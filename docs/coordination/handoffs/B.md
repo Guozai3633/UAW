@@ -1,4 +1,8 @@
-# Session B：MS-C1 实际交接
+# Session B交接记录
+
+最新状态：MS-C2 已提交，真实 SQL 待 A 执行。下节保留 MS-C1 首包当时报告；A 已在 ms-i1 接受该组件。
+
+## MS-C1 历史交接报告
 
 日期：2026-10-07（Asia/Shanghai）。状态：**组件已提交，待 A 审阅与 MS-I1 接线；P1-02 整轮未验收，MS-C2 未开工。**
 
@@ -106,3 +110,101 @@ Set-Location E:/UAW/.worktrees/context
 ## 集成与回退
 
 B 实现提交 `307a49b3bbb9e72237b9eed61f787164fe6bdea5` 可独立审阅；A 按 PARALLEL_WORKFLOW 合入 dev/context，公共接线另作可区分提交。本包没有迁移或已发生的外部效果，可通过 A 的正常 revert 回退实现。禁止直接把 worker 分支当其他 session 的未发布依赖。
+
+
+## MS-C2：实际交接
+
+日期：2026-10-07（Asia/Shanghai）。状态：**实现已提交，待 A 审阅/接线和真实 SQL 执行；P1-02 整轮未验收。**
+
+### 基线、分支与提交
+
+- 实际 worktree / 分支：`E:/UAW/.worktrees/context` / `dev/context`。
+- 从干净的 `0da308fd42a59c8f4bf47a5c19c2932f345d0a85` 快进 `git merge --ff-only ms-i1`；HEAD 与标签均为 `f33d16245619b6d446816a36b65bd5c1fc607593`，保留首包历史。
+- 已读新 DISPATCH、Session B 和 A 的 `requests/A/MS-I1-adapters.md`。A 接受 MS-C1 并派发 MS-C2；只消费该已发布快照，未消费 A 后续 MS-I2 未交接源码。
+- 本包实现提交：**`c85bf52b283866cfdcad689356faee239152ba1d`**，`feat(context): persist immutable snapshots and resolve read sources`。
+- 本交接另作后续提交；使用 `git log -1 --format=%H -- docs/coordination/handoffs/B.md` 取得文档实际 SHA。A 审阅本包时对比 `ms-i1..dev/context`，不要将已快进的 C/D 基线误算为 B 新改动。
+- schema/shared ports/contracts/uv.lock 摘要仍与 DISPATCH 一致。未新增迁移/依赖/事件/flags，D01/D03/D06 未自行设定。
+- 只修改允许路径；A 的 seed.py、intent.py、Run/Model adapters、composition、共享文件与 DISPATCH 相对 ms-i1 无差异。
+
+### 文件清单
+
+实现提交的九个文件：
+
+- src/uaw/context/contracts.py
+- src/uaw/context/ports.py
+- src/uaw/context/facade.py
+- src/uaw/context/composer.py
+- src/uaw/context/repository.py
+- src/uaw/context/references.py
+- tests/unit/context/test_snapshots.py
+- tests/integration/context/test_snapshots_postgres.py
+- docs/coordination/requests/B/MS-C2-storage-wiring.md
+
+后续只提交本 handoff。回执/缓存在本 session 忽略目录，未提交。
+
+### 公开接口与实际范围
+
+- `ContextComponents` 增加可选 repository/authority 注入；原 ms-i1 组装默认未传，因此理解专用行为保持，通用 bindings.context 不被启用。
+- `build(ContextRequest, ctx) -> RuntimeContextruntimeBuildResult`：依赖齐全时保存真实读取来源的 ContextSnapshot；缺仓储、CompositionAuthority、能力 Reader、目的规则或模型元数据，明确失败/不可用。
+- `resolve_reference(RefRequest, ctx) -> RuntimeContextruntimeResolveReferenceResult`：只查本 Run/作用域中由 Composer 已登记的实际来源；没有任意 URL/Ref 造证据。
+- `read_snapshot(Ref, ctx)`：内部查询辅助，返回现有 BuildResult 结构；重新检查源/规则/权限/epoch/模型窗口与保护集合。没有自增 HTTP/工具操作。
+- `components.references.handle(InternalContextReferencesRequest, ctx)`：实现 resolve/read；Unicode text_span 对整个已读文本取片段，已登记片段不能扩大到 whole。分页与任意 register 明确不可用。
+- `ContextRepository(records, TransactionalStore(database))`：消费 ms-i1 现有通用 SQL 存储/事务，未导入其他 Runtime 私有仓储或修改邻域状态。
+- 新增 `ContextRequest` Python DTO 完全对应现有 schema。CompositionBinding/PreparedSnapshot/CompositionAuthority 是注入用内部记录与 port，不增加公共 JSON 字段。
+
+CompositionAuthority 必须提供真实 purpose 对应规则、当前 epoch、实际能力源 Ref、原文/重要要求/未决动作保护及额外来源依赖，verify 复核当前权威状态。B 没有默认用理解指令服务 agent_step，也没默认构造空 tools；当前生产这类适配器尚缺，接线提案待 A 审阅。
+
+### 存储、来源与边界
+
+- 命名空间：`context.generic.snapshots`、`instructions`、`bindings`、`scopes`、`requests`、`references`，完整名称均带 context.generic 前缀；与 A 理解专用 context.* 分开。
+- 一个事务写快照、InstructionSet、ModelContextBinding、Scope、原始 ContextRequest 及实际读取的 ReferenceRecord；仅成功提交后返回 Context Ref。提交前后重读固定来源并复核授权/取消。
+- 自有对象只创建 revision=1。新 operation_id 创建新 ID；新 epoch 必须来自真实 authority，expected_epoch 不符返回 conflict。没有更新旧快照的方法。
+- ctx.operation_id 是逻辑 request_id；attempt_id 只代表重试。持久幂等参数含原请求、Run、Scope 与固定模型/能力政策；同键同参重放，同键异参 idempotency_conflict。聚合锁和 RequestRow 来自现有 TransactionalStore，非内存生产账本。
+- 快照 Manifest 记录实际选中来源及读取依赖；源 Ref/hash/Location 对应实际读取。manifest.content_hash 是快照非 manifest 字段摘要，Context Ref 的 hash 覆盖完整快照。InstructionSet Ref 也核对固定内容 hash。
+- ReferenceRecord 保存首次读取时间、实际来源链和服务端 scope；与下一次快照复用时不覆写。同源版本不同内容明确拒绝。无推测网页 URL、本机绝对路径或虚构 Citation；空 citations 表示未登记论断关系。
+- 引用/快照读取再次调用当前 Reader，删除、撤权、取消、版本/hash/位置变化均可使旧 Ref 不可读。Ref/access_scope/快照缓存不授予永久读权。
+- ContextRequest.preserve 与 authority 的关键保护合并；request 不提供原文时仍保留 authority 的已受理原文。requirement_ids 没有实际来源绑定时不可用，不能声称语义匹配完成。
+- 最后序列化估算覆盖完整 snapshot/manifest/规则/能力及 escaped text，保留输出、工具和额外 envelope 余量；超窗失败，不删关键项或更换模型。仍是保守 UTF-8 估算，实际 Model 发送前沿用 ms-i1 原生请求计数。
+- SQL 事务保证 Context 自有对象原子性；不能把其他领域/外部源撤销做成跨系统原子承诺。真实 authority/Reader 必须供当前版本复核；打开时必重查。发生提交与取消竞态时已保存记录不被宣称自动撤销。
+- 当前 ms-i1 Run Reader 只支持已受理活动 Run；本包沿用该边界，不扩大到预览或已完成 Run，不修改 Run/Model 状态和执行权限。
+
+### 验证命令与实际回执
+
+环境：本 worktree 的 .venv，Python 3.14.6。未读取/复制凭据，未启动数据库、迁移或第二套后端，没有真实 LLM/Runner 执行。
+
+`<B files>` 为 context 下九个 B 文件：facade/contracts/ports/sources/rules/selection/composer/repository/references.py；不格式化 A 的 seed.py/intent.py。
+
+| 命令 | 实际结果 | 回执 |
+| --- | --- | --- |
+| ./.venv/Scripts/python.exe -m ruff check <B files> tests/unit/context tests/integration/context | exit 0 / All checks passed | tests/.artifacts/B/MS-C2/ruff.txt |
+| ./.venv/Scripts/python.exe -m ruff format --check <B files> tests/unit/context tests/integration/context | exit 0 / 12 files already formatted | tests/.artifacts/B/MS-C2/format.txt |
+| ./.venv/Scripts/python.exe -m mypy <B files> --cache-dir .cache/mypy/B | exit 0 / 9 source files | tests/.artifacts/B/MS-C2/mypy.txt |
+| ./.venv/Scripts/python.exe -m pytest tests/unit/context -q -o cache_dir=.cache/pytest/B --junitxml=tests/.artifacts/B/MS-C2/unit.xml | **64 passed，0 failed/skipped/warning**；其中原 MS-C1 39 个及 MS-C2 25 个 | tests/.artifacts/B/MS-C2/unit.txt、unit.xml |
+| ./.venv/Scripts/python.exe -m pytest tests/integration/context --collect-only -q -o cache_dir=.cache/pytest/B | **9 tests collected，未执行 SQL** | tests/.artifacts/B/MS-C2/sql-collection.txt |
+| git diff --cached --check（实现提交前） | exit 0 | 提交工具回执 |
+
+完整命令/环境/exit_code：`tests/.artifacts/B/MS-C2/validation.json`。JSON 成功、重复、参数冲突、引用读取、denied、epoch stale 例子：`tests/.artifacts/B/MS-C2/examples.json`。均为明确的受控组件运行；内存事务不是真实 SQL 回执。
+
+必要用例包括：原文 CRLF/数字不改写、固定 manifest、真实来源登记、同操作并发/重放、参数冲突、新 epoch 新快照、旧 snapshot stale、源删除/变更、当前撤权、作用域/Run 隔离、超窗与缺 requirement 绑定、未知 Workspace、片段不能扩大、取消（含部分写入后的回滚）。
+
+### A 必须执行的真实存储验证
+
+B 当前没有获准 UAW_TEST_DATABASE_URL，未启动或借用共享数据库。已完成真正 PostgreSQL 测试代码，交 A 执行，**收集成功不算存储验收**：
+
+```powershell
+./.venv/Scripts/python.exe -m pytest tests/integration/context -q --require-postgres
+```
+
+九个用例使用 root database/principal 与已发布 domain/understanding fixture，随机主体清理、无 truncate。实际 Run 原文/权限/取消/固定模型目录及事务使用 ms-i1 已发布适配器；epoch 和空能力集合是标注清楚的测试适配器。没有模型发送，不证明产品 Tool/Runner 或真实 LLM。
+
+SQL 检查覆盖实际原文打开、原子写入、durable replay、参数冲突、并发一次保存、新旧 epoch 不覆写、删除传播、当前政策撤销、取消、Workspace 未接入无提交、登记冲突时整个事务回滚。A 在集成 SHA 上执行这组后，再执行现有 MS-I1 理解接线和全链路回归；若发现业务问题退回 B 修复。
+
+### 接线提案、未通过项与回退
+
+- 提案：`docs/coordination/requests/B/MS-C2-storage-wiring.md`，待 A 决定，无已批准公共变更。
+- A 注入可信 CompositionAuthority 和真实 ModelToolSet Reader、明确 purpose 规则/保护/epoch 状态所有者，再决定 Model 输入解析、RuntimeBindings.context 与产品操作登记。B 未改 composition 或 A 的理解专用 builder/new adapters。
+- **真实 PostgreSQL 9 项未运行，故实际存储验收尚未通过**；现有理解组合回归和整条链路也由 A 执行。没有将缺连接当默认 skip 的成功记录。
+- Workspace/Board/Memory、真实 Runner、任意引用登记、分页/Citation、预览/终态 Run、自然语言多规则评估及通用生产能力摘要仍缺实际依赖，明确不可用。
+- 本包不需要 schema 生成、锁更新或迁移；部署权威 D01、Runner D03、真实模型 D06 保持待定。A 接线/权限所有者变化需要独立公共提案和实际新基线。
+- A 按 ms-i1..dev/context 审阅本包，实现与接线提交区分。可正常 revert B 实现提交或独立 A 接线提交；已有不可变数据库记录不会被源码 revert 删除，后续读取仍受当前授权约束。
+- 未自动创建/联系其他 session。接受状态由 A 在 DISPATCH 维护；MS-C2 组件交付不自动接受 P1-02。
