@@ -4,7 +4,7 @@ UAW 面向办公、开发与学术任务，采用 Python 构建可扩展 Agent R
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-P1-01任务理解协议已实现，当前全量73项检查通过；真实模型语义质量仍待验收。Git远端已关联[项目仓库](https://github.com/Guozai3633/UAW)，集成分支为`integration`。采用 **3个开发session＋1个集成session**；B/C/D独立分支、worktree和环境已准备，开发聊天待在对应目录开启，实际基线及派发状态见[统一记录](docs/coordination/DISPATCH.md)：[分工计划](docs/plan/PARALLEL.md) · [开工和合并](docs/plan/PARALLEL_WORKFLOW.md)。
+P1-01协议、B/C/D首包组件和MS-I1上下文接线已合入，当前全量222项检查通过；真实模型语义质量、实际配对与执行仍待验收。Git远端已关联[项目仓库](https://github.com/Guozai3633/UAW)，集成分支为`integration`。采用 **3个开发session＋1个集成session**；B按新`ms-i1`基线执行MS-C2，A继续MS-I2，C/D下一包等待公共接线，见[统一记录](docs/coordination/DISPATCH.md)：[分工计划](docs/plan/PARALLEL.md) · [开工和合并](docs/plan/PARALLEL_WORKFLOW.md)。
 
 ## 先看这些入口
 

@@ -506,6 +506,18 @@ r("P5-07","foundation","交付盘点与开发移交","把实际完成、未完�
 
 # Actual progress is kept separately from the planned tasks and backed by recorded evidence.
 IMPLEMENTATION_STATUS = {
+    "P1-02": dict(status="in_progress", implementation_evidence=[
+        "docs/implementation/MS-I1.md", "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml",
+    ]),
+    "P1-03": dict(status="in_progress", implementation_evidence=[
+        "docs/implementation/MS-I1.md", "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml",
+    ]),
+    "P1-04": dict(status="in_progress", implementation_evidence=[
+        "docs/implementation/MS-I1.md", "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml",
+    ]),
     "P1-01": dict(status="in_progress", implementation_evidence=[
         "docs/implementation/P1-01.md",
         "docs/implementation/evidence/environment.json", "docs/implementation/evidence/p0-tests.xml",

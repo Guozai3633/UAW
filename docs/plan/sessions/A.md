@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：独立分支/worktree及依赖已准备。首包已分配，开发聊天尚未创建；开工先核对parallel-wave-1和DISPATCH。
+状态：MS-I1开发范围完成；继续MS-I2公共接线。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
@@ -43,6 +43,8 @@
 - `DEVELOPMENT_PLAN.md`
 - `.gitignore`
 - `.gitattributes`
+- `tests/integration/test_context_wiring.py`
+- `tests/unit/model/`
 - `docs/plan/`
 - `docs/api/`
 - `docs/design/`
@@ -63,7 +65,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- B/C/D分支、worktree和依赖环境已准备；用户在对应目录新建聊天后启动首包。
+- B/C/D首包已合入，MS-I1开发范围通过；A继续MS-I2，B按新基线执行MS-C2。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -145,7 +147,7 @@
 当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-先完成MS-00：收尾未完成P1-01、验证当前源码、保存共同Git基线和环境；条件成立后记录B/C/D的派发包与SHA。
+当前执行MS-I2。工作区干净后fetch origin --tags，将ms-i1合入本工作分支，保留已有提交历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

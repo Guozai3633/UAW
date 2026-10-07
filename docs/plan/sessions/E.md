@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：可选工作区未创建、任务未派发。取得实际基线与派发记录后再开始。
+状态：可选工作区未创建、任务未派发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
@@ -57,7 +57,7 @@
 当前工作目录必须是E:/UAW/.worktrees/evaluation，分支必须是dev/evaluation。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/E.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-若基线未发布，先完成本包可做的设计/提案；不要修改或使用其他session未交接的源码。
+当前MS-Q1未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

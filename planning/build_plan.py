@@ -230,7 +230,7 @@ def build_readme():
               f"| {link(path, 'planning/plan.json', '机器可读计划')} | 消费全部任务与输入/输出接口关联 |",
               f"| {link(path, 'planning/plan-map.json', '节点到轮次映射')} | 反查节点由哪些轮逐步实现 |",
               f"| {link(path, 'docs/plan/plan-check.json', '计划检查结果')} | 依赖无环、节点/接口关联、文档链接检查；不是Runtime测试 |", "",
-              "## 4. 当前接续入口", "", "P0工程/受理基础已经实施；真实模型仍待配置。" + round_link(path, "P1-01", True) + "的协议基线已通过73项全量检查，语义质量仍待实际模型验证。由集成session A保存共同提交并准备独立工作区，随后按" + link(path, "docs/plan/PARALLEL.md", "多session分工") + "开放独立组件子包，完整轮验收仍遵守原依赖。", "",
+              "## 4. 当前接续入口", "", "P0工程/受理基础已经实施；真实模型仍待配置。" + round_link(path, "P1-01", True) + "协议、三份组件及MS-I1接线已通过222项全量检查，语义质量仍待实际模型验证。B按ms-i1基线执行MS-C2，A继续Tool/Runner公共接线；见" + link(path, "docs/plan/PARALLEL.md", "多session分工") + "，完整轮验收仍遵守原依赖。", "",
               "## 5. 计划维护规则", "",
               "- 修改planning/catalog.py后运行 `python planning/build_plan.py`；逐轮/模块/阶段/映射是生成文件。",
               "- 开发报告保存在 `docs/implementation/<轮次>.md`，实际选型保存在 `docs/decisions/`，实施时才创建。",
@@ -346,7 +346,7 @@ def build_template_and_status():
     path = "docs/plan/STATUS.md"
     counts = Counter(r["status"] for r in ROUNDS)
     lines = ["# 开发计划当前状态", "", link(path, "docs/plan/README.md", "总索引"), "", f"计划记录日期{DATE}：" + "、".join(f"{STATUS_LABELS[k]}{v}轮" for k, v in counts.items()) + f"。已验收轮数：{counts.get('accepted', 0)}。", "",
-             "src/uaw已开始工程/公共契约/存储实现；Agent业务循环、apps/web及apps/local_runner仍待建设。当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
+             "Context/Tool/Runner首包已合入，Context理解接线已通过；Agent业务循环、apps/web与真实Runner配对/执行仍待建设。当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
     for r in ROUNDS:
         evidence = "、".join(link(path, ref, ref) for ref in r["implementation_evidence"]) or "为空；没有实现完成声明"
         lines.append(f"| {round_link(path, r['id'], True)} | {STATUS_LABELS[r['status']]} | {SCOPE_LABELS[r['scope']]} | {evidence} |")

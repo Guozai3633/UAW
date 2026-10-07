@@ -1045,10 +1045,14 @@
       "deliverables": [
         "最小上下文快照与引用fixture"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I1.md",
+        "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml"
+      ],
       "effective_dependencies": [
         "P0-02",
         "P0-05",
@@ -1253,10 +1257,14 @@
         "工具调用竞态/失败fixture",
         "控制工具到Facade接线表"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I1.md",
+        "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml"
+      ],
       "effective_dependencies": [
         "P0-03",
         "P0-04",
@@ -1506,12 +1514,16 @@
         "配对与本机授权演示",
         "执行能力报告"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [
         "D03"
       ],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I1.md",
+        "docs/implementation/evidence/environment.json",
+        "docs/implementation/evidence/p0-tests.xml"
+      ],
       "effective_dependencies": [
         "P0-03",
         "P1-03",

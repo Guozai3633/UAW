@@ -6,15 +6,16 @@ BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "5000a0e9a6eb4cffdc21a691a916d056792d4242",
+    "commit": "c43bbc5a87dc244a918aa835032ed491e7e2f421",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
-    "dispatch_ref": "parallel-wave-1",
-    "chat_sessions_created": False,
+    "dispatch_ref": "ms-i1",
+    "first_dispatch_ref": "parallel-wave-1",
+    "chat_sessions_created": True,
     "code_baseline_verified": True,
-    "last_verified_tests": 73,
-    "last_verified_scope": "P0 control/model protocol and P1-01 source-bound understanding, real PostgreSQL with controlled model replies",
+    "last_verified_tests": 222,
+    "last_verified_scope": "P0/P1-01 plus MS-C1/MS-T1/MS-R1 components and MS-I1 wiring; real PostgreSQL and controlled HTTP replies, no actual LLM/Runner execution",
     "current_unverified_round": None,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": ["D01 final storage authority", "D06 actual model provider", "D03 Runner execution mode"],
@@ -30,6 +31,7 @@ RESERVED = [
     "tests/conftest.py", "tests/integration/test_control_plane.py",
     "tests/integration/test_bootstrap.py", "tests/integration/model/",
     "tests/integration/intent/", "README.md", "DEVELOPMENT_PLAN.md", ".gitignore", ".gitattributes",
+    "tests/integration/test_context_wiring.py", "tests/unit/model/",
     "docs/plan/", "docs/api/", "docs/design/", "docs/technology/",
     "docs/implementation/",
     "docs/DOCUMENT_MAP.md", "docs/PROJECT_STRUCTURE.md",
@@ -45,7 +47,7 @@ SESSIONS = {
               rules=["负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
                      "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
                      "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-                     "B/C/D分支、worktree和依赖环境已准备；用户在对应目录新建聊天后启动首包。"]),
+                     "B/C/D首包已合入，MS-I1开发范围通过；A继续MS-I2，B按新基线执行MS-C2。"]),
     "B": dict(name="上下文组件", branch="dev/context", worktree="E:/UAW/.worktrees/context",
               owns=["src/uaw/context/facade.py", "src/uaw/context/contracts.py", "src/uaw/context/ports.py",
                     "src/uaw/context/repository.py", "src/uaw/context/sources.py", "src/uaw/context/rules.py",
@@ -80,6 +82,21 @@ SESSIONS = {
               rules=["第5个session可选，负责办公/开发/学术样本、验收表和来源/权限反例。",
                      "不改Runtime或其他session测试，不生成共享JUnit和环境摘要。",
                      "无真实提供方时只提交样本/预期标准，不生成伪模型样本或语义质量分数。"]),
+}
+
+SESSION_PROGRESS = {
+    "A": dict(state="MS-I1开发范围完成；继续MS-I2公共接线。", package="MS-I2", ready=True),
+    "B": dict(state="MS-C1组件已接受；MS-C2已派发，同步ms-i1后开始。", package="MS-C2", ready=True),
+    "C": dict(state="MS-T1组件已接受；MS-T2待MS-I2真实依赖发布，未派发。", package="MS-T2", ready=False),
+    "D": dict(state="MS-R1组件已接受；MS-R2待MS-I2真实依赖发布，未派发。", package="MS-R2", ready=False),
+    "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
+}
+
+PACKAGE_PROGRESS = {
+    "MS-00": "accepted_development", "MS-C1": "accepted_component",
+    "MS-T1": "accepted_component", "MS-R1": "accepted_component",
+    "MS-I1": "accepted_development", "MS-C2": "dispatched",
+    "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 
 PACKAGES = [

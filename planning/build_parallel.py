@@ -6,7 +6,8 @@ import re
 from pathlib import Path
 
 from catalog import ROUNDS
-from parallel_catalog import BASELINE, CONFIGURATIONS, DATE, PACKAGES, SESSIONS, VERSION
+from parallel_catalog import (BASELINE, CONFIGURATIONS, DATE, PACKAGES, SESSIONS,
+                              SESSION_PROGRESS, PACKAGE_PROGRESS, VERSION)
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATED = []
@@ -70,8 +71,8 @@ def build_sessions():
     for key, session in SESSIONS.items():
         path = f"docs/plan/sessions/{key}.md"
         ready = BASELINE.get("workspaces_ready", False) and key in ("A", "B", "C", "D")
-        state = ("状态：独立分支/worktree及依赖已准备。首包已分配，开发聊天尚未创建；开工先核对parallel-wave-1和DISPATCH。"
-                 if ready else "状态：可选工作区未创建、任务未派发。取得实际基线与派发记录后再开始。")
+        progress = SESSION_PROGRESS[key]
+        state = "状态：" + progress["state"] + "以DISPATCH的固定版本与派发为准。"
         lines = [f"# Session {key}：{session['name']}", "", link(path, "docs/plan/PARALLEL.md", "并行开发总入口"), "",
                  state, "",
                  "## 工作位置和顺序", "", f"- {'实际' if ready else '建议'}分支：`{session['branch']}`。", f"- {'实际' if ready else '建议'}worktree：`{session['worktree']}`。",
@@ -93,7 +94,8 @@ def build_sessions():
                   f"当前工作目录必须是{session['worktree']}，分支必须是{session['branch']}。",
                   f"先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/{key}.md。",
                   "读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。",
-                  "若基线未发布，先完成本包可做的设计/提案；不要修改或使用其他session未交接的源码。" if key != "A" else "先完成MS-00：收尾未完成P1-01、验证当前源码、保存共同Git基线和环境；条件成立后记录B/C/D的派发包与SHA。",
+                  (f"当前执行{progress['package']}。工作区干净后fetch origin --tags，将ms-i1合入本工作分支，保留已有提交历史。"
+                   if progress["ready"] else f"当前{progress['package']}未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。"),
                   "只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。",
                   "按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。",
                   "保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。",
@@ -113,8 +115,8 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **B/C/D分支、独立worktree及依赖环境已准备，首包已分配；实际开发聊天尚未创建。** 开工版本固定为`parallel-wave-1`标签。实际目录与派发状态见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
-             "用户在对应目录新建聊天，粘贴session页的开工说明即可开始组件包。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
+             "- **B/C/D首包已分别合入；MS-I1完成开发范围，新基线为`ms-i1`。** B同步后执行MS-C2；A继续MS-I2；C/D的下一包等待公共依赖。实际接受与派发见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
         lines.append(f"| {link(path, f'docs/plan/sessions/{key}.md', key + '：' + session['name'])} | {session['rules'][0]} | {'、'.join(session['starts'])} | {'第5个可选' if key == 'E' else '推荐4个方案'} |")
@@ -161,7 +163,8 @@ def main():
             target.write_text(f"# Session {key}交接记录\n\n当前：未派发。基线SHA：待A完成MS-00后公布。\n\n负责：{session['name']}。首包：{'、'.join(session['starts'])}。\n\n本文件只由本session填写实际提交；A在[DISPATCH.md](../DISPATCH.md)记录派发与接受。模板见[HANDOFF_TEMPLATE.md](../HANDOFF_TEMPLATE.md)。\n\n## 实际提交\n\n- 所依据的真实基线SHA：待定。\n- 提交SHA/修改文件/验证证据：未开工。\n- 公共接口提案/接线需求：未提交。\n- 未通过项：待执行。\n", encoding="utf-8")
     build_sessions()
     build_overview()
-    report = {"plan_version": VERSION, "date": DATE, "status": "planned_not_dispatched", "baseline": BASELINE,
+    report = {"plan_version": VERSION, "date": DATE, "status": "first_wave_integrated", "baseline": BASELINE,
+              "session_progress": SESSION_PROGRESS, "package_progress": PACKAGE_PROGRESS,
               "recommended_sessions": 4, "configurations": CONFIGURATIONS, "sessions": SESSIONS,
               "packages": PACKAGES, "full_round_dependencies_unchanged": True, "runtime_gates_unchanged": True}
     write("planning/parallel-plan.json", json.dumps(report, ensure_ascii=False, indent=2))
@@ -176,6 +179,9 @@ def main():
             if "://" in href or href.startswith("#"):
                 continue
             destination = (target.parent / href.split("#", 1)[0]).resolve()
+            # Worker fixture receipts are ignored local artifacts, not clone-time docs.
+            if destination.is_relative_to(ROOT / "tests/.artifacts"):
+                continue
             checked_links += 1
             if not destination.is_file():
                 errors.append(f"broken link: {path}: {href}")

@@ -2,7 +2,7 @@
 
 2026-10-07：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
 
-P1-01任务理解协议及认证frame读取已通过回归，详情见[实现范围与未过项](P1-01.md)。当前全量73项检查通过，无跳过；使用真实PostgreSQL及受控模型响应，真实模型语义质量仍待D06。Git已关联用户提供的新仓库；共同提交与多session开工状态见[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
+P1-01协议及三份组件已通过组合回归，MS-I1接线完成开发范围，见[接线与未过项](MS-I1.md)。当前全量222项检查通过，无跳过；使用真实PostgreSQL、本机临时路径及受控模型响应，真实模型语义质量仍待D06。B可按ms-i1基线进入MS-C2；A继续MS-I2，C/D下一包等待真实公共依赖。见[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
 
 ## 已实现的代码
 
@@ -18,6 +18,8 @@ P1-01任务理解协议及认证frame读取已通过回归，详情见[实现范
 - 每attempt预算准入、调用意图、未知用量保留、失败结算及去重核对。
 - ModelRuntime.generate与显式Chat Completions adapter；固定模型/能力复核、长输出Blob、结构输出校验、有限重试、取消和未知费用记账。实际LLM调用需要管理员批准配置。
 - IntentRuntime.understand/revise与当前frame读取；保留完整用户原文、逐字来源和理解历史，新输入/取消/期限/CAS阻止旧提案提交。旧Run不静默补来源。
+- Context来源/规则/窗口组件已通过真实Run/政策/目录adapter接入理解，Intent与Model共用resolver；通用build仍未绑定。Model在准入前计入完整原生请求的保守估算。
+- Tool固定目录、权限/flag过滤、安全schema与身份组件；Runner命令/回执/根路径组件已合入。生产工具目录为空，真实审批、配对、签名和执行尚未接入。
 
 [开发控制层操作说明](CONTROL_PLANE.md) 包含管理员配置流程、请求格式和本轮限制。
 
@@ -60,4 +62,4 @@ uv sync --frozen --extra agent-engine
 
 ## 后续工作
 
-补齐D06提供方/模型/私有凭据与真实调用回执，完成P0-05及Intent语义验收；并行建设Context、Tool和Runner独立组件，随后接Agent闭环。办公、学术和代码样例在后续真实任务阶段验收。组件基线通过不代表已经通过P0真实模型门槛。
+补齐D06提供方/模型/私有凭据与真实调用回执，完成P0-05及Intent语义验收。B开发固定快照/引用，A落实Tool/Runner公共接线后派发C/D下一包，随后接Agent闭环。办公、学术和代码样例在后续真实任务阶段验收。组件基线通过不代表已经通过P0真实模型门槛。

@@ -9,11 +9,11 @@ v0.1 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量73项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量222项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **B/C/D分支、独立worktree及依赖环境已准备，首包已分配；实际开发聊天尚未创建。** 开工版本固定为`parallel-wave-1`标签。实际目录与派发状态见[统一派发表](../coordination/DISPATCH.md)。
+- **B/C/D首包已分别合入；MS-I1完成开发范围，新基线为`ms-i1`。** B同步后执行MS-C2；A继续MS-I2；C/D的下一包等待公共依赖。实际接受与派发见[统一派发表](../coordination/DISPATCH.md)。
 
-用户在对应目录新建聊天，粘贴session页的开工说明即可开始组件包。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
+沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 
 ## 2. 首批session
 

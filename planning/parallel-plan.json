@@ -1,20 +1,21 @@
 {
   "plan_version": "0.1",
   "date": "2026-10-07",
-  "status": "planned_not_dispatched",
+  "status": "first_wave_integrated",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "5000a0e9a6eb4cffdc21a691a916d056792d4242",
+    "commit": "c43bbc5a87dc244a918aa835032ed491e7e2f421",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
-    "dispatch_ref": "parallel-wave-1",
-    "chat_sessions_created": false,
+    "dispatch_ref": "ms-i1",
+    "first_dispatch_ref": "parallel-wave-1",
+    "chat_sessions_created": true,
     "code_baseline_verified": true,
-    "last_verified_tests": 73,
-    "last_verified_scope": "P0 control/model protocol and P1-01 source-bound understanding, real PostgreSQL with controlled model replies",
+    "last_verified_tests": 222,
+    "last_verified_scope": "P0/P1-01 plus MS-C1/MS-T1/MS-R1 components and MS-I1 wiring; real PostgreSQL and controlled HTTP replies, no actual LLM/Runner execution",
     "current_unverified_round": null,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
@@ -22,6 +23,44 @@
       "D06 actual model provider",
       "D03 Runner execution mode"
     ]
+  },
+  "session_progress": {
+    "A": {
+      "state": "MS-I1开发范围完成；继续MS-I2公共接线。",
+      "package": "MS-I2",
+      "ready": true
+    },
+    "B": {
+      "state": "MS-C1组件已接受；MS-C2已派发，同步ms-i1后开始。",
+      "package": "MS-C2",
+      "ready": true
+    },
+    "C": {
+      "state": "MS-T1组件已接受；MS-T2待MS-I2真实依赖发布，未派发。",
+      "package": "MS-T2",
+      "ready": false
+    },
+    "D": {
+      "state": "MS-R1组件已接受；MS-R2待MS-I2真实依赖发布，未派发。",
+      "package": "MS-R2",
+      "ready": false
+    },
+    "E": {
+      "state": "可选工作区未创建、任务未派发。",
+      "package": "MS-Q1",
+      "ready": false
+    }
+  },
+  "package_progress": {
+    "MS-00": "accepted_development",
+    "MS-C1": "accepted_component",
+    "MS-T1": "accepted_component",
+    "MS-R1": "accepted_component",
+    "MS-I1": "accepted_development",
+    "MS-C2": "dispatched",
+    "MS-I2": "in_progress",
+    "MS-T2": "waiting_not_dispatched",
+    "MS-R2": "waiting_not_dispatched"
   },
   "recommended_sessions": 4,
   "configurations": {
@@ -79,6 +118,8 @@
         "DEVELOPMENT_PLAN.md",
         ".gitignore",
         ".gitattributes",
+        "tests/integration/test_context_wiring.py",
+        "tests/unit/model/",
         "docs/plan/",
         "docs/api/",
         "docs/design/",
@@ -106,7 +147,7 @@
         "负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
         "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
         "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-        "B/C/D分支、worktree和依赖环境已准备；用户在对应目录新建聊天后启动首包。"
+        "B/C/D首包已合入，MS-I1开发范围通过；A继续MS-I2，B按新基线执行MS-C2。"
       ]
     },
     "B": {

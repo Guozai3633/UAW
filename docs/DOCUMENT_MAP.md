@@ -33,6 +33,7 @@
 | [implementation/README.md](implementation/README.md) | 实际代码范围、启动/检查及未完成能力 | 人工维护；对应真实回执与冻结版本 |
 | [implementation/P0-05.md](implementation/P0-05.md) | 模型网关/固定政策/协议/用量实际范围与未过项 | 人工维护；协议fixture不替代实际LLM验收 |
 | [implementation/P1-01.md](implementation/P1-01.md) | 本轮写入代码、未完成验证和A收尾清单 | 当前部分实现记录，不是验收通过报告 |
+| [implementation/MS-I1.md](implementation/MS-I1.md)、[A接线说明](coordination/requests/A/MS-I1-adapters.md) | 三份组件接受、真实Context接线、消费边界与下一包 | 222项回归通过；通用build/真实配对与执行仍未验收 |
 | [implementation/MODEL_CONNECTION.md](implementation/MODEL_CONNECTION.md) | 批准提供方profile、私有凭据及实连CLI | 按实际提供方配置执行，回执保存在私有.data |
 | [implementation/CONTROL_PLANE.md](implementation/CONTROL_PLANE.md) | 开发用户/管理员认证、配置发布与任务受理操作 | 仅本机开发入口；不声称公网登录或模型已连通 |
 | [implementation/P0-03.md](implementation/P0-03.md)、[P0-04](implementation/P0-04.md) | 配置、原文、状态、事件及账本的实际策略/验收 | 独立于目标设计；本轮限制与证据在此记录 |

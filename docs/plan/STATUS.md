@@ -2,9 +2,9 @@
 
 [总索引](README.md)
 
-计划记录日期2026-10-07：已验收3轮、开发中3轮、待开发43轮、后续讨论1轮。已验收轮数：3。
+计划记录日期2026-10-07：已验收3轮、开发中6轮、待开发40轮、后续讨论1轮。已验收轮数：3。
 
-src/uaw已开始工程/公共契约/存储实现；Agent业务循环、apps/web及apps/local_runner仍待建设。当前能力与启动方式见[实际实施入口](../implementation/README.md)。文档检查只核对引用/覆盖/依赖，不能替代运行证据。
+Context/Tool/Runner首包已合入，Context理解接线已通过；Agent业务循环、apps/web与真实Runner配对/执行仍待建设。当前能力与启动方式见[实际实施入口](../implementation/README.md)。文档检查只核对引用/覆盖/依赖，不能替代运行证据。
 
 | 轮次 | 当前状态 | 范围 | 实现证据 |
 | --- | --- | --- | --- |
@@ -14,9 +14,9 @@ src/uaw已开始工程/公共契约/存储实现；Agent业务循环、apps/web�
 | [P0-04 受理、原文、状态、事件与资源账本](rounds/P0-04.md) | 已验收 | 核心开发范围 | [docs/implementation/P0-04.md](../implementation/P0-04.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
 | [P0-05 固定模型真实调用与协议恢复](rounds/P0-05.md) | 开发中 | 核心开发范围 | [docs/implementation/P0-05.md](../implementation/P0-05.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
 | [P1-01 正式任务理解与原文溯源](rounds/P1-01.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-01.md](../implementation/P1-01.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
-| [P1-02 最小上下文、规则和引用](rounds/P1-02.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
-| [P1-03 工具目录与完整调用闸门](rounds/P1-03.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
-| [P1-04 Runner配对与项目授权](rounds/P1-04.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
+| [P1-02 最小上下文、规则和引用](rounds/P1-02.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I1.md](../implementation/MS-I1.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
+| [P1-03 工具目录与完整调用闸门](rounds/P1-03.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I1.md](../implementation/MS-I1.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
+| [P1-04 Runner配对与项目授权](rounds/P1-04.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I1.md](../implementation/MS-I1.md)、[docs/implementation/evidence/environment.json](../implementation/evidence/environment.json)、[docs/implementation/evidence/p0-tests.xml](../implementation/evidence/p0-tests.xml) |
 | [P1-05 输入快照、隔离、环境和真实进程](rounds/P1-05.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-06 实际变更、成果与基础审阅](rounds/P1-06.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-07 根实例、单Agent循环与工具接线](rounds/P1-07.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |

@@ -2,20 +2,20 @@
 
 此文件由A维护。开发session只写自己的handoff和提案，避免多人更新同一状态表。
 
-日期：2026-10-07。当前：**MS-00准备完成；B/C/D分支、独立worktree及依赖已创建，首包已分配，开发聊天待用户在对应目录开启**。
+日期：2026-10-07。当前：**B/C/D首包组件已分别合入并接受；MS-I1开发范围通过，B同步新基线后执行MS-C2。A继续MS-I2；MS-T2/MS-R2尚未派发。**
 
 ## 共同代码基线
 
 - 仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，origin为`https://github.com/Guozai3633/UAW.git`。
 - 集成目录/分支：`E:/UAW` / `integration`，跟踪`origin/integration`。
-- 已验证代码基线SHA：`5000a0e9a6eb4cffdc21a691a916d056792d4242`；已实际推送并由远端refs核对。
-- 代码基线SHA指运行代码快照；本次开工版本使用固定标签`parallel-wave-1`，包括最新派发说明。三个开发分支均从该标签对应提交开始。
-- 实际开工SHA用`git rev-parse parallel-wave-1^{commit}`取得；首次开工应与本worktree的HEAD相同。标签发布后不移动；后续集成发布新版本。
-- 当前全量验证：73项通过，无失败或跳过；其中13项Intent协议检查。真实PG＋受控模型响应，不证明真实LLM语义质量。
+- 新验证代码SHA：`c43bbc5a87dc244a918aa835032ed491e7e2f421`，包含三份组件和MS-I1接线。
+- 新开工版本为固定标签`ms-i1`，包含上述代码与本次派发说明；实际整体SHA用`git rev-parse 'ms-i1^{commit}'`取得。标签不移动，后续另发新版本。
+- 第一波历史版本仍是`parallel-wave-1` / `70f2fcccb88650c616920a5630d2caa45d94ad45`；原73项验证代码为`5000a0e9a6eb4cffdc21a691a916d056792d4242`，均保留。
+- 最终全量验证：222项通过，0失败/错误/跳过。使用真实PG、本机临时路径/junction与受控HTTP回复；不证明真实LLM语义质量或Runner执行。
 - 公开支持：20个HTTP入口＋RunRuntime.create、ModelRuntime.generate、IntentRuntime.understand/revise，共24项操作；不代表七Runtime全部完成。
 - D01最终存储权威、D06真实模型和D03 Runner执行方式仍待确认/配置。
-- 测试通过后Docker停止，当前不可用；环境证据注明引擎版本为此前核验。后续SQL检查需恢复Docker。
-- 方案：A/B/C/D共4个session，E未创建。`dispatch_ready=true`，B/C/D首包已分配，但尚未新建开发聊天或启动编码。
+- 本轮Docker与PG实际可用，环境版本现场读取；JUnit和源码/环境摘要已更新。回归脚本也覆盖实际Runner模块的静态/类型检查。
+- 方案：A/B/C/D共4个session，E未创建。三位worker均已交付；A只更新integration，不替worker改写分支或工作文件。
 
 ## 固定文件摘要
 
@@ -35,15 +35,35 @@
 
 | Session | 首个准备包 | 实际工作区/分支 | 基线SHA | 派发 | 提交SHA/回执 | 接受结果 |
 | --- | --- | --- | --- | --- | --- | --- |
-| A | MS-00 | E:/UAW / integration | `parallel-wave-1` | 当前聊天完成开工准备 | 代码73项通过；工作区/依赖核对通过 | MS-00准备完成；继续逐包集成 |
-| B | MS-C1 | E:/UAW/.worktrees/context / dev/context | `parallel-wave-1` | 首包已分配，待开启聊天 | 环境已准备；业务未开工 | 未接受 |
-| C | MS-T1 | E:/UAW/.worktrees/tool / dev/tool | `parallel-wave-1` | 首包已分配，待开启聊天 | 环境已准备；业务未开工 | 未接受 |
-| D | MS-R1 | E:/UAW/.worktrees/runner / dev/runner | `parallel-wave-1` | 首包已分配，待开启聊天 | 环境已准备；业务未开工 | 未接受 |
+| A | MS-00 / MS-I1 | E:/UAW / integration | `ms-i1` | 接线已完成；继续MS-I2 | `c43bbc5`；最终222项通过，静态/格式/75文件类型检查通过 | MS-I1开发范围接受；完整P1未验收 |
+| B | MS-C1 | E:/UAW/.worktrees/context / dev/context | 首包`parallel-wave-1` | MS-C2已派发；同步`ms-i1`后开始 | `307a49b` / `0da308f`；A merge `2f0a427` | 组件接受；P1-02开发中 |
+| C | MS-T1 | E:/UAW/.worktrees/tool / dev/tool | 首包`parallel-wave-1` | MS-T2等待MS-I2，未派发 | `f9622ca` / `5dd77c2`；A merge `e7b4a74` | 组件接受；P1-03开发中 |
+| D | MS-R1 | E:/UAW/.worktrees/runner / dev/runner | 首包`parallel-wave-1` | MS-R2等待MS-I2，未派发 | `d77bf35` / `300bdf5`；A merge `c8a40d6` | 组件接受；P1-04开发中 |
 | E，可选 | MS-Q1 | 未创建 | 实际开工时固定 | 未派发 | 未开工 | 未接受 |
 
 ## 提案决定和新基线
 
-本次A修复并接受Intent协议边界，详细范围见[实施记录](../implementation/P1-01.md)。暂无worker提案。
+三个首包无归属越界、无合并冲突；逐包保留merge提交。详情见[MS-I1实施记录](../implementation/MS-I1.md)。
+
+- B接线提案按理解专用范围采用：真实Run来源/当前政策/取消、单个平台规则、固定模型窗口；Intent与Model共用一个resolver。通用Composer、项目/技能规则、预览仍明确不可用。
+- C目录/参数/身份与预检复核port采用；Model输出的工具RefKind已统一为configuration并实际验证能进入normalize。真实预算/审批/持久dispatch/effect/settle尚未注入。
+- D命令/根/回执组件采用；真实签名/IPC/配对/持久仓储及文件句柄执行尚未注入。回执互斥schema提案仍待MS-I2，不自行更改公共DTO。
+- [A的接口消费与提案决定](requests/A/MS-I1-adapters.md)记录准确文件和限定范围。没有修改原固定公共文件、依赖锁、迁移或能力flags。
+
+## 下一轮
+
+**B / MS-C2已派发**。沿用原worktree，在干净的dev/context中同步整体开工版本：
+
+```powershell
+git fetch origin --tags
+git merge --ff-only ms-i1
+git rev-parse HEAD
+git rev-parse 'ms-i1^{commit}'
+```
+
+同步后两项SHA相同。若存在新的本地改动/提交使快进失败，先保留并报告，不reset。B阅读A接线说明后，在自有composer/repository/references及测试目录开发固定快照与引用查询；不改A的理解专用builder或新adapter。
+
+**A / MS-I2继续；C / MS-T2和D / MS-R2未派发。** 本轮已完成C/D组件审阅与合入，MS-I2剩余工作是发布真实预算/审批/持久调用及Runner权威port，统一回执/配对协议并验证消费方；单凭本次合并不足以开放下一包的真实执行。C/D保留干净交接边界，待新固定MS-I2版本再同步。
 
 ## 本次工作区核对
 
@@ -53,6 +73,6 @@
 - schema、公共port、对象、锁文件及提示词与已验证代码快照逐字节一致；虚拟环境prefix、项目来源目录、Git目录分别核对。
 - 未复制`.data`、私有配置或凭据；未启动数据库、后台服务或Runner。组件首包可以使用本工作区测试fixture；实际SQL联测由A安排。
 
-用户在各自目录新建本地聊天，粘贴[B](../plan/sessions/B.md)、[C](../plan/sessions/C.md)、[D](../plan/sessions/D.md)的开工说明。当前这三个目录已经是worktree，不必再自动生成一套；不要把三个聊天都绑定E:/UAW。
+沿用[B](../plan/sessions/B.md)、[C](../plan/sessions/C.md)、[D](../plan/sessions/D.md)的原三个独立worktree；无需再创建一套。会话/目录隔离仍不等于OS沙箱，也不自动隔离端口、数据库或系统凭据。
 
 每次合入逐包审阅、组合回归并发布新集成SHA；组件包接受不自动完成原P0/P1正式验收。
