@@ -172,3 +172,37 @@ def matches_pin(requested: Ref, actual: Ref) -> bool:
         and requested.location == actual.location
         and (requested.content_hash is None or requested.content_hash == actual.content_hash)
     )
+
+
+class ContextRequest(ContractModel):
+    purpose: str
+    source_refs: tuple[Ref, ...]
+    model_policy_ref: Ref
+    output_reserve: int
+    tool_reserve: int
+    preserve: PreservationSpec
+    expected_epoch: int
+
+
+@dataclass(frozen=True)
+class CompositionBinding:
+    """Trusted, purpose-specific facts. Missing adapters must return unavailable.
+
+    The owner advances epoch when requirements, rules, flags or capability inputs
+    change, and verifies current source/policy revisions before commit/replay.
+    The body is injection-only; it is never accepted from HTTP or LLM arguments.
+    """
+
+    epoch: int
+    rules: RulesRequest
+    capability_ref: Ref
+    preserve: PreservationSpec
+    dependency_refs: tuple[Ref, ...] = ()
+
+
+@dataclass(frozen=True)
+class PreparedSnapshot:
+    snapshot: dict[str, Any]
+    instructions: dict[str, Any]
+    references: tuple[dict[str, Any], ...]
+    request: dict[str, Any]
