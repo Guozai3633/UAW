@@ -9,3 +9,18 @@ def fail(
         Failure(code=code, category=category, message=message, retryable=False, failed_phase=phase),
         status_code=status,
     )
+
+
+def validate_dependency(name: str, response: object, phase: str) -> None:
+    from uaw.shared.schema import ContractViolation, validate_contract
+
+    try:
+        validate_contract(name, response)
+    except ContractViolation as exc:
+        raise fail(
+            "dependency_protocol_invalid",
+            "Dependency returned an invalid named DTO",
+            phase=phase,
+            category="dependency",
+            status=503,
+        ) from exc
