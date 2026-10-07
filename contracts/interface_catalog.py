@@ -1836,7 +1836,12 @@ def finalize(graph,strategies):
     TYPES["RunnerCommand"]["required"].append("parameters")
     record("RunnerReceipt","workspace","设备回执不能把启动成功当任务完成。","command_id|ID|对应命令\nattempt_id|ID|实际执行\nkind|RunnerReceiptKind|成功/等待/失败\npayload?|RunnerSuccessPayload|成功结果\nwait_ref?|Ref|等待进程/授权\nfailure?|Failure|失败详情\nusage|Usage|实际消耗\nsignature|NonEmptyText|设备签名")
     enum("RunnerReceiptKind","ok|waiting|failed|cancelled","workspace")
-    TYPES["RunnerReceipt"]["allOf"]=[{"if":{"properties":{"kind":{"const":"ok"}},"required":["kind"]},"then":{"required":["payload"]}},{"if":{"properties":{"kind":{"const":"waiting"}},"required":["kind"]},"then":{"required":["wait_ref"]}},{"if":{"properties":{"kind":{"enum":["failed","cancelled"]}},"required":["kind"]},"then":{"required":["failure"]}}]
+    TYPES["RunnerReceipt"]["allOf"]=[
+      {"if":{"properties":{"kind":{"const":"ok"}},"required":["kind"]},"then":{"required":["payload"],"not":{"anyOf":[{"required":["wait_ref"]},{"required":["failure"]}]}}},
+      {"if":{"properties":{"kind":{"const":"waiting"}},"required":["kind"]},"then":{"required":["wait_ref"],"not":{"anyOf":[{"required":["payload"]},{"required":["failure"]}]}}},
+      {"if":{"properties":{"kind":{"enum":["failed","cancelled"]}},"required":["kind"]},"then":{"required":["failure"],"not":{"anyOf":[{"required":["payload"]},{"required":["wait_ref"]}]}}},
+      {"if":{"properties":{"kind":{"const":"cancelled"}},"required":["kind"]},"then":{"properties":{"failure":{"properties":{"category":{"const":"cancelled"}}}}}},
+    ]
     enum("ParallelScope","none|tools|agents|mixed","agent")
     enum("DecisionStatus","ready|provisional","agent")
     record("SuggestedDelegation","agent","执行评估中的分工建议，尚未分配预算或启动实例。","definition_ref?|Ref|候选角色\ngoal|NonEmptyText|子目标\ninput_refs|[](Ref)|已知资料\noutput_contract|Contract|验收\nstart_condition|StartCondition|何时可启动")
@@ -1901,6 +1906,7 @@ def finalize(graph,strategies):
     record("ReservationAccounting","run","每个attempt独占预留；发出调用意图后保留未知用量。","run_id|ID|运行\noperation_id|ID|操作\ntrace_id|ID|链路\nattempt_id|ID|尝试\ndeadline|Timestamp|预留截止\ndispatched|Bool|已经提交调用意图\nheld|ResourceVector|待确认额度\nused|ResourceVector|已观察消耗\nbilling_pending|Bool|账单待确认\nusage?|Usage|最近实际观察\nusage_revision?|Revision|用量修订")
     TYPES["ReservationAccounting"]["dependentRequired"]={"usage":["usage_revision"],"usage_revision":["usage"]}
     record("RunAdmissionBinding","run","受理时固定实际来源、用户模型政策和配置。","input_ref|UserInputRef|原始输入\nmodel_policy_ref|Ref|用户选择\nconfiguration_ref|Ref|固定配置\nturn_id|ID|提交轮次")
+    record("ApprovalBinding","run","审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。","context|TrustedExecutionContext|固定主体、Run、动作上下文\nrequest|ApprovalCreateRequest|固定动作参数摘要、资源和效果\nconfiguration_ref|Ref|Run受理配置\napproval_policy_ref|Ref|固定审批政策")
     record("CredentialMetadata","support","不含密文或明文秘密的句柄归属。","provider_id|ID|提供方\nreceipt|SecretReceipt|回执")
     record("ModelHttpSettings","support","首批HTTP模型配置profile；注册不意味着完成连通或协议适配。","model_name|NonEmptyText|提供方模型名称\ntimeout_ms|Duration|超时")
     TYPES["ModelHttpSettings"]["properties"]["timeout_ms"].update(minimum=1000,maximum=300000)

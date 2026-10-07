@@ -487,7 +487,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_manual_consent_no_executor",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2a.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
       "result": "HttpApprovalsGetResult",
       "envelope": "HttpApprovalsGetEnvelope"
     },
@@ -512,7 +520,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_manual_consent_no_executor",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2a.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
       "result": "HttpApprovalsDecideResult",
       "envelope": "HttpApprovalsDecideEnvelope"
     },

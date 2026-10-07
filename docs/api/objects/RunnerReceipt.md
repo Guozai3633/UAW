@@ -40,7 +40,21 @@
       "then": {
         "required": [
           "payload"
-        ]
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "wait_ref"
+              ]
+            },
+            {
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
       }
     },
     {
@@ -57,7 +71,21 @@
       "then": {
         "required": [
           "wait_ref"
-        ]
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "payload"
+              ]
+            },
+            {
+              "required": [
+                "failure"
+              ]
+            }
+          ]
+        }
       }
     },
     {
@@ -77,7 +105,44 @@
       "then": {
         "required": [
           "failure"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "payload"
+              ]
+            },
+            {
+              "required": [
+                "wait_ref"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "cancelled"
+          }
+        },
+        "required": [
+          "kind"
         ]
+      },
+      "then": {
+        "properties": {
+          "failure": {
+            "properties": {
+              "category": {
+                "const": "cancelled"
+              }
+            }
+          }
+        }
       }
     }
   ]

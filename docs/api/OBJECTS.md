@@ -931,6 +931,7 @@
 
 | 对象 | 用途 |
 | --- | --- |
+| [ApprovalBinding](objects/ApprovalBinding.md) | 审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。 |
 | [ApprovalCreateRequest](objects/ApprovalCreateRequest.md) | 创建固定动作审批。 |
 | [ApprovalDecision](objects/ApprovalDecision.md) | 由用户或批准的审查服务签发，LLM工具参数不含批准结果。 |
 | [ApprovalGrant](objects/ApprovalGrant.md) | 授权结果不是无限期全局允许。 |

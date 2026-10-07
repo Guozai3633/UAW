@@ -138,6 +138,22 @@ class TransactionalStore:
     def __init__(self, database: Database) -> None:
         self.database = database
 
+    async def inspect(
+        self,
+        owner: Principal,
+        aggregate: str,
+        action: Callable[[RecordTransaction], Awaitable[Payload]],
+    ) -> Payload:
+        """Serialize a fresh read/expiry refresh without creating replayable request receipts."""
+        validate_contract("Principal", owner.wire())
+        async with self.database.sessions() as session, session.begin():
+            await session.execute(
+                select(
+                    func.pg_advisory_xact_lock(func.hashtextextended(f"{owner.id}:{aggregate}", 0))
+                )
+            )
+            return await action(RecordTransaction(session, owner.id))
+
     async def execute(
         self,
         owner: Principal,

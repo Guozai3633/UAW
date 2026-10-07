@@ -132,8 +132,12 @@ class RunnerProtocol:
 
     def verify_receipt(self, data: str | bytes, *, command: RunnerCommand) -> RunnerReceipt:
         command = RunnerCommand.model_validate_json(json.dumps(command.wire()))
-        parse_json(data)
-        receipt = RunnerReceipt.model_validate_json(data)
+        try:
+            parse_json(data)
+            receipt = RunnerReceipt.model_validate_json(data)
+        except ValueError:
+            # The shared schema now rejects mixed branches before the domain checks below.
+            raise reject("schema_invalid", "Receipt schema or branches are invalid") from None
         if self.signatures is None:
             raise CapabilityUnavailable("runner.signature")
         if not self.signatures.verify_receipt(receipt.wire(), device_id=self.device_id):

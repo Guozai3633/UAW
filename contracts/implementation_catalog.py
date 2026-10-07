@@ -29,3 +29,9 @@ for operation in ("IntentRuntime.understand", "IntentRuntime.revise", "tasks.fra
         "entrypoint": "src/uaw/api/routes.py" if operation == "tasks.frame" else "src/uaw/intent/facade.py",
         "evidence": ["docs/implementation/P1-01.md", "docs/implementation/evidence/p0-tests.xml"],
     }
+for operation in ("approvals.get", "approvals.decide"):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_manual_consent_no_executor",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2a.md", "docs/implementation/evidence/p0-tests.xml"],
+    }

@@ -18,6 +18,7 @@ from uaw.infrastructure.db.transactions import (
 from uaw.run.facade import zero_resources
 from uaw.shared.contracts import Principal, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
+from uaw.shared.ports import BudgetPort
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreConflict
 
@@ -52,7 +53,7 @@ def remaining(ledger: Payload) -> Payload:
     }
 
 
-class BudgetService:
+class BudgetService(BudgetPort):
     def __init__(self, store: PostgresRecordStore) -> None:
         self.store = store
         self.transactions = TransactionalStore(store.database)

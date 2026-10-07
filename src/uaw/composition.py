@@ -17,6 +17,7 @@ from uaw.model.context import FixedModelWindow
 from uaw.model.facade import ModelFacade
 from uaw.model.gateway import ModelGateway
 from uaw.model.policy import PolicyResolver
+from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
 from uaw.run.context import RunContextSources
 from uaw.run.events import EventReader
@@ -72,6 +73,7 @@ class Container:
     configuration: ConfigurationService | None = None
     run_service: RunFacade | None = None
     budgets: BudgetService | None = None
+    approvals: ApprovalService | None = None
     model_service: ModelFacade | None = None
     intent_service: IntentFacade | None = None
     context_components: ContextComponents | None = None
@@ -166,6 +168,7 @@ def compose(settings: Settings) -> Container:
         configuration=configuration,
         run_service=run,
         budgets=budgets,
+        approvals=ApprovalService(records, configuration) if records and configuration else None,
         model_service=model,
         intent_service=intent,
         context_components=contexts.components if contexts else None,

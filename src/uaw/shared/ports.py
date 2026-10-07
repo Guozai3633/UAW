@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from uaw.shared.contracts import JsonObject, RequestMeta, TrustedExecutionContext
+from uaw.shared.contracts import JsonObject, Principal, Ref, RequestMeta, TrustedExecutionContext
 
 
 class IntentPort(Protocol):
@@ -32,4 +32,63 @@ class ModelPort(Protocol):
 class RunPort(Protocol):
     async def create(
         self, request: JsonObject, meta: RequestMeta, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
+class ApprovalAuthorityPort(Protocol):
+    """Tool-owned live action/resource check. Missing implementations never grant access.
+
+    Compare the immutable validated call and trusted ToolSpec (including effect),
+    current role/flags/provider, and every resource version. Raise on any mismatch.
+    ApprovalService supplies only its persisted request and trusted Run context.
+    """
+
+    async def check(self, request: JsonObject, ctx: TrustedExecutionContext) -> None: ...
+
+
+class ApprovalPort(Protocol):
+    async def request(
+        self, request: JsonObject, meta: RequestMeta, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+    async def get(self, actor: Principal, approval_id: str) -> JsonObject: ...
+
+    async def decide(
+        self, actor: Principal, request: JsonObject, meta: RequestMeta
+    ) -> JsonObject: ...
+
+    async def recheck(
+        self, approval_ref: Ref, request: JsonObject, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
+class BudgetPort(Protocol):
+    async def reserve(
+        self, actor: Principal, request: JsonObject, meta: RequestMeta, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+    async def dispatch(
+        self,
+        actor: Principal,
+        reservation_ref: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+    ) -> JsonObject: ...
+
+    async def release(
+        self,
+        actor: Principal,
+        reservation_ref: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+    ) -> JsonObject: ...
+
+    async def settle(
+        self,
+        actor: Principal,
+        request: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+        *,
+        status: str,
     ) -> JsonObject: ...

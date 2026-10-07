@@ -27,7 +27,7 @@ packages = {
     "fastapi": "fastapi", "uvicorn": "uvicorn", "pydantic": "pydantic",
     "jsonschema": "jsonschema", "sqlalchemy": "sqlalchemy", "psycopg": "psycopg",
     "alembic": "alembic", "structlog": "structlog", "httpx": "httpx",
-    "keyring": "keyring",
+    "keyring": "keyring", "cryptography": "cryptography",
     "langgraph": "langgraph", "graph_checkpoint": "langgraph-checkpoint-postgres",
     "langchain": "langchain-core", "pytest": "pytest", "ruff": "ruff", "mypy": "mypy",
 }
@@ -87,7 +87,7 @@ paths.extend((ROOT / "src/uaw/resources/prompts").glob("*.txt"))
 paths = [p for p in paths if "__pycache__" not in p.parts and p.name != "local.toml"]
 report = {
     "date": "2026-10-07", "platform": platform.system(), "machine": platform.machine(),
-    "scope": "P0/P1-01 plus MS-C1/MS-T1/MS-R1 components and MS-I1 Context wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+    "scope": "P0/P1-01 plus first-wave components, MS-I1 wiring and MS-I2a durable manual approvals/Ed25519 primitives; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
     "components": components,
     "python_packages": {package: version(package) for package in packages.values()},
     "compatibility": {"core_checks": True, "langgraph_basic_api": True,

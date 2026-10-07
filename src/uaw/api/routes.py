@@ -48,6 +48,20 @@ ROUTES = (
     ("tasks.frame", "GET", "/v1/tasks/{task_id}/frame", "TasksFrameRequest", "TaskFrame"),
     ("runs.control", "POST", "/v1/runs/{run_id}/control", "RunsControlRequest", "Acknowledgement"),
     (
+        "approvals.get",
+        "GET",
+        "/v1/approvals/{approval_id}",
+        "ApprovalsGetRequest",
+        "ApprovalRequest",
+    ),
+    (
+        "approvals.decide",
+        "POST",
+        "/v1/approvals/{approval_id}/decisions",
+        "ApprovalsDecideRequest",
+        "ApprovalGrant",
+    ),
+    (
         "events.read",
         "GET",
         "/v1/conversations/{conversation_id}/events",
@@ -222,6 +236,10 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 ).payload
             elif operation == "runs.get":
                 result = await run.get_run(actor, payload["run_id"])
+            elif operation == "approvals.get":
+                if container.approvals is None:
+                    raise CapabilityUnavailable("approval.persistence")
+                result = await container.approvals.get(actor, payload["approval_id"])
             elif operation == "tasks.frame":
                 if container.intent_service is None:
                     raise CapabilityUnavailable("task_understanding")
@@ -250,6 +268,10 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     result = await run.submit(actor, payload, meta)
                 elif operation == "runs.control":
                     result = await run.control(actor, payload, meta)
+                elif operation == "approvals.decide":
+                    if container.approvals is None:
+                        raise CapabilityUnavailable("approval.persistence")
+                    result = await container.approvals.decide(actor, payload, meta)
                 elif operation == "admin.secrets.put":
                     result = await configuration.put_secret(actor, payload, meta)
                 elif operation == "admin.providers.revoke":

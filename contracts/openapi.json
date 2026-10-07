@@ -5626,8 +5626,8 @@
           "ui",
           "run.approval"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned"
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_manual_consent_no_executor"
       }
     },
     "/v1/approvals/{approval_id}/decisions": {
@@ -5903,8 +5903,8 @@
           "tool.invocation.approval",
           "tool.invocation.recheck"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned",
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_manual_consent_no_executor",
         "requestBody": {
           "required": true,
           "content": {
@@ -41217,7 +41217,21 @@
             "then": {
               "required": [
                 "payload"
-              ]
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "wait_ref"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "failure"
+                    ]
+                  }
+                ]
+              }
             }
           },
           {
@@ -41234,7 +41248,21 @@
             "then": {
               "required": [
                 "wait_ref"
-              ]
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "payload"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "failure"
+                    ]
+                  }
+                ]
+              }
             }
           },
           {
@@ -41254,7 +41282,44 @@
             "then": {
               "required": [
                 "failure"
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "payload"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "wait_ref"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "cancelled"
+                }
+              },
+              "required": [
+                "kind"
               ]
+            },
+            "then": {
+              "properties": {
+                "failure": {
+                  "properties": {
+                    "category": {
+                      "const": "cancelled"
+                    }
+                  }
+                }
+              }
             }
           }
         ]
@@ -41793,6 +41858,35 @@
           "model_policy_ref",
           "configuration_ref",
           "turn_id"
+        ],
+        "additionalProperties": false
+      },
+      "ApprovalBinding": {
+        "type": "object",
+        "description": "审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。",
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "固定主体、Run、动作上下文"
+          },
+          "request": {
+            "$ref": "#/components/schemas/ApprovalCreateRequest",
+            "description": "固定动作参数摘要、资源和效果"
+          },
+          "configuration_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "Run受理配置"
+          },
+          "approval_policy_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定审批政策"
+          }
+        },
+        "required": [
+          "context",
+          "request",
+          "configuration_ref",
+          "approval_policy_ref"
         ],
         "additionalProperties": false
       },
