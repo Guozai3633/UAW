@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Protocol
 
 from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
+from uaw.shared.runner_signatures import VerificationKey
 from uaw.workspace.contracts import RootSelection, RunnerCommand
 
 
@@ -97,4 +98,34 @@ class RootRepository(Protocol):
 class AdmissionRepository(Protocol):
     def reserve(self, principal_id: str, device_id: str, admission: Admission) -> Admission:
         """Atomically return original state; same ID with different fingerprint conflicts."""
+        ...
+
+
+class CurrentKeyDirectory(Protocol):
+    def lookup(self, key_id: str, *, device_id: str) -> VerificationKey:
+        """Fresh trusted lookup including role and revocation, never payload public keys."""
+        ...
+
+
+@dataclass(frozen=True)
+class NativeConfirmation:
+    # Authenticated IPC/OS user interaction result, NOT a model-supplied approval boolean.
+    ticket_id: str
+    principal_id: str
+    device_id: str
+    document_hash: str
+    expires_at: datetime
+    native_path: Path | None = None
+
+
+class NativeConfirmationPort(Protocol):
+    async def confirm(
+        self,
+        *,
+        ticket_id: str,
+        principal_id: str,
+        device_id: str,
+        document_hash: str,
+    ) -> NativeConfirmation:
+        """Authenticate local user/channel, show exact request, confirm and bind its hash."""
         ...
