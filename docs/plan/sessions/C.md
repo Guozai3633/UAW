@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T1组件已接受；MS-T2待MS-I2真实依赖发布，未派发。以DISPATCH的固定版本与派发为准。
+状态：MS-T2a已安排，开工说明待转发；完整MS-T2仍等待。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -50,10 +50,26 @@
 - effect取自可信ToolSpec，同ID改参数冲突，未知写效果不盲重试。
 - 测试adapter不作为产品能力发布；完整审批/dispatch验收留给接线包。
 
-### MS-T2：意图/效果账本与审批接线
+### MS-T2a：持久调用账本和审批适配
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
-开发前置：MS-I2。
+开发前置：MS-I2a。
+
+任务：
+
+1. 消费A的ApprovalPort/BudgetPort，实现可信固定动作/资源的ApprovalAuthorityPort；未授权Reader明确不可用。
+2. 实现持久action/attempt/dispatch意图/effect账本和预算阶段恢复，不在同一会话锁内嵌套调用预算服务。
+3. 补真实SQL重启/并发/审批参数变化/取消/unknown测试；公共DTO变更在C提案目录交A。
+
+交付检查：
+
+- 真实审批与预算可消费；等待引用真实，未知写效果不重发，测试adapter不注册产品。
+- 无Runner/executor保持不可用，不自动进入完整MS-T2或宣布P1-03接受。
+
+### MS-T2：工具真实dispatch及结算接线
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2、MS-T2a。
 
 任务：
 
@@ -74,7 +90,7 @@
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前MS-T2未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。
+当前执行MS-T2a。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2a同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R1组件已接受；MS-R2待MS-I2真实依赖发布，未派发。以DISPATCH的固定版本与派发为准。
+状态：MS-R2a已安排，开工说明待转发；完整MS-R2仍等待。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -55,10 +55,26 @@
 - 不连接真实用户项目、不安装系统环境、不开放exec。
 - 没有真实配对/签名/执行权限回执时P1-04不能标accepted。
 
-### MS-R2：真实配对和获准执行接线
+### MS-R2a：真实签名适配和配对一次使用状态
+
+对应原轮：[P1-04](../rounds/P1-04.md)。
+开发前置：MS-I2a。
+
+任务：
+
+1. 消费统一Ed25519原语并落实当前可信key目录/撤销/密钥角色；私钥不进入普通记录或模型。
+2. 实现配对nonce/一次码/挑战和RootSelection的持久CAS状态，缺可信IPC/证明不批准。
+3. 提出异步Runner权威port与配对证明DTO接线提案，验证真实签名与一次使用/过期/撤销并发。
+
+交付检查：
+
+- 签名测试使用真实密码学；持久一次消费与权限来源有真实测试，不以测试布尔量自证。
+- D01/D03和IPC未满足项明确，不开放安装/写/exec，不声称真实用户配对完成。
+
+### MS-R2：真实IPC配对和获准执行接线
 
 对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
-开发前置：MS-I2。
+开发前置：MS-I2、MS-R2a。
 
 任务：
 
@@ -79,7 +95,7 @@
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前MS-R2未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。
+当前执行MS-R2a。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2a同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -1477,6 +1477,8 @@
       "implementation_record_target": "docs/implementation/P1-03.md",
       "parallel_packages": [
         "MS-T1",
+        "MS-I2a",
+        "MS-T2a",
         "MS-I2",
         "MS-T2"
       ]
@@ -1636,6 +1638,8 @@
       "implementation_record_target": "docs/implementation/P1-04.md",
       "parallel_packages": [
         "MS-R1",
+        "MS-I2a",
+        "MS-R2a",
         "MS-I2",
         "MS-R2"
       ]
@@ -2531,6 +2535,7 @@
       ],
       "implementation_record_target": "docs/implementation/P1-09.md",
       "parallel_packages": [
+        "MS-T2a",
         "MS-T2",
         "MS-I3"
       ]

@@ -1,6 +1,6 @@
 # Session A交接记录
 
-日期：2026-10-07。当前已接受B/C/D首包组件，并完成MS-I1开发范围；A继续MS-I2。以下先保留MS-00历史，最新交付见末尾。
+日期：2026-10-07。MS-I2a开发范围已完成；C/D下一子包已安排，待用户转发。完整MS-I2仍在开发中。以下保留MS-00/MS-I1历史。
 
 ## 代码基线
 
@@ -34,3 +34,14 @@
 - 修复跨模块接线：真实Run来源/当前权限/取消、固定用户模型窗口、平台理解规则、Intent/Model共用resolver、原生请求最终预算；Model工具Ref与C目录一致并经过normalize。
 - 全部实际边界、旧快照处理和提案决定见[MS-I1](../../implementation/MS-I1.md)及[A接线说明](../requests/A/MS-I1-adapters.md)。当前通用build、Tool/Workspace Runtime仍不绑定，真实LLM/审批/配对/签名/执行未验收。
 - 固定新开工版本为`ms-i1`；准确发布状态由[DISPATCH](../DISPATCH.md)维护。B同步后执行MS-C2；C/D下一包仍待MS-I2的实际公共依赖，不把本次组件接受视为P1-02/03/04整轮完成。
+
+
+## MS-I2a 最新交付
+
+- 已验证源码提交：`ec5313b7f5d1aadabaab6e4ce4e0b02879cc1c8b`；开工固定标签 `ms-i2a`，含后续安排提交。
+- 真实 SQL 人工单次审批和认证 get/decide/recheck；新增审批/预算 public port 和真实 Ed25519 原语，收紧 RunnerReceipt 分支并保留 DomainError 映射。
+- 全量 251 项通过，0失败/错误/跳过；静态/格式/77文件类型检查通过。接口检查 1258 schemas / 272 契约 / 26 已实现操作；源码摘要 125 文件，现场引擎可用。
+- 新 `ApprovalBinding`、公共 ports 和 crypto 锁已发布；其他固定对象/原文提示词未改变，能力 flags 未开启。
+- B 按 ms-i1 继续 MS-C2；C 的 MS-T2a / D 的 MS-R2a 已形成可转发说明。没有向 worker 聊天发消息，也没有替其切换分支。
+- 完整 MS-I2 / Tool dispatch / 实际 IPC、配对、Runner 权威和执行尚未完成；默认审批无动作 adapter 仍拒绝。D01/D03/D06 保留。
+- [实现范围](../../implementation/MS-I2a.md)、[公共消费协议](../requests/A/MS-I2a-ports.md)、[下一轮消息](../NEXT_WAVE.md)、[权威派发表](../DISPATCH.md)。

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I1开发范围完成；继续MS-I2公共接线。以DISPATCH的固定版本与派发为准。
+状态：MS-I2a公共基础发布；继续MS-I2汇合与真实权威接线。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -45,6 +45,8 @@
 - `.gitattributes`
 - `tests/integration/test_context_wiring.py`
 - `tests/unit/model/`
+- `tests/integration/test_approvals.py`
+- `tests/unit/test_runner_signatures.py`
 - `docs/plan/`
 - `docs/api/`
 - `docs/design/`
@@ -65,7 +67,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- B/C/D首包已合入，MS-I1开发范围通过；A继续MS-I2，B按新基线执行MS-C2。
+- MS-I2a发布后B继续MS-C2，C/D分别执行MS-T2a/MS-R2a；A继续完整MS-I2接线。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -106,10 +108,26 @@
 - 组合回归通过，A/B对接线前后公开port样例达成一致。
 - Context绑定、规则和引用实际一致；无真实LLM门槛时只验收开发范围。
 
-### MS-I2：合入Tool与Runner协议基础
+### MS-I2a：持久人工审批和签名公共基础
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
 开发前置：MS-I1、MS-T1、MS-R1。
+
+任务：
+
+1. 实现真实SQL单次人工审批、认证查询/决定及执行前复核。
+2. 发布ApprovalAuthorityPort/ApprovalPort/BudgetPort、Ed25519字节规则和互斥Runner回执，更新锁与真实测试。
+3. 默认无Tool权限adapter则拒绝；拆出C/D可独立开发的子包，不声称完整MS-I2完成。
+
+交付检查：
+
+- 真实SQL和真实签名验证通过，公共服务实际满足port；无假批准/假执行。
+- MS-T2a/MS-R2a有固定版本、明确范围及依赖缺失分支，原P1门槛继续保留。
+
+### MS-I2：合入Tool与Runner并完成真实权威接线
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
+开发前置：MS-I2a、MS-T2a、MS-R2a。
 
 任务：
 
@@ -147,7 +165,7 @@
 当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前执行MS-I2。工作区干净后fetch origin --tags，将ms-i1合入本工作分支，保留已有提交历史。
+当前在integration执行集成任务，不替worker同步或重写分支。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -72,6 +72,7 @@ def build_sessions():
         path = f"docs/plan/sessions/{key}.md"
         ready = BASELINE.get("workspaces_ready", False) and key in ("A", "B", "C", "D")
         progress = SESSION_PROGRESS[key]
+        base_ref = progress.get("base_ref", BASELINE["dispatch_ref"])
         state = "状态：" + progress["state"] + "以DISPATCH的固定版本与派发为准。"
         lines = [f"# Session {key}：{session['name']}", "", link(path, "docs/plan/PARALLEL.md", "并行开发总入口"), "",
                  state, "",
@@ -94,7 +95,8 @@ def build_sessions():
                   f"当前工作目录必须是{session['worktree']}，分支必须是{session['branch']}。",
                   f"先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/{key}.md。",
                   "读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。",
-                  (f"当前执行{progress['package']}。工作区干净后fetch origin --tags，将ms-i1合入本工作分支，保留已有提交历史。"
+                  ("当前在integration执行集成任务，不替worker同步或重写分支。" if key == "A" else
+                   f"当前执行{progress['package']}。工作区干净后fetch origin --tags，使用git merge --ff-only {base_ref}同步本工作分支；失败先报告，不reset，保留已有历史。"
                    if progress["ready"] else f"当前{progress['package']}未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。"),
                   "只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。",
                   "按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。",
@@ -115,7 +117,7 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **B/C/D首包已分别合入；MS-I1完成开发范围，新基线为`ms-i1`。** B同步后执行MS-C2；A继续MS-I2；C/D的下一包等待公共依赖。实际接受与派发见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "- **MS-I2a公共基础已验证，新基线为`ms-i2a`。** B按ms-i1继续MS-C2；C/D的MS-T2a/MS-R2a开工说明已准备，待用户转发；A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
@@ -131,8 +133,10 @@ def build_overview():
               "  A0[\"A：P1-01收尾、验证、共同基线 MS-00\"] --> B1[\"B：Context组件 MS-C1\"]",
               "  A0 --> C1[\"C：Tool组件 MS-T1\"]", "  A0 --> D1[\"D：Runner协议 MS-R1\"]",
               "  B1 --> I1[\"A：Context与Intent/Model接线 MS-I1\"]", "  I1 --> B2[\"B：快照与引用 MS-C2\"]",
-              "  C1 --> I2[\"A：Tool/Runner公共接线 MS-I2\"]", "  D1 --> I2", "  I1 --> I2",
-              "  I2 --> C2[\"C：调用/审批/效果账本 MS-T2\"]", "  I2 --> D2[\"D：实际配对；获准后进入执行 MS-R2\"]",
+              "  C1 --> I2a[\"A：审批/签名公共基础 MS-I2a\"]", "  D1 --> I2a", "  I1 --> I2a",
+              "  I2a --> C2a[\"C：账本/审批适配 MS-T2a\"]", "  I2a --> D2a[\"D：签名/配对状态 MS-R2a\"]",
+              "  C2a --> I2[\"A：真实权威与公共接线 MS-I2\"]", "  D2a --> I2",
+              "  I2 --> C2[\"C：真实dispatch/结算 MS-T2\"]", "  I2 --> D2[\"D：真实IPC；获准后执行 MS-R2\"]",
               "  B2 --> I3[\"A：汇合；按原P1轮次进入Agent闭环\"]", "  C2 --> I3", "  D2 --> I3", "```", "",
               "每次合入发布新集成SHA。开发session在包边界同步后进入下一包；未完成的分支不会直接作为另一个session的依赖。MS-I3仅是汇合入口，P1-06变更、P1-10真实界面等原工作包仍须另行完成。", "",
               "## 5. 开3个或5个怎样调整", "",

@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.1 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.2 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -9,9 +9,9 @@ v0.1 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量222项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量251项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **B/C/D首包已分别合入；MS-I1完成开发范围，新基线为`ms-i1`。** B同步后执行MS-C2；A继续MS-I2；C/D的下一包等待公共依赖。实际接受与派发见[统一派发表](../coordination/DISPATCH.md)。
+- **MS-I2a公共基础已验证，新基线为`ms-i2a`。** B按ms-i1继续MS-C2；C/D的MS-T2a/MS-R2a开工说明已准备，待用户转发；A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 
 沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 
@@ -48,11 +48,15 @@ flowchart TD
   A0 --> D1["D：Runner协议 MS-R1"]
   B1 --> I1["A：Context与Intent/Model接线 MS-I1"]
   I1 --> B2["B：快照与引用 MS-C2"]
-  C1 --> I2["A：Tool/Runner公共接线 MS-I2"]
-  D1 --> I2
-  I1 --> I2
-  I2 --> C2["C：调用/审批/效果账本 MS-T2"]
-  I2 --> D2["D：实际配对；获准后进入执行 MS-R2"]
+  C1 --> I2a["A：审批/签名公共基础 MS-I2a"]
+  D1 --> I2a
+  I1 --> I2a
+  I2a --> C2a["C：账本/审批适配 MS-T2a"]
+  I2a --> D2a["D：签名/配对状态 MS-R2a"]
+  C2a --> I2["A：真实权威与公共接线 MS-I2"]
+  D2a --> I2
+  I2 --> C2["C：真实dispatch/结算 MS-T2"]
+  I2 --> D2["D：真实IPC；获准后执行 MS-R2"]
   B2 --> I3["A：汇合；按原P1轮次进入Agent闭环"]
   C2 --> I3
   D2 --> I3
@@ -81,9 +85,12 @@ flowchart TD
 | MS-Q1 | E | 三类样本及语义审阅标准 | MS-00 | [P0-01](rounds/P0-01.md)、[P1-01](rounds/P1-01.md)、[P1-11](rounds/P1-11.md)、[P2-07](rounds/P2-07.md) |
 | MS-I1 | A | 合入Context并接Intent/Model | MS-00、MS-C1 | [P1-01](rounds/P1-01.md)、[P1-02](rounds/P1-02.md) |
 | MS-C2 | B | 固定快照和引用查询 | MS-I1 | [P1-02](rounds/P1-02.md) |
-| MS-I2 | A | 合入Tool与Runner协议基础 | MS-I1、MS-T1、MS-R1 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
-| MS-T2 | C | 意图/效果账本与审批接线 | MS-I2 | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
-| MS-R2 | D | 真实配对和获准执行接线 | MS-I2 | [P1-04](rounds/P1-04.md)、[P1-05](rounds/P1-05.md) |
+| MS-I2a | A | 持久人工审批和签名公共基础 | MS-I1、MS-T1、MS-R1 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
+| MS-T2a | C | 持久调用账本和审批适配 | MS-I2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
+| MS-R2a | D | 真实签名适配和配对一次使用状态 | MS-I2a | [P1-04](rounds/P1-04.md) |
+| MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2a、MS-T2a、MS-R2a | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
+| MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
+| MS-R2 | D | 真实IPC配对和获准执行接线 | MS-I2、MS-R2a | [P1-04](rounds/P1-04.md)、[P1-05](rounds/P1-05.md) |
 | MS-I3 | A | 汇合后进入Agent闭环 | MS-C2、MS-T2、MS-R2 | [P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md)、[P1-11](rounds/P1-11.md) |
 
 开发交付只写各自handoff；A在[统一派发表](../coordination/DISPATCH.md)记录基线、派发与接受。两者是不同文件，减少状态记录冲突。组件交接通过不自动将整轮改为accepted。

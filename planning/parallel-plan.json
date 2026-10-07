@@ -1,49 +1,53 @@
 {
-  "plan_version": "0.1",
+  "plan_version": "0.2",
   "date": "2026-10-07",
   "status": "first_wave_integrated",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "c43bbc5a87dc244a918aa835032ed491e7e2f421",
+    "commit": "ec5313b7f5d1aadabaab6e4ce4e0b02879cc1c8b",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
-    "dispatch_ref": "ms-i1",
+    "dispatch_ref": "ms-i2a",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
     "code_baseline_verified": true,
-    "last_verified_tests": 222,
-    "last_verified_scope": "P0/P1-01 plus MS-C1/MS-T1/MS-R1 components and MS-I1 wiring; real PostgreSQL and controlled HTTP replies, no actual LLM/Runner execution",
+    "last_verified_tests": 251,
+    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring and MS-I2a manual consent/real Ed25519; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
     "current_unverified_round": null,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
       "D01 final storage authority",
       "D06 actual model provider",
       "D03 Runner execution mode"
-    ]
+    ],
+    "next_wave_dispatch_channel": "published_documents_for_user_to_forward"
   },
   "session_progress": {
     "A": {
-      "state": "MS-I1开发范围完成；继续MS-I2公共接线。",
+      "state": "MS-I2a公共基础发布；继续MS-I2汇合与真实权威接线。",
       "package": "MS-I2",
       "ready": true
     },
     "B": {
-      "state": "MS-C1组件已接受；MS-C2已派发，同步ms-i1后开始。",
+      "state": "MS-C2按原安排继续，基线ms-i1；不要求开发中途切换。",
       "package": "MS-C2",
-      "ready": true
+      "ready": true,
+      "base_ref": "ms-i1"
     },
     "C": {
-      "state": "MS-T1组件已接受；MS-T2待MS-I2真实依赖发布，未派发。",
-      "package": "MS-T2",
-      "ready": false
+      "state": "MS-T2a已安排，开工说明待转发；完整MS-T2仍等待。",
+      "package": "MS-T2a",
+      "ready": true,
+      "base_ref": "ms-i2a"
     },
     "D": {
-      "state": "MS-R1组件已接受；MS-R2待MS-I2真实依赖发布，未派发。",
-      "package": "MS-R2",
-      "ready": false
+      "state": "MS-R2a已安排，开工说明待转发；完整MS-R2仍等待。",
+      "package": "MS-R2a",
+      "ready": true,
+      "base_ref": "ms-i2a"
     },
     "E": {
       "state": "可选工作区未创建、任务未派发。",
@@ -58,6 +62,9 @@
     "MS-R1": "accepted_component",
     "MS-I1": "accepted_development",
     "MS-C2": "dispatched",
+    "MS-I2a": "accepted_development",
+    "MS-T2a": "assigned_ready",
+    "MS-R2a": "assigned_ready",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -120,6 +127,8 @@
         ".gitattributes",
         "tests/integration/test_context_wiring.py",
         "tests/unit/model/",
+        "tests/integration/test_approvals.py",
+        "tests/unit/test_runner_signatures.py",
         "docs/plan/",
         "docs/api/",
         "docs/design/",
@@ -138,6 +147,7 @@
       ],
       "later": [
         "MS-I1",
+        "MS-I2a",
         "MS-I2",
         "MS-I3"
       ],
@@ -147,7 +157,7 @@
         "负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
         "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
         "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-        "B/C/D首包已合入，MS-I1开发范围通过；A继续MS-I2，B按新基线执行MS-C2。"
+        "MS-I2a发布后B继续MS-C2，C/D分别执行MS-T2a/MS-R2a；A继续完整MS-I2接线。"
       ]
     },
     "B": {
@@ -198,6 +208,7 @@
         "MS-T1"
       ],
       "later": [
+        "MS-T2a",
         "MS-T2"
       ],
       "report": "docs/coordination/handoffs/C.md",
@@ -227,6 +238,7 @@
         "MS-R1"
       ],
       "later": [
+        "MS-R2a",
         "MS-R2"
       ],
       "report": "docs/coordination/handoffs/D.md",
@@ -423,17 +435,84 @@
       ]
     },
     {
+      "id": "MS-I2a",
+      "session": "A",
+      "rounds": [
+        "P1-03",
+        "P1-04"
+      ],
+      "title": "持久人工审批和签名公共基础",
+      "deps": [
+        "MS-I1",
+        "MS-T1",
+        "MS-R1"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "实现真实SQL单次人工审批、认证查询/决定及执行前复核。",
+        "发布ApprovalAuthorityPort/ApprovalPort/BudgetPort、Ed25519字节规则和互斥Runner回执，更新锁与真实测试。",
+        "默认无Tool权限adapter则拒绝；拆出C/D可独立开发的子包，不声称完整MS-I2完成。"
+      ],
+      "acceptance": [
+        "真实SQL和真实签名验证通过，公共服务实际满足port；无假批准/假执行。",
+        "MS-T2a/MS-R2a有固定版本、明确范围及依赖缺失分支，原P1门槛继续保留。"
+      ]
+    },
+    {
+      "id": "MS-T2a",
+      "session": "C",
+      "rounds": [
+        "P1-03",
+        "P1-09"
+      ],
+      "title": "持久调用账本和审批适配",
+      "deps": [
+        "MS-I2a"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "消费A的ApprovalPort/BudgetPort，实现可信固定动作/资源的ApprovalAuthorityPort；未授权Reader明确不可用。",
+        "实现持久action/attempt/dispatch意图/effect账本和预算阶段恢复，不在同一会话锁内嵌套调用预算服务。",
+        "补真实SQL重启/并发/审批参数变化/取消/unknown测试；公共DTO变更在C提案目录交A。"
+      ],
+      "acceptance": [
+        "真实审批与预算可消费；等待引用真实，未知写效果不重发，测试adapter不注册产品。",
+        "无Runner/executor保持不可用，不自动进入完整MS-T2或宣布P1-03接受。"
+      ]
+    },
+    {
+      "id": "MS-R2a",
+      "session": "D",
+      "rounds": [
+        "P1-04"
+      ],
+      "title": "真实签名适配和配对一次使用状态",
+      "deps": [
+        "MS-I2a"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "消费统一Ed25519原语并落实当前可信key目录/撤销/密钥角色；私钥不进入普通记录或模型。",
+        "实现配对nonce/一次码/挑战和RootSelection的持久CAS状态，缺可信IPC/证明不批准。",
+        "提出异步Runner权威port与配对证明DTO接线提案，验证真实签名与一次使用/过期/撤销并发。"
+      ],
+      "acceptance": [
+        "签名测试使用真实密码学；持久一次消费与权限来源有真实测试，不以测试布尔量自证。",
+        "D01/D03和IPC未满足项明确，不开放安装/写/exec，不声称真实用户配对完成。"
+      ]
+    },
+    {
       "id": "MS-I2",
       "session": "A",
       "rounds": [
         "P1-03",
         "P1-04"
       ],
-      "title": "合入Tool与Runner协议基础",
+      "title": "合入Tool与Runner并完成真实权威接线",
       "deps": [
-        "MS-I1",
-        "MS-T1",
-        "MS-R1"
+        "MS-I2a",
+        "MS-T2a",
+        "MS-R2a"
       ],
       "scope": "integration",
       "tasks": [
@@ -453,9 +532,10 @@
         "P1-03",
         "P1-09"
       ],
-      "title": "意图/效果账本与审批接线",
+      "title": "工具真实dispatch及结算接线",
       "deps": [
-        "MS-I2"
+        "MS-I2",
+        "MS-T2a"
       ],
       "scope": "dependent_component",
       "tasks": [
@@ -474,9 +554,10 @@
         "P1-04",
         "P1-05"
       ],
-      "title": "真实配对和获准执行接线",
+      "title": "真实IPC配对和获准执行接线",
       "deps": [
-        "MS-I2"
+        "MS-I2",
+        "MS-R2a"
       ],
       "scope": "dependent_component",
       "tasks": [
