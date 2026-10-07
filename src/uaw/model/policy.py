@@ -6,10 +6,12 @@ from urllib.parse import urlsplit
 from uaw.context.seed import revision
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.model.contracts import Payload
+from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import TrustedExecutionContext
-from uaw.shared.errors import reject
-from uaw.shared.schema import parse_json, validate_contract
+from uaw.shared.errors import DomainError, reject
+from uaw.shared.ports import ExecutionPolicyPort
+from uaw.shared.schema import parse_json
 
 
 @dataclass(frozen=True)
@@ -21,8 +23,14 @@ class Selection:
 
 
 class PolicyResolver:
-    def __init__(self, store: PostgresRecordStore, configuration: ConfigurationService) -> None:
+    def __init__(
+        self,
+        store: PostgresRecordStore,
+        configuration: ConfigurationService,
+        permissions: ExecutionPolicyPort | None = None,
+    ) -> None:
         self.store, self.configuration = store, configuration
+        self.permissions = permissions or ExecutionPolicyResolver(store)
 
     async def resolve(self, requested: Payload, ctx: TrustedExecutionContext) -> Selection:
         run = (await self.store.get(ctx.principal, "runs", ctx.run_id or "")).payload
@@ -86,24 +94,18 @@ class PolicyResolver:
                 "model_adapter_unavailable", "Register an explicit supported provider protocol", 503
             )
         settings = provider["settings"]
-        access_ref = ctx.capability_policy_ref.wire()
-        access_record = await self.store.get(ctx.principal, "execution.policies", access_ref["id"])
-        if access_record.revision != revision(access_ref, "policy"):
-            raise reject(
-                "model_capability_stale",
-                "Execution permission changed; refresh its trusted context",
-                412,
-            )
-        access = access_record.payload
-        validate_contract("CapabilityPolicy", access)
+        try:
+            access: Payload = await self.permissions.resolve(ctx)
+            require_snapshot(access, ctx)
+        except DomainError as exc:
+            if exc.failure.code == "execution_policy_stale":
+                raise reject(
+                    "model_capability_stale", "Execution permission changed", 412
+                ) from None
+            raise
         if (
-            access["resource_scope"].get("conversation_id") != run["conversation_id"]
-            or "model.generate" not in access["allowed_capabilities"]
-            or "model.generate" not in ctx.scope.capabilities
-            or "model.generate" in access["denied_capabilities"]
+            "model.generate" not in access["allowed_capabilities"]
             or urlsplit(provider["endpoint"]).hostname not in access["network_allowlist"]
-            or not set(ctx.scope.capabilities).issubset(access["allowed_capabilities"])
-            or set(ctx.scope.capabilities).intersection(access["denied_capabilities"])
         ):
             raise reject(
                 "model_capability_denied",

@@ -28,6 +28,7 @@ from uaw.model.policy import PolicyResolver, Selection
 from uaw.model.ports import ModelInputPort, ModelProviderPort
 from uaw.run.budget import BudgetService
 from uaw.run.facade import zero_resources
+from uaw.run.permissions import require_snapshot
 from uaw.shared.contracts import RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import DomainError, error_result, reject
 from uaw.shared.observability import report_request_failure
@@ -482,11 +483,16 @@ class ModelGateway:
                     ).payload
                     if ledger["cancel_requested"]:
                         raise ProviderFailure("model_run_cancelled", category="cancelled")
-                    access = await self.store.get(
-                        ctx.principal, "execution.policies", ctx.capability_policy_ref.id
-                    )
-                    if str(access.revision) != ctx.capability_policy_ref.version:
-                        raise ProviderFailure("model_capability_changed", category="authorization")
+                    try:
+                        require_snapshot(await self.policies.permissions.resolve(ctx), ctx)
+                    except DomainError as exc:
+                        category = exc.failure.category
+                        raise ProviderFailure(
+                            "model_capability_changed",
+                            category=category
+                            if category in ("cancelled", "timeout", "dependency")
+                            else "authorization",
+                        ) from None
                     live = (
                         await self.store.get(
                             self.policies.configuration.platform,

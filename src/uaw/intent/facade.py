@@ -53,6 +53,15 @@ class IntentFacade:
                 )
             )
         except DomainError as exc:
+            # Preserve Intent's existing lifecycle errors when the shared gate runs first.
+            code = {
+                "execution_scope_denied": "intent_scope_denied",
+                "execution_cancelled": "intent_cancelled",
+                "execution_deadline_expired": "intent_deadline_expired",
+                "execution_run_unavailable": "intent_run_unavailable",
+            }.get(exc.failure.code)
+            if code:
+                exc = DomainError(exc.failure.model_copy(update={"code": code}), exc.status_code)
             result = error_result(exc)
         validate_contract(
             "RuntimeIntentruntimeReviseResult"

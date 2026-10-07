@@ -16246,6 +16246,106 @@
       ],
       "additionalProperties": false
     },
+    "ExecutionPolicySnapshot": {
+      "type": "object",
+      "description": "实时父子权限交集，非可复用授权；来源均为当前主体持久政策。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "已受理运行"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope",
+          "description": "当前可信请求作用域"
+        },
+        "policy_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/Ref"
+              },
+              {
+                "properties": {
+                  "kind": {
+                    "const": "policy"
+                  },
+                  "version": {
+                    "pattern": "^[1-9][0-9]*$"
+                  }
+                },
+                "required": [
+                  "content_hash"
+                ],
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "location"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "access_scope"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "description": "叶到根当前版本与摘要"
+        },
+        "allowed_capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ID"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "description": "在全部父政策允许的当前scope能力"
+        },
+        "denied_capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ID"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "祖先显式禁止的并集"
+        },
+        "network_allowlist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NonEmptyText"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "网络范围交集"
+        },
+        "feature_flag_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "需另行核验的开关引用"
+        }
+      },
+      "required": [
+        "run_id",
+        "scope",
+        "policy_refs",
+        "allowed_capabilities",
+        "denied_capabilities",
+        "network_allowlist",
+        "feature_flag_refs"
+      ],
+      "additionalProperties": false
+    },
     "CredentialMetadata": {
       "type": "object",
       "description": "不含密文或明文秘密的句柄归属。",

@@ -5219,6 +5219,26 @@
         "version": "example_001"
       }
     },
+    "ExecutionPolicySnapshot": {
+      "run_id": "example_001",
+      "scope": {
+        "principal_id": "example_001"
+      },
+      "policy_refs": [
+        {
+          "kind": "policy",
+          "id": "example_001",
+          "version": "example_001",
+          "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "allowed_capabilities": [
+        "example_001"
+      ],
+      "denied_capabilities": [],
+      "network_allowlist": [],
+      "feature_flag_refs": []
+    },
     "CredentialMetadata": {
       "provider_id": "example_001",
       "receipt": {

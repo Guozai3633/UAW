@@ -6,14 +6,18 @@ from datetime import UTC, datetime
 from uaw.context.contracts import Reading, from_wire
 from uaw.context.seed import revision
 from uaw.infrastructure.db.records import PostgresRecordStore
+from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
 from uaw.shared.contracts import Ref, TrustedExecutionContext
-from uaw.shared.errors import CapabilityUnavailable, reject
-from uaw.shared.schema import validate_contract
+from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
+from uaw.shared.ports import ExecutionPolicyPort
 
 
 class RunContextSources:
-    def __init__(self, store: PostgresRecordStore) -> None:
+    def __init__(
+        self, store: PostgresRecordStore, permissions: ExecutionPolicyPort | None = None
+    ) -> None:
         self.store = store
+        self.permissions = permissions or ExecutionPolicyResolver(store)
 
     async def is_cancelled(self, ctx: TrustedExecutionContext) -> bool:
         if not ctx.run_id:
@@ -42,31 +46,19 @@ class RunContextSources:
             raise reject("cancelled", "Run has been cancelled", 422, "cancelled")
         if datetime.fromisoformat(ctx.deadline.replace("Z", "+00:00")) <= datetime.now(UTC):
             raise reject("deadline_exceeded", "Context deadline expired", 422, "timeout")
-        policy_ref = ctx.capability_policy_ref.wire()
-        record = await self.store.get(ctx.principal, "execution.policies", policy_ref["id"])
-        if record.revision != revision(policy_ref, "policy"):
-            raise reject("context_capability_stale", "Execution permission changed", 412)
-        policy = record.payload
-        validate_contract("CapabilityPolicy", policy)
-        selector = policy["resource_scope"]
-        capabilities = set(ctx.scope.capabilities)
-        if (
-            selector.get("conversation_id") != ctx.scope.conversation_id
-            or any(
-                selector.get(field) is not None and selector[field] != getattr(ctx.scope, field)
-                for field in ("task_id", "project_id")
-            )
-            or not capabilities.intersection(
-                {"model.generate", "intent.understand", "context.build"}
-            )
-            or not capabilities.issubset(policy["allowed_capabilities"])
-            or capabilities.intersection(policy["denied_capabilities"])
-            or any(
-                ref.wire() not in selector.get("resource_refs", [])
-                for ref in ctx.scope.resource_refs
-            )
+        if not set(ctx.scope.capabilities).intersection(
+            {"model.generate", "intent.understand", "context.build"}
         ):
             raise reject("permission_denied", "Current policy denies Context source access", 403)
+        try:
+            snapshot = await self.permissions.resolve(ctx)
+            require_snapshot(snapshot, ctx)
+        except DomainError as exc:
+            if exc.failure.code == "execution_policy_stale":
+                raise reject(
+                    "context_capability_stale", "Execution permission changed", 412
+                ) from None
+            raise
 
     async def _reading(self, ref: Ref, ctx: TrustedExecutionContext) -> Reading:
         await self.authorize(ctx)

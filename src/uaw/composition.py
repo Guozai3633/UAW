@@ -23,6 +23,7 @@ from uaw.run.context import RunContextSources
 from uaw.run.events import EventReader
 from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
+from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import CapabilityUnavailable
@@ -74,6 +75,7 @@ class Container:
     run_service: RunFacade | None = None
     budgets: BudgetService | None = None
     approvals: ApprovalService | None = None
+    execution_permissions: ExecutionPolicyResolver | None = None
     model_service: ModelFacade | None = None
     intent_service: IntentFacade | None = None
     context_components: ContextComponents | None = None
@@ -102,7 +104,7 @@ def compose_understanding_context(
     records: PostgresRecordStore, policies: PolicyResolver
 ) -> IntentContexts:
     """Real adapters shared by Intent and Model; general Context.build remains unbound."""
-    sources = RunContextSources(records)
+    sources = RunContextSources(records, policies.permissions)
     rules = UnderstandingRules(sources)
     components = ContextComponents(
         readers={"input": sources, "rule": rules},
@@ -132,7 +134,10 @@ def compose(settings: Settings) -> Container:
     )
     blobs = FSBlobStore(settings.blob_directory) if database else None
     budgets = BudgetService(records) if records else None
-    policies = PolicyResolver(records, configuration) if records and configuration else None
+    permissions = ExecutionPolicyResolver(records) if records else None
+    policies = (
+        PolicyResolver(records, configuration, permissions) if records and configuration else None
+    )
     contexts = compose_understanding_context(records, policies) if records and policies else None
     model = (
         ModelFacade(
@@ -168,7 +173,10 @@ def compose(settings: Settings) -> Container:
         configuration=configuration,
         run_service=run,
         budgets=budgets,
-        approvals=ApprovalService(records, configuration) if records and configuration else None,
+        approvals=ApprovalService(records, configuration, permissions=permissions)
+        if records and configuration
+        else None,
+        execution_permissions=permissions,
         model_service=model,
         intent_service=intent,
         context_components=contexts.components if contexts else None,

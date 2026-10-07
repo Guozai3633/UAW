@@ -35,6 +35,16 @@ class RunPort(Protocol):
     ) -> JsonObject: ...
 
 
+class ExecutionPolicyPort(Protocol):
+    """Fresh Run-bound permission intersection. Does not issue grants or enable flags.
+
+    Return ExecutionPolicySnapshot only from current owned policy records;
+    callers still check role, configuration, resources, lease/fence and executor.
+    """
+
+    async def resolve(self, ctx: TrustedExecutionContext) -> JsonObject: ...
+
+
 class ApprovalAuthorityPort(Protocol):
     """Tool-owned live action/resource check. Missing implementations never grant access.
 

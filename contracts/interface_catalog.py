@@ -1907,6 +1907,10 @@ def finalize(graph,strategies):
     TYPES["ReservationAccounting"]["dependentRequired"]={"usage":["usage_revision"],"usage_revision":["usage"]}
     record("RunAdmissionBinding","run","受理时固定实际来源、用户模型政策和配置。","input_ref|UserInputRef|原始输入\nmodel_policy_ref|Ref|用户选择\nconfiguration_ref|Ref|固定配置\nturn_id|ID|提交轮次")
     record("ApprovalBinding","run","审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。","context|TrustedExecutionContext|固定主体、Run、动作上下文\nrequest|ApprovalCreateRequest|固定动作参数摘要、资源和效果\nconfiguration_ref|Ref|Run受理配置\napproval_policy_ref|Ref|固定审批政策")
+    record("ExecutionPolicySnapshot","run","实时父子权限交集，非可复用授权；来源均为当前主体持久政策。","run_id|ID|已受理运行\nscope|Scope|当前可信请求作用域\npolicy_refs|[](Ref)|叶到根当前版本与摘要\nallowed_capabilities|[](ID)|在全部父政策允许的当前scope能力\ndenied_capabilities|[](ID)|祖先显式禁止的并集\nnetwork_allowlist|[](NonEmptyText)|网络范围交集\nfeature_flag_refs|[](Ref)|需另行核验的开关引用",["不创建权限、不证明角色/设备/资源/租约或执行器已就绪；模型不能提供该对象来取得授权；执行前必须重查当前状态。"])
+    TYPES["ExecutionPolicySnapshot"]["properties"]["policy_refs"].update(minItems=1,maxItems=8)
+    TYPES["ExecutionPolicySnapshot"]["properties"]["allowed_capabilities"].update(minItems=1)
+    TYPES["ExecutionPolicySnapshot"]["properties"]["policy_refs"]["items"]={"allOf":[ref("Ref"),{"properties":{"kind":{"const":"policy"},"version":{"pattern":"^[1-9][0-9]*$"}},"required":["content_hash"],"not":{"anyOf":[{"required":["location"]},{"required":["access_scope"]}]}}]}
     record("CredentialMetadata","support","不含密文或明文秘密的句柄归属。","provider_id|ID|提供方\nreceipt|SecretReceipt|回执")
     record("ModelHttpSettings","support","首批HTTP模型配置profile；注册不意味着完成连通或协议适配。","model_name|NonEmptyText|提供方模型名称\ntimeout_ms|Duration|超时")
     TYPES["ModelHttpSettings"]["properties"]["timeout_ms"].update(minimum=1000,maximum=300000)

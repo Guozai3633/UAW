@@ -1009,6 +1009,7 @@
 | [EventsReadRequest](objects/EventsReadRequest.md) | 分页读取历史事件。 |
 | [EventsStreamRequest](objects/EventsStreamRequest.md) | SSE续接。 |
 | [ExecutionLease](objects/ExecutionLease.md) | Run/节点恢复租约归Run，与Agent对话控制租约区分。 |
+| [ExecutionPolicySnapshot](objects/ExecutionPolicySnapshot.md) | 实时父子权限交集，非可复用授权；来源均为当前主体持久政策。 |
 | [HttpApprovalsDecideEnvelope](objects/HttpApprovalsDecideEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpApprovalsDecideResult](objects/HttpApprovalsDecideResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpApprovalsGetEnvelope](objects/HttpApprovalsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |

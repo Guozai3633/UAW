@@ -12,10 +12,11 @@ from uaw.infrastructure.db.transactions import (
     reference,
     timestamp,
 )
+from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
-from uaw.shared.errors import CapabilityUnavailable, reject
-from uaw.shared.ports import ApprovalAuthorityPort, ApprovalPort
+from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
+from uaw.shared.ports import ApprovalAuthorityPort, ApprovalPort, ExecutionPolicyPort
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreConflict
 
@@ -32,10 +33,12 @@ class ApprovalService(ApprovalPort):
         store: PostgresRecordStore,
         configuration: ConfigurationService,
         authority: ApprovalAuthorityPort | None = None,
+        permissions: ExecutionPolicyPort | None = None,
     ) -> None:
         self.store = store
         self.configuration = configuration
         self.authority = authority
+        self.permissions = permissions or ExecutionPolicyResolver(store)
         self.transactions = TransactionalStore(store.database)
 
     async def _aggregate(self, actor: Principal, run_id: str) -> str:
@@ -98,27 +101,18 @@ class ApprovalService(ApprovalPort):
             or "manual" not in policy.payload["allowed_modes"]
         ):
             raise CapabilityUnavailable("non_manual_approval")
-        permission = await tx.load("execution.policies", ctx.capability_policy_ref.id)
-        validate_contract("CapabilityPolicy", permission.payload)
-        if permission.payload.get("parent_policy_ref") is not None:
-            raise CapabilityUnavailable("approval.parent_policy_authority")
-        selector = permission.payload["resource_scope"]
-        if (
-            ctx.capability_policy_ref.kind != "policy"
-            or str(permission.revision) != ctx.capability_policy_ref.version
-            or selector.get("conversation_id") != ctx.conversation_id
-            or any(
-                selector.get(key) is not None and selector[key] != getattr(ctx.scope, key)
-                for key in ("task_id", "project_id")
-            )
-            or not ctx.scope.capabilities
-            or not set(ctx.scope.capabilities).issubset(permission.payload["allowed_capabilities"])
-            or set(ctx.scope.capabilities).intersection(permission.payload["denied_capabilities"])
-            or any(ref.wire() not in selector["resource_refs"] for ref in ctx.scope.resource_refs)
-            or any(
-                ref not in [r.wire() for r in ctx.scope.resource_refs]
-                for ref in binding["request"]["resource_refs"]
-            )
+        try:
+            snapshot = await self.permissions.resolve(ctx)
+            require_snapshot(snapshot, ctx)
+        except DomainError as exc:
+            if exc.failure.code == "execution_policy_stale":
+                raise reject(
+                    "approval_permission_stale", "Execution permission changed", 412
+                ) from None
+            raise
+        if any(
+            ref not in [r.wire() for r in ctx.scope.resource_refs]
+            for ref in binding["request"]["resource_refs"]
         ):
             raise reject(
                 "approval_permission_stale", "Current permission does not allow the action", 412
