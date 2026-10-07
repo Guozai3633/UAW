@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：代码基线已通过73项检查，Git已关联远端；尚未创建worker/worktree。B/C/D/E取得实际派发SHA和记录后才开始组件包。
+状态：可选工作区未创建、任务未派发。取得实际基线与派发记录后再开始。
 
 ## 工作位置和顺序
 
@@ -54,8 +54,9 @@
 
 ```text
 你负责UAW并行开发中的Session E：可选样本与评测。
+当前工作目录必须是E:/UAW/.worktrees/evaluation，分支必须是dev/evaluation。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/E.md。
-核对当前cwd为本session worktree，并读取docs/coordination/DISPATCH.md的真实基线SHA和本session派发状态。
+读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
 若基线未发布，先完成本包可做的设计/提案；不要修改或使用其他session未交接的源码。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

@@ -2,12 +2,12 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：代码基线已通过73项检查，Git已关联远端；尚未创建worker/worktree。B/C/D/E取得实际派发SHA和记录后才开始组件包。
+状态：独立分支/worktree及依赖已准备。首包已分配，开发聊天尚未创建；开工先核对parallel-wave-1和DISPATCH。
 
 ## 工作位置和顺序
 
-- 建议分支：`integration`。
-- 建议worktree：`E:/UAW`。
+- 实际分支：`integration`。
+- 实际worktree：`E:/UAW`。
 - 首包：MS-00；后续：MS-I1、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
@@ -63,7 +63,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- 建立Git和已验证基线后填真实SHA并开放B/C/D；本计划未创建任何session。
+- B/C/D分支、worktree和依赖环境已准备；用户在对应目录新建聊天后启动首包。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -142,8 +142,9 @@
 
 ```text
 你负责UAW并行开发中的Session A：集成与任务理解。
+当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
-核对当前cwd为本session worktree，并读取docs/coordination/DISPATCH.md的真实基线SHA和本session派发状态。
+读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
 先完成MS-00：收尾未完成P1-01、验证当前源码、保存共同Git基线和环境；条件成立后记录B/C/D的派发包与SHA。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

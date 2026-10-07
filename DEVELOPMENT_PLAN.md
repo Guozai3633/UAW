@@ -60,7 +60,7 @@
 
 ## 5. 下一步与维护位置
 
-P0-01工程基础、P0-03开发管理配置及P0-04持久受理/账本已验收；P0-02开发存储已验证，最终D01仍待确认。P0-05调用网关及P1-01理解协议已实现，当前全量73项检查通过；实际提供方和理解语义验收仍待D06，记录见[P1-01](docs/implementation/P1-01.md)。Git已关联新仓库，集成分支为`integration`；A保存共同提交后准备B/C/D独立工作区，实际基线与派发状态见[DISPATCH](docs/coordination/DISPATCH.md)。
+P0-01工程基础、P0-03开发管理配置及P0-04持久受理/账本已验收；P0-02开发存储已验证，最终D01仍待确认。P0-05调用网关及P1-01理解协议已实现，当前全量73项检查通过；实际提供方和理解语义验收仍待D06，记录见[P1-01](docs/implementation/P1-01.md)。Git已关联新仓库，集成分支为`integration`；B/C/D独立工作区和依赖已准备，统一开工版本为parallel-wave-1，开发聊天待在各自目录开启，实际基线与派发状态见[DISPATCH](docs/coordination/DISPATCH.md)。
 
 [计划维护源](planning/catalog.py)保存手写任务与依赖；[并行维护源](planning/parallel_catalog.py)保存session归属与子包。总生成器同时重建两份计划并检查依赖、路径归属和文档链接。修改源后运行：
 

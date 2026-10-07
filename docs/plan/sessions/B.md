@@ -2,12 +2,12 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：代码基线已通过73项检查，Git已关联远端；尚未创建worker/worktree。B/C/D/E取得实际派发SHA和记录后才开始组件包。
+状态：独立分支/worktree及依赖已准备。首包已分配，开发聊天尚未创建；开工先核对parallel-wave-1和DISPATCH。
 
 ## 工作位置和顺序
 
-- 建议分支：`dev/context`。
-- 建议worktree：`E:/UAW/.worktrees/context`。
+- 实际分支：`dev/context`。
+- 实际worktree：`E:/UAW/.worktrees/context`。
 - 首包：MS-C1；后续：MS-C2。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
@@ -79,8 +79,9 @@
 
 ```text
 你负责UAW并行开发中的Session B：上下文组件。
+当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
-核对当前cwd为本session worktree，并读取docs/coordination/DISPATCH.md的真实基线SHA和本session派发状态。
+读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
 若基线未发布，先完成本包可做的设计/提案；不要修改或使用其他session未交接的源码。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

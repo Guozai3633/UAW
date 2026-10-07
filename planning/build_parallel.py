@@ -69,9 +69,12 @@ def validate():
 def build_sessions():
     for key, session in SESSIONS.items():
         path = f"docs/plan/sessions/{key}.md"
+        ready = BASELINE.get("workspaces_ready", False) and key in ("A", "B", "C", "D")
+        state = ("状态：独立分支/worktree及依赖已准备。首包已分配，开发聊天尚未创建；开工先核对parallel-wave-1和DISPATCH。"
+                 if ready else "状态：可选工作区未创建、任务未派发。取得实际基线与派发记录后再开始。")
         lines = [f"# Session {key}：{session['name']}", "", link(path, "docs/plan/PARALLEL.md", "并行开发总入口"), "",
-                 "状态：代码基线已通过73项检查，Git已关联远端；尚未创建worker/worktree。B/C/D/E取得实际派发SHA和记录后才开始组件包。", "",
-                 "## 工作位置和顺序", "", f"- 建议分支：`{session['branch']}`。", f"- 建议worktree：`{session['worktree']}`。",
+                 state, "",
+                 "## 工作位置和顺序", "", f"- {'实际' if ready else '建议'}分支：`{session['branch']}`。", f"- {'实际' if ready else '建议'}worktree：`{session['worktree']}`。",
                  f"- 首包：{'、'.join(session['starts'])}；后续：{'、'.join(session['later']) or '本轮无'}。",
                  f"- 交接记录：{link(path, session['report'], session['report'])}。",
                  f"- 公共变更提案目录：`{session['request_dir']}`。", "", "## 可修改路径", "",
@@ -87,8 +90,9 @@ def build_sessions():
                       "交付检查：", "", *[f"- {condition}" for condition in package["acceptance"]], ""]
         lines += ["## 可复制到新session的开工说明", "", "下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。", "", "```text",
                   f"你负责UAW并行开发中的Session {key}：{session['name']}。",
+                  f"当前工作目录必须是{session['worktree']}，分支必须是{session['branch']}。",
                   f"先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/{key}.md。",
-                  "核对当前cwd为本session worktree，并读取docs/coordination/DISPATCH.md的真实基线SHA和本session派发状态。",
+                  "读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。",
                   "若基线未发布，先完成本包可做的设计/提案；不要修改或使用其他session未交接的源码。" if key != "A" else "先完成MS-00：收尾未完成P1-01、验证当前源码、保存共同Git基线和环境；条件成立后记录B/C/D的派发包与SHA。",
                   "只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。",
                   "按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。",
@@ -109,8 +113,8 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **尚未创建其他session或worktree，尚未派发worker。** 实际提交、基线摘要和派发状态见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
-             "A完成MS-00的代码验证后，保存Git提交并分配独立工作区。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
+             "- **B/C/D分支、独立worktree及依赖环境已准备，首包已分配；实际开发聊天尚未创建。** 开工版本固定为`parallel-wave-1`标签。实际目录与派发状态见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "用户在对应目录新建聊天，粘贴session页的开工说明即可开始组件包。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
         lines.append(f"| {link(path, f'docs/plan/sessions/{key}.md', key + '：' + session['name'])} | {session['rules'][0]} | {'、'.join(session['starts'])} | {'第5个可选' if key == 'E' else '推荐4个方案'} |")
