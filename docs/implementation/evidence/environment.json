@@ -138,7 +138,7 @@
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
     "apps/local_runner/uaw_runner/protocol.py": "60e70e964a8a3fd0a54b0112476c0a8b5020642438ac18dd2a87e51cc2052b81",
-    "contracts/build_interfaces.py": "00b6d234cd5bb4548ae4cc10b330fec21a36468e9a948185061e023009f62ec9",
+    "contracts/build_interfaces.py": "e9d52310d2b0409be0702a1c3aaf5917bc9d9571cde937c3d5221f8d39eb5441",
     "contracts/check_interfaces.py": "5bc9c9fc2c028e46c832b04390720a1b659d3e5bc84c35db61f9f9eddccd2d6e",
     "contracts/implementation_catalog.py": "1ef09427ce54267c3518ff01a33466a71e0ecfc8277467fdaf855188a9ac6cbf",
     "contracts/interface_catalog.py": "f48ba6d061356bffea4cc6bca4a7440018ff743922a841829d0899774f2d7077",

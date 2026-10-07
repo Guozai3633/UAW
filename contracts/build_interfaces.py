@@ -96,6 +96,7 @@ def example(schema,depth=0):
         if s.get("format")=="date-time":return "2026-10-07T02:00:00Z"
         if s.get("format")=="uri":return "https://example.org/resource"
         if s.get("pattern")=="^[a-f0-9]{64}$":return "a"*64
+        if s.get("pattern")=="^[1-9][0-9]*$":return "1"
         if "^[A-Z]{3}$"==s.get("pattern"):return "CNY"
         if s.get("pattern","").startswith("^(0|"):return "0"
         if s.get("pattern","").startswith("^(?!"):return "src/main.py"

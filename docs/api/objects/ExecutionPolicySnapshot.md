@@ -38,7 +38,7 @@
     {
       "kind": "policy",
       "id": "example_001",
-      "version": "example_001",
+      "version": "1",
       "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     }
   ],
