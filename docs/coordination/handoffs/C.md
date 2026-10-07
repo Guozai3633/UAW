@@ -85,3 +85,81 @@ git diff --check
 ## 影响与回退
 
 本包只新增隔离组件，没有改变现有API/运行行为或启用任何能力。A可独立审阅源码提交 `f9622ca88e6d59352e1bb89145ed2795da8819ab`，再合入当前dev/tool。若退回，由C修本包业务；若需撤销，由A revert该源码提交和后续公共接线提交，不重置其他session。没有已执行的业务外部副作用、迁移或新依赖需要撤销。
+
+
+# MS-T2a 交接追加
+
+状态：**本包代码与单元检查已交付；真实 SQL 验证受环境阻碍，待 A 审阅与复跑。未进入完整 MS-T2，未接受 P1-03/P1-09。** 上方 MS-T1 历史保持原样。
+
+## 实际基线、分支和提交
+
+- 目录 `E:/UAW/.worktrees/tool`，分支 `dev/tool`。
+- 开工工作区干净，实际执行 `git fetch origin --tags` → `git merge --ff-only ms-i2a`；快进成功。同步后 HEAD 与 `ms-i2a^{commit}` 一致：`ac9bf621e3caebf060300b3a628b77dee36f7ab0`，未 reset/改写历史。
+- 按新 uv.lock 执行 `uv sync --frozen --extra agent-engine --link-mode copy` 成功，缓存只用本 worktree `.cache/uv`，独立 `.venv` / Python 3.14.6。
+- **MS-T2a 源码/测试/提案提交：`e3a19dd2d800b44005c95daabc4a96cecd04892e`**。交接记录另作仅文档提交；A合入当前dev/tool两笔提交，不需修改已交接历史。
+- schema SHA256 `e4195d1f89fb82bbc7cf5bd32e1cafdc04f44ba70a87703fc38ff65f45025b0d`；uv.lock SHA256 `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；shared ports/contracts均与DISPATCH摘要一致。
+- 只改C允许路径；未修改公共schema/锁/组装/API/迁移/其他worker文件；未开启flag、启动数据库服务、复制凭据或配置D01/D03/D06。
+
+## 本轮改动清单
+
+- `docs/coordination/requests/C/C-002-ms-t2a-ledger-and-readers.md`
+- `src/uaw/tool/approval.py`
+- `src/uaw/tool/authority.py`
+- `src/uaw/tool/budget.py`
+- `src/uaw/tool/errors.py`
+- `src/uaw/tool/ledger.py`
+- `tests/integration/tool/conftest.py`
+- `tests/integration/tool/test_durable.py`
+- `tests/unit/tool/test_durable_adapters.py`
+- `docs/coordination/handoffs/C.md`（本交接追加）。
+
+## 公开组件接口和状态所有者
+
+- `ToolLedger(store)`：`bind(call, spec, ctx)`原子固定不可变action/attempt；`action/action_key/attempt/effect`读取真实状态；`claim(intent, ctx)`原子记录唯一派发意图与unknown效果；`save`仅写白名单tool阶段及对应命名DTO；`acknowledge`保存实际首个预算回执，不改写accepted/unchanged。
+- action按Principal/Run/action分区，attempt按Principal唯一；新attempt/trace不换action，operation/scope/task/agent/node/模型/能力政策或参数变化冲突；原期限不可扩大。ToolSpec/effect/hash由固定注册记录和真实参数核对。工具账本是实际PG RecordStore记录，不使用内存guard代替持久账本。
+- `ToolApprovalAuthority(ledger, registry, configuration, access, resources)`满足公共ApprovalAuthorityPort.check；从持久ValidatedCall/ToolSpec、Run/固定模型、当前政策父链/权限/flags/提供方/取消、实际资源Reader导出ApprovalCreateRequest，拒绝模型自报effect/hash/资源或旧授权。缺Reader/角色环境明确不可用；未解析的policy feature_flag_refs也不可用。基线ApprovalService不支持的父政策/规则/持续授权仍拒绝。
+- `ActionResourceReaderPort.resolve(call, spec, ctx)`为本包内部 owning-domain 接线port，须覆盖固定动作实际触及的全部资源和当前授权/版本；传入路径/Ref不是权限，缺真实实现不放行。没有新增公共wire字段。
+- `ToolApprovalAdapter(ledger, authority, approvals: ApprovalPort)`实现既有PrecheckPort/RecheckPort；`require_approved(ctx)`供预算阶段消费。规范化动作先持久固定；request/get/recheck只使用真实服务记录；waiting引用真实ApprovalRequest当前版本；批准后再次检查当前资源/权限。批准不自动发送、等待不预留预算，拒绝/取消/过期明确返回，错误服务DTO返回dependency_protocol_invalid。
+- `ToolBudgetAdapter(ledger, budgets: BudgetPort, approvals)`：`reserve(estimates, ctx)`、`recover_reserved(ctx)`、`release(ctx)`、`mark_dispatch(ctx)`、`settle_unknown(ctx)`、`reservation_ref(ctx)`。消费实际公开服务方法，稳定请求ID和不可变计划用于响应丢失恢复；只有确定CAS冲突才生成下一计划（最多4个），不在超时后换attempt。
+- mark_dispatch只做**内部意图/预算记账，无executor调用**；先真实审批复核，再原子claim+unknown，最后调用预算dispatch。claim后中断仅重放账务，不重发动作；重复返回False，不是第二个执行授权。当前ToolFacade连入gates后批准也返回dispatch unavailable，不调用该内部方法、不预留预算。真实发送及fencing仍是后续MS-T2/A接线。
+- tool-identities锁负责原子action/attempt固定，tool-run锁负责后续阶段。所有事务回调只读写记录，**不会在持有conversation或tool事务锁时嵌套调用BudgetService**。Authority在ApprovalService会话锁内只普通读取，不申请tool锁/审批/预算锁。跨服务流程是可恢复阶段，未声称单事务。
+- Run仍拥有取消、审批和预算，C不另建Run业务状态；tool命名空间拥有调用身份/意图/效果。各持久payload均为已发布的ValidatedCall、ToolSpec、TrustedExecutionContext、ApprovalCreateRequest、EffectRecord、BudgetReserveRequest、BudgetReservation、Ref、Acknowledgement、BudgetSettleRequest、UsageSettlement等命名schema，没有Object隐藏扩展。表/DTO对照详见C-002。
+- unknown未回执/不重发/不释放其已claim预留；未dispatch的竞争失败attempt可释放自己的独占预留。settle_unknown只记录billing_state=pending和currency，未知观察字段省略，保留实际未决额度；没有把未观察消耗记为0或成功，没有confirmed效果/真实回执对账能力。
+
+## 成功、拒绝、重复/恢复对接例子
+
+可执行例子位于本轮unit与SQL测试，所有受控fixture均注明不是产品能力。
+
+1. `test_sql_real_wait_approved_restart_missing_executor_no_budget`：真实审批服务pending引用指向存储id/version；用户approve_once后重建服务并复核，facade仍返回dependency_unavailable/dispatch，预算没有预留。
+2. `test_sql_approval_hash_resource_effect_policy_and_cancel_change`、`test_sql_policy_revision_and_parameter_changes_cannot_reuse_grant`：批准后参数/hash/effect/资源/权限改变或Run取消拒绝；`test_sql_missing_reader_role_port_and_current_provider_revocation`缺Reader/角色环境或当前提供方撤销拒绝。
+3. `test_sql_concurrent_budget_reserve_once_and_no_nested_transaction_deadlock`、`test_sql_two_attempts_cannot_claim_same_action`、`test_sql_release_dispatch_race_keeps_exactly_one_persistent_intent`：并发reserve只持有一次额度，action只提交一个send intent，释放与claim互斥。
+4. 四个`test_sql_crash_after_service_commit_recovers_same_budget_request`子例和`test_sql_claim_commit_before_accounting_crash_never_reissues_send`：commit后响应丢失/claim后记账前中断，重启只重放同一个预算步骤；unknown阻止新写attempt，不能把异常当作未发生。
+
+**这些SQL断言尚未在本工作区执行到业务阶段**，不能将用例代码或收集成功标为SQL通过。单元协议替身已运行，验证了当前审批读取、正确等待引用消费、失败DTO脱敏、缺真实权限/Reader拒绝等；不代表真实SQL/LLM/Runner。
+
+## 命令、回执和未通过项
+
+```powershell
+Set-Location E:/UAW/.worktrees/tool
+.venv/Scripts/python.exe -m ruff check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m ruff format --check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m mypy --cache-dir .cache/mypy-tool src/uaw/tool
+.venv/Scripts/python.exe -m pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2a/unit.xml
+.venv/Scripts/python.exe -m pytest tests/integration/tool -q -p no:cacheprovider --require-postgres --junitxml=tests/.artifacts/C/MS-T2a/sql.xml
+```
+
+- Unit：**66 passed，0 failure/skip**；原MS-T1的52项仍通过，新适配协议14项通过。
+- Ruff通过，格式22个文件通过，Mypy strict 15个源码文件无错误；git diff/staged diff --check通过。
+- SQL：17项已收集；使用--require-postgres实际尝试，**17 setup errors，0 passed/skip，exit 1**。共同原因是`UAW_TEST_DATABASE_URL`未配置；PG连接和业务断言尚未运行。没有从A复制连接URL/凭据，没有自行启动DB/迁移或以SQLite/mock代替。
+- ignored回执：`tests/.artifacts/C/MS-T2a/unit.txt`、`unit.xml`、`ruff.txt`、`format.txt`、`mypy.txt`、`sql.txt`、`sql.xml`、`environment.json`。回执没有入源码提交，A可读取/保存。
+- 未运行：真实PG本包行为、全量整链路、真实LLM、Runner/IPC/executor、真实领域Reader/角色/环境/账号权限；不宣称产品能力已开放。
+
+## A 接线、公共提案和回退
+
+[C-002-ms-t2a-ledger-and-readers.md](../requests/C/C-002-ms-t2a-ledger-and-readers.md)包含最小composition例子、所有命名阶段schema、消费方、锁/预算恢复顺序、缺口、必要验证和回退方式。
+
+A须安排受控PG及独立测试主体，先在本分支/实际集成SHA运行上述17项SQL检查，再组合审阅；若失败由C修本包业务。A将ToolAuthority注入ApprovalService，将真实Role/Environment/ResourceReader注入Authority；默认缺port仍不可用。批准到发送之间的lease/fence/取消/当前撤销/句柄复核仍需A和实际executor完成，mark_dispatch的布尔值不是Runner权限。不得把fixtures的connected metadata、role/Reader或声明adapter登记为产品能力。
+
+公共缺口：完整MS-T2需要带实际action/attempt/provider/receipt/evidence/Usage绑定的对账port/DTO；confirmed-not-applied不可从超时推出，本包没有消费建议字段。BudgetPort缺状态查询port，当前按A现有storage读取RootBudgetLedger/实际BudgetReservation用于CAS与只恢复已提交预留；若A要求收拢跨域读，应先发布BudgetStatePort。字段与版本决定在C-002交A，C没有直接扩充公共schema。
+
+MS-T2a范围到此；等待SQL回执、A审阅及新基线，不自动进入完整MS-T2。D01/D03/D06保持未决定。A负责合入、公共冲突、配置/事件/实施范围登记和整链路回归。无新依赖或迁移；回退源码提交`e3a19dd2d800b44005c95daabc4a96cecd04892e`与后续A接线提交即可，但不得删除持久unknown意图或用代码revert声称已撤销外部效果。
