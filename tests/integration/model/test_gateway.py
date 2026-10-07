@@ -11,6 +11,7 @@ import pytest
 
 from tests.integration.test_control_plane import admitted, context, meta, seed
 from tests.integration.test_control_plane import domain as domain
+from uaw.composition import compose_understanding_context
 from uaw.context.seed import StoredModelInputs
 from uaw.infrastructure.blob.filesystem import FSBlobStore
 from uaw.infrastructure.db.transactions import reference
@@ -57,7 +58,7 @@ class Case:
 
 
 @pytest.fixture
-async def case(domain, principal, tmp_path) -> AsyncIterator[Case]:
+async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> AsyncIterator[Case]:
     configuration, run, admin = domain
     await seed(configuration, admin)
     secret = await configuration.put_secret(
@@ -98,8 +99,12 @@ async def case(domain, principal, tmp_path) -> AsyncIterator[Case]:
                     "id": "fixture-model",
                     "provider_ref": reference("provider", provider["id"], 2),
                     "display_name": "Protocol fixture",
-                    "context_limit_tokens": 100000,
-                    "output_limit_tokens": 16000,
+                    "context_limit_tokens": getattr(request, "param", {}).get(
+                        "context_limit_tokens", 100000
+                    ),
+                    "output_limit_tokens": getattr(request, "param", {}).get(
+                        "output_limit_tokens", 16000
+                    ),
                     "capabilities": ["text", "json_schema", "tool_calls"],
                 }
             },
@@ -155,7 +160,10 @@ async def case(domain, principal, tmp_path) -> AsyncIterator[Case]:
             }
         )
         binding = (await run.store.get(principal, "run.bindings", record["id"])).payload
-        inputs = StoredModelInputs(run.store, FSBlobStore(tmp_path))
+        policies = PolicyResolver(run.store, configuration)
+        inputs = StoredModelInputs(
+            run.store, FSBlobStore(tmp_path), compose_understanding_context(run.store, policies)
+        )
         input_ref = await inputs.seed(ctx, 128)
         requests: list[httpx.Request] = []
         responses: list[httpx.Response | Exception] = [httpx.Response(200, json=reply())]

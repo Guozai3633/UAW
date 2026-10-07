@@ -74,7 +74,8 @@ except (OSError, subprocess.CalledProcessError):
     }
 paths = [ROOT / p for p in ["pyproject.toml", "uv.lock", ".python-version", "alembic.ini"]]
 for directory, pattern in [
-    ("src/uaw", "*.py"), ("tests/unit", "*.py"), ("tests/integration", "*.py"),
+    ("src/uaw", "*.py"), ("apps/local_runner/uaw_runner", "*.py"),
+    ("tests/unit", "*.py"), ("tests/integration", "*.py"),
     ("ops", "*.py"), ("ops", "*.ps1"), ("ops", "*.toml"),
 ]:
     paths.extend((ROOT / directory).rglob(pattern))
@@ -86,17 +87,18 @@ paths.extend((ROOT / "src/uaw/resources/prompts").glob("*.txt"))
 paths = [p for p in paths if "__pycache__" not in p.parts and p.name != "local.toml"]
 report = {
     "date": "2026-10-07", "platform": platform.system(), "machine": platform.machine(),
-    "scope": "P0 foundation/control plane/model protocol and P1-01 source-bound understanding, using real PostgreSQL and controlled HTTP replies; no external LLM, Agent or Runner task",
+    "scope": "P0/P1-01 plus MS-C1/MS-T1/MS-R1 components and MS-I1 Context wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
     "components": components,
     "python_packages": {package: version(package) for package in packages.values()},
     "compatibility": {"core_checks": True, "langgraph_basic_api": True,
                       "postgres_development_checks": True, "model_protocol_checks": True,
                       "intent_protocol_checks": True,
+                      "parallel_components": True, "context_wiring": True,
                       "external_llm_verified": False, "model_agent_runner": False},
     "test_counts": test_counts,
     "engine_metadata": engine_metadata,
     "test_evidence_sha256": hashlib.sha256(test_path.read_bytes()).hexdigest(),
-    "runtime_implementation": "development_control_plane_run_admission_model_and_intent_protocol",
+    "runtime_implementation": "development_control_plane_intent_model_and_context_components",
     "source_hashes": {str(p.relative_to(ROOT)).replace('\\', '/'):
                       hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(set(paths))},
 }

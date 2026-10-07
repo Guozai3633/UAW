@@ -34,7 +34,8 @@ class ChatCompletionsAdapter:
     async def close(self) -> None:
         await self.client.aclose()
 
-    async def generate(self, request: ProviderRequest) -> ProviderResponse:
+    @staticmethod
+    def body(request: ProviderRequest) -> dict[str, Any]:
         config = request.config
         body: dict[str, Any] = {
             "model": request.settings["model_name"],
@@ -68,6 +69,21 @@ class ChatCompletionsAdapter:
                 }
                 for tool in request.prompt.tools
             ]
+        return body
+
+    def estimate_input_tokens(self, request: ProviderRequest) -> int:
+        # Same compact UTF-8 JSON as HTTPX. A conservative estimate, not a tokenizer.
+        return (
+            len(
+                json.dumps(
+                    self.body(request), ensure_ascii=False, separators=(",", ":"), allow_nan=False
+                ).encode("utf-8")
+            )
+            + 64
+        )
+
+    async def generate(self, request: ProviderRequest) -> ProviderResponse:
+        body = self.body(request)
         headers = {"Content-Type": "application/json"}
         if request.credential:
             headers["Authorization"] = "Bearer " + request.credential.get_secret_value()
@@ -174,7 +190,11 @@ class ChatCompletionsAdapter:
             key = json.dumps([request.operation_id, index, tool["id"], arguments], sort_keys=True)
             proposals.append(
                 {
-                    "tool_ref": {"kind": "tool_call", "id": tool["id"], "version": tool["version"]},
+                    "tool_ref": {
+                        "kind": "configuration",
+                        "id": tool["id"],
+                        "version": tool["version"],
+                    },
                     "arguments": arguments,
                     "action_id": "action-" + hashlib.sha256(key.encode()).hexdigest(),
                 }

@@ -1,16 +1,21 @@
-"""Diagnostic input preparation only; not the general Context Runtime or rule resolver."""
+"""Diagnostic snapshots and dispatch to the injected, bounded understanding resolver."""
+
+from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, reference
 from uaw.model.contracts import ModelPrompt, Payload
 from uaw.shared.contracts import RequestMeta, TrustedExecutionContext
-from uaw.shared.errors import reject
+from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import BlobStorePort
+
+if TYPE_CHECKING:
+    from uaw.context.intent import IntentContexts
 
 
 def revision(ref: Payload, kind: str) -> int:
@@ -37,8 +42,14 @@ def snapshot_hash(snapshot: Payload) -> str:
 
 
 class StoredModelInputs:
-    def __init__(self, store: PostgresRecordStore, blobs: BlobStorePort) -> None:
+    def __init__(
+        self,
+        store: PostgresRecordStore,
+        blobs: BlobStorePort,
+        understanding: IntentContexts | None = None,
+    ) -> None:
         self.store, self.blobs = store, blobs
+        self.understanding = understanding
         self.transactions = TransactionalStore(store.database)
 
     async def seed(self, ctx: TrustedExecutionContext, output_reserve: int) -> Payload:
@@ -136,12 +147,9 @@ class StoredModelInputs:
                 "model_context_stale", "Input snapshot does not match its fixed manifest", 412
             )
         if snapshot["purpose"] == "understanding":
-            from uaw.context.intent import IntentContexts
-            from uaw.run.inputs import RunInputReader
-
-            return await IntentContexts(self.store, RunInputReader(self.store)).resolve(
-                snapshot, ctx
-            )
+            if self.understanding is None:
+                raise CapabilityUnavailable("context.understanding_resolver")
+            return await self.understanding.resolve(snapshot, ctx)
         rules = snapshot["instruction_set_ref"]
         instructions = (
             await self.store.get(

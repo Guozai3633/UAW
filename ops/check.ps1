@@ -7,11 +7,11 @@ Push-Location $taskRoot
 try {
     & $taskPython ops/sync_runtime_contracts.py
     if ($LASTEXITCODE -ne 0) { throw 'Contract synchronization failed' }
-    & $taskPython -m ruff check src tests/unit tests/integration tests/conftest.py
+    & $taskPython -m ruff check src apps/local_runner/uaw_runner tests/unit tests/integration tests/conftest.py
     if ($LASTEXITCODE -ne 0) { throw 'Static checks failed' }
-    & $taskPython -m ruff format --check src tests/unit tests/integration tests/conftest.py
+    & $taskPython -m ruff format --check src apps/local_runner/uaw_runner tests/unit tests/integration tests/conftest.py
     if ($LASTEXITCODE -ne 0) { throw 'Formatting checks failed' }
-    & $taskPython -m mypy src/uaw
+    & $taskPython -m mypy src/uaw apps/local_runner/uaw_runner
     if ($LASTEXITCODE -ne 0) { throw 'Type checks failed' }
     if ($WithPostgres) {
         & (Join-Path $PSScriptRoot 'start-dev-db.ps1')
@@ -25,4 +25,3 @@ try {
 } finally {
     Pop-Location
 }
-

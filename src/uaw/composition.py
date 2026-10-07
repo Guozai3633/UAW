@@ -2,7 +2,8 @@
 
 from dataclasses import dataclass
 
-from uaw.context.intent import IntentContexts
+from uaw.context.facade import ContextComponents
+from uaw.context.intent import IntentContexts, UnderstandingRules
 from uaw.context.seed import StoredModelInputs
 from uaw.infrastructure.blob.filesystem import FSBlobStore
 from uaw.infrastructure.credentials import WindowsCredentialStore
@@ -12,10 +13,12 @@ from uaw.intent.facade import IntentFacade
 from uaw.intent.frame import FrameRepository
 from uaw.intent.original import OriginalReader
 from uaw.model.adapters import ChatCompletionsAdapter
+from uaw.model.context import FixedModelWindow
 from uaw.model.facade import ModelFacade
 from uaw.model.gateway import ModelGateway
 from uaw.model.policy import PolicyResolver
 from uaw.run.budget import BudgetService
+from uaw.run.context import RunContextSources
 from uaw.run.events import EventReader
 from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
@@ -71,6 +74,7 @@ class Container:
     budgets: BudgetService | None = None
     model_service: ModelFacade | None = None
     intent_service: IntentFacade | None = None
+    context_components: ContextComponents | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -92,6 +96,21 @@ class Container:
             await self.database.close()
 
 
+def compose_understanding_context(
+    records: PostgresRecordStore, policies: PolicyResolver
+) -> IntentContexts:
+    """Real adapters shared by Intent and Model; general Context.build remains unbound."""
+    sources = RunContextSources(records)
+    rules = UnderstandingRules(sources)
+    components = ContextComponents(
+        readers={"input": sources, "rule": rules},
+        cancellation=sources,
+        rules=rules,
+        models=FixedModelWindow(policies),
+    )
+    return IntentContexts(records, RunInputReader(records), components)
+
+
 def compose(settings: Settings) -> Container:
     database = Database(settings.database_url.get_secret_value()) if settings.database_url else None
     records = PostgresRecordStore(database) if database else None
@@ -111,29 +130,31 @@ def compose(settings: Settings) -> Container:
     )
     blobs = FSBlobStore(settings.blob_directory) if database else None
     budgets = BudgetService(records) if records else None
+    policies = PolicyResolver(records, configuration) if records and configuration else None
+    contexts = compose_understanding_context(records, policies) if records and policies else None
     model = (
         ModelFacade(
             ModelGateway(
                 records,
-                PolicyResolver(records, configuration),
-                StoredModelInputs(records, blobs),
+                policies,
+                StoredModelInputs(records, blobs, contexts),
                 budgets,
                 blobs,
                 ChatCompletionsAdapter(),
             )
         )
-        if records and configuration and blobs and budgets
+        if records and policies and contexts and blobs and budgets
         else None
     )
     intent = (
         IntentFacade(
             OriginalReader(RunInputReader(records)),
-            IntentContexts(records, RunInputReader(records)),
+            contexts,
             model,
-            PolicyResolver(records, configuration),
+            policies,
             FrameRepository(records),
         )
-        if records and configuration and model
+        if records and policies and contexts and model
         else None
     )
     return Container(
@@ -147,4 +168,5 @@ def compose(settings: Settings) -> Container:
         budgets=budgets,
         model_service=model,
         intent_service=intent,
+        context_components=contexts.components if contexts else None,
     )

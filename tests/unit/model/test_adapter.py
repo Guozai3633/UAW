@@ -3,6 +3,7 @@
 import asyncio
 import json
 import threading
+from dataclasses import replace
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import httpx
@@ -13,6 +14,8 @@ from tests.integration.model.test_gateway import reply
 from uaw.model.adapters import MAX_RESPONSE_BYTES, ChatCompletionsAdapter, tool_name
 from uaw.model.contracts import ModelPrompt, ProviderFailure, ProviderRequest
 from uaw.shared.schema import validate_contract
+from uaw.tool.invocation.schema import normalize
+from uaw.tool.registry import ToolRegistry
 
 
 def request(endpoint: str = "https://protocol.invalid/v1") -> ProviderRequest:
@@ -124,7 +127,7 @@ def test_tool_proposals_bind_to_registered_schema_and_stable_action():
             "required": ["path"],
             "additionalProperties": False,
         },
-        "output_schema": {"type": "object"},
+        "output_schema": {"type": "object", "properties": {}, "additionalProperties": False},
         "categories": [],
         "required_capabilities": [],
         "effect": "read",
@@ -155,6 +158,11 @@ def test_tool_proposals_bind_to_registered_schema_and_stable_action():
     result = ChatCompletionsAdapter.parse(json.dumps(data).encode(), req)
     validate_contract("ToolCall", result.tool_calls[0])
     assert result.tool_calls[0]["tool_ref"]["id"] == "file.read"
+    registry = ToolRegistry()
+    registry.register(tool, expected_revision=0)
+    normalized = normalize(result.tool_calls[0], registry)
+    assert normalized["tool_ref"]["kind"] == "configuration"
+    assert normalized["arguments"] == {"path": "src/main.py"}
     data["choices"][0]["message"]["tool_calls"][0]["id"] = "provider-call-2"
     assert (
         ChatCompletionsAdapter.parse(json.dumps(data).encode(), req).tool_calls == result.tool_calls
@@ -163,3 +171,61 @@ def test_tool_proposals_bind_to_registered_schema_and_stable_action():
     with pytest.raises(ProviderFailure) as failed:
         ChatCompletionsAdapter.parse(json.dumps(data).encode(), req)
     assert failed.value.failure.code == "provider_unknown_tool"
+
+
+@pytest.mark.parametrize("protocol", ["text", "json_schema", "tool_calls"])
+async def test_native_estimate_covers_exact_http_json_with_unicode_and_schemas(protocol):
+    captured = []
+    tool = {
+        "id": "fixture.read",
+        "version": "1",
+        "description": '工具说明\n"原文"' * 40,
+        "input_schema": {"type": "object", "properties": {}, "additionalProperties": False},
+    }
+    data = reply("{}" if protocol == "json_schema" else "完成")
+    if protocol == "tool_calls":
+        data["choices"][0]["finish_reason"] = "tool_calls"
+        data["choices"][0]["message"]["tool_calls"] = [
+            {
+                "id": "provider-call-1",
+                "type": "function",
+                "function": {"name": tool_name(tool), "arguments": "{}"},
+            }
+        ]
+    base = request()
+    call = replace(
+        base,
+        protocol=protocol,
+        config={**base.config, "temperature": 0.2, "reasoning_level": "low"},
+        prompt=ModelPrompt(
+            ({"role": "user", "content": '原文\n"语义"'},),
+            (tool,) if protocol == "tool_calls" else (),
+            1,
+        ),
+        output_schema={
+            "type": "object",
+            "properties": {},
+            "additionalProperties": False,
+            "description": "输出说明" * 40,
+        }
+        if protocol == "json_schema"
+        else None,
+    )
+
+    async def receive(req):
+        captured.append(req)
+        return httpx.Response(200, json=data)
+
+    adapter = ChatCompletionsAdapter(httpx.AsyncClient(transport=httpx.MockTransport(receive)))
+    try:
+        estimate = adapter.estimate_input_tokens(call)
+        await adapter.generate(call)
+        assert estimate == len(captured[0].content) + 64
+        body = json.loads(captured[0].content)
+        assert body["temperature"] == 0.2 and body["reasoning_effort"] == "low"
+        if protocol == "json_schema":
+            assert body["response_format"]["json_schema"]["schema"] == call.output_schema
+        elif protocol == "tool_calls":
+            assert body["tools"][0]["function"]["parameters"] == tool["input_schema"]
+    finally:
+        await adapter.close()

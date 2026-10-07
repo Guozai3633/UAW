@@ -85,6 +85,25 @@ class ModelGateway:
             )
         elif "output_schema" in request:
             raise reject("model_schema_unexpected", "Only structured output accepts output_schema")
+        native_estimate = self.adapter.estimate_input_tokens(
+            ProviderRequest(
+                selection.provider["endpoint"],
+                None,
+                selection.provider["settings"],
+                selection.config,
+                prompt,
+                protocol,
+                request.get("output_schema"),
+                ctx.operation_id,
+            )
+        )
+        if type(native_estimate) is not int or native_estimate < 0:
+            raise reject(
+                "model_token_estimate_invalid", "Provider returned an invalid estimate", 503
+            )
+        prompt = ModelPrompt(
+            prompt.messages, prompt.tools, max(prompt.estimated_tokens, native_estimate)
+        )
         if (
             prompt.estimated_tokens + selection.config["max_output_tokens"]
             > selection.model["context_limit_tokens"]

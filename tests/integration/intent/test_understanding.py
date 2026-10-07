@@ -15,7 +15,7 @@ from tests.integration.test_control_plane import domain as domain
 from tests.integration.test_control_plane import meta
 from uaw.api.application import create_app
 from uaw.composition import Container, RuntimeBindings
-from uaw.context.intent import IntentContexts, understanding_template
+from uaw.context.intent import understanding_template
 from uaw.intent.facade import IntentFacade
 from uaw.intent.frame import FrameRepository
 from uaw.intent.original import OriginalReader
@@ -82,9 +82,10 @@ async def understanding(case: Case, domain, principal) -> UnderstandingCase:
     )
     reader = RunInputReader(store)
     inputs = await reader.read(ctx)
+    assert case.inputs.understanding is not None
     intent = IntentFacade(
         OriginalReader(reader),
-        IntentContexts(store, reader),
+        case.inputs.understanding,
         case.model,
         PolicyResolver(store, domain[0]),
         FrameRepository(store),
