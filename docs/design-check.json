@@ -1,0 +1,9 @@
+{
+  "architecture_version": "0.10",
+  "nodes": 115,
+  "node_design_documents": 115,
+  "views": 16,
+  "mapping_coverage": "100%",
+  "issues": [],
+  "runtime_tests": "not_implemented"
+}

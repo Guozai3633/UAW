@@ -1,0 +1,19 @@
+{
+  "check_date": "2026-10-03",
+  "valid": true,
+  "errors": [],
+  "sections": 12,
+  "evidence_rows": 42,
+  "access_status_counts": {
+    "accessed": 35,
+    "inaccessible": 2,
+    "provided": 5
+  },
+  "reviews": 22,
+  "competitors": 12,
+  "opportunities": 5,
+  "field_observations": 0,
+  "synthetic_rows": 0,
+  "checks": "交付结构、证据ID引用、记录分母、null市场规模、台账结构与空白现场记录；不是事实独立复现。",
+  "limitations": "日期/版本Unknown，便利样本无代表性，未访谈/实测/支付。"
+}

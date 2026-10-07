@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UAW ExecutionAssessment v0.1",
+  "description": "Historical experiment; current contract is uaw.schema.json#/$defs/ExecutionAssessment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_state_revision",
+    "understanding",
+    "execution",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "input_state_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "understanding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "constraints",
+        "assumptions",
+        "unknowns"
+      ],
+      "properties": {
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraints": {
+          "$ref": "#/$defs/string_list"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/string_list"
+        },
+        "unknowns": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_status",
+        "planning_level",
+        "delegation",
+        "parallelism",
+        "parallel_scope",
+        "information_status",
+        "decision_reason",
+        "evidence_refs",
+        "suggested_delegates",
+        "reassess_when"
+      ],
+      "properties": {
+        "decision_status": {
+          "type": "string",
+          "enum": [
+            "ready",
+            "provisional"
+          ]
+        },
+        "planning_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "steps",
+            "dag"
+          ]
+        },
+        "delegation": {
+          "type": "string",
+          "enum": [
+            "single",
+            "parent_child"
+          ]
+        },
+        "parallelism": {
+          "type": "string",
+          "enum": [
+            "serial",
+            "parallel"
+          ]
+        },
+        "parallel_scope": {
+          "type": "string",
+          "enum": [
+            "none",
+            "tools",
+            "agents",
+            "mixed"
+          ]
+        },
+        "information_status": {
+          "type": "string",
+          "enum": [
+            "sufficient",
+            "probe_needed",
+            "clarification_needed"
+          ]
+        },
+        "decision_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/string_list"
+        },
+        "suggested_delegates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/delegate"
+          }
+        },
+        "reassess_when": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "next_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "goal",
+        "resource_refs",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "respond",
+            "request_context",
+            "ask_user",
+            "continue_agent_loop",
+            "plan",
+            "delegate"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_refs": {
+          "$ref": "#/$defs/string_list"
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "delegate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_kind",
+        "target_ref",
+        "goal",
+        "output_contract",
+        "start_condition"
+      ],
+      "properties": {
+        "target_kind": {
+          "type": "string",
+          "enum": [
+            "agent_definition",
+            "role_profile"
+          ]
+        },
+        "target_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_contract": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_condition": {
+          "type": "string",
+          "enum": [
+            "inputs_available",
+            "after_dependencies"
+          ]
+        }
+      }
+    }
+  },
+  "deprecated": true
+}

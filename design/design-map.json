@@ -1,0 +1,696 @@
+{
+  "architecture_version": "0.10",
+  "date": "2026-10-07",
+  "nodes": {
+    "ui": {
+      "design_doc": "docs/design/components/ui.md",
+      "code_target": "apps/web/src/features/workspace/",
+      "root": "ui",
+      "implemented": false
+    },
+    "ingress": {
+      "design_doc": "docs/design/components/ingress.md",
+      "code_target": "src/uaw/api/ingress.py",
+      "root": "ingress",
+      "implemented": false
+    },
+    "intent": {
+      "design_doc": "docs/design/modules/intent.md",
+      "code_target": "src/uaw/intent/facade.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "agent": {
+      "design_doc": "docs/design/modules/agent.md",
+      "code_target": "src/uaw/agent/facade.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "context": {
+      "design_doc": "docs/design/modules/context.md",
+      "code_target": "src/uaw/context/facade.py",
+      "root": "context",
+      "implemented": false
+    },
+    "tool": {
+      "design_doc": "docs/design/modules/tool.md",
+      "code_target": "src/uaw/tool/facade.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "workspace": {
+      "design_doc": "docs/design/modules/workspace.md",
+      "code_target": "src/uaw/workspace/facade.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "model": {
+      "design_doc": "docs/design/modules/model.md",
+      "code_target": "src/uaw/model/facade.py",
+      "root": "model",
+      "implemented": false
+    },
+    "run": {
+      "design_doc": "docs/design/modules/run.md",
+      "code_target": "src/uaw/run/facade.py",
+      "root": "run",
+      "implemented": false
+    },
+    "support": {
+      "design_doc": "docs/design/modules/support.md",
+      "code_target": "src/uaw/shared/__init__.py",
+      "root": "support",
+      "implemented": false
+    },
+    "intent.preview": {
+      "design_doc": "docs/design/components/intent-preview.md",
+      "code_target": "src/uaw/intent/preview.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.original": {
+      "design_doc": "docs/design/components/intent-original.md",
+      "code_target": "src/uaw/intent/original.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.semantic": {
+      "design_doc": "docs/design/components/intent-semantic.md",
+      "code_target": "src/uaw/intent/semantic.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.references": {
+      "design_doc": "docs/design/components/intent-references.md",
+      "code_target": "src/uaw/intent/references.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.probe": {
+      "design_doc": "docs/design/components/intent-probe.md",
+      "code_target": "src/uaw/intent/probe.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.ambiguity": {
+      "design_doc": "docs/design/components/intent-ambiguity.md",
+      "code_target": "src/uaw/intent/ambiguity.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "intent.frame": {
+      "design_doc": "docs/design/components/intent-frame.md",
+      "code_target": "src/uaw/intent/frame.py",
+      "root": "intent",
+      "implemented": false
+    },
+    "agent.definitions": {
+      "design_doc": "docs/design/components/agent-definitions.md",
+      "code_target": "src/uaw/agent/definitions/facade.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.loop": {
+      "design_doc": "docs/design/components/agent-loop.md",
+      "code_target": "src/uaw/agent/loop.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.assessment": {
+      "design_doc": "docs/design/components/agent-assessment.md",
+      "code_target": "src/uaw/agent/assessment.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.planning": {
+      "design_doc": "docs/design/components/agent-planning.md",
+      "code_target": "src/uaw/agent/planning.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.scheduler": {
+      "design_doc": "docs/design/components/agent-scheduler.md",
+      "code_target": "src/uaw/agent/scheduler.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration": {
+      "design_doc": "docs/design/components/agent-collaboration.md",
+      "code_target": "src/uaw/agent/collaboration/facade.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.skills": {
+      "design_doc": "docs/design/components/agent-skills.md",
+      "code_target": "src/uaw/agent/skills.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion": {
+      "design_doc": "docs/design/components/agent-completion.md",
+      "code_target": "src/uaw/agent/completion/facade.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.board": {
+      "design_doc": "docs/design/components/agent-board.md",
+      "code_target": "src/uaw/agent/board.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.factory": {
+      "design_doc": "docs/design/components/agent-factory.md",
+      "code_target": "src/uaw/agent/factory.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.designer": {
+      "design_doc": "docs/design/components/agent-definitions-designer.md",
+      "code_target": "src/uaw/agent/definitions/designer.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.validator": {
+      "design_doc": "docs/design/components/agent-definitions-validator.md",
+      "code_target": "src/uaw/agent/definitions/validator.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.model_intent": {
+      "design_doc": "docs/design/components/agent-definitions-model_intent.md",
+      "code_target": "src/uaw/agent/definitions/model_intent.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.repository": {
+      "design_doc": "docs/design/components/agent-definitions-repository.md",
+      "code_target": "src/uaw/agent/definitions/repository.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.discovery": {
+      "design_doc": "docs/design/components/agent-definitions-discovery.md",
+      "code_target": "src/uaw/agent/definitions/discovery.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.definitions.change_service": {
+      "design_doc": "docs/design/components/agent-definitions-change_service.md",
+      "code_target": "src/uaw/agent/definitions/change_service.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "context.sources": {
+      "design_doc": "docs/design/components/context-sources.md",
+      "code_target": "src/uaw/context/sources.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.rules": {
+      "design_doc": "docs/design/components/context-rules.md",
+      "code_target": "src/uaw/context/rules.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.ingestion": {
+      "design_doc": "docs/design/components/context-ingestion.md",
+      "code_target": "src/uaw/context/ingestion.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.retrieval": {
+      "design_doc": "docs/design/components/context-retrieval.md",
+      "code_target": "src/uaw/context/retrieval.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.memory": {
+      "design_doc": "docs/design/components/context-memory.md",
+      "code_target": "src/uaw/context/memory/facade.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.selection": {
+      "design_doc": "docs/design/components/context-selection.md",
+      "code_target": "src/uaw/context/selection.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.compression": {
+      "design_doc": "docs/design/components/context-compression.md",
+      "code_target": "src/uaw/context/compression.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.composer": {
+      "design_doc": "docs/design/components/context-composer.md",
+      "code_target": "src/uaw/context/composer.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.references": {
+      "design_doc": "docs/design/components/context-references.md",
+      "code_target": "src/uaw/context/references.py",
+      "root": "context",
+      "implemented": false
+    },
+    "tool.registry": {
+      "design_doc": "docs/design/components/tool-registry.md",
+      "code_target": "src/uaw/tool/registry.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.discovery": {
+      "design_doc": "docs/design/components/tool-discovery.md",
+      "code_target": "src/uaw/tool/discovery.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation": {
+      "design_doc": "docs/design/components/tool-invocation.md",
+      "code_target": "src/uaw/tool/invocation/facade.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.effects": {
+      "design_doc": "docs/design/components/tool-effects.md",
+      "code_target": "src/uaw/tool/effects.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.failure": {
+      "design_doc": "docs/design/components/tool-failure.md",
+      "code_target": "src/uaw/tool/failure.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.mcp": {
+      "design_doc": "docs/design/components/tool-mcp.md",
+      "code_target": "src/uaw/tool/mcp/facade.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.adapters": {
+      "design_doc": "docs/design/components/tool-adapters.md",
+      "code_target": "src/uaw/tool/adapters.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.results": {
+      "design_doc": "docs/design/components/tool-results.md",
+      "code_target": "src/uaw/tool/results.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.audit": {
+      "design_doc": "docs/design/components/tool-audit.md",
+      "code_target": "src/uaw/tool/audit.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "workspace.binding": {
+      "design_doc": "docs/design/components/workspace-binding.md",
+      "code_target": "src/uaw/workspace/binding.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.base": {
+      "design_doc": "docs/design/components/workspace-base.md",
+      "code_target": "src/uaw/workspace/base.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.isolation": {
+      "design_doc": "docs/design/components/workspace-isolation.md",
+      "code_target": "src/uaw/workspace/isolation.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.environment": {
+      "design_doc": "docs/design/components/workspace-environment.md",
+      "code_target": "src/uaw/workspace/environment.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.process": {
+      "design_doc": "docs/design/components/workspace-process.md",
+      "code_target": "src/uaw/workspace/process.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.changes": {
+      "design_doc": "docs/design/components/workspace-changes.md",
+      "code_target": "src/uaw/workspace/changes.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.artifacts": {
+      "design_doc": "docs/design/components/workspace-artifacts.md",
+      "code_target": "src/uaw/workspace/artifacts.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "workspace.review": {
+      "design_doc": "docs/design/components/workspace-review.md",
+      "code_target": "src/uaw/workspace/review.py",
+      "root": "workspace",
+      "implemented": false
+    },
+    "model.catalog": {
+      "design_doc": "docs/design/components/model-catalog.md",
+      "code_target": "src/uaw/model/catalog.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.policy": {
+      "design_doc": "docs/design/components/model-policy.md",
+      "code_target": "src/uaw/model/policy.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.capability": {
+      "design_doc": "docs/design/components/model-capability.md",
+      "code_target": "src/uaw/model/capability.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.gateway": {
+      "design_doc": "docs/design/components/model-gateway.md",
+      "code_target": "src/uaw/model/gateway.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.adapters": {
+      "design_doc": "docs/design/components/model-adapters.md",
+      "code_target": "src/uaw/model/adapters.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.recovery": {
+      "design_doc": "docs/design/components/model-recovery.md",
+      "code_target": "src/uaw/model/recovery.py",
+      "root": "model",
+      "implemented": false
+    },
+    "model.usage": {
+      "design_doc": "docs/design/components/model-usage.md",
+      "code_target": "src/uaw/model/usage.py",
+      "root": "model",
+      "implemented": false
+    },
+    "run.history": {
+      "design_doc": "docs/design/components/run-history.md",
+      "code_target": "src/uaw/run/history.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.state": {
+      "design_doc": "docs/design/components/run-state.md",
+      "code_target": "src/uaw/run/state.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.events": {
+      "design_doc": "docs/design/components/run-events.md",
+      "code_target": "src/uaw/run/events.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.budget": {
+      "design_doc": "docs/design/components/run-budget.md",
+      "code_target": "src/uaw/run/budget.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.approval": {
+      "design_doc": "docs/design/components/run-approval.md",
+      "code_target": "src/uaw/run/approval.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.checkpoint": {
+      "design_doc": "docs/design/components/run-checkpoint.md",
+      "code_target": "src/uaw/run/checkpoint.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume": {
+      "design_doc": "docs/design/components/run-resume.md",
+      "code_target": "src/uaw/run/resume/facade.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.cancel": {
+      "design_doc": "docs/design/components/run-cancel.md",
+      "code_target": "src/uaw/run/cancel.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.trigger": {
+      "design_doc": "docs/design/components/run-trigger.md",
+      "code_target": "src/uaw/run/trigger.py",
+      "root": "run",
+      "implemented": false
+    },
+    "support.configuration": {
+      "design_doc": "docs/design/components/support-configuration.md",
+      "code_target": "src/uaw/shared/configuration.py",
+      "root": "support",
+      "implemented": false
+    },
+    "support.extensions": {
+      "design_doc": "docs/design/components/support-extensions.md",
+      "code_target": "src/uaw/shared/extensions.py",
+      "root": "support",
+      "implemented": false
+    },
+    "support.cache": {
+      "design_doc": "docs/design/components/support-cache.md",
+      "code_target": "src/uaw/shared/cache.py",
+      "root": "support",
+      "implemented": false
+    },
+    "support.observability": {
+      "design_doc": "docs/design/components/support-observability.md",
+      "code_target": "src/uaw/shared/observability.py",
+      "root": "support",
+      "implemented": false
+    },
+    "support.evaluation": {
+      "design_doc": "docs/design/components/support-evaluation.md",
+      "code_target": "src/uaw/shared/evaluation.py",
+      "root": "support",
+      "implemented": false
+    },
+    "support.stores": {
+      "design_doc": "docs/design/components/support-stores.md",
+      "code_target": "src/uaw/shared/stores.py",
+      "root": "support",
+      "implemented": false
+    },
+    "tool.invocation.schema": {
+      "design_doc": "docs/design/components/tool-invocation-schema.md",
+      "code_target": "src/uaw/tool/invocation/schema.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation.precheck": {
+      "design_doc": "docs/design/components/tool-invocation-precheck.md",
+      "code_target": "src/uaw/tool/invocation/precheck.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation.approval": {
+      "design_doc": "docs/design/components/tool-invocation-approval.md",
+      "code_target": "src/uaw/tool/invocation/approval.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation.recheck": {
+      "design_doc": "docs/design/components/tool-invocation-recheck.md",
+      "code_target": "src/uaw/tool/invocation/recheck.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation.dispatch": {
+      "design_doc": "docs/design/components/tool-invocation-dispatch.md",
+      "code_target": "src/uaw/tool/invocation/dispatch.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.invocation.result": {
+      "design_doc": "docs/design/components/tool-invocation-result.md",
+      "code_target": "src/uaw/tool/invocation/result.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "agent.collaboration.contract": {
+      "design_doc": "docs/design/components/agent-collaboration-contract.md",
+      "code_target": "src/uaw/agent/collaboration/contract.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration.instance": {
+      "design_doc": "docs/design/components/agent-collaboration-instance.md",
+      "code_target": "src/uaw/agent/collaboration/instance.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration.channel": {
+      "design_doc": "docs/design/components/agent-collaboration-channel.md",
+      "code_target": "src/uaw/agent/collaboration/channel.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration.join": {
+      "design_doc": "docs/design/components/agent-collaboration-join.md",
+      "code_target": "src/uaw/agent/collaboration/join.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration.handoff": {
+      "design_doc": "docs/design/components/agent-collaboration-handoff.md",
+      "code_target": "src/uaw/agent/collaboration/handoff.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.collaboration.cancel": {
+      "design_doc": "docs/design/components/agent-collaboration-cancel.md",
+      "code_target": "src/uaw/agent/collaboration/cancel.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.contract": {
+      "design_doc": "docs/design/components/agent-completion-contract.md",
+      "code_target": "src/uaw/agent/completion/contract.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.evidence": {
+      "design_doc": "docs/design/components/agent-completion-evidence.md",
+      "code_target": "src/uaw/agent/completion/evidence.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.semantic": {
+      "design_doc": "docs/design/components/agent-completion-semantic.md",
+      "code_target": "src/uaw/agent/completion/semantic.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.version": {
+      "design_doc": "docs/design/components/agent-completion-version.md",
+      "code_target": "src/uaw/agent/completion/version.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.delivery": {
+      "design_doc": "docs/design/components/agent-completion-delivery.md",
+      "code_target": "src/uaw/agent/completion/delivery.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "agent.completion.acceptance": {
+      "design_doc": "docs/design/components/agent-completion-acceptance.md",
+      "code_target": "src/uaw/agent/completion/acceptance.py",
+      "root": "agent",
+      "implemented": false
+    },
+    "context.memory.candidate": {
+      "design_doc": "docs/design/components/context-memory-candidate.md",
+      "code_target": "src/uaw/context/memory/candidate.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.memory.policy": {
+      "design_doc": "docs/design/components/context-memory-policy.md",
+      "code_target": "src/uaw/context/memory/policy.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.memory.conflict": {
+      "design_doc": "docs/design/components/context-memory-conflict.md",
+      "code_target": "src/uaw/context/memory/conflict.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.memory.store": {
+      "design_doc": "docs/design/components/context-memory-store.md",
+      "code_target": "src/uaw/context/memory/store.py",
+      "root": "context",
+      "implemented": false
+    },
+    "context.memory.forget": {
+      "design_doc": "docs/design/components/context-memory-forget.md",
+      "code_target": "src/uaw/context/memory/forget.py",
+      "root": "context",
+      "implemented": false
+    },
+    "tool.mcp.provider": {
+      "design_doc": "docs/design/components/tool-mcp-provider.md",
+      "code_target": "src/uaw/tool/mcp/provider.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.mcp.session": {
+      "design_doc": "docs/design/components/tool-mcp-session.md",
+      "code_target": "src/uaw/tool/mcp/session.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.mcp.capabilities": {
+      "design_doc": "docs/design/components/tool-mcp-capabilities.md",
+      "code_target": "src/uaw/tool/mcp/capabilities.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.mcp.invoke": {
+      "design_doc": "docs/design/components/tool-mcp-invoke.md",
+      "code_target": "src/uaw/tool/mcp/invoke.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "tool.mcp.invalidate": {
+      "design_doc": "docs/design/components/tool-mcp-invalidate.md",
+      "code_target": "src/uaw/tool/mcp/invalidate.py",
+      "root": "tool",
+      "implemented": false
+    },
+    "run.resume.lease": {
+      "design_doc": "docs/design/components/run-resume-lease.md",
+      "code_target": "src/uaw/run/resume/lease.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume.versions": {
+      "design_doc": "docs/design/components/run-resume-versions.md",
+      "code_target": "src/uaw/run/resume/versions.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume.access": {
+      "design_doc": "docs/design/components/run-resume-access.md",
+      "code_target": "src/uaw/run/resume/access.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume.effects": {
+      "design_doc": "docs/design/components/run-resume-effects.md",
+      "code_target": "src/uaw/run/resume/effects.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume.workspace": {
+      "design_doc": "docs/design/components/run-resume-workspace.md",
+      "code_target": "src/uaw/run/resume/workspace.py",
+      "root": "run",
+      "implemented": false
+    },
+    "run.resume.continue": {
+      "design_doc": "docs/design/components/run-resume-continue.md",
+      "code_target": "src/uaw/run/resume/continue_run.py",
+      "root": "run",
+      "implemented": false
+    }
+  }
+}

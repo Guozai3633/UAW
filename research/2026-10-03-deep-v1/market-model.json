@@ -1,0 +1,275 @@
+{
+  "currency": "USD",
+  "year": 2026,
+  "disjoint_segments": true,
+  "disjoint_reason": "只建模O001唯一付款账户，承担周期业务报告的中文用户；同人多任务只计一账户，不把办公/开发/学术相加；人数Unknown。",
+  "scenarios": {
+    "conservative": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "region": "全球可合法接入/付款中文用户；国别可用性Unknown",
+          "population": "周期业务报告唯一付款账户；人数Unknown",
+          "parameters": {
+            "customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "incidence": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "units": {
+              "value": 1,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_price": {
+              "value": 144,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "serviceable_customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "prospects": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "conversion": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "acquisition_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "delivery_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "retained_customers": {
+              "value": 0,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_variable_cost": {
+              "value": 156,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "cac": {
+              "value": 60,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_fixed_cost": {
+              "value": 12000,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            }
+          }
+        }
+      ]
+    },
+    "base": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "region": "全球可合法接入/付款中文用户；国别可用性Unknown",
+          "population": "周期业务报告唯一付款账户；人数Unknown",
+          "parameters": {
+            "customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "incidence": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "units": {
+              "value": 1,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_price": {
+              "value": 180,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "serviceable_customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "prospects": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "conversion": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "acquisition_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "delivery_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "retained_customers": {
+              "value": 0,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_variable_cost": {
+              "value": 96,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "cac": {
+              "value": 40,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_fixed_cost": {
+              "value": 12000,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            }
+          }
+        }
+      ]
+    },
+    "optimistic": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "region": "全球可合法接入/付款中文用户；国别可用性Unknown",
+          "population": "周期业务报告唯一付款账户；人数Unknown",
+          "parameters": {
+            "customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "incidence": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "units": {
+              "value": 1,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_price": {
+              "value": 240,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "serviceable_customers": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "prospects": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "conversion": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "acquisition_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "delivery_capacity": {
+              "value": null,
+              "label": "Unknown",
+              "evidence_ids": [],
+              "reason": "缺符合定义的地域/任务/渠道数据，不能借全球知识工作者总量推断。"
+            },
+            "retained_customers": {
+              "value": 0,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_variable_cost": {
+              "value": 72,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "cac": {
+              "value": 25,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            },
+            "annual_fixed_cost": {
+              "value": 12000,
+              "label": "Hypothesis",
+              "evidence_ids": [],
+              "reason": "商业压力情景，非市场事实/产品报价。费用须含失败重试、搜索、存储、支持和支付，以实际账单/工时替换。"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

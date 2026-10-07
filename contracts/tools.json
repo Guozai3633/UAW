@@ -1,0 +1,462 @@
+{
+  "version": "0.1",
+  "status": "design_only",
+  "trusted_context": "separate_and_not_model_visible",
+  "tools": [
+    {
+      "name": "tools.discover",
+      "description": "按语义寻找当前可用工具和角色。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolToolsDiscoverInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolToolsDiscoverResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "tool"
+    },
+    {
+      "name": "context.read",
+      "description": "读取当前授权资料。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolContextReadInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolContextReadResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "context"
+    },
+    {
+      "name": "skills.load",
+      "description": "加载获准技能方法。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolSkillsLoadInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolSkillsLoadResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.create",
+      "description": "把用户明确要求的子Agent保存到当前会话。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsCreateInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsCreateResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.update",
+      "description": "更新当前会话角色。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsUpdateInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsUpdateResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.list",
+      "description": "发现会话中可复用角色。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsListInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsListResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.invoke",
+      "description": "创建隔离实例执行当前有界分工。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsInvokeInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsInvokeResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.wait",
+      "description": "等待子Agent结果或需要注意。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsWaitInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsWaitResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.message",
+      "description": "向当前任务的子Agent发送协作资料。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsMessageInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsMessageResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.cancel",
+      "description": "停止当前实例子树。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsCancelInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsCancelResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "agents.handoff",
+      "description": "显式移交任务控制权。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsHandoffInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolAgentsHandoffResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": "agent_handoff",
+      "owner": "agent"
+    },
+    {
+      "name": "tasks.assess",
+      "description": "按语义与实际能力判断执行规模。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksAssessInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksAssessResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "tasks.plan",
+      "description": "创建/修改执行计划。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksPlanInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksPlanResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "tasks.verify",
+      "description": "语义完成校验。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksVerifyInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolTasksVerifyResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "models.list",
+      "description": "查询用户可用模型，以处理用户明确指定名。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolModelsListInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolModelsListResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "model"
+    },
+    {
+      "name": "workspace.changes",
+      "description": "查看实际文件改动。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolWorkspaceChangesInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolWorkspaceChangesResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "workspace"
+    },
+    {
+      "name": "workspace.revert",
+      "description": "撤销选定可逆文件改动。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolWorkspaceRevertInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolWorkspaceRevertResult"
+      },
+      "effect": "workspace_write",
+      "feature_flag": "file_write",
+      "owner": "workspace"
+    },
+    {
+      "name": "references.resolve",
+      "description": "解析实际引用。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolReferencesResolveInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolReferencesResolveResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "context"
+    },
+    {
+      "name": "references.read",
+      "description": "读取资料位置。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolReferencesReadInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolReferencesReadResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "context"
+    },
+    {
+      "name": "environment.inspect",
+      "description": "检查真实语言与依赖。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolEnvironmentInspectInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolEnvironmentInspectResult"
+      },
+      "effect": "read",
+      "feature_flag": "process_exec",
+      "owner": "workspace"
+    },
+    {
+      "name": "environment.ensure",
+      "description": "按批准模板准备环境并核验。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolEnvironmentEnsureInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolEnvironmentEnsureResult"
+      },
+      "effect": "process",
+      "feature_flag": "environment_install",
+      "owner": "workspace"
+    },
+    {
+      "name": "process.exec",
+      "description": "启动真实命令，例如go test ./...。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessExecInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessExecResult"
+      },
+      "effect": "process",
+      "feature_flag": "process_exec",
+      "owner": "workspace"
+    },
+    {
+      "name": "process.poll",
+      "description": "读取真实进程状态/增量输出。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessPollInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessPollResult"
+      },
+      "effect": "read",
+      "feature_flag": "process_exec",
+      "owner": "workspace"
+    },
+    {
+      "name": "process.stop",
+      "description": "停止已启动进程树。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessStopInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolProcessStopResult"
+      },
+      "effect": "process",
+      "feature_flag": "process_exec",
+      "owner": "workspace"
+    },
+    {
+      "name": "file.read",
+      "description": "读获准根内文件片段。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolFileReadInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolFileReadResult"
+      },
+      "effect": "read",
+      "feature_flag": "file_access",
+      "owner": "workspace"
+    },
+    {
+      "name": "file.write",
+      "description": "写获准根内文件。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolFileWriteInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolFileWriteResult"
+      },
+      "effect": "workspace_write",
+      "feature_flag": "file_write",
+      "owner": "workspace"
+    },
+    {
+      "name": "search.query",
+      "description": "联网搜索，管理员已配置提供方。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolSearchQueryInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolSearchQueryResult"
+      },
+      "effect": "read",
+      "feature_flag": "web_search",
+      "owner": "tool"
+    },
+    {
+      "name": "web.read",
+      "description": "读取批准网络目标。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolWebReadInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolWebReadResult"
+      },
+      "effect": "read",
+      "feature_flag": "web_search",
+      "owner": "tool"
+    },
+    {
+      "name": "verification.run",
+      "description": "执行一个批准的检查命令。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolVerificationRunInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolVerificationRunResult"
+      },
+      "effect": "process",
+      "feature_flag": "process_exec",
+      "owner": "workspace"
+    },
+    {
+      "name": "verification.report",
+      "description": "读取核验报告。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolVerificationReportInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolVerificationReportResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "agent"
+    },
+    {
+      "name": "artifacts.publish",
+      "description": "登记成果以便预览、下载、修订。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolArtifactsPublishInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolArtifactsPublishResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "workspace"
+    },
+    {
+      "name": "interaction.ask_user",
+      "description": "提出必要澄清并挂起等待。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolInteractionAsk_userInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolInteractionAskUserResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "run"
+    },
+    {
+      "name": "memory.remember",
+      "description": "提交记忆候选。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryRememberInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryRememberResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "context"
+    },
+    {
+      "name": "memory.recall",
+      "description": "按政策读取记忆。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryRecallInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryRecallResult"
+      },
+      "effect": "read",
+      "feature_flag": null,
+      "owner": "context"
+    },
+    {
+      "name": "memory.forget",
+      "description": "删除授权范围记忆。",
+      "parameters": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryForgetInput"
+      },
+      "result_schema": {
+        "$ref": "uaw.schema.json#/$defs/ToolMemoryForgetResult"
+      },
+      "effect": "internal_write",
+      "feature_flag": null,
+      "owner": "context"
+    }
+  ]
+}

@@ -1,0 +1,2158 @@
+{
+  "version": "0.1",
+  "date": "2026-10-07",
+  "status": "technology_design_only",
+  "nodes": {
+    "ui": {
+      "components": [
+        "react",
+        "typescript",
+        "vite",
+        "tailwind",
+        "radix",
+        "query",
+        "router",
+        "ajv",
+        "openapi_ts"
+      ],
+      "implementation": "真实Item/Event驱动页面，详情按需展开；技术模块web",
+      "module": "web",
+      "technology_doc": "docs/technology/modules/web.md",
+      "design_doc": "docs/design/components/ui.md",
+      "interface_doc": "docs/api/nodes/ui.md",
+      "code_target": "apps/web/src/features/workspace/",
+      "rounds": [
+        "P1-10",
+        "P2-08",
+        "P4-09",
+        "P5-05"
+      ],
+      "implemented": false
+    },
+    "ingress": {
+      "components": [
+        "fastapi",
+        "uvicorn",
+        "pydantic",
+        "jsonschema",
+        "authlib"
+      ],
+      "implementation": "认证依赖注入可信上下文，SSE/WSS适配；技术模块api",
+      "module": "api",
+      "technology_doc": "docs/technology/modules/api.md",
+      "design_doc": "docs/design/components/ingress.md",
+      "interface_doc": "docs/api/nodes/ingress.md",
+      "code_target": "src/uaw/api/ingress.py",
+      "rounds": [
+        "P1-10",
+        "P2-08",
+        "P4-09",
+        "P5-05"
+      ],
+      "implemented": false
+    },
+    "intent": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "原文Ref/理解版本与CAS，自有facade",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/modules/intent.md",
+      "interface_doc": "docs/api/nodes/intent.md",
+      "code_target": "src/uaw/intent/facade.py",
+      "rounds": [
+        "P1-01"
+      ],
+      "implemented": false
+    },
+    "agent": {
+      "components": [
+        "python",
+        "pydantic",
+        "langgraph",
+        "postgres"
+      ],
+      "implementation": "自有AgentRuntime，EnginePort封装局部循环",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/modules/agent.md",
+      "interface_doc": "docs/api/nodes/agent.md",
+      "code_target": "src/uaw/agent/facade.py",
+      "rounds": [
+        "P1-07"
+      ],
+      "implemented": false
+    },
+    "context": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/modules/context.md",
+      "interface_doc": "docs/api/nodes/context.md",
+      "code_target": "src/uaw/context/facade.py",
+      "rounds": [
+        "P1-02"
+      ],
+      "implemented": false
+    },
+    "tool": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "postgres",
+        "pgvector",
+        "pgtrgm"
+      ],
+      "implementation": "ToolSpec权威注册，权限过滤与混合索引；LLM最终选择",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/modules/tool.md",
+      "interface_doc": "docs/api/nodes/tool.md",
+      "code_target": "src/uaw/tool/facade.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "workspace": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "websockets"
+      ],
+      "implementation": "LocalBackend通过签名Runner协议；绑定只来自真实选择",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/modules/workspace.md",
+      "interface_doc": "docs/api/nodes/workspace.md",
+      "code_target": "src/uaw/workspace/facade.py",
+      "rounds": [
+        "P1-04"
+      ],
+      "implemented": false
+    },
+    "model": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有模型继承/能力目录/价格版本与全部attempt账本",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/modules/model.md",
+      "interface_doc": "docs/api/nodes/model.md",
+      "code_target": "src/uaw/model/facade.py",
+      "rounds": [
+        "P0-05"
+      ],
+      "implemented": false
+    },
+    "run": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/modules/run.md",
+      "interface_doc": "docs/api/nodes/run.md",
+      "code_target": "src/uaw/run/facade.py",
+      "rounds": [
+        "P0-04"
+      ],
+      "implemented": false
+    },
+    "support": {
+      "components": [
+        "python",
+        "pydantic"
+      ],
+      "implementation": "独立共享ports和控制层入口，不增加万能Runtime",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/modules/support.md",
+      "interface_doc": "docs/api/nodes/support.md",
+      "code_target": "src/uaw/shared/__init__.py",
+      "rounds": [
+        "P0-01"
+      ],
+      "implemented": false
+    },
+    "intent.preview": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "通过ModelGateway做语义提案，原文/版本/来源用代码校验",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-preview.md",
+      "interface_doc": "docs/api/nodes/intent.preview.md",
+      "code_target": "src/uaw/intent/preview.py",
+      "rounds": [
+        "P4-09"
+      ],
+      "implemented": false
+    },
+    "intent.original": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "原文Ref/理解版本与CAS，自有facade",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-original.md",
+      "interface_doc": "docs/api/nodes/intent.original.md",
+      "code_target": "src/uaw/intent/original.py",
+      "rounds": [
+        "P1-01"
+      ],
+      "implemented": false
+    },
+    "intent.semantic": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "通过ModelGateway做语义提案，原文/版本/来源用代码校验",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-semantic.md",
+      "interface_doc": "docs/api/nodes/intent.semantic.md",
+      "code_target": "src/uaw/intent/semantic.py",
+      "rounds": [
+        "P1-01"
+      ],
+      "implemented": false
+    },
+    "intent.references": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "通过ModelGateway做语义提案，原文/版本/来源用代码校验",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-references.md",
+      "interface_doc": "docs/api/nodes/intent.references.md",
+      "code_target": "src/uaw/intent/references.py",
+      "rounds": [
+        "P3-01"
+      ],
+      "implemented": false
+    },
+    "intent.probe": {
+      "components": [
+        "python",
+        "pydantic"
+      ],
+      "implementation": "通过Tool port按需探查，不能直接执行本地/网络动作",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-probe.md",
+      "interface_doc": "docs/api/nodes/intent.probe.md",
+      "code_target": "src/uaw/intent/probe.py",
+      "rounds": [
+        "P3-01"
+      ],
+      "implemented": false
+    },
+    "intent.ambiguity": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "通过ModelGateway做语义提案，原文/版本/来源用代码校验",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-ambiguity.md",
+      "interface_doc": "docs/api/nodes/intent.ambiguity.md",
+      "code_target": "src/uaw/intent/ambiguity.py",
+      "rounds": [
+        "P3-01"
+      ],
+      "implemented": false
+    },
+    "intent.frame": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "原文Ref/理解版本与CAS，自有facade",
+      "module": "intent",
+      "technology_doc": "docs/technology/modules/intent.md",
+      "design_doc": "docs/design/components/intent-frame.md",
+      "interface_doc": "docs/api/nodes/intent.frame.md",
+      "code_target": "src/uaw/intent/frame.py",
+      "rounds": [
+        "P1-01"
+      ],
+      "implemented": false
+    },
+    "agent.definitions": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "create/update/diff/revert是会话定义服务，定义不等于实例",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.md",
+      "code_target": "src/uaw/agent/definitions/facade.py",
+      "rounds": [
+        "P2-04"
+      ],
+      "implemented": false
+    },
+    "agent.loop": {
+      "components": [
+        "python",
+        "langgraph"
+      ],
+      "implementation": "StateGraph调用UAW ports，动作条件由LLM选择",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-loop.md",
+      "interface_doc": "docs/api/nodes/agent.loop.md",
+      "code_target": "src/uaw/agent/loop.py",
+      "rounds": [
+        "P1-07"
+      ],
+      "implemented": false
+    },
+    "agent.assessment": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "当前继承模型语义提案＋自有范围/来源校验",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-assessment.md",
+      "interface_doc": "docs/api/nodes/agent.assessment.md",
+      "code_target": "src/uaw/agent/assessment.py",
+      "rounds": [
+        "P3-01"
+      ],
+      "implemented": false
+    },
+    "agent.planning": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "自有版本化Plan、graphlib无环辅助、asyncio有界调度",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-planning.md",
+      "interface_doc": "docs/api/nodes/agent.planning.md",
+      "code_target": "src/uaw/agent/planning.py",
+      "rounds": [
+        "P3-01",
+        "P3-02",
+        "P3-07"
+      ],
+      "implemented": false
+    },
+    "agent.scheduler": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "自有版本化Plan、graphlib无环辅助、asyncio有界调度",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-scheduler.md",
+      "interface_doc": "docs/api/nodes/agent.scheduler.md",
+      "code_target": "src/uaw/agent/scheduler.py",
+      "rounds": [
+        "P3-02"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "langgraph"
+      ],
+      "implementation": "有界实例工厂/权限预算交集；每实例独立Engine和图命名空间",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.md",
+      "code_target": "src/uaw/agent/collaboration/facade.py",
+      "rounds": [
+        "P2-05",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.skills": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "自有批准SkillLoader/Manifest，按需加载方法与模板",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-skills.md",
+      "interface_doc": "docs/api/nodes/agent.skills.md",
+      "code_target": "src/uaw/agent/skills.py",
+      "rounds": [
+        "P2-03",
+        "P2-07"
+      ],
+      "implemented": false
+    },
+    "agent.completion": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion.md",
+      "interface_doc": "docs/api/nodes/agent.completion.md",
+      "code_target": "src/uaw/agent/completion/facade.py",
+      "rounds": [
+        "P1-08"
+      ],
+      "implemented": false
+    },
+    "agent.board": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "版本Ref/共享板/CAS控制租约，Run取消传播，父汇总验收",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-board.md",
+      "interface_doc": "docs/api/nodes/agent.board.md",
+      "code_target": "src/uaw/agent/board.py",
+      "rounds": [
+        "P2-06",
+        "P3-04",
+        "P3-07"
+      ],
+      "implemented": false
+    },
+    "agent.factory": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "langgraph"
+      ],
+      "implementation": "有界实例工厂/权限预算交集；每实例独立Engine和图命名空间",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-factory.md",
+      "interface_doc": "docs/api/nodes/agent.factory.md",
+      "code_target": "src/uaw/agent/factory.py",
+      "rounds": [
+        "P1-07",
+        "P2-05",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.designer": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "当前继承模型语义提案＋自有范围/来源校验",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-designer.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.designer.md",
+      "code_target": "src/uaw/agent/definitions/designer.py",
+      "rounds": [
+        "P2-04"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.validator": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "create/update/diff/revert是会话定义服务，定义不等于实例",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-validator.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.validator.md",
+      "code_target": "src/uaw/agent/definitions/validator.py",
+      "rounds": [
+        "P2-04"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.model_intent": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "当前继承模型语义提案＋自有范围/来源校验",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-model_intent.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.model_intent.md",
+      "code_target": "src/uaw/agent/definitions/model_intent.py",
+      "rounds": [
+        "P2-04",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.repository": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "create/update/diff/revert是会话定义服务，定义不等于实例",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-repository.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.repository.md",
+      "code_target": "src/uaw/agent/definitions/repository.py",
+      "rounds": [
+        "P2-04"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.discovery": {
+      "components": [
+        "python",
+        "postgres",
+        "pgvector",
+        "pgtrgm"
+      ],
+      "implementation": "会话内候选摘要发现，向量按P4加入，LLM选择invoke",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-discovery.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.discovery.md",
+      "code_target": "src/uaw/agent/definitions/discovery.py",
+      "rounds": [
+        "P2-04",
+        "P4-03"
+      ],
+      "implemented": false
+    },
+    "agent.definitions.change_service": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "create/update/diff/revert是会话定义服务，定义不等于实例",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-definitions-change_service.md",
+      "interface_doc": "docs/api/nodes/agent.definitions.change_service.md",
+      "code_target": "src/uaw/agent/definitions/change_service.py",
+      "rounds": [
+        "P2-04",
+        "P3-06"
+      ],
+      "implemented": false
+    },
+    "context.sources": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-sources.md",
+      "interface_doc": "docs/api/nodes/context.sources.md",
+      "code_target": "src/uaw/context/sources.py",
+      "rounds": [
+        "P1-02",
+        "P4-04"
+      ],
+      "implemented": false
+    },
+    "context.rules": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-rules.md",
+      "interface_doc": "docs/api/nodes/context.rules.md",
+      "code_target": "src/uaw/context/rules.py",
+      "rounds": [
+        "P1-02",
+        "P2-03"
+      ],
+      "implemented": false
+    },
+    "context.ingestion": {
+      "components": [
+        "python",
+        "pypdf",
+        "docx",
+        "xlsx",
+        "blob_fs",
+        "postgres"
+      ],
+      "implementation": "受限解析器输出版本与位置；格式按D05启用",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-ingestion.md",
+      "interface_doc": "docs/api/nodes/context.ingestion.md",
+      "code_target": "src/uaw/context/ingestion.py",
+      "rounds": [
+        "P2-01"
+      ],
+      "implemented": false
+    },
+    "context.retrieval": {
+      "components": [
+        "python",
+        "postgres",
+        "pgvector",
+        "pgtrgm"
+      ],
+      "implementation": "访问范围内关键词＋向量RRF召回，embedding版本分区",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-retrieval.md",
+      "interface_doc": "docs/api/nodes/context.retrieval.md",
+      "code_target": "src/uaw/context/retrieval.py",
+      "rounds": [
+        "P2-01",
+        "P4-03",
+        "P4-04"
+      ],
+      "implemented": false
+    },
+    "context.memory": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "pgvector"
+      ],
+      "implementation": "记忆读写/版本/冲突/删除，索引及缓存依赖失效",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory.md",
+      "interface_doc": "docs/api/nodes/context.memory.md",
+      "code_target": "src/uaw/context/memory/facade.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "context.selection": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-selection.md",
+      "interface_doc": "docs/api/nodes/context.selection.md",
+      "code_target": "src/uaw/context/selection.py",
+      "rounds": [
+        "P1-02",
+        "P4-02"
+      ],
+      "implemented": false
+    },
+    "context.compression": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "经ModelGateway提案，保护关键约束/来源/未决动作",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-compression.md",
+      "interface_doc": "docs/api/nodes/context.compression.md",
+      "code_target": "src/uaw/context/compression.py",
+      "rounds": [
+        "P4-02"
+      ],
+      "implemented": false
+    },
+    "context.composer": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-composer.md",
+      "interface_doc": "docs/api/nodes/context.composer.md",
+      "code_target": "src/uaw/context/composer.py",
+      "rounds": [
+        "P1-02",
+        "P4-02"
+      ],
+      "implemented": false
+    },
+    "context.references": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "获准Reader/指令优先级/TokenCounter/Manifest，自有上下文入口",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-references.md",
+      "interface_doc": "docs/api/nodes/context.references.md",
+      "code_target": "src/uaw/context/references.py",
+      "rounds": [
+        "P1-02",
+        "P2-02",
+        "P2-07"
+      ],
+      "implemented": false
+    },
+    "tool.registry": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "postgres",
+        "pgvector",
+        "pgtrgm"
+      ],
+      "implementation": "ToolSpec权威注册，权限过滤与混合索引；LLM最终选择",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-registry.md",
+      "interface_doc": "docs/api/nodes/tool.registry.md",
+      "code_target": "src/uaw/tool/registry.py",
+      "rounds": [
+        "P1-03",
+        "P4-03"
+      ],
+      "implemented": false
+    },
+    "tool.discovery": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "postgres",
+        "pgvector",
+        "pgtrgm"
+      ],
+      "implementation": "ToolSpec权威注册，权限过滤与混合索引；LLM最终选择",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-discovery.md",
+      "interface_doc": "docs/api/nodes/tool.discovery.md",
+      "code_target": "src/uaw/tool/discovery.py",
+      "rounds": [
+        "P1-03",
+        "P4-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "统一InvocationGate调用自有Policy/Run审批/提供方adapter",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.md",
+      "code_target": "src/uaw/tool/invocation/facade.py",
+      "rounds": [
+        "P1-03",
+        "P3-03"
+      ],
+      "implemented": false
+    },
+    "tool.effects": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "blob_fs"
+      ],
+      "implementation": "typed回执、真实输出Ref、效果/审计账本与幂等对账",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-effects.md",
+      "interface_doc": "docs/api/nodes/tool.effects.md",
+      "code_target": "src/uaw/tool/effects.py",
+      "rounds": [
+        "P1-03",
+        "P3-03",
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "tool.failure": {
+      "components": [
+        "python",
+        "postgres"
+      ],
+      "implementation": "自有attempt/退避/熔断/严格等价恢复控制器",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-failure.md",
+      "interface_doc": "docs/api/nodes/tool.failure.md",
+      "code_target": "src/uaw/tool/failure.py",
+      "rounds": [
+        "P1-03",
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.mcp": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.md",
+      "code_target": "src/uaw/tool/mcp/facade.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.adapters": {
+      "components": [
+        "python",
+        "httpx"
+      ],
+      "implementation": "批准provider与Runtime control adapters；持久operation边界",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-adapters.md",
+      "interface_doc": "docs/api/nodes/tool.adapters.md",
+      "code_target": "src/uaw/tool/adapters.py",
+      "rounds": [
+        "P1-03",
+        "P2-02"
+      ],
+      "implemented": false
+    },
+    "tool.results": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "blob_fs"
+      ],
+      "implementation": "typed回执、真实输出Ref、效果/审计账本与幂等对账",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-results.md",
+      "interface_doc": "docs/api/nodes/tool.results.md",
+      "code_target": "src/uaw/tool/results.py",
+      "rounds": [
+        "P1-03",
+        "P2-02"
+      ],
+      "implemented": false
+    },
+    "tool.audit": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "blob_fs"
+      ],
+      "implementation": "typed回执、真实输出Ref、效果/审计账本与幂等对账",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-audit.md",
+      "interface_doc": "docs/api/nodes/tool.audit.md",
+      "code_target": "src/uaw/tool/audit.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "workspace.binding": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "websockets"
+      ],
+      "implementation": "LocalBackend通过签名Runner协议；绑定只来自真实选择",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-binding.md",
+      "interface_doc": "docs/api/nodes/workspace.binding.md",
+      "code_target": "src/uaw/workspace/binding.py",
+      "rounds": [
+        "P1-04",
+        "P5-05"
+      ],
+      "implemented": false
+    },
+    "workspace.base": {
+      "components": [
+        "python",
+        "postgres",
+        "blob_fs",
+        "git",
+        "docker"
+      ],
+      "implementation": "输入快照/独立副本/worktree；可选受控OS后端报告真实能力",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-base.md",
+      "interface_doc": "docs/api/nodes/workspace.base.md",
+      "code_target": "src/uaw/workspace/base.py",
+      "rounds": [
+        "P1-05",
+        "P3-05"
+      ],
+      "implemented": false
+    },
+    "workspace.isolation": {
+      "components": [
+        "python",
+        "postgres",
+        "blob_fs",
+        "git",
+        "docker"
+      ],
+      "implementation": "输入快照/独立副本/worktree；可选受控OS后端报告真实能力",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-isolation.md",
+      "interface_doc": "docs/api/nodes/workspace.isolation.md",
+      "code_target": "src/uaw/workspace/isolation.py",
+      "rounds": [
+        "P1-05",
+        "P3-05",
+        "P4-07"
+      ],
+      "implemented": false
+    },
+    "workspace.environment": {
+      "components": [
+        "python",
+        "pydantic",
+        "websockets"
+      ],
+      "implementation": "Runner进程/模板inspect/ensure，实际工具链和回执",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-environment.md",
+      "interface_doc": "docs/api/nodes/workspace.environment.md",
+      "code_target": "src/uaw/workspace/environment.py",
+      "rounds": [
+        "P1-05",
+        "P4-07"
+      ],
+      "implemented": false
+    },
+    "workspace.process": {
+      "components": [
+        "python",
+        "pydantic",
+        "websockets"
+      ],
+      "implementation": "Runner进程/模板inspect/ensure，实际工具链和回执",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-process.md",
+      "interface_doc": "docs/api/nodes/workspace.process.md",
+      "code_target": "src/uaw/workspace/process.py",
+      "rounds": [
+        "P1-05",
+        "P4-07"
+      ],
+      "implemented": false
+    },
+    "workspace.changes": {
+      "components": [
+        "python",
+        "postgres",
+        "git"
+      ],
+      "implementation": "实际字节Hash、三方合并、稳定review units、局部接受/撤销",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-changes.md",
+      "interface_doc": "docs/api/nodes/workspace.changes.md",
+      "code_target": "src/uaw/workspace/changes.py",
+      "rounds": [
+        "P1-06",
+        "P3-05",
+        "P3-06"
+      ],
+      "implemented": false
+    },
+    "workspace.artifacts": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "blob_fs",
+        "s3"
+      ],
+      "implementation": "产物版本/保留/授权resolver；可选S3 adapter",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-artifacts.md",
+      "interface_doc": "docs/api/nodes/workspace.artifacts.md",
+      "code_target": "src/uaw/workspace/artifacts.py",
+      "rounds": [
+        "P1-06",
+        "P3-06"
+      ],
+      "implemented": false
+    },
+    "workspace.review": {
+      "components": [
+        "python",
+        "postgres",
+        "git"
+      ],
+      "implementation": "实际字节Hash、三方合并、稳定review units、局部接受/撤销",
+      "module": "workspace",
+      "technology_doc": "docs/technology/modules/workspace.md",
+      "design_doc": "docs/design/components/workspace-review.md",
+      "interface_doc": "docs/api/nodes/workspace.review.md",
+      "code_target": "src/uaw/workspace/review.py",
+      "rounds": [
+        "P1-06",
+        "P3-06"
+      ],
+      "implemented": false
+    },
+    "model.catalog": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有模型继承/能力目录/价格版本与全部attempt账本",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-catalog.md",
+      "interface_doc": "docs/api/nodes/model.catalog.md",
+      "code_target": "src/uaw/model/catalog.py",
+      "rounds": [
+        "P0-05",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "model.policy": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有模型继承/能力目录/价格版本与全部attempt账本",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-policy.md",
+      "interface_doc": "docs/api/nodes/model.policy.md",
+      "code_target": "src/uaw/model/policy.py",
+      "rounds": [
+        "P0-05",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "model.capability": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有模型继承/能力目录/价格版本与全部attempt账本",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-capability.md",
+      "interface_doc": "docs/api/nodes/model.capability.md",
+      "code_target": "src/uaw/model/capability.py",
+      "rounds": [
+        "P0-05",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "model.gateway": {
+      "components": [
+        "python",
+        "model_sdk",
+        "httpx",
+        "langchain"
+      ],
+      "implementation": "批准官方SDK主路径；LangChain按需隔离在adapter内",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-gateway.md",
+      "interface_doc": "docs/api/nodes/model.gateway.md",
+      "code_target": "src/uaw/model/gateway.py",
+      "rounds": [
+        "P0-05"
+      ],
+      "implemented": false
+    },
+    "model.adapters": {
+      "components": [
+        "python",
+        "model_sdk",
+        "httpx",
+        "langchain"
+      ],
+      "implementation": "批准官方SDK主路径；LangChain按需隔离在adapter内",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-adapters.md",
+      "interface_doc": "docs/api/nodes/model.adapters.md",
+      "code_target": "src/uaw/model/adapters.py",
+      "rounds": [
+        "P0-05"
+      ],
+      "implemented": false
+    },
+    "model.recovery": {
+      "components": [
+        "python",
+        "postgres"
+      ],
+      "implementation": "固定模型或明确Auto集合内恢复，拒绝隐式替换",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-recovery.md",
+      "interface_doc": "docs/api/nodes/model.recovery.md",
+      "code_target": "src/uaw/model/recovery.py",
+      "rounds": [
+        "P0-05",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "model.usage": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有模型继承/能力目录/价格版本与全部attempt账本",
+      "module": "model",
+      "technology_doc": "docs/technology/modules/model.md",
+      "design_doc": "docs/design/components/model-usage.md",
+      "interface_doc": "docs/api/nodes/model.usage.md",
+      "code_target": "src/uaw/model/usage.py",
+      "rounds": [
+        "P0-05",
+        "P4-04",
+        "P4-08"
+      ],
+      "implemented": false
+    },
+    "run.history": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-history.md",
+      "interface_doc": "docs/api/nodes/run.history.md",
+      "code_target": "src/uaw/run/history.py",
+      "rounds": [
+        "P0-04",
+        "P3-07"
+      ],
+      "implemented": false
+    },
+    "run.state": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-state.md",
+      "interface_doc": "docs/api/nodes/run.state.md",
+      "code_target": "src/uaw/run/state.py",
+      "rounds": [
+        "P0-04",
+        "P3-07",
+        "P5-01"
+      ],
+      "implemented": false
+    },
+    "run.events": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-events.md",
+      "interface_doc": "docs/api/nodes/run.events.md",
+      "code_target": "src/uaw/run/events.py",
+      "rounds": [
+        "P0-04",
+        "P5-01"
+      ],
+      "implemented": false
+    },
+    "run.budget": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-budget.md",
+      "interface_doc": "docs/api/nodes/run.budget.md",
+      "code_target": "src/uaw/run/budget.py",
+      "rounds": [
+        "P0-04",
+        "P3-03",
+        "P5-01"
+      ],
+      "implemented": false
+    },
+    "run.approval": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-approval.md",
+      "interface_doc": "docs/api/nodes/run.approval.md",
+      "code_target": "src/uaw/run/approval.py",
+      "rounds": [
+        "P1-09",
+        "P3-07",
+        "P4-09"
+      ],
+      "implemented": false
+    },
+    "run.checkpoint": {
+      "components": [
+        "python",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "已保存图位置＋已提交领域Ref组成发布检查点",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-checkpoint.md",
+      "interface_doc": "docs/api/nodes/run.checkpoint.md",
+      "code_target": "src/uaw/run/checkpoint.py",
+      "rounds": [
+        "P5-01"
+      ],
+      "implemented": false
+    },
+    "run.resume": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume.md",
+      "interface_doc": "docs/api/nodes/run.resume.md",
+      "code_target": "src/uaw/run/resume/facade.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.cancel": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-cancel.md",
+      "interface_doc": "docs/api/nodes/run.cancel.md",
+      "code_target": "src/uaw/run/cancel.py",
+      "rounds": [
+        "P1-09",
+        "P3-07",
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.trigger": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "Run领域权威、事务Outbox、SQL待办、审批和控制意图",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-trigger.md",
+      "interface_doc": "docs/api/nodes/run.trigger.md",
+      "code_target": "src/uaw/run/trigger.py",
+      "rounds": [
+        "P5-04"
+      ],
+      "implemented": false
+    },
+    "support.configuration": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "postgres",
+        "keyring",
+        "cryptography"
+      ],
+      "implementation": "配置修订/激活/撤销和CredentialStore，部署秘密backend独立",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-configuration.md",
+      "interface_doc": "docs/api/nodes/support.configuration.md",
+      "code_target": "src/uaw/shared/configuration.py",
+      "rounds": [
+        "P0-03",
+        "P4-05",
+        "P4-06",
+        "P5-03",
+        "P5-05"
+      ],
+      "implemented": false
+    },
+    "support.extensions": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "postgres"
+      ],
+      "implementation": "自有能力Manifest/来源/Hash/依赖/回滚；安装不授予权限",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-extensions.md",
+      "interface_doc": "docs/api/nodes/support.extensions.md",
+      "code_target": "src/uaw/shared/extensions.py",
+      "rounds": [
+        "P4-06"
+      ],
+      "implemented": false
+    },
+    "support.cache": {
+      "components": [
+        "python",
+        "cachetools",
+        "postgres",
+        "blob_fs"
+      ],
+      "implementation": "L1＋可持久派生结果，依赖epoch和single-flight由UAW实现",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-cache.md",
+      "interface_doc": "docs/api/nodes/support.cache.md",
+      "code_target": "src/uaw/shared/cache.py",
+      "rounds": [
+        "P4-04"
+      ],
+      "implemented": false
+    },
+    "support.observability": {
+      "components": [
+        "python",
+        "structlog",
+        "otel"
+      ],
+      "implementation": "脱敏关联日志与版本/attempt trace，默认不导出内容",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-observability.md",
+      "interface_doc": "docs/api/nodes/support.observability.md",
+      "code_target": "src/uaw/shared/observability.py",
+      "rounds": [
+        "P0-04",
+        "P5-03"
+      ],
+      "implemented": false
+    },
+    "support.evaluation": {
+      "components": [
+        "python",
+        "pytest",
+        "postgres"
+      ],
+      "implementation": "版本场景、真实回执、人工/语义grader与发布阈值",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-evaluation.md",
+      "interface_doc": "docs/api/nodes/support.evaluation.md",
+      "code_target": "src/uaw/shared/evaluation.py",
+      "rounds": [
+        "P5-03"
+      ],
+      "implemented": false
+    },
+    "support.stores": {
+      "components": [
+        "python",
+        "sqlalchemy",
+        "psycopg",
+        "alembic",
+        "postgres",
+        "blob_fs",
+        "s3"
+      ],
+      "implementation": "领域Repository适配、迁移、事务、Blob/Index ports",
+      "module": "support",
+      "technology_doc": "docs/technology/modules/support.md",
+      "design_doc": "docs/design/components/support-stores.md",
+      "interface_doc": "docs/api/nodes/support.stores.md",
+      "code_target": "src/uaw/shared/stores.py",
+      "rounds": [
+        "P0-02"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.schema": {
+      "components": [
+        "python",
+        "jsonschema",
+        "pydantic"
+      ],
+      "implementation": "从统一schema验证准确动作分支，拒绝自报信任字段",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-schema.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.schema.md",
+      "code_target": "src/uaw/tool/invocation/schema.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.precheck": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "统一InvocationGate调用自有Policy/Run审批/提供方adapter",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-precheck.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.precheck.md",
+      "code_target": "src/uaw/tool/invocation/precheck.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.approval": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "统一InvocationGate调用自有Policy/Run审批/提供方adapter",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-approval.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.approval.md",
+      "code_target": "src/uaw/tool/invocation/approval.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.recheck": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "统一InvocationGate调用自有Policy/Run审批/提供方adapter",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-recheck.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.recheck.md",
+      "code_target": "src/uaw/tool/invocation/recheck.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.dispatch": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "统一InvocationGate调用自有Policy/Run审批/提供方adapter",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-dispatch.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.dispatch.md",
+      "code_target": "src/uaw/tool/invocation/dispatch.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "tool.invocation.result": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "blob_fs"
+      ],
+      "implementation": "typed回执、真实输出Ref、效果/审计账本与幂等对账",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-invocation-result.md",
+      "interface_doc": "docs/api/nodes/tool.invocation.result.md",
+      "code_target": "src/uaw/tool/invocation/result.py",
+      "rounds": [
+        "P1-03"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.contract": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "langgraph"
+      ],
+      "implementation": "有界实例工厂/权限预算交集；每实例独立Engine和图命名空间",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-contract.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.contract.md",
+      "code_target": "src/uaw/agent/collaboration/contract.py",
+      "rounds": [
+        "P2-05"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.instance": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "langgraph"
+      ],
+      "implementation": "有界实例工厂/权限预算交集；每实例独立Engine和图命名空间",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-instance.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.instance.md",
+      "code_target": "src/uaw/agent/collaboration/instance.py",
+      "rounds": [
+        "P2-05",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.channel": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "版本Ref/共享板/CAS控制租约，Run取消传播，父汇总验收",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-channel.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.channel.md",
+      "code_target": "src/uaw/agent/collaboration/channel.py",
+      "rounds": [
+        "P2-05",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.join": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "版本Ref/共享板/CAS控制租约，Run取消传播，父汇总验收",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-join.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.join.md",
+      "code_target": "src/uaw/agent/collaboration/join.py",
+      "rounds": [
+        "P2-06",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.handoff": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "版本Ref/共享板/CAS控制租约，Run取消传播，父汇总验收",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-handoff.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.handoff.md",
+      "code_target": "src/uaw/agent/collaboration/handoff.py",
+      "rounds": [
+        "P5-04"
+      ],
+      "implemented": false
+    },
+    "agent.collaboration.cancel": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "版本Ref/共享板/CAS控制租约，Run取消传播，父汇总验收",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-collaboration-cancel.md",
+      "interface_doc": "docs/api/nodes/agent.collaboration.cancel.md",
+      "code_target": "src/uaw/agent/collaboration/cancel.py",
+      "rounds": [
+        "P2-05",
+        "P3-04"
+      ],
+      "implemented": false
+    },
+    "agent.completion.contract": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-contract.md",
+      "interface_doc": "docs/api/nodes/agent.completion.contract.md",
+      "code_target": "src/uaw/agent/completion/contract.py",
+      "rounds": [
+        "P1-08"
+      ],
+      "implemented": false
+    },
+    "agent.completion.evidence": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-evidence.md",
+      "interface_doc": "docs/api/nodes/agent.completion.evidence.md",
+      "code_target": "src/uaw/agent/completion/evidence.py",
+      "rounds": [
+        "P1-08"
+      ],
+      "implemented": false
+    },
+    "agent.completion.semantic": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "当前继承模型语义提案＋自有范围/来源校验",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-semantic.md",
+      "interface_doc": "docs/api/nodes/agent.completion.semantic.md",
+      "code_target": "src/uaw/agent/completion/semantic.py",
+      "rounds": [
+        "P1-08",
+        "P2-07"
+      ],
+      "implemented": false
+    },
+    "agent.completion.version": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-version.md",
+      "interface_doc": "docs/api/nodes/agent.completion.version.md",
+      "code_target": "src/uaw/agent/completion/version.py",
+      "rounds": [
+        "P1-08",
+        "P3-06"
+      ],
+      "implemented": false
+    },
+    "agent.completion.delivery": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-delivery.md",
+      "interface_doc": "docs/api/nodes/agent.completion.delivery.md",
+      "code_target": "src/uaw/agent/completion/delivery.py",
+      "rounds": [
+        "P1-08"
+      ],
+      "implemented": false
+    },
+    "agent.completion.acceptance": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema",
+        "sqlalchemy",
+        "postgres"
+      ],
+      "implementation": "自有完成控制器核验实际Ref/版本，用户接受独立记录",
+      "module": "agent",
+      "technology_doc": "docs/technology/modules/agent.md",
+      "design_doc": "docs/design/components/agent-completion-acceptance.md",
+      "interface_doc": "docs/api/nodes/agent.completion.acceptance.md",
+      "code_target": "src/uaw/agent/completion/acceptance.py",
+      "rounds": [
+        "P1-08"
+      ],
+      "implemented": false
+    },
+    "context.memory.candidate": {
+      "components": [
+        "python",
+        "pydantic",
+        "jsonschema"
+      ],
+      "implementation": "经ModelGateway提案，保护关键约束/来源/未决动作",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory-candidate.md",
+      "interface_doc": "docs/api/nodes/context.memory.candidate.md",
+      "code_target": "src/uaw/context/memory/candidate.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "context.memory.policy": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "pgvector"
+      ],
+      "implementation": "记忆读写/版本/冲突/删除，索引及缓存依赖失效",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory-policy.md",
+      "interface_doc": "docs/api/nodes/context.memory.policy.md",
+      "code_target": "src/uaw/context/memory/policy.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "context.memory.conflict": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "pgvector"
+      ],
+      "implementation": "记忆读写/版本/冲突/删除，索引及缓存依赖失效",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory-conflict.md",
+      "interface_doc": "docs/api/nodes/context.memory.conflict.md",
+      "code_target": "src/uaw/context/memory/conflict.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "context.memory.store": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "pgvector"
+      ],
+      "implementation": "记忆读写/版本/冲突/删除，索引及缓存依赖失效",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory-store.md",
+      "interface_doc": "docs/api/nodes/context.memory.store.md",
+      "code_target": "src/uaw/context/memory/store.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "context.memory.forget": {
+      "components": [
+        "python",
+        "pydantic",
+        "sqlalchemy",
+        "postgres",
+        "pgvector"
+      ],
+      "implementation": "记忆读写/版本/冲突/删除，索引及缓存依赖失效",
+      "module": "context",
+      "technology_doc": "docs/technology/modules/context.md",
+      "design_doc": "docs/design/components/context-memory-forget.md",
+      "interface_doc": "docs/api/nodes/context.memory.forget.md",
+      "code_target": "src/uaw/context/memory/forget.py",
+      "rounds": [
+        "P4-01"
+      ],
+      "implemented": false
+    },
+    "tool.mcp.provider": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp-provider.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.provider.md",
+      "code_target": "src/uaw/tool/mcp/provider.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.mcp.session": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp-session.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.session.md",
+      "code_target": "src/uaw/tool/mcp/session.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.mcp.capabilities": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp-capabilities.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.capabilities.md",
+      "code_target": "src/uaw/tool/mcp/capabilities.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.mcp.invoke": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp-invoke.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.invoke.md",
+      "code_target": "src/uaw/tool/mcp/invoke.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "tool.mcp.invalidate": {
+      "components": [
+        "python",
+        "mcp",
+        "pydantic",
+        "postgres"
+      ],
+      "implementation": "官方SDK session在统一闸门后，连接/能力撤销失效",
+      "module": "tool",
+      "technology_doc": "docs/technology/modules/tool.md",
+      "design_doc": "docs/design/components/tool-mcp-invalidate.md",
+      "interface_doc": "docs/api/nodes/tool.mcp.invalidate.md",
+      "code_target": "src/uaw/tool/mcp/invalidate.py",
+      "rounds": [
+        "P4-05"
+      ],
+      "implemented": false
+    },
+    "run.resume.lease": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-lease.md",
+      "interface_doc": "docs/api/nodes/run.resume.lease.md",
+      "code_target": "src/uaw/run/resume/lease.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.resume.versions": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-versions.md",
+      "interface_doc": "docs/api/nodes/run.resume.versions.md",
+      "code_target": "src/uaw/run/resume/versions.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.resume.access": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-access.md",
+      "interface_doc": "docs/api/nodes/run.resume.access.md",
+      "code_target": "src/uaw/run/resume/access.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.resume.effects": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-effects.md",
+      "interface_doc": "docs/api/nodes/run.resume.effects.md",
+      "code_target": "src/uaw/run/resume/effects.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.resume.workspace": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-workspace.md",
+      "interface_doc": "docs/api/nodes/run.resume.workspace.md",
+      "code_target": "src/uaw/run/resume/workspace.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    },
+    "run.resume.continue": {
+      "components": [
+        "python",
+        "pydantic",
+        "postgres",
+        "graph_checkpoint"
+      ],
+      "implementation": "先租约/当前授权/效果与工作区核验，再恢复Engine",
+      "module": "run",
+      "technology_doc": "docs/technology/modules/run.md",
+      "design_doc": "docs/design/components/run-resume-continue.md",
+      "interface_doc": "docs/api/nodes/run.resume.continue.md",
+      "code_target": "src/uaw/run/resume/continue_run.py",
+      "rounds": [
+        "P5-02"
+      ],
+      "implemented": false
+    }
+  }
+}

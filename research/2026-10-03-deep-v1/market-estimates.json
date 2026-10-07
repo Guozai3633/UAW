@@ -1,0 +1,140 @@
+{
+  "currency": "USD",
+  "year": 2026,
+  "label": "Analytical Inference",
+  "scenarios": {
+    "conservative": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "unknown_parameters": [
+            "customers",
+            "incidence",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity"
+          ],
+          "assumption_parameters": [
+            "customers",
+            "incidence",
+            "units",
+            "annual_price",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity",
+            "retained_customers",
+            "annual_variable_cost",
+            "cac",
+            "annual_fixed_cost"
+          ],
+          "tam": null,
+          "sam": null,
+          "som": null,
+          "annual_contribution_per_customer": -12.0,
+          "cac_payback_months": null,
+          "operating_contribution": null,
+          "annual_revenue_per_customer": 144.0
+        }
+      ],
+      "totals": {
+        "tam": null,
+        "sam": null,
+        "som": null,
+        "operating_contribution": null
+      }
+    },
+    "base": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "unknown_parameters": [
+            "customers",
+            "incidence",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity"
+          ],
+          "assumption_parameters": [
+            "customers",
+            "incidence",
+            "units",
+            "annual_price",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity",
+            "retained_customers",
+            "annual_variable_cost",
+            "cac",
+            "annual_fixed_cost"
+          ],
+          "tam": null,
+          "sam": null,
+          "som": null,
+          "annual_contribution_per_customer": 84.0,
+          "cac_payback_months": 5.714285714285714,
+          "operating_contribution": null,
+          "annual_revenue_per_customer": 180.0
+        }
+      ],
+      "totals": {
+        "tam": null,
+        "sam": null,
+        "som": null,
+        "operating_contribution": null
+      }
+    },
+    "optimistic": {
+      "segments": [
+        {
+          "id": "O001-unique-paying-account",
+          "unknown_parameters": [
+            "customers",
+            "incidence",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity"
+          ],
+          "assumption_parameters": [
+            "customers",
+            "incidence",
+            "units",
+            "annual_price",
+            "serviceable_customers",
+            "prospects",
+            "conversion",
+            "acquisition_capacity",
+            "delivery_capacity",
+            "retained_customers",
+            "annual_variable_cost",
+            "cac",
+            "annual_fixed_cost"
+          ],
+          "tam": null,
+          "sam": null,
+          "som": null,
+          "annual_contribution_per_customer": 168.0,
+          "cac_payback_months": 1.7857142857142858,
+          "operating_contribution": null,
+          "annual_revenue_per_customer": 240.0
+        }
+      ],
+      "totals": {
+        "tam": null,
+        "sam": null,
+        "som": null,
+        "operating_contribution": null
+      }
+    }
+  },
+  "limitations": "Bottom-up scenarios, not verified market statistics. Parameter provenance and disjointness need human review. No LTV calculation without cohort data."
+}

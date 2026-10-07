@@ -1,0 +1,19 @@
+name: uaw-development
+services:
+  postgres:
+    image: postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b
+    ports:
+      - "127.0.0.1:55432:5432"
+    environment:
+      POSTGRES_USER: uaw_dev
+      POSTGRES_DB: uaw_dev
+      POSTGRES_PASSWORD: ${UAW_DEV_DB_PASSWORD:?development password required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uaw_dev -d uaw_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  postgres_data:

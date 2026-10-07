@@ -1,0 +1,33 @@
+{
+  "candidate_records": 26,
+  "manual_excluded": 4,
+  "script_input": 22,
+  "count_unit": "记录，不是独立用户；R006/R012同作者；未知身份不推断",
+  "method": "22条结合上下文人工复核；短摘录保留，另有转述/手工多标签；不采用自动关键词统计作为市场结论",
+  "manual_theme_counts": {
+    "adoption": 3,
+    "approvals": 1,
+    "coding": 5,
+    "control": 3,
+    "cost": 2,
+    "coverage": 1,
+    "diy": 4,
+    "fit": 5,
+    "free": 3,
+    "integration": 1,
+    "nonbuyer": 1,
+    "nonuser": 1,
+    "office": 6,
+    "payment_report": 1,
+    "positive": 6,
+    "quality": 2,
+    "research": 3,
+    "rework": 4,
+    "supplier_bias": 1,
+    "switching": 1,
+    "templates": 1,
+    "trust": 1,
+    "verification": 3
+  },
+  "limitations": "目的性便利样本；同线程保守计一组；版本和发表日Unknown保留；无全量抓取、访谈、账单或代表性。"
+}

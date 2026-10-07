@@ -1,0 +1,141 @@
+# agent.loop
+
+状态：契约0.1，待实现。类别：细分组件私有接口。所属：Agent执行与协作。
+
+单次推进循环，调度器不越过LLM决策。
+
+[分类索引](../COMPONENT.md) · [统一规则](../CONVENTIONS.md) · [实际范围](../../implementation/README.md)
+
+## 调用入口
+
+计划Python异步签名：`async def handle(request: AgentStepRequest, context: TrustedExecutionContext) -> ComponentAgentLoopResult`。所属入口为 `agent.loop`。该签名是契约目标；实际方法定位见对应开发设计，不能从公网/LLM直接调用私有组件。
+
+## 输入
+
+[AgentStepRequest](../objects/AgentStepRequest.md)；每个字段的类型、必填性、默认注解、限制和分支见对象页。
+
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `instance_ref` | [Ref](../objects/Ref.md) | 是 | 固定实例 |
+| `observations` | 数组&lt;[Ref](../objects/Ref.md)&gt; | 是 | 新增结果 |
+| `current_frame_ref` | [Ref](../objects/Ref.md) | 是 | 当前理解 |
+| `remaining_budget` | [Budget](../objects/Budget.md) | 是 | 可用预算 |
+
+## 输出
+
+[ComponentAgentLoopResult](../objects/ComponentAgentLoopResult.md) 为完整返回结构。`kind=ok` 的payload是 [AgentStepResult](../objects/AgentStepResult.md)。`waiting`带wait_ref，其他非成功状态带Failure，不能用空对象假装成功。
+
+| payload字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `action` | [AgentStepAction](../objects/AgentStepAction.md) | 是 | 下一动作 |
+| `model_output_ref` | [Ref](../objects/Ref.md) | 是 | 模型依据 |
+| `proposed_calls` | 数组&lt;[ToolCall](../objects/ToolCall.md)&gt; | 是 | 工具建议 |
+| `completion_proposal_ref` | [Ref](../objects/Ref.md) | 否 | 完成提案 |
+| `instance_ref` | [Ref](../objects/Ref.md) | 是 | 提交后实例 |
+
+## 约束与提交
+
+- 效果分类：`read`。
+- 认证/上下文：`service`；范围及权限由服务端或Runner取得。
+- 请求/动作ID去重与CAS按[统一规则](../CONVENTIONS.md)执行，重复ID不同参数必须冲突。
+- 每个实例只提交自己的版本化状态；关键观察引用保留，Run存checkpoint引用。
+- 读取当前用户修订与实例状态
+- Context按agent_step装配实际可用定义/工具摘要
+- 当前继承模型提出答复、发现、调用、规划或委派
+- 对动作进行生命周期/预算检查，工具动作统一交Tool
+- 消费实际ToolResult或子结果而非模拟成功文本
+- 有新约束先失效受影响状态，再决定下一步或申请完成
+- 取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。
+
+## 错误、等待、取消
+
+- 模型协议错误交Model恢复
+- 工具错误消费类型结果
+- 重复无进展或额度耗尽交付部分/询问，不无限循环
+
+错误对象是 [Failure](../objects/Failure.md)；统一分类：schema_invalid / permission_denied / feature_disabled / revision_conflict / stale_resource / dependency_unavailable / budget_exceeded / deadline_exceeded / cancelled / unknown_effect。实际Runtime需要把业务错误映射到此对象；上述分类不会代替明确failed_phase和恢复提示。
+
+只读可在有界策略内重试；写失败先核对动作账本，效果unknown时禁止盲重试；waiting通过审批决定、用户输入、process.poll或agents.wait推进。取消只停止后续执行，已有效果如实保留。
+
+## 请求示例
+
+示例展示结构；不代表这些示例引用存在。
+
+```json
+{
+  "instance_ref": {
+    "kind": "web",
+    "id": "example_001",
+    "version": "example_001"
+  },
+  "observations": [],
+  "current_frame_ref": {
+    "kind": "web",
+    "id": "example_001",
+    "version": "example_001"
+  },
+  "remaining_budget": {
+    "limits": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "child_agents": 0,
+      "wall_time_ms": 0,
+      "money": "0",
+      "currency": "CNY"
+    },
+    "max_steps": 0,
+    "max_depth": 0,
+    "deadline": "2026-10-07T02:00:00Z"
+  }
+}
+```
+
+## 成功结构示例
+
+```json
+{
+  "kind": "ok",
+  "payload": {
+    "action": "respond",
+    "model_output_ref": {
+      "kind": "web",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "proposed_calls": [],
+    "instance_ref": {
+      "kind": "web",
+      "id": "example_001",
+      "version": "example_001"
+    }
+  },
+  "output_refs": []
+}
+```
+
+## 拒绝结构示例
+
+```json
+{
+  "kind": "denied",
+  "output_refs": [],
+  "failure": {
+    "code": "permission_denied",
+    "category": "authorization",
+    "message": "当前主体没有本动作所需权限。",
+    "retryable": false,
+    "failed_phase": "policy_gate",
+    "recover_hint": "取得真实授权后重新检查；不能通过换工具绕过。"
+  }
+}
+```
+
+## 模块与目录
+
+| 节点 | 详细策略 | 计划代码位置 |
+| --- | --- | --- |
+| `agent.loop` | [开发设计](../../../docs/design/components/agent-loop.md) | `src/uaw/agent/loop.py` |
+
+[接口机器目录](../../../contracts/interfaces.json) · [统一对象schema](../../../contracts/uaw.schema.json)

@@ -1,0 +1,1524 @@
+{
+  "cases": [
+    {
+      "case": "agent create rejects owner_id",
+      "schema": "ToolAgentsCreateInput",
+      "rejected": true
+    },
+    {
+      "case": "agent create rejects conversation_id",
+      "schema": "ToolAgentsCreateInput",
+      "rejected": true
+    },
+    {
+      "case": "agent create rejects approved",
+      "schema": "ToolAgentsCreateInput",
+      "rejected": true
+    },
+    {
+      "case": "agent create rejects trusted_context",
+      "schema": "ToolAgentsCreateInput",
+      "rejected": true
+    },
+    {
+      "case": "explicit requires user source",
+      "schema": "ModelRequest",
+      "rejected": true
+    },
+    {
+      "case": "inherit cannot silently request replacement",
+      "schema": "ModelRequest",
+      "rejected": true
+    },
+    {
+      "case": "auto requires authorization source",
+      "schema": "ModelRequest",
+      "rejected": true
+    },
+    {
+      "case": "auto cannot use empty model universe",
+      "schema": "ConversationModelChoice",
+      "rejected": true
+    },
+    {
+      "case": "conversation cannot inherit nonexistent parent",
+      "schema": "ConversationModelChoice",
+      "rejected": true
+    },
+    {
+      "case": "reject lexical path escape ../secret",
+      "schema": "RelativePath",
+      "rejected": true
+    },
+    {
+      "case": "reject lexical path escape C:\\secret.txt",
+      "schema": "RelativePath",
+      "rejected": true
+    },
+    {
+      "case": "reject lexical path escape /etc/passwd",
+      "schema": "RelativePath",
+      "rejected": true
+    },
+    {
+      "case": "reject lexical path escape src/../../secret",
+      "schema": "RelativePath",
+      "rejected": true
+    },
+    {
+      "case": "reject lexical path escape \\server\\share",
+      "schema": "RelativePath",
+      "rejected": true
+    },
+    {
+      "case": "money cannot be numeric/negative",
+      "schema": "Budget",
+      "rejected": true
+    },
+    {
+      "case": "process timeout must be positive",
+      "schema": "ProcessSpec",
+      "rejected": true
+    },
+    {
+      "case": "shell requires approved shell profile",
+      "schema": "ProcessSpec",
+      "rejected": true
+    },
+    {
+      "case": "existing file write requires content hash",
+      "schema": "ToolFileWriteInput",
+      "rejected": true
+    },
+    {
+      "case": "text/blob write mutually exclusive",
+      "schema": "ToolFileWriteInput",
+      "rejected": true
+    },
+    {
+      "case": "partial accept requires selection",
+      "schema": "ReviewDecision",
+      "rejected": true
+    },
+    {
+      "case": "scope approval requires scope and expiry",
+      "schema": "ApprovalDecision",
+      "rejected": true
+    },
+    {
+      "case": "cannot mix text delta and replacement",
+      "schema": "ItemPatch",
+      "rejected": true
+    },
+    {
+      "case": "passing requirement needs evidence",
+      "schema": "RequirementVerdict",
+      "rejected": true
+    },
+    {
+      "case": "passing command check needs actual process reference",
+      "schema": "VerificationCheck",
+      "rejected": true
+    },
+    {
+      "case": "unknown external effect cannot claim full success",
+      "schema": "DeliveryProposal",
+      "rejected": true
+    },
+    {
+      "case": "tool success requires confirmed effect",
+      "schema": "ToolResult",
+      "rejected": true
+    },
+    {
+      "case": "user connection view excludes credential handle",
+      "schema": "AccountConnectionView",
+      "rejected": true
+    },
+    {
+      "case": "reject unsupported contract version",
+      "schema": "RequestMeta",
+      "rejected": true
+    },
+    {
+      "case": "large model preview requires full content reference",
+      "schema": "ModelOutput",
+      "rejected": true
+    },
+    {
+      "case": "web content cannot be user authorization source",
+      "schema": "UserInputRef",
+      "rejected": true
+    },
+    {
+      "case": "serial assessment cannot request agent parallelism",
+      "schema": "ExecutionAssessment",
+      "rejected": true
+    },
+    {
+      "case": "single agent can parallelize tools but cannot claim agent parallelism",
+      "schema": "ExecutionAssessment",
+      "rejected": true
+    },
+    {
+      "case": "http:conversations.create cannot succeed without payload",
+      "schema": "HttpConversationsCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:conversations.list cannot succeed without payload",
+      "schema": "HttpConversationsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:conversations.get cannot succeed without payload",
+      "schema": "HttpConversationsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:conversations.configure cannot succeed without payload",
+      "schema": "HttpConversationsConfigureResult",
+      "rejected": true
+    },
+    {
+      "case": "http:conversations.items cannot succeed without payload",
+      "schema": "HttpConversationsItemsResult",
+      "rejected": true
+    },
+    {
+      "case": "http:intent.preview cannot succeed without payload",
+      "schema": "HttpIntentPreviewResult",
+      "rejected": true
+    },
+    {
+      "case": "http:turns.submit cannot succeed without payload",
+      "schema": "HttpTurnsSubmitResult",
+      "rejected": true
+    },
+    {
+      "case": "http:tasks.get cannot succeed without payload",
+      "schema": "HttpTasksGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:tasks.frame cannot succeed without payload",
+      "schema": "HttpTasksFrameResult",
+      "rejected": true
+    },
+    {
+      "case": "http:tasks.plan cannot succeed without payload",
+      "schema": "HttpTasksPlanResult",
+      "rejected": true
+    },
+    {
+      "case": "http:tasks.board cannot succeed without payload",
+      "schema": "HttpTasksBoardResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.get cannot succeed without payload",
+      "schema": "HttpRunsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.control cannot succeed without payload",
+      "schema": "HttpRunsControlResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.checkpoint cannot succeed without payload",
+      "schema": "HttpRunsCheckpointResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.resume cannot succeed without payload",
+      "schema": "HttpRunsResumeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:events.read cannot succeed without payload",
+      "schema": "HttpEventsReadResult",
+      "rejected": true
+    },
+    {
+      "case": "http:events.stream cannot succeed without payload",
+      "schema": "HttpEventsStreamResult",
+      "rejected": true
+    },
+    {
+      "case": "http:approvals.get cannot succeed without payload",
+      "schema": "HttpApprovalsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:approvals.decide cannot succeed without payload",
+      "schema": "HttpApprovalsDecideResult",
+      "rejected": true
+    },
+    {
+      "case": "http:assets.upload.begin cannot succeed without payload",
+      "schema": "HttpAssetsUploadBeginResult",
+      "rejected": true
+    },
+    {
+      "case": "http:assets.upload.complete cannot succeed without payload",
+      "schema": "HttpAssetsUploadCompleteResult",
+      "rejected": true
+    },
+    {
+      "case": "http:references.resolve cannot succeed without payload",
+      "schema": "HttpReferencesResolveResult",
+      "rejected": true
+    },
+    {
+      "case": "http:references.read cannot succeed without payload",
+      "schema": "HttpReferencesReadResult",
+      "rejected": true
+    },
+    {
+      "case": "http:sources.ingest cannot succeed without payload",
+      "schema": "HttpSourcesIngestResult",
+      "rejected": true
+    },
+    {
+      "case": "http:sources.delete cannot succeed without payload",
+      "schema": "HttpSourcesDeleteResult",
+      "rejected": true
+    },
+    {
+      "case": "http:sources.get cannot succeed without payload",
+      "schema": "HttpSourcesGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:memory.list cannot succeed without payload",
+      "schema": "HttpMemoryListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:memory.forget cannot succeed without payload",
+      "schema": "HttpMemoryForgetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.create cannot succeed without payload",
+      "schema": "HttpDefinitionsCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.list cannot succeed without payload",
+      "schema": "HttpDefinitionsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.get cannot succeed without payload",
+      "schema": "HttpDefinitionsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.update cannot succeed without payload",
+      "schema": "HttpDefinitionsUpdateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.diff cannot succeed without payload",
+      "schema": "HttpDefinitionsDiffResult",
+      "rejected": true
+    },
+    {
+      "case": "http:definitions.revert cannot succeed without payload",
+      "schema": "HttpDefinitionsRevertResult",
+      "rejected": true
+    },
+    {
+      "case": "http:agents.get cannot succeed without payload",
+      "schema": "HttpAgentsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:agents.cancel cannot succeed without payload",
+      "schema": "HttpAgentsCancelResult",
+      "rejected": true
+    },
+    {
+      "case": "http:skills.list cannot succeed without payload",
+      "schema": "HttpSkillsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:projects.list cannot succeed without payload",
+      "schema": "HttpProjectsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:projects.bind cannot succeed without payload",
+      "schema": "HttpProjectsBindResult",
+      "rejected": true
+    },
+    {
+      "case": "http:projects.get cannot succeed without payload",
+      "schema": "HttpProjectsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:projects.unbind cannot succeed without payload",
+      "schema": "HttpProjectsUnbindResult",
+      "rejected": true
+    },
+    {
+      "case": "http:workspaces.get cannot succeed without payload",
+      "schema": "HttpWorkspacesGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:workspaces.files cannot succeed without payload",
+      "schema": "HttpWorkspacesFilesResult",
+      "rejected": true
+    },
+    {
+      "case": "http:workspaces.changes cannot succeed without payload",
+      "schema": "HttpWorkspacesChangesResult",
+      "rejected": true
+    },
+    {
+      "case": "http:workspaces.merge cannot succeed without payload",
+      "schema": "HttpWorkspacesMergeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:workspaces.revert cannot succeed without payload",
+      "schema": "HttpWorkspacesRevertResult",
+      "rejected": true
+    },
+    {
+      "case": "http:processes.get cannot succeed without payload",
+      "schema": "HttpProcessesGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:processes.stop cannot succeed without payload",
+      "schema": "HttpProcessesStopResult",
+      "rejected": true
+    },
+    {
+      "case": "http:artifacts.list cannot succeed without payload",
+      "schema": "HttpArtifactsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:artifacts.get cannot succeed without payload",
+      "schema": "HttpArtifactsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:artifacts.preview cannot succeed without payload",
+      "schema": "HttpArtifactsPreviewResult",
+      "rejected": true
+    },
+    {
+      "case": "http:artifacts.export cannot succeed without payload",
+      "schema": "HttpArtifactsExportResult",
+      "rejected": true
+    },
+    {
+      "case": "http:reviews.get cannot succeed without payload",
+      "schema": "HttpReviewsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:reviews.decide cannot succeed without payload",
+      "schema": "HttpReviewsDecideResult",
+      "rejected": true
+    },
+    {
+      "case": "http:verification.get cannot succeed without payload",
+      "schema": "HttpVerificationGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:models.list cannot succeed without payload",
+      "schema": "HttpModelsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:connections.list cannot succeed without payload",
+      "schema": "HttpConnectionsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:connections.begin cannot succeed without payload",
+      "schema": "HttpConnectionsBeginResult",
+      "rejected": true
+    },
+    {
+      "case": "http:connections.revoke cannot succeed without payload",
+      "schema": "HttpConnectionsRevokeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.configuration.get cannot succeed without payload",
+      "schema": "HttpAdminConfigurationGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.configuration.stage cannot succeed without payload",
+      "schema": "HttpAdminConfigurationStageResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.configuration.validate cannot succeed without payload",
+      "schema": "HttpAdminConfigurationValidateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.configuration.activate cannot succeed without payload",
+      "schema": "HttpAdminConfigurationActivateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.tools.register cannot succeed without payload",
+      "schema": "HttpAdminToolsRegisterResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.tools.list cannot succeed without payload",
+      "schema": "HttpAdminToolsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.models.register cannot succeed without payload",
+      "schema": "HttpAdminModelsRegisterResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.providers.configure cannot succeed without payload",
+      "schema": "HttpAdminProvidersConfigureResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.secrets.put cannot succeed without payload",
+      "schema": "HttpAdminSecretsPutResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.environments.register cannot succeed without payload",
+      "schema": "HttpAdminEnvironmentsRegisterResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.extensions.install cannot succeed without payload",
+      "schema": "HttpAdminExtensionsInstallResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.extensions.activate cannot succeed without payload",
+      "schema": "HttpAdminExtensionsActivateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.extensions.revoke cannot succeed without payload",
+      "schema": "HttpAdminExtensionsRevokeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.extensions.validate cannot succeed without payload",
+      "schema": "HttpAdminExtensionsValidateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.extensions.rollback cannot succeed without payload",
+      "schema": "HttpAdminExtensionsRollbackResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.policies.register cannot succeed without payload",
+      "schema": "HttpAdminPoliciesRegisterResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.traces.list cannot succeed without payload",
+      "schema": "HttpAdminTracesListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.evaluations.run cannot succeed without payload",
+      "schema": "HttpAdminEvaluationsRunResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.evaluations.get cannot succeed without payload",
+      "schema": "HttpAdminEvaluationsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:triggers.create cannot succeed without payload",
+      "schema": "HttpTriggersCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:triggers.disable cannot succeed without payload",
+      "schema": "HttpTriggersDisableResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:tools.discover cannot succeed without payload",
+      "schema": "ToolToolsDiscoverResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:context.read cannot succeed without payload",
+      "schema": "ToolContextReadResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:skills.load cannot succeed without payload",
+      "schema": "ToolSkillsLoadResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.create cannot succeed without payload",
+      "schema": "ToolAgentsCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.update cannot succeed without payload",
+      "schema": "ToolAgentsUpdateResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.list cannot succeed without payload",
+      "schema": "ToolAgentsListResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.invoke cannot succeed without payload",
+      "schema": "ToolAgentsInvokeResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.wait cannot succeed without payload",
+      "schema": "ToolAgentsWaitResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.message cannot succeed without payload",
+      "schema": "ToolAgentsMessageResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.cancel cannot succeed without payload",
+      "schema": "ToolAgentsCancelResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:agents.handoff cannot succeed without payload",
+      "schema": "ToolAgentsHandoffResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:tasks.assess cannot succeed without payload",
+      "schema": "ToolTasksAssessResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:tasks.plan cannot succeed without payload",
+      "schema": "ToolTasksPlanResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:tasks.verify cannot succeed without payload",
+      "schema": "ToolTasksVerifyResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:models.list cannot succeed without payload",
+      "schema": "ToolModelsListResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:workspace.changes cannot succeed without payload",
+      "schema": "ToolWorkspaceChangesResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:workspace.revert cannot succeed without payload",
+      "schema": "ToolWorkspaceRevertResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:references.resolve cannot succeed without payload",
+      "schema": "ToolReferencesResolveResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:references.read cannot succeed without payload",
+      "schema": "ToolReferencesReadResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:environment.inspect cannot succeed without payload",
+      "schema": "ToolEnvironmentInspectResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:environment.ensure cannot succeed without payload",
+      "schema": "ToolEnvironmentEnsureResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:process.exec cannot succeed without payload",
+      "schema": "ToolProcessExecResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:process.poll cannot succeed without payload",
+      "schema": "ToolProcessPollResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:process.stop cannot succeed without payload",
+      "schema": "ToolProcessStopResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:file.read cannot succeed without payload",
+      "schema": "ToolFileReadResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:file.write cannot succeed without payload",
+      "schema": "ToolFileWriteResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:search.query cannot succeed without payload",
+      "schema": "ToolSearchQueryResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:web.read cannot succeed without payload",
+      "schema": "ToolWebReadResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:verification.run cannot succeed without payload",
+      "schema": "ToolVerificationRunResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:verification.report cannot succeed without payload",
+      "schema": "ToolVerificationReportResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:artifacts.publish cannot succeed without payload",
+      "schema": "ToolArtifactsPublishResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:interaction.ask_user cannot succeed without payload",
+      "schema": "ToolInteractionAskUserResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:memory.remember cannot succeed without payload",
+      "schema": "ToolMemoryRememberResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:memory.recall cannot succeed without payload",
+      "schema": "ToolMemoryRecallResult",
+      "rejected": true
+    },
+    {
+      "case": "tool:memory.forget cannot succeed without payload",
+      "schema": "ToolMemoryForgetResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:IntentRuntime.preview cannot succeed without payload",
+      "schema": "RuntimeIntentruntimePreviewResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:IntentRuntime.understand cannot succeed without payload",
+      "schema": "RuntimeIntentruntimeUnderstandResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:IntentRuntime.revise cannot succeed without payload",
+      "schema": "RuntimeIntentruntimeReviseResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.define_agent cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeDefineAgentResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.start cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeStartResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.step cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeStepResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.delegate cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeDelegateResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.verify cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeVerifyResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.build cannot succeed without payload",
+      "schema": "RuntimeContextruntimeBuildResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.ingest cannot succeed without payload",
+      "schema": "RuntimeContextruntimeIngestResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.remember cannot succeed without payload",
+      "schema": "RuntimeContextruntimeRememberResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.recall cannot succeed without payload",
+      "schema": "RuntimeContextruntimeRecallResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.forget cannot succeed without payload",
+      "schema": "RuntimeContextruntimeForgetResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ContextRuntime.resolve_reference cannot succeed without payload",
+      "schema": "RuntimeContextruntimeResolveReferenceResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ToolRuntime.discover cannot succeed without payload",
+      "schema": "RuntimeToolruntimeDiscoverResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ToolRuntime.invoke cannot succeed without payload",
+      "schema": "RuntimeToolruntimeInvokeResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ToolRuntime.reconcile cannot succeed without payload",
+      "schema": "RuntimeToolruntimeReconcileResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:WorkspaceRuntime.allocate cannot succeed without payload",
+      "schema": "RuntimeWorkspaceruntimeAllocateResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:WorkspaceRuntime.prepare cannot succeed without payload",
+      "schema": "RuntimeWorkspaceruntimePrepareResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:WorkspaceRuntime.merge cannot succeed without payload",
+      "schema": "RuntimeWorkspaceruntimeMergeResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:WorkspaceRuntime.revert cannot succeed without payload",
+      "schema": "RuntimeWorkspaceruntimeRevertResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:WorkspaceRuntime.review cannot succeed without payload",
+      "schema": "RuntimeWorkspaceruntimeReviewResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ModelRuntime.resolve_policy cannot succeed without payload",
+      "schema": "RuntimeModelruntimeResolvePolicyResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ModelRuntime.list cannot succeed without payload",
+      "schema": "RuntimeModelruntimeListResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:ModelRuntime.generate cannot succeed without payload",
+      "schema": "RuntimeModelruntimeGenerateResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.create cannot succeed without payload",
+      "schema": "RuntimeRunruntimeCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.control cannot succeed without payload",
+      "schema": "RuntimeRunruntimeControlResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.checkpoint cannot succeed without payload",
+      "schema": "RuntimeRunruntimeCheckpointResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.resume cannot succeed without payload",
+      "schema": "RuntimeRunruntimeResumeResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:pair.begin cannot succeed without payload",
+      "schema": "RunnerPairBeginResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:pair.complete cannot succeed without payload",
+      "schema": "RunnerPairCompleteResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:heartbeat cannot succeed without payload",
+      "schema": "RunnerHeartbeatResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:root.select cannot succeed without payload",
+      "schema": "RunnerRootSelectResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:workspace.capture cannot succeed without payload",
+      "schema": "RunnerWorkspaceCaptureResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:workspace.allocate cannot succeed without payload",
+      "schema": "RunnerWorkspaceAllocateResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:environment.inspect cannot succeed without payload",
+      "schema": "RunnerEnvironmentInspectResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:environment.ensure cannot succeed without payload",
+      "schema": "RunnerEnvironmentEnsureResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:file.read cannot succeed without payload",
+      "schema": "RunnerFileReadResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:file.write cannot succeed without payload",
+      "schema": "RunnerFileWriteResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:file.list cannot succeed without payload",
+      "schema": "RunnerFileListResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:process.exec cannot succeed without payload",
+      "schema": "RunnerProcessExecResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:process.poll cannot succeed without payload",
+      "schema": "RunnerProcessPollResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:process.stop cannot succeed without payload",
+      "schema": "RunnerProcessStopResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:changes.capture cannot succeed without payload",
+      "schema": "RunnerChangesCaptureResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:changes.merge cannot succeed without payload",
+      "schema": "RunnerChangesMergeResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:changes.revert cannot succeed without payload",
+      "schema": "RunnerChangesRevertResult",
+      "rejected": true
+    },
+    {
+      "case": "runner:workspace.release cannot succeed without payload",
+      "schema": "RunnerWorkspaceReleaseResult",
+      "rejected": true
+    },
+    {
+      "case": "http:tasks.attach_conversation cannot succeed without payload",
+      "schema": "HttpTasksAttachConversationResult",
+      "rejected": true
+    },
+    {
+      "case": "http:admin.providers.revoke cannot succeed without payload",
+      "schema": "HttpAdminProvidersRevokeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:events.payload cannot succeed without payload",
+      "schema": "HttpEventsPayloadResult",
+      "rejected": true
+    },
+    {
+      "case": "component:ui cannot succeed without payload",
+      "schema": "ComponentUiResult",
+      "rejected": true
+    },
+    {
+      "case": "component:ingress cannot succeed without payload",
+      "schema": "ComponentIngressResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.preview cannot succeed without payload",
+      "schema": "ComponentIntentPreviewResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.original cannot succeed without payload",
+      "schema": "ComponentIntentOriginalResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.semantic cannot succeed without payload",
+      "schema": "ComponentIntentSemanticResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.references cannot succeed without payload",
+      "schema": "ComponentIntentReferencesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.probe cannot succeed without payload",
+      "schema": "ComponentIntentProbeResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.ambiguity cannot succeed without payload",
+      "schema": "ComponentIntentAmbiguityResult",
+      "rejected": true
+    },
+    {
+      "case": "component:intent.frame cannot succeed without payload",
+      "schema": "ComponentIntentFrameResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.loop cannot succeed without payload",
+      "schema": "ComponentAgentLoopResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.assessment cannot succeed without payload",
+      "schema": "ComponentAgentAssessmentResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.planning cannot succeed without payload",
+      "schema": "ComponentAgentPlanningResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.scheduler cannot succeed without payload",
+      "schema": "ComponentAgentSchedulerResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.skills cannot succeed without payload",
+      "schema": "ComponentAgentSkillsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion cannot succeed without payload",
+      "schema": "ComponentAgentCompletionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.board cannot succeed without payload",
+      "schema": "ComponentAgentBoardResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.factory cannot succeed without payload",
+      "schema": "ComponentAgentFactoryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.designer cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsDesignerResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.validator cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsValidatorResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.model_intent cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsModelIntentResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.repository cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsRepositoryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.discovery cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsDiscoveryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.definitions.change_service cannot succeed without payload",
+      "schema": "ComponentAgentDefinitionsChangeServiceResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.sources cannot succeed without payload",
+      "schema": "ComponentContextSourcesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.rules cannot succeed without payload",
+      "schema": "ComponentContextRulesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.ingestion cannot succeed without payload",
+      "schema": "ComponentContextIngestionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.retrieval cannot succeed without payload",
+      "schema": "ComponentContextRetrievalResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory cannot succeed without payload",
+      "schema": "ComponentContextMemoryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.selection cannot succeed without payload",
+      "schema": "ComponentContextSelectionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.compression cannot succeed without payload",
+      "schema": "ComponentContextCompressionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.composer cannot succeed without payload",
+      "schema": "ComponentContextComposerResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.references cannot succeed without payload",
+      "schema": "ComponentContextReferencesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.registry cannot succeed without payload",
+      "schema": "ComponentToolRegistryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.discovery cannot succeed without payload",
+      "schema": "ComponentToolDiscoveryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation cannot succeed without payload",
+      "schema": "ComponentToolInvocationResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.effects cannot succeed without payload",
+      "schema": "ComponentToolEffectsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.failure cannot succeed without payload",
+      "schema": "ComponentToolFailureResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp cannot succeed without payload",
+      "schema": "ComponentToolMcpResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.adapters cannot succeed without payload",
+      "schema": "ComponentToolAdaptersResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.results cannot succeed without payload",
+      "schema": "ComponentToolResultsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.audit cannot succeed without payload",
+      "schema": "ComponentToolAuditResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.binding cannot succeed without payload",
+      "schema": "ComponentWorkspaceBindingResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.base cannot succeed without payload",
+      "schema": "ComponentWorkspaceBaseResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.isolation cannot succeed without payload",
+      "schema": "ComponentWorkspaceIsolationResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.environment cannot succeed without payload",
+      "schema": "ComponentWorkspaceEnvironmentResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.process cannot succeed without payload",
+      "schema": "ComponentWorkspaceProcessResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.changes cannot succeed without payload",
+      "schema": "ComponentWorkspaceChangesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.artifacts cannot succeed without payload",
+      "schema": "ComponentWorkspaceArtifactsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:workspace.review cannot succeed without payload",
+      "schema": "ComponentWorkspaceReviewResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.catalog cannot succeed without payload",
+      "schema": "ComponentModelCatalogResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.policy cannot succeed without payload",
+      "schema": "ComponentModelPolicyResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.capability cannot succeed without payload",
+      "schema": "ComponentModelCapabilityResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.gateway cannot succeed without payload",
+      "schema": "ComponentModelGatewayResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.adapters cannot succeed without payload",
+      "schema": "ComponentModelAdaptersResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.recovery cannot succeed without payload",
+      "schema": "ComponentModelRecoveryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:model.usage cannot succeed without payload",
+      "schema": "ComponentModelUsageResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.history cannot succeed without payload",
+      "schema": "ComponentRunHistoryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.state cannot succeed without payload",
+      "schema": "ComponentRunStateResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.events cannot succeed without payload",
+      "schema": "ComponentRunEventsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.budget cannot succeed without payload",
+      "schema": "ComponentRunBudgetResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.approval cannot succeed without payload",
+      "schema": "ComponentRunApprovalResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.checkpoint cannot succeed without payload",
+      "schema": "ComponentRunCheckpointResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume cannot succeed without payload",
+      "schema": "ComponentRunResumeResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.cancel cannot succeed without payload",
+      "schema": "ComponentRunCancelResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.trigger cannot succeed without payload",
+      "schema": "ComponentRunTriggerResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.configuration cannot succeed without payload",
+      "schema": "ComponentSupportConfigurationResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.extensions cannot succeed without payload",
+      "schema": "ComponentSupportExtensionsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.cache cannot succeed without payload",
+      "schema": "ComponentSupportCacheResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.observability cannot succeed without payload",
+      "schema": "ComponentSupportObservabilityResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.evaluation cannot succeed without payload",
+      "schema": "ComponentSupportEvaluationResult",
+      "rejected": true
+    },
+    {
+      "case": "component:support.stores cannot succeed without payload",
+      "schema": "ComponentSupportStoresResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.schema cannot succeed without payload",
+      "schema": "ComponentToolInvocationSchemaResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.precheck cannot succeed without payload",
+      "schema": "ComponentToolInvocationPrecheckResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.approval cannot succeed without payload",
+      "schema": "ComponentToolInvocationApprovalResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.recheck cannot succeed without payload",
+      "schema": "ComponentToolInvocationRecheckResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.dispatch cannot succeed without payload",
+      "schema": "ComponentToolInvocationDispatchResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.invocation.result cannot succeed without payload",
+      "schema": "ComponentToolInvocationResultResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.contract cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationContractResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.instance cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationInstanceResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.channel cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationChannelResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.join cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationJoinResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.handoff cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationHandoffResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.collaboration.cancel cannot succeed without payload",
+      "schema": "ComponentAgentCollaborationCancelResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.contract cannot succeed without payload",
+      "schema": "ComponentAgentCompletionContractResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.evidence cannot succeed without payload",
+      "schema": "ComponentAgentCompletionEvidenceResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.semantic cannot succeed without payload",
+      "schema": "ComponentAgentCompletionSemanticResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.version cannot succeed without payload",
+      "schema": "ComponentAgentCompletionVersionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.delivery cannot succeed without payload",
+      "schema": "ComponentAgentCompletionDeliveryResult",
+      "rejected": true
+    },
+    {
+      "case": "component:agent.completion.acceptance cannot succeed without payload",
+      "schema": "ComponentAgentCompletionAcceptanceResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory.candidate cannot succeed without payload",
+      "schema": "ComponentContextMemoryCandidateResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory.policy cannot succeed without payload",
+      "schema": "ComponentContextMemoryPolicyResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory.conflict cannot succeed without payload",
+      "schema": "ComponentContextMemoryConflictResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory.store cannot succeed without payload",
+      "schema": "ComponentContextMemoryStoreResult",
+      "rejected": true
+    },
+    {
+      "case": "component:context.memory.forget cannot succeed without payload",
+      "schema": "ComponentContextMemoryForgetResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp.provider cannot succeed without payload",
+      "schema": "ComponentToolMcpProviderResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp.session cannot succeed without payload",
+      "schema": "ComponentToolMcpSessionResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp.capabilities cannot succeed without payload",
+      "schema": "ComponentToolMcpCapabilitiesResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp.invoke cannot succeed without payload",
+      "schema": "ComponentToolMcpInvokeResult",
+      "rejected": true
+    },
+    {
+      "case": "component:tool.mcp.invalidate cannot succeed without payload",
+      "schema": "ComponentToolMcpInvalidateResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.lease cannot succeed without payload",
+      "schema": "ComponentRunResumeLeaseResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.versions cannot succeed without payload",
+      "schema": "ComponentRunResumeVersionsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.access cannot succeed without payload",
+      "schema": "ComponentRunResumeAccessResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.effects cannot succeed without payload",
+      "schema": "ComponentRunResumeEffectsResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.workspace cannot succeed without payload",
+      "schema": "ComponentRunResumeWorkspaceResult",
+      "rejected": true
+    },
+    {
+      "case": "component:run.resume.continue cannot succeed without payload",
+      "schema": "ComponentRunResumeContinueResult",
+      "rejected": true
+    }
+  ]
+}

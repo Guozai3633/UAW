@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "date": "2026-10-07",
+  "module_documents": 13,
+  "components": 58,
+  "planned_node_coverage": {
+    "covered": 115,
+    "total": 115
+  },
+  "mapped_rounds": 50,
+  "local_document_links_checked": 1175,
+  "errors": [],
+  "dependencies_installed": true,
+  "installed_components": 20,
+  "dependency_compatibility_tested": true,
+  "runtime_behavior_tests_run": true,
+  "runtime_evidence_scope": "P0 foundation/control plane/model protocol and P1-01 source-bound understanding, using real PostgreSQL and controlled HTTP replies; no external LLM, Agent or Runner task",
+  "runtime_facts_are_imported_from_evidence": true,
+  "limitations": [
+    "this checks authored IDs and existing file links, not runtime/library compatibility",
+    "component versions are design baselines, not resolved installation locks",
+    "planned code paths are not implementation evidence",
+    "external references are documentation sources, not configured provider accounts"
+  ]
+}

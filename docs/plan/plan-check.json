@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "date": "2026-10-07",
+  "plan_rounds": 50,
+  "phase_counts": {
+    "P0": 5,
+    "P1": 11,
+    "P2": 9,
+    "P3": 8,
+    "P4": 10,
+    "P5": 7
+  },
+  "module_groups": 11,
+  "scope_counts": {
+    "required": 48,
+    "target_implementation_default_disabled": 1,
+    "future_adapter_design_only": 1
+  },
+  "status_counts": {
+    "accepted": 3,
+    "in_progress": 3,
+    "planned": 43,
+    "deferred": 1
+  },
+  "planned_node_coverage": {
+    "covered": 115,
+    "total": 115
+  },
+  "interface_associations": 272,
+  "dependency_graph_acyclic": true,
+  "final_core_gate_covers_required_rounds": true,
+  "optional_rounds_do_not_block_first_core_trial": true,
+  "local_document_links_checked": 3811,
+  "generated_files": 72,
+  "errors": [],
+  "runtime_implementation": "not_inferred_from_plan_checks",
+  "runtime_behavior_tests": "not_run_by_plan_generator",
+  "limitations": [
+    "coverage means planned association, not implementation or interface readiness",
+    "code paths are planned and intentionally not validated as existing implementations",
+    "no schedule/team capacity estimate or provider availability is inferred",
+    "local link checks validate file existence, not Markdown anchor validity"
+  ]
+}

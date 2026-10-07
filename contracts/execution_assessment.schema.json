@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UAW 当前ExecutionAssessment契约入口",
+  "description": "与统一对象字典相同，不维护第二套字段。旧实验见legacy/execution_assessment.v0.1.schema.json。",
+  "$ref": "uaw.schema.json#/$defs/ExecutionAssessment"
+}

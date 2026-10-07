@@ -1,0 +1,3002 @@
+{
+  "schema_version": "0.2",
+  "architecture_version": "0.10",
+  "date": "2026-10-07",
+  "status": "设计稿，非已实现运行系统",
+  "types": {
+    "call": "调用",
+    "data": "数据/引用",
+    "state": "状态/事件",
+    "policy": "权限/配置",
+    "lifecycle": "生命周期"
+  },
+  "nodes": {
+    "ui": {
+      "id": "ui",
+      "label": "交互页面",
+      "description": "用户原文、任务理解、运行过程、成果及变更审阅。",
+      "entry": "send/control/review",
+      "inputs": "用户输入与选择",
+      "outputs": "请求与可见反馈",
+      "guard": "任务理解是提示，原文是执行基准。",
+      "parent": null,
+      "kind": "boundary",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/ui.md",
+      "code_target": "apps/web/src/features/workspace/",
+      "interface_doc": "docs/api/nodes/ui.md",
+      "interface_count": 35
+    },
+    "ingress": {
+      "id": "ingress",
+      "label": "产品入口",
+      "description": "接收请求，检查身份、资源与限额，连接事件流。",
+      "entry": "submit/stream",
+      "inputs": "原文、附件引用、会话配置",
+      "outputs": "AgentExecutionRequest",
+      "guard": "输入路径不自动赋予本地权限。",
+      "parent": null,
+      "kind": "boundary",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/ingress.md",
+      "code_target": "src/uaw/api/ingress.py",
+      "interface_doc": "docs/api/nodes/ingress.md",
+      "interface_count": 6
+    },
+    "intent": {
+      "id": "intent",
+      "label": "任务理解 · Intent",
+      "description": "把原文整理成带依据的目标、约束与未知项。",
+      "entry": "understand/preview",
+      "inputs": "原文、草稿、必要资料",
+      "outputs": "TaskFrame / DraftPreview",
+      "guard": "预览不替代用户指令；理解可以随证据修订。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "intent",
+      "design_doc": "docs/design/modules/intent.md",
+      "code_target": "src/uaw/intent/facade.py",
+      "interface_doc": "docs/api/nodes/intent.md",
+      "interface_count": 3
+    },
+    "agent": {
+      "id": "agent",
+      "label": "决策执行 · Agent",
+      "description": "组织单 Agent 循环、规划、委派、技能与完成核验。",
+      "entry": "start/step/define_agent",
+      "inputs": "TaskFrame、能力、预算、模型政策",
+      "outputs": "动作提案、NodeResult、CompletionProposal",
+      "guard": "LLM 提议动作，Runtime 检查权限、预算、状态。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "agent",
+      "design_doc": "docs/design/modules/agent.md",
+      "code_target": "src/uaw/agent/facade.py",
+      "interface_doc": "docs/api/nodes/agent.md",
+      "interface_count": 5
+    },
+    "context": {
+      "id": "context",
+      "label": "上下文 · Context",
+      "description": "按目的找资料、记忆和规则，装配有来源的模型输入。",
+      "entry": "build/ingest/remember/forget",
+      "inputs": "purpose、目标、作用域、版本、token预算",
+      "outputs": "ContextSnapshot / ContextManifest / Reference",
+      "guard": "压缩不赋权；资料和规则按信任来源区分。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "context",
+      "design_doc": "docs/design/modules/context.md",
+      "code_target": "src/uaw/context/facade.py",
+      "interface_doc": "docs/api/nodes/context.md",
+      "interface_count": 6
+    },
+    "tool": {
+      "id": "tool",
+      "label": "工具执行 · Tool",
+      "description": "统一注册、发现、调用、审批闸门、失败治理和 MCP。",
+      "entry": "discover/invoke/reconcile",
+      "inputs": "工具参数与可信 ToolRuntimeContext",
+      "outputs": "ToolResult、效果状态、原始结果引用",
+      "guard": "未知写结果先核对；只有登记等价契约才自动切换。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "tool",
+      "design_doc": "docs/design/modules/tool.md",
+      "code_target": "src/uaw/tool/facade.py",
+      "interface_doc": "docs/api/nodes/tool.md",
+      "interface_count": 3
+    },
+    "workspace": {
+      "id": "workspace",
+      "label": "工作区 · Workspace",
+      "description": "授权本地项目/可选云沙箱、环境、改动、产物和审阅。",
+      "entry": "allocate/prepare/merge/review/revert",
+      "inputs": "项目授权、BaseState、操作与预期版本",
+      "outputs": "Environment、ChangeSet、Artifact、ReviewSet",
+      "guard": "本地 Runner 再检查；cwd/venv 不等于安全隔离。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "workspace",
+      "design_doc": "docs/design/modules/workspace.md",
+      "code_target": "src/uaw/workspace/facade.py",
+      "interface_doc": "docs/api/nodes/workspace.md",
+      "interface_count": 5
+    },
+    "model": {
+      "id": "model",
+      "label": "模型调用 · Model",
+      "description": "继承用户模型选择，适配提供方调用、恢复与用量。",
+      "entry": "resolve_policy/generate",
+      "inputs": "固定/Auto政策、prompt、能力需求",
+      "outputs": "模型动作输出、实际版本、用量",
+      "guard": "用户指定模型优先；不可用不能静默换模型。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "model",
+      "design_doc": "docs/design/modules/model.md",
+      "code_target": "src/uaw/model/facade.py",
+      "interface_doc": "docs/api/nodes/model.md",
+      "interface_count": 3
+    },
+    "run": {
+      "id": "run",
+      "label": "运行控制 · Run",
+      "description": "统一生命周期、历史、事件、预算、审批、取消恢复。",
+      "entry": "create/control/checkpoint/resume",
+      "inputs": "执行请求、版本、用户控制",
+      "outputs": "RunState、Items、事件、checkpoint",
+      "guard": "完成文本不证明成功，completed 与 succeeded 分开。",
+      "parent": null,
+      "kind": "module",
+      "status": "设计目标，未实现 Runtime",
+      "view": "run",
+      "design_doc": "docs/design/modules/run.md",
+      "code_target": "src/uaw/run/facade.py",
+      "interface_doc": "docs/api/nodes/run.md",
+      "interface_count": 4
+    },
+    "support": {
+      "id": "support",
+      "label": "共享支撑与控制层",
+      "description": "缓存、平台配置、扩展包、观测与离线评测。",
+      "entry": "领域入口 + 共享设施",
+      "inputs": "版本配置、派生数据、诊断/评测请求",
+      "outputs": "有效配置、缓存、运行诊断、对比报告",
+      "guard": "不成为第八个强制执行 Runtime；业务状态仍归领域。",
+      "parent": null,
+      "kind": "support",
+      "status": "设计目标，未实现 Runtime",
+      "view": "support",
+      "design_doc": "docs/design/modules/support.md",
+      "code_target": "src/uaw/shared/__init__.py",
+      "interface_doc": "docs/api/nodes/support.md",
+      "interface_count": 28
+    },
+    "intent.preview": {
+      "id": "intent.preview",
+      "label": "草稿理解预览",
+      "description": "短时只读、可取消，不阻塞发送。",
+      "entry": "preview",
+      "inputs": "草稿 hash、最小历史",
+      "outputs": "DraftPreview",
+      "guard": "只显示匹配当前草稿的预览。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-preview.md",
+      "code_target": "src/uaw/intent/preview.py",
+      "interface_doc": "docs/api/nodes/intent.preview.md",
+      "interface_count": 3
+    },
+    "intent.original": {
+      "id": "intent.original",
+      "label": "原文读取",
+      "description": "读取 Run 保存的不可变用户原文。",
+      "entry": "read_original",
+      "inputs": "original_input_ref",
+      "outputs": "原文与用户修订",
+      "guard": "不另存可覆盖的原文账本。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-original.md",
+      "code_target": "src/uaw/intent/original.py",
+      "interface_doc": "docs/api/nodes/intent.original.md",
+      "interface_count": 3
+    },
+    "intent.semantic": {
+      "id": "intent.semantic",
+      "label": "语义解析",
+      "description": "分开显式目标、推断与未知；可合并进首次模型调用。",
+      "entry": "parse",
+      "inputs": "原文与必要上下文",
+      "outputs": "目标/约束/候选解释",
+      "guard": "不用词典判复杂度，推断不伪装用户事实。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-semantic.md",
+      "code_target": "src/uaw/intent/semantic.py",
+      "interface_doc": "docs/api/nodes/intent.semantic.md",
+      "interface_count": 3
+    },
+    "intent.references": {
+      "id": "intent.references",
+      "label": "指代解析",
+      "description": "定位‘这个文件’、‘上次报告’等资源。",
+      "entry": "resolve",
+      "inputs": "表达与候选引用",
+      "outputs": "可验证资源引用",
+      "guard": "不唯一保留歧义，不凭名称猜本地文件。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-references.md",
+      "code_target": "src/uaw/intent/references.py",
+      "interface_doc": "docs/api/nodes/intent.references.md",
+      "interface_count": 1
+    },
+    "intent.probe": {
+      "id": "intent.probe",
+      "label": "必要信息探查",
+      "description": "请求 Context 或有预算的只读 Tool 补信息。",
+      "entry": "probe",
+      "inputs": "缺口、权限、剩余预算",
+      "outputs": "证据与信息缺口",
+      "guard": "不在理解阶段无限调研。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-probe.md",
+      "code_target": "src/uaw/intent/probe.py",
+      "interface_doc": "docs/api/nodes/intent.probe.md",
+      "interface_count": 1
+    },
+    "intent.ambiguity": {
+      "id": "intent.ambiguity",
+      "label": "歧义处理",
+      "description": "依据后果、可逆性与证据决定开始或澄清。",
+      "entry": "resolve_ambiguity",
+      "inputs": "候选目标与影响",
+      "outputs": "可开始/需澄清",
+      "guard": "高影响关键条件未知时不能猜。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-ambiguity.md",
+      "code_target": "src/uaw/intent/ambiguity.py",
+      "interface_doc": "docs/api/nodes/intent.ambiguity.md",
+      "interface_count": 2
+    },
+    "intent.frame": {
+      "id": "intent.frame",
+      "label": "任务框架",
+      "description": "形成版本化 TaskFrame，并保留原文引用。",
+      "entry": "build_frame",
+      "inputs": "以上解析与证据",
+      "outputs": "TaskFrame revision",
+      "guard": "正式理解变化说明原因，不覆盖原文。",
+      "parent": "intent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/intent-frame.md",
+      "code_target": "src/uaw/intent/frame.py",
+      "interface_doc": "docs/api/nodes/intent.frame.md",
+      "interface_count": 6
+    },
+    "agent.definitions": {
+      "id": "agent.definitions",
+      "label": "子Agent定义与发现",
+      "description": "持久会话角色的设计、创建、发现与配置版本。",
+      "entry": "define_agent/discover_agents",
+      "inputs": "用户授权配置、角色/定义版本",
+      "outputs": "AgentDefinitionVersion / CandidateSummary",
+      "guard": "创建角色不自动启动任务；定义修改可撤销。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "agent.definitions",
+      "design_doc": "docs/design/components/agent-definitions.md",
+      "code_target": "src/uaw/agent/definitions/facade.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.md",
+      "interface_count": 4
+    },
+    "agent.loop": {
+      "id": "agent.loop",
+      "label": "Agent 决策循环",
+      "description": "上下文→模型→动作→观察，主 Agent 保持精炼指令。",
+      "entry": "step",
+      "inputs": "TaskFrame、ContextSnapshot、预算",
+      "outputs": "动作提案或答复",
+      "guard": "失败回到决策，不强制固定业务流水线。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-loop.md",
+      "code_target": "src/uaw/agent/loop.py",
+      "interface_doc": "docs/api/nodes/agent.loop.md",
+      "interface_count": 4
+    },
+    "agent.assessment": {
+      "id": "agent.assessment",
+      "label": "按需执行评估",
+      "description": "语义选择 none/steps/dag、single/parent_child、serial/parallel。",
+      "entry": "assess_execution",
+      "inputs": "目标、能力、已知信息、成本",
+      "outputs": "ExecutionAssessment",
+      "guard": "可合并理解，不要求独立判断 Agent。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-assessment.md",
+      "code_target": "src/uaw/agent/assessment.py",
+      "interface_doc": "docs/api/nodes/agent.assessment.md",
+      "interface_count": 3
+    },
+    "agent.planning": {
+      "id": "agent.planning",
+      "label": "规划与依赖校验",
+      "description": "生成步骤或任务 DAG，校验每次 PlanPatch。",
+      "entry": "plan/validate",
+      "inputs": "目标、依赖、预算、资源",
+      "outputs": "TaskGraph revision",
+      "guard": "只有执行依赖图必须无环；计划版本之间可以迭代。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-planning.md",
+      "code_target": "src/uaw/agent/planning.py",
+      "interface_doc": "docs/api/nodes/agent.planning.md",
+      "interface_count": 4
+    },
+    "agent.scheduler": {
+      "id": "agent.scheduler",
+      "label": "节点与资源调度",
+      "description": "依赖满足、权限与资源允许才开始节点。",
+      "entry": "schedule",
+      "inputs": "可运行节点、资源预留",
+      "outputs": "受控执行与 Join 条件",
+      "guard": "节点不必须对应 Agent，能并行不等于值得并行。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-scheduler.md",
+      "code_target": "src/uaw/agent/scheduler.py",
+      "interface_doc": "docs/api/nodes/agent.scheduler.md",
+      "interface_count": 2
+    },
+    "agent.collaboration": {
+      "id": "agent.collaboration",
+      "label": "委派与控制权",
+      "description": "管理父子 Agent、消息、结果整合与可选交接。",
+      "entry": "delegate/join/handoff",
+      "inputs": "子目标、契约、引用、权限/预算",
+      "outputs": "NodeResult / ControlLease",
+      "guard": "子上下文独立；默认父 Agent 负责最终回复。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "agent.collaboration",
+      "design_doc": "docs/design/components/agent-collaboration.md",
+      "code_target": "src/uaw/agent/collaboration/facade.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.md",
+      "interface_count": 2
+    },
+    "agent.skills": {
+      "id": "agent.skills",
+      "label": "技能与任务模板",
+      "description": "按需发现和加载方法/依赖/验收标准。",
+      "entry": "resolve_skill/activate_skill",
+      "inputs": "目标与可见技能元数据",
+      "outputs": "固定 SkillBundle / TaskTemplate",
+      "guard": "技能不能扩大权限，不把所有方法塞进常驻 prompt。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-skills.md",
+      "code_target": "src/uaw/agent/skills.py",
+      "interface_doc": "docs/api/nodes/agent.skills.md",
+      "interface_count": 3
+    },
+    "agent.completion": {
+      "id": "agent.completion",
+      "label": "完成核验协调",
+      "description": "按语义目标与实际证据发现缺口并提出完成。",
+      "entry": "verify/propose_completion",
+      "inputs": "契约、成果版本、检查证据",
+      "outputs": "VerificationReport / Proposal",
+      "guard": "真实测试、语义满足、用户接受分别记录。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "agent.completion",
+      "design_doc": "docs/design/components/agent-completion.md",
+      "code_target": "src/uaw/agent/completion/facade.py",
+      "interface_doc": "docs/api/nodes/agent.completion.md",
+      "interface_count": 2
+    },
+    "agent.board": {
+      "id": "agent.board",
+      "label": "共享任务板",
+      "description": "存目标、计划、节点结果与证据引用。",
+      "entry": "read/commit(expected_revision)",
+      "inputs": "各节点结构化结果",
+      "outputs": "TaskBoard revision",
+      "guard": "CAS 提交；依赖变更只使相关节点 stale。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-board.md",
+      "code_target": "src/uaw/agent/board.py",
+      "interface_doc": "docs/api/nodes/agent.board.md",
+      "interface_count": 3
+    },
+    "agent.factory": {
+      "id": "agent.factory",
+      "label": "统一实例工厂",
+      "description": "把获准定义/角色与子任务契约创建为隔离运行实例。",
+      "entry": "AgentFactory.create",
+      "inputs": "定义版本、目标、引用、有效权限/模型与预算",
+      "outputs": "AgentInstance / allocation result",
+      "guard": "定义创建不启动实例；重复请求不创建第二实例。",
+      "parent": "agent",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-factory.md",
+      "code_target": "src/uaw/agent/factory.py",
+      "interface_doc": "docs/api/nodes/agent.factory.md",
+      "interface_count": 4
+    },
+    "agent.definitions.designer": {
+      "id": "agent.definitions.designer",
+      "label": "角色设计方法",
+      "description": "主Agent按需加载短方法生成职责、条件与验收草案。",
+      "entry": "design_definition",
+      "inputs": "用户创建要求、现有角色、能力摘要",
+      "outputs": "AgentDefinitionDraft",
+      "guard": "不强制另起设计Agent，不擅存临时角色。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-designer.md",
+      "code_target": "src/uaw/agent/definitions/designer.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.designer.md",
+      "interface_count": 2
+    },
+    "agent.definitions.validator": {
+      "id": "agent.definitions.validator",
+      "label": "定义与授权校验",
+      "description": "检查会话归属、名称、依赖、权限请求与用户来源。",
+      "entry": "validate_definition",
+      "inputs": "定义草案与可信上下文",
+      "outputs": "可提交草案或阻碍项",
+      "guard": "用户指定来源由服务核对，模型引用不自行证明授权。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-validator.md",
+      "code_target": "src/uaw/agent/definitions/validator.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.validator.md",
+      "interface_count": 5
+    },
+    "agent.definitions.model_intent": {
+      "id": "agent.definitions.model_intent",
+      "label": "模型意图解析",
+      "description": "保留inherit/用户explicit/授权auto并交Model核对。",
+      "entry": "resolve_model_intent",
+      "inputs": "原指定名称及来源、父模型政策",
+      "outputs": "规范ModelRequest或缺口",
+      "guard": "型号缺失回当前LLM，不暗换型号。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-model_intent.md",
+      "code_target": "src/uaw/agent/definitions/model_intent.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.model_intent.md",
+      "interface_count": 3
+    },
+    "agent.definitions.repository": {
+      "id": "agent.definitions.repository",
+      "label": "定义提交与版本",
+      "description": "按批量策略保存定义，保持幂等、名称唯一与CAS。",
+      "entry": "commit_definition",
+      "inputs": "已验证定义、稳定请求键、预期版本",
+      "outputs": "DefinitionVersion / per-item result",
+      "guard": "定义是配置，提交不创建执行实例。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-repository.md",
+      "code_target": "src/uaw/agent/definitions/repository.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.repository.md",
+      "interface_count": 5
+    },
+    "agent.definitions.discovery": {
+      "id": "agent.definitions.discovery",
+      "label": "会话Agent发现",
+      "description": "按scope展示角色摘要，语义匹配任务与正反条件。",
+      "entry": "discover_agents",
+      "inputs": "当前任务与可见定义",
+      "outputs": "有版本候选摘要",
+      "guard": "候选发现不等于调用；use_when不是词典路由。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-discovery.md",
+      "code_target": "src/uaw/agent/definitions/discovery.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.discovery.md",
+      "interface_count": 4
+    },
+    "agent.definitions.change_service": {
+      "id": "agent.definitions.change_service",
+      "label": "配置变更与撤销",
+      "description": "显示角色差异并基于当前版本生成反向修订。",
+      "entry": "diff/disable/revert",
+      "inputs": "定义版本、用户选定变更",
+      "outputs": "新定义版本/冲突",
+      "guard": "撤销配置不逆转已发生的外部动作。",
+      "parent": "agent.definitions",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-definitions-change_service.md",
+      "code_target": "src/uaw/agent/definitions/change_service.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.change_service.md",
+      "interface_count": 5
+    },
+    "context.sources": {
+      "id": "context.sources",
+      "label": "来源解析",
+      "description": "读取有权限的原文、文件、Task Board、产物与外部材料。",
+      "entry": "resolve_sources",
+      "inputs": "目标、scope、引用版本",
+      "outputs": "SourceManifest",
+      "guard": "本地材料走 Workspace 授权适配器。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-sources.md",
+      "code_target": "src/uaw/context/sources.py",
+      "interface_doc": "docs/api/nodes/context.sources.md",
+      "interface_count": 4
+    },
+    "context.rules": {
+      "id": "context.rules",
+      "label": "规则与信任装配",
+      "description": "装配用户、项目、技能与角色规则并记录优先级。",
+      "entry": "resolve_rules",
+      "inputs": "可信规则来源与作用域",
+      "outputs": "InstructionSet",
+      "guard": "网页/工具文本不会自动变为高优先级指令。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-rules.md",
+      "code_target": "src/uaw/context/rules.py",
+      "interface_doc": "docs/api/nodes/context.rules.md",
+      "interface_count": 2
+    },
+    "context.ingestion": {
+      "id": "context.ingestion",
+      "label": "摄取与索引发布",
+      "description": "解析、切片、索引、发布；增量更新和删除传播。",
+      "entry": "ingest/publish/delete",
+      "inputs": "来源版本、内容、授权",
+      "outputs": "内容块与 active revision",
+      "guard": "未准备好的新索引不能混入当前有效版本。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-ingestion.md",
+      "code_target": "src/uaw/context/ingestion.py",
+      "interface_doc": "docs/api/nodes/context.ingestion.md",
+      "interface_count": 7
+    },
+    "context.retrieval": {
+      "id": "context.retrieval",
+      "label": "资料检索与证据",
+      "description": "权限内关键词/向量检索、排序与覆盖检查。",
+      "entry": "retrieve",
+      "inputs": "查询、过滤、scope、预算",
+      "outputs": "版本化证据引用",
+      "guard": "召回相关不证明来源真实；少量资料可直接读取。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-retrieval.md",
+      "code_target": "src/uaw/context/retrieval.py",
+      "interface_doc": "docs/api/nodes/context.retrieval.md",
+      "interface_count": 1
+    },
+    "context.memory": {
+      "id": "context.memory",
+      "label": "记忆生命周期",
+      "description": "候选、冲突、写入、召回、遗忘与派生删除。",
+      "entry": "remember/recall/forget",
+      "inputs": "用户显式要求/候选、记忆政策",
+      "outputs": "Memory revision",
+      "guard": "用户偏好不能授予权限；未核验结论不升为共享事实。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "context.memory",
+      "design_doc": "docs/design/components/context-memory.md",
+      "code_target": "src/uaw/context/memory/facade.py",
+      "interface_doc": "docs/api/nodes/context.memory.md",
+      "interface_count": 4
+    },
+    "context.selection": {
+      "id": "context.selection",
+      "label": "选择与上下文预算",
+      "description": "按 purpose 选块并预留输出及工具反馈空间。",
+      "entry": "select/allocate",
+      "inputs": "候选块、模型限制、任务目标",
+      "outputs": "选中块与分配计划",
+      "guard": "不按固定回合裁剪所有任务。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-selection.md",
+      "code_target": "src/uaw/context/selection.py",
+      "interface_doc": "docs/api/nodes/context.selection.md",
+      "interface_count": 1
+    },
+    "context.compression": {
+      "id": "context.compression",
+      "label": "压缩与关键项保护",
+      "description": "压缩继续执行状态，核对目标、数字和来源。",
+      "entry": "compress/validate",
+      "inputs": "固定输入与保留项",
+      "outputs": "ContinuationState",
+      "guard": "真实审批与执行状态回 Runtime 读取。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-compression.md",
+      "code_target": "src/uaw/context/compression.py",
+      "interface_doc": "docs/api/nodes/context.compression.md",
+      "interface_count": 1
+    },
+    "context.composer": {
+      "id": "context.composer",
+      "label": "装配与快照",
+      "description": "分区稳定规则/历史/实时材料，产出可追溯上下文。",
+      "entry": "compose",
+      "inputs": "选中块、指令、压缩状态",
+      "outputs": "ContextSnapshot / Manifest",
+      "guard": "缓存不能改变用户目标、时间或有效工具权限。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-composer.md",
+      "code_target": "src/uaw/context/composer.py",
+      "interface_doc": "docs/api/nodes/context.composer.md",
+      "interface_count": 2
+    },
+    "context.references": {
+      "id": "context.references",
+      "label": "引用登记与解析",
+      "description": "定位网页、内容、文件、产物、测试报告的实际版本。",
+      "entry": "register/resolve/read",
+      "inputs": "来源与位置、hash、可见范围",
+      "outputs": "Reference / Citation",
+      "guard": "不编造来源；不可用时给出明确状态。",
+      "parent": "context",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-references.md",
+      "code_target": "src/uaw/context/references.py",
+      "interface_doc": "docs/api/nodes/context.references.md",
+      "interface_count": 8
+    },
+    "tool.registry": {
+      "id": "tool.registry",
+      "label": "工具注册与版本",
+      "description": "存完整 ToolSpec，向量库保存派生检索表示。",
+      "entry": "register/update",
+      "inputs": "已启用 ToolSpec、能力/效果元数据",
+      "outputs": "Registry revision",
+      "guard": "向量命中不能代替 schema 或当前授权。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-registry.md",
+      "code_target": "src/uaw/tool/registry.py",
+      "interface_doc": "docs/api/nodes/tool.registry.md",
+      "interface_count": 4
+    },
+    "tool.discovery": {
+      "id": "tool.discovery",
+      "label": "工具发现与筛选",
+      "description": "角色/flag/权限缩小候选，关键词/向量召回后让 LLM 选择。",
+      "entry": "discover",
+      "inputs": "目标、范围、候选预算",
+      "outputs": "可见 schema 与候选依据",
+      "guard": "小工具集可直接暴露，索引只是发现方法。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-discovery.md",
+      "code_target": "src/uaw/tool/discovery.py",
+      "interface_doc": "docs/api/nodes/tool.discovery.md",
+      "interface_count": 3
+    },
+    "tool.invocation": {
+      "id": "tool.invocation",
+      "label": "调用闸门与派发",
+      "description": "统一参数、授权、审批复核、预算与适配器调用。",
+      "entry": "invoke",
+      "inputs": "ToolCall + trusted context",
+      "outputs": "标准 ToolResult",
+      "guard": "模型不能写入 approved/principal 等可信字段。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "tool.invocation",
+      "design_doc": "docs/design/components/tool-invocation.md",
+      "code_target": "src/uaw/tool/invocation/facade.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.md",
+      "interface_count": 2
+    },
+    "tool.effects": {
+      "id": "tool.effects",
+      "label": "调用与副作用账本",
+      "description": "持久意图、尝试、稳定业务键和未决结果。",
+      "entry": "record_intent/reconcile",
+      "inputs": "action_id、参数hash、幂等键",
+      "outputs": "confirmed/pending/unknown",
+      "guard": "超时不证明失败，不盲重试未知外部写入。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-effects.md",
+      "code_target": "src/uaw/tool/effects.py",
+      "interface_doc": "docs/api/nodes/tool.effects.md",
+      "interface_count": 2
+    },
+    "tool.failure": {
+      "id": "tool.failure",
+      "label": "失败恢复与等价切换",
+      "description": "分类错误、退避、熔断和有限等价提供方切换。",
+      "entry": "recover",
+      "inputs": "类型化错误、剩余deadline",
+      "outputs": "恢复结果或能力缺口",
+      "guard": "非等价替换必须交给 Agent 重新决定。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-failure.md",
+      "code_target": "src/uaw/tool/failure.py",
+      "interface_doc": "docs/api/nodes/tool.failure.md",
+      "interface_count": 1
+    },
+    "tool.mcp": {
+      "id": "tool.mcp",
+      "label": "MCP 连接与适配",
+      "description": "协商、能力发现、会话生命周期和结果规范化。",
+      "entry": "connect/discover/call/close",
+      "inputs": "已授权 provider 配置引用",
+      "outputs": "命名空间能力与协议结果",
+      "guard": "连接不授信，重连不重放未知写调用。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "tool.mcp",
+      "design_doc": "docs/design/components/tool-mcp.md",
+      "code_target": "src/uaw/tool/mcp/facade.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.md",
+      "interface_count": 1
+    },
+    "tool.adapters": {
+      "id": "tool.adapters",
+      "label": "领域与外部适配器",
+      "description": "转发到 Workspace、控制工具或第三方 API。",
+      "entry": "dispatch",
+      "inputs": "已准入的调用",
+      "outputs": "原始结果及效果状态",
+      "guard": "平台凭据不进入任意任务代码。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-adapters.md",
+      "code_target": "src/uaw/tool/adapters.py",
+      "interface_doc": "docs/api/nodes/tool.adapters.md",
+      "interface_count": 3
+    },
+    "tool.results": {
+      "id": "tool.results",
+      "label": "结果规范化与分页",
+      "description": "区分业务失败/基础设施失败，保存大结果引用。",
+      "entry": "normalize/page",
+      "inputs": "原始输出、执行状态",
+      "outputs": "ToolResult / raw_ref",
+      "guard": "HTTP200 或成功文字不能证明业务成功。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-results.md",
+      "code_target": "src/uaw/tool/results.py",
+      "interface_doc": "docs/api/nodes/tool.results.md",
+      "interface_count": 2
+    },
+    "tool.audit": {
+      "id": "tool.audit",
+      "label": "执行审计与指标",
+      "description": "关联审批、真实动作、用量与类型化失败。",
+      "entry": "audit/observe",
+      "inputs": "调用版本、结果、关联IDs",
+      "outputs": "事件与受控诊断引用",
+      "guard": "不保存凭据；执行审计不依赖模型自述。",
+      "parent": "tool",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-audit.md",
+      "code_target": "src/uaw/tool/audit.py",
+      "interface_doc": "docs/api/nodes/tool.audit.md",
+      "interface_count": 1
+    },
+    "workspace.binding": {
+      "id": "workspace.binding",
+      "label": "项目绑定与本地授权",
+      "description": "配对设备/Runner，明确项目根与读写执行范围。",
+      "entry": "bind/check_scope",
+      "inputs": "用户选定项目与权限",
+      "outputs": "ProjectRootBinding",
+      "guard": "上传路径、符号链接或子目录不能绕过根边界。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-binding.md",
+      "code_target": "src/uaw/workspace/binding.py",
+      "interface_doc": "docs/api/nodes/workspace.binding.md",
+      "interface_count": 9
+    },
+    "workspace.base": {
+      "id": "workspace.base",
+      "label": "输入基础状态",
+      "description": "指定提交或包含未提交修改的工作目录快照。",
+      "entry": "capture_base",
+      "inputs": "用户工作目录/选定revision",
+      "outputs": "BaseStateSpec",
+      "guard": "记录来源，不遗漏用户正在编辑的内容。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-base.md",
+      "code_target": "src/uaw/workspace/base.py",
+      "interface_doc": "docs/api/nodes/workspace.base.md",
+      "interface_count": 2
+    },
+    "workspace.isolation": {
+      "id": "workspace.isolation",
+      "label": "隔离与分支",
+      "description": "授权本地副本、worktree或可选云沙箱。",
+      "entry": "allocate/release",
+      "inputs": "基础状态与所需隔离",
+      "outputs": "WorkspaceHandle",
+      "guard": "如需原项目执行，明确冲突策略与实际隔离能力。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-isolation.md",
+      "code_target": "src/uaw/workspace/isolation.py",
+      "interface_doc": "docs/api/nodes/workspace.isolation.md",
+      "interface_count": 5
+    },
+    "workspace.environment": {
+      "id": "workspace.environment",
+      "label": "环境准备与回收",
+      "description": "检测现有工具链、受控补依赖、健康检查。",
+      "entry": "inspect/ensure/release",
+      "inputs": "模板、项目要求、预算",
+      "outputs": "EnvironmentManifest",
+      "guard": "项目依赖与 Runtime 服务环境分开，全局安装另授权。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-environment.md",
+      "code_target": "src/uaw/workspace/environment.py",
+      "interface_doc": "docs/api/nodes/workspace.environment.md",
+      "interface_count": 8
+    },
+    "workspace.process": {
+      "id": "workspace.process",
+      "label": "文件与进程执行",
+      "description": "受控读写、安装、测试、预览及进程停止。",
+      "entry": "read/write/exec/poll/stop",
+      "inputs": "工作区句柄、命令、deadline",
+      "outputs": "执行证据与实际改动",
+      "guard": "任意代码前后采集改动，不能漏掉shell写文件。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-process.md",
+      "code_target": "src/uaw/workspace/process.py",
+      "interface_doc": "docs/api/nodes/workspace.process.md",
+      "interface_count": 16
+    },
+    "workspace.changes": {
+      "id": "workspace.changes",
+      "label": "变更与冲突合并",
+      "description": "采集ChangeSet、检查用户并发改动、生成合并或反向修改。",
+      "entry": "changes/merge/revert",
+      "inputs": "基础/当前版本与改动单位",
+      "outputs": "新revision或ConflictSet",
+      "guard": "不覆盖用户后续修改；冲突需明确解决。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-changes.md",
+      "code_target": "src/uaw/workspace/changes.py",
+      "interface_doc": "docs/api/nodes/workspace.changes.md",
+      "interface_count": 13
+    },
+    "workspace.artifacts": {
+      "id": "workspace.artifacts",
+      "label": "产物与格式适配",
+      "description": "登记版本、引用，提供预览/下载/导出。",
+      "entry": "register/preview/export",
+      "inputs": "真实成果文件与版本",
+      "outputs": "ArtifactHandle",
+      "guard": "存在可打开不等于内容质量合格。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-artifacts.md",
+      "code_target": "src/uaw/workspace/artifacts.py",
+      "interface_doc": "docs/api/nodes/workspace.artifacts.md",
+      "interface_count": 6
+    },
+    "workspace.review": {
+      "id": "workspace.review",
+      "label": "审阅与局部接受",
+      "description": "按格式能力提供diff、位置反馈、接受/拒绝。",
+      "entry": "review/accept/reject/revise",
+      "inputs": "固定 ReviewSet 与用户意见",
+      "outputs": "Delivery 状态与新用户修订",
+      "guard": "不支持块级接受的格式明确只支持整份。",
+      "parent": "workspace",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/workspace-review.md",
+      "code_target": "src/uaw/workspace/review.py",
+      "interface_doc": "docs/api/nodes/workspace.review.md",
+      "interface_count": 4
+    },
+    "model.catalog": {
+      "id": "model.catalog",
+      "label": "可见模型目录",
+      "description": "平台启用的模型、能力、版本和可用状态。",
+      "entry": "list/resolve",
+      "inputs": "用户scope与平台配置",
+      "outputs": "可用模型候选",
+      "guard": "目录可缓存，调用仍复核当前状态。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-catalog.md",
+      "code_target": "src/uaw/model/catalog.py",
+      "interface_doc": "docs/api/nodes/model.catalog.md",
+      "interface_count": 6
+    },
+    "model.policy": {
+      "id": "model.policy",
+      "label": "选择与模型继承",
+      "description": "固定用户选择，子定义仅用户显式覆盖；Auto限定范围。",
+      "entry": "resolve_policy",
+      "inputs": "用户选择、父政策、子显式要求",
+      "outputs": "EffectiveModelPolicy",
+      "guard": "技能/角色不能覆盖用户选定模型。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-policy.md",
+      "code_target": "src/uaw/model/policy.py",
+      "interface_doc": "docs/api/nodes/model.policy.md",
+      "interface_count": 4
+    },
+    "model.capability": {
+      "id": "model.capability",
+      "label": "兼容与Auto选择",
+      "description": "检查工具/结构/多模态能力，Auto可用时才路由。",
+      "entry": "check/select",
+      "inputs": "有效政策、能力需求与预算",
+      "outputs": "兼容调用配置或缺口",
+      "guard": "不可用回到Agent/用户，不偷偷降低模型。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-capability.md",
+      "code_target": "src/uaw/model/capability.py",
+      "interface_doc": "docs/api/nodes/model.capability.md",
+      "interface_count": 1
+    },
+    "model.gateway": {
+      "id": "model.gateway",
+      "label": "调用网关",
+      "description": "统一入口，管理服务凭据、限流、deadline。",
+      "entry": "generate",
+      "inputs": "ContextSnapshot与调用配置",
+      "outputs": "带关联ID的模型尝试",
+      "guard": "供应商差异明确呈现，统一接口不伪装全兼容。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-gateway.md",
+      "code_target": "src/uaw/model/gateway.py",
+      "interface_doc": "docs/api/nodes/model.gateway.md",
+      "interface_count": 2
+    },
+    "model.adapters": {
+      "id": "model.adapters",
+      "label": "供应商协议适配",
+      "description": "消息、工具schema、流式输出与实际前缀缓存接口。",
+      "entry": "provider_call",
+      "inputs": "支持的参数与版本",
+      "outputs": "标准输出与usage",
+      "guard": "能力/计费依官方协议核对，不假设KV可控。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-adapters.md",
+      "code_target": "src/uaw/model/adapters.py",
+      "interface_doc": "docs/api/nodes/model.adapters.md",
+      "interface_count": 2
+    },
+    "model.recovery": {
+      "id": "model.recovery",
+      "label": "调用恢复",
+      "description": "超时、限流、协议失败的有限重试。",
+      "entry": "recover",
+      "inputs": "attempt错误、剩余预算",
+      "outputs": "新attempt或明确失败",
+      "guard": "流式重试不拼接两次输出；固定模型不静默切换。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-recovery.md",
+      "code_target": "src/uaw/model/recovery.py",
+      "interface_doc": "docs/api/nodes/model.recovery.md",
+      "interface_count": 1
+    },
+    "model.usage": {
+      "id": "model.usage",
+      "label": "计量与版本记录",
+      "description": "真实模型/参数、缓存用量、所有尝试费用。",
+      "entry": "record_usage/settle",
+      "inputs": "provider usage与预留",
+      "outputs": "账本结算、模型调用记录",
+      "guard": "未知账单待核对，不能按成功调用数漏算失败。",
+      "parent": "model",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/model-usage.md",
+      "code_target": "src/uaw/model/usage.py",
+      "interface_doc": "docs/api/nodes/model.usage.md",
+      "interface_count": 1
+    },
+    "run.history": {
+      "id": "run.history",
+      "label": "历史与输入权威",
+      "description": "存不可变用户消息、关联任务与会话。",
+      "entry": "append/read",
+      "inputs": "原文与用户控制",
+      "outputs": "InputRef / History",
+      "guard": "云/本地权威尚待选定，执行位置不决定存储位置。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-history.md",
+      "code_target": "src/uaw/run/history.py",
+      "interface_doc": "docs/api/nodes/run.history.md",
+      "interface_count": 10
+    },
+    "run.state": {
+      "id": "run.state",
+      "label": "Run 与交互项",
+      "description": "生命周期、Item revision、结果状态。",
+      "entry": "transition/emit_item",
+      "inputs": "预期版本与领域确认",
+      "outputs": "RunState / InteractionItem",
+      "guard": "模型finish不能跳过必需的证据核验。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-state.md",
+      "code_target": "src/uaw/run/state.py",
+      "interface_doc": "docs/api/nodes/run.state.md",
+      "interface_count": 5
+    },
+    "run.events": {
+      "id": "run.events",
+      "label": "事件与重连",
+      "description": "追加关键事件，序号续接、去重与快照。",
+      "entry": "append/subscribe/replay",
+      "inputs": "带关联IDs的变化",
+      "outputs": "stream_seq与cursor",
+      "guard": "事件回放不重新调用工具，不能被采样丢失关键状态。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-events.md",
+      "code_target": "src/uaw/run/events.py",
+      "interface_doc": "docs/api/nodes/run.events.md",
+      "interface_count": 4
+    },
+    "run.budget": {
+      "id": "run.budget",
+      "label": "预算与准入",
+      "description": "任务总预算、子预算预留、使用结算、活跃Run上限。",
+      "entry": "reserve/settle/release",
+      "inputs": "动作估算、已用额、deadline",
+      "outputs": "预留凭据或限额结果",
+      "guard": "重试/子Agent/汇总都计入总额，队列有界。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-budget.md",
+      "code_target": "src/uaw/run/budget.py",
+      "interface_doc": "docs/api/nodes/run.budget.md",
+      "interface_count": 1
+    },
+    "run.approval": {
+      "id": "run.approval",
+      "label": "审批与用户控制",
+      "description": "持久审批、steer/enqueue/replace/cancel/partial。",
+      "entry": "control/decide_approval",
+      "inputs": "用户或受授权独立代审决定",
+      "outputs": "ApprovalRef / ControlReceipt",
+      "guard": "assisted/manual/automatic不扩大真实权限。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-approval.md",
+      "code_target": "src/uaw/run/approval.py",
+      "interface_doc": "docs/api/nodes/run.approval.md",
+      "interface_count": 7
+    },
+    "run.checkpoint": {
+      "id": "run.checkpoint",
+      "label": "恢复边界与版本",
+      "description": "记录领域引用、账本游标、计划与环境版本。",
+      "entry": "checkpoint",
+      "inputs": "已提交进度与未决动作",
+      "outputs": "Checkpoint",
+      "guard": "不承诺跨外部系统原子快照。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-checkpoint.md",
+      "code_target": "src/uaw/run/checkpoint.py",
+      "interface_doc": "docs/api/nodes/run.checkpoint.md",
+      "interface_count": 3
+    },
+    "run.resume": {
+      "id": "run.resume",
+      "label": "租约与执行恢复",
+      "description": "防双领，核对版本、当前授权、未决调用后继续。",
+      "entry": "acquire/resume",
+      "inputs": "checkpoint和当前状态",
+      "outputs": "恢复节点或明确受阻",
+      "guard": "非兼容版本不强行续跑；rerun是新Run。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "view": "run.resume",
+      "design_doc": "docs/design/components/run-resume.md",
+      "code_target": "src/uaw/run/resume/facade.py",
+      "interface_doc": "docs/api/nodes/run.resume.md",
+      "interface_count": 3
+    },
+    "run.cancel": {
+      "id": "run.cancel",
+      "label": "取消传播",
+      "description": "阻止新调度，停止可取消进程与工具，保留已得成果。",
+      "entry": "cancel",
+      "inputs": "范围与取消原因",
+      "outputs": "各执行器回执/未决项",
+      "guard": "停止等待不等于外部动作已撤销。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-cancel.md",
+      "code_target": "src/uaw/run/cancel.py",
+      "interface_doc": "docs/api/nodes/run.cancel.md",
+      "interface_count": 7
+    },
+    "run.trigger": {
+      "id": "run.trigger",
+      "label": "未来触发器",
+      "description": "定时/事件创建或唤醒Run，和节点调度分开。",
+      "entry": "trigger",
+      "inputs": "授权TriggerSpec与幂等键",
+      "outputs": "新Run或受控续接",
+      "guard": "先预留，不默认允许自动创建定时任务。",
+      "parent": "run",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-trigger.md",
+      "code_target": "src/uaw/run/trigger.py",
+      "interface_doc": "docs/api/nodes/run.trigger.md",
+      "interface_count": 3
+    },
+    "support.configuration": {
+      "id": "support.configuration",
+      "label": "配置与账号控制层",
+      "description": "管理员配置模型/API/政策；私人连接由用户授权。",
+      "entry": "publish_config/connect/revoke",
+      "inputs": "平台管理与账号授权",
+      "outputs": "版本配置、凭据引用",
+      "guard": "管理API不暴露为普通Agent工具；撤销当前生效。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-configuration.md",
+      "code_target": "src/uaw/shared/configuration.py",
+      "interface_doc": "docs/api/nodes/support.configuration.md",
+      "interface_count": 11
+    },
+    "support.extensions": {
+      "id": "support.extensions",
+      "label": "扩展包与版本发布",
+      "description": "技能、工具提供方、模板包的校验与升级。",
+      "entry": "install/validate/activate/rollback",
+      "inputs": "不可变包与依赖",
+      "outputs": "ReleaseManifest",
+      "guard": "安装不是授权，同版本内容不能偷偷变化。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-extensions.md",
+      "code_target": "src/uaw/shared/extensions.py",
+      "interface_doc": "docs/api/nodes/support.extensions.md",
+      "interface_count": 7
+    },
+    "support.cache": {
+      "id": "support.cache",
+      "label": "共享缓存设施",
+      "description": "key、依赖失效、在途合并、配额与指标。",
+      "entry": "get_or_compute/invalidate",
+      "inputs": "领域声明的可复用输入",
+      "outputs": "缓存引用与命中结果",
+      "guard": "领域决定有效性，缓存不储存唯一的审批/产物。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-cache.md",
+      "code_target": "src/uaw/shared/cache.py",
+      "interface_doc": "docs/api/nodes/support.cache.md",
+      "interface_count": 4
+    },
+    "support.observability": {
+      "id": "support.observability",
+      "label": "运行观测",
+      "description": "关联模块调用、版本、错误、成本和尾延迟。",
+      "entry": "observe/query_trace",
+      "inputs": "脱敏span/event/metric",
+      "outputs": "诊断视图与指标",
+      "guard": "Trace不替代恢复日志，不收隐藏思维全文。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-observability.md",
+      "code_target": "src/uaw/shared/observability.py",
+      "interface_doc": "docs/api/nodes/support.observability.md",
+      "interface_count": 2
+    },
+    "support.evaluation": {
+      "id": "support.evaluation",
+      "label": "离线质量评测",
+      "description": "固定真实任务集、隔离比较版本、人工校准。",
+      "entry": "evaluate/compare",
+      "inputs": "candidate/baseline/dataset/environment",
+      "outputs": "切片对比与ReleaseGate",
+      "guard": "不为每个用户请求执行；防止评测重放外部写入。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-evaluation.md",
+      "code_target": "src/uaw/shared/evaluation.py",
+      "interface_doc": "docs/api/nodes/support.evaluation.md",
+      "interface_count": 3
+    },
+    "support.stores": {
+      "id": "support.stores",
+      "label": "存储适配与访问",
+      "description": "逻辑历史、对象、检索与缓存存储接口。",
+      "entry": "repository/blob/index",
+      "inputs": "领域拥有的对象和scope",
+      "outputs": "持久引用与版本",
+      "guard": "物理数据库选型另议，不共用无归属的万能状态表。",
+      "parent": "support",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/support-stores.md",
+      "code_target": "src/uaw/shared/stores.py",
+      "interface_doc": "docs/api/nodes/support.stores.md",
+      "interface_count": 1
+    },
+    "tool.invocation.schema": {
+      "id": "tool.invocation.schema",
+      "label": "参数与可信上下文",
+      "description": "规范业务参数，可信身份/授权由服务端注入。",
+      "entry": "normalize",
+      "inputs": "ToolCall与服务端上下文",
+      "outputs": "ValidatedCall",
+      "guard": "模型参数不能覆盖执行主体。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-schema.md",
+      "code_target": "src/uaw/tool/invocation/schema.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.schema.md",
+      "interface_count": 1
+    },
+    "tool.invocation.precheck": {
+      "id": "tool.invocation.precheck",
+      "label": "执行预检",
+      "description": "当前权限、flag、风险、预算、deadline。",
+      "entry": "precheck",
+      "inputs": "动作与资源版本",
+      "outputs": "允许/拒绝/需审批",
+      "guard": "schema合法不等于允许执行。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-precheck.md",
+      "code_target": "src/uaw/tool/invocation/precheck.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.precheck.md",
+      "interface_count": 1
+    },
+    "tool.invocation.approval": {
+      "id": "tool.invocation.approval",
+      "label": "必要审批等待",
+      "description": "请求Run持久审批，受影响节点等待。",
+      "entry": "request_approval",
+      "inputs": "绑定动作、参数hash、资源、有效期",
+      "outputs": "ApprovalRef / declined",
+      "guard": "超时或没回复不算批准。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-approval.md",
+      "code_target": "src/uaw/tool/invocation/approval.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.approval.md",
+      "interface_count": 2
+    },
+    "tool.invocation.recheck": {
+      "id": "tool.invocation.recheck",
+      "label": "执行前复核",
+      "description": "重新检查参数、资源与当前撤销状态。",
+      "entry": "recheck",
+      "inputs": "当前动作与审批引用",
+      "outputs": "可执行调用或stale",
+      "guard": "TOCTOU变化需重新判断，不复用过期批准。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-recheck.md",
+      "code_target": "src/uaw/tool/invocation/recheck.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.recheck.md",
+      "interface_count": 2
+    },
+    "tool.invocation.dispatch": {
+      "id": "tool.invocation.dispatch",
+      "label": "意图登记与执行",
+      "description": "Tool效果账本先存意图，调用领域适配器。",
+      "entry": "record_then_dispatch",
+      "inputs": "稳定业务键、预留、deadline",
+      "outputs": "confirmed/pending/unknown",
+      "guard": "并行生成不能越过执行闸门。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-dispatch.md",
+      "code_target": "src/uaw/tool/invocation/dispatch.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.dispatch.md",
+      "interface_count": 1
+    },
+    "tool.invocation.result": {
+      "id": "tool.invocation.result",
+      "label": "规范结果与结算",
+      "description": "登记真实返回、分离业务失败、分页引用。",
+      "entry": "normalize/settle",
+      "inputs": "实际返回与用量",
+      "outputs": "ToolResult与反馈",
+      "guard": "unknown保留核对，不冒充failed后重发。",
+      "parent": "tool.invocation",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-invocation-result.md",
+      "code_target": "src/uaw/tool/invocation/result.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.result.md",
+      "interface_count": 1
+    },
+    "agent.collaboration.contract": {
+      "id": "agent.collaboration.contract",
+      "label": "子任务契约",
+      "description": "目标、输入、输出、验收、预算与权限交集。",
+      "entry": "prepare_delegation",
+      "inputs": "父目标与独立子工作",
+      "outputs": "DelegationSpec",
+      "guard": "检查协调成本，不凭复杂二字一律拆分。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-contract.md",
+      "code_target": "src/uaw/agent/collaboration/contract.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.contract.md",
+      "interface_count": 2
+    },
+    "agent.collaboration.instance": {
+      "id": "agent.collaboration.instance",
+      "label": "隔离运行实例",
+      "description": "固定定义、模型继承、临时上下文与工作区。",
+      "entry": "spawn",
+      "inputs": "定义版本与子预算",
+      "outputs": "AgentInstance",
+      "guard": "不共享可写临时状态。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-instance.md",
+      "code_target": "src/uaw/agent/collaboration/instance.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.instance.md",
+      "interface_count": 2
+    },
+    "agent.collaboration.channel": {
+      "id": "agent.collaboration.channel",
+      "label": "消息与受控引用",
+      "description": "分配、补充、有限询问、进度和结果引用。",
+      "entry": "send/read",
+      "inputs": "带任务/节点/版本的消息",
+      "outputs": "可追踪AgentMessage",
+      "guard": "不复制完整上下文或凭据。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-channel.md",
+      "code_target": "src/uaw/agent/collaboration/channel.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.channel.md",
+      "interface_count": 3
+    },
+    "agent.collaboration.join": {
+      "id": "agent.collaboration.join",
+      "label": "结果核验与汇总",
+      "description": "检查必需子结果、证据和目标版本，CAS提交共享板。",
+      "entry": "join",
+      "inputs": "NodeResult引用与状态",
+      "outputs": "整合结果/缺口",
+      "guard": "缺失和失败不静默视为完成。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-join.md",
+      "code_target": "src/uaw/agent/collaboration/join.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.join.md",
+      "interface_count": 2
+    },
+    "agent.collaboration.handoff": {
+      "id": "agent.collaboration.handoff",
+      "label": "可选控制权交接",
+      "description": "Handoff Controller 用CAS交接唯一对话责任。",
+      "entry": "handoff",
+      "inputs": "目标Agent、未完成状态、expected_lease",
+      "outputs": "新ControlLease或失败",
+      "guard": "控制权不自动转移全部权限，首版不默认开启。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-handoff.md",
+      "code_target": "src/uaw/agent/collaboration/handoff.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.handoff.md",
+      "interface_count": 2
+    },
+    "agent.collaboration.cancel": {
+      "id": "agent.collaboration.cancel",
+      "label": "生命周期与取消",
+      "description": "父取消、限额、超深度、子失败回传。",
+      "entry": "cancel/reconcile",
+      "inputs": "父子关联与未决调用",
+      "outputs": "回执与保留成果",
+      "guard": "不可取消副作用仍需Tool对账。",
+      "parent": "agent.collaboration",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-collaboration-cancel.md",
+      "code_target": "src/uaw/agent/collaboration/cancel.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.cancel.md",
+      "interface_count": 3
+    },
+    "agent.completion.contract": {
+      "id": "agent.completion.contract",
+      "label": "语义交付契约",
+      "description": "原文目标、硬约束、可接受成果与证据要求。",
+      "entry": "resolve_contract",
+      "inputs": "用户原文与已明确修订",
+      "outputs": "DeliveryContract revision",
+      "guard": "LLM不能为完成而删掉必需目标。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-contract.md",
+      "code_target": "src/uaw/agent/completion/contract.py",
+      "interface_doc": "docs/api/nodes/agent.completion.contract.md",
+      "interface_count": 2
+    },
+    "agent.completion.evidence": {
+      "id": "agent.completion.evidence",
+      "label": "真实证据收集",
+      "description": "选用测试、读取、来源核对或格式检查。",
+      "entry": "select_and_request_checks",
+      "inputs": "成果与缺口",
+      "outputs": "检查/来源引用",
+      "guard": "没有跑测试就不能说测试通过。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-evidence.md",
+      "code_target": "src/uaw/agent/completion/evidence.py",
+      "interface_doc": "docs/api/nodes/agent.completion.evidence.md",
+      "interface_count": 3
+    },
+    "agent.completion.semantic": {
+      "id": "agent.completion.semantic",
+      "label": "语义核对",
+      "description": "判断证据是否支持目标，标出缺口与限制。",
+      "entry": "review",
+      "inputs": "契约与受测版本证据",
+      "outputs": "目标满足/部分/受阻",
+      "guard": "不强制新增裁判Agent；主张不是事实证明。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-semantic.md",
+      "code_target": "src/uaw/agent/completion/semantic.py",
+      "interface_doc": "docs/api/nodes/agent.completion.semantic.md",
+      "interface_count": 4
+    },
+    "agent.completion.version": {
+      "id": "agent.completion.version",
+      "label": "版本与硬条件校验",
+      "description": "核实实际成果、必需检查、未决效果和预期版本。",
+      "entry": "validate_proposal",
+      "inputs": "VerificationReport与当前revision",
+      "outputs": "允许提交或stale",
+      "guard": "合并/撤销/局部接受可能需要重验。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-version.md",
+      "code_target": "src/uaw/agent/completion/version.py",
+      "interface_doc": "docs/api/nodes/agent.completion.version.md",
+      "interface_count": 2
+    },
+    "agent.completion.delivery": {
+      "id": "agent.completion.delivery",
+      "label": "提交交付",
+      "description": "Run核对终态，Workspace发布受控成果。",
+      "entry": "commit_completion",
+      "inputs": "CAS完成提案",
+      "outputs": "完整/部分/受阻交付",
+      "guard": "completed不一律等于succeeded。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-delivery.md",
+      "code_target": "src/uaw/agent/completion/delivery.py",
+      "interface_doc": "docs/api/nodes/agent.completion.delivery.md",
+      "interface_count": 1
+    },
+    "agent.completion.acceptance": {
+      "id": "agent.completion.acceptance",
+      "label": "用户接受与迭代",
+      "description": "审阅、局部接受、位置反馈与二次修改。",
+      "entry": "review_delivery",
+      "inputs": "固定ReviewSet与用户意见",
+      "outputs": "独立Delivery状态/新修订",
+      "guard": "AI判断完成与用户认可分开。",
+      "parent": "agent.completion",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/agent-completion-acceptance.md",
+      "code_target": "src/uaw/agent/completion/acceptance.py",
+      "interface_doc": "docs/api/nodes/agent.completion.acceptance.md",
+      "interface_count": 2
+    },
+    "context.memory.candidate": {
+      "id": "context.memory.candidate",
+      "label": "记忆候选",
+      "description": "显式记住或后台推断候选。",
+      "entry": "propose_memory",
+      "inputs": "用户输入、任务结果、来源",
+      "outputs": "待判断候选",
+      "guard": "不要每句话都写长期记忆。",
+      "parent": "context.memory",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-memory-candidate.md",
+      "code_target": "src/uaw/context/memory/candidate.py",
+      "interface_doc": "docs/api/nodes/context.memory.candidate.md",
+      "interface_count": 2
+    },
+    "context.memory.policy": {
+      "id": "context.memory.policy",
+      "label": "范围与写入政策",
+      "description": "读取/贡献开关、范围、保留期、可信来源。",
+      "entry": "check_memory_policy",
+      "inputs": "候选与用户控制",
+      "outputs": "允许写入或拒绝",
+      "guard": "不因协作而默认共享私人资料。",
+      "parent": "context.memory",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-memory-policy.md",
+      "code_target": "src/uaw/context/memory/policy.py",
+      "interface_doc": "docs/api/nodes/context.memory.policy.md",
+      "interface_count": 3
+    },
+    "context.memory.conflict": {
+      "id": "context.memory.conflict",
+      "label": "查重与冲突",
+      "description": "精确槽位/条件和语义候选对比，保留纠正历史。",
+      "entry": "resolve_conflict",
+      "inputs": "来源/时间/条件/版本",
+      "outputs": "版本化事实或待确认",
+      "guard": "相似不等于相同，不混淆不同成立条件。",
+      "parent": "context.memory",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-memory-conflict.md",
+      "code_target": "src/uaw/context/memory/conflict.py",
+      "interface_doc": "docs/api/nodes/context.memory.conflict.md",
+      "interface_count": 2
+    },
+    "context.memory.store": {
+      "id": "context.memory.store",
+      "label": "提交与召回",
+      "description": "权威提交后才宣称记住，按范围查找。",
+      "entry": "commit/recall",
+      "inputs": "验证事实与policy",
+      "outputs": "MemoryRef / revision",
+      "guard": "记忆不能成为授权凭证。",
+      "parent": "context.memory",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-memory-store.md",
+      "code_target": "src/uaw/context/memory/store.py",
+      "interface_doc": "docs/api/nodes/context.memory.store.md",
+      "interface_count": 4
+    },
+    "context.memory.forget": {
+      "id": "context.memory.forget",
+      "label": "遗忘与删除传播",
+      "description": "停止召回，清理派生摘要、索引与缓存。",
+      "entry": "forget",
+      "inputs": "选择器、派生依赖、保留政策",
+      "outputs": "完成项/失败项/删除标记",
+      "guard": "备份恢复要重放删除，物理期限明确。",
+      "parent": "context.memory",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/context-memory-forget.md",
+      "code_target": "src/uaw/context/memory/forget.py",
+      "interface_doc": "docs/api/nodes/context.memory.forget.md",
+      "interface_count": 4
+    },
+    "tool.mcp.provider": {
+      "id": "tool.mcp.provider",
+      "label": "提供方绑定",
+      "description": "消费控制层已启用配置与账号状态。",
+      "entry": "resolve_provider",
+      "inputs": "provider_ref与调用scope",
+      "outputs": "可连接配置",
+      "guard": "服务密钥不进入prompt。",
+      "parent": "tool.mcp",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-mcp-provider.md",
+      "code_target": "src/uaw/tool/mcp/provider.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.provider.md",
+      "interface_count": 3
+    },
+    "tool.mcp.session": {
+      "id": "tool.mcp.session",
+      "label": "协议会话",
+      "description": "协商、健康、有限重连与关闭。",
+      "entry": "connect/health/close",
+      "inputs": "连接配置与deadline",
+      "outputs": "SessionHandle",
+      "guard": "重连不重新执行未知写操作。",
+      "parent": "tool.mcp",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-mcp-session.md",
+      "code_target": "src/uaw/tool/mcp/session.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.session.md",
+      "interface_count": 1
+    },
+    "tool.mcp.capabilities": {
+      "id": "tool.mcp.capabilities",
+      "label": "能力规范化",
+      "description": "provider命名空间、schema与版本。",
+      "entry": "discover/normalize",
+      "inputs": "远端能力清单",
+      "outputs": "ToolSpec / registry revision",
+      "guard": "远端描述是数据，不是高优先级指令。",
+      "parent": "tool.mcp",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-mcp-capabilities.md",
+      "code_target": "src/uaw/tool/mcp/capabilities.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.capabilities.md",
+      "interface_count": 1
+    },
+    "tool.mcp.invoke": {
+      "id": "tool.mcp.invoke",
+      "label": "闸门后调用",
+      "description": "通过统一Tool调用闸门才使用远端会话。",
+      "entry": "proxy_call",
+      "inputs": "已准入动作与稳定调用ID",
+      "outputs": "协议结果或类型化失败",
+      "guard": "注册可见不等于现在有执行授权。",
+      "parent": "tool.mcp",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-mcp-invoke.md",
+      "code_target": "src/uaw/tool/mcp/invoke.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.invoke.md",
+      "interface_count": 1
+    },
+    "tool.mcp.invalidate": {
+      "id": "tool.mcp.invalidate",
+      "label": "变化与撤销",
+      "description": "断开、能力变更、授权撤销使绑定/缓存失效。",
+      "entry": "invalidate_binding",
+      "inputs": "当前变化事件",
+      "outputs": "registry revision / revoked状态",
+      "guard": "旧会话不能继续使用已撤销账号。",
+      "parent": "tool.mcp",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/tool-mcp-invalidate.md",
+      "code_target": "src/uaw/tool/mcp/invalidate.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.invalidate.md",
+      "interface_count": 3
+    },
+    "run.resume.lease": {
+      "id": "run.resume.lease",
+      "label": "取得运行租约",
+      "description": "使用预期版本，防同一工作重复领走。",
+      "entry": "acquire_lease",
+      "inputs": "run/node及预期revision",
+      "outputs": "有限Lease",
+      "guard": "多worker需要fencing，单进程先保恢复边界。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-lease.md",
+      "code_target": "src/uaw/run/resume/lease.py",
+      "interface_doc": "docs/api/nodes/run.resume.lease.md",
+      "interface_count": 2
+    },
+    "run.resume.versions": {
+      "id": "run.resume.versions",
+      "label": "版本兼容检查",
+      "description": "检查业务schema、定义、技能与环境manifest。",
+      "entry": "check_compatibility",
+      "inputs": "checkpoint与当前实现",
+      "outputs": "兼容/迁移/受阻",
+      "guard": "升级不能悄悄改变既有审批与模型政策。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-versions.md",
+      "code_target": "src/uaw/run/resume/versions.py",
+      "interface_doc": "docs/api/nodes/run.resume.versions.md",
+      "interface_count": 2
+    },
+    "run.resume.access": {
+      "id": "run.resume.access",
+      "label": "重建连接与核验",
+      "description": "读取当前授权/撤销，重建非持久连接。",
+      "entry": "rehydrate",
+      "inputs": "有效配置与资源引用",
+      "outputs": "可恢复句柄与范围",
+      "guard": "checkpoint不保存可长期复用的密钥授权。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-access.md",
+      "code_target": "src/uaw/run/resume/access.py",
+      "interface_doc": "docs/api/nodes/run.resume.access.md",
+      "interface_count": 2
+    },
+    "run.resume.effects": {
+      "id": "run.resume.effects",
+      "label": "Tool未决动作对账",
+      "description": "查询实际效果，保留不能确定的项。",
+      "entry": "reconcile",
+      "inputs": "Tool账本游标与业务键",
+      "outputs": "实际效果状态",
+      "guard": "先核对，再决定是否允许重试。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-effects.md",
+      "code_target": "src/uaw/run/resume/effects.py",
+      "interface_doc": "docs/api/nodes/run.resume.effects.md",
+      "interface_count": 2
+    },
+    "run.resume.workspace": {
+      "id": "run.resume.workspace",
+      "label": "工作区实际版本",
+      "description": "检查用户并发修改、环境可用与产物版本。",
+      "entry": "check_workspace",
+      "inputs": "保存的版本与当前Runner状态",
+      "outputs": "可继续/冲突/缺失",
+      "guard": "不把旧快照冒充当前磁盘。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-workspace.md",
+      "code_target": "src/uaw/run/resume/workspace.py",
+      "interface_doc": "docs/api/nodes/run.resume.workspace.md",
+      "interface_count": 2
+    },
+    "run.resume.continue": {
+      "id": "run.resume.continue",
+      "label": "恢复可运行工作",
+      "description": "更新恢复事件，继续未完成节点。",
+      "entry": "resume_nodes",
+      "inputs": "核对后的领域状态",
+      "outputs": "Run进展或明确受阻",
+      "guard": "replay不执行；rerun是新尝试。",
+      "parent": "run.resume",
+      "kind": "component",
+      "status": "设计目标，未实现 Runtime",
+      "design_doc": "docs/design/components/run-resume-continue.md",
+      "code_target": "src/uaw/run/resume/continue_run.py",
+      "interface_doc": "docs/api/nodes/run.resume.continue.md",
+      "interface_count": 2
+    }
+  },
+  "views": {
+    "overview": {
+      "id": "overview",
+      "title": "UAW 总体关系",
+      "summary": "这是职责关系图，可以有反馈与循环；不规定每个请求必经全部模块。任务依赖 DAG、Agent 委派树和工作区分支另行建模。",
+      "nodes": [
+        "ui",
+        "ingress",
+        "intent",
+        "agent",
+        "context",
+        "tool",
+        "workspace",
+        "model",
+        "run",
+        "support"
+      ],
+      "edges": [
+        {
+          "source": "ui",
+          "target": "ingress",
+          "label": "发送原文/干预/审阅",
+          "kind": "call"
+        },
+        {
+          "source": "ingress",
+          "target": "run",
+          "label": "创建与控制执行",
+          "kind": "call"
+        },
+        {
+          "source": "run",
+          "target": "intent",
+          "label": "发起理解或修订",
+          "kind": "call"
+        },
+        {
+          "source": "intent",
+          "target": "agent",
+          "label": "目标、约束、未知项",
+          "kind": "data"
+        },
+        {
+          "source": "intent",
+          "target": "context",
+          "label": "按需补充理解材料",
+          "kind": "call"
+        },
+        {
+          "source": "intent",
+          "target": "model",
+          "label": "需要语义理解生成时",
+          "kind": "call"
+        },
+        {
+          "source": "agent",
+          "target": "context",
+          "label": "装配本轮输入",
+          "kind": "call"
+        },
+        {
+          "source": "context",
+          "target": "model",
+          "label": "需要语义压缩/摘要时",
+          "kind": "call"
+        },
+        {
+          "source": "agent",
+          "target": "model",
+          "label": "提出下一步动作",
+          "kind": "call"
+        },
+        {
+          "source": "agent",
+          "target": "tool",
+          "label": "发现/执行动作",
+          "kind": "call"
+        },
+        {
+          "source": "tool",
+          "target": "workspace",
+          "label": "受控文件/环境/进程",
+          "kind": "call"
+        },
+        {
+          "source": "tool",
+          "target": "agent",
+          "label": "定义/委派等控制工具",
+          "kind": "call"
+        },
+        {
+          "source": "tool",
+          "target": "context",
+          "label": "资料/引用等控制工具",
+          "kind": "call"
+        },
+        {
+          "source": "agent",
+          "target": "workspace",
+          "label": "隔离分配与交付协调",
+          "kind": "call"
+        },
+        {
+          "source": "workspace",
+          "target": "context",
+          "label": "授权文件与产物版本",
+          "kind": "data"
+        },
+        {
+          "source": "tool",
+          "target": "agent",
+          "label": "实际结果/类型化失败",
+          "kind": "data"
+        },
+        {
+          "source": "agent",
+          "target": "run",
+          "label": "预算/检查点/完成申请",
+          "kind": "state"
+        },
+        {
+          "source": "tool",
+          "target": "run",
+          "label": "审批请求与用量",
+          "kind": "state"
+        },
+        {
+          "source": "model",
+          "target": "run",
+          "label": "模型预算预留与结算",
+          "kind": "state"
+        },
+        {
+          "source": "run",
+          "target": "ui",
+          "label": "Items、进度、审批、成果",
+          "kind": "state"
+        },
+        {
+          "source": "support",
+          "target": "tool",
+          "label": "提供方与当前撤销",
+          "kind": "policy"
+        },
+        {
+          "source": "support",
+          "target": "model",
+          "label": "模型目录与发布配置",
+          "kind": "policy"
+        },
+        {
+          "source": "support",
+          "target": "agent",
+          "label": "技能/能力包与flag",
+          "kind": "policy"
+        },
+        {
+          "source": "support",
+          "target": "context",
+          "label": "资料/记忆与保留政策",
+          "kind": "policy"
+        },
+        {
+          "source": "run",
+          "target": "support",
+          "label": "关联诊断与评测输入",
+          "kind": "data"
+        }
+      ]
+    },
+    "intent": {
+      "id": "intent",
+      "title": "任务理解 · Intent",
+      "summary": "草稿与正式理解是两个入口；必要探查可循环，简单请求可以直接构建 TaskFrame。",
+      "nodes": [
+        "intent.preview",
+        "intent.original",
+        "intent.semantic",
+        "intent.references",
+        "intent.probe",
+        "intent.ambiguity",
+        "intent.frame"
+      ],
+      "edges": [
+        {
+          "source": "intent.original",
+          "target": "intent.semantic",
+          "label": "用户基准",
+          "kind": "data"
+        },
+        {
+          "source": "intent.semantic",
+          "target": "intent.references",
+          "label": "待定位表达",
+          "kind": "call"
+        },
+        {
+          "source": "intent.references",
+          "target": "intent.probe",
+          "label": "按需补材料",
+          "kind": "call"
+        },
+        {
+          "source": "intent.probe",
+          "target": "intent.semantic",
+          "label": "证据反馈",
+          "kind": "data"
+        },
+        {
+          "source": "intent.semantic",
+          "target": "intent.ambiguity",
+          "label": "候选与未知",
+          "kind": "data"
+        },
+        {
+          "source": "intent.ambiguity",
+          "target": "intent.frame",
+          "label": "已定目标与保留假设",
+          "kind": "data"
+        },
+        {
+          "source": "intent.semantic",
+          "target": "intent.preview",
+          "label": "草稿路径的短理解",
+          "kind": "data"
+        }
+      ]
+    },
+    "agent": {
+      "id": "agent",
+      "title": "决策执行 · Agent",
+      "summary": "默认单 Agent 循环；规划、委派和并发分别按需启用。完成核验是任务语义与真实证据核对。",
+      "nodes": [
+        "agent.definitions",
+        "agent.factory",
+        "agent.loop",
+        "agent.assessment",
+        "agent.planning",
+        "agent.scheduler",
+        "agent.collaboration",
+        "agent.skills",
+        "agent.completion",
+        "agent.board"
+      ],
+      "edges": [
+        {
+          "source": "agent.skills",
+          "target": "agent.loop",
+          "label": "按需方法",
+          "kind": "data"
+        },
+        {
+          "source": "agent.loop",
+          "target": "agent.assessment",
+          "label": "不确定执行方式时",
+          "kind": "call"
+        },
+        {
+          "source": "agent.assessment",
+          "target": "agent.planning",
+          "label": "需要 steps/DAG 时",
+          "kind": "call"
+        },
+        {
+          "source": "agent.planning",
+          "target": "agent.scheduler",
+          "label": "已校验依赖",
+          "kind": "data"
+        },
+        {
+          "source": "agent.scheduler",
+          "target": "agent.collaboration",
+          "label": "需要委派时",
+          "kind": "call"
+        },
+        {
+          "source": "agent.collaboration",
+          "target": "agent.board",
+          "label": "提交版本化结果",
+          "kind": "state"
+        },
+        {
+          "source": "agent.board",
+          "target": "agent.scheduler",
+          "label": "依赖满足/失效",
+          "kind": "state"
+        },
+        {
+          "source": "agent.loop",
+          "target": "agent.completion",
+          "label": "提出交付时",
+          "kind": "call"
+        },
+        {
+          "source": "agent.completion",
+          "target": "agent.loop",
+          "label": "缺口与补救",
+          "kind": "data"
+        },
+        {
+          "source": "agent.board",
+          "target": "agent.completion",
+          "label": "成果及证据引用",
+          "kind": "data"
+        },
+        {
+          "source": "agent.scheduler",
+          "target": "agent.loop",
+          "label": "执行节点",
+          "kind": "call"
+        },
+        {
+          "source": "agent.definitions",
+          "target": "agent.factory",
+          "label": "读取启用定义版本",
+          "kind": "data"
+        },
+        {
+          "source": "agent.collaboration",
+          "target": "agent.factory",
+          "label": "invoke经合法契约创建",
+          "kind": "call"
+        },
+        {
+          "source": "agent.factory",
+          "target": "agent.loop",
+          "label": "固定定义后的实例运行",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "agent.definitions",
+          "target": "agent.loop",
+          "label": "Context提供会话候选，非自动调用",
+          "kind": "data"
+        }
+      ]
+    },
+    "agent.definitions": {
+      "id": "agent.definitions",
+      "title": "子Agent定义与发现",
+      "summary": "用户要求创建时主Agent加载方法并调用create；后续语义发现合适角色，invoke另经统一工厂启动。",
+      "nodes": [
+        "agent.definitions.designer",
+        "agent.definitions.validator",
+        "agent.definitions.model_intent",
+        "agent.definitions.repository",
+        "agent.definitions.discovery",
+        "agent.definitions.change_service",
+        "agent.factory"
+      ],
+      "edges": [
+        {
+          "source": "agent.definitions.designer",
+          "target": "agent.definitions.validator",
+          "label": "用户授权创建的草案",
+          "kind": "data"
+        },
+        {
+          "source": "agent.definitions.validator",
+          "target": "agent.definitions.model_intent",
+          "label": "必要模型意图核对",
+          "kind": "call"
+        },
+        {
+          "source": "agent.definitions.model_intent",
+          "target": "agent.definitions.repository",
+          "label": "合法/未解决结果",
+          "kind": "data"
+        },
+        {
+          "source": "agent.definitions.repository",
+          "target": "agent.definitions.discovery",
+          "label": "已启用定义摘要",
+          "kind": "data"
+        },
+        {
+          "source": "agent.definitions.repository",
+          "target": "agent.definitions.change_service",
+          "label": "版本化配置",
+          "kind": "data"
+        },
+        {
+          "source": "agent.definitions.change_service",
+          "target": "agent.definitions.repository",
+          "label": "反向修订/CAS",
+          "kind": "state"
+        },
+        {
+          "source": "agent.definitions.discovery",
+          "target": "agent.factory",
+          "label": "当前LLM决定委派后，经Tool调用invoke",
+          "kind": "call"
+        }
+      ]
+    },
+    "context": {
+      "id": "context",
+      "title": "上下文 · Context",
+      "summary": "资料、记忆与规则是不同支路，最终按当前任务目的装配；不是先跑完整 RAG 再回答。",
+      "nodes": [
+        "context.sources",
+        "context.rules",
+        "context.ingestion",
+        "context.retrieval",
+        "context.memory",
+        "context.selection",
+        "context.compression",
+        "context.composer",
+        "context.references"
+      ],
+      "edges": [
+        {
+          "source": "context.sources",
+          "target": "context.ingestion",
+          "label": "新增/更新材料",
+          "kind": "call"
+        },
+        {
+          "source": "context.ingestion",
+          "target": "context.retrieval",
+          "label": "已发布索引",
+          "kind": "data"
+        },
+        {
+          "source": "context.sources",
+          "target": "context.retrieval",
+          "label": "明确来源或查询",
+          "kind": "call"
+        },
+        {
+          "source": "context.retrieval",
+          "target": "context.selection",
+          "label": "证据候选",
+          "kind": "data"
+        },
+        {
+          "source": "context.memory",
+          "target": "context.selection",
+          "label": "允许读取的记忆",
+          "kind": "data"
+        },
+        {
+          "source": "context.rules",
+          "target": "context.composer",
+          "label": "可信指令",
+          "kind": "policy"
+        },
+        {
+          "source": "context.selection",
+          "target": "context.compression",
+          "label": "需要压缩时",
+          "kind": "call"
+        },
+        {
+          "source": "context.selection",
+          "target": "context.composer",
+          "label": "无需压缩的块",
+          "kind": "data"
+        },
+        {
+          "source": "context.compression",
+          "target": "context.composer",
+          "label": "核验后继续状态",
+          "kind": "data"
+        },
+        {
+          "source": "context.sources",
+          "target": "context.references",
+          "label": "登记来源",
+          "kind": "call"
+        },
+        {
+          "source": "context.references",
+          "target": "context.composer",
+          "label": "定位与版本",
+          "kind": "data"
+        }
+      ]
+    },
+    "tool": {
+      "id": "tool",
+      "title": "工具执行 · Tool",
+      "summary": "工具动作有统一入口，具体状态仍由所属 Runtime 实现；失败恢复集中在 Tool。",
+      "nodes": [
+        "tool.registry",
+        "tool.discovery",
+        "tool.invocation",
+        "tool.effects",
+        "tool.failure",
+        "tool.mcp",
+        "tool.adapters",
+        "tool.results",
+        "tool.audit"
+      ],
+      "edges": [
+        {
+          "source": "tool.registry",
+          "target": "tool.discovery",
+          "label": "当前可见能力",
+          "kind": "data"
+        },
+        {
+          "source": "tool.discovery",
+          "target": "tool.invocation",
+          "label": "LLM选择后调用",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation",
+          "target": "tool.effects",
+          "label": "执行前登记意图",
+          "kind": "state"
+        },
+        {
+          "source": "tool.effects",
+          "target": "tool.adapters",
+          "label": "准入后的调用",
+          "kind": "call"
+        },
+        {
+          "source": "tool.adapters",
+          "target": "tool.mcp",
+          "label": "MCP提供方路径",
+          "kind": "call"
+        },
+        {
+          "source": "tool.mcp",
+          "target": "tool.registry",
+          "label": "能力及schema版本",
+          "kind": "data"
+        },
+        {
+          "source": "tool.adapters",
+          "target": "tool.results",
+          "label": "实际返回",
+          "kind": "data"
+        },
+        {
+          "source": "tool.results",
+          "target": "tool.effects",
+          "label": "确认/待核对",
+          "kind": "state"
+        },
+        {
+          "source": "tool.results",
+          "target": "tool.failure",
+          "label": "错误或未决反馈",
+          "kind": "call"
+        },
+        {
+          "source": "tool.failure",
+          "target": "tool.invocation",
+          "label": "允许重试/等价切换",
+          "kind": "call"
+        },
+        {
+          "source": "tool.results",
+          "target": "tool.audit",
+          "label": "结果与用量",
+          "kind": "state"
+        }
+      ]
+    },
+    "workspace": {
+      "id": "workspace",
+      "title": "工作区 · Workspace",
+      "summary": "本地项目首版可用是产品目标；图不代表 Runner 已实现。交付、用户接受和外部发布是不同操作。",
+      "nodes": [
+        "workspace.binding",
+        "workspace.base",
+        "workspace.isolation",
+        "workspace.environment",
+        "workspace.process",
+        "workspace.changes",
+        "workspace.artifacts",
+        "workspace.review"
+      ],
+      "edges": [
+        {
+          "source": "workspace.binding",
+          "target": "workspace.base",
+          "label": "获准的项目",
+          "kind": "call"
+        },
+        {
+          "source": "workspace.base",
+          "target": "workspace.isolation",
+          "label": "基础快照",
+          "kind": "data"
+        },
+        {
+          "source": "workspace.isolation",
+          "target": "workspace.environment",
+          "label": "环境生命周期",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "workspace.environment",
+          "target": "workspace.process",
+          "label": "ready后的操作",
+          "kind": "call"
+        },
+        {
+          "source": "workspace.process",
+          "target": "workspace.changes",
+          "label": "前后快照与真实改动",
+          "kind": "data"
+        },
+        {
+          "source": "workspace.changes",
+          "target": "workspace.artifacts",
+          "label": "固定成果版本",
+          "kind": "data"
+        },
+        {
+          "source": "workspace.artifacts",
+          "target": "workspace.review",
+          "label": "可审阅交付",
+          "kind": "data"
+        },
+        {
+          "source": "workspace.review",
+          "target": "workspace.changes",
+          "label": "局部接受/撤销/冲突",
+          "kind": "call"
+        },
+        {
+          "source": "workspace.process",
+          "target": "workspace.environment",
+          "label": "停止与保留策略",
+          "kind": "lifecycle"
+        }
+      ]
+    },
+    "model": {
+      "id": "model",
+      "title": "模型调用 · Model",
+      "summary": "默认所有 Agent 继承用户选择；成本优化与故障恢复都遵守这一政策。",
+      "nodes": [
+        "model.catalog",
+        "model.policy",
+        "model.capability",
+        "model.gateway",
+        "model.adapters",
+        "model.recovery",
+        "model.usage"
+      ],
+      "edges": [
+        {
+          "source": "model.catalog",
+          "target": "model.policy",
+          "label": "可见模型",
+          "kind": "data"
+        },
+        {
+          "source": "model.policy",
+          "target": "model.capability",
+          "label": "继承后的约束",
+          "kind": "policy"
+        },
+        {
+          "source": "model.capability",
+          "target": "model.gateway",
+          "label": "获准兼容配置",
+          "kind": "data"
+        },
+        {
+          "source": "model.gateway",
+          "target": "model.adapters",
+          "label": "实际请求",
+          "kind": "call"
+        },
+        {
+          "source": "model.adapters",
+          "target": "model.recovery",
+          "label": "调用失败",
+          "kind": "call"
+        },
+        {
+          "source": "model.recovery",
+          "target": "model.gateway",
+          "label": "有限新尝试",
+          "kind": "call"
+        },
+        {
+          "source": "model.adapters",
+          "target": "model.usage",
+          "label": "实际用量和版本",
+          "kind": "state"
+        }
+      ]
+    },
+    "run": {
+      "id": "run",
+      "title": "运行控制 · Run",
+      "summary": "Run 负责可靠控制；计划/记忆/工具结果仍由各自领域写入，不复制第二套业务权威。",
+      "nodes": [
+        "run.history",
+        "run.state",
+        "run.events",
+        "run.budget",
+        "run.approval",
+        "run.checkpoint",
+        "run.resume",
+        "run.cancel",
+        "run.trigger"
+      ],
+      "edges": [
+        {
+          "source": "run.history",
+          "target": "run.state",
+          "label": "原始请求",
+          "kind": "data"
+        },
+        {
+          "source": "run.state",
+          "target": "run.events",
+          "label": "可见状态变化",
+          "kind": "state"
+        },
+        {
+          "source": "run.budget",
+          "target": "run.state",
+          "label": "准入/超限",
+          "kind": "policy"
+        },
+        {
+          "source": "run.approval",
+          "target": "run.state",
+          "label": "干预安全边界",
+          "kind": "state"
+        },
+        {
+          "source": "run.state",
+          "target": "run.checkpoint",
+          "label": "已提交领域进度",
+          "kind": "state"
+        },
+        {
+          "source": "run.checkpoint",
+          "target": "run.resume",
+          "label": "恢复引用",
+          "kind": "data"
+        },
+        {
+          "source": "run.resume",
+          "target": "run.state",
+          "label": "核对后继续",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "run.approval",
+          "target": "run.cancel",
+          "label": "用户取消",
+          "kind": "call"
+        },
+        {
+          "source": "run.cancel",
+          "target": "run.state",
+          "label": "取消回执与未决动作",
+          "kind": "state"
+        },
+        {
+          "source": "run.trigger",
+          "target": "run.state",
+          "label": "授权触发",
+          "kind": "lifecycle"
+        }
+      ]
+    },
+    "support": {
+      "id": "support",
+      "title": "共享支撑与控制层",
+      "summary": "共享设施各有统一入口；调用图显示逻辑职责，不要求新增多个服务或数据库。",
+      "nodes": [
+        "support.configuration",
+        "support.extensions",
+        "support.cache",
+        "support.observability",
+        "support.evaluation",
+        "support.stores"
+      ],
+      "edges": [
+        {
+          "source": "support.configuration",
+          "target": "support.extensions",
+          "label": "有效政策与提供方",
+          "kind": "policy"
+        },
+        {
+          "source": "support.extensions",
+          "target": "support.evaluation",
+          "label": "待发布候选",
+          "kind": "data"
+        },
+        {
+          "source": "support.observability",
+          "target": "support.evaluation",
+          "label": "授权失败样本",
+          "kind": "data"
+        },
+        {
+          "source": "support.evaluation",
+          "target": "support.extensions",
+          "label": "回归报告与发布门槛",
+          "kind": "policy"
+        },
+        {
+          "source": "support.extensions",
+          "target": "support.cache",
+          "label": "版本/撤销失效",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "support.configuration",
+          "target": "support.cache",
+          "label": "账号/授权撤销",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "support.cache",
+          "target": "support.stores",
+          "label": "可淘汰派生存储",
+          "kind": "call"
+        },
+        {
+          "source": "support.observability",
+          "target": "support.stores",
+          "label": "受控诊断记录",
+          "kind": "call"
+        },
+        {
+          "source": "support.evaluation",
+          "target": "support.stores",
+          "label": "样本与对比版本",
+          "kind": "data"
+        }
+      ]
+    },
+    "tool.invocation": {
+      "id": "tool.invocation",
+      "title": "调用闸门与派发",
+      "summary": "这是一条动作的安全契约，不是固定业务任务流水线；拒绝和未知结果都回到Agent决策。",
+      "nodes": [
+        "tool.invocation.schema",
+        "tool.invocation.precheck",
+        "tool.invocation.approval",
+        "tool.invocation.recheck",
+        "tool.invocation.dispatch",
+        "tool.invocation.result"
+      ],
+      "edges": [
+        {
+          "source": "tool.invocation.schema",
+          "target": "tool.invocation.precheck",
+          "label": "结构已校验",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation.precheck",
+          "target": "tool.invocation.approval",
+          "label": "需要确认时",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation.precheck",
+          "target": "tool.invocation.recheck",
+          "label": "已有有效授权时",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation.approval",
+          "target": "tool.invocation.recheck",
+          "label": "明确批准后",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation.recheck",
+          "target": "tool.invocation.dispatch",
+          "label": "复核通过后",
+          "kind": "call"
+        },
+        {
+          "source": "tool.invocation.dispatch",
+          "target": "tool.invocation.result",
+          "label": "真实执行返回",
+          "kind": "data"
+        }
+      ]
+    },
+    "agent.collaboration": {
+      "id": "agent.collaboration",
+      "title": "委派与控制权",
+      "summary": "delegate返回结果，父Agent仍负责用户对话；handoff另行移交控制权，不是普通子调用。",
+      "nodes": [
+        "agent.collaboration.contract",
+        "agent.collaboration.instance",
+        "agent.collaboration.channel",
+        "agent.collaboration.join",
+        "agent.collaboration.handoff",
+        "agent.collaboration.cancel"
+      ],
+      "edges": [
+        {
+          "source": "agent.collaboration.contract",
+          "target": "agent.collaboration.instance",
+          "label": "工厂校验后创建",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "agent.collaboration.instance",
+          "target": "agent.collaboration.channel",
+          "label": "运行与交互",
+          "kind": "call"
+        },
+        {
+          "source": "agent.collaboration.channel",
+          "target": "agent.collaboration.join",
+          "label": "子结果与证据",
+          "kind": "data"
+        },
+        {
+          "source": "agent.collaboration.join",
+          "target": "agent.collaboration.contract",
+          "label": "缺口触发再决策",
+          "kind": "data"
+        },
+        {
+          "source": "agent.collaboration.channel",
+          "target": "agent.collaboration.handoff",
+          "label": "需要转对话责任时",
+          "kind": "call"
+        },
+        {
+          "source": "agent.collaboration.instance",
+          "target": "agent.collaboration.cancel",
+          "label": "取消与超限",
+          "kind": "lifecycle"
+        }
+      ]
+    },
+    "agent.completion": {
+      "id": "agent.completion",
+      "title": "完成核验协调",
+      "summary": "成果存在、检查通过、语义满足和用户接受分别表达；验收策略随任务变化。",
+      "nodes": [
+        "agent.completion.contract",
+        "agent.completion.evidence",
+        "agent.completion.semantic",
+        "agent.completion.version",
+        "agent.completion.delivery",
+        "agent.completion.acceptance"
+      ],
+      "edges": [
+        {
+          "source": "agent.completion.contract",
+          "target": "agent.completion.evidence",
+          "label": "按需要选择检查",
+          "kind": "call"
+        },
+        {
+          "source": "agent.completion.evidence",
+          "target": "agent.completion.semantic",
+          "label": "真实证据",
+          "kind": "data"
+        },
+        {
+          "source": "agent.completion.semantic",
+          "target": "agent.completion.evidence",
+          "label": "发现缺口再验证",
+          "kind": "call"
+        },
+        {
+          "source": "agent.completion.semantic",
+          "target": "agent.completion.version",
+          "label": "完成提案",
+          "kind": "data"
+        },
+        {
+          "source": "agent.completion.version",
+          "target": "agent.completion.delivery",
+          "label": "条件/版本通过",
+          "kind": "call"
+        },
+        {
+          "source": "agent.completion.delivery",
+          "target": "agent.completion.acceptance",
+          "label": "交付供审阅",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "agent.completion.acceptance",
+          "target": "agent.completion.contract",
+          "label": "用户修订目标",
+          "kind": "state"
+        }
+      ]
+    },
+    "context.memory": {
+      "id": "context.memory",
+      "title": "记忆生命周期",
+      "summary": "显式要求及时提交并报告成功/失败；推断候选可后台核验。遗忘是可追踪动作。",
+      "nodes": [
+        "context.memory.candidate",
+        "context.memory.policy",
+        "context.memory.conflict",
+        "context.memory.store",
+        "context.memory.forget"
+      ],
+      "edges": [
+        {
+          "source": "context.memory.candidate",
+          "target": "context.memory.policy",
+          "label": "用户/后台候选",
+          "kind": "call"
+        },
+        {
+          "source": "context.memory.policy",
+          "target": "context.memory.conflict",
+          "label": "允许写入",
+          "kind": "call"
+        },
+        {
+          "source": "context.memory.conflict",
+          "target": "context.memory.store",
+          "label": "核验后提交",
+          "kind": "state"
+        },
+        {
+          "source": "context.memory.store",
+          "target": "context.memory.forget",
+          "label": "删除/过期/撤销",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "context.memory.forget",
+          "target": "context.memory.store",
+          "label": "停止召回与新版本",
+          "kind": "state"
+        }
+      ]
+    },
+    "tool.mcp": {
+      "id": "tool.mcp",
+      "title": "MCP 连接与适配",
+      "summary": "MCP会话由Tool管理，账号授权与凭据由控制层管理，两种生命周期关联但不混为一份状态。",
+      "nodes": [
+        "tool.mcp.provider",
+        "tool.mcp.session",
+        "tool.mcp.capabilities",
+        "tool.mcp.invoke",
+        "tool.mcp.invalidate"
+      ],
+      "edges": [
+        {
+          "source": "tool.mcp.provider",
+          "target": "tool.mcp.session",
+          "label": "获准建立连接",
+          "kind": "policy"
+        },
+        {
+          "source": "tool.mcp.session",
+          "target": "tool.mcp.capabilities",
+          "label": "发现当前能力",
+          "kind": "call"
+        },
+        {
+          "source": "tool.mcp.capabilities",
+          "target": "tool.mcp.invoke",
+          "label": "Tool注册/闸门后",
+          "kind": "call"
+        },
+        {
+          "source": "tool.mcp.session",
+          "target": "tool.mcp.invalidate",
+          "label": "变化或断开",
+          "kind": "lifecycle"
+        },
+        {
+          "source": "tool.mcp.invalidate",
+          "target": "tool.mcp.capabilities",
+          "label": "需重新发现",
+          "kind": "state"
+        }
+      ]
+    },
+    "run.resume": {
+      "id": "run.resume",
+      "title": "租约与执行恢复",
+      "summary": "恢复有明确核对边界；未决效果无法核实的依赖不能当成已成功继续。",
+      "nodes": [
+        "run.resume.lease",
+        "run.resume.versions",
+        "run.resume.access",
+        "run.resume.effects",
+        "run.resume.workspace",
+        "run.resume.continue"
+      ],
+      "edges": [
+        {
+          "source": "run.resume.lease",
+          "target": "run.resume.versions",
+          "label": "checkpoint读入",
+          "kind": "call"
+        },
+        {
+          "source": "run.resume.versions",
+          "target": "run.resume.access",
+          "label": "兼容检查通过",
+          "kind": "call"
+        },
+        {
+          "source": "run.resume.access",
+          "target": "run.resume.effects",
+          "label": "当前授权核验",
+          "kind": "call"
+        },
+        {
+          "source": "run.resume.effects",
+          "target": "run.resume.workspace",
+          "label": "未决项已有明确处理",
+          "kind": "call"
+        },
+        {
+          "source": "run.resume.workspace",
+          "target": "run.resume.continue",
+          "label": "版本/环境允许继续",
+          "kind": "call"
+        }
+      ]
+    }
+  }
+}

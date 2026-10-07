@@ -1,0 +1,289 @@
+{
+  "input_rows": 22,
+  "effective_rows": 22,
+  "exact_duplicates": 0,
+  "excluded": 0,
+  "synthetic_rows": 0,
+  "theme_counts": {
+    "manual_work": 2,
+    "fragmentation": 0,
+    "switching": 0,
+    "cost": 0,
+    "trust": 0,
+    "positive_preference": 0
+  },
+  "strata_counts": {
+    "V2EX actual AI work|中文社区；地区未知|知识工作者/具体范围见内容|Unknown|false": 3,
+    "V2EX Excel annotation DIY|中文社区；地区未知|知识工作者/具体范围见内容|Unknown|false": 1,
+    "V2EX agent maker notes|中文社区；地区未知|知识工作者/具体范围见内容|Unknown|false": 1,
+    "V2EX WorkBuddy mixed experiences|中文社区；居住地未知|知识工作者/具体范围见内容|Unknown|false": 7,
+    "V2EX WorkBuddy incomplete task|中文社区；地区未知|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Reddit Cowork Sheets workflow|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Reddit mundane Cowork tasks|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Reddit finance adoption/verification|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 2,
+    "Reddit developer non-adopter|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Reddit education Elicit concern|澳大利亚（OP自述）|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Reddit literature workflow|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Cursor stale review backlog|全球/样本地区有限|知识工作者/具体范围见内容|Unknown|false": 1,
+    "Claude permission inheritance issue|全球/样本地区有限|知识工作者/具体范围见内容|Claude Code 2.1.132|false": 1
+  },
+  "publication_month_counts": {
+    "2025-06": 4,
+    "2025-07": 1,
+    "2026-08": 7,
+    "2026-07": 1,
+    "2026-03": 1,
+    "Unknown": 7,
+    "2026-02": 1
+  },
+  "publication_month_theme_counts": {
+    "2025-06": {
+      "manual_work": 1,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "2025-07": {
+      "manual_work": 0,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "2026-08": {
+      "manual_work": 0,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "2026-07": {
+      "manual_work": 0,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "2026-03": {
+      "manual_work": 0,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "Unknown": {
+      "manual_work": 1,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    },
+    "2026-02": {
+      "manual_work": 0,
+      "fragmentation": 0,
+      "switching": 0,
+      "cost": 0,
+      "trust": 0,
+      "positive_preference": 0
+    }
+  },
+  "quality_flags": [
+    {
+      "review_id": "R001",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R002",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R003",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R004",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R005",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R006",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R007",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R008",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R009",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R010",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R011",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R012",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R013",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R014",
+      "missing_provenance": [
+        "product_version",
+        "author_id"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R015",
+      "missing_provenance": [
+        "published_at",
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R016",
+      "missing_provenance": [
+        "published_at",
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R017",
+      "missing_provenance": [
+        "published_at",
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R018",
+      "missing_provenance": [
+        "published_at",
+        "product_version",
+        "author_id"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R019",
+      "missing_provenance": [
+        "published_at",
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R020",
+      "missing_provenance": [
+        "published_at",
+        "product_version",
+        "author_id"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R021",
+      "missing_provenance": [
+        "product_version"
+      ],
+      "synthetic": false,
+      "review_required": true
+    },
+    {
+      "review_id": "R022",
+      "missing_provenance": [
+        "published_at",
+        "author_id"
+      ],
+      "synthetic": false,
+      "review_required": true
+    }
+  ],
+  "near_comparisons": 21,
+  "near_search_truncated": false,
+  "method": "NFKC case/whitespace normalization; identity-aware exact dedup; keyword multi-label themes; monthly publication counts; provenance gap flags; manual near-dedup candidates.",
+  "limitations": "Counts describe this convenience sample only, not population prevalence or unique people. Keywords do not understand negation; manually review. Different URLs may be reposts. Themes can overlap; provenance is preserved. Provenance flags do not detect bots, marketing or factual accuracy."
+}

@@ -1,0 +1,602 @@
+{
+  "opportunities": [
+    {
+      "id": "O001",
+      "description": "周期业务报告：更新材料后保留人工改动，只修受影响表格/报告并交付依据和异常待办。",
+      "fatal_risks": [],
+      "ratings": {
+        "pain_intensity": {
+          "value": 3,
+          "rationale": "Analytical Inference：有绕行/复核记录，目标子群损失未计时。",
+          "evidence_ids": [
+            "E020",
+            "E025",
+            "E027"
+          ],
+          "counter_evidence_ids": [
+            "E007",
+            "E017"
+          ]
+        },
+        "demand_frequency": {
+          "value": 2,
+          "rationale": "Hypothesis：可能周期发生，但尚无目标用户周频。",
+          "evidence_ids": [
+            "E025",
+            "E026"
+          ],
+          "counter_evidence_ids": []
+        },
+        "unmet_need": {
+          "value": 2,
+          "rationale": "Analytical Inference：整合有摩擦，官方已有大量更新能力。",
+          "evidence_ids": [
+            "E025",
+            "E027"
+          ],
+          "counter_evidence_ids": [
+            "E007",
+            "E014",
+            "E015"
+          ]
+        },
+        "market_space": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "differentiation": {
+          "value": 2,
+          "rationale": "Hypothesis：人工修改保持/异常处理能比较，未证明胜过竞品。",
+          "evidence_ids": [
+            "L003",
+            "E025"
+          ],
+          "counter_evidence_ids": [
+            "E007",
+            "E014"
+          ]
+        },
+        "reachability": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "switching_ease": {
+          "value": 3,
+          "rationale": "Hypothesis：副本与常用格式可并用，准备成本待测。",
+          "evidence_ids": [
+            "E020",
+            "E025"
+          ],
+          "counter_evidence_ids": [
+            "E027"
+          ]
+        },
+        "retention": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "feasibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "defensibility": {
+          "value": 1,
+          "rationale": "Analytical Inference：框架可复制，任务/口径积累尚无。",
+          "evidence_ids": [
+            "E007",
+            "E014"
+          ],
+          "counter_evidence_ids": []
+        },
+        "expansion": {
+          "value": 2,
+          "rationale": "Hypothesis：相邻报告任务有线索，学术/开发不能外推。",
+          "evidence_ids": [
+            "E026",
+            "L002"
+          ],
+          "counter_evidence_ids": []
+        },
+        "risk_control": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "evidence_strength": {
+          "value": 2,
+          "rationale": "Analytical Inference：多组具体自报，没有UAW试用/支付。",
+          "evidence_ids": [
+            "E020",
+            "E025",
+            "E027"
+          ],
+          "counter_evidence_ids": [
+            "E007",
+            "E014"
+          ]
+        }
+      }
+    },
+    {
+      "id": "O002",
+      "description": "学术关键命题：有限论文来源定位、反例检查与既有笔记局部修订。",
+      "fatal_risks": [],
+      "ratings": {
+        "pain_intensity": {
+          "value": 3,
+          "rationale": "Analytical Inference：论文和流程自报支持核验劳动，目标学科未定。",
+          "evidence_ids": [
+            "E005",
+            "E030"
+          ],
+          "counter_evidence_ids": [
+            "E013"
+          ]
+        },
+        "demand_frequency": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "unmet_need": {
+          "value": 2,
+          "rationale": "Analytical Inference：覆盖/导入限制存在，专业研究工具已解决大量任务。",
+          "evidence_ids": [
+            "E029",
+            "E016"
+          ],
+          "counter_evidence_ids": [
+            "E005",
+            "E014"
+          ]
+        },
+        "market_space": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "differentiation": {
+          "value": 2,
+          "rationale": "Hypothesis：中文笔记保持和命题证据联动可测，未证实。",
+          "evidence_ids": [
+            "L004",
+            "E030"
+          ],
+          "counter_evidence_ids": [
+            "E014",
+            "E016"
+          ]
+        },
+        "reachability": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "switching_ease": {
+          "value": 3,
+          "rationale": "Hypothesis：保留Zotero/Word，以文件并用。",
+          "evidence_ids": [
+            "E030",
+            "E013"
+          ],
+          "counter_evidence_ids": []
+        },
+        "retention": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "feasibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "defensibility": {
+          "value": 1,
+          "rationale": "Analytical Inference：检索/引用本身不能提供壁垒。",
+          "evidence_ids": [
+            "E005",
+            "E014"
+          ],
+          "counter_evidence_ids": []
+        },
+        "expansion": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "risk_control": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "evidence_strength": {
+          "value": 2,
+          "rationale": "Analytical Inference：问题有支持，中文付款主体/学科未知。",
+          "evidence_ids": [
+            "E005",
+            "E029",
+            "E030"
+          ],
+          "counter_evidence_ids": [
+            "E014"
+          ]
+        }
+      }
+    },
+    {
+      "id": "O003",
+      "description": "开发小改动验收包：保留现有修改，关联diff、真实检查和未覆盖目标。",
+      "fatal_risks": [],
+      "ratings": {
+        "pain_intensity": {
+          "value": 3,
+          "rationale": "Analytical Inference：审查积压/审批有案例，目标损失未计量。",
+          "evidence_ids": [
+            "E031",
+            "E032"
+          ],
+          "counter_evidence_ids": [
+            "E010"
+          ]
+        },
+        "demand_frequency": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "unmet_need": {
+          "value": 1,
+          "rationale": "Analytical Inference：工作区/diff/steer/审查已成熟。",
+          "evidence_ids": [
+            "E010",
+            "E009"
+          ],
+          "counter_evidence_ids": [
+            "E031",
+            "E032"
+          ]
+        },
+        "market_space": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "differentiation": {
+          "value": 1,
+          "rationale": "Hypothesis：可用既有工具配置替代，独立收益未明。",
+          "evidence_ids": [
+            "L003",
+            "E034"
+          ],
+          "counter_evidence_ids": [
+            "E010",
+            "E009"
+          ]
+        },
+        "reachability": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "switching_ease": {
+          "value": 2,
+          "rationale": "Hypothesis：副本只读验收可并用，但接入仍增加成本。",
+          "evidence_ids": [
+            "E031",
+            "E010"
+          ],
+          "counter_evidence_ids": []
+        },
+        "retention": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "feasibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "defensibility": {
+          "value": 1,
+          "rationale": "Analytical Inference：成熟工具易复制。",
+          "evidence_ids": [
+            "E009",
+            "E010"
+          ],
+          "counter_evidence_ids": []
+        },
+        "expansion": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "risk_control": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "evidence_strength": {
+          "value": 2,
+          "rationale": "Analytical Inference：版本有限具体问题存在，购买未知。",
+          "evidence_ids": [
+            "E031",
+            "E032",
+            "E003"
+          ],
+          "counter_evidence_ids": [
+            "E004",
+            "E010"
+          ]
+        }
+      }
+    },
+    {
+      "id": "O004",
+      "description": "补充式只读核验：复核已有AI/人工成果的来源、口径和重大错误，先用服务验证。",
+      "fatal_risks": [],
+      "ratings": {
+        "pain_intensity": {
+          "value": 3,
+          "rationale": "Analytical Inference：复核劳动有用户/研究支持。",
+          "evidence_ids": [
+            "E001",
+            "E027",
+            "E030"
+          ],
+          "counter_evidence_ids": []
+        },
+        "demand_frequency": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "unmet_need": {
+          "value": 2,
+          "rationale": "Hypothesis：现有抽查是否已足够，复核是否重复劳动未明。",
+          "evidence_ids": [
+            "E027",
+            "E030"
+          ],
+          "counter_evidence_ids": [
+            "E005"
+          ]
+        },
+        "market_space": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "differentiation": {
+          "value": 2,
+          "rationale": "Hypothesis：小范围标准可透明服务测试，独立购买未验证。",
+          "evidence_ids": [
+            "L003",
+            "E034"
+          ],
+          "counter_evidence_ids": [
+            "E007",
+            "E014"
+          ]
+        },
+        "reachability": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "switching_ease": {
+          "value": 4,
+          "rationale": "Hypothesis：副本只读/差异并用降低写入焦虑，准备成本未知。",
+          "evidence_ids": [
+            "E027",
+            "E030"
+          ],
+          "counter_evidence_ids": []
+        },
+        "retention": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "feasibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "defensibility": {
+          "value": 1,
+          "rationale": "Analytical Inference：方法易复制，暂无独占任务资源。",
+          "evidence_ids": [
+            "E005",
+            "E034"
+          ],
+          "counter_evidence_ids": []
+        },
+        "expansion": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "risk_control": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "evidence_strength": {
+          "value": 2,
+          "rationale": "Analytical Inference：问题证据存在，净收益与另付费未知。",
+          "evidence_ids": [
+            "E001",
+            "E027",
+            "E030"
+          ],
+          "counter_evidence_ids": [
+            "E005"
+          ]
+        }
+      }
+    },
+    {
+      "id": "O005",
+      "description": "三类群体同时驱动完整通用平台首发，以Agent数量和广功能为卖点。",
+      "fatal_risks": [
+        "当前首发被阻断：三类真实任务、付款和资源均未验证；暂停此首发假设，不否定通用架构长期方向。"
+      ],
+      "ratings": {
+        "pain_intensity": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "demand_frequency": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "unmet_need": {
+          "value": 1,
+          "rationale": "Analytical Inference：成熟替代多，暂无项目行为结果。",
+          "evidence_ids": [
+            "E007",
+            "E008",
+            "E010"
+          ],
+          "counter_evidence_ids": [
+            "L001"
+          ]
+        },
+        "market_space": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "differentiation": {
+          "value": 1,
+          "rationale": "Analytical Inference：通用能力重叠，不否定细分机会。",
+          "evidence_ids": [
+            "E007",
+            "E009",
+            "E010"
+          ],
+          "counter_evidence_ids": []
+        },
+        "reachability": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "switching_ease": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "retention": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "feasibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "defensibility": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "expansion": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "risk_control": {
+          "value": null,
+          "rationale": "Unknown：缺目标任务行为、付款、获客、成本或团队资源证据；不补零。",
+          "evidence_ids": [],
+          "counter_evidence_ids": []
+        },
+        "evidence_strength": {
+          "value": 1,
+          "rationale": "Analytical Inference：设计和泛任务不足支撑全范围首发。",
+          "evidence_ids": [
+            "L001",
+            "L002"
+          ],
+          "counter_evidence_ids": []
+        }
+      }
+    }
+  ],
+  "interpretation": "探索顺序按证伪成本，评分不是投资概率。"
+}

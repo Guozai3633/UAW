@@ -1,0 +1,3046 @@
+{
+  "version": "0.1",
+  "nodes": {
+    "ui": {
+      "interfaces": [
+        {
+          "id": "conversations.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-create.md"
+        },
+        {
+          "id": "conversations.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-list.md"
+        },
+        {
+          "id": "conversations.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-get.md"
+        },
+        {
+          "id": "conversations.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-configure.md"
+        },
+        {
+          "id": "conversations.items",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-items.md"
+        },
+        {
+          "id": "intent.preview",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--intent-preview.md"
+        },
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "tasks.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-get.md"
+        },
+        {
+          "id": "tasks.frame",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-frame.md"
+        },
+        {
+          "id": "tasks.plan",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-plan.md"
+        },
+        {
+          "id": "tasks.board",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-board.md"
+        },
+        {
+          "id": "runs.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-get.md"
+        },
+        {
+          "id": "runs.control",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-control.md"
+        },
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "events.stream",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-stream.md"
+        },
+        {
+          "id": "approvals.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-get.md"
+        },
+        {
+          "id": "approvals.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-decide.md"
+        },
+        {
+          "id": "assets.upload.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--assets-upload-begin.md"
+        },
+        {
+          "id": "definitions.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-create.md"
+        },
+        {
+          "id": "definitions.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-list.md"
+        },
+        {
+          "id": "agents.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-get.md"
+        },
+        {
+          "id": "agents.cancel",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-cancel.md"
+        },
+        {
+          "id": "projects.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-list.md"
+        },
+        {
+          "id": "projects.bind",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-bind.md"
+        },
+        {
+          "id": "workspaces.changes",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-changes.md"
+        },
+        {
+          "id": "workspaces.revert",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-revert.md"
+        },
+        {
+          "id": "processes.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--processes-get.md"
+        },
+        {
+          "id": "artifacts.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-list.md"
+        },
+        {
+          "id": "artifacts.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-get.md"
+        },
+        {
+          "id": "artifacts.preview",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-preview.md"
+        },
+        {
+          "id": "reviews.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--reviews-get.md"
+        },
+        {
+          "id": "reviews.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--reviews-decide.md"
+        },
+        {
+          "id": "verification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--verification-get.md"
+        },
+        {
+          "id": "models.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--models-list.md"
+        },
+        {
+          "id": "ui",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--ui.md"
+        }
+      ],
+      "design_doc": "docs/design/components/ui.md",
+      "code_target": "apps/web/src/features/workspace/",
+      "interface_doc": "docs/api/nodes/ui.md"
+    },
+    "ingress": {
+      "interfaces": [
+        {
+          "id": "conversations.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-create.md"
+        },
+        {
+          "id": "intent.preview",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--intent-preview.md"
+        },
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "events.read",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-read.md"
+        },
+        {
+          "id": "events.stream",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-stream.md"
+        },
+        {
+          "id": "ingress",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--ingress.md"
+        }
+      ],
+      "design_doc": "docs/design/components/ingress.md",
+      "code_target": "src/uaw/api/ingress.py",
+      "interface_doc": "docs/api/nodes/ingress.md"
+    },
+    "intent": {
+      "interfaces": [
+        {
+          "id": "IntentRuntime.preview",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-preview.md"
+        },
+        {
+          "id": "IntentRuntime.understand",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-understand.md"
+        },
+        {
+          "id": "IntentRuntime.revise",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-revise.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/intent.md",
+      "code_target": "src/uaw/intent/facade.py",
+      "interface_doc": "docs/api/nodes/intent.md"
+    },
+    "agent": {
+      "interfaces": [
+        {
+          "id": "AgentRuntime.define_agent",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-define-agent.md"
+        },
+        {
+          "id": "AgentRuntime.start",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-start.md"
+        },
+        {
+          "id": "AgentRuntime.step",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-step.md"
+        },
+        {
+          "id": "AgentRuntime.delegate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-delegate.md"
+        },
+        {
+          "id": "AgentRuntime.verify",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-verify.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/agent.md",
+      "code_target": "src/uaw/agent/facade.py",
+      "interface_doc": "docs/api/nodes/agent.md"
+    },
+    "context": {
+      "interfaces": [
+        {
+          "id": "ContextRuntime.build",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-build.md"
+        },
+        {
+          "id": "ContextRuntime.ingest",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-ingest.md"
+        },
+        {
+          "id": "ContextRuntime.remember",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-remember.md"
+        },
+        {
+          "id": "ContextRuntime.recall",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-recall.md"
+        },
+        {
+          "id": "ContextRuntime.forget",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-forget.md"
+        },
+        {
+          "id": "ContextRuntime.resolve_reference",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-resolve-reference.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/context.md",
+      "code_target": "src/uaw/context/facade.py",
+      "interface_doc": "docs/api/nodes/context.md"
+    },
+    "tool": {
+      "interfaces": [
+        {
+          "id": "ToolRuntime.discover",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-discover.md"
+        },
+        {
+          "id": "ToolRuntime.invoke",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-invoke.md"
+        },
+        {
+          "id": "ToolRuntime.reconcile",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-reconcile.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/tool.md",
+      "code_target": "src/uaw/tool/facade.py",
+      "interface_doc": "docs/api/nodes/tool.md"
+    },
+    "workspace": {
+      "interfaces": [
+        {
+          "id": "WorkspaceRuntime.allocate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-allocate.md"
+        },
+        {
+          "id": "WorkspaceRuntime.prepare",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-prepare.md"
+        },
+        {
+          "id": "WorkspaceRuntime.merge",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-merge.md"
+        },
+        {
+          "id": "WorkspaceRuntime.revert",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-revert.md"
+        },
+        {
+          "id": "WorkspaceRuntime.review",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-review.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/workspace.md",
+      "code_target": "src/uaw/workspace/facade.py",
+      "interface_doc": "docs/api/nodes/workspace.md"
+    },
+    "model": {
+      "interfaces": [
+        {
+          "id": "ModelRuntime.resolve_policy",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-resolve-policy.md"
+        },
+        {
+          "id": "ModelRuntime.list",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-list.md"
+        },
+        {
+          "id": "ModelRuntime.generate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-generate.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/model.md",
+      "code_target": "src/uaw/model/facade.py",
+      "interface_doc": "docs/api/nodes/model.md"
+    },
+    "run": {
+      "interfaces": [
+        {
+          "id": "RunRuntime.create",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-create.md"
+        },
+        {
+          "id": "RunRuntime.control",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-control.md"
+        },
+        {
+          "id": "RunRuntime.checkpoint",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-checkpoint.md"
+        },
+        {
+          "id": "RunRuntime.resume",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-resume.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/run.md",
+      "code_target": "src/uaw/run/facade.py",
+      "interface_doc": "docs/api/nodes/run.md"
+    },
+    "support": {
+      "interfaces": [
+        {
+          "id": "connections.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-list.md"
+        },
+        {
+          "id": "connections.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-begin.md"
+        },
+        {
+          "id": "connections.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-revoke.md"
+        },
+        {
+          "id": "admin.configuration.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-get.md"
+        },
+        {
+          "id": "admin.configuration.stage",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-stage.md"
+        },
+        {
+          "id": "admin.configuration.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-validate.md"
+        },
+        {
+          "id": "admin.configuration.activate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-activate.md"
+        },
+        {
+          "id": "admin.providers.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-configure.md"
+        },
+        {
+          "id": "admin.secrets.put",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-secrets-put.md"
+        },
+        {
+          "id": "admin.policies.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-policies-register.md"
+        },
+        {
+          "id": "admin.providers.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-revoke.md"
+        },
+        {
+          "id": "support.configuration",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-configuration.md"
+        },
+        {
+          "id": "skills.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--skills-list.md"
+        },
+        {
+          "id": "admin.extensions.install",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-install.md"
+        },
+        {
+          "id": "admin.extensions.activate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-activate.md"
+        },
+        {
+          "id": "admin.extensions.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-revoke.md"
+        },
+        {
+          "id": "admin.extensions.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-validate.md"
+        },
+        {
+          "id": "admin.extensions.rollback",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-rollback.md"
+        },
+        {
+          "id": "support.extensions",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-extensions.md"
+        },
+        {
+          "id": "sources.delete",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--sources-delete.md"
+        },
+        {
+          "id": "memory.forget",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--memory-forget.md"
+        },
+        {
+          "id": "admin.policies.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-policies-register.md"
+        },
+        {
+          "id": "support.cache",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-cache.md"
+        },
+        {
+          "id": "admin.traces.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-traces-list.md"
+        },
+        {
+          "id": "support.observability",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-observability.md"
+        },
+        {
+          "id": "admin.evaluations.run",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-evaluations-run.md"
+        },
+        {
+          "id": "admin.evaluations.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-evaluations-get.md"
+        },
+        {
+          "id": "support.evaluation",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-evaluation.md"
+        },
+        {
+          "id": "support.stores",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-stores.md"
+        }
+      ],
+      "design_doc": "docs/design/modules/support.md",
+      "code_target": "src/uaw/shared/__init__.py",
+      "interface_doc": "docs/api/nodes/support.md",
+      "aggregation_only": true
+    },
+    "intent.preview": {
+      "interfaces": [
+        {
+          "id": "intent.preview",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--intent-preview.md"
+        },
+        {
+          "id": "IntentRuntime.preview",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-preview.md"
+        },
+        {
+          "id": "intent.preview",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-preview.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-preview.md",
+      "code_target": "src/uaw/intent/preview.py",
+      "interface_doc": "docs/api/nodes/intent.preview.md"
+    },
+    "intent.original": {
+      "interfaces": [
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "IntentRuntime.understand",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-understand.md"
+        },
+        {
+          "id": "intent.original",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-original.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-original.md",
+      "code_target": "src/uaw/intent/original.py",
+      "interface_doc": "docs/api/nodes/intent.original.md"
+    },
+    "intent.semantic": {
+      "interfaces": [
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "IntentRuntime.understand",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-understand.md"
+        },
+        {
+          "id": "intent.semantic",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-semantic.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-semantic.md",
+      "code_target": "src/uaw/intent/semantic.py",
+      "interface_doc": "docs/api/nodes/intent.semantic.md"
+    },
+    "intent.references": {
+      "interfaces": [
+        {
+          "id": "intent.references",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-references.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-references.md",
+      "code_target": "src/uaw/intent/references.py",
+      "interface_doc": "docs/api/nodes/intent.references.md"
+    },
+    "intent.probe": {
+      "interfaces": [
+        {
+          "id": "intent.probe",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-probe.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-probe.md",
+      "code_target": "src/uaw/intent/probe.py",
+      "interface_doc": "docs/api/nodes/intent.probe.md"
+    },
+    "intent.ambiguity": {
+      "interfaces": [
+        {
+          "id": "interaction.ask_user",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--interaction-ask-user.md"
+        },
+        {
+          "id": "intent.ambiguity",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-ambiguity.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-ambiguity.md",
+      "code_target": "src/uaw/intent/ambiguity.py",
+      "interface_doc": "docs/api/nodes/intent.ambiguity.md"
+    },
+    "intent.frame": {
+      "interfaces": [
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "tasks.frame",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-frame.md"
+        },
+        {
+          "id": "runs.control",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-control.md"
+        },
+        {
+          "id": "IntentRuntime.understand",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-understand.md"
+        },
+        {
+          "id": "IntentRuntime.revise",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--IntentRuntime-revise.md"
+        },
+        {
+          "id": "intent.frame",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--intent-frame.md"
+        }
+      ],
+      "design_doc": "docs/design/components/intent-frame.md",
+      "code_target": "src/uaw/intent/frame.py",
+      "interface_doc": "docs/api/nodes/intent.frame.md"
+    },
+    "agent.definitions": {
+      "interfaces": [
+        {
+          "id": "definitions.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-create.md"
+        },
+        {
+          "id": "agents.create",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-create.md"
+        },
+        {
+          "id": "AgentRuntime.define_agent",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-define-agent.md"
+        },
+        {
+          "id": "agent.definitions",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions.md",
+      "code_target": "src/uaw/agent/definitions/facade.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.md"
+    },
+    "agent.loop": {
+      "interfaces": [
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "agents.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-get.md"
+        },
+        {
+          "id": "AgentRuntime.step",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-step.md"
+        },
+        {
+          "id": "agent.loop",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-loop.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-loop.md",
+      "code_target": "src/uaw/agent/loop.py",
+      "interface_doc": "docs/api/nodes/agent.loop.md"
+    },
+    "agent.assessment": {
+      "interfaces": [
+        {
+          "id": "agents.invoke",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-invoke.md"
+        },
+        {
+          "id": "tasks.assess",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-assess.md"
+        },
+        {
+          "id": "agent.assessment",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-assessment.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-assessment.md",
+      "code_target": "src/uaw/agent/assessment.py",
+      "interface_doc": "docs/api/nodes/agent.assessment.md"
+    },
+    "agent.planning": {
+      "interfaces": [
+        {
+          "id": "tasks.plan",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-plan.md"
+        },
+        {
+          "id": "runs.control",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-control.md"
+        },
+        {
+          "id": "tasks.plan",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-plan.md"
+        },
+        {
+          "id": "agent.planning",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-planning.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-planning.md",
+      "code_target": "src/uaw/agent/planning.py",
+      "interface_doc": "docs/api/nodes/agent.planning.md"
+    },
+    "agent.scheduler": {
+      "interfaces": [
+        {
+          "id": "tasks.plan",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-plan.md"
+        },
+        {
+          "id": "agent.scheduler",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-scheduler.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-scheduler.md",
+      "code_target": "src/uaw/agent/scheduler.py",
+      "interface_doc": "docs/api/nodes/agent.scheduler.md"
+    },
+    "agent.collaboration": {
+      "interfaces": [
+        {
+          "id": "AgentRuntime.delegate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-delegate.md"
+        },
+        {
+          "id": "agent.collaboration",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration.md",
+      "code_target": "src/uaw/agent/collaboration/facade.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.md"
+    },
+    "agent.skills": {
+      "interfaces": [
+        {
+          "id": "skills.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--skills-list.md"
+        },
+        {
+          "id": "skills.load",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--skills-load.md"
+        },
+        {
+          "id": "agent.skills",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-skills.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-skills.md",
+      "code_target": "src/uaw/agent/skills.py",
+      "interface_doc": "docs/api/nodes/agent.skills.md"
+    },
+    "agent.completion": {
+      "interfaces": [
+        {
+          "id": "AgentRuntime.verify",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-verify.md"
+        },
+        {
+          "id": "agent.completion",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion.md",
+      "code_target": "src/uaw/agent/completion/facade.py",
+      "interface_doc": "docs/api/nodes/agent.completion.md"
+    },
+    "agent.board": {
+      "interfaces": [
+        {
+          "id": "tasks.board",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-board.md"
+        },
+        {
+          "id": "tasks.attach_conversation",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-attach-conversation.md"
+        },
+        {
+          "id": "agent.board",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-board.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-board.md",
+      "code_target": "src/uaw/agent/board.py",
+      "interface_doc": "docs/api/nodes/agent.board.md"
+    },
+    "agent.factory": {
+      "interfaces": [
+        {
+          "id": "agents.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-get.md"
+        },
+        {
+          "id": "agents.invoke",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-invoke.md"
+        },
+        {
+          "id": "AgentRuntime.start",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-start.md"
+        },
+        {
+          "id": "agent.factory",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-factory.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-factory.md",
+      "code_target": "src/uaw/agent/factory.py",
+      "interface_doc": "docs/api/nodes/agent.factory.md"
+    },
+    "agent.definitions.designer": {
+      "interfaces": [
+        {
+          "id": "agents.create",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-create.md"
+        },
+        {
+          "id": "agent.definitions.designer",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-designer.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-designer.md",
+      "code_target": "src/uaw/agent/definitions/designer.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.designer.md"
+    },
+    "agent.definitions.validator": {
+      "interfaces": [
+        {
+          "id": "definitions.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-create.md"
+        },
+        {
+          "id": "definitions.update",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-update.md"
+        },
+        {
+          "id": "agents.create",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-create.md"
+        },
+        {
+          "id": "agents.update",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-update.md"
+        },
+        {
+          "id": "agent.definitions.validator",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-validator.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-validator.md",
+      "code_target": "src/uaw/agent/definitions/validator.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.validator.md"
+    },
+    "agent.definitions.model_intent": {
+      "interfaces": [
+        {
+          "id": "definitions.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-create.md"
+        },
+        {
+          "id": "agents.create",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-create.md"
+        },
+        {
+          "id": "agent.definitions.model_intent",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-model-intent.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-model_intent.md",
+      "code_target": "src/uaw/agent/definitions/model_intent.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.model_intent.md"
+    },
+    "agent.definitions.repository": {
+      "interfaces": [
+        {
+          "id": "definitions.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-create.md"
+        },
+        {
+          "id": "definitions.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-get.md"
+        },
+        {
+          "id": "definitions.update",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-update.md"
+        },
+        {
+          "id": "agents.create",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-create.md"
+        },
+        {
+          "id": "agent.definitions.repository",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-repository.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-repository.md",
+      "code_target": "src/uaw/agent/definitions/repository.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.repository.md"
+    },
+    "agent.definitions.discovery": {
+      "interfaces": [
+        {
+          "id": "definitions.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-list.md"
+        },
+        {
+          "id": "tools.discover",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tools-discover.md"
+        },
+        {
+          "id": "agents.list",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-list.md"
+        },
+        {
+          "id": "agent.definitions.discovery",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-discovery.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-discovery.md",
+      "code_target": "src/uaw/agent/definitions/discovery.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.discovery.md"
+    },
+    "agent.definitions.change_service": {
+      "interfaces": [
+        {
+          "id": "definitions.update",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-update.md"
+        },
+        {
+          "id": "definitions.diff",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-diff.md"
+        },
+        {
+          "id": "definitions.revert",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--definitions-revert.md"
+        },
+        {
+          "id": "agents.update",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-update.md"
+        },
+        {
+          "id": "agent.definitions.change_service",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-definitions-change-service.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-definitions-change_service.md",
+      "code_target": "src/uaw/agent/definitions/change_service.py",
+      "interface_doc": "docs/api/nodes/agent.definitions.change_service.md"
+    },
+    "context.sources": {
+      "interfaces": [
+        {
+          "id": "assets.upload.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--assets-upload-begin.md"
+        },
+        {
+          "id": "references.read",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--references-read.md"
+        },
+        {
+          "id": "context.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--context-read.md"
+        },
+        {
+          "id": "context.sources",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-sources.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-sources.md",
+      "code_target": "src/uaw/context/sources.py",
+      "interface_doc": "docs/api/nodes/context.sources.md"
+    },
+    "context.rules": {
+      "interfaces": [
+        {
+          "id": "skills.load",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--skills-load.md"
+        },
+        {
+          "id": "context.rules",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-rules.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-rules.md",
+      "code_target": "src/uaw/context/rules.py",
+      "interface_doc": "docs/api/nodes/context.rules.md"
+    },
+    "context.ingestion": {
+      "interfaces": [
+        {
+          "id": "assets.upload.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--assets-upload-begin.md"
+        },
+        {
+          "id": "assets.upload.complete",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--assets-upload-complete.md"
+        },
+        {
+          "id": "sources.ingest",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--sources-ingest.md"
+        },
+        {
+          "id": "sources.delete",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--sources-delete.md"
+        },
+        {
+          "id": "sources.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--sources-get.md"
+        },
+        {
+          "id": "ContextRuntime.ingest",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-ingest.md"
+        },
+        {
+          "id": "context.ingestion",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-ingestion.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-ingestion.md",
+      "code_target": "src/uaw/context/ingestion.py",
+      "interface_doc": "docs/api/nodes/context.ingestion.md"
+    },
+    "context.retrieval": {
+      "interfaces": [
+        {
+          "id": "context.retrieval",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-retrieval.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-retrieval.md",
+      "code_target": "src/uaw/context/retrieval.py",
+      "interface_doc": "docs/api/nodes/context.retrieval.md"
+    },
+    "context.memory": {
+      "interfaces": [
+        {
+          "id": "memory.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--memory-list.md"
+        },
+        {
+          "id": "ContextRuntime.remember",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-remember.md"
+        },
+        {
+          "id": "ContextRuntime.recall",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-recall.md"
+        },
+        {
+          "id": "context.memory",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory.md",
+      "code_target": "src/uaw/context/memory/facade.py",
+      "interface_doc": "docs/api/nodes/context.memory.md"
+    },
+    "context.selection": {
+      "interfaces": [
+        {
+          "id": "context.selection",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-selection.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-selection.md",
+      "code_target": "src/uaw/context/selection.py",
+      "interface_doc": "docs/api/nodes/context.selection.md"
+    },
+    "context.compression": {
+      "interfaces": [
+        {
+          "id": "context.compression",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-compression.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-compression.md",
+      "code_target": "src/uaw/context/compression.py",
+      "interface_doc": "docs/api/nodes/context.compression.md"
+    },
+    "context.composer": {
+      "interfaces": [
+        {
+          "id": "ContextRuntime.build",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-build.md"
+        },
+        {
+          "id": "context.composer",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-composer.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-composer.md",
+      "code_target": "src/uaw/context/composer.py",
+      "interface_doc": "docs/api/nodes/context.composer.md"
+    },
+    "context.references": {
+      "interfaces": [
+        {
+          "id": "references.resolve",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--references-resolve.md"
+        },
+        {
+          "id": "references.read",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--references-read.md"
+        },
+        {
+          "id": "context.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--context-read.md"
+        },
+        {
+          "id": "references.resolve",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--references-resolve.md"
+        },
+        {
+          "id": "references.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--references-read.md"
+        },
+        {
+          "id": "web.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--web-read.md"
+        },
+        {
+          "id": "ContextRuntime.resolve_reference",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-resolve-reference.md"
+        },
+        {
+          "id": "context.references",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-references.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-references.md",
+      "code_target": "src/uaw/context/references.py",
+      "interface_doc": "docs/api/nodes/context.references.md"
+    },
+    "tool.registry": {
+      "interfaces": [
+        {
+          "id": "admin.configuration.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-validate.md"
+        },
+        {
+          "id": "admin.tools.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-tools-register.md"
+        },
+        {
+          "id": "admin.tools.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-tools-list.md"
+        },
+        {
+          "id": "tool.registry",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-registry.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-registry.md",
+      "code_target": "src/uaw/tool/registry.py",
+      "interface_doc": "docs/api/nodes/tool.registry.md"
+    },
+    "tool.discovery": {
+      "interfaces": [
+        {
+          "id": "tools.discover",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tools-discover.md"
+        },
+        {
+          "id": "ToolRuntime.discover",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-discover.md"
+        },
+        {
+          "id": "tool.discovery",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-discovery.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-discovery.md",
+      "code_target": "src/uaw/tool/discovery.py",
+      "interface_doc": "docs/api/nodes/tool.discovery.md"
+    },
+    "tool.invocation": {
+      "interfaces": [
+        {
+          "id": "ToolRuntime.invoke",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-invoke.md"
+        },
+        {
+          "id": "tool.invocation",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation.md",
+      "code_target": "src/uaw/tool/invocation/facade.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.md"
+    },
+    "tool.effects": {
+      "interfaces": [
+        {
+          "id": "ToolRuntime.reconcile",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ToolRuntime-reconcile.md"
+        },
+        {
+          "id": "tool.effects",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-effects.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-effects.md",
+      "code_target": "src/uaw/tool/effects.py",
+      "interface_doc": "docs/api/nodes/tool.effects.md"
+    },
+    "tool.failure": {
+      "interfaces": [
+        {
+          "id": "tool.failure",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-failure.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-failure.md",
+      "code_target": "src/uaw/tool/failure.py",
+      "interface_doc": "docs/api/nodes/tool.failure.md"
+    },
+    "tool.mcp": {
+      "interfaces": [
+        {
+          "id": "tool.mcp",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp.md",
+      "code_target": "src/uaw/tool/mcp/facade.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.md"
+    },
+    "tool.adapters": {
+      "interfaces": [
+        {
+          "id": "search.query",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--search-query.md"
+        },
+        {
+          "id": "web.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--web-read.md"
+        },
+        {
+          "id": "tool.adapters",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-adapters.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-adapters.md",
+      "code_target": "src/uaw/tool/adapters.py",
+      "interface_doc": "docs/api/nodes/tool.adapters.md"
+    },
+    "tool.results": {
+      "interfaces": [
+        {
+          "id": "search.query",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--search-query.md"
+        },
+        {
+          "id": "tool.results",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-results.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-results.md",
+      "code_target": "src/uaw/tool/results.py",
+      "interface_doc": "docs/api/nodes/tool.results.md"
+    },
+    "tool.audit": {
+      "interfaces": [
+        {
+          "id": "tool.audit",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-audit.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-audit.md",
+      "code_target": "src/uaw/tool/audit.py",
+      "interface_doc": "docs/api/nodes/tool.audit.md"
+    },
+    "workspace.binding": {
+      "interfaces": [
+        {
+          "id": "projects.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-list.md"
+        },
+        {
+          "id": "projects.bind",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-bind.md"
+        },
+        {
+          "id": "projects.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-get.md"
+        },
+        {
+          "id": "projects.unbind",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-unbind.md"
+        },
+        {
+          "id": "pair.begin",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--pair-begin.md"
+        },
+        {
+          "id": "pair.complete",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--pair-complete.md"
+        },
+        {
+          "id": "heartbeat",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--heartbeat.md"
+        },
+        {
+          "id": "root.select",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--root-select.md"
+        },
+        {
+          "id": "workspace.binding",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-binding.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-binding.md",
+      "code_target": "src/uaw/workspace/binding.py",
+      "interface_doc": "docs/api/nodes/workspace.binding.md"
+    },
+    "workspace.base": {
+      "interfaces": [
+        {
+          "id": "workspace.capture",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--workspace-capture.md"
+        },
+        {
+          "id": "workspace.base",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-base.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-base.md",
+      "code_target": "src/uaw/workspace/base.py",
+      "interface_doc": "docs/api/nodes/workspace.base.md"
+    },
+    "workspace.isolation": {
+      "interfaces": [
+        {
+          "id": "workspaces.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-get.md"
+        },
+        {
+          "id": "WorkspaceRuntime.allocate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-allocate.md"
+        },
+        {
+          "id": "workspace.allocate",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--workspace-allocate.md"
+        },
+        {
+          "id": "workspace.release",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--workspace-release.md"
+        },
+        {
+          "id": "workspace.isolation",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-isolation.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-isolation.md",
+      "code_target": "src/uaw/workspace/isolation.py",
+      "interface_doc": "docs/api/nodes/workspace.isolation.md"
+    },
+    "workspace.environment": {
+      "interfaces": [
+        {
+          "id": "admin.environments.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-environments-register.md"
+        },
+        {
+          "id": "environment.inspect",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--environment-inspect.md"
+        },
+        {
+          "id": "environment.ensure",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--environment-ensure.md"
+        },
+        {
+          "id": "WorkspaceRuntime.prepare",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-prepare.md"
+        },
+        {
+          "id": "environment.inspect",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--environment-inspect.md"
+        },
+        {
+          "id": "environment.ensure",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--environment-ensure.md"
+        },
+        {
+          "id": "workspace.release",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--workspace-release.md"
+        },
+        {
+          "id": "workspace.environment",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-environment.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-environment.md",
+      "code_target": "src/uaw/workspace/environment.py",
+      "interface_doc": "docs/api/nodes/workspace.environment.md"
+    },
+    "workspace.process": {
+      "interfaces": [
+        {
+          "id": "workspaces.files",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-files.md"
+        },
+        {
+          "id": "processes.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--processes-get.md"
+        },
+        {
+          "id": "processes.stop",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--processes-stop.md"
+        },
+        {
+          "id": "process.exec",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--process-exec.md"
+        },
+        {
+          "id": "process.poll",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--process-poll.md"
+        },
+        {
+          "id": "process.stop",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--process-stop.md"
+        },
+        {
+          "id": "file.read",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--file-read.md"
+        },
+        {
+          "id": "file.write",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--file-write.md"
+        },
+        {
+          "id": "verification.run",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--verification-run.md"
+        },
+        {
+          "id": "file.read",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--file-read.md"
+        },
+        {
+          "id": "file.write",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--file-write.md"
+        },
+        {
+          "id": "file.list",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--file-list.md"
+        },
+        {
+          "id": "process.exec",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--process-exec.md"
+        },
+        {
+          "id": "process.poll",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--process-poll.md"
+        },
+        {
+          "id": "process.stop",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--process-stop.md"
+        },
+        {
+          "id": "workspace.process",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-process.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-process.md",
+      "code_target": "src/uaw/workspace/process.py",
+      "interface_doc": "docs/api/nodes/workspace.process.md"
+    },
+    "workspace.changes": {
+      "interfaces": [
+        {
+          "id": "workspaces.changes",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-changes.md"
+        },
+        {
+          "id": "workspaces.merge",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-merge.md"
+        },
+        {
+          "id": "workspaces.revert",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--workspaces-revert.md"
+        },
+        {
+          "id": "workspace.changes",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--workspace-changes.md"
+        },
+        {
+          "id": "workspace.revert",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--workspace-revert.md"
+        },
+        {
+          "id": "file.write",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--file-write.md"
+        },
+        {
+          "id": "WorkspaceRuntime.merge",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-merge.md"
+        },
+        {
+          "id": "WorkspaceRuntime.revert",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-revert.md"
+        },
+        {
+          "id": "file.write",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--file-write.md"
+        },
+        {
+          "id": "changes.capture",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--changes-capture.md"
+        },
+        {
+          "id": "changes.merge",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--changes-merge.md"
+        },
+        {
+          "id": "changes.revert",
+          "channel": "runner",
+          "doc": "docs/api/interfaces/runner--changes-revert.md"
+        },
+        {
+          "id": "workspace.changes",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-changes.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-changes.md",
+      "code_target": "src/uaw/workspace/changes.py",
+      "interface_doc": "docs/api/nodes/workspace.changes.md"
+    },
+    "workspace.artifacts": {
+      "interfaces": [
+        {
+          "id": "artifacts.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-list.md"
+        },
+        {
+          "id": "artifacts.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-get.md"
+        },
+        {
+          "id": "artifacts.preview",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-preview.md"
+        },
+        {
+          "id": "artifacts.export",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-export.md"
+        },
+        {
+          "id": "artifacts.publish",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--artifacts-publish.md"
+        },
+        {
+          "id": "workspace.artifacts",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-artifacts.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-artifacts.md",
+      "code_target": "src/uaw/workspace/artifacts.py",
+      "interface_doc": "docs/api/nodes/workspace.artifacts.md"
+    },
+    "workspace.review": {
+      "interfaces": [
+        {
+          "id": "reviews.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--reviews-get.md"
+        },
+        {
+          "id": "reviews.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--reviews-decide.md"
+        },
+        {
+          "id": "WorkspaceRuntime.review",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--WorkspaceRuntime-review.md"
+        },
+        {
+          "id": "workspace.review",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--workspace-review.md"
+        }
+      ],
+      "design_doc": "docs/design/components/workspace-review.md",
+      "code_target": "src/uaw/workspace/review.py",
+      "interface_doc": "docs/api/nodes/workspace.review.md"
+    },
+    "model.catalog": {
+      "interfaces": [
+        {
+          "id": "models.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--models-list.md"
+        },
+        {
+          "id": "admin.configuration.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-validate.md"
+        },
+        {
+          "id": "admin.models.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-models-register.md"
+        },
+        {
+          "id": "models.list",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--models-list.md"
+        },
+        {
+          "id": "ModelRuntime.list",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-list.md"
+        },
+        {
+          "id": "model.catalog",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-catalog.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-catalog.md",
+      "code_target": "src/uaw/model/catalog.py",
+      "interface_doc": "docs/api/nodes/model.catalog.md"
+    },
+    "model.policy": {
+      "interfaces": [
+        {
+          "id": "conversations.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-create.md"
+        },
+        {
+          "id": "conversations.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-configure.md"
+        },
+        {
+          "id": "ModelRuntime.resolve_policy",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-resolve-policy.md"
+        },
+        {
+          "id": "model.policy",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-policy.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-policy.md",
+      "code_target": "src/uaw/model/policy.py",
+      "interface_doc": "docs/api/nodes/model.policy.md"
+    },
+    "model.capability": {
+      "interfaces": [
+        {
+          "id": "model.capability",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-capability.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-capability.md",
+      "code_target": "src/uaw/model/capability.py",
+      "interface_doc": "docs/api/nodes/model.capability.md"
+    },
+    "model.gateway": {
+      "interfaces": [
+        {
+          "id": "ModelRuntime.generate",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ModelRuntime-generate.md"
+        },
+        {
+          "id": "model.gateway",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-gateway.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-gateway.md",
+      "code_target": "src/uaw/model/gateway.py",
+      "interface_doc": "docs/api/nodes/model.gateway.md"
+    },
+    "model.adapters": {
+      "interfaces": [
+        {
+          "id": "admin.providers.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-configure.md"
+        },
+        {
+          "id": "model.adapters",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-adapters.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-adapters.md",
+      "code_target": "src/uaw/model/adapters.py",
+      "interface_doc": "docs/api/nodes/model.adapters.md"
+    },
+    "model.recovery": {
+      "interfaces": [
+        {
+          "id": "model.recovery",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-recovery.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-recovery.md",
+      "code_target": "src/uaw/model/recovery.py",
+      "interface_doc": "docs/api/nodes/model.recovery.md"
+    },
+    "model.usage": {
+      "interfaces": [
+        {
+          "id": "model.usage",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--model-usage.md"
+        }
+      ],
+      "design_doc": "docs/design/components/model-usage.md",
+      "code_target": "src/uaw/model/usage.py",
+      "interface_doc": "docs/api/nodes/model.usage.md"
+    },
+    "run.history": {
+      "interfaces": [
+        {
+          "id": "conversations.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-create.md"
+        },
+        {
+          "id": "conversations.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-list.md"
+        },
+        {
+          "id": "conversations.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-get.md"
+        },
+        {
+          "id": "conversations.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-configure.md"
+        },
+        {
+          "id": "conversations.items",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-items.md"
+        },
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "tasks.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-get.md"
+        },
+        {
+          "id": "RunRuntime.create",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-create.md"
+        },
+        {
+          "id": "tasks.attach_conversation",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-attach-conversation.md"
+        },
+        {
+          "id": "run.history",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-history.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-history.md",
+      "code_target": "src/uaw/run/history.py",
+      "interface_doc": "docs/api/nodes/run.history.md"
+    },
+    "run.state": {
+      "interfaces": [
+        {
+          "id": "turns.submit",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-submit.md"
+        },
+        {
+          "id": "runs.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-get.md"
+        },
+        {
+          "id": "RunRuntime.create",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-create.md"
+        },
+        {
+          "id": "tasks.attach_conversation",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--tasks-attach-conversation.md"
+        },
+        {
+          "id": "run.state",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-state.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-state.md",
+      "code_target": "src/uaw/run/state.py",
+      "interface_doc": "docs/api/nodes/run.state.md"
+    },
+    "run.events": {
+      "interfaces": [
+        {
+          "id": "conversations.items",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-items.md"
+        },
+        {
+          "id": "events.read",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-read.md"
+        },
+        {
+          "id": "events.stream",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-stream.md"
+        },
+        {
+          "id": "events.payload",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--events-payload.md"
+        },
+        {
+          "id": "run.events",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-events.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-events.md",
+      "code_target": "src/uaw/run/events.py",
+      "interface_doc": "docs/api/nodes/run.events.md"
+    },
+    "run.budget": {
+      "interfaces": [
+        {
+          "id": "run.budget",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-budget.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-budget.md",
+      "code_target": "src/uaw/run/budget.py",
+      "interface_doc": "docs/api/nodes/run.budget.md"
+    },
+    "run.approval": {
+      "interfaces": [
+        {
+          "id": "runs.control",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-control.md"
+        },
+        {
+          "id": "approvals.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-get.md"
+        },
+        {
+          "id": "approvals.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-decide.md"
+        },
+        {
+          "id": "admin.policies.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-policies-register.md"
+        },
+        {
+          "id": "interaction.ask_user",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--interaction-ask-user.md"
+        },
+        {
+          "id": "RunRuntime.control",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-control.md"
+        },
+        {
+          "id": "run.approval",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-approval.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-approval.md",
+      "code_target": "src/uaw/run/approval.py",
+      "interface_doc": "docs/api/nodes/run.approval.md"
+    },
+    "run.checkpoint": {
+      "interfaces": [
+        {
+          "id": "runs.checkpoint",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-checkpoint.md"
+        },
+        {
+          "id": "RunRuntime.checkpoint",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-checkpoint.md"
+        },
+        {
+          "id": "run.checkpoint",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-checkpoint.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-checkpoint.md",
+      "code_target": "src/uaw/run/checkpoint.py",
+      "interface_doc": "docs/api/nodes/run.checkpoint.md"
+    },
+    "run.resume": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "RunRuntime.resume",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-resume.md"
+        },
+        {
+          "id": "run.resume",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume.md",
+      "code_target": "src/uaw/run/resume/facade.py",
+      "interface_doc": "docs/api/nodes/run.resume.md"
+    },
+    "run.cancel": {
+      "interfaces": [
+        {
+          "id": "runs.control",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-control.md"
+        },
+        {
+          "id": "agents.cancel",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-cancel.md"
+        },
+        {
+          "id": "projects.unbind",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--projects-unbind.md"
+        },
+        {
+          "id": "processes.stop",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--processes-stop.md"
+        },
+        {
+          "id": "agents.cancel",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-cancel.md"
+        },
+        {
+          "id": "RunRuntime.control",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-control.md"
+        },
+        {
+          "id": "run.cancel",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-cancel.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-cancel.md",
+      "code_target": "src/uaw/run/cancel.py",
+      "interface_doc": "docs/api/nodes/run.cancel.md"
+    },
+    "run.trigger": {
+      "interfaces": [
+        {
+          "id": "triggers.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--triggers-create.md"
+        },
+        {
+          "id": "triggers.disable",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--triggers-disable.md"
+        },
+        {
+          "id": "run.trigger",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-trigger.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-trigger.md",
+      "code_target": "src/uaw/run/trigger.py",
+      "interface_doc": "docs/api/nodes/run.trigger.md"
+    },
+    "support.configuration": {
+      "interfaces": [
+        {
+          "id": "connections.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-list.md"
+        },
+        {
+          "id": "connections.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-begin.md"
+        },
+        {
+          "id": "connections.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-revoke.md"
+        },
+        {
+          "id": "admin.configuration.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-get.md"
+        },
+        {
+          "id": "admin.configuration.stage",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-stage.md"
+        },
+        {
+          "id": "admin.configuration.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-validate.md"
+        },
+        {
+          "id": "admin.configuration.activate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-configuration-activate.md"
+        },
+        {
+          "id": "admin.providers.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-configure.md"
+        },
+        {
+          "id": "admin.secrets.put",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-secrets-put.md"
+        },
+        {
+          "id": "admin.policies.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-policies-register.md"
+        },
+        {
+          "id": "admin.providers.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-revoke.md"
+        },
+        {
+          "id": "support.configuration",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-configuration.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-configuration.md",
+      "code_target": "src/uaw/shared/configuration.py",
+      "interface_doc": "docs/api/nodes/support.configuration.md"
+    },
+    "support.extensions": {
+      "interfaces": [
+        {
+          "id": "skills.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--skills-list.md"
+        },
+        {
+          "id": "admin.extensions.install",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-install.md"
+        },
+        {
+          "id": "admin.extensions.activate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-activate.md"
+        },
+        {
+          "id": "admin.extensions.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-revoke.md"
+        },
+        {
+          "id": "admin.extensions.validate",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-validate.md"
+        },
+        {
+          "id": "admin.extensions.rollback",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-rollback.md"
+        },
+        {
+          "id": "support.extensions",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-extensions.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-extensions.md",
+      "code_target": "src/uaw/shared/extensions.py",
+      "interface_doc": "docs/api/nodes/support.extensions.md"
+    },
+    "support.cache": {
+      "interfaces": [
+        {
+          "id": "sources.delete",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--sources-delete.md"
+        },
+        {
+          "id": "memory.forget",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--memory-forget.md"
+        },
+        {
+          "id": "admin.policies.register",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-policies-register.md"
+        },
+        {
+          "id": "support.cache",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-cache.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-cache.md",
+      "code_target": "src/uaw/shared/cache.py",
+      "interface_doc": "docs/api/nodes/support.cache.md"
+    },
+    "support.observability": {
+      "interfaces": [
+        {
+          "id": "admin.traces.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-traces-list.md"
+        },
+        {
+          "id": "support.observability",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-observability.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-observability.md",
+      "code_target": "src/uaw/shared/observability.py",
+      "interface_doc": "docs/api/nodes/support.observability.md"
+    },
+    "support.evaluation": {
+      "interfaces": [
+        {
+          "id": "admin.evaluations.run",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-evaluations-run.md"
+        },
+        {
+          "id": "admin.evaluations.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-evaluations-get.md"
+        },
+        {
+          "id": "support.evaluation",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-evaluation.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-evaluation.md",
+      "code_target": "src/uaw/shared/evaluation.py",
+      "interface_doc": "docs/api/nodes/support.evaluation.md"
+    },
+    "support.stores": {
+      "interfaces": [
+        {
+          "id": "support.stores",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--support-stores.md"
+        }
+      ],
+      "design_doc": "docs/design/components/support-stores.md",
+      "code_target": "src/uaw/shared/stores.py",
+      "interface_doc": "docs/api/nodes/support.stores.md"
+    },
+    "tool.invocation.schema": {
+      "interfaces": [
+        {
+          "id": "tool.invocation.schema",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-schema.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-schema.md",
+      "code_target": "src/uaw/tool/invocation/schema.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.schema.md"
+    },
+    "tool.invocation.precheck": {
+      "interfaces": [
+        {
+          "id": "tool.invocation.precheck",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-precheck.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-precheck.md",
+      "code_target": "src/uaw/tool/invocation/precheck.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.precheck.md"
+    },
+    "tool.invocation.approval": {
+      "interfaces": [
+        {
+          "id": "approvals.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-decide.md"
+        },
+        {
+          "id": "tool.invocation.approval",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-approval.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-approval.md",
+      "code_target": "src/uaw/tool/invocation/approval.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.approval.md"
+    },
+    "tool.invocation.recheck": {
+      "interfaces": [
+        {
+          "id": "approvals.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--approvals-decide.md"
+        },
+        {
+          "id": "tool.invocation.recheck",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-recheck.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-recheck.md",
+      "code_target": "src/uaw/tool/invocation/recheck.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.recheck.md"
+    },
+    "tool.invocation.dispatch": {
+      "interfaces": [
+        {
+          "id": "tool.invocation.dispatch",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-dispatch.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-dispatch.md",
+      "code_target": "src/uaw/tool/invocation/dispatch.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.dispatch.md"
+    },
+    "tool.invocation.result": {
+      "interfaces": [
+        {
+          "id": "tool.invocation.result",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-invocation-result.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-invocation-result.md",
+      "code_target": "src/uaw/tool/invocation/result.py",
+      "interface_doc": "docs/api/nodes/tool.invocation.result.md"
+    },
+    "agent.collaboration.contract": {
+      "interfaces": [
+        {
+          "id": "agents.invoke",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-invoke.md"
+        },
+        {
+          "id": "agent.collaboration.contract",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-contract.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-contract.md",
+      "code_target": "src/uaw/agent/collaboration/contract.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.contract.md"
+    },
+    "agent.collaboration.instance": {
+      "interfaces": [
+        {
+          "id": "agents.invoke",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-invoke.md"
+        },
+        {
+          "id": "agent.collaboration.instance",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-instance.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-instance.md",
+      "code_target": "src/uaw/agent/collaboration/instance.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.instance.md"
+    },
+    "agent.collaboration.channel": {
+      "interfaces": [
+        {
+          "id": "agents.wait",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-wait.md"
+        },
+        {
+          "id": "agents.message",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-message.md"
+        },
+        {
+          "id": "agent.collaboration.channel",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-channel.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-channel.md",
+      "code_target": "src/uaw/agent/collaboration/channel.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.channel.md"
+    },
+    "agent.collaboration.join": {
+      "interfaces": [
+        {
+          "id": "agents.wait",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-wait.md"
+        },
+        {
+          "id": "agent.collaboration.join",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-join.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-join.md",
+      "code_target": "src/uaw/agent/collaboration/join.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.join.md"
+    },
+    "agent.collaboration.handoff": {
+      "interfaces": [
+        {
+          "id": "agents.handoff",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-handoff.md"
+        },
+        {
+          "id": "agent.collaboration.handoff",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-handoff.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-handoff.md",
+      "code_target": "src/uaw/agent/collaboration/handoff.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.handoff.md"
+    },
+    "agent.collaboration.cancel": {
+      "interfaces": [
+        {
+          "id": "agents.cancel",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--agents-cancel.md"
+        },
+        {
+          "id": "agents.cancel",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--agents-cancel.md"
+        },
+        {
+          "id": "agent.collaboration.cancel",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-collaboration-cancel.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-collaboration-cancel.md",
+      "code_target": "src/uaw/agent/collaboration/cancel.py",
+      "interface_doc": "docs/api/nodes/agent.collaboration.cancel.md"
+    },
+    "agent.completion.contract": {
+      "interfaces": [
+        {
+          "id": "tasks.verify",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-verify.md"
+        },
+        {
+          "id": "agent.completion.contract",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-contract.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-contract.md",
+      "code_target": "src/uaw/agent/completion/contract.py",
+      "interface_doc": "docs/api/nodes/agent.completion.contract.md"
+    },
+    "agent.completion.evidence": {
+      "interfaces": [
+        {
+          "id": "tasks.verify",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-verify.md"
+        },
+        {
+          "id": "verification.run",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--verification-run.md"
+        },
+        {
+          "id": "agent.completion.evidence",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-evidence.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-evidence.md",
+      "code_target": "src/uaw/agent/completion/evidence.py",
+      "interface_doc": "docs/api/nodes/agent.completion.evidence.md"
+    },
+    "agent.completion.semantic": {
+      "interfaces": [
+        {
+          "id": "verification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--verification-get.md"
+        },
+        {
+          "id": "tasks.verify",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-verify.md"
+        },
+        {
+          "id": "verification.report",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--verification-report.md"
+        },
+        {
+          "id": "agent.completion.semantic",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-semantic.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-semantic.md",
+      "code_target": "src/uaw/agent/completion/semantic.py",
+      "interface_doc": "docs/api/nodes/agent.completion.semantic.md"
+    },
+    "agent.completion.version": {
+      "interfaces": [
+        {
+          "id": "tasks.verify",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--tasks-verify.md"
+        },
+        {
+          "id": "agent.completion.version",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-version.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-version.md",
+      "code_target": "src/uaw/agent/completion/version.py",
+      "interface_doc": "docs/api/nodes/agent.completion.version.md"
+    },
+    "agent.completion.delivery": {
+      "interfaces": [
+        {
+          "id": "agent.completion.delivery",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-delivery.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-delivery.md",
+      "code_target": "src/uaw/agent/completion/delivery.py",
+      "interface_doc": "docs/api/nodes/agent.completion.delivery.md"
+    },
+    "agent.completion.acceptance": {
+      "interfaces": [
+        {
+          "id": "reviews.decide",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--reviews-decide.md"
+        },
+        {
+          "id": "agent.completion.acceptance",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--agent-completion-acceptance.md"
+        }
+      ],
+      "design_doc": "docs/design/components/agent-completion-acceptance.md",
+      "code_target": "src/uaw/agent/completion/acceptance.py",
+      "interface_doc": "docs/api/nodes/agent.completion.acceptance.md"
+    },
+    "context.memory.candidate": {
+      "interfaces": [
+        {
+          "id": "memory.remember",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-remember.md"
+        },
+        {
+          "id": "context.memory.candidate",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory-candidate.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory-candidate.md",
+      "code_target": "src/uaw/context/memory/candidate.py",
+      "interface_doc": "docs/api/nodes/context.memory.candidate.md"
+    },
+    "context.memory.policy": {
+      "interfaces": [
+        {
+          "id": "conversations.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--conversations-configure.md"
+        },
+        {
+          "id": "memory.remember",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-remember.md"
+        },
+        {
+          "id": "context.memory.policy",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory-policy.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory-policy.md",
+      "code_target": "src/uaw/context/memory/policy.py",
+      "interface_doc": "docs/api/nodes/context.memory.policy.md"
+    },
+    "context.memory.conflict": {
+      "interfaces": [
+        {
+          "id": "memory.remember",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-remember.md"
+        },
+        {
+          "id": "context.memory.conflict",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory-conflict.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory-conflict.md",
+      "code_target": "src/uaw/context/memory/conflict.py",
+      "interface_doc": "docs/api/nodes/context.memory.conflict.md"
+    },
+    "context.memory.store": {
+      "interfaces": [
+        {
+          "id": "memory.list",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--memory-list.md"
+        },
+        {
+          "id": "memory.remember",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-remember.md"
+        },
+        {
+          "id": "memory.recall",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-recall.md"
+        },
+        {
+          "id": "context.memory.store",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory-store.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory-store.md",
+      "code_target": "src/uaw/context/memory/store.py",
+      "interface_doc": "docs/api/nodes/context.memory.store.md"
+    },
+    "context.memory.forget": {
+      "interfaces": [
+        {
+          "id": "memory.forget",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--memory-forget.md"
+        },
+        {
+          "id": "memory.forget",
+          "channel": "tool",
+          "doc": "docs/api/interfaces/tool--memory-forget.md"
+        },
+        {
+          "id": "ContextRuntime.forget",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--ContextRuntime-forget.md"
+        },
+        {
+          "id": "context.memory.forget",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--context-memory-forget.md"
+        }
+      ],
+      "design_doc": "docs/design/components/context-memory-forget.md",
+      "code_target": "src/uaw/context/memory/forget.py",
+      "interface_doc": "docs/api/nodes/context.memory.forget.md"
+    },
+    "tool.mcp.provider": {
+      "interfaces": [
+        {
+          "id": "connections.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-begin.md"
+        },
+        {
+          "id": "admin.providers.configure",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-configure.md"
+        },
+        {
+          "id": "tool.mcp.provider",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp-provider.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp-provider.md",
+      "code_target": "src/uaw/tool/mcp/provider.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.provider.md"
+    },
+    "tool.mcp.session": {
+      "interfaces": [
+        {
+          "id": "tool.mcp.session",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp-session.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp-session.md",
+      "code_target": "src/uaw/tool/mcp/session.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.session.md"
+    },
+    "tool.mcp.capabilities": {
+      "interfaces": [
+        {
+          "id": "tool.mcp.capabilities",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp-capabilities.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp-capabilities.md",
+      "code_target": "src/uaw/tool/mcp/capabilities.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.capabilities.md"
+    },
+    "tool.mcp.invoke": {
+      "interfaces": [
+        {
+          "id": "tool.mcp.invoke",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp-invoke.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp-invoke.md",
+      "code_target": "src/uaw/tool/mcp/invoke.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.invoke.md"
+    },
+    "tool.mcp.invalidate": {
+      "interfaces": [
+        {
+          "id": "connections.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--connections-revoke.md"
+        },
+        {
+          "id": "admin.extensions.revoke",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-extensions-revoke.md"
+        },
+        {
+          "id": "tool.mcp.invalidate",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--tool-mcp-invalidate.md"
+        }
+      ],
+      "design_doc": "docs/design/components/tool-mcp-invalidate.md",
+      "code_target": "src/uaw/tool/mcp/invalidate.py",
+      "interface_doc": "docs/api/nodes/tool.mcp.invalidate.md"
+    },
+    "run.resume.lease": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.lease",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-lease.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-lease.md",
+      "code_target": "src/uaw/run/resume/lease.py",
+      "interface_doc": "docs/api/nodes/run.resume.lease.md"
+    },
+    "run.resume.versions": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.versions",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-versions.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-versions.md",
+      "code_target": "src/uaw/run/resume/versions.py",
+      "interface_doc": "docs/api/nodes/run.resume.versions.md"
+    },
+    "run.resume.access": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.access",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-access.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-access.md",
+      "code_target": "src/uaw/run/resume/access.py",
+      "interface_doc": "docs/api/nodes/run.resume.access.md"
+    },
+    "run.resume.effects": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.effects",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-effects.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-effects.md",
+      "code_target": "src/uaw/run/resume/effects.py",
+      "interface_doc": "docs/api/nodes/run.resume.effects.md"
+    },
+    "run.resume.workspace": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.workspace",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-workspace.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-workspace.md",
+      "code_target": "src/uaw/run/resume/workspace.py",
+      "interface_doc": "docs/api/nodes/run.resume.workspace.md"
+    },
+    "run.resume.continue": {
+      "interfaces": [
+        {
+          "id": "runs.resume",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-resume.md"
+        },
+        {
+          "id": "run.resume.continue",
+          "channel": "component",
+          "doc": "docs/api/interfaces/component--run-resume-continue.md"
+        }
+      ],
+      "design_doc": "docs/design/components/run-resume-continue.md",
+      "code_target": "src/uaw/run/resume/continue_run.py",
+      "interface_doc": "docs/api/nodes/run.resume.continue.md"
+    }
+  }
+}

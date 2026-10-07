@@ -1,0 +1,475 @@
+{
+  "plan_version": "0.1",
+  "date": "2026-10-07",
+  "status": "planned_not_dispatched",
+  "baseline": {
+    "git_repository": true,
+    "remote": "https://github.com/Guozai3633/UAW.git",
+    "integration_branch": "integration",
+    "commit": null,
+    "dispatch_ready": false,
+    "code_baseline_verified": true,
+    "last_verified_tests": 73,
+    "last_verified_scope": "P0 control/model protocol and P1-01 source-bound understanding, real PostgreSQL with controlled model replies",
+    "current_unverified_round": null,
+    "pending_semantic_acceptance_round": "P1-01",
+    "pending_gates": [
+      "D01 final storage authority",
+      "D06 actual model provider",
+      "D03 Runner execution mode"
+    ]
+  },
+  "recommended_sessions": 4,
+  "configurations": {
+    "3": [
+      "A",
+      "B",
+      "C"
+    ],
+    "4": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "5": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ]
+  },
+  "sessions": {
+    "A": {
+      "name": "集成与任务理解",
+      "branch": "integration",
+      "worktree": "E:/UAW",
+      "owns": [
+        "src/uaw/composition.py",
+        "src/uaw/application.py",
+        "src/uaw/shared/",
+        "src/uaw/api/",
+        "src/uaw/infrastructure/",
+        "src/uaw/run/",
+        "src/uaw/model/",
+        "src/uaw/intent/",
+        "src/uaw/context/seed.py",
+        "src/uaw/context/intent.py",
+        "src/uaw/resources/",
+        "contracts/",
+        "planning/",
+        "design/",
+        "architecture/",
+        "technology/",
+        "ops/",
+        "pyproject.toml",
+        "uv.lock",
+        ".python-version",
+        "tests/conftest.py",
+        "tests/integration/test_control_plane.py",
+        "tests/integration/test_bootstrap.py",
+        "tests/integration/model/",
+        "tests/integration/intent/",
+        "README.md",
+        "DEVELOPMENT_PLAN.md",
+        ".gitignore",
+        ".gitattributes",
+        "docs/plan/",
+        "docs/api/",
+        "docs/design/",
+        "docs/technology/",
+        "docs/implementation/",
+        "docs/DOCUMENT_MAP.md",
+        "docs/PROJECT_STRUCTURE.md",
+        "docs/coordination/DISPATCH.md",
+        "docs/coordination/HANDOFF_TEMPLATE.md",
+        "docs/coordination/REQUEST_TEMPLATE.md",
+        "docs/coordination/handoffs/A.md",
+        "docs/coordination/requests/A/"
+      ],
+      "starts": [
+        "MS-00"
+      ],
+      "later": [
+        "MS-I1",
+        "MS-I2",
+        "MS-I3"
+      ],
+      "report": "docs/coordination/handoffs/A.md",
+      "request_dir": "docs/coordination/requests/A/",
+      "rules": [
+        "负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
+        "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
+        "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
+        "建立Git和已验证基线后填真实SHA并开放B/C/D；本计划未创建任何session。"
+      ]
+    },
+    "B": {
+      "name": "上下文组件",
+      "branch": "dev/context",
+      "worktree": "E:/UAW/.worktrees/context",
+      "owns": [
+        "src/uaw/context/facade.py",
+        "src/uaw/context/contracts.py",
+        "src/uaw/context/ports.py",
+        "src/uaw/context/repository.py",
+        "src/uaw/context/sources.py",
+        "src/uaw/context/rules.py",
+        "src/uaw/context/selection.py",
+        "src/uaw/context/composer.py",
+        "src/uaw/context/references.py",
+        "tests/unit/context/",
+        "tests/integration/context/",
+        "docs/coordination/handoffs/B.md",
+        "docs/coordination/requests/B/"
+      ],
+      "starts": [
+        "MS-C1"
+      ],
+      "later": [
+        "MS-C2"
+      ],
+      "report": "docs/coordination/handoffs/B.md",
+      "request_dir": "docs/coordination/requests/B/",
+      "rules": [
+        "seed.py和intent.py包含已验证的理解专用实现，归A；B用新文件实现通用Context组件。",
+        "通过Reader port处理已有获准来源；Workspace/Board/记忆未接入时明确不可用。",
+        "不写原文、Model配置或执行权限，不把外部资料升级为系统指令。"
+      ]
+    },
+    "C": {
+      "name": "工具组件",
+      "branch": "dev/tool",
+      "worktree": "E:/UAW/.worktrees/tool",
+      "owns": [
+        "src/uaw/tool/",
+        "tests/unit/tool/",
+        "tests/integration/tool/",
+        "docs/coordination/handoffs/C.md",
+        "docs/coordination/requests/C/"
+      ],
+      "starts": [
+        "MS-T1"
+      ],
+      "later": [
+        "MS-T2"
+      ],
+      "report": "docs/coordination/handoffs/C.md",
+      "request_dir": "docs/coordination/requests/C/",
+      "rules": [
+        "先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。",
+        "审批、预算、配置、Runner通过公开port；未提供真实执行器时不得dispatch。",
+        "不放开禁用flag，不把测试适配器登记为产品工具；向量/MCP仍属后续轮。"
+      ]
+    },
+    "D": {
+      "name": "Runner协议与授权组件",
+      "branch": "dev/runner",
+      "worktree": "E:/UAW/.worktrees/runner",
+      "owns": [
+        "src/uaw/workspace/binding.py",
+        "src/uaw/workspace/contracts.py",
+        "src/uaw/workspace/ports.py",
+        "src/uaw/workspace/repository.py",
+        "apps/local_runner/uaw_runner/",
+        "tests/unit/runner/",
+        "tests/integration/runner/",
+        "docs/coordination/handoffs/D.md",
+        "docs/coordination/requests/D/"
+      ],
+      "starts": [
+        "MS-R1"
+      ],
+      "later": [
+        "MS-R2"
+      ],
+      "report": "docs/coordination/handoffs/D.md",
+      "request_dir": "docs/coordination/requests/D/",
+      "rules": [
+        "先落实可信命令信封、期限/主体/签名校验port、授权根和撤销状态。",
+        "RootSelection只由可信本机用户入口生成；测试根限制在本session临时目录。",
+        "D03未决定前不开放安装/写入/exec；仅协议组件不能宣称配对或OS隔离已经可用。",
+        "签名算法或新依赖需要契约/ADR提案，由A集中落地后再验证真实签名。"
+      ]
+    },
+    "E": {
+      "name": "可选样本与评测",
+      "branch": "dev/evaluation",
+      "worktree": "E:/UAW/.worktrees/evaluation",
+      "owns": [
+        "tests/evaluation/",
+        "tests/fixtures/parallel/",
+        "docs/coordination/evaluation/",
+        "docs/coordination/handoffs/E.md",
+        "docs/coordination/requests/E/"
+      ],
+      "starts": [
+        "MS-Q1"
+      ],
+      "later": [],
+      "report": "docs/coordination/handoffs/E.md",
+      "request_dir": "docs/coordination/requests/E/",
+      "rules": [
+        "第5个session可选，负责办公/开发/学术样本、验收表和来源/权限反例。",
+        "不改Runtime或其他session测试，不生成共享JUnit和环境摘要。",
+        "无真实提供方时只提交样本/预期标准，不生成伪模型样本或语义质量分数。"
+      ]
+    }
+  },
+  "packages": [
+    {
+      "id": "MS-00",
+      "session": "A",
+      "rounds": [
+        "P0-05",
+        "P1-01"
+      ],
+      "title": "收尾并建立共同基线",
+      "deps": [],
+      "scope": "setup",
+      "tasks": [
+        "检查并结束遗留运行；完成当前P1-01的静态/真实PG边界检查，修复实际失败。",
+        "同步契约源与生成物、已挂载入口与实现范围，记录真实模型仍待D06。",
+        "检查忽略规则，初始化Git并创建本地基线提交；不提交.data、凭据、构建缓存或worktree。",
+        "冻结schema/公开port/事件/失败/版本语义，记录真实提交SHA、依赖锁摘要和模块修改边界。",
+        "分别配置B/C/D的worktree与环境，填写交接记录，变更dispatch_ready后才开工。"
+      ],
+      "acceptance": [
+        "当前源码全量检查有新回执；历史60项不是当前P1-01的通过证明。",
+        "Git实际可用，所有session基于相同真实提交SHA；当前工作已保留。",
+        "提供方未配置仍保留门槛，不把开发边界通过写成真实LLM验收。"
+      ]
+    },
+    {
+      "id": "MS-C1",
+      "session": "B",
+      "rounds": [
+        "P1-02"
+      ],
+      "title": "规则、来源与窗口分配",
+      "deps": [
+        "MS-00"
+      ],
+      "scope": "independent_component",
+      "tasks": [
+        "定义并实现Reader port，固定已读取来源和版本；缺失/越权明示。",
+        "按已设计优先级、作用域和信任级别装配InstructionSet；冲突保留明确结果。",
+        "按实际模型窗口保护原文/要求及输出空间，计算输入/输出/工具保留。",
+        "单独验证权限、材料注入、版本、窗口不足；提交来源装配的输入输出例子。"
+      ],
+      "acceptance": [
+        "只依赖共同基线与注入port，不导入未合并的Tool/Runner私有实现。",
+        "外部文本不能升级为平台权限；关键要求不能因窗口不足静默删掉。",
+        "无完整Reader/模型/Runner时明确边界，不宣称P1-02整轮验收。"
+      ]
+    },
+    {
+      "id": "MS-T1",
+      "session": "C",
+      "rounds": [
+        "P1-03"
+      ],
+      "title": "工具注册、过滤与参数校验",
+      "deps": [
+        "MS-00"
+      ],
+      "scope": "independent_component",
+      "tasks": [
+        "实现ToolSpec固定版本登记/读取与已实现adapter绑定状态。",
+        "先按角色/能力/feature flag/环境过滤候选，再按小目录搜索；模型保持最终选择权。",
+        "实现严格参数schema、有界注册、动作参数摘要和action/attempt区分。",
+        "定义precheck/recheck依赖port并返回可核验的拒绝/等待；没有批准与执行器不派发。"
+      ],
+      "acceptance": [
+        "关闭工具直接伪造调用也不能执行；模型不能自报owner/approved。",
+        "effect取自可信ToolSpec，同ID改参数冲突，未知写效果不盲重试。",
+        "测试adapter不作为产品能力发布；完整审批/dispatch验收留给接线包。"
+      ]
+    },
+    {
+      "id": "MS-R1",
+      "session": "D",
+      "rounds": [
+        "P1-04"
+      ],
+      "title": "Runner协议与授权范围校验",
+      "deps": [
+        "MS-00"
+      ],
+      "scope": "independent_component",
+      "tasks": [
+        "落实RunnerCommand/Receipt DTO校验与签名验证port，校验期限、主体、根句柄、fencing和稳定command_id。",
+        "实现获准根/相对路径/真实路径校验与撤销模型；临时目录验证链接越界。",
+        "设计配对nonce/一次码及RootSelection的来源/有效期/一次使用，不把聊天路径当授权。",
+        "列出真实IPC、签名实现、配对存储与D03决定所需接线；包外依赖交A审批合入。"
+      ],
+      "acceptance": [
+        "组件校验和真实本机临时路径验证有证据；签名替身只算协议测试。",
+        "不连接真实用户项目、不安装系统环境、不开放exec。",
+        "没有真实配对/签名/执行权限回执时P1-04不能标accepted。"
+      ]
+    },
+    {
+      "id": "MS-Q1",
+      "session": "E",
+      "rounds": [
+        "P0-01",
+        "P1-01",
+        "P1-11",
+        "P2-07"
+      ],
+      "title": "三类样本及语义审阅标准",
+      "deps": [
+        "MS-00"
+      ],
+      "scope": "optional_component",
+      "tasks": [
+        "补办公、开发、学术的原始输入、材料、可接受成果与返工标准。",
+        "增加任务扩大范围、缺口、数字/日期、后续纠正等语义审阅样本，区分硬断言与人工质量判断。",
+        "为已合入组件补跨边界测试提案；不与B/C/D修改同一份测试。"
+      ],
+      "acceptance": [
+        "样本来源与预期可审阅，不能把固定关键词当语义质量验证。",
+        "真实LLM质量/费用仍待配置，无对应回执不填评分。"
+      ]
+    },
+    {
+      "id": "MS-I1",
+      "session": "A",
+      "rounds": [
+        "P1-01",
+        "P1-02"
+      ],
+      "title": "合入Context并接Intent/Model",
+      "deps": [
+        "MS-00",
+        "MS-C1"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "审阅B的目录/接口/证据，集中处理公共契约提案后合入。",
+        "完成composition和Model输入port接线，处理现有context/intent.py与通用装配器的职责。",
+        "验证输入修订、摘要权限、窗口/结构协议以及来源删除与撤销；保留实际P0/P1门槛。"
+      ],
+      "acceptance": [
+        "组合回归通过，A/B对接线前后公开port样例达成一致。",
+        "Context绑定、规则和引用实际一致；无真实LLM门槛时只验收开发范围。"
+      ]
+    },
+    {
+      "id": "MS-C2",
+      "session": "B",
+      "rounds": [
+        "P1-02"
+      ],
+      "title": "固定快照和引用查询",
+      "deps": [
+        "MS-I1"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "在新共同基线上完成快照manifest/引用来源和不可变修订的仓储适配。",
+        "补实存储测试代码并交A执行或在获准独立环境执行；保持Workspace Reader未接入分支明确。"
+      ],
+      "acceptance": [
+        "Ref只指向真实读取来源；当前授权仍复核。",
+        "代码和证据可合入，不修改A保留文件。"
+      ]
+    },
+    {
+      "id": "MS-I2",
+      "session": "A",
+      "rounds": [
+        "P1-03",
+        "P1-04"
+      ],
+      "title": "合入Tool与Runner协议基础",
+      "deps": [
+        "MS-I1",
+        "MS-T1",
+        "MS-R1"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "分别审阅合入C/D基础包，统一批准契约/依赖/数据库变更。",
+        "确认审批、预算、配置、Runner调用port及调用顺序；修跨边界失败返回。",
+        "发布第二个集成SHA供C/D同步；真实执行仍等待后续接线和授权。"
+      ],
+      "acceptance": [
+        "三模块接口消费方检查通过；不是把签名/执行替身当真实Runner。",
+        "D03选择及提供方配置的未满足项仍可见。"
+      ]
+    },
+    {
+      "id": "MS-T2",
+      "session": "C",
+      "rounds": [
+        "P1-03",
+        "P1-09"
+      ],
+      "title": "意图/效果账本与审批接线",
+      "deps": [
+        "MS-I2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "在A提供真实预算/审批/Runner port后实现dispatch意图、结果规范和结算。",
+        "验证审批后参数/资源变化、重复调用、取消、unknown写效果与有限安全恢复。"
+      ],
+      "acceptance": [
+        "缺少真实依赖时返回等待/不可用，不扩权限绕过。",
+        "完整P1-03验收按原轮依赖与门槛，不能只凭组件用例通过。"
+      ]
+    },
+    {
+      "id": "MS-R2",
+      "session": "D",
+      "rounds": [
+        "P1-04",
+        "P1-05"
+      ],
+      "title": "真实配对和获准执行接线",
+      "deps": [
+        "MS-I2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "落实实际签名/可信IPC/用户确认配对及授权句柄的存储。",
+        "D03确定且真实权限到位后才能进入输入快照、隔离和进程；安装另走审批。"
+      ],
+      "acceptance": [
+        "实际配对/权限有回执，scope逐次复核。",
+        "代码隔离不声称OS隔离，真实代码任务仍需实际test与交付验证。"
+      ]
+    },
+    {
+      "id": "MS-I3",
+      "session": "A",
+      "rounds": [
+        "P1-07",
+        "P1-08",
+        "P1-09",
+        "P1-11"
+      ],
+      "title": "汇合后进入Agent闭环",
+      "deps": [
+        "MS-C2",
+        "MS-T2",
+        "MS-R2"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "统一跨模块回归，检查原始完整轮的依赖与真实模型/环境门槛。",
+        "按P1-06/07/08/09/10/11原计划接变更、Agent、完成核验、用户控制和页面。",
+        "此包是后续汇合入口；不能代替尚未展开的页面与闭环轮。"
+      ],
+      "acceptance": [
+        "50轮主计划的退出标准保持有效。",
+        "真正的P1阶段验收需真实用户授权、测试、成果和审阅证据。"
+      ]
+    }
+  ],
+  "full_round_dependencies_unchanged": true,
+  "runtime_gates_unchanged": true
+}

@@ -1,0 +1,8 @@
+# Engineering bootstrap only. Loopback identity is not a public account login.
+profile = "development"
+host = "127.0.0.1"
+port = 8000
+development_principal_id = "development-user"
+blob_directory = ".data/blobs"
+# P0-02 database-backed profile: enable database_url_env in a separate config.
+

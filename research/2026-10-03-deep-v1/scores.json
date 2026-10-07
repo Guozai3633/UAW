@@ -1,0 +1,1098 @@
+{
+  "opportunities": [
+    {
+      "id": "O001",
+      "business_attractiveness_partial": 45.0,
+      "business_coverage": 0.52,
+      "business_interval_with_unknowns": [
+        23.4,
+        71.4
+      ],
+      "evidence_strength": 2,
+      "independent_source_groups": [
+        "elicit-product-docs",
+        "reddit-cowork-1sfhin6",
+        "reddit-finance-1s2hz4o",
+        "reddit-sheets-1rxoncj",
+        "tencent-product-docs",
+        "uaw-design",
+        "v2ex-1141350"
+      ],
+      "source_types": [
+        "community",
+        "official_documentation",
+        "provided_document"
+      ],
+      "dimension_source_groups": {
+        "pain_intensity": [
+          "reddit-finance-1s2hz4o",
+          "reddit-sheets-1rxoncj",
+          "v2ex-1141350"
+        ],
+        "demand_frequency": [
+          "reddit-cowork-1sfhin6",
+          "reddit-sheets-1rxoncj"
+        ],
+        "unmet_need": [
+          "reddit-finance-1s2hz4o",
+          "reddit-sheets-1rxoncj"
+        ],
+        "market_space": [],
+        "willingness_to_pay": [],
+        "differentiation": [
+          "reddit-sheets-1rxoncj",
+          "uaw-design"
+        ],
+        "reachability": [],
+        "switching_ease": [
+          "reddit-sheets-1rxoncj",
+          "v2ex-1141350"
+        ],
+        "retention": [],
+        "feasibility": [],
+        "defensibility": [
+          "elicit-product-docs",
+          "tencent-product-docs"
+        ],
+        "expansion": [
+          "reddit-cowork-1sfhin6",
+          "uaw-design"
+        ],
+        "risk_control": [],
+        "evidence_strength": [
+          "reddit-finance-1s2hz4o",
+          "reddit-sheets-1rxoncj",
+          "v2ex-1141350"
+        ]
+      },
+      "missing_dimensions": [
+        "market_space",
+        "willingness_to_pay",
+        "reachability",
+        "retention",
+        "feasibility",
+        "risk_control"
+      ],
+      "unsupported_ratings": [],
+      "counter_evidence_ids": [
+        "E007",
+        "E014",
+        "E015",
+        "E017",
+        "E027"
+      ],
+      "state": "待验证",
+      "gate_reasons": [
+        "关键维度证据不足: willingness_to_pay",
+        "关键维度证据不足: feasibility",
+        "商业评分覆盖不足"
+      ],
+      "fatal_risks": []
+    },
+    {
+      "id": "O002",
+      "business_attractiveness_partial": 46.341,
+      "business_coverage": 0.41,
+      "business_interval_with_unknowns": [
+        19.0,
+        78.0
+      ],
+      "evidence_strength": 2,
+      "independent_source_groups": [
+        "elicit-product-docs",
+        "google-product-docs",
+        "openscholar-study",
+        "reddit-elicit-1istbkr",
+        "reddit-lit-workflow-1l9mrwr",
+        "uaw-design"
+      ],
+      "source_types": [
+        "community",
+        "official_documentation",
+        "official_pricing",
+        "provided_document",
+        "research_paper"
+      ],
+      "dimension_source_groups": {
+        "pain_intensity": [
+          "openscholar-study",
+          "reddit-lit-workflow-1l9mrwr"
+        ],
+        "demand_frequency": [],
+        "unmet_need": [
+          "google-product-docs",
+          "reddit-elicit-1istbkr"
+        ],
+        "market_space": [],
+        "willingness_to_pay": [],
+        "differentiation": [
+          "reddit-lit-workflow-1l9mrwr",
+          "uaw-design"
+        ],
+        "reachability": [],
+        "switching_ease": [
+          "elicit-product-docs",
+          "reddit-lit-workflow-1l9mrwr"
+        ],
+        "retention": [],
+        "feasibility": [],
+        "defensibility": [
+          "elicit-product-docs",
+          "openscholar-study"
+        ],
+        "expansion": [],
+        "risk_control": [],
+        "evidence_strength": [
+          "openscholar-study",
+          "reddit-elicit-1istbkr",
+          "reddit-lit-workflow-1l9mrwr"
+        ]
+      },
+      "missing_dimensions": [
+        "demand_frequency",
+        "market_space",
+        "willingness_to_pay",
+        "reachability",
+        "retention",
+        "feasibility",
+        "expansion",
+        "risk_control"
+      ],
+      "unsupported_ratings": [],
+      "counter_evidence_ids": [
+        "E005",
+        "E013",
+        "E014",
+        "E016"
+      ],
+      "state": "待验证",
+      "gate_reasons": [
+        "关键维度证据不足: willingness_to_pay",
+        "关键维度证据不足: feasibility",
+        "商业评分覆盖不足"
+      ],
+      "fatal_risks": []
+    },
+    {
+      "id": "O003",
+      "business_attractiveness_partial": 34.634,
+      "business_coverage": 0.41,
+      "business_interval_with_unknowns": [
+        14.2,
+        73.2
+      ],
+      "evidence_strength": 2,
+      "independent_source_groups": [
+        "anthropic-product-docs",
+        "claude-permissions-57118",
+        "cursor-backlog-151723",
+        "metr-productivity-2025",
+        "nasa-se-handbook",
+        "openai-product-docs",
+        "uaw-design"
+      ],
+      "source_types": [
+        "institution_method",
+        "issue_report",
+        "official_documentation",
+        "provided_document",
+        "research_paper"
+      ],
+      "dimension_source_groups": {
+        "pain_intensity": [
+          "claude-permissions-57118",
+          "cursor-backlog-151723"
+        ],
+        "demand_frequency": [],
+        "unmet_need": [
+          "anthropic-product-docs",
+          "openai-product-docs"
+        ],
+        "market_space": [],
+        "willingness_to_pay": [],
+        "differentiation": [
+          "nasa-se-handbook",
+          "uaw-design"
+        ],
+        "reachability": [],
+        "switching_ease": [
+          "cursor-backlog-151723",
+          "openai-product-docs"
+        ],
+        "retention": [],
+        "feasibility": [],
+        "defensibility": [
+          "anthropic-product-docs",
+          "openai-product-docs"
+        ],
+        "expansion": [],
+        "risk_control": [],
+        "evidence_strength": [
+          "claude-permissions-57118",
+          "cursor-backlog-151723",
+          "metr-productivity-2025"
+        ]
+      },
+      "missing_dimensions": [
+        "demand_frequency",
+        "market_space",
+        "willingness_to_pay",
+        "reachability",
+        "retention",
+        "feasibility",
+        "expansion",
+        "risk_control"
+      ],
+      "unsupported_ratings": [],
+      "counter_evidence_ids": [
+        "E004",
+        "E009",
+        "E010",
+        "E031",
+        "E032"
+      ],
+      "state": "待验证",
+      "gate_reasons": [
+        "关键维度证据不足: willingness_to_pay",
+        "关键维度证据不足: feasibility",
+        "商业评分覆盖不足"
+      ],
+      "fatal_risks": []
+    },
+    {
+      "id": "O004",
+      "business_attractiveness_partial": 49.268,
+      "business_coverage": 0.41,
+      "business_interval_with_unknowns": [
+        20.2,
+        79.2
+      ],
+      "evidence_strength": 2,
+      "independent_source_groups": [
+        "ms-critical-thinking-study",
+        "nasa-se-handbook",
+        "openscholar-study",
+        "reddit-finance-1s2hz4o",
+        "reddit-lit-workflow-1l9mrwr",
+        "uaw-design"
+      ],
+      "source_types": [
+        "community",
+        "institution_method",
+        "provided_document",
+        "research_paper"
+      ],
+      "dimension_source_groups": {
+        "pain_intensity": [
+          "ms-critical-thinking-study",
+          "reddit-finance-1s2hz4o",
+          "reddit-lit-workflow-1l9mrwr"
+        ],
+        "demand_frequency": [],
+        "unmet_need": [
+          "reddit-finance-1s2hz4o",
+          "reddit-lit-workflow-1l9mrwr"
+        ],
+        "market_space": [],
+        "willingness_to_pay": [],
+        "differentiation": [
+          "nasa-se-handbook",
+          "uaw-design"
+        ],
+        "reachability": [],
+        "switching_ease": [
+          "reddit-finance-1s2hz4o",
+          "reddit-lit-workflow-1l9mrwr"
+        ],
+        "retention": [],
+        "feasibility": [],
+        "defensibility": [
+          "nasa-se-handbook",
+          "openscholar-study"
+        ],
+        "expansion": [],
+        "risk_control": [],
+        "evidence_strength": [
+          "ms-critical-thinking-study",
+          "reddit-finance-1s2hz4o",
+          "reddit-lit-workflow-1l9mrwr"
+        ]
+      },
+      "missing_dimensions": [
+        "demand_frequency",
+        "market_space",
+        "willingness_to_pay",
+        "reachability",
+        "retention",
+        "feasibility",
+        "expansion",
+        "risk_control"
+      ],
+      "unsupported_ratings": [],
+      "counter_evidence_ids": [
+        "E005",
+        "E007",
+        "E014"
+      ],
+      "state": "待验证",
+      "gate_reasons": [
+        "关键维度证据不足: willingness_to_pay",
+        "关键维度证据不足: feasibility",
+        "商业评分覆盖不足"
+      ],
+      "fatal_risks": []
+    },
+    {
+      "id": "O005",
+      "business_attractiveness_partial": 20.0,
+      "business_coverage": 0.18,
+      "business_interval_with_unknowns": [
+        3.6,
+        85.6
+      ],
+      "evidence_strength": 1,
+      "independent_source_groups": [
+        "anthropic-product-docs",
+        "openai-product-docs",
+        "tencent-product-docs",
+        "uaw-design"
+      ],
+      "source_types": [
+        "official_documentation",
+        "provided_document"
+      ],
+      "dimension_source_groups": {
+        "pain_intensity": [],
+        "demand_frequency": [],
+        "unmet_need": [
+          "anthropic-product-docs",
+          "openai-product-docs",
+          "tencent-product-docs"
+        ],
+        "market_space": [],
+        "willingness_to_pay": [],
+        "differentiation": [
+          "anthropic-product-docs",
+          "openai-product-docs",
+          "tencent-product-docs"
+        ],
+        "reachability": [],
+        "switching_ease": [],
+        "retention": [],
+        "feasibility": [],
+        "defensibility": [],
+        "expansion": [],
+        "risk_control": [],
+        "evidence_strength": [
+          "uaw-design"
+        ]
+      },
+      "missing_dimensions": [
+        "pain_intensity",
+        "demand_frequency",
+        "market_space",
+        "willingness_to_pay",
+        "reachability",
+        "switching_ease",
+        "retention",
+        "feasibility",
+        "defensibility",
+        "expansion",
+        "risk_control"
+      ],
+      "unsupported_ratings": [],
+      "counter_evidence_ids": [
+        "L001"
+      ],
+      "state": "淘汰/阻断",
+      "gate_reasons": [
+        "关键维度证据不足: pain_intensity",
+        "关键维度证据不足: willingness_to_pay",
+        "关键维度证据不足: feasibility",
+        "商业评分覆盖不足"
+      ],
+      "fatal_risks": [
+        "当前首发被阻断：三类真实任务、付款和资源均未验证；暂停此首发假设，不否定通用架构长期方向。"
+      ]
+    }
+  ],
+  "weight_sensitivity": [
+    {
+      "dimension": "pain_intensity",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 48.601
+        },
+        {
+          "id": "O002",
+          "partial_score": 45.492
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.274
+        },
+        {
+          "id": "O003",
+          "partial_score": 33.057
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "pain_intensity",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.862
+        },
+        {
+          "id": "O002",
+          "partial_score": 47.097
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.662
+        },
+        {
+          "id": "O003",
+          "partial_score": 36.037
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "demand_frequency",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.138
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "demand_frequency",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.869
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "unmet_need",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.694
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.633
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.179
+        },
+        {
+          "id": "O003",
+          "partial_score": 35.306
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "unmet_need",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 48.879
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.075
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.833
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.019
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "market_space",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "market_space",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "willingness_to_pay",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "willingness_to_pay",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "differentiation",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.694
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.633
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.179
+        },
+        {
+          "id": "O003",
+          "partial_score": 35.306
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "differentiation",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 48.879
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.075
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.833
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.019
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "reachability",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "reachability",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "switching_ease",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 48.342
+        },
+        {
+          "id": "O002",
+          "partial_score": 45.93
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.646
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.472
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "switching_ease",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 50.142
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.73
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.338
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.787
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "retention",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "retention",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "feasibility",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "feasibility",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "defensibility",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 50.0
+        },
+        {
+          "id": "O002",
+          "partial_score": 47.0
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.49
+        },
+        {
+          "id": "O003",
+          "partial_score": 35.0
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "defensibility",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 48.571
+        },
+        {
+          "id": "O002",
+          "partial_score": 45.714
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.528
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.286
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "expansion",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.078
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "expansion",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 44.924
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "risk_control",
+      "weight_multiplier": 0.8,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    },
+    {
+      "dimension": "risk_control",
+      "weight_multiplier": 1.2,
+      "ranking": [
+        {
+          "id": "O004",
+          "partial_score": 49.268
+        },
+        {
+          "id": "O002",
+          "partial_score": 46.341
+        },
+        {
+          "id": "O001",
+          "partial_score": 45.0
+        },
+        {
+          "id": "O003",
+          "partial_score": 34.634
+        },
+        {
+          "id": "O005",
+          "partial_score": 20.0
+        }
+      ]
+    }
+  ],
+  "interpretation": "Analytical judgment, not market probability. Partial ranking is provisional when coverage differs or uncertainty intervals overlap. Evidence independence and representativeness require human review. Ready status means validation only, never automatic development approval."
+}

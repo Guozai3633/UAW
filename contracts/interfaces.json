@@ -1,0 +1,7016 @@
+{
+  "contract_version": "0.1",
+  "architecture_version": "0.10",
+  "status": "partial_development_implementation",
+  "operations": [
+    {
+      "id": "conversations.create",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "model.policy"
+      ],
+      "request": "ConversationsCreateRequest",
+      "response": "Conversation",
+      "effect": "internal_write",
+      "rules": [
+        "principal由认证注入；模型目录不可用时返回model_unavailable，不静默选择。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpConversationsCreateResult",
+      "envelope": "HttpConversationsCreateEnvelope"
+    },
+    {
+      "id": "conversations.list",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history"
+      ],
+      "request": "ConversationsListRequest",
+      "response": "ConversationPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpConversationsListResult",
+      "envelope": "HttpConversationsListEnvelope"
+    },
+    {
+      "id": "conversations.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history"
+      ],
+      "request": "ConversationsGetRequest",
+      "response": "Conversation",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpConversationsGetResult",
+      "envelope": "HttpConversationsGetEnvelope"
+    },
+    {
+      "id": "conversations.configure",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history",
+        "model.policy",
+        "context.memory.policy"
+      ],
+      "request": "ConversationsConfigureRequest",
+      "response": "Conversation",
+      "effect": "internal_write",
+      "rules": [
+        "需expected_revision；模型变化默认只影响下一安全调用边界，不改写已产生的结果。"
+      ],
+      "method": "PATCH",
+      "path": "/v1/conversations/{conversation_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpConversationsConfigureResult",
+      "envelope": "HttpConversationsConfigureEnvelope"
+    },
+    {
+      "id": "conversations.items",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history",
+        "run.events"
+      ],
+      "request": "ConversationsItemsRequest",
+      "response": "ItemPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/items",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpConversationsItemsResult",
+      "envelope": "HttpConversationsItemsEnvelope"
+    },
+    {
+      "id": "intent.preview",
+      "channel": "http",
+      "owner": "intent",
+      "nodes": [
+        "ui",
+        "ingress",
+        "intent.preview"
+      ],
+      "request": "IntentPreviewRequest",
+      "response": "DraftPreview",
+      "effect": "read",
+      "rules": [
+        "只读、短deadline；取消旧草稿；预览失败不阻止提交；不得创建Run或执行写。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/preview",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpIntentPreviewResult",
+      "envelope": "HttpIntentPreviewEnvelope"
+    },
+    {
+      "id": "turns.submit",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "intent.original",
+        "intent.semantic",
+        "intent.frame",
+        "agent.loop"
+      ],
+      "request": "TurnsSubmitRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [
+        "同request_id+相同规范请求重放返回原Run；同键不同原文冲突；输入正文或附件至少一个非空。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/turns",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpTurnsSubmitResult",
+      "envelope": "HttpTurnsSubmitEnvelope"
+    },
+    {
+      "id": "tasks.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history"
+      ],
+      "request": "TasksGetRequest",
+      "response": "TaskRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpTasksGetResult",
+      "envelope": "HttpTasksGetEnvelope"
+    },
+    {
+      "id": "tasks.frame",
+      "channel": "http",
+      "owner": "intent",
+      "nodes": [
+        "ui",
+        "intent.frame"
+      ],
+      "request": "TasksFrameRequest",
+      "response": "TaskFrame",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}/frame",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_intent_protocol",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P1-01.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpTasksFrameResult",
+      "envelope": "HttpTasksFrameEnvelope"
+    },
+    {
+      "id": "tasks.plan",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.planning"
+      ],
+      "request": "TasksPlanRequest",
+      "response": "TaskGraph",
+      "effect": "read",
+      "rules": [
+        "无图返回missing，不能伪造空图。"
+      ],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}/plan",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpTasksPlanResult",
+      "envelope": "HttpTasksPlanEnvelope"
+    },
+    {
+      "id": "tasks.board",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.board"
+      ],
+      "request": "TasksBoardRequest",
+      "response": "BoardPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}/board",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpTasksBoardResult",
+      "envelope": "HttpTasksBoardEnvelope"
+    },
+    {
+      "id": "runs.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.state"
+      ],
+      "request": "RunsGetRequest",
+      "response": "RunRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpRunsGetResult",
+      "envelope": "HttpRunsGetEnvelope"
+    },
+    {
+      "id": "runs.control",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.approval",
+        "run.cancel",
+        "intent.frame",
+        "agent.planning"
+      ],
+      "request": "RunsControlRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision必需；steer追加要求、enqueue下一轮、replace取消过期工作并开始新修订；202仅表示受理。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/control",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpRunsControlResult",
+      "envelope": "HttpRunsControlEnvelope"
+    },
+    {
+      "id": "runs.checkpoint",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "run.checkpoint"
+      ],
+      "request": "RunsCheckpointRequest",
+      "response": "Checkpoint",
+      "effect": "internal_write",
+      "rules": [
+        "只采集已提交域版本；未决外部写保留到pending_action_refs；需expected_revision。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/checkpoints",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpRunsCheckpointResult",
+      "envelope": "HttpRunsCheckpointEnvelope"
+    },
+    {
+      "id": "runs.resume",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.resume",
+        "run.resume.lease",
+        "run.resume.versions",
+        "run.resume.access",
+        "run.resume.effects",
+        "run.resume.workspace",
+        "run.resume.continue"
+      ],
+      "request": "RunsResumeRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [
+        "执行恢复先取得租约、复核权限与资源、对账未知写；rerun创建新Run，不能冒充结果复现。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/resume",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpRunsResumeResult",
+      "envelope": "HttpRunsResumeEnvelope"
+    },
+    {
+      "id": "events.read",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ingress",
+        "run.events"
+      ],
+      "request": "EventsReadRequest",
+      "response": "EventPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/events",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpEventsReadResult",
+      "envelope": "HttpEventsReadEnvelope"
+    },
+    {
+      "id": "events.stream",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.events"
+      ],
+      "request": "EventsStreamRequest",
+      "response": "EventEnvelope",
+      "effect": "read",
+      "rules": [
+        "Last-Event-ID与cursor同时存在必须一致；断点过旧返回410并提供快照入口；心跳不持久化。"
+      ],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/events/stream",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpEventsStreamResult",
+      "envelope": "HttpEventsStreamEnvelope"
+    },
+    {
+      "id": "approvals.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.approval"
+      ],
+      "request": "ApprovalsGetRequest",
+      "response": "ApprovalRequest",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/approvals/{approval_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpApprovalsGetResult",
+      "envelope": "HttpApprovalsGetEnvelope"
+    },
+    {
+      "id": "approvals.decide",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.approval",
+        "tool.invocation.approval",
+        "tool.invocation.recheck"
+      ],
+      "request": "ApprovalsDecideRequest",
+      "response": "ApprovalGrant",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision必需；参数/资源版本不一致返回stale；不能从LLM参数approved读取授权。"
+      ],
+      "method": "POST",
+      "path": "/v1/approvals/{approval_id}/decisions",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpApprovalsDecideResult",
+      "envelope": "HttpApprovalsDecideEnvelope"
+    },
+    {
+      "id": "assets.upload.begin",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "ui",
+        "context.sources",
+        "context.ingestion"
+      ],
+      "request": "AssetsUploadBeginRequest",
+      "response": "UploadSession",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/assets/uploads",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAssetsUploadBeginResult",
+      "envelope": "HttpAssetsUploadBeginEnvelope"
+    },
+    {
+      "id": "assets.upload.complete",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.ingestion"
+      ],
+      "request": "AssetsUploadCompleteRequest",
+      "response": "BlobReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "只有真实字节/摘要/格式检查通过才发布asset_ref。"
+      ],
+      "method": "POST",
+      "path": "/v1/assets/uploads/{upload_id}/complete",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAssetsUploadCompleteResult",
+      "envelope": "HttpAssetsUploadCompleteEnvelope"
+    },
+    {
+      "id": "references.resolve",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.references"
+      ],
+      "request": "ReferencesResolveRequest",
+      "response": "ResolvedReference",
+      "effect": "read",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/references/resolve",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpReferencesResolveResult",
+      "envelope": "HttpReferencesResolveEnvelope"
+    },
+    {
+      "id": "references.read",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.references",
+        "context.sources"
+      ],
+      "request": "ReferencesReadRequest",
+      "response": "ReadResult",
+      "effect": "read",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/references/read",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpReferencesReadResult",
+      "envelope": "HttpReferencesReadEnvelope"
+    },
+    {
+      "id": "sources.ingest",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.ingestion"
+      ],
+      "request": "SourcesIngestRequest",
+      "response": "IngestionRecord",
+      "effect": "internal_write",
+      "rules": [
+        "异步状态preparing/running；索引发布CAS后才成为active。"
+      ],
+      "method": "POST",
+      "path": "/v1/tasks/{task_id}/sources",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpSourcesIngestResult",
+      "envelope": "HttpSourcesIngestEnvelope"
+    },
+    {
+      "id": "sources.delete",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.ingestion",
+        "support.cache"
+      ],
+      "request": "SourcesDeleteRequest",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision必需；权限内逻辑删除先阻断读取，异步物理清理可继续。"
+      ],
+      "method": "DELETE",
+      "path": "/v1/tasks/{task_id}/sources/{source_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpSourcesDeleteResult",
+      "envelope": "HttpSourcesDeleteEnvelope"
+    },
+    {
+      "id": "sources.get",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.ingestion"
+      ],
+      "request": "SourcesGetRequest",
+      "response": "IngestionRecord",
+      "effect": "read",
+      "rules": [
+        "未发布时chunk_refs不供检索；pending状态只说明作业已受理。"
+      ],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}/sources/{source_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpSourcesGetResult",
+      "envelope": "HttpSourcesGetEnvelope"
+    },
+    {
+      "id": "memory.list",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.memory",
+        "context.memory.store"
+      ],
+      "request": "MemoryListRequest",
+      "response": "MemoryPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/memories",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpMemoryListResult",
+      "envelope": "HttpMemoryListEnvelope"
+    },
+    {
+      "id": "memory.forget",
+      "channel": "http",
+      "owner": "context",
+      "nodes": [
+        "context.memory.forget",
+        "support.cache"
+      ],
+      "request": "MemoryForgetRequest",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "禁止空选择器全量删除；失效索引、摘要和缓存；后续调用不能读旧记忆派生块。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/memories/forget",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpMemoryForgetResult",
+      "envelope": "HttpMemoryForgetEnvelope"
+    },
+    {
+      "id": "definitions.create",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.definitions",
+        "agent.definitions.validator",
+        "agent.definitions.model_intent",
+        "agent.definitions.repository"
+      ],
+      "request": "DefinitionsCreateRequest",
+      "response": "DefinitionBatchResult",
+      "effect": "internal_write",
+      "rules": [
+        "不会启动实例；显式模型缺失返回needs_resolution；会话名唯一；幂等client_definition_key。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/agents",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsCreateResult",
+      "envelope": "HttpDefinitionsCreateEnvelope"
+    },
+    {
+      "id": "definitions.list",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.definitions.discovery"
+      ],
+      "request": "DefinitionsListRequest",
+      "response": "DefinitionPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/agents",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsListResult",
+      "envelope": "HttpDefinitionsListEnvelope"
+    },
+    {
+      "id": "definitions.get",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.repository"
+      ],
+      "request": "DefinitionsGetRequest",
+      "response": "AgentDefinitionVersion",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/agents/{definition_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsGetResult",
+      "envelope": "HttpDefinitionsGetEnvelope"
+    },
+    {
+      "id": "definitions.update",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.change_service",
+        "agent.definitions.validator",
+        "agent.definitions.repository"
+      ],
+      "request": "DefinitionsUpdateRequest",
+      "response": "AgentDefinitionVersion",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision必需；运行实例固定旧定义，不追随变更。"
+      ],
+      "method": "PATCH",
+      "path": "/v1/conversations/{conversation_id}/agents/{definition_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsUpdateResult",
+      "envelope": "HttpDefinitionsUpdateEnvelope"
+    },
+    {
+      "id": "definitions.diff",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.change_service"
+      ],
+      "request": "DefinitionsDiffRequest",
+      "response": "DefinitionDiff",
+      "effect": "read",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/agents/{definition_id}/diff",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsDiffResult",
+      "envelope": "HttpDefinitionsDiffEnvelope"
+    },
+    {
+      "id": "definitions.revert",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.change_service"
+      ],
+      "request": "DefinitionsRevertRequest",
+      "response": "AgentDefinitionVersion",
+      "effect": "internal_write",
+      "rules": [
+        "CAS；创建新revision，保留历史；权限和模型配置重新校验。"
+      ],
+      "method": "POST",
+      "path": "/v1/conversations/{conversation_id}/agents/{definition_id}/revert",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpDefinitionsRevertResult",
+      "envelope": "HttpDefinitionsRevertEnvelope"
+    },
+    {
+      "id": "agents.get",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.factory",
+        "agent.loop"
+      ],
+      "request": "AgentsGetRequest",
+      "response": "AgentInstance",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/agents/{agent_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAgentsGetResult",
+      "envelope": "HttpAgentsGetEnvelope"
+    },
+    {
+      "id": "agents.cancel",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.collaboration.cancel",
+        "run.cancel"
+      ],
+      "request": "AgentsCancelRequest",
+      "response": "CancellationResult",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/agents/{agent_id}/cancel",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAgentsCancelResult",
+      "envelope": "HttpAgentsCancelEnvelope"
+    },
+    {
+      "id": "skills.list",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "agent.skills",
+        "support.extensions"
+      ],
+      "request": "SkillsListRequest",
+      "response": "SkillPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/skills",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpSkillsListResult",
+      "envelope": "HttpSkillsListEnvelope"
+    },
+    {
+      "id": "projects.list",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "ProjectsListRequest",
+      "response": "DevicePage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/devices",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpProjectsListResult",
+      "envelope": "HttpProjectsListEnvelope"
+    },
+    {
+      "id": "projects.bind",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "ProjectsBindRequest",
+      "response": "ProjectBinding",
+      "effect": "internal_write",
+      "rules": [
+        "根不由网页任意path字符串指定；一次凭据绑定当前用户和设备；批准后能力只能缩窄。"
+      ],
+      "method": "POST",
+      "path": "/v1/projects/bind",
+      "auth": "user",
+      "errors": [],
+      "feature": "local_runner",
+      "implemented": false,
+      "result": "HttpProjectsBindResult",
+      "envelope": "HttpProjectsBindEnvelope"
+    },
+    {
+      "id": "projects.get",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "ProjectsGetRequest",
+      "response": "ProjectBinding",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/projects/{project_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": "local_runner",
+      "implemented": false,
+      "result": "HttpProjectsGetResult",
+      "envelope": "HttpProjectsGetEnvelope"
+    },
+    {
+      "id": "projects.unbind",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding",
+        "run.cancel"
+      ],
+      "request": "ProjectsUnbindRequest",
+      "response": "CancellationResult",
+      "effect": "internal_write",
+      "rules": [
+        "立即失效新命令、控制租约和缓存；正在执行进程请求停止并对账。"
+      ],
+      "method": "DELETE",
+      "path": "/v1/projects/{project_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": "local_runner",
+      "implemented": false,
+      "result": "HttpProjectsUnbindResult",
+      "envelope": "HttpProjectsUnbindEnvelope"
+    },
+    {
+      "id": "workspaces.get",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.isolation"
+      ],
+      "request": "WorkspacesGetRequest",
+      "response": "WorkspaceRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/workspaces/{workspace_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpWorkspacesGetResult",
+      "envelope": "HttpWorkspacesGetEnvelope"
+    },
+    {
+      "id": "workspaces.files",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "WorkspacesFilesRequest",
+      "response": "FilePage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/workspaces/{workspace_id}/files",
+      "auth": "user",
+      "errors": [],
+      "feature": "file_access",
+      "implemented": false,
+      "result": "HttpWorkspacesFilesResult",
+      "envelope": "HttpWorkspacesFilesEnvelope"
+    },
+    {
+      "id": "workspaces.changes",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.changes"
+      ],
+      "request": "WorkspacesChangesRequest",
+      "response": "ChangeSet",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/workspaces/{workspace_id}/changes",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpWorkspacesChangesResult",
+      "envelope": "HttpWorkspacesChangesEnvelope"
+    },
+    {
+      "id": "workspaces.merge",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "WorkspacesMergeRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [
+        "选空列表拒绝；当前文件基线变化返回conflict；二进制按文件；重新核验成果。"
+      ],
+      "method": "POST",
+      "path": "/v1/workspaces/{workspace_id}/merge",
+      "auth": "user",
+      "errors": [],
+      "feature": "file_write",
+      "implemented": false,
+      "result": "HttpWorkspacesMergeResult",
+      "envelope": "HttpWorkspacesMergeEnvelope"
+    },
+    {
+      "id": "workspaces.revert",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.changes"
+      ],
+      "request": "WorkspacesRevertRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [
+        "撤销创建新版本；用户后续编辑不覆盖；外部服务动作不属于文件撤销。"
+      ],
+      "method": "POST",
+      "path": "/v1/workspaces/{workspace_id}/revert",
+      "auth": "user",
+      "errors": [],
+      "feature": "file_write",
+      "implemented": false,
+      "result": "HttpWorkspacesRevertResult",
+      "envelope": "HttpWorkspacesRevertEnvelope"
+    },
+    {
+      "id": "processes.get",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.process"
+      ],
+      "request": "ProcessesGetRequest",
+      "response": "ProcessRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/processes/{process_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "HttpProcessesGetResult",
+      "envelope": "HttpProcessesGetEnvelope"
+    },
+    {
+      "id": "processes.stop",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process",
+        "run.cancel"
+      ],
+      "request": "ProcessesStopRequest",
+      "response": "ProcessRecord",
+      "effect": "process",
+      "rules": [
+        "先软终止、超时硬终止；离线lost不伪称stopped。"
+      ],
+      "method": "POST",
+      "path": "/v1/processes/{process_id}/stop",
+      "auth": "user",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "HttpProcessesStopResult",
+      "envelope": "HttpProcessesStopEnvelope"
+    },
+    {
+      "id": "artifacts.list",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.artifacts"
+      ],
+      "request": "ArtifactsListRequest",
+      "response": "ArtifactPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/tasks/{task_id}/artifacts",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpArtifactsListResult",
+      "envelope": "HttpArtifactsListEnvelope"
+    },
+    {
+      "id": "artifacts.get",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.artifacts"
+      ],
+      "request": "ArtifactsGetRequest",
+      "response": "ArtifactRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/artifacts/{artifact_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpArtifactsGetResult",
+      "envelope": "HttpArtifactsGetEnvelope"
+    },
+    {
+      "id": "artifacts.preview",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.artifacts"
+      ],
+      "request": "ArtifactsPreviewRequest",
+      "response": "DownloadTicket",
+      "effect": "read",
+      "rules": [
+        "HTML预览在独立安全域，禁主动外部副作用；无预览适配器返回unsupported_format。"
+      ],
+      "method": "POST",
+      "path": "/v1/artifacts/{artifact_id}/preview",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpArtifactsPreviewResult",
+      "envelope": "HttpArtifactsPreviewEnvelope"
+    },
+    {
+      "id": "artifacts.export",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.artifacts"
+      ],
+      "request": "ArtifactsExportRequest",
+      "response": "DownloadTicket",
+      "effect": "read",
+      "rules": [
+        "内容转换派生成新成果，保留来源；不能谎称原版本验证适用于转换后版本。"
+      ],
+      "method": "POST",
+      "path": "/v1/artifacts/{artifact_id}/export",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpArtifactsExportResult",
+      "envelope": "HttpArtifactsExportEnvelope"
+    },
+    {
+      "id": "reviews.get",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.review"
+      ],
+      "request": "ReviewsGetRequest",
+      "response": "ReviewSet",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/reviews/{review_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpReviewsGetResult",
+      "envelope": "HttpReviewsGetEnvelope"
+    },
+    {
+      "id": "reviews.decide",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.review",
+        "agent.completion.acceptance"
+      ],
+      "request": "ReviewsDecideRequest",
+      "response": "ReviewSet",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision与成果基线双校验；接受意见不会偷偷执行文件合并，应用改动需显式merge。"
+      ],
+      "method": "POST",
+      "path": "/v1/reviews/{review_id}/decisions",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpReviewsDecideResult",
+      "envelope": "HttpReviewsDecideEnvelope"
+    },
+    {
+      "id": "verification.get",
+      "channel": "http",
+      "owner": "agent",
+      "nodes": [
+        "ui",
+        "agent.completion.semantic"
+      ],
+      "request": "VerificationGetRequest",
+      "response": "VerificationReport",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/verifications/{verification_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpVerificationGetResult",
+      "envelope": "HttpVerificationGetEnvelope"
+    },
+    {
+      "id": "models.list",
+      "channel": "http",
+      "owner": "model",
+      "nodes": [
+        "ui",
+        "model.catalog"
+      ],
+      "request": "ModelsListRequest",
+      "response": "ModelPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/models",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpModelsListResult",
+      "envelope": "HttpModelsListEnvelope"
+    },
+    {
+      "id": "connections.list",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "ConnectionsListRequest",
+      "response": "ConnectionPage",
+      "effect": "read",
+      "rules": [
+        "HTTP普通用户视图不含credential_ref；模式关闭凭据字段。"
+      ],
+      "method": "GET",
+      "path": "/v1/connections",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpConnectionsListResult",
+      "envelope": "HttpConnectionsListEnvelope"
+    },
+    {
+      "id": "connections.begin",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration",
+        "tool.mcp.provider"
+      ],
+      "request": "ConnectionsBeginRequest",
+      "response": "AuthorizationStart",
+      "effect": "credential",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/connections",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpConnectionsBeginResult",
+      "envelope": "HttpConnectionsBeginEnvelope"
+    },
+    {
+      "id": "connections.revoke",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration",
+        "tool.mcp.invalidate"
+      ],
+      "request": "ConnectionsRevokeRequest",
+      "response": "DeletionReceipt",
+      "effect": "credential",
+      "rules": [
+        "能力索引与session立即失效，旧审批不可继续使用。"
+      ],
+      "method": "DELETE",
+      "path": "/v1/connections/{connection_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpConnectionsRevokeResult",
+      "envelope": "HttpConnectionsRevokeEnvelope"
+    },
+    {
+      "id": "admin.configuration.get",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminConfigurationGetRequest",
+      "response": "ConfigurationVersion",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/admin/configuration",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminConfigurationGetResult",
+      "envelope": "HttpAdminConfigurationGetEnvelope"
+    },
+    {
+      "id": "admin.configuration.stage",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminConfigurationStageRequest",
+      "response": "ConfigurationVersion",
+      "effect": "internal_write",
+      "rules": [
+        "revision/主体由服务决定；秘密另经secret write-only接口。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/configuration/drafts",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminConfigurationStageResult",
+      "envelope": "HttpAdminConfigurationStageEnvelope"
+    },
+    {
+      "id": "admin.configuration.validate",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration",
+        "model.catalog",
+        "tool.registry"
+      ],
+      "request": "AdminConfigurationValidateRequest",
+      "response": "ValidationReport",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision必需；结构与引用校验成功后提交validated修订，不执行网络探测。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/configuration/drafts/{configuration_id}/validate",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminConfigurationValidateResult",
+      "envelope": "HttpAdminConfigurationValidateEnvelope"
+    },
+    {
+      "id": "admin.configuration.activate",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminConfigurationActivateRequest",
+      "response": "ConfigurationVersion",
+      "effect": "internal_write",
+      "rules": [
+        "expected_revision；受影响发现索引和缓存失效，旧在途调用固定旧配置并受撤销闸门控制。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/configuration/drafts/{configuration_id}/activate",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminConfigurationActivateResult",
+      "envelope": "HttpAdminConfigurationActivateEnvelope"
+    },
+    {
+      "id": "admin.tools.register",
+      "channel": "http",
+      "owner": "tool",
+      "nodes": [
+        "tool.registry"
+      ],
+      "request": "AdminToolsRegisterRequest",
+      "response": "ToolSpec",
+      "effect": "internal_write",
+      "rules": [
+        "检查schema合法、唯一版本、提供方可用；向量索引异步构建且保持目录版本一致。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/tools",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAdminToolsRegisterResult",
+      "envelope": "HttpAdminToolsRegisterEnvelope"
+    },
+    {
+      "id": "admin.tools.list",
+      "channel": "http",
+      "owner": "tool",
+      "nodes": [
+        "tool.registry"
+      ],
+      "request": "AdminToolsListRequest",
+      "response": "ToolPage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/admin/tools",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAdminToolsListResult",
+      "envelope": "HttpAdminToolsListEnvelope"
+    },
+    {
+      "id": "admin.models.register",
+      "channel": "http",
+      "owner": "model",
+      "nodes": [
+        "model.catalog"
+      ],
+      "request": "AdminModelsRegisterRequest",
+      "response": "ModelCatalogEntry",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/models",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminModelsRegisterResult",
+      "envelope": "HttpAdminModelsRegisterEnvelope"
+    },
+    {
+      "id": "admin.providers.configure",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration",
+        "tool.mcp.provider",
+        "model.adapters"
+      ],
+      "request": "AdminProvidersConfigureRequest",
+      "response": "ProviderBinding",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/providers",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminProvidersConfigureResult",
+      "envelope": "HttpAdminProvidersConfigureEnvelope"
+    },
+    {
+      "id": "admin.secrets.put",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminSecretsPutRequest",
+      "response": "SecretReceipt",
+      "effect": "credential",
+      "rules": [
+        "日志/缓存/trace禁止记录secret；前端与模型不可读取秘密。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/secrets",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminSecretsPutResult",
+      "envelope": "HttpAdminSecretsPutEnvelope"
+    },
+    {
+      "id": "admin.environments.register",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "AdminEnvironmentsRegisterRequest",
+      "response": "EnvironmentTemplate",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/environments",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminEnvironmentsRegisterResult",
+      "envelope": "HttpAdminEnvironmentsRegisterEnvelope"
+    },
+    {
+      "id": "admin.extensions.install",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.extensions"
+      ],
+      "request": "AdminExtensionsInstallRequest",
+      "response": "ExtensionManifest",
+      "effect": "internal_write",
+      "rules": [
+        "哈希、依赖和能力验证；install不等于activate。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/extensions",
+      "auth": "admin",
+      "errors": [],
+      "feature": "extensions",
+      "implemented": false,
+      "result": "HttpAdminExtensionsInstallResult",
+      "envelope": "HttpAdminExtensionsInstallEnvelope"
+    },
+    {
+      "id": "admin.extensions.activate",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.extensions"
+      ],
+      "request": "AdminExtensionsActivateRequest",
+      "response": "ExtensionManifest",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/extensions/{extension_id}/activate",
+      "auth": "admin",
+      "errors": [],
+      "feature": "extensions",
+      "implemented": false,
+      "result": "HttpAdminExtensionsActivateResult",
+      "envelope": "HttpAdminExtensionsActivateEnvelope"
+    },
+    {
+      "id": "admin.extensions.revoke",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.extensions",
+        "tool.mcp.invalidate"
+      ],
+      "request": "AdminExtensionsRevokeRequest",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "DELETE",
+      "path": "/v1/admin/extensions/{extension_id}",
+      "auth": "admin",
+      "errors": [],
+      "feature": "extensions",
+      "implemented": false,
+      "result": "HttpAdminExtensionsRevokeResult",
+      "envelope": "HttpAdminExtensionsRevokeEnvelope"
+    },
+    {
+      "id": "admin.extensions.validate",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.extensions"
+      ],
+      "request": "AdminExtensionsValidateRequest",
+      "response": "ValidationReport",
+      "effect": "read",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/extensions/{extension_id}/validate",
+      "auth": "admin",
+      "errors": [],
+      "feature": "extensions",
+      "implemented": false,
+      "result": "HttpAdminExtensionsValidateResult",
+      "envelope": "HttpAdminExtensionsValidateEnvelope"
+    },
+    {
+      "id": "admin.extensions.rollback",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.extensions"
+      ],
+      "request": "AdminExtensionsRollbackRequest",
+      "response": "ExtensionManifest",
+      "effect": "internal_write",
+      "rules": [
+        "CAS；旧包仍须安全/依赖有效；不回滚外部动作；撤销与新实例策略当前生效。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/extensions/{extension_id}/rollback",
+      "auth": "admin",
+      "errors": [],
+      "feature": "extensions",
+      "implemented": false,
+      "result": "HttpAdminExtensionsRollbackResult",
+      "envelope": "HttpAdminExtensionsRollbackEnvelope"
+    },
+    {
+      "id": "admin.policies.register",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration",
+        "run.approval",
+        "support.cache"
+      ],
+      "request": "AdminPoliciesRegisterRequest",
+      "response": "Ref",
+      "effect": "internal_write",
+      "rules": [
+        "校验后登记但不立即激活；须configuration.activate引用该版本。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/policies",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminPoliciesRegisterResult",
+      "envelope": "HttpAdminPoliciesRegisterEnvelope"
+    },
+    {
+      "id": "admin.traces.list",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.observability"
+      ],
+      "request": "AdminTracesListRequest",
+      "response": "TracePage",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/admin/traces/{trace_id}",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAdminTracesListResult",
+      "envelope": "HttpAdminTracesListEnvelope"
+    },
+    {
+      "id": "admin.evaluations.run",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "AdminEvaluationsRunRequest",
+      "response": "EvaluationResult",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/admin/evaluations",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAdminEvaluationsRunResult",
+      "envelope": "HttpAdminEvaluationsRunEnvelope"
+    },
+    {
+      "id": "admin.evaluations.get",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "AdminEvaluationsGetRequest",
+      "response": "EvaluationResult",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/admin/evaluations/{evaluation_id}",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpAdminEvaluationsGetResult",
+      "envelope": "HttpAdminEvaluationsGetEnvelope"
+    },
+    {
+      "id": "triggers.create",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "run.trigger"
+      ],
+      "request": "TriggersCreateRequest",
+      "response": "TriggerSpec",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "POST",
+      "path": "/v1/tasks/{task_id}/triggers",
+      "auth": "user",
+      "errors": [],
+      "feature": "automations",
+      "implemented": false,
+      "result": "HttpTriggersCreateResult",
+      "envelope": "HttpTriggersCreateEnvelope"
+    },
+    {
+      "id": "triggers.disable",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "run.trigger"
+      ],
+      "request": "TriggersDisableRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [],
+      "method": "DELETE",
+      "path": "/v1/triggers/{trigger_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": "automations",
+      "implemented": false,
+      "result": "HttpTriggersDisableResult",
+      "envelope": "HttpTriggersDisableEnvelope"
+    },
+    {
+      "id": "tools.discover",
+      "channel": "tool",
+      "owner": "tool",
+      "nodes": [
+        "tool.discovery",
+        "agent.definitions.discovery"
+      ],
+      "request": "ToolToolsDiscoverInput",
+      "response": "DiscoveryResult",
+      "effect": "read",
+      "rules": [
+        "角色类别、产品旗标和权限先过滤，混合召回后交当前LLM选；小目录可直接返回。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolToolsDiscoverResult"
+    },
+    {
+      "id": "context.read",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.sources",
+        "context.references"
+      ],
+      "request": "ToolContextReadInput",
+      "response": "ReadResult",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolContextReadResult"
+    },
+    {
+      "id": "skills.load",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.skills",
+        "context.rules"
+      ],
+      "request": "ToolSkillsLoadInput",
+      "response": "SkillSpec",
+      "effect": "read",
+      "rules": [
+        "加载不自动运行脚本；依赖能力仍经Tool Runtime。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolSkillsLoadResult"
+    },
+    {
+      "id": "agents.create",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions",
+        "agent.definitions.designer",
+        "agent.definitions.validator",
+        "agent.definitions.model_intent",
+        "agent.definitions.repository"
+      ],
+      "request": "ToolAgentsCreateInput",
+      "response": "DefinitionBatchResult",
+      "effect": "internal_write",
+      "rules": [
+        "不能包含owner、权限批准或conversation；create不启动实例；同键相同内容幂等。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsCreateResult"
+    },
+    {
+      "id": "agents.update",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.change_service",
+        "agent.definitions.validator"
+      ],
+      "request": "ToolAgentsUpdateInput",
+      "response": "AgentDefinitionVersion",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsUpdateResult"
+    },
+    {
+      "id": "agents.list",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.discovery"
+      ],
+      "request": "ToolAgentsListInput",
+      "response": "CandidatePage",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsListResult"
+    },
+    {
+      "id": "agents.invoke",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.assessment",
+        "agent.collaboration.contract",
+        "agent.factory",
+        "agent.collaboration.instance"
+      ],
+      "request": "ToolAgentsInvokeInput",
+      "response": "AgentInstance",
+      "effect": "internal_write",
+      "rules": [
+        "调用是当前主Agent语义决定；创建角色不自动invoke；不做独立性成立不了的并发。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsInvokeResult"
+    },
+    {
+      "id": "agents.wait",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.channel",
+        "agent.collaboration.join"
+      ],
+      "request": "ToolAgentsWaitInput",
+      "response": "AgentWaitResult",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsWaitResult"
+    },
+    {
+      "id": "agents.message",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.channel"
+      ],
+      "request": "ToolAgentsMessageInput",
+      "response": "AgentMessage",
+      "effect": "internal_write",
+      "rules": [
+        "实例树内授权；不能向不相关用户会话发送消息。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsMessageResult"
+    },
+    {
+      "id": "agents.cancel",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.cancel",
+        "run.cancel"
+      ],
+      "request": "ToolAgentsCancelInput",
+      "response": "CancellationResult",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolAgentsCancelResult"
+    },
+    {
+      "id": "agents.handoff",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.handoff"
+      ],
+      "request": "ToolAgentsHandoffInput",
+      "response": "ControlLease",
+      "effect": "internal_write",
+      "rules": [
+        "CAS交换租约；原控制者丢失栅栏不能再提交；不可移交未确认外部副作用。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "agent_handoff",
+      "implemented": false,
+      "result": "ToolAgentsHandoffResult"
+    },
+    {
+      "id": "tasks.assess",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.assessment"
+      ],
+      "request": "ToolTasksAssessInput",
+      "response": "ExecutionAssessment",
+      "effect": "read",
+      "rules": [
+        "默认单Agent；独立评估规划、委派、并发；额外工作须预算内有收益。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolTasksAssessResult"
+    },
+    {
+      "id": "tasks.plan",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.planning",
+        "agent.scheduler"
+      ],
+      "request": "ToolTasksPlanInput",
+      "response": "TaskGraph",
+      "effect": "internal_write",
+      "rules": [
+        "patch与非空node_specs互斥；硬依赖校验由代码；不自动invoke。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolTasksPlanResult"
+    },
+    {
+      "id": "tasks.verify",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.contract",
+        "agent.completion.evidence",
+        "agent.completion.semantic",
+        "agent.completion.version"
+      ],
+      "request": "ToolTasksVerifyInput",
+      "response": "VerificationReport",
+      "effect": "read",
+      "rules": [
+        "缺测试只能not_run/blocked，不能按模型陈述passed；返回报告不自动完成Run。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolTasksVerifyResult"
+    },
+    {
+      "id": "models.list",
+      "channel": "tool",
+      "owner": "model",
+      "nodes": [
+        "model.catalog"
+      ],
+      "request": "ToolModelsListInput",
+      "response": "ModelPage",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "ToolModelsListResult"
+    },
+    {
+      "id": "workspace.changes",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "ToolWorkspaceChangesInput",
+      "response": "ChangeSet",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolWorkspaceChangesResult"
+    },
+    {
+      "id": "workspace.revert",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "ToolWorkspaceRevertInput",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "file_write",
+      "implemented": false,
+      "result": "ToolWorkspaceRevertResult"
+    },
+    {
+      "id": "references.resolve",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.references"
+      ],
+      "request": "ToolReferencesResolveInput",
+      "response": "ResolvedReference",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolReferencesResolveResult"
+    },
+    {
+      "id": "references.read",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.references"
+      ],
+      "request": "ToolReferencesReadInput",
+      "response": "ReadResult",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolReferencesReadResult"
+    },
+    {
+      "id": "environment.inspect",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "ToolEnvironmentInspectInput",
+      "response": "EnvironmentRecord",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "ToolEnvironmentInspectResult"
+    },
+    {
+      "id": "environment.ensure",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "ToolEnvironmentEnsureInput",
+      "response": "EnvironmentRecord",
+      "effect": "process",
+      "rules": [
+        "预装优先，安装受权限/网络来源/预算约束；失败返回真实日志；cwd和venv不等于OS隔离。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "environment_install",
+      "implemented": false,
+      "result": "ToolEnvironmentEnsureResult"
+    },
+    {
+      "id": "process.exec",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessExecInput",
+      "response": "ProcessRecord",
+      "effect": "process",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "ToolProcessExecResult"
+    },
+    {
+      "id": "process.poll",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessPollInput",
+      "response": "ProcessRecord",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "ToolProcessPollResult"
+    },
+    {
+      "id": "process.stop",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessStopInput",
+      "response": "ProcessRecord",
+      "effect": "process",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "ToolProcessStopResult"
+    },
+    {
+      "id": "file.read",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolFileReadInput",
+      "response": "FileContent",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "file_access",
+      "implemented": false,
+      "result": "ToolFileReadResult"
+    },
+    {
+      "id": "file.write",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process",
+        "workspace.changes"
+      ],
+      "request": "ToolFileWriteInput",
+      "response": "ChangeSet",
+      "effect": "workspace_write",
+      "rules": [
+        "create_only=false须旧摘要；写原子替换、记录before/after；超大内容先上传blob。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "file_write",
+      "implemented": false,
+      "result": "ToolFileWriteResult"
+    },
+    {
+      "id": "search.query",
+      "channel": "tool",
+      "owner": "tool",
+      "nodes": [
+        "tool.adapters",
+        "tool.results"
+      ],
+      "request": "ToolSearchQueryInput",
+      "response": "SearchPage",
+      "effect": "read",
+      "rules": [
+        "搜索摘要不是已读取网页的证据；不得向模型返回密钥。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "web_search",
+      "implemented": false,
+      "result": "ToolSearchQueryResult"
+    },
+    {
+      "id": "web.read",
+      "channel": "tool",
+      "owner": "tool",
+      "nodes": [
+        "tool.adapters",
+        "context.references"
+      ],
+      "request": "ToolWebReadInput",
+      "response": "ReadResult",
+      "effect": "read",
+      "rules": [
+        "解析DNS和重定向检查SSRF/网络范围；实际内容登记版本；外部网页文本视为资料。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "web_search",
+      "implemented": false,
+      "result": "ToolWebReadResult"
+    },
+    {
+      "id": "verification.run",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process",
+        "agent.completion.evidence"
+      ],
+      "request": "ToolVerificationRunInput",
+      "response": "VerificationCheck",
+      "effect": "process",
+      "rules": [
+        "进程仍运行时返回waiting；结束证据含exit_code及输出；命令退出0只说明该检查通过。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": "process_exec",
+      "implemented": false,
+      "result": "ToolVerificationRunResult"
+    },
+    {
+      "id": "verification.report",
+      "channel": "tool",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.semantic"
+      ],
+      "request": "ToolVerificationReportInput",
+      "response": "VerificationReport",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolVerificationReportResult"
+    },
+    {
+      "id": "artifacts.publish",
+      "channel": "tool",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.artifacts"
+      ],
+      "request": "ToolArtifactsPublishInput",
+      "response": "ArtifactRecord",
+      "effect": "internal_write",
+      "rules": [
+        "仅登记，不是部署或公开发布；内容须真实存在且可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolArtifactsPublishResult"
+    },
+    {
+      "id": "interaction.ask_user",
+      "channel": "tool",
+      "owner": "run",
+      "nodes": [
+        "run.approval",
+        "intent.ambiguity"
+      ],
+      "request": "ToolInteractionAsk_userInput",
+      "response": "InteractionItem",
+      "effect": "internal_write",
+      "rules": [
+        "批准动作走ApprovalRequest；澄清不能伪造授权，超时不等于答案。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolInteractionAskUserResult"
+    },
+    {
+      "id": "memory.remember",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.memory.candidate",
+        "context.memory.policy",
+        "context.memory.conflict",
+        "context.memory.store"
+      ],
+      "request": "ToolMemoryRememberInput",
+      "response": "MemoryRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolMemoryRememberResult"
+    },
+    {
+      "id": "memory.recall",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.memory.store"
+      ],
+      "request": "ToolMemoryRecallInput",
+      "response": "MemoryPage",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolMemoryRecallResult"
+    },
+    {
+      "id": "memory.forget",
+      "channel": "tool",
+      "owner": "context",
+      "nodes": [
+        "context.memory.forget"
+      ],
+      "request": "ToolMemoryForgetInput",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "agent",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "ToolMemoryForgetResult"
+    },
+    {
+      "id": "IntentRuntime.preview",
+      "channel": "runtime",
+      "owner": "intent",
+      "nodes": [
+        "intent",
+        "intent.preview"
+      ],
+      "request": "IntentPreviewRequest",
+      "response": "DraftPreview",
+      "effect": "read",
+      "rules": [
+        "预览只读，不创建正式任务。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeIntentruntimePreviewResult"
+    },
+    {
+      "id": "IntentRuntime.understand",
+      "channel": "runtime",
+      "owner": "intent",
+      "nodes": [
+        "intent",
+        "intent.original",
+        "intent.semantic",
+        "intent.frame"
+      ],
+      "request": "UnderstandingRequest",
+      "response": "TaskFrame",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_intent_protocol",
+        "entrypoint": "src/uaw/intent/facade.py",
+        "evidence": [
+          "docs/implementation/P1-01.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "RuntimeIntentruntimeUnderstandResult"
+    },
+    {
+      "id": "IntentRuntime.revise",
+      "channel": "runtime",
+      "owner": "intent",
+      "nodes": [
+        "intent",
+        "intent.frame"
+      ],
+      "request": "FramePatchRequest",
+      "response": "TaskFrame",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_intent_protocol",
+        "entrypoint": "src/uaw/intent/facade.py",
+        "evidence": [
+          "docs/implementation/P1-01.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "RuntimeIntentruntimeReviseResult"
+    },
+    {
+      "id": "AgentRuntime.define_agent",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent",
+        "agent.definitions"
+      ],
+      "request": "ToolAgentsCreateInput",
+      "response": "DefinitionBatchResult",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeAgentruntimeDefineAgentResult"
+    },
+    {
+      "id": "AgentRuntime.start",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent",
+        "agent.factory"
+      ],
+      "request": "AgentStartRequest",
+      "response": "AgentInstance",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeAgentruntimeStartResult"
+    },
+    {
+      "id": "AgentRuntime.step",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent",
+        "agent.loop"
+      ],
+      "request": "AgentStepRequest",
+      "response": "AgentStepResult",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeAgentruntimeStepResult"
+    },
+    {
+      "id": "AgentRuntime.delegate",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent",
+        "agent.collaboration"
+      ],
+      "request": "DelegationSpec",
+      "response": "AgentInstance",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeAgentruntimeDelegateResult"
+    },
+    {
+      "id": "AgentRuntime.verify",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent",
+        "agent.completion"
+      ],
+      "request": "ToolTasksVerifyInput",
+      "response": "VerificationReport",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeAgentruntimeVerifyResult"
+    },
+    {
+      "id": "ContextRuntime.build",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.composer"
+      ],
+      "request": "ContextRequest",
+      "response": "ContextSnapshot",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeBuildResult"
+    },
+    {
+      "id": "ContextRuntime.ingest",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.ingestion"
+      ],
+      "request": "SourcesIngestRequest",
+      "response": "IngestionRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeIngestResult"
+    },
+    {
+      "id": "ContextRuntime.remember",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.memory"
+      ],
+      "request": "MemoryCandidate",
+      "response": "MemoryRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeRememberResult"
+    },
+    {
+      "id": "ContextRuntime.recall",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.memory"
+      ],
+      "request": "ToolMemoryRecallInput",
+      "response": "MemoryPage",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeRecallResult"
+    },
+    {
+      "id": "ContextRuntime.forget",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.memory.forget"
+      ],
+      "request": "MemorySelector",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeForgetResult"
+    },
+    {
+      "id": "ContextRuntime.resolve_reference",
+      "channel": "runtime",
+      "owner": "context",
+      "nodes": [
+        "context",
+        "context.references"
+      ],
+      "request": "RefRequest",
+      "response": "ResolvedReference",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeContextruntimeResolveReferenceResult"
+    },
+    {
+      "id": "ToolRuntime.discover",
+      "channel": "runtime",
+      "owner": "tool",
+      "nodes": [
+        "tool",
+        "tool.discovery"
+      ],
+      "request": "ToolToolsDiscoverInput",
+      "response": "DiscoveryResult",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeToolruntimeDiscoverResult"
+    },
+    {
+      "id": "ToolRuntime.invoke",
+      "channel": "runtime",
+      "owner": "tool",
+      "nodes": [
+        "tool",
+        "tool.invocation"
+      ],
+      "request": "ToolCall",
+      "response": "ToolResult",
+      "effect": "external_write",
+      "rules": [
+        "effect由固定ToolSpec确定，不由调用者指定；本描述是最大风险上限。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeToolruntimeInvokeResult"
+    },
+    {
+      "id": "ToolRuntime.reconcile",
+      "channel": "runtime",
+      "owner": "tool",
+      "nodes": [
+        "tool",
+        "tool.effects"
+      ],
+      "request": "ReconcileRequest",
+      "response": "EffectRecord",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeToolruntimeReconcileResult"
+    },
+    {
+      "id": "WorkspaceRuntime.allocate",
+      "channel": "runtime",
+      "owner": "workspace",
+      "nodes": [
+        "workspace",
+        "workspace.isolation"
+      ],
+      "request": "WorkspaceSpec",
+      "response": "WorkspaceRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeWorkspaceruntimeAllocateResult"
+    },
+    {
+      "id": "WorkspaceRuntime.prepare",
+      "channel": "runtime",
+      "owner": "workspace",
+      "nodes": [
+        "workspace",
+        "workspace.environment"
+      ],
+      "request": "ToolEnvironmentEnsureInput",
+      "response": "EnvironmentRecord",
+      "effect": "process",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeWorkspaceruntimePrepareResult"
+    },
+    {
+      "id": "WorkspaceRuntime.merge",
+      "channel": "runtime",
+      "owner": "workspace",
+      "nodes": [
+        "workspace",
+        "workspace.changes"
+      ],
+      "request": "WorkspacesMergeRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeWorkspaceruntimeMergeResult"
+    },
+    {
+      "id": "WorkspaceRuntime.revert",
+      "channel": "runtime",
+      "owner": "workspace",
+      "nodes": [
+        "workspace",
+        "workspace.changes"
+      ],
+      "request": "WorkspacesRevertRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeWorkspaceruntimeRevertResult"
+    },
+    {
+      "id": "WorkspaceRuntime.review",
+      "channel": "runtime",
+      "owner": "workspace",
+      "nodes": [
+        "workspace",
+        "workspace.review"
+      ],
+      "request": "ReviewsDecideRequest",
+      "response": "ReviewSet",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeWorkspaceruntimeReviewResult"
+    },
+    {
+      "id": "ModelRuntime.resolve_policy",
+      "channel": "runtime",
+      "owner": "model",
+      "nodes": [
+        "model",
+        "model.policy"
+      ],
+      "request": "ModelPolicyRequest",
+      "response": "ResolvedModelPolicy",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeModelruntimeResolvePolicyResult"
+    },
+    {
+      "id": "ModelRuntime.list",
+      "channel": "runtime",
+      "owner": "model",
+      "nodes": [
+        "model",
+        "model.catalog"
+      ],
+      "request": "ToolModelsListInput",
+      "response": "ModelPage",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeModelruntimeListResult"
+    },
+    {
+      "id": "ModelRuntime.generate",
+      "channel": "runtime",
+      "owner": "model",
+      "nodes": [
+        "model",
+        "model.gateway"
+      ],
+      "request": "ModelCall",
+      "response": "ModelOutput",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_model_protocol",
+        "entrypoint": "src/uaw/model/facade.py",
+        "evidence": [
+          "docs/implementation/P0-05.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "RuntimeModelruntimeGenerateResult"
+    },
+    {
+      "id": "RunRuntime.create",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run",
+        "run.history",
+        "run.state"
+      ],
+      "request": "RunCreateRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_run_admission",
+        "entrypoint": "src/uaw/run/facade.py",
+        "evidence": [
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "RuntimeRunruntimeCreateResult"
+    },
+    {
+      "id": "RunRuntime.control",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run",
+        "run.approval",
+        "run.cancel"
+      ],
+      "request": "RunControlRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeRunruntimeControlResult"
+    },
+    {
+      "id": "RunRuntime.checkpoint",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run",
+        "run.checkpoint"
+      ],
+      "request": "RunsCheckpointRequest",
+      "response": "Checkpoint",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeRunruntimeCheckpointResult"
+    },
+    {
+      "id": "RunRuntime.resume",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run",
+        "run.resume"
+      ],
+      "request": "RunsResumeRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RuntimeRunruntimeResumeResult"
+    },
+    {
+      "id": "pair.begin",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "RunnerPairBeginRequest",
+      "response": "RunnerPairing",
+      "effect": "credential",
+      "rules": [
+        "未配对无项目访问权；一次码只经用户账户页面确认。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerPairBeginResult"
+    },
+    {
+      "id": "pair.complete",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "RunnerPairCompleteRequest",
+      "response": "RunnerDevice",
+      "effect": "credential",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerPairCompleteResult"
+    },
+    {
+      "id": "heartbeat",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "RunnerHeartbeatRequest",
+      "response": "RunnerDevice",
+      "effect": "read",
+      "rules": [],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerHeartbeatResult"
+    },
+    {
+      "id": "root.select",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "RunnerRootSelectRequest",
+      "response": "RootSelection",
+      "effect": "credential",
+      "rules": [
+        "native_path绝不接受模型提供；realpath校验并由本机交互确认。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerRootSelectResult"
+    },
+    {
+      "id": "workspace.capture",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.base"
+      ],
+      "request": "CaptureRequest",
+      "response": "BaseState",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerWorkspaceCaptureResult"
+    },
+    {
+      "id": "workspace.allocate",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.isolation"
+      ],
+      "request": "WorkspaceSpec",
+      "response": "WorkspaceRecord",
+      "effect": "internal_write",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerWorkspaceAllocateResult"
+    },
+    {
+      "id": "environment.inspect",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "ToolEnvironmentInspectInput",
+      "response": "EnvironmentRecord",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerEnvironmentInspectResult"
+    },
+    {
+      "id": "environment.ensure",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "ToolEnvironmentEnsureInput",
+      "response": "EnvironmentRecord",
+      "effect": "process",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerEnvironmentEnsureResult"
+    },
+    {
+      "id": "file.read",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolFileReadInput",
+      "response": "FileContent",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerFileReadResult"
+    },
+    {
+      "id": "file.write",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process",
+        "workspace.changes"
+      ],
+      "request": "ToolFileWriteInput",
+      "response": "ChangeSet",
+      "effect": "workspace_write",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerFileWriteResult"
+    },
+    {
+      "id": "file.list",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "WorkspacesFilesRequest",
+      "response": "FilePage",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerFileListResult"
+    },
+    {
+      "id": "process.exec",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessExecInput",
+      "response": "ProcessRecord",
+      "effect": "process",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerProcessExecResult"
+    },
+    {
+      "id": "process.poll",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessPollInput",
+      "response": "ProcessRecord",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerProcessPollResult"
+    },
+    {
+      "id": "process.stop",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "ToolProcessStopInput",
+      "response": "ProcessRecord",
+      "effect": "process",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerProcessStopResult"
+    },
+    {
+      "id": "changes.capture",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "ToolWorkspaceChangesInput",
+      "response": "ChangeSet",
+      "effect": "read",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerChangesCaptureResult"
+    },
+    {
+      "id": "changes.merge",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "WorkspacesMergeRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerChangesMergeResult"
+    },
+    {
+      "id": "changes.revert",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "WorkspacesRevertRequest",
+      "response": "MergeResult",
+      "effect": "workspace_write",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerChangesRevertResult"
+    },
+    {
+      "id": "workspace.release",
+      "channel": "runner",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.isolation",
+        "workspace.environment"
+      ],
+      "request": "RefRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [
+        "网络请求实际为RunnerCommand信封，签名/期限/主体/根/栅栏与业务参数均复核；重复command_id只返回原执行状态。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "runner",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "RunnerWorkspaceReleaseResult"
+    },
+    {
+      "id": "tasks.attach_conversation",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "run.history",
+        "agent.board",
+        "run.state"
+      ],
+      "request": "TasksAttach_conversationRequest",
+      "response": "TaskRecord",
+      "effect": "internal_write",
+      "rules": [
+        "两端同主体且expected_revision匹配；关联不复制权限，不取得写控制权；并发修订CAS冲突。"
+      ],
+      "method": "POST",
+      "path": "/v1/tasks/{task_id}/conversations",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpTasksAttachConversationResult",
+      "envelope": "HttpTasksAttachConversationEnvelope"
+    },
+    {
+      "id": "admin.providers.revoke",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminProvidersRevokeRequest",
+      "response": "ProviderBinding",
+      "effect": "internal_write",
+      "rules": [
+        "管理员认证与expected_revision必需；不撤销已发生的外部动作。"
+      ],
+      "method": "DELETE",
+      "path": "/v1/admin/providers/{provider_id}",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpAdminProvidersRevokeResult",
+      "envelope": "HttpAdminProvidersRevokeEnvelope"
+    },
+    {
+      "id": "events.payload",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "run.events"
+      ],
+      "request": "EventsPayloadRequest",
+      "response": "EventPayload",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/events/{event_id}/payload",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_control_plane",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/P0-03.md",
+          "docs/implementation/P0-04.md",
+          "docs/implementation/evidence/p0-tests.xml"
+        ]
+      },
+      "result": "HttpEventsPayloadResult",
+      "envelope": "HttpEventsPayloadEnvelope"
+    },
+    {
+      "id": "ui",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "ui"
+      ],
+      "request": "InternalUiRequest",
+      "response": "InternalUiOutput",
+      "effect": "read",
+      "rules": [
+        "草稿可短期本地保存；Run/审批/成果以服务端或已明确的历史权威为准，缓存不提交执行状态。",
+        "输入保持用户原文，预览请求另带draft_revision",
+        "发送使用稳定turn_request_id，反馈丢失先查询发送状态",
+        "按Item ID/revision更新消息，工具、审批和变更用结构化卡片",
+        "重连先续事件，缺序或revision不匹配拉取权威快照",
+        "用户评论和局部接受绑定实际产物版本，不把当前屏幕文本当资源版本",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "草稿旧响应丢弃",
+        "未知Item类型展示通用内容",
+        "旧版本审阅返回stale并显示差异，不默默接受"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentUiResult"
+    },
+    {
+      "id": "ingress",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "ingress"
+      ],
+      "request": "InternalIngressRequest",
+      "response": "InternalIngressOutput",
+      "effect": "read",
+      "rules": [
+        "request_id+主体绑定同一受理结果；原文追加和本地Run创建使用事务或可恢复的受理意图。",
+        "传输层只解析协议和大小，不加工用户目标",
+        "准入检查主体、配额、请求幂等和资源归属",
+        "资源解析只生成已授权Reference，不相信客户端绝对路径",
+        "向Run追加原文并取得不可变InputRef",
+        "装配AgentExecutionRequest及用户模型意图引用，再创建Run与事件订阅",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "重复请求返回既有Run",
+        "越权资源拒绝且不透露其详情",
+        "受理未完成可查询pending，不新建第二Run"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIngressResult"
+    },
+    {
+      "id": "intent.preview",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.preview"
+      ],
+      "request": "IntentPreviewRequest",
+      "response": "DraftPreview",
+      "effect": "read",
+      "rules": [
+        "预览是可淘汰派生记录；发送原文后重新理解，预览只作为可比较参考。",
+        "读取当前草稿与最小最近上下文",
+        "使用会话选定模型产生一两句目标摘要，只声明理解和假设",
+        "草稿变更取消旧任务，新请求保留自己的revision",
+        "输出DraftPreview及依据引用，不持久为正式TaskFrame",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "模型失败返回preview_unavailable，正常发送继续",
+        "取消返回cancelled，不显示错误任务理解"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentPreviewResult"
+    },
+    {
+      "id": "intent.original",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.original"
+      ],
+      "request": "InternalIntentOriginalRequest",
+      "response": "InputRecord",
+      "effect": "read",
+      "rules": [
+        "只读原文，不维护第二份可修改账本；纠正必须先成为新的用户输入记录。",
+        "向Run History读取原始用户输入及明确修订",
+        "校验作用域、内容版本和资源可访问性",
+        "保留原文顺序和每项来源",
+        "返回只读输入集给语义解析，不将AI预览混入用户指令",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "缺失引用返回input_missing",
+        "版本不匹配回取权威记录",
+        "已删除资料返回不可用状态"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentOriginalResult"
+    },
+    {
+      "id": "intent.semantic",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.semantic"
+      ],
+      "request": "InternalIntentSemanticRequest",
+      "response": "SemanticParse",
+      "effect": "read",
+      "rules": [
+        "解析结果提交新理解版本；原文不变，重大目标变化向用户显示。",
+        "让当前模型提取目标、约束、交付物与未知项",
+        "每个硬要求绑定用户来源，推断标记assumption",
+        "通过结构schema验证，再核对未被遗漏的显式要求",
+        "信息不足返回所需材料或候选解释",
+        "已有充分理解时合并首次Agent调用，避免固定额外分类模型",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "结构错误有界修复",
+        "目标互相冲突返回ambiguity",
+        "证据不足不填成确定事实"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentSemanticResult"
+    },
+    {
+      "id": "intent.references",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.references"
+      ],
+      "request": "InternalIntentReferencesRequest",
+      "response": "SourceBundle",
+      "effect": "read",
+      "rules": [
+        "TaskFrame只记录已解析引用及版本；候选是临时数据，授权由resolver复核。",
+        "先使用用户明确选中资源和精确ID",
+        "再查当前会话/项目最近相关引用",
+        "按语义与位置形成候选并附依据",
+        "唯一且足够可靠的候选解析为Reference",
+        "关键动作出现多候选交歧义策略，不凭相似文件名任选",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "断开的本地Runner返回source_disconnected",
+        "多个候选返回ambiguous_reference",
+        "不可定位返回reference_missing"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentReferencesResult"
+    },
+    {
+      "id": "intent.probe",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.probe"
+      ],
+      "request": "InternalIntentProbeRequest",
+      "response": "ProbeResult",
+      "effect": "read",
+      "rules": [
+        "保存证据引用和探查结果，不修改用户目标或外部状态。",
+        "把缺口转成最少的资料读取需求",
+        "优先Context已有来源，再发现允许只读工具",
+        "预留预算并通过Tool调用，禁止创建工作区写入",
+        "收到信息后核对是否消除缺口",
+        "达到探查额度仍未知则交Agent调研或澄清",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "工具权限失败直接返回",
+        "来源读取失败明确区分为空与读取失败",
+        "预算超限保留unknowns"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentProbeResult"
+    },
+    {
+      "id": "intent.ambiguity",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.ambiguity"
+      ],
+      "request": "InternalIntentAmbiguityRequest",
+      "response": "AmbiguityDecision",
+      "effect": "read",
+      "rules": [
+        "澄清进入Run InteractionItem，用户回答是新输入；假设保持显式版本。",
+        "逐项区分非关键表达与影响动作后果的歧义",
+        "已有来源能够排除候选时回填依据",
+        "低影响可逆行动带假设开始",
+        "无法安全选择的关键条件提出一组简短澄清",
+        "决策随新材料和用户输入复评",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "用户未回复只保留waiting，不能视为默认同意",
+        "澄清回答不匹配原问题返回待解析"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentAmbiguityResult"
+    },
+    {
+      "id": "intent.frame",
+      "channel": "component",
+      "owner": "intent",
+      "nodes": [
+        "intent.frame"
+      ],
+      "request": "InternalIntentFrameRequest",
+      "response": "TaskFrame",
+      "effect": "read",
+      "rules": [
+        "Intent是TaskFrame唯一写入者；版本追加，Run记录frame_ref和变更事件。",
+        "收集语义解析、已定位资源、保留假设和未知项",
+        "验证硬要求都有用户/政策来源",
+        "生成TaskFrame候选并比对旧版本",
+        "用expected_revision提交新版本",
+        "只标记受变更影响的理解字段，交Agent决定计划失效范围",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "CAS冲突返回当前frame revision",
+        "来源缺失不提交伪完整frame",
+        "重大目标歧义保持pending"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentIntentFrameResult"
+    },
+    {
+      "id": "agent.definitions",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions"
+      ],
+      "request": "InternalAgentDefinitionsRequest",
+      "response": "InternalAgentDefinitionsOutput",
+      "effect": "read",
+      "rules": [
+        "唯一name约束绑定owner/conversation；每项client_definition_key保持重试幂等。更新CAS，停用/撤销产生新版本；工厂固定定义版本。",
+        "主Agent识别用户创建/修改意图，按需加载agent_definition短方法",
+        "通过agents.create/update提交职责、use_when、avoid_when、技能工具边界和模型意图",
+        "Tool注入主体/会话与幂等键",
+        "Agent Registry检查作用域、名称冲突、依赖与用户授权，Model解析inherit/explicit/auto",
+        "按整组或独立项策略提交不可变定义版本",
+        "定义成功后返回可发现摘要，实际执行另走agents.invoke",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "模型不存在返回当前LLM且不启用",
+        "同名返回conflict，不覆盖",
+        "原子批量任何一项失败全组不提交"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsResult"
+    },
+    {
+      "id": "agent.loop",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.loop"
+      ],
+      "request": "AgentStepRequest",
+      "response": "AgentStepResult",
+      "effect": "read",
+      "rules": [
+        "每个实例只提交自己的版本化状态；关键观察引用保留，Run存checkpoint引用。",
+        "读取当前用户修订与实例状态",
+        "Context按agent_step装配实际可用定义/工具摘要",
+        "当前继承模型提出答复、发现、调用、规划或委派",
+        "对动作进行生命周期/预算检查，工具动作统一交Tool",
+        "消费实际ToolResult或子结果而非模拟成功文本",
+        "有新约束先失效受影响状态，再决定下一步或申请完成",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "模型协议错误交Model恢复",
+        "工具错误消费类型结果",
+        "重复无进展或额度耗尽交付部分/询问，不无限循环"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentLoopResult"
+    },
+    {
+      "id": "agent.assessment",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.assessment"
+      ],
+      "request": "InternalAgentAssessmentRequest",
+      "response": "ExecutionAssessment",
+      "effect": "read",
+      "rules": [
+        "Assessment是建议记录，不直接创建实例或把全部步骤标记ready。",
+        "按原文、独立子成果、依赖、风险与可用能力作语义评估",
+        "分别输出planning_level、delegation、parallelism及信息缺口",
+        "附可验收子目标和预估协调/等待成本",
+        "Runtime检查预算、最大深度、flag与资源上限",
+        "证据不足以证明委派收益时保持单Agent，运行中可根据失败/新材料复评",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "不支持能力返回capability_gap",
+        "schema错有界修复",
+        "超预算建议被拒绝并回LLM缩小计划"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentAssessmentResult"
+    },
+    {
+      "id": "agent.planning",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.planning"
+      ],
+      "request": "InternalAgentPlanningRequest",
+      "response": "InternalAgentPlanningOutput",
+      "effect": "read",
+      "rules": [
+        "Agent拥有计划版本；已完成结果保留历史引用，受影响节点变stale。",
+        "步骤模式记录目标与验收，不强行建依赖图",
+        "DAG模式检查引用、环、依赖完备和输出契约",
+        "估计所需工具/角色及可用预算，计算资源冲突",
+        "PlanPatch验证已完成节点不变量并计算受影响闭包",
+        "CAS发布新计划版本，Scheduler只消费有效版本",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "循环依赖返回cycle_path",
+        "缺输入返回missing_dependency",
+        "CAS冲突不自动覆盖新用户计划"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentPlanningResult"
+    },
+    {
+      "id": "agent.scheduler",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.scheduler"
+      ],
+      "request": "InternalAgentSchedulerRequest",
+      "response": "SchedulerResult",
+      "effect": "read",
+      "rules": [
+        "领用与预留使用一致提交或可恢复分配意图；完成提交携带node attempt和lease版本。",
+        "找依赖已满足且结果版本有效的节点",
+        "核对权限、deadline、工作区写冲突与总预算",
+        "按就绪节点与受控优先级预留资源并取得租约",
+        "选单Agent步骤、并发工具或子实例执行，不把节点强制映射Agent",
+        "完成/失败后重新计算就绪集合并触发Join条件",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "资源不足返回queued且等待有界",
+        "依赖failed/stale阻止调度",
+        "过期租约完成回执不能覆盖新attempt"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentSchedulerResult"
+    },
+    {
+      "id": "agent.collaboration",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration"
+      ],
+      "request": "InternalAgentCollaborationRequest",
+      "response": "InternalAgentCollaborationOutput",
+      "effect": "read",
+      "rules": [
+        "Agent拥有实例树、消息协议、TaskBoard与ControlLease；Run追加关联事件和恢复引用。",
+        "默认子Agent只返回结果，父保持用户对话控制",
+        "为可独立工作定义目标/输入/输出/验收/预算",
+        "工厂固定角色定义和继承模型，Context按引用隔离",
+        "通道只共享必要结果与证据",
+        "Join核对每个必需结果状态和版本",
+        "真正移交对话时另用ControlLease，先核对未决动作与权限再CAS交接",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "子失败回父选择缩小/重派/部分交付",
+        "缺失输入不Join",
+        "handoff失败保留旧控制者或明确等待"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationResult"
+    },
+    {
+      "id": "agent.skills",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.skills"
+      ],
+      "request": "InternalAgentSkillsRequest",
+      "response": "InternalAgentSkillsOutput",
+      "effect": "read",
+      "rules": [
+        "Registry/ActivationLedger归Agent；包发布归Extension，装配块归Context。",
+        "用任务目标比对可见名称/描述与排除条件",
+        "加载主指令前校验版本、来源、依赖、权限与循环",
+        "固定包内容hash后按需请求Context读取参考",
+        "脚本必须作为Tool动作在获准环境运行",
+        "模板固定口径/步骤与动态范围，变更需用户授权",
+        "记录激活版本与实际验收结果",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "缺必需依赖停在安全阶段",
+        "循环加载返回cycle",
+        "撤销阻止后续执行，旧版本不能越权继续"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentSkillsResult"
+    },
+    {
+      "id": "agent.completion",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion"
+      ],
+      "request": "InternalAgentCompletionRequest",
+      "response": "InternalAgentCompletionOutput",
+      "effect": "read",
+      "rules": [
+        "Agent拥有验证协调报告与提案；Run拥有终态，Workspace拥有真实产物与ReviewSet。",
+        "从原文和用户修订确认必需目标",
+        "按当前证据动态选择真实检查，不运行固定Twitter字段校验",
+        "语义评审区分满足/缺口/未验证",
+        "Runtime核对真实成果、检查版本、硬条件和未决效果",
+        "用CAS提交CompletionProposal到Run",
+        "Workspace交付并独立追踪用户接受",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "旧报告返回stale并选择受影响重验",
+        "必需检查失败不能succeeded",
+        "未决外部写阻断依赖完成"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionResult"
+    },
+    {
+      "id": "agent.board",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.board"
+      ],
+      "request": "InternalAgentBoardRequest",
+      "response": "InternalAgentBoardOutput",
+      "effect": "internal_write",
+      "rules": [
+        "共享板只存协调状态与可审阅引用；局部scratch与隐含推理保持实例私有。",
+        "按字段/节点写入所有权检查提交者",
+        "验证结果schema、来源、任务目标版本和授权",
+        "以expected_revision CAS提交引用",
+        "变更后计算真正依赖该条目的节点集合",
+        "将受影响结果标stale并向Scheduler发送事件",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "冲突返回当前条目和revision，按目标重读再提交",
+        "未验证候选不冒充confirmed",
+        "权限失败不共享"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentBoardResult"
+    },
+    {
+      "id": "agent.factory",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.factory"
+      ],
+      "request": "InternalAgentFactoryRequest",
+      "response": "AgentInstance",
+      "effect": "internal_write",
+      "rules": [
+        "实例只引用固定DefinitionVersion，不修改长期定义；实际分配需可恢复。",
+        "检查获准定义或临时角色版本与目标契约",
+        "校验模型政策、有效权限、深度与实例总数",
+        "预留子预算并分配私有上下文/必要工作区",
+        "持久记录实例与分配意图再调度",
+        "重复creation_key查询已有实例，失败回收未用预留与目录",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "定义不可用拒绝",
+        "预留不足不启动",
+        "部分资源准备失败明确preparation_failed"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentFactoryResult"
+    },
+    {
+      "id": "agent.definitions.designer",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.designer"
+      ],
+      "request": "InternalAgentDefinitionsDesignerRequest",
+      "response": "AgentDefinitionDraft",
+      "effect": "read",
+      "rules": [
+        "只产生待验证草案，Registry提交成功后才宣布已创建。",
+        "核对用户持久创建/修改要求",
+        "按需加载短角色设计方法与可用能力",
+        "当前主模型生成职责/正反调用条件/简短指令与契约",
+        "未指定模型保留inherit，工具依赖只从真实目录选择",
+        "关键歧义先澄清，否则调用create/update，不强制独立设计Agent",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "未知能力返回dependency_gap",
+        "模糊持久授权不保存",
+        "模型不存在保留原意图"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsDesignerResult"
+    },
+    {
+      "id": "agent.definitions.validator",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.validator"
+      ],
+      "request": "InternalAgentDefinitionsValidatorRequest",
+      "response": "ValidationReport",
+      "effect": "read",
+      "rules": [
+        "ValidatedDraft不是enabled定义，必须交Repository提交。",
+        "服务端核对owner/conversation及真实用户授权",
+        "检查名称唯一、必需职责/契约与指令长度范围",
+        "检查可见Skill/tool类别和委派边界",
+        "新权限只能请求当前有效交集，越界作为阻碍项反馈",
+        "批量依赖先整组验证",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "重名返回definition_conflict",
+        "依赖缺失返回dependency_missing",
+        "来源不足返回authorization_gap"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsValidatorResult"
+    },
+    {
+      "id": "agent.definitions.model_intent",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.model_intent"
+      ],
+      "request": "ModelPolicyRequest",
+      "response": "ResolvedModelPolicy",
+      "effect": "read",
+      "rules": [
+        "保存用户模型意图与规范引用，实例创建时再解析实际继承。",
+        "inherit不写死当前型号",
+        "explicit核对用户原文指定并保留原名称",
+        "通过Model目录精确/登记别名解析可见候选",
+        "缺失/歧义/不可用返回当前主LLM解释或询问",
+        "只有用户授权替代或Auto时选择合法范围后重提交",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "model_not_found不启用",
+        "model_ambiguous不猜",
+        "未经授权替代拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsModelIntentResult"
+    },
+    {
+      "id": "agent.definitions.repository",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.repository"
+      ],
+      "request": "InternalAgentDefinitionsRepositoryRequest",
+      "response": "DefinitionBatchResult",
+      "effect": "internal_write",
+      "rules": [
+        "同版本hash不可变，定义未执行；查询pending意图防反馈丢失重复create。",
+        "以主体/会话/请求及项键核对重试参数",
+        "atomic先校验全组并事务提交，independent逐项返回结果",
+        "新增保持名称唯一，更新CAS追加版本",
+        "启用项进入可发现集合，未解决草稿不能被调用",
+        "提交后产生配置变更引用及Run事件",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "同键不同参数idempotency_conflict",
+        "CAS失败返回当前diff",
+        "atomic失败不提交任一项"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsRepositoryResult"
+    },
+    {
+      "id": "agent.definitions.discovery",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.discovery"
+      ],
+      "request": "InternalAgentDefinitionsDiscoveryRequest",
+      "response": "CandidatePage",
+      "effect": "read",
+      "rules": [
+        "候选仅诊断/缓存派生；发现不创建实例、不批权限。",
+        "按owner/conversation、enabled、flag/权限与能力过滤",
+        "小集合直接提供摘要，大集合关键词/向量召回",
+        "比对职责、use_when/avoid_when、输入输出与资源状态",
+        "返回带版本候选给当前LLM决定自己做/委派",
+        "选中后加载长方法，invoke再次复核",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无候选返回agent_capability_gap",
+        "停用/旧索引候选丢弃",
+        "跨会话未经授权拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsDiscoveryResult"
+    },
+    {
+      "id": "agent.definitions.change_service",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.definitions.change_service"
+      ],
+      "request": "InternalAgentDefinitionsChange_serviceRequest",
+      "response": "InternalAgentDefinitionsChange_serviceOutput",
+      "effect": "internal_write",
+      "rules": [
+        "反向修订保留完整历史；普通停用仅阻止新实例，安全撤销当前约束后续动作。",
+        "读取指定定义版本并生成字段/权限/模型差异",
+        "撤销在当前版本上构造反向patch",
+        "保留之后用户修改，冲突明确返回",
+        "新权限/模型覆盖仍核对用户来源",
+        "CAS提交新版本并失效定义摘要",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "并发编辑返回change_conflict",
+        "已发生外部动作不可由配置回退撤销"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentDefinitionsChangeServiceResult"
+    },
+    {
+      "id": "context.sources",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.sources"
+      ],
+      "request": "InternalContextSourcesRequest",
+      "response": "SourceBundle",
+      "effect": "read",
+      "rules": [
+        "只写来源清单，源对象由原领域拥有；latest_required取得版本后也固定本次实际版本。",
+        "按来源类型分派到History、TaskBoard、Workspace或账号适配器",
+        "读取前检查scope与当前撤销",
+        "固定取得的内容版本并核对位置/hash",
+        "将已知缺失、断开与可用材料分别返回",
+        "登记SourceManifest供后续检索和引用",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "本地断开返回disconnected",
+        "无权拒绝",
+        "版本不稳定返回source_changed供重读"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextSourcesResult"
+    },
+    {
+      "id": "context.rules",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.rules"
+      ],
+      "request": "InternalContextRulesRequest",
+      "response": "InstructionSet",
+      "effect": "read",
+      "rules": [
+        "保存InstructionSet与rule_manifest；跨目录分别记录适用规则，工具写入前核对作用域。",
+        "只从可信注册来源发现规则",
+        "用户明确要求优先，项目规则按根到目标目录细化，再装配技能/角色/偏好",
+        "记录覆盖关系与内容版本",
+        "硬权限始终由Runtime强制，不被自然语言覆盖",
+        "不可同时满足的关键要求返回冲突与澄清，普通风格冲突按确定优先级",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "未经注册的网页指令当数据",
+        "关键冲突返回rule_conflict",
+        "规则变化通知相关上下文失效"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextRulesResult"
+    },
+    {
+      "id": "context.ingestion",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.ingestion"
+      ],
+      "request": "InternalContextIngestionRequest",
+      "response": "InternalContextIngestionOutput",
+      "effect": "internal_write",
+      "rules": [
+        "新revision构建时不覆盖旧版，发布标记为权威；保留或删除旧内容按用户保留政策。",
+        "校验来源可用与解析资源限额",
+        "保留标题/页码/表格结构及定位，产生内容块",
+        "按内容hash避免重复处理并构建关键词/向量派生索引",
+        "验证块完整性、来源与ACL后CAS切换active revision",
+        "删除先让当前访问不可用，再清理块/索引/派生摘要及缓存",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "解析失败标parse_failed，不能假称无结果",
+        "索引构建失败不发布",
+        "并发新版本返回publish_conflict"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextIngestionResult"
+    },
+    {
+      "id": "context.retrieval",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.retrieval"
+      ],
+      "request": "InternalContextRetrievalRequest",
+      "response": "RetrievalPage",
+      "effect": "read",
+      "rules": [
+        "保存RetrievalManifest与实际索引版本；不能把高相似排名写成已验证事实。",
+        "精确引用优先直接读，开放查询才生成检索需求",
+        "在授权子集中关键词/向量召回而非全库TopK后删",
+        "合并候选并按目标相关、来源时效/权威与覆盖排序",
+        "检查证据冲突/缺口，必要时让Agent扩大检索",
+        "返回前复核当前ACL与实际版本并输出定位引用",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "索引不可用返回retrieval_unavailable",
+        "无命中与读取失败分开",
+        "撤销候选不能给模型"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextRetrievalResult"
+    },
+    {
+      "id": "context.memory",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory"
+      ],
+      "request": "InternalContextMemoryRequest",
+      "response": "InternalContextMemoryOutput",
+      "effect": "internal_write",
+      "rules": [
+        "Memory记录source、valid_from/to、supersedes与derived_from，Context是唯一写入者。",
+        "区分显式记住与后台推断候选",
+        "检查读取/贡献开关、用途、作用域和保留期",
+        "按具体槽位/条件查重，用户纠正优先，未决冲突保持待确认",
+        "提交新事实版本后才宣告记住",
+        "召回时复核有效时间和授权",
+        "遗忘立即停止召回并传播到摘要/索引/缓存",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "提交失败如实返回not_saved",
+        "低可信研究结论留任务候选",
+        "删除部分失败返回待清理项"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryResult"
+    },
+    {
+      "id": "context.selection",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.selection"
+      ],
+      "request": "InternalContextSelectionRequest",
+      "response": "InternalContextSelectionOutput",
+      "effect": "read",
+      "rules": [
+        "记录被选/被排除块和原因到ContextManifest，真实用量更新预算估计。",
+        "先从模型可用窗口扣除输出/工具反馈/必要压缩余量",
+        "用户原文、硬约束与当前未完成状态优先",
+        "按来源可信、目标覆盖、时效、成本选择候选",
+        "大工具结果先分页/筛选，避免用一次压缩解决无限输入",
+        "剩余缺口转压缩或读取需求，不能静默丢关键条件",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "必需内容装不下返回context_insufficient",
+        "未知tokenizer使用保守估算并报告",
+        "无关块不补满窗口"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextSelectionResult"
+    },
+    {
+      "id": "context.compression",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.compression"
+      ],
+      "request": "InternalContextCompressionRequest",
+      "response": "InternalContextCompressionOutput",
+      "effect": "read",
+      "rules": [
+        "保存输入依赖、压缩方法/模型版本与guard结果；压缩不删除可审阅交互历史。",
+        "固定输入revision并提取必须保留的目标、约束、数值单位、未完成工作和来源",
+        "使用当前模型生成ContinuationState",
+        "对比保留项并核查证据定位仍有效",
+        "通过后CAS发布新context_epoch",
+        "失败缩小压缩范围或回读原文，权限/工具状态独立从Runtime读取",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "关键数字丢失返回compression_invalid",
+        "压缩时用户改目标返回stale",
+        "无空间安全停下或请求缩小范围"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextCompressionResult"
+    },
+    {
+      "id": "context.composer",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.composer"
+      ],
+      "request": "InternalContextComposerRequest",
+      "response": "ContextSnapshot",
+      "effect": "read",
+      "rules": [
+        "快照内容不可变；装配源引用保留以便诊断，删除/撤销可使其不可再读取。",
+        "按可信指令、角色方法、用户原文、必要历史、实时材料分区",
+        "稳定共同前缀与schema规范序列化",
+        "实际可用工具与会话Agent摘要按权限装配",
+        "数据块标来源但不提升信任权限",
+        "核对预算与依赖版本后返回ContextSnapshot及Manifest",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "依赖stale重新选择块",
+        "缺角色必需方法返回dependency_missing",
+        "序列化超预算不发模型"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextComposerResult"
+    },
+    {
+      "id": "context.references",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.references"
+      ],
+      "request": "InternalContextReferencesRequest",
+      "response": "InternalContextReferencesOutput",
+      "effect": "internal_write",
+      "rules": [
+        "Reference是来源定位，Citation是论断关系；临时签名链接按读取时生成。",
+        "登记实际取得来源的版本、hash、位置与可见范围",
+        "Citation单独绑定回答论断位置",
+        "打开时按身份调用相应resolver核验当前可访问与位置有效",
+        "对于网页摘要明确证据范围",
+        "本地引用按设备/项目/版本走Runner，不能直接暴露服务器绝对路径",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "来源删除返回gone",
+        "本地断开返回disconnected",
+        "定位迁移失败返回location_stale，不编造页码"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextReferencesResult"
+    },
+    {
+      "id": "tool.registry",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.registry"
+      ],
+      "request": "InternalToolRegistryRequest",
+      "response": "ToolSpec",
+      "effect": "internal_write",
+      "rules": [
+        "ToolSpec为权威；向量表示可重建，不能储存唯一schema或凭据。",
+        "校验schema、效果类别、权限、超时、幂等与等价声明",
+        "平台启用提供方后注册不可变spec",
+        "生成只含允许元数据的关键词/向量表示",
+        "索引发布绑定tool_id/version，发现阶段复核权威记录",
+        "关闭/撤销先拒绝执行，再异步清理索引",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "重复同版本不同hash拒绝",
+        "schema不兼容返回registration_invalid",
+        "索引滞后显式记录不破坏执行授权"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolRegistryResult"
+    },
+    {
+      "id": "tool.discovery",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.discovery"
+      ],
+      "request": "InternalToolDiscoveryRequest",
+      "response": "DiscoveryResult",
+      "effect": "read",
+      "rules": [
+        "记录候选与选中理由；目录命中不产生授权记录。",
+        "产品flag、主体、角色类别与执行环境先缩小候选",
+        "精确工具名优先，无精确意图做关键词/向量召回",
+        "按能力/schema适配、健康、成本与描述反例重排",
+        "返回少量描述，选中后按需加载完整schema",
+        "LLM可扩大范围，但不能扩大授权范围",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无匹配返回capability_gap",
+        "索引失败可退到权威精确/类别检索",
+        "无权限候选不泄露详情"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolDiscoveryResult"
+    },
+    {
+      "id": "tool.invocation",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation"
+      ],
+      "request": "ToolCall",
+      "response": "ToolResult",
+      "effect": "read",
+      "rules": [
+        "Tool拥有调用账本与效果记录；ApprovalRef指向Run权威决定，模型不能自填approved。",
+        "schema规范化与资源引用校验",
+        "当前权限/flag/预算/deadline预检",
+        "必要审批绑定参数hash和资源版本，由Run持久等待",
+        "批准后复核身份、撤销、参数与资源",
+        "持久调用意图再派发",
+        "结果规范化、账本对账与用量结算后反馈Agent",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "参数错误可修复但不执行",
+        "拒绝返回declined不能换工具绕过",
+        "timeout保持可能unknown"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationResult"
+    },
+    {
+      "id": "tool.effects",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.effects"
+      ],
+      "request": "InternalToolEffectsRequest",
+      "response": "InternalToolEffectsOutput",
+      "effect": "read",
+      "rules": [
+        "动作与attempt分开，重试不换逻辑action/business key；外部幂等仍需提供方支持。",
+        "执行前持久保存pending意图与稳定业务键",
+        "适配器发送并保存真实请求/回应引用",
+        "confirmed仅在提供方状态足够明确时记录",
+        "网络中断/崩溃结果未知标unknown",
+        "恢复用业务键/请求ID查询实际状态",
+        "确定未发生且契约允许后才能重试",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无法查询保持unknown且阻止依赖成功",
+        "重复回执幂等提交",
+        "提供方不支持对账需用户/人工处理"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolEffectsResult"
+    },
+    {
+      "id": "tool.failure",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.failure"
+      ],
+      "request": "InternalToolFailureRequest",
+      "response": "RecoveryDecision",
+      "effect": "read",
+      "rules": [
+        "每次尝试记录实际provider、等价契约版本、用量与恢复原因。",
+        "按参数/权限/业务/基础设施/限流/unknown分类",
+        "权限拒绝不重试绕过，参数错误交Agent修复",
+        "只读或确认幂等瞬时错误在剩余deadline内退避",
+        "熔断仅阻止故障提供方新调用",
+        "等价契约满足才切换，否则返回能力差异让Agent决定",
+        "unknown写先走效果对账",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "最大尝试/时间达到返回retry_exhausted",
+        "非等价候选只建议",
+        "业务不满足不假装网络恢复可解决"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolFailureResult"
+    },
+    {
+      "id": "tool.mcp",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp"
+      ],
+      "request": "InternalToolMcpRequest",
+      "response": "InternalToolMcpOutput",
+      "effect": "read",
+      "rules": [
+        "Tool持有协议Session，控制层持有账号授权；连接状态不能充当动作批准。",
+        "读取有效账号/提供方引用，不加载凭据进模型",
+        "建立协议会话并发现能力",
+        "工具名放provider命名空间，能力schema与版本入Registry",
+        "远端调用通过统一Tool闸门与结果规范化",
+        "健康变化有限重连并更新能力revision",
+        "撤销关闭会话和失效绑定，未知写不重放",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "协商不支持返回protocol_mismatch",
+        "掉线写结果可能unknown",
+        "能力变更让旧绑定stale"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpResult"
+    },
+    {
+      "id": "tool.adapters",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.adapters"
+      ],
+      "request": "InternalToolAdaptersRequest",
+      "response": "ProviderReceipt",
+      "effect": "read",
+      "rules": [
+        "适配器不拥有目标Runtime业务状态，只持调用/协议关联引用。",
+        "按不可变ToolSpec选择适配器，不让模型指定任意服务地址",
+        "运行时控制工具进入目标Runtime公共facade",
+        "Workspace动作进入受控Runner/沙箱路径",
+        "第三方调用由受控服务凭据与数据策略适配",
+        "保留原始返回与实际效果信息交Normalizer",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "不支持参数返回unsupported而非静默忽略",
+        "提供方连接错误类型化",
+        "反序列化失败保留原始受控引用"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolAdaptersResult"
+    },
+    {
+      "id": "tool.results",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.results"
+      ],
+      "request": "InternalToolResultsRequest",
+      "response": "InternalToolResultsOutput",
+      "effect": "read",
+      "rules": [
+        "原始输出保留来源/版本/采集时间；摘要是派生内容，不作为唯一事实。",
+        "验证输出schema和提供方语义",
+        "区分网络成功与业务成功",
+        "保存原始受控输出并计算摘要/分页索引",
+        "提供status、failure_class、retryable、evidence_refs与效果状态",
+        "按模型读取预算返回必要字段，后续Context可压缩但不得改写实际结果",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "HTTP200但业务失败仍失败",
+        "输出缺关键字段返回protocol_invalid",
+        "结果过大返回分页引用不是截断成功"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolResultsResult"
+    },
+    {
+      "id": "tool.audit",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.audit"
+      ],
+      "request": "InternalToolAuditRequest",
+      "response": "AuditRecord",
+      "effect": "read",
+      "rules": [
+        "关键审计不可采样丢失；Trace可按政策采样，二者用调用ID关联。",
+        "从实际调用取主体、动作、版本、批准依据和时间",
+        "记录尝试/结果/效果状态及数据引用",
+        "对敏感字段脱敏并保持授权诊断入口",
+        "向Run追加必要交互/审计事件，向Observability报告诊断span",
+        "审计必需动作在落盘失败时停下",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "普通观测故障不回滚已完成外部效果",
+        "审计必需且不可写返回audit_unavailable",
+        "缺关联标识拒绝不明调用"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolAuditResult"
+    },
+    {
+      "id": "workspace.binding",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.binding"
+      ],
+      "request": "InternalWorkspaceBindingRequest",
+      "response": "InternalWorkspaceBindingOutput",
+      "effect": "read",
+      "rules": [
+        "绝对路径是受控元数据；服务端scope不能替代Runner真实授权。",
+        "由用户选择设备/项目根并确认能力",
+        "本地Runner解析真实路径、链接和平台边界",
+        "服务端保存设备/根/范围绑定，Runner保存本地授权",
+        "每次操作同时核对绑定/授权与实际解析路径",
+        "断开/撤销停止新动作并告知未决进程",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "路径越界拒绝",
+        "设备不匹配返回binding_mismatch",
+        "链接逃逸拒绝",
+        "Runner断开不可伪装读取成功"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceBindingResult"
+    },
+    {
+      "id": "workspace.base",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.base"
+      ],
+      "request": "CaptureRequest",
+      "response": "BaseState",
+      "effect": "read",
+      "rules": [
+        "基础快照不可变；不改变用户源目录或提交用户改动。",
+        "按用户选择读取提交或当前目录",
+        "纳入已授权的未提交修改与未跟踪文件，排除凭据/缓存规则",
+        "复制时校验文件前后hash检测变化",
+        "生成文件清单、规则版本与基础来源",
+        "稳定后发布BaseStateSpec供隔离实例",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "复制中源变化返回snapshot_unstable并有限重试",
+        "无权文件不偷偷纳入",
+        "快照空间不足明确失败"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceBaseResult"
+    },
+    {
+      "id": "workspace.isolation",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.isolation"
+      ],
+      "request": "InternalWorkspaceIsolationRequest",
+      "response": "InternalWorkspaceIsolationOutput",
+      "effect": "internal_write",
+      "rules": [
+        "WorkspaceHandle绑定Run/Agent与基础版本；分支合并不自动发布外部动作。",
+        "按任务所需与实际后端能力选择工作副本",
+        "并行写实例分配独立目录/分支，只读共享稳定基础",
+        "native模式明确实际权限并限制同目标并发写",
+        "记录隔离类型/根/基础revision",
+        "释放前保存产物和未处理改动，按租约停止进程",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "不支持的隔离模式返回unsupported",
+        "目录分配失败不标ready",
+        "存在未处理改动禁止直接删除"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceIsolationResult"
+    },
+    {
+      "id": "workspace.environment",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.environment"
+      ],
+      "request": "InternalWorkspaceEnvironmentRequest",
+      "response": "InternalWorkspaceEnvironmentOutput",
+      "effect": "internal_write",
+      "rules": [
+        "EnvironmentManifest记录模板、工具链、锁文件、平台、实际隔离和ready证据。",
+        "先检测本地项目现有工具链与依赖",
+        "满足要求直接记录实际版本",
+        "不足时在授权项目环境安装，系统级安装另申请范围",
+        "初始化动作同样通过Tool策略",
+        "健康检查后ready，失败保留日志",
+        "终止/回收遵守用户保留服务与产物策略",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "安装失败标preparation_failed",
+        "网络/系统权限不足返回范围缺口",
+        "不能用空目录冒充可测试环境"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceEnvironmentResult"
+    },
+    {
+      "id": "workspace.process",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.process"
+      ],
+      "request": "InternalWorkspaceProcessRequest",
+      "response": "InternalWorkspaceProcessOutput",
+      "effect": "internal_write",
+      "rules": [
+        "ProcessRecord关联真实环境、命令、PID/lease、退出码、日志与ChangeSet；不是模型自报测试。",
+        "确认工作区/当前范围与实际隔离",
+        "优先executable+argv，显式shell视更宽执行能力",
+        "采集受控目录执行前状态并创建process lease",
+        "在Runner或沙箱执行，流式日志受限并保存结果",
+        "结束/取消后采集实际改动与退出状态，保留后台服务明确租约",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "超时发送停止并核对状态",
+        "无法停止返回still_running",
+        "shell写出授权范围由实际隔离强制"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceProcessResult"
+    },
+    {
+      "id": "workspace.changes",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.changes"
+      ],
+      "request": "InternalWorkspaceChangesRequest",
+      "response": "InternalWorkspaceChangesOutput",
+      "effect": "internal_write",
+      "rules": [
+        "CAS提交新的workspace revision；保留原变更/反向变更和用户审阅来源。",
+        "比较基础/目标形成稳定ChangeUnit和依赖",
+        "提交时核对当前用户目录是否改变",
+        "不同文件可合并，同文件三方比较，语义/二进制冲突显式返回",
+        "局部接受检查单位依赖并重验实际合并版本",
+        "撤销生成逆向ChangeSet而非覆盖旧整目录",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "用户后续修改返回conflict",
+        "格式不支持块级返回unsupported_granularity",
+        "过期验证报告失效"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceChangesResult"
+    },
+    {
+      "id": "workspace.artifacts",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.artifacts"
+      ],
+      "request": "InternalWorkspaceArtifactsRequest",
+      "response": "InternalWorkspaceArtifactsOutput",
+      "effect": "internal_write",
+      "rules": [
+        "产物本体是权威对象不按缓存TTL淘汰；预览派生内容可重建。",
+        "核验实际内容存在、类型、可访问与来源版本",
+        "通过格式adapter提取预览与可编辑能力",
+        "登记不可变ArtifactVersion和来源/验证引用",
+        "导出生成授权下载引用",
+        "外部公开发布必须另有Tool动作，不与登记混同",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "文件缺失返回artifact_missing",
+        "格式不支持保留原件与下载",
+        "解析失败不宣告质量通过"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceArtifactsResult"
+    },
+    {
+      "id": "workspace.review",
+      "channel": "component",
+      "owner": "workspace",
+      "nodes": [
+        "workspace.review"
+      ],
+      "request": "InternalWorkspaceReviewRequest",
+      "response": "InternalWorkspaceReviewOutput",
+      "effect": "read",
+      "rules": [
+        "Workspace记录Delivery审阅状态，Run记录用户动作；AI完成与用户接受独立。",
+        "固定基础/目标revision供预览diff",
+        "用户按文件/块/结构单元选择并校验格式能力",
+        "提交前复核当前revision与改动依赖",
+        "接受后生成实际新版本及所需重验，不改旧报告",
+        "位置反馈绑定artifact version并形成新的用户输入",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "过期位置先重新定位或返回stale",
+        "局部冲突保持待解决",
+        "格式无块能力明确整版接受"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentWorkspaceReviewResult"
+    },
+    {
+      "id": "model.catalog",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.catalog"
+      ],
+      "request": "InternalModelCatalogRequest",
+      "response": "InternalModelCatalogOutput",
+      "effect": "read",
+      "rules": [
+        "平台配置是目录来源，Model保存解析与调用实际目录revision。",
+        "读取管理员启用模型元数据",
+        "按用户可见域、提供方状态与能力筛选",
+        "精确名称和已登记别名解析到canonical ID，模糊相似名称仅候选",
+        "返回实际版本/可用状态与限制",
+        "调用时仍重查下线/撤销",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "精确缺失返回model_not_found",
+        "别名多解返回ambiguous",
+        "故障目录返回unavailable不猜模型"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelCatalogResult"
+    },
+    {
+      "id": "model.policy",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.policy"
+      ],
+      "request": "ModelPolicyRequest",
+      "response": "ResolvedModelPolicy",
+      "effect": "read",
+      "rules": [
+        "ResolvedModelPolicy绑定用户来源、实际版本与路由范围，Run保存引用。",
+        "根实例解析用户选定固定模型或Auto",
+        "子实例默认继承父政策，用户明确指定才覆盖",
+        "核对指定来源而非只相信模型提交的source_ref",
+        "定义inherit保留继承意图，启动时解析实际父模型",
+        "会话模型改变默认下次Run生效，当前Run须明确修订",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无来源覆盖拒绝",
+        "不存在子模型反馈当前主LLM且不改inherit",
+        "Auto无候选返回缺口"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelPolicyResult"
+    },
+    {
+      "id": "model.capability",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.capability"
+      ],
+      "request": "InternalModelCapabilityRequest",
+      "response": "InternalModelCapabilityOutput",
+      "effect": "read",
+      "rules": [
+        "记录选择理由与候选策略版本，不变更用户授权范围。",
+        "检查固定模型是否支持必要工具/结构/输入类型与窗口",
+        "固定不兼容返回具体能力缺口",
+        "只有Auto授权范围内过滤候选",
+        "依据真实任务质量/延迟/成本选择已评测兼容模型",
+        "输出实际配置与版本，不能静默删除必要参数",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "能力缺失返回capability_mismatch",
+        "上下文超限返回context_overflow",
+        "固定模式故障仅允许同模型重试"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelCapabilityResult"
+    },
+    {
+      "id": "model.gateway",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.gateway"
+      ],
+      "request": "ModelCall",
+      "response": "ModelOutput",
+      "effect": "read",
+      "rules": [
+        "保存调用ID、模型/参数/输入引用与attempt，密钥不保存于prompt/log。",
+        "复核当前模型/提供方有效状态",
+        "向Run预留调用预算并服从剩余deadline",
+        "用服务端凭据选择adapter，规范请求",
+        "绑定流式attempt并验证动作输出",
+        "成功或失败都记录实际用量/费用，释放未用预留",
+        "类型化错误交Recovery",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "配额不足不发送",
+        "协议不支持明确unsupported",
+        "传输取消不假装供应商未计费"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelGatewayResult"
+    },
+    {
+      "id": "model.adapters",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.adapters"
+      ],
+      "request": "InternalModelAdaptersRequest",
+      "response": "ProviderReceipt",
+      "effect": "read",
+      "rules": [
+        "adapter协议版本固定，供应商响应标识用于对账；不伪造统一能力。",
+        "按adapter能力声明转消息/工具schema",
+        "检查具体模型支持的推理/结构参数",
+        "解析流式增量、工具参数与最终usage",
+        "保留供应商实际model/version和缓存用量",
+        "规范错误码但同时保留可诊断原始受控引用",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "字段不支持返回unsupported",
+        "流截断标incomplete",
+        "usage缺失标pending_usage不估成零"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelAdaptersResult"
+    },
+    {
+      "id": "model.recovery",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.recovery"
+      ],
+      "request": "InternalModelRecoveryRequest",
+      "response": "RecoveryDecision",
+      "effect": "read",
+      "rules": [
+        "新attempt与同一逻辑生成关联；旧输出保留诊断但不能成为有效动作提案。",
+        "分类限流/网络/协议/参数/取消错误",
+        "同固定模型的瞬时失败有限退避",
+        "Auto仅在许可兼容候选内切换",
+        "中途流失败新attempt从确定边界重启，不将两次delta拼接",
+        "记录全部失败费用并按重复无进展停止",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "参数错误回Agent/Context修复",
+        "固定模型持续失败明确说明",
+        "取消不自动重试"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelRecoveryResult"
+    },
+    {
+      "id": "model.usage",
+      "channel": "component",
+      "owner": "model",
+      "nodes": [
+        "model.usage"
+      ],
+      "request": "InternalModelUsageRequest",
+      "response": "UsageSettlement",
+      "effect": "read",
+      "rules": [
+        "Model拥有调用记录，Run Budget Ledger是预算余额权威；重复回执不能二次扣账。",
+        "核对attempt和供应商响应标识去重usage",
+        "区分输入/输出/推理/缓存字段的实际计费口径",
+        "结算预留与实际费用，未知费用留待核对",
+        "回传预算警告与诊断指标",
+        "记录实际模型版本而非用户显示名称",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "usage缺失返回pending",
+        "超出预留立即限制后续动作并报告",
+        "金额口径未知不伪造价格"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentModelUsageResult"
+    },
+    {
+      "id": "run.history",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.history"
+      ],
+      "request": "InternalRunHistoryRequest",
+      "response": "InternalRunHistoryOutput",
+      "effect": "internal_write",
+      "rules": [
+        "History为用户原文权威；云/本地存储权威选择独立于本地执行位置，适配器接口一致。",
+        "验证消息归属并追加不可变Turn",
+        "原文、附件引用、显式用户配置一起登记",
+        "steer/审批答复以新输入和关联Item记录，不改过去原文",
+        "按授权读取顺序和版本",
+        "删除按保留政策标不可再读取并传播派生依赖",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "重复Turn幂等返回",
+        "越权会话拒绝",
+        "缺失历史显式返回，不能拼凑猜测原文"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunHistoryResult"
+    },
+    {
+      "id": "run.state",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.state"
+      ],
+      "request": "InternalRunStateRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [
+        "本地RunState+关键Event事务提交；外部效果通过Tool账本关联不假定分布式原子。",
+        "校验请求主体/版本与允许转换",
+        "领域动作实际确认后写对应Item",
+        "running/verifying/waiting等并非必经",
+        "完成时核验提案、必需检查、未决效果和成果revision",
+        "分别提交completed状态及succeeded/partial/blocked等outcome",
+        "Delivery用户接受另由Workspace记录",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "非法转换拒绝",
+        "旧版本返回stale",
+        "缺证据不succeeded",
+        "终态不抹去独立未决效果"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunStateResult"
+    },
+    {
+      "id": "run.events",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.events"
+      ],
+      "request": "InternalRunEventsRequest",
+      "response": "InternalRunEventsOutput",
+      "effect": "internal_write",
+      "rules": [
+        "关键事件不可因Trace采样而丢失；保留/快照压缩策略保持可恢复边界。",
+        "追加关键事件并分配单调序号",
+        "增量绑定Item/base/new revision",
+        "订阅按cursor续接并按event_id去重",
+        "缺序号/历史被裁剪返回快照+新cursor",
+        "replay只重建状态和UI，不发起工具调用",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "未知类型通用显示",
+        "cursor过期返回snapshot_required",
+        "事务失败不能提前播成功事件"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunEventsResult"
+    },
+    {
+      "id": "run.budget",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.budget"
+      ],
+      "request": "InternalRunBudgetRequest",
+      "response": "InternalRunBudgetOutput",
+      "effect": "internal_write",
+      "rules": [
+        "账本预留/结算幂等且CAS/事务保护；时间策略记录审批等待如何计入。",
+        "准入核对活跃Run与总额",
+        "按模型/工具/子实例/评审预留资源向量",
+        "子额度来自父额度不另造余额",
+        "执行实际用量结算并释放剩余，unknown待核对",
+        "超额/到期停止新调度，允许明确用户预算修订",
+        "队列满返回受控等待/拒绝",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "额度不足返回budget_exceeded",
+        "重复结算不二次扣",
+        "未知计费保留责任项"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunBudgetResult"
+    },
+    {
+      "id": "run.approval",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.approval"
+      ],
+      "request": "InternalRunApprovalRequest",
+      "response": "InternalRunApprovalOutput",
+      "effect": "read",
+      "rules": [
+        "Run审批是权威，Reviewer不能审批自己，拒绝记录不可被换工具绕过。",
+        "审批绑定主体、动作/参数、资源、期限和政策",
+        "manual等用户，assisted只在预授权范围由独立Reviewer决定，automatic不提示但仍受范围约束",
+        "明确决定持久化并唤醒相关节点",
+        "执行前由Tool/Runner复核当前撤销与变化",
+        "steer等控制回执注明生效安全边界和不能取消动作",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无回复/超时不批准",
+        "参数变化返回approval_stale",
+        "代审不确定升级用户",
+        "控制版本冲突返回现态"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunApprovalResult"
+    },
+    {
+      "id": "run.checkpoint",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.checkpoint"
+      ],
+      "request": "CheckpointCaptureRequest",
+      "response": "Checkpoint",
+      "effect": "read",
+      "rules": [
+        "引用各领域权威状态，不复制可独立改写的第二套计划/审批；失败保留上个有效点。",
+        "在可恢复安全边界收集已提交领域版本",
+        "保存计划/实例/上下文/工作区/预算引用与Tool账本游标",
+        "检查关键引用可解析，标明未决效果",
+        "原子发布本地checkpoint指针与事件序号",
+        "不序列化连接、密钥或隐含思维为恢复权威",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "部分引用未提交不发布",
+        "损坏checkpoint回上个点并对账",
+        "外部状态不能凭快照声明原子"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunCheckpointResult"
+    },
+    {
+      "id": "run.resume",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume"
+      ],
+      "request": "InternalRunResumeRequest",
+      "response": "InternalRunResumeOutput",
+      "effect": "read",
+      "rules": [
+        "Resume不接管各领域写入；恢复事件关联旧checkpoint与当前版本。",
+        "先取得运行租约",
+        "检查业务schema/定义/技能/环境兼容，必要迁移显式记录",
+        "重建连接并核验当前撤销",
+        "通过Tool对账pending/unknown效果",
+        "Workspace核对真实文件与环境变化",
+        "恢复无未决依赖的节点，或返回冲突/受阻",
+        "rerun建立新Run，不将其伪装为历史回放",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "不兼容返回migration_required",
+        "未决结果无法核实保持blocked依赖",
+        "双领返回lease_conflict"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeResult"
+    },
+    {
+      "id": "run.cancel",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.cancel"
+      ],
+      "request": "CancelInternalRequest",
+      "response": "CancellationResult",
+      "effect": "read",
+      "rules": [
+        "cancel_requested与执行器实际取消分别记录，cancelled不能掩盖外部未决效果。",
+        "先持久取消请求并停止新节点调度",
+        "递归通知子Agent、Tool调用和Workspace进程",
+        "有界等待可取消执行器确认，再按能力强停",
+        "不能取消的外部动作继续独立对账",
+        "保留已确认产物并返回实际停止/仍在执行/unknown列表",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "已终止请求幂等返回",
+        "停止进程失败标still_running",
+        "缺权限不能取消别的会话Run"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunCancelResult"
+    },
+    {
+      "id": "run.trigger",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.trigger"
+      ],
+      "request": "InternalRunTriggerRequest",
+      "response": "RunRecord",
+      "effect": "read",
+      "rules": [
+        "每次触发与授权版本留记录，节点Scheduler不负责决定定时唤醒。",
+        "只消费已被用户授权的TriggerSpec",
+        "按时区/来源生成稳定触发occurrence键",
+        "当前授权/预算再次校验",
+        "重叠按queue/skip/parallel明确处理",
+        "创建或唤醒指定Run并按 meaningful变化通知",
+        "首版预留不默认提供定时能力",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "重复触发幂等返回",
+        "目标已撤销不启动",
+        "配额不足按策略记录skip或等待"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunTriggerResult"
+    },
+    {
+      "id": "support.configuration",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "InternalSupportConfigurationRequest",
+      "response": "InternalSupportConfigurationOutput",
+      "effect": "internal_write",
+      "rules": [
+        "凭据存在受控CredentialStore，普通配置仅引用；管理API不进入Agent工具目录。",
+        "管理员发布模型/搜索/提供方/环境/政策配置",
+        "私人账号连接由用户明确授权，配置身份与执行身份分开",
+        "校验引用与配置兼容后生成不可变snapshot",
+        "Runtime固定常规版本并实时核验撤销/限额",
+        "失效通知目录、绑定与缓存",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无管理员权限拒绝平台改动",
+        "账号撤销立即禁调用",
+        "过期配置CAS冲突返回现态"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportConfigurationResult"
+    },
+    {
+      "id": "support.extensions",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.extensions"
+      ],
+      "request": "InternalSupportExtensionsRequest",
+      "response": "InternalSupportExtensionsOutput",
+      "effect": "read",
+      "rules": [
+        "ReleaseManifest绑定技能/工具schema/prompt/adapter/索引配置，运行实际版本固定。",
+        "校验包完整性、来源与必需能力",
+        "登记不可变版本和权限请求，安装不自动授权",
+        "候选版本跑受影响契约与真实任务回归",
+        "通过ReleaseGate才允许新激活",
+        "回滚指向旧内容，撤销阻止尚未执行动作并失效派生绑定",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "同版本不同内容拒绝",
+        "依赖不满足不激活",
+        "恢复旧Run不兼容需迁移或受阻"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportExtensionsResult"
+    },
+    {
+      "id": "support.cache",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.cache"
+      ],
+      "request": "InternalSupportCacheRequest",
+      "response": "InternalSupportCacheOutput",
+      "effect": "internal_write",
+      "rules": [
+        "缓存可丢失重建；不储存唯一审批、账本、历史或产物。",
+        "领域先声明可复用性/有效性",
+        "按真实输入/版本/权限域生成键并二次核验命中",
+        "miss按key合并允许的在途读取，组内再查缓存",
+        "等待者各自deadline/取消，最后等待者退出按执行器能力回收",
+        "写入带依赖/来源时间，撤销/删除传播失效",
+        "记录实际有效命中与净节省",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "刷新失败释放等待者",
+        "授权变化不能返回旧私密结果",
+        "写动作拒绝结果缓存/在途去重"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportCacheResult"
+    },
+    {
+      "id": "support.observability",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.observability"
+      ],
+      "request": "InternalSupportObservabilityRequest",
+      "response": "InternalSupportObservabilityOutput",
+      "effect": "read",
+      "rules": [
+        "Trace是诊断派生记录，Run事件/审计权威不被采样替代。",
+        "各facade发开始/结束span，包含实际版本/关联调用和错误",
+        "用来源引用记录诊断而非完整私密正文",
+        "脱敏和访问策略后写Trace/Metrics",
+        "排队/重试/缓存/用户等待分别测量",
+        "提供按Run与调用定位故障",
+        "授权失败样本送离线评测，不自动把日志当记忆",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "普通Trace失败记录降级",
+        "必须审计动作服从其阻断政策",
+        "无法关联标异常不合并别的Run"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportObservabilityResult"
+    },
+    {
+      "id": "support.evaluation",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "InternalSupportEvaluationRequest",
+      "response": "EvaluationResult",
+      "effect": "read",
+      "rules": [
+        "评测输入、评分器和报告版本不可变；一次运行验收不替代离线系统比较。",
+        "固定真实输入、初态、权限与工具fixture",
+        "开发/回归/隐藏集分开并查近重复",
+        "隔离跑新旧版本，外部写禁用或模拟",
+        "先真实状态与硬约束，再事实/语义评分和人工校准",
+        "按办公/开发/学术与失败类型报告接受、返工、全成本/延迟",
+        "用证据决定发布门槛，不只看总分",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "零接受数成本比不可计算",
+        "裁判不确定抽检",
+        "被评输出不能改变裁判指令",
+        "不完整fixture标不可比"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportEvaluationResult"
+    },
+    {
+      "id": "support.stores",
+      "channel": "component",
+      "owner": "support",
+      "nodes": [
+        "support.stores"
+      ],
+      "request": "InternalSupportStoresRequest",
+      "response": "InternalSupportStoresOutput",
+      "effect": "read",
+      "rules": [
+        "物理数据库可共用，逻辑写入所有权不同；可重建派生与权威数据采用不同保留规则。",
+        "每领域通过自己的Repository接口读写",
+        "共享设施提供事务/CAS、对象引用、索引发布与缓存能力适配",
+        "资源读写检查归属和保留政策",
+        "备份恢复重放删除/撤销记录",
+        "迁移版本显式校验，不让万能JSON状态表承担所有领域规则",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "版本冲突类型化",
+        "部分对象上传保留pending并清理未引用块",
+        "迁移失败不宣布ready"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentSupportStoresResult"
+    },
+    {
+      "id": "tool.invocation.schema",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.schema"
+      ],
+      "request": "NormalizeCallRequest",
+      "response": "ValidatedCall",
+      "effect": "read",
+      "rules": [
+        "保存规范参数hash和工具版本供审批绑定。",
+        "载入精确工具版本schema",
+        "执行schema允许的参数规范化，不自行改变语义",
+        "验证资源引用类型并定位实际版本",
+        "忽略或拒绝模型提供的主体/批准字段，用可信上下文替换",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "结构不合法返回invalid_arguments",
+        "资源不可定位返回reference_error"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationSchemaResult"
+    },
+    {
+      "id": "tool.invocation.precheck",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.precheck"
+      ],
+      "request": "InternalToolInvocationPrecheckRequest",
+      "response": "PrecheckDecision",
+      "effect": "read",
+      "rules": [
+        "PrecheckDecision短时记录不是永久授权。",
+        "按当前主体/资源检查flag与能力",
+        "按实际副作用类别判断风险，不看工具名字猜只读",
+        "检查剩余deadline和预算",
+        "返回允许/需审批/拒绝，尚不执行",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "policy_denied不能替换工具绕过",
+        "budget_exceeded返回资源缺口"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationPrecheckResult"
+    },
+    {
+      "id": "tool.invocation.approval",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.approval"
+      ],
+      "request": "ApprovalCreateRequest",
+      "response": "ApprovalRequest",
+      "effect": "read",
+      "rules": [
+        "Run为审批权威，此节点不自批。",
+        "向Run提交绑定动作的ApprovalRequest",
+        "只暂停该动作依赖，其他独立读取可继续",
+        "等待用户或独立代审的明确回执",
+        "批准返回ApprovalRef给执行前复核，拒绝交主Agent",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无响应返回waiting不是approved",
+        "过期返回expired"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationApprovalResult"
+    },
+    {
+      "id": "tool.invocation.recheck",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.recheck"
+      ],
+      "request": "InternalToolInvocationRecheckRequest",
+      "response": "RecheckDecision",
+      "effect": "read",
+      "rules": [
+        "保存实际复核policy revision与结果。",
+        "重新读取当前身份与撤销",
+        "比较实际参数hash和审批绑定",
+        "核对资源版本/有效期/受限持续授权谓词",
+        "通过才签执行所需短期上下文，变化返回重新决策",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "approval_stale重新申请或解释",
+        "当前撤销直接拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationRecheckResult"
+    },
+    {
+      "id": "tool.invocation.dispatch",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.dispatch"
+      ],
+      "request": "InternalToolInvocationDispatchRequest",
+      "response": "ProviderReceipt",
+      "effect": "read",
+      "rules": [
+        "先意图后发送；attempt关联稳定action ID。",
+        "持久登记Tool pending意图",
+        "核对目标适配器绑定和剩余deadline",
+        "执行精确版本动作并保留传输关联ID",
+        "返回实际效果信息给Normalizer，不在此层重复创建业务动作",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "发送后中断标unknown",
+        "适配器不可用返回typed failure"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationDispatchResult"
+    },
+    {
+      "id": "tool.invocation.result",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.invocation.result"
+      ],
+      "request": "InternalToolInvocationResultRequest",
+      "response": "ToolResult",
+      "effect": "read",
+      "rules": [
+        "结果提交和账本进展保持可恢复关联，终态仅由Run提交。",
+        "输出schema核验并分离业务与基础设施状态",
+        "确认或保留未决效果到账本",
+        "保存原始结果并分页/摘要",
+        "结算实际用量，向Run/Agent反馈类型结果",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "缺业务状态不能猜成功",
+        "超大结果返回raw_ref与分页"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolInvocationResultResult"
+    },
+    {
+      "id": "agent.collaboration.contract",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.contract"
+      ],
+      "request": "InternalAgentCollaborationContractRequest",
+      "response": "DelegationSpec",
+      "effect": "read",
+      "rules": [
+        "DelegationSpec固定task/plan与输入版本。",
+        "说明可独立验收子成果与父目标关系",
+        "核对必要输入是否已经可读、依赖是否满足",
+        "计算父权限/角色/产品/委托限制交集",
+        "将协调/汇总预算算入总额，收益不足保持单Agent",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "子目标模糊返回contract_gap",
+        "额外预算不足不创建实例"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationContractResult"
+    },
+    {
+      "id": "agent.collaboration.instance",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.instance"
+      ],
+      "request": "InternalAgentCollaborationInstanceRequest",
+      "response": "AgentInstance",
+      "effect": "internal_write",
+      "rules": [
+        "实例状态与定义分开，复用定义不复用scratch。",
+        "工厂校验定义enabled及精确版本",
+        "解析继承模型与角色权限交集",
+        "预留子预算并分配私有上下文，写任务需要隔离工作区",
+        "持久实例关联后调度，反馈丢失按creation_key查询",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "定义停用拒绝新实例",
+        "模型无效返回主LLM",
+        "预留失败回收分配意图"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationInstanceResult"
+    },
+    {
+      "id": "agent.collaboration.channel",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.channel"
+      ],
+      "request": "InternalAgentCollaborationChannelRequest",
+      "response": "AgentMessage",
+      "effect": "read",
+      "rules": [
+        "消息记录归Agent，Run事件仅引用；不共享完整prompt。",
+        "核对同任务关系和收发权限",
+        "消息注明目标/引用/期待回复/deadline",
+        "关键分配/结果消息持久去重，临时进度按策略保留",
+        "接收者按自己scope重新解析引用，控制互聊深度与次数",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "过期目标返回stale_message",
+        "无权引用不送达正文"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationChannelResult"
+    },
+    {
+      "id": "agent.collaboration.join",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.join"
+      ],
+      "request": "JoinRequest",
+      "response": "AgentResult",
+      "effect": "read",
+      "rules": [
+        "整合结果绑定全部输入依赖。",
+        "检查每项必需结果状态与实际版本",
+        "按输出契约读取证据/产物并区分候选与确认",
+        "冲突结论保留差异，必要查证后整合",
+        "CAS提交共享板并回父Agent，缺口保留不伪造汇总成功",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "必需子failed不能Join成功",
+        "旧结果返回stale",
+        "矛盾未解标partial"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationJoinResult"
+    },
+    {
+      "id": "agent.collaboration.handoff",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.handoff"
+      ],
+      "request": "InternalAgentCollaborationHandoffRequest",
+      "response": "ControlLease",
+      "effect": "read",
+      "rules": [
+        "Agent拥有唯一ControlLease，Run保存恢复引用。",
+        "验证目标有完整后续职责和许可模型/权限",
+        "核对在途与未决动作的归属/对账方案",
+        "准备最小交接上下文与回转条件",
+        "CAS更新ConversationControlLease并发送交接事件",
+        "旧控制者之后的过期动作/回复被拒绝",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "CAS失败保留现持有者",
+        "循环/次数超限拒绝",
+        "敏感未决无法处理时等待"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationHandoffResult"
+    },
+    {
+      "id": "agent.collaboration.cancel",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.collaboration.cancel"
+      ],
+      "request": "InternalAgentCollaborationCancelRequest",
+      "response": "CancellationResult",
+      "effect": "read",
+      "rules": [
+        "实例取消回执归Agent，Run聚合生命周期。",
+        "接收Run取消并停止此子树新委派",
+        "按父子关联通知活动实例",
+        "请求Tool/Workspace执行器真正停止并收回未用预留",
+        "未决效果留对账，已确认结果保留来源状态",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "执行器不可取消返回pending_effect",
+        "过期回执不能恢复新实例"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCollaborationCancelResult"
+    },
+    {
+      "id": "agent.completion.contract",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.contract"
+      ],
+      "request": "InternalAgentCompletionContractRequest",
+      "response": "Contract",
+      "effect": "read",
+      "rules": [
+        "DeliveryContract追加版本并绑定用户/政策来源。",
+        "提取原文和用户纠正的必需目标",
+        "分开硬约束与开放质量标准",
+        "LLM可提出补充验证但不能删必需要求",
+        "为每项确定可接受成果/证据或明确待澄清",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "关键标准冲突返回clarification_required",
+        "模型自降目标拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionContractResult"
+    },
+    {
+      "id": "agent.completion.evidence",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.evidence"
+      ],
+      "request": "InternalAgentCompletionEvidenceRequest",
+      "response": "CheckPage",
+      "effect": "read",
+      "rules": [
+        "验证证据是不可变引用，不以模型口述替代。",
+        "按缺口选择真实读取/测试/计算/格式检查",
+        "通过Tool请求获准检查与预算",
+        "登记实际受测版本、环境和输出",
+        "把passed/failed/not_run/blocked分别返回语义核验",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "环境不足标blocked",
+        "未跑标not_run",
+        "工具失败不写passed"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionEvidenceResult"
+    },
+    {
+      "id": "agent.completion.semantic",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.semantic"
+      ],
+      "request": "InternalAgentCompletionSemanticRequest",
+      "response": "VerificationReport",
+      "effect": "read",
+      "rules": [
+        "VerificationReport记录判别方法版本与限制，不直接结束Run。",
+        "让当前模型对照每项目标与证据",
+        "区分支持/反驳/未覆盖并列依据",
+        "缺口可触发获准补查或修订",
+        "必要独立Reviewer使用隔离上下文且继承模型政策",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "缺证据保持unknown",
+        "裁判受注入指令当数据",
+        "高不确定需人工反馈"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionSemanticResult"
+    },
+    {
+      "id": "agent.completion.version",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.version"
+      ],
+      "request": "InternalAgentCompletionVersionRequest",
+      "response": "ValidationReport",
+      "effect": "read",
+      "rules": [
+        "提案绑定当前revision，最终CAS归Run。",
+        "读取真实成果/环境/目标版本",
+        "按报告依赖比较实际受测输入",
+        "核对必需检查、权限和未决效果",
+        "通过才给可提交提案，stale项计算重验范围",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "版本改变返回stale_verification",
+        "必需未知效果阻止succeeded"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionVersionResult"
+    },
+    {
+      "id": "agent.completion.delivery",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.delivery"
+      ],
+      "request": "InternalAgentCompletionDeliveryRequest",
+      "response": "RunRecord",
+      "effect": "internal_write",
+      "rules": [
+        "终态与必要事件本地事务提交；外部公开发布另走Tool。",
+        "Run核对提案来源与版本",
+        "Workspace确保真实成果可访问",
+        "CAS写Run终态和相应交付引用",
+        "发送完整/部分/受阻说明与验证范围，用户审阅状态另存",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "CAS冲突重读而非覆盖",
+        "产物不可读不能假交付",
+        "未决项保持可见"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionDeliveryResult"
+    },
+    {
+      "id": "agent.completion.acceptance",
+      "channel": "component",
+      "owner": "agent",
+      "nodes": [
+        "agent.completion.acceptance"
+      ],
+      "request": "InternalAgentCompletionAcceptanceRequest",
+      "response": "ReviewSet",
+      "effect": "read",
+      "rules": [
+        "用户接受的权威由Workspace保存，模型无权替用户填写。",
+        "通过Workspace审阅固定成果",
+        "用户接受/拒绝/局部接受分别记录",
+        "位置反馈成为新用户输入",
+        "需要修改时基于当前版本重新建立契约与Run，保留未受影响成果",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "旧ReviewSet返回stale",
+        "依赖破坏要求补验",
+        "全盘不支持时明确整版操作"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentAgentCompletionAcceptanceResult"
+    },
+    {
+      "id": "context.memory.candidate",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory.candidate"
+      ],
+      "request": "InternalContextMemoryCandidateRequest",
+      "response": "MemoryCandidate",
+      "effect": "read",
+      "rules": [
+        "候选未通过之前不进入正式长期召回。",
+        "识别用户明确记住请求并保留来源",
+        "普通对话/研究结果只提炼有用途的候选",
+        "区分偏好、事实、经历与方法",
+        "推断候选不能先对用户宣告记住",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "无来源拒绝持久记忆",
+        "低稳定内容留任务范围"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryCandidateResult"
+    },
+    {
+      "id": "context.memory.policy",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory.policy"
+      ],
+      "request": "InternalContextMemoryPolicyRequest",
+      "response": "MemoryPolicyDecision",
+      "effect": "read",
+      "rules": [
+        "政策版本记录，不把候选文字当授权。",
+        "检查读/贡献开关与用户要求",
+        "核对内容敏感范围、用途与保留",
+        "确定仅任务/会话/用户范围",
+        "拒绝或返回允许的写入范围给冲突检查",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "关闭贡献不写",
+        "共享范围无权拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryPolicyResult"
+    },
+    {
+      "id": "context.memory.conflict",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory.conflict"
+      ],
+      "request": "InternalContextMemoryConflictRequest",
+      "response": "MemoryConflictDecision",
+      "effect": "read",
+      "rules": [
+        "不原地抹掉来源历史，提交新的事实版本。",
+        "先按精确槽位和有效条件查重",
+        "再用语义寻找可能冲突",
+        "用户明确纠正优先并生成supersedes",
+        "不同条件都成立分开保存，无法确定保留候选待确认",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "并发纠正CAS冲突重读",
+        "相似而非相同不得合并"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryConflictResult"
+    },
+    {
+      "id": "context.memory.store",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory.store"
+      ],
+      "request": "InternalContextMemoryStoreRequest",
+      "response": "InternalContextMemoryStoreOutput",
+      "effect": "internal_write",
+      "rules": [
+        "Memory本体权威，embedding为派生；保存错误可查询幂等状态。",
+        "提交scope/source/有效期/派生关系并确认事务",
+        "更新索引与缓存依赖，索引未就绪标明确状态",
+        "召回先按当前范围/有效期过滤再排名",
+        "显式记住仅事务成功后回用户",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "写失败返回not_saved",
+        "撤销记录不能召回",
+        "索引失败不假称已可检索"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryStoreResult"
+    },
+    {
+      "id": "context.memory.forget",
+      "channel": "component",
+      "owner": "context",
+      "nodes": [
+        "context.memory.forget"
+      ],
+      "request": "InternalContextMemoryForgetRequest",
+      "response": "DeletionReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "删除记录不能被旧checkpoint/备份恢复覆盖。",
+        "先标不可召回并检查当前读取",
+        "沿derived_from清理摘要/索引/缓存",
+        "按保留政策处理物理副本与备份删除标记",
+        "返回完成、待清理、失败项并可幂等重试",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "部分存储失败明确pending_cleanup",
+        "无权selector拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentContextMemoryForgetResult"
+    },
+    {
+      "id": "tool.mcp.provider",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp.provider"
+      ],
+      "request": "InternalToolMcpProviderRequest",
+      "response": "ProviderBinding",
+      "effect": "read",
+      "rules": [
+        "不复制账号授权到账本作为永久许可。",
+        "读取当前平台启用状态和私人账号授权",
+        "校验数据范围、可用凭据引用与传输限制",
+        "固定普通配置版本，当前撤销单独检查",
+        "输出仅可连接配置给会话层",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "账号过期返回reauth_required",
+        "提供方未启用拒绝"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpProviderResult"
+    },
+    {
+      "id": "tool.mcp.session",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp.session"
+      ],
+      "request": "InternalToolMcpSessionRequest",
+      "response": "InternalToolMcpSessionOutput",
+      "effect": "read",
+      "rules": [
+        "会话记录绑定账号/config revision；凭据仅适配器读取。",
+        "按支持协议建立/协商会话",
+        "健康检查记录能力与连接状态",
+        "有限重连重新核验授权",
+        "关闭和过期回收句柄，不把连接对象放checkpoint",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "协商失败返回protocol_mismatch",
+        "掉线不重放未知写"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpSessionResult"
+    },
+    {
+      "id": "tool.mcp.capabilities",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp.capabilities"
+      ],
+      "request": "InternalToolMcpCapabilitiesRequest",
+      "response": "InternalToolMcpCapabilitiesOutput",
+      "effect": "read",
+      "rules": [
+        "能力元数据入权威Registry，向量索引只存派生描述。",
+        "列当前能力并校验schema/大小",
+        "使用provider命名空间避免同名覆盖",
+        "规范为ToolSpec且标来源信任",
+        "版本变化发布新registry revision并失效旧发现候选",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "畸形schema不注册",
+        "不兼容变化返回stale_binding"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpCapabilitiesResult"
+    },
+    {
+      "id": "tool.mcp.invoke",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp.invoke"
+      ],
+      "request": "InternalToolMcpInvokeRequest",
+      "response": "ProviderReceipt",
+      "effect": "read",
+      "rules": [
+        "不在MCP层另批准一份动作，使用原action/attempt关联。",
+        "必须持统一Tool闸门准入结果",
+        "核验session与工具实际版本",
+        "发送远端调用并保存关联ID",
+        "规范协议返回与大结果引用，写unknown进入效果账本",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "远端业务错误类型化",
+        "掉线写结果unknown",
+        "schema变化需重新绑定"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpInvokeResult"
+    },
+    {
+      "id": "tool.mcp.invalidate",
+      "channel": "component",
+      "owner": "tool",
+      "nodes": [
+        "tool.mcp.invalidate"
+      ],
+      "request": "InternalToolMcpInvalidateRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [
+        "撤销当前生效，普通版本固定不能绕过。",
+        "先阻止新敏感调用",
+        "关闭或标无效旧session",
+        "让Registry/Discovery/缓存绑定失效",
+        "已有在途调用按取消能力和效果对账继续跟踪",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "关闭失败记录仍在处理但不开放新调用",
+        "能力变化可重新发现"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentToolMcpInvalidateResult"
+    },
+    {
+      "id": "run.resume.lease",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.lease"
+      ],
+      "request": "InternalRunResumeLeaseRequest",
+      "response": "ExecutionLease",
+      "effect": "read",
+      "rules": [
+        "lease是有限执行权，不是持久工具授权。",
+        "读取现有效lease",
+        "通过事务/CAS取得owner与递增fencing版本",
+        "执行期间有界续租",
+        "结果提交检查lease版本，失租即停止新动作",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "已被领走返回lease_conflict",
+        "过期提交返回stale_lease"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeLeaseResult"
+    },
+    {
+      "id": "run.resume.versions",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.versions"
+      ],
+      "request": "InternalRunResumeVersionsRequest",
+      "response": "CompatibilityReport",
+      "effect": "read",
+      "rules": [
+        "记录迁移输入/输出和实现版本，保留旧checkpoint。",
+        "逐项比较schema/定义/技能/环境与调用协议版本",
+        "兼容可继续，迁移必须有明确函数与验证",
+        "固定模型政策和审批参数不静默改写",
+        "不兼容返回受阻或新Run建议",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "迁移失败不发布新checkpoint",
+        "模型下线按用户政策返回缺口"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeVersionsResult"
+    },
+    {
+      "id": "run.resume.access",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.access"
+      ],
+      "request": "InternalRunResumeAccessRequest",
+      "response": "ResumeAccessResult",
+      "effect": "read",
+      "rules": [
+        "checkpoint保存引用，当前授权读取原权威。",
+        "重新核验当前身份、项目绑定、账号与撤销",
+        "重建连接/进程查询句柄而非复用序列化连接",
+        "检查已删除来源不重新加载",
+        "返回可继续的真实访问范围",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "资源撤销返回denied",
+        "Runner断开返回disconnected",
+        "来源删除不能恢复内容"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeAccessResult"
+    },
+    {
+      "id": "run.resume.effects",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.effects"
+      ],
+      "request": "InternalRunResumeEffectsRequest",
+      "response": "ResumeEffectsResult",
+      "effect": "read",
+      "rules": [
+        "Run记录对账进度引用，效果权威仍归Tool。",
+        "向Tool请求pending/unknown列表",
+        "用原业务键查询真实提供方状态",
+        "确认完成后记录结果，确认未发生且契约允许才重试",
+        "无法确定保留未决并阻止相关依赖",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "provider不可查询返回unresolved_effect",
+        "回执重复幂等更新"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeEffectsResult"
+    },
+    {
+      "id": "run.resume.workspace",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.workspace"
+      ],
+      "request": "InternalRunResumeWorkspaceRequest",
+      "response": "CompatibilityReport",
+      "effect": "read",
+      "rules": [
+        "不将checkpoint文件镜像直接覆盖当前磁盘。",
+        "让Workspace/Runner检查目录、实际文件hash和环境状态",
+        "比较用户并发编辑与保存版本",
+        "冲突返回ChangeSet定位并保留用户改动",
+        "受测依赖改变让旧验证失效后再继续",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "目录丢失返回workspace_missing",
+        "环境变化要求重准备",
+        "冲突保持等待"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeWorkspaceResult"
+    },
+    {
+      "id": "run.resume.continue",
+      "channel": "component",
+      "owner": "run",
+      "nodes": [
+        "run.resume.continue"
+      ],
+      "request": "InternalRunResumeContinueRequest",
+      "response": "RunRecord",
+      "effect": "read",
+      "rules": [
+        "恢复是继续同Run，rerun另建ID并保留关联来源。",
+        "核对租约仍有效和全部强制恢复条件",
+        "标清可继续/需等待节点",
+        "CAS提交恢复事件和当前引用",
+        "调用Agent Scheduler运行可就绪工作",
+        "既有确认成果只引用不重做",
+        "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [
+        "恢复期间用户steer导致版本冲突重读",
+        "依赖未决不调度"
+      ],
+      "feature": null,
+      "implemented": false,
+      "result": "ComponentRunResumeContinueResult"
+    }
+  ]
+}

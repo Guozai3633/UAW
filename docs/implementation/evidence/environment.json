@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-07",
+  "platform": "Windows",
+  "machine": "AMD64",
+  "scope": "P0 foundation/control plane/model protocol and P1-01 source-bound understanding, using real PostgreSQL and controlled HTTP replies; no external LLM, Agent or Runner task",
+  "components": {
+    "fastapi": {
+      "installed": true,
+      "version": "0.142.2"
+    },
+    "uvicorn": {
+      "installed": true,
+      "version": "0.54.0"
+    },
+    "pydantic": {
+      "installed": true,
+      "version": "2.13.5"
+    },
+    "jsonschema": {
+      "installed": true,
+      "version": "4.26.0"
+    },
+    "sqlalchemy": {
+      "installed": true,
+      "version": "2.1.3"
+    },
+    "psycopg": {
+      "installed": true,
+      "version": "3.3.6"
+    },
+    "alembic": {
+      "installed": true,
+      "version": "1.20.0"
+    },
+    "structlog": {
+      "installed": true,
+      "version": "26.1.0"
+    },
+    "httpx": {
+      "installed": true,
+      "version": "0.28.1"
+    },
+    "keyring": {
+      "installed": true,
+      "version": "25.7.0"
+    },
+    "langgraph": {
+      "installed": true,
+      "version": "1.2.14"
+    },
+    "graph_checkpoint": {
+      "installed": true,
+      "version": "3.1.2"
+    },
+    "langchain": {
+      "installed": true,
+      "version": "1.6.7"
+    },
+    "pytest": {
+      "installed": true,
+      "version": "9.1.1"
+    },
+    "ruff": {
+      "installed": true,
+      "version": "0.16.10"
+    },
+    "mypy": {
+      "installed": true,
+      "version": "1.20.2"
+    },
+    "python": {
+      "installed": true,
+      "version": "3.14.6"
+    },
+    "uv": {
+      "installed": true,
+      "version": "0.11.23"
+    },
+    "postgres": {
+      "installed": true,
+      "version": "17.11",
+      "scope": "isolated_dev_container",
+      "version_source": "previous_verified_environment",
+      "currently_available": false
+    },
+    "docker": {
+      "installed": true,
+      "version": "28.3.3",
+      "version_source": "previous_verified_environment",
+      "currently_available": false
+    }
+  },
+  "python_packages": {
+    "fastapi": "0.142.2",
+    "uvicorn": "0.54.0",
+    "pydantic": "2.13.5",
+    "jsonschema": "4.26.0",
+    "sqlalchemy": "2.1.3",
+    "psycopg": "3.3.6",
+    "alembic": "1.20.0",
+    "structlog": "26.1.0",
+    "httpx": "0.28.1",
+    "keyring": "25.7.0",
+    "langgraph": "1.2.14",
+    "langgraph-checkpoint-postgres": "3.1.2",
+    "langchain-core": "1.6.7",
+    "pytest": "9.1.1",
+    "ruff": "0.16.10",
+    "mypy": "1.20.2"
+  },
+  "compatibility": {
+    "core_checks": true,
+    "langgraph_basic_api": true,
+    "postgres_development_checks": true,
+    "model_protocol_checks": true,
+    "intent_protocol_checks": true,
+    "external_llm_verified": false,
+    "model_agent_runner": false
+  },
+  "test_counts": {
+    "tests": 73,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "engine_metadata": {
+    "observed_live": false,
+    "version_metadata_source": "previous_verified_environment",
+    "previous_evidence_sha256": "49ef34885e273ab79e683188f9510d36fc8cad5faa0b75a77cb210bf4745db65",
+    "note": "Engine stopped after passing test receipt; versions are historical, not current availability"
+  },
+  "test_evidence_sha256": "aaf2c57864979ec616ce7830178bb68112525ff7760baec4ff04b12e1fe882ca",
+  "runtime_implementation": "development_control_plane_run_admission_model_and_intent_protocol",
+  "source_hashes": {
+    ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
+    "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
+    "contracts/build_interfaces.py": "00b6d234cd5bb4548ae4cc10b330fec21a36468e9a948185061e023009f62ec9",
+    "contracts/check_interfaces.py": "5bc9c9fc2c028e46c832b04390720a1b659d3e5bc84c35db61f9f9eddccd2d6e",
+    "contracts/implementation_catalog.py": "3669f9fad81b4b6cc3867b612a91b0c043c133d68141ed2498bf2cd344aa0636",
+    "contracts/interface_catalog.py": "ab45e16e7647d1ef866a3fb53748681c29732723853df4de6c3041b0f8947f2e",
+    "contracts/uaw.schema.json": "c9737069f74331ee5f519eabc1a8bf5c2527389da0e922d46ba892557b522a2c",
+    "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
+    "ops/capture_environment.py": "c7306835bbaf77b12a10688ceb8da244c64c3421526c4851235b28c2bc2fce4e",
+    "ops/check.ps1": "b0a585f030472ebbc58bc7132530517e368024a9c5deb9eb04406db9d5d8c239",
+    "ops/compose.yaml": "8bcd492f7b77573aefbf4250722d371d90c5e0724d8b27f1395a5fdb261d79a8",
+    "ops/database-development.toml": "47adff9a258b9d1cf4ef262f511f984c6b853dfea755365c96f062178f7bb2bc",
+    "ops/development.toml": "23f5ce047a5785359653aa50b2bc9f64668a63c969b9d241915565e56f58b968",
+    "ops/migrations/env.py": "61b755ee484f227260626fcb509bee1a68a68e61893c18065ee7332383440e8c",
+    "ops/migrations/versions/0001_initial.py": "8970d7d4e3cfb2e37064f94f0ffef793beb5fe59b4ad8b41739f2154e0967a0f",
+    "ops/migrations/versions/0002_immutable_versions.py": "7be249846fdc8a7e24a0f84f2b9340dadaef54b647e611c91fd69f20fdf6afe3",
+    "ops/migrations/versions/0003_attempt_identity.py": "7b01953ea32a6cfc85185ec1a61d92cd31a17bdb87bac12faede5d5db98d88c3",
+    "ops/model_probe.py": "4b39354b787943f76a867c8bce8d4bd2fea4265bffc26c89c33c01796f99996c",
+    "ops/provision_dev_auth.py": "6ce5089fceacc797c2dd60096c0f698686061f8259d837b509b4dd639f503528",
+    "ops/start-dev-db.ps1": "6e5b90aea6bbee828ca2f243c206ac97e49f06f881cdab8b0a9101d275b65565",
+    "ops/start.ps1": "4bb586c3ae4e3994871689c33716f2ec801e44aa86565a6b63089919abf25446",
+    "ops/sync_runtime_contracts.py": "81d7d25e8cfef345f851b1f27563926e78c3f58ffc6240f94de5dce6e6672683",
+    "pyproject.toml": "ab489ce9d224f90dca88e0b4c94685a490f949201dddc393e38e70954b0d7500",
+    "src/uaw/__init__.py": "6a6a891da0c35ae75d15b3d12e0c847eb2beb9adf6e879b9e29936172035786a",
+    "src/uaw/api/__init__.py": "ebe54959b8b9cd6ae24a9b10aaab53e93ccfeaf95bb0ecbb047aae18f564b738",
+    "src/uaw/api/application.py": "6731c74de94bb884d5b4ca9278a4815dcdd5dcf48dc25d6ed7f97ac26d5ea0cb",
+    "src/uaw/api/authentication.py": "afd9c04e2314bb2bdacc37a70a02542f7dab442874fa049932e82962cafde70e",
+    "src/uaw/api/documentation.py": "41add23f6142c48549354f54cae0b0dfb7aaf47ba4f88d79ab2642855a4d66d5",
+    "src/uaw/api/routes.py": "9dbcf5ddffb6b4fdf1eeda3fc9f91e456e008c87dad4c752dfedb3e2be6a59cb",
+    "src/uaw/application.py": "636c7a74d98e3d4c040c7db9639b0401ed3378c7c1add6155f9f2c24bfedc457",
+    "src/uaw/composition.py": "b72e277b87015d629a87bafca3c2808a483321e16b55120c3c5501dc08b42b43",
+    "src/uaw/context/intent.py": "b7dd9f8f45200bd18d3823bf14f6cc960d7f32b429339fb7e2d97c1b5b155554",
+    "src/uaw/context/seed.py": "a318a2b6957d5c9f3c1af39ed46015e74552c5fc04e22255b06f46d0241e27ca",
+    "src/uaw/infrastructure/__init__.py": "2c1679fe08355a5ee574120254bb1993eeec0fae75cdde34717af697e796a409",
+    "src/uaw/infrastructure/blob/__init__.py": "9838e77bf44f68fa685863cf6ee3f8e0c93ebd67ebedc6935dd33f954ab55e34",
+    "src/uaw/infrastructure/blob/filesystem.py": "75c50744fa7367e7f03d43e9a8462383927ab9831c8d43b6fe00da4b01cf3388",
+    "src/uaw/infrastructure/credentials.py": "a8a0d7ee5be78952cbd16ccc95388c22b1ef546f29942571096246df37dd7156",
+    "src/uaw/infrastructure/db/__init__.py": "4daabe1f937d387d75c22b0ea581e5bf75bf06924285face28f42d451e7fcfdc",
+    "src/uaw/infrastructure/db/models.py": "903d669461df37767b8be9fdcd6aa1cfc6060afd34a06d09e444976c35762fb5",
+    "src/uaw/infrastructure/db/records.py": "f5c037b85769e84f8129f096200cc57a60d82c0f2cb10fb80d43cbba6fb35ba8",
+    "src/uaw/infrastructure/db/session.py": "9caa1a66587b9c24d342d5bca020c7164917153a18bd965eae1864138b2ae9dc",
+    "src/uaw/infrastructure/db/transactions.py": "9733568a8c02084f2ba586f9305d10d0633d1d434bc5c4d18b41790741bff81c",
+    "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
+    "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
+    "src/uaw/intent/facade.py": "a11729b5a599b1f7380d687c1a268fbcda063d145002f407f9f206f17a2b267e",
+    "src/uaw/intent/frame.py": "4459d533d5f80c152a5e470c4c26224122bacad6a382bcc38c4c8a236a2946dd",
+    "src/uaw/intent/original.py": "e7ca89c5bbcea63d9230245eee44646f9811d8d702d872344accc09929b031b1",
+    "src/uaw/intent/ports.py": "aa8da8fd224204f322f7d77f5215e2317af682875d31a25bf4cbfdfc395fef45",
+    "src/uaw/intent/semantic.py": "e5938b872eb135bdab71341a4fad2e60fabf52333848d63d2e83a547559bd318",
+    "src/uaw/model/adapters.py": "547a8a89cdde6a6e8c9fce74aa0a86bc13175367f4d42c296bc9c7a1cb4b670e",
+    "src/uaw/model/capability.py": "a3ecaba44089eec8311e5c2fab5a44410e97f9e8490555731ac0389562710b7f",
+    "src/uaw/model/contracts.py": "1c7d86ac5a78c338d66d2fb7a7cdb7c102e0470f46dd9a632aa9bf4c076e46b6",
+    "src/uaw/model/facade.py": "66593a455ebac27274b99e1f64b94b0b7c048345e3d8be5a5421a2a8a984ad44",
+    "src/uaw/model/gateway.py": "02569da6075d6cc56c7b89b06c6b5aef7aafcd56d9deb2904662e9fd428a0be7",
+    "src/uaw/model/policy.py": "3f3236346d204d7292b211263c36bf61d1745f93c05e37e76ada871d1c106868",
+    "src/uaw/model/ports.py": "c5f80dafc89e2b6b746e9a7b0c5b4de8627e587bb3632d153277cc9a66edf0f6",
+    "src/uaw/resources/__init__.py": "422f351371d1d70179a616b510b9e55b8ede11a0ad02395d656531147f6b0009",
+    "src/uaw/resources/prompts/intent-understand-v1.txt": "3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400",
+    "src/uaw/run/__init__.py": "a422b2894ffd8197f6426969e000187361fe9c79df7a0eaad7e381f6636b8b7e",
+    "src/uaw/run/budget.py": "e723d7485ec45e8d9ab44229d11593dd94223d5b309abb40cb3cb967af90f6a5",
+    "src/uaw/run/events.py": "886d61d7e25d3739cb854310c68d43795c0b2bb3dd075ffcadc1fff30be791b8",
+    "src/uaw/run/facade.py": "62aca07b23676ab612683164057b450054713b56b47abe03ea515d28e4888cff",
+    "src/uaw/run/history.py": "716f04acf442da7ebd0040b2e314da4d1c93a25ac3233a4fbecb131e442f5cae",
+    "src/uaw/run/inputs.py": "e1b3cbdfd70c120593cde9eb345e497926adf3216c922903b6dbb3251ae88ccb",
+    "src/uaw/run/state.py": "fe32289e58b2b171da6522d3a814db33aad411ae5cf7722aa8723e6df764f23a",
+    "src/uaw/shared/__init__.py": "1283eb8e79ae3de55f83e2275103dfa565386ff251fcb66099764778684b0d18",
+    "src/uaw/shared/configuration.py": "d09d8dfaf9e7ecfc55d14f717193cc964bcc8532d07bdc7c9839927c89a6ce3f",
+    "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
+    "src/uaw/shared/credentials.py": "9d5079401cfacd59ff201150d06b0c819662c16b2252273a99ff9d1dd99b8eb0",
+    "src/uaw/shared/errors.py": "a4fdc31da7753ae0859aff6eae0694fc66423bad3eac1ba31f463176ae4de7a3",
+    "src/uaw/shared/observability.py": "bc6d59e4dc3064c40e2f60e6baf32522140ddc6d61ab2d07d503d2595acc2e27",
+    "src/uaw/shared/ports.py": "857ba50e7a74439ce4c266a4193c09271eabf4dde87232591a9d80826f21e490",
+    "src/uaw/shared/schema.py": "d9ff3b9e2cdc0c94ab0e75ba2b1e95a332e50bff0fc2c28bae03dcec3994e97a",
+    "src/uaw/shared/settings.py": "5ba77a5e948e614ad9257cc4afa253c3ac704909e1ba96a3e4dd94b18014ec98",
+    "src/uaw/shared/stores.py": "47e0f6b70a843bebf9fd1477e3a8c507b75cad8d8b01f03a2ea1b0b5f26fd300",
+    "tests/conftest.py": "077b4b8e8db58f6532514d0d50504aca255e7fa6636fa551681bd27165e9dd4c",
+    "tests/integration/intent/test_understanding.py": "3941c4632032a97f7ae0426626675a46656327fa00654ed77f072fb1c59920f1",
+    "tests/integration/model/test_gateway.py": "f3042acc74e42b561612ea78506eefd9c46e31f517cc73464623f11a34d1aab2",
+    "tests/integration/persistence/test_blob.py": "2108c3a75569269b7442e87b15534b79c479dc20734691383e2132b035de016e",
+    "tests/integration/persistence/test_postgres.py": "4c75e62f77f2423eceaa9b67aa11cdd205f2c267adceddbb55ce4ee753a601d3",
+    "tests/integration/test_bootstrap.py": "c3fddf33be3507e924f6dc20c8760cf15bf3c89a6030c77aa3d4adc005f0fdc9",
+    "tests/integration/test_control_plane.py": "a9284082408c07f42d0de78801fa69ff8eba76d7c694dade5db113d5d7a27c63",
+    "tests/unit/model/test_adapter.py": "b0816d78f16f87553ced6259583388233f57d8176ad270542e055b9b674e731b",
+    "tests/unit/shared/test_contracts.py": "f9ee197a7063d12690bc23ca452991ecd72b208b1f6ec49980846f21428f5d00",
+    "tests/unit/test_development_boundary.py": "1ef0630afd806645dce974dc8a5159df9efb7f8a1ee78e56c96695ed37274481",
+    "uv.lock": "e048aafdcfdd0949b7234a8d381fa0dd1d13450ee70f13b5e01c70b79156f9f4"
+  }
+}
