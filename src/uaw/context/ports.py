@@ -2,7 +2,13 @@
 
 from typing import Protocol
 
-from uaw.context.contracts import ModelWindow, Reading, RulePlan, RulesRequest
+from uaw.context.contracts import (
+    CompositionBinding,
+    ModelWindow,
+    Reading,
+    RulePlan,
+    RulesRequest,
+)
 from uaw.shared.contracts import Ref, TrustedExecutionContext
 
 
@@ -51,4 +57,22 @@ class TokenCounter(Protocol):
 
     def count(self, reading: Reading) -> int:
         """Conservative serialized-block estimate for this fixed model."""
+        ...
+
+
+class CompositionAuthority(Protocol):
+    async def resolve(self, purpose: str, ctx: TrustedExecutionContext) -> CompositionBinding:
+        """Provide actual purpose-specific rules, capability read pin and epoch.
+
+        Preserve all admitted original input/critical requirements/pending actions.
+        No default understanding instruction, invented capability ref or flags.
+        """
+        ...
+
+    async def verify(self, binding: CompositionBinding, ctx: TrustedExecutionContext) -> None:
+        """Recheck current owner revisions, ACL, revocation, flags and epoch.
+
+        Called before/inside commit and on replay/read. External source changes
+        are not made atomic by SQL; adapters must supply real revision checks.
+        """
         ...
