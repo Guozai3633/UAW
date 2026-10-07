@@ -2,7 +2,7 @@
 
 2026-10-07：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
 
-P1-01协议及三份组件已通过组合回归，MS-I1接线完成开发范围，见[接线与未过项](MS-I1.md)。当前全量222项检查通过，无跳过；使用真实PostgreSQL、本机临时路径及受控模型响应，真实模型语义质量仍待D06。B可按ms-i1基线进入MS-C2；A继续MS-I2，C/D下一包等待真实公共依赖。见[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
+当前全量 **285 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受。A 继续 MS-I2；C/D 按固定 ms-i2a 执行 MS-T2a/MS-R2a；B 暂无新任务。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
 
 ## 已实现的代码
 
@@ -14,12 +14,14 @@ P1-01协议及三份组件已通过组合回归，MS-I1接线完成开发范围�
 - 同域数据与Outbox事务提交、SQL消费者回执去重。
 - 私有不可变blob的主体分区、大小/摘要验证和并发写入。
 - 开发 bearer 用户/管理员身份、Windows 凭据库存取、配置校验发布与当前撤销闸门。
-- 20个开发HTTP入口和Run公共创建入口；原文、模型选择来源、任务、根预算、交互项与事件事务受理。
+- 22个开发HTTP入口和Run公共创建入口；原文、模型选择来源、任务、根预算、交互项与事件事务受理。
 - 每attempt预算准入、调用意图、未知用量保留、失败结算及去重核对。
 - ModelRuntime.generate与显式Chat Completions adapter；固定模型/能力复核、长输出Blob、结构输出校验、有限重试、取消和未知费用记账。实际LLM调用需要管理员批准配置。
 - IntentRuntime.understand/revise与当前frame读取；保留完整用户原文、逐字来源和理解历史，新输入/取消/期限/CAS阻止旧提案提交。旧Run不静默补来源。
 - Context来源/规则/窗口组件已通过真实Run/政策/目录adapter接入理解，Intent与Model共用resolver；通用build仍未绑定。Model在准入前计入完整原生请求的保守估算。
-- Tool固定目录、权限/flag过滤、安全schema与身份组件；Runner命令/回执/根路径组件已合入。生产工具目录为空，真实审批、配对、签名和执行尚未接入。
+- Context通用快照/引用仓储、Composer和References组件已通过实际SQL验证；生产authority/能力Reader尚未注入，通用Context仍未绑定。
+- 人工单次审批持久化与认证查询/决定/执行前复核；默认缺Tool动作权限adapter则拒绝，不自动发送工具。
+- Tool固定目录、权限/flag过滤、安全schema与身份组件；Runner命令/回执/根路径组件和真实签名原语已合入。生产工具目录为空，实际配对/IPC/可信key目录和执行尚未接入。
 
 [开发控制层操作说明](CONTROL_PLANE.md) 包含管理员配置流程、请求格式和本轮限制。
 

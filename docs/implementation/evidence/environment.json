@@ -2,7 +2,7 @@
   "date": "2026-10-07",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01 plus first-wave components, MS-I1 wiring and MS-I2a durable manual approvals/Ed25519 primitives; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519 and MS-C2 immutable snapshots/references; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
   "components": {
     "fastapi": {
       "installed": true,
@@ -117,11 +117,13 @@
     "intent_protocol_checks": true,
     "parallel_components": true,
     "context_wiring": true,
+    "generic_context_storage_components": true,
+    "generic_context_product_binding": false,
     "external_llm_verified": false,
     "model_agent_runner": false
   },
   "test_counts": {
-    "tests": 251,
+    "tests": 285,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -129,7 +131,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "6ff3d0c3c33821ac1bcb19913134296eef226dd98a35ca5757bfe8df54fe5d0d",
+  "test_evidence_sha256": "a2f0dd66f9c0d55572f23e8437690d219c03b60ac730fb893be1c841e57ecc48",
   "runtime_implementation": "development_control_plane_intent_model_and_context_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -141,7 +143,7 @@
     "contracts/interface_catalog.py": "8d1a1329538d01e6b55522e9a383c57bf99e62741e9eef478e7deafaaabff372",
     "contracts/uaw.schema.json": "e4195d1f89fb82bbc7cf5bd32e1cafdc04f44ba70a87703fc38ff65f45025b0d",
     "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
-    "ops/capture_environment.py": "8d45d020f4877396aef6987e03341b732222884ca629746d582d41c79bfcde76",
+    "ops/capture_environment.py": "ab06f4ee5f0f0f2ccd6e8f7757fc0487d4d04a7a1cee579f258eccc384cc1a06",
     "ops/check.ps1": "a364de174696f578c320c9045464d4abafd94c8de1ca01eeff5f602ab1715860",
     "ops/compose.yaml": "8bcd492f7b77573aefbf4250722d371d90c5e0724d8b27f1395a5fdb261d79a8",
     "ops/database-development.toml": "47adff9a258b9d1cf4ef262f511f984c6b853dfea755365c96f062178f7bb2bc",
@@ -164,10 +166,13 @@
     "src/uaw/api/routes.py": "ed4ebd675c042308cc063d4dac93337d9cbb7c2eaf1dc700fd01f044dc9e745a",
     "src/uaw/application.py": "636c7a74d98e3d4c040c7db9639b0401ed3378c7c1add6155f9f2c24bfedc457",
     "src/uaw/composition.py": "e6a2a3ec98b764ce01090f3b6de8e32d8cfa3d52f44f3bec4549653ebf9ebdb9",
-    "src/uaw/context/contracts.py": "e8c5a4203359359331e9e0529b04aa7f17dd45fa1f942a7c5767fab6c8a0dd40",
-    "src/uaw/context/facade.py": "cfbc70a35045e81215970257492a36cea0d24b5ceef98579bdcafc4b88d19a69",
+    "src/uaw/context/composer.py": "198f82b2d1c6f6ce735bebdc71cd0ba23358fb0fff3d1be143ac5b1c5d4b7177",
+    "src/uaw/context/contracts.py": "1020689d9a6a5d25537755ebc09955409f556ce2f56f579b58d4b9a5e9853404",
+    "src/uaw/context/facade.py": "8d94adc3625d54116f96b6a08add6522704e8164465b926c2c3d11fdedfbf5fb",
     "src/uaw/context/intent.py": "733c6658868a221105ce88cc51adb621df6e1143c11185cdd7b7295bd42dc1c2",
-    "src/uaw/context/ports.py": "1ded56f11a20181982bd0a733c7a65964913e93e3718483aa3d2bfe87026b48f",
+    "src/uaw/context/ports.py": "e92dfc773f7d9127607688f0cb64e0a3b06d318b762e9f04b8f90ebf9ae7fda5",
+    "src/uaw/context/references.py": "684103813c105495f510da83987785cc2971038c3fa595d640751469143611bc",
+    "src/uaw/context/repository.py": "36e3ca44623200e537bb596379a9557c5c03b1604380c5d85939ac512b2edee6",
     "src/uaw/context/rules.py": "202a2962e733e5cbc341445198d04feff961a10e36146b289494041338199e06",
     "src/uaw/context/seed.py": "58d8ca66a989355a419f0d6d28f6a4991f45587958279f645cf063da02028afe",
     "src/uaw/context/selection.py": "ead8702189838b848f3f72c641158f5c14f9fed7f7121a8c8056f012905374ea",
@@ -234,6 +239,7 @@
     "src/uaw/workspace/ports.py": "40b2bf256c3beba47d0563fb3a85960939a5a7b660ec03decc299bd303e904fc",
     "src/uaw/workspace/repository.py": "26f07be149c66ef7e659abd3de38836cf4695d2c817dc9ae55f3f9eb2a4cba1a",
     "tests/conftest.py": "077b4b8e8db58f6532514d0d50504aca255e7fa6636fa551681bd27165e9dd4c",
+    "tests/integration/context/test_snapshots_postgres.py": "23b4629f58ca4cc9dc5298530d82508c7419c130d876c96f745d4529c4b1d36d",
     "tests/integration/intent/test_understanding.py": "1bb1d58bac9b0aa7db2851a889f287c95bfe22b5fcde4018e922c91713a70c3a",
     "tests/integration/model/test_gateway.py": "1769b29a03ad7d807e0a64019fbb53025cc825e1ee073f7bb72d981729738f0b",
     "tests/integration/persistence/test_blob.py": "2108c3a75569269b7442e87b15534b79c479dc20734691383e2132b035de016e",
@@ -244,6 +250,7 @@
     "tests/integration/test_context_wiring.py": "306b6280c680f4606823ef0169780bb049f5d72f47231e94a0c94b1cfccce5da",
     "tests/integration/test_control_plane.py": "a9284082408c07f42d0de78801fa69ff8eba76d7c694dade5db113d5d7a27c63",
     "tests/unit/context/test_components.py": "beb412007cb1c12c597abbd048e76fb2d72b0007b26fb683beb70a5c1ae1e06a",
+    "tests/unit/context/test_snapshots.py": "cd06f000104f2750866c0dfcefb0087914776c39966e5b0df302164d2a7972b2",
     "tests/unit/model/test_adapter.py": "4b3e9a5d9b2264f748dbbd9b326548a0276427c4f080df22b4e2334890d2a5dd",
     "tests/unit/runner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "tests/unit/runner/conftest.py": "dab804ec0556ea1d7f3e1db8d76c6bf2e477921c9dbd41a3fc713718f121f2f9",
