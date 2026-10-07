@@ -5,7 +5,7 @@
   "session_templates": 5,
   "ownership_paths_disjoint": true,
   "package_dependencies_acyclic": true,
-  "local_links_checked": 87,
+  "local_links_checked": 89,
   "session_dispatch_ready": false,
   "runtime_tests": "not_run_by_plan_generator",
   "git_operations": "not_performed",
