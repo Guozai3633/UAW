@@ -1,6 +1,6 @@
 # Session A交接记录
 
-日期：2026-10-07。MS-I2a开发范围和MS-C2组件接受已完成；C/D继续原子包安排，B暂无新任务。完整MS-I2仍在开发中。以下保留历史记录。
+日期：2026-10-07。MS-I2b实时父子权限接线已验证；C/D继续原子包安排，B暂无新任务。完整MS-I2仍在开发中。以下保留历史记录。
 
 ## 代码基线
 
@@ -55,3 +55,14 @@
 - MS-C2标为组件接受，P1-02仍开发中；B保留干净边界，无新派发包。C/D继续MS-T2a/MS-R2a；A继续完整MS-I2。未发送聊天消息或改写worker分支。
 - 公共schema/共享ports/contracts/锁/提示词相对ms-i2a未变，无迁移/flags变更；D01/D03/D06不自行决定。
 - [接受及回退记录](../../implementation/MS-C2-acceptance.md)、[接收决定](../requests/A/MS-C2-integration.md)、[派发表](../DISPATCH.md)。
+
+## MS-I2b 最新交付
+
+- 权限接线提交：`27cb48973f39626392d9db21f39a5ed426b58b8d`；已通过全部契约校验的代码/证据提交：`cd43b17396a52dc65afc3e99e68381f8350f6ea1`。固定集成标签 `ms-i2b` 包含随后状态记录。
+- Context、Model、Approval 共用当前 PostgreSQL 父子权限解析；最多八级，检查当前 revision/hash、范围/网络/资源收窄、deny 并集和取消/期限。输出 snapshot 只绑定当前 scope，不作为可缓存或转用的授权。
+- Model 调用中父权限撤销停止本地 adapter 工作，未知用量/费用继续保留；现有 Intent 生命周期错误语义保留，固定用户模型选择和来源不变。
+- 最终 300 项全量通过，0失败/错误/跳过；新增15项真实SQL/跨模块验证；静态/格式和81文件类型检查通过。1259 schema、272契约、26已实现操作的检查通过；源码/环境摘要132文件。
+- 初次全量发现 Intent 过期错误码兼容问题，修正入口映射后完整重跑通过；数字版本的自动文档示例也已修正并重跑全部契约检查，没有放宽版本约束或改旧测试预期。
+- 新 ExecutionPolicyPort / ExecutionPolicySnapshot；无新依赖锁、迁移、能力flag或HTTP工具入口。默认Tool/Workspace/通用Context Runtime仍未绑定，审批仍缺真实动作adapter，角色/设备/租约/实际执行仍需后续接线。
+- C/D当前包固定`ms-i2a`，不要求中途混入新公共文件；B已接受MS-C2，保留交付边界。A继续完整MS-I2和公共提案集成；未发送聊天消息或修改worker分支，D01/D03/D06保持待定。
+- [实际范围/证据](../../implementation/MS-I2b.md)、[完整消费规则](../requests/A/MS-I2b-permissions.md)、[派发表](../DISPATCH.md)。

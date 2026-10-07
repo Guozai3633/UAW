@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2a公共基础发布；继续MS-I2汇合与真实权威接线。以DISPATCH的固定版本与派发为准。
+状态：MS-I2b实时父子权限接线已验证；继续完整MS-I2汇合和Runner权威接线。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -47,6 +47,7 @@
 - `tests/unit/model/`
 - `tests/integration/test_approvals.py`
 - `tests/unit/test_runner_signatures.py`
+- `tests/integration/test_execution_permissions.py`
 - `docs/plan/`
 - `docs/api/`
 - `docs/design/`
@@ -125,10 +126,27 @@
 - 真实SQL和真实签名验证通过，公共服务实际满足port；无假批准/假执行。
 - MS-T2a/MS-R2a有固定版本、明确范围及依赖缺失分支，原P1门槛继续保留。
 
+### MS-I2b：实时父子权限链公共接线
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
+开发前置：MS-I2a。
+
+任务：
+
+1. 提供ExecutionPolicyPort及严格ExecutionPolicySnapshot，读取当前主体真实持久父子政策，不注册或推断新权限。
+2. 统一Context/Model/Approval的scope、当前revision/hash、八级父链、deny并集和能力/网络/资源收窄；非空未解析flag引用拒绝。
+3. Model调用中父政策撤销停止本地工作，保留未知用量；修复公共gate提前检测时Intent的生命周期错误兼容。
+4. 发布新集成版本和SQL组合验证，C/D继续ms-i2a，不要求开发中途切换。
+
+交付检查：
+
+- 真实SQL覆盖父deny/扩大/循环/深度/撤销/并发变化/快照转用；既有Context/Model/审批回归通过。
+- snapshot不是可重放授权或dispatch租约；角色/flags/模型/预算/资源/Runner还需各所有者实际校验，不提前解锁完整MS-I2。
+
 ### MS-I2：合入Tool与Runner并完成真实权威接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
-开发前置：MS-I2a、MS-T2a、MS-R2a。
+开发前置：MS-I2b、MS-T2a、MS-R2a。
 
 任务：
 

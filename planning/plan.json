@@ -1051,6 +1051,7 @@
       "implementation_evidence": [
         "docs/implementation/MS-I1.md",
         "docs/implementation/MS-C2-acceptance.md",
+        "docs/implementation/MS-I2b.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1208,7 +1209,8 @@
       "parallel_packages": [
         "MS-C1",
         "MS-I1",
-        "MS-C2"
+        "MS-C2",
+        "MS-I2b"
       ]
     },
     {
@@ -1263,6 +1265,8 @@
       "decision_dependencies": [],
       "implementation_evidence": [
         "docs/implementation/MS-I1.md",
+        "docs/implementation/MS-I2a.md",
+        "docs/implementation/MS-I2b.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1480,6 +1484,7 @@
         "MS-T1",
         "MS-I2a",
         "MS-T2a",
+        "MS-I2b",
         "MS-I2",
         "MS-T2"
       ]
@@ -1524,6 +1529,8 @@
       ],
       "implementation_evidence": [
         "docs/implementation/MS-I1.md",
+        "docs/implementation/MS-I2a.md",
+        "docs/implementation/MS-I2b.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1641,6 +1648,7 @@
         "MS-R1",
         "MS-I2a",
         "MS-R2a",
+        "MS-I2b",
         "MS-I2",
         "MS-R2"
       ]

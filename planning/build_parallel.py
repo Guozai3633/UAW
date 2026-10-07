@@ -117,7 +117,7 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **MS-C2组件已合入并接受，B暂无新任务。** C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a；本次Context合入不要求开发中途同步。A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "- **MS-I2b已验证，B的MS-C2组件已接受，暂无新任务。** 集成版本为`ms-i2b`；C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a，不要求开发中途同步。A继续完整MS-I2汇合，真实执行包仍等待。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
@@ -135,7 +135,9 @@ def build_overview():
               "  B1 --> I1[\"A：Context与Intent/Model接线 MS-I1\"]", "  I1 --> B2[\"B：快照与引用 MS-C2\"]",
               "  C1 --> I2a[\"A：审批/签名公共基础 MS-I2a\"]", "  D1 --> I2a", "  I1 --> I2a",
               "  I2a --> C2a[\"C：账本/审批适配 MS-T2a\"]", "  I2a --> D2a[\"D：签名/配对状态 MS-R2a\"]",
+              "  I2a --> I2b[\"A：实时父子权限 MS-I2b\"]",
               "  C2a --> I2[\"A：真实权威与公共接线 MS-I2\"]", "  D2a --> I2",
+              "  I2b --> I2",
               "  I2 --> C2[\"C：真实dispatch/结算 MS-T2\"]", "  I2 --> D2[\"D：真实IPC；获准后执行 MS-R2\"]",
               "  B2 --> I3[\"A：汇合；按原P1轮次进入Agent闭环\"]", "  C2 --> I3", "  D2 --> I3", "```", "",
               "每次合入发布新集成SHA。开发session在包边界同步后进入下一包；未完成的分支不会直接作为另一个session的依赖。MS-I3仅是汇合入口，P1-06变更、P1-10真实界面等原工作包仍须另行完成。", "",

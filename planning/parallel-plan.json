@@ -6,17 +6,17 @@
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "603a0ac4d9348dee054de0c2161bffe6e3de1cce",
+    "commit": "cd43b17396a52dc65afc3e99e68381f8350f6ea1",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
     "dispatch_ref": "ms-i2a",
-    "integration_ref": "ms-c2-accepted",
+    "integration_ref": "ms-i2b",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
     "code_baseline_verified": true,
-    "last_verified_tests": 285,
-    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519 and MS-C2 immutable snapshots/references; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
+    "last_verified_tests": 300,
+    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
     "current_unverified_round": null,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
@@ -28,7 +28,7 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2a公共基础发布；继续MS-I2汇合与真实权威接线。",
+      "state": "MS-I2b实时父子权限接线已验证；继续完整MS-I2汇合和Runner权威接线。",
       "package": "MS-I2",
       "ready": true
     },
@@ -66,6 +66,7 @@
     "MS-I2a": "accepted_development",
     "MS-T2a": "assigned_ready",
     "MS-R2a": "assigned_ready",
+    "MS-I2b": "accepted_development",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -130,6 +131,7 @@
         "tests/unit/model/",
         "tests/integration/test_approvals.py",
         "tests/unit/test_runner_signatures.py",
+        "tests/integration/test_execution_permissions.py",
         "docs/plan/",
         "docs/api/",
         "docs/design/",
@@ -150,6 +152,7 @@
       "later": [
         "MS-I1",
         "MS-I2a",
+        "MS-I2b",
         "MS-I2",
         "MS-I3"
       ],
@@ -504,6 +507,30 @@
       ]
     },
     {
+      "id": "MS-I2b",
+      "session": "A",
+      "rounds": [
+        "P1-02",
+        "P1-03",
+        "P1-04"
+      ],
+      "title": "实时父子权限链公共接线",
+      "deps": [
+        "MS-I2a"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "提供ExecutionPolicyPort及严格ExecutionPolicySnapshot，读取当前主体真实持久父子政策，不注册或推断新权限。",
+        "统一Context/Model/Approval的scope、当前revision/hash、八级父链、deny并集和能力/网络/资源收窄；非空未解析flag引用拒绝。",
+        "Model调用中父政策撤销停止本地工作，保留未知用量；修复公共gate提前检测时Intent的生命周期错误兼容。",
+        "发布新集成版本和SQL组合验证，C/D继续ms-i2a，不要求开发中途切换。"
+      ],
+      "acceptance": [
+        "真实SQL覆盖父deny/扩大/循环/深度/撤销/并发变化/快照转用；既有Context/Model/审批回归通过。",
+        "snapshot不是可重放授权或dispatch租约；角色/flags/模型/预算/资源/Runner还需各所有者实际校验，不提前解锁完整MS-I2。"
+      ]
+    },
+    {
       "id": "MS-I2",
       "session": "A",
       "rounds": [
@@ -512,7 +539,7 @@
       ],
       "title": "合入Tool与Runner并完成真实权威接线",
       "deps": [
-        "MS-I2a",
+        "MS-I2b",
         "MS-T2a",
         "MS-R2a"
       ],

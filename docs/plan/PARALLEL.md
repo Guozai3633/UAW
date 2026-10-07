@@ -9,9 +9,9 @@ v0.2 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量285项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量300项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **MS-C2组件已合入并接受，B暂无新任务。** C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a；本次Context合入不要求开发中途同步。A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
+- **MS-I2b已验证，B的MS-C2组件已接受，暂无新任务。** 集成版本为`ms-i2b`；C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a，不要求开发中途同步。A继续完整MS-I2汇合，真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 
 沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 
@@ -53,8 +53,10 @@ flowchart TD
   I1 --> I2a
   I2a --> C2a["C：账本/审批适配 MS-T2a"]
   I2a --> D2a["D：签名/配对状态 MS-R2a"]
+  I2a --> I2b["A：实时父子权限 MS-I2b"]
   C2a --> I2["A：真实权威与公共接线 MS-I2"]
   D2a --> I2
+  I2b --> I2
   I2 --> C2["C：真实dispatch/结算 MS-T2"]
   I2 --> D2["D：真实IPC；获准后执行 MS-R2"]
   B2 --> I3["A：汇合；按原P1轮次进入Agent闭环"]
@@ -88,7 +90,8 @@ flowchart TD
 | MS-I2a | A | 持久人工审批和签名公共基础 | MS-I1、MS-T1、MS-R1 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2a | C | 持久调用账本和审批适配 | MS-I2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
 | MS-R2a | D | 真实签名适配和配对一次使用状态 | MS-I2a | [P1-04](rounds/P1-04.md) |
-| MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2a、MS-T2a、MS-R2a | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
+| MS-I2b | A | 实时父子权限链公共接线 | MS-I2a | [P1-02](rounds/P1-02.md)、[P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
+| MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2b、MS-T2a、MS-R2a | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
 | MS-R2 | D | 真实IPC配对和获准执行接线 | MS-I2、MS-R2a | [P1-04](rounds/P1-04.md)、[P1-05](rounds/P1-05.md) |
 | MS-I3 | A | 汇合后进入Agent闭环 | MS-C2、MS-T2、MS-R2 | [P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md)、[P1-11](rounds/P1-11.md) |
