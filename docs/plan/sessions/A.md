@@ -57,6 +57,7 @@
 - `docs/coordination/DISPATCH.md`
 - `docs/coordination/HANDOFF_TEMPLATE.md`
 - `docs/coordination/REQUEST_TEMPLATE.md`
+- `docs/coordination/NEXT_WAVE.md`
 - `docs/coordination/handoffs/A.md`
 - `docs/coordination/requests/A/`
 
@@ -67,7 +68,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-I2a发布后B继续MS-C2，C/D分别执行MS-T2a/MS-R2a；A继续完整MS-I2接线。
+- MS-C2组件已合入；B等待下一包，C/D继续MS-T2a/MS-R2a；A继续完整MS-I2接线。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 

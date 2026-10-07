@@ -1,11 +1,11 @@
 # 本轮可直接转发的消息
 
-日期：2026-10-07。C/D 使用发布的 `ms-i2a`；B 按原包继续。消息只针对对应现有聊天，不创建新 session。
+日期：2026-10-07。C/D 使用发布的 `ms-i2a`；B 的 MS-C2 已合入接受，暂无新包。消息只针对对应现有聊天，不创建新 session。
 
 ## 发给 B
 
 ```text
-继续 UAW Session B 的 MS-C2：固定上下文快照和引用查询。仍按原安排使用 ms-i1，不要求开发中途切换 ms-i2a。只改 B 允许目录，遵循 docs/plan/sessions/B.md 和 docs/coordination/requests/A/MS-I1-adapters.md。权限/来源删除与版本变化必须复核；未接入 Reader 明确不可用。完成后提交源码及 B handoff，列真实测试和 A 接线要求，不自行进入下一包。A 在合入时负责公共版本兼容。
+A 已将 UAW Session B 的 MS-C2 实现 c85bf52 和交接 c6ae25d 合入 integration；没有合并冲突。64 个组件检查、9 个真实 PostgreSQL 检查及原 8 个 Context 接线检查已通过。MS-C2 组件接受，完整 P1-02 仍待生产 authority/能力 Reader 等接线。请保留干净的 dev/context 交付边界，当前没有新的已派发包，不自动扩大范围。A 负责后续公共版本兼容；当前无需同步或重写分支。接受记录见 docs/implementation/MS-C2-acceptance.md。
 ```
 
 ## 发给 C

@@ -9,9 +9,9 @@ v0.2 · 2026-10-07 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量251项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量285项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **MS-I2a公共基础已验证，新基线为`ms-i2a`。** B按ms-i1继续MS-C2；C/D的MS-T2a/MS-R2a开工说明已准备，待用户转发；A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
+- **MS-C2组件已合入并接受，B暂无新任务。** C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a；本次Context合入不要求开发中途同步。A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 
 沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 

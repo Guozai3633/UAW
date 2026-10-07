@@ -97,7 +97,7 @@ def build_sessions():
                   "读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。",
                   ("当前在integration执行集成任务，不替worker同步或重写分支。" if key == "A" else
                    f"当前执行{progress['package']}。工作区干净后fetch origin --tags，使用git merge --ff-only {base_ref}同步本工作分支；失败先报告，不reset，保留已有历史。"
-                   if progress["ready"] else f"当前{progress['package']}未派发；只整理现有交接与依赖提案，不开始需要未发布依赖的实现。"),
+                   if progress["ready"] else f"当前状态：{progress['state']}只整理现有交接与依赖提案，不自动开始下一包。"),
                   "只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。",
                   "按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。",
                   "保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。",
@@ -117,7 +117,7 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **MS-I2a公共基础已验证，新基线为`ms-i2a`。** B按ms-i1继续MS-C2；C/D的MS-T2a/MS-R2a开工说明已准备，待用户转发；A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "- **MS-C2组件已合入并接受，B暂无新任务。** C/D继续使用固定`ms-i2a`完成MS-T2a/MS-R2a；本次Context合入不要求开发中途同步。A继续MS-I2汇合，完整真实执行包仍等待。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():

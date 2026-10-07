@@ -6,16 +6,17 @@ BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "ec5313b7f5d1aadabaab6e4ce4e0b02879cc1c8b",
+    "commit": "603a0ac4d9348dee054de0c2161bffe6e3de1cce",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2a",
+    "integration_ref": "ms-c2-accepted",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
     "code_baseline_verified": True,
-    "last_verified_tests": 251,
-    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring and MS-I2a manual consent/real Ed25519; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
+    "last_verified_tests": 285,
+    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519 and MS-C2 immutable snapshots/references; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
     "current_unverified_round": None,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": ["D01 final storage authority", "D06 actual model provider", "D03 Runner execution mode"],
@@ -38,7 +39,7 @@ RESERVED = [
     "docs/implementation/",
     "docs/DOCUMENT_MAP.md", "docs/PROJECT_STRUCTURE.md",
     "docs/coordination/DISPATCH.md", "docs/coordination/HANDOFF_TEMPLATE.md",
-    "docs/coordination/REQUEST_TEMPLATE.md",
+    "docs/coordination/REQUEST_TEMPLATE.md", "docs/coordination/NEXT_WAVE.md",
 ]
 
 SESSIONS = {
@@ -49,7 +50,7 @@ SESSIONS = {
               rules=["负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
                      "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
                      "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-                     "MS-I2a发布后B继续MS-C2，C/D分别执行MS-T2a/MS-R2a；A继续完整MS-I2接线。"]),
+                     "MS-C2组件已合入；B等待下一包，C/D继续MS-T2a/MS-R2a；A继续完整MS-I2接线。"]),
     "B": dict(name="上下文组件", branch="dev/context", worktree="E:/UAW/.worktrees/context",
               owns=["src/uaw/context/facade.py", "src/uaw/context/contracts.py", "src/uaw/context/ports.py",
                     "src/uaw/context/repository.py", "src/uaw/context/sources.py", "src/uaw/context/rules.py",
@@ -88,7 +89,7 @@ SESSIONS = {
 
 SESSION_PROGRESS = {
     "A": dict(state="MS-I2a公共基础发布；继续MS-I2汇合与真实权威接线。", package="MS-I2", ready=True),
-    "B": dict(state="MS-C2按原安排继续，基线ms-i1；不要求开发中途切换。", package="MS-C2", ready=True, base_ref="ms-i1"),
+    "B": dict(state="MS-C2组件已接受，9项真实SQL通过；没有新任务，保留干净交付边界。", package="MS-C2", ready=False, base_ref="ms-i1"),
     "C": dict(state="MS-T2a已安排，开工说明待转发；完整MS-T2仍等待。", package="MS-T2a", ready=True, base_ref="ms-i2a"),
     "D": dict(state="MS-R2a已安排，开工说明待转发；完整MS-R2仍等待。", package="MS-R2a", ready=True, base_ref="ms-i2a"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
@@ -97,7 +98,7 @@ SESSION_PROGRESS = {
 PACKAGE_PROGRESS = {
     "MS-00": "accepted_development", "MS-C1": "accepted_component",
     "MS-T1": "accepted_component", "MS-R1": "accepted_component",
-    "MS-I1": "accepted_development", "MS-C2": "dispatched",
+    "MS-I1": "accepted_development", "MS-C2": "accepted_component",
     "MS-I2a": "accepted_development", "MS-T2a": "assigned_ready", "MS-R2a": "assigned_ready",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }

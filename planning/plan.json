@@ -1050,6 +1050,7 @@
       "decision_dependencies": [],
       "implementation_evidence": [
         "docs/implementation/MS-I1.md",
+        "docs/implementation/MS-C2-acceptance.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
