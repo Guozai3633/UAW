@@ -3931,6 +3931,400 @@
       "arguments": {},
       "action_id": "example_001"
     },
+    "RunnerBindingState": "active",
+    "RunnerCommandState": "active",
+    "RunnerChannelSnapshot": {
+      "device_id": "example_001",
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "actor": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "pairing_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "channel_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "key_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "connected": true,
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerDeviceBinding": {
+      "device_id": "example_001",
+      "revision": 0,
+      "source": {
+        "device_id": "example_001",
+        "owner": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "actor": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "pairing_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "channel_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "key_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "connected": true,
+        "expires_at": "2026-10-07T02:00:00Z"
+      },
+      "state": "active"
+    },
+    "RunnerDeviceBindRequest": {
+      "device_id": "example_001",
+      "channel_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "expected_revision": 0
+    },
+    "RunnerRequestRegisterRequest": {
+      "id": "example_001",
+      "parameters": {
+        "action": "workspace.capture",
+        "parameters": {
+          "source_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "base_kind": "commit",
+          "include_rules": {
+            "include_uncommitted": true,
+            "include_untracked": true,
+            "include_paths": [],
+            "exclude_paths": [],
+            "max_total_bytes": 0
+          },
+          "expected_source_revision": "example_001"
+        }
+      }
+    },
+    "RunnerRequestRecord": {
+      "id": "example_001",
+      "context": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "scope": {
+          "principal_id": "example_001"
+        },
+        "operation_id": "example_001",
+        "trace_id": "example_001",
+        "attempt_id": "example_001",
+        "deadline": "2026-10-07T02:00:00Z",
+        "capability_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      },
+      "parameters": {
+        "action": "workspace.capture",
+        "parameters": {
+          "source_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "base_kind": "commit",
+          "include_rules": {
+            "include_uncommitted": true,
+            "include_untracked": true,
+            "include_paths": [],
+            "exclude_paths": [],
+            "max_total_bytes": 0
+          },
+          "expected_source_revision": "example_001"
+        }
+      }
+    },
+    "RunnerRootSnapshot": {
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "device_id": "example_001",
+      "workspace_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "root_handle": "example_001",
+      "binding_revision": 0,
+      "allowed_actions": [],
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerCommandDraft": {
+      "command_id": "example_001",
+      "operation_id": "example_001",
+      "request_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "trusted_context": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "scope": {
+          "principal_id": "example_001"
+        },
+        "operation_id": "example_001",
+        "trace_id": "example_001",
+        "attempt_id": "example_001",
+        "deadline": "2026-10-07T02:00:00Z",
+        "capability_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      },
+      "fencing_token": 0,
+      "expires_at": "2026-10-07T02:00:00Z",
+      "parameters": {
+        "action": "workspace.capture",
+        "parameters": {
+          "source_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "base_kind": "commit",
+          "include_rules": {
+            "include_uncommitted": true,
+            "include_untracked": true,
+            "include_paths": [],
+            "exclude_paths": [],
+            "max_total_bytes": 0
+          },
+          "expected_source_revision": "example_001"
+        }
+      }
+    },
+    "RunnerCommandRegisterRequest": {
+      "command_id": "example_001",
+      "request_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "device_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "lease_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "fencing_token": 0,
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerCommandRecord": {
+      "command": {
+        "command_id": "example_001",
+        "operation_id": "example_001",
+        "request_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "trusted_context": {
+          "principal": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "scope": {
+            "principal_id": "example_001"
+          },
+          "operation_id": "example_001",
+          "trace_id": "example_001",
+          "attempt_id": "example_001",
+          "deadline": "2026-10-07T02:00:00Z",
+          "capability_policy_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          }
+        },
+        "fencing_token": 0,
+        "expires_at": "2026-10-07T02:00:00Z",
+        "signature": "example_001",
+        "parameters": {
+          "action": "workspace.capture",
+          "parameters": {
+            "source_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "base_kind": "commit",
+            "include_rules": {
+              "include_uncommitted": true,
+              "include_untracked": true,
+              "include_paths": [],
+              "exclude_paths": [],
+              "max_total_bytes": 0
+            },
+            "expected_source_revision": "example_001"
+          }
+        }
+      },
+      "device_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "lease_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "holder": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "root": {
+        "owner": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "device_id": "example_001",
+        "workspace_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "root_handle": "example_001",
+        "binding_revision": 0,
+        "allowed_actions": [],
+        "expires_at": "2026-10-07T02:00:00Z"
+      },
+      "revision": 0,
+      "state": "active"
+    },
+    "BudgetAttemptState": {
+      "run_id": "example_001",
+      "operation_id": "example_001",
+      "trace_id": "example_001",
+      "attempt_id": "example_001",
+      "reservation_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "deadline": "2026-10-07T02:00:00Z",
+      "dispatched": true
+    },
+    "BudgetExecutionSnapshot": {
+      "ledger": {
+        "id": "example_001",
+        "run_id": "example_001",
+        "revision": 0,
+        "limits": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0",
+          "currency": "CNY"
+        },
+        "held": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0",
+          "currency": "CNY"
+        },
+        "used": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0",
+          "currency": "CNY"
+        },
+        "billing_pending": true,
+        "overdrawn": true,
+        "cancel_requested": true,
+        "deadline": "2026-10-07T02:00:00Z"
+      },
+      "reservation": {
+        "id": "example_001",
+        "estimates": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0",
+          "currency": "CNY"
+        },
+        "settled_usage_refs": [],
+        "status": "reserved",
+        "revision": 0
+      },
+      "attempt": {
+        "run_id": "example_001",
+        "operation_id": "example_001",
+        "trace_id": "example_001",
+        "attempt_id": "example_001",
+        "reservation_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "deadline": "2026-10-07T02:00:00Z",
+        "dispatched": true
+      }
+    },
     "ExecutionLeaseTtl": 1,
     "ExecutionLeaseState": "active",
     "ExecutionLeaseStateRecord": {

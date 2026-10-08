@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 
 from pydantic import SecretStr
 
-from uaw.infrastructure.db.records import PostgresRecordStore
+from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
 from uaw.infrastructure.db.transactions import (
     RecordTransaction,
     TransactionalStore,
@@ -534,6 +534,15 @@ class ConfigurationService:
                 for f in config["feature_flags"]
                 if f["id"] == capability
                 and all(scope.get(k) == v for k, v in f["scope"].items() if k != "resource_refs")
+                and (
+                    not f["scope"].get("resource_refs")
+                    or (
+                        bool(scope.get("resource_refs"))
+                        and {parameter_hash(r) for r in scope["resource_refs"]}.issubset(
+                            {parameter_hash(r) for r in f["scope"]["resource_refs"]}
+                        )
+                    )
+                )
             ]
             if not flags or any(not f["enabled"] for f in flags):
                 raise reject(

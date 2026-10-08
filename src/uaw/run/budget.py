@@ -18,7 +18,7 @@ from uaw.infrastructure.db.transactions import (
 from uaw.run.facade import zero_resources
 from uaw.shared.contracts import Principal, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
-from uaw.shared.ports import BudgetPort, BudgetStatePort
+from uaw.shared.ports import BudgetExecutionStatePort, BudgetPort, BudgetStatePort
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreConflict, StoreMissing
 
@@ -53,13 +53,17 @@ def remaining(ledger: Payload) -> Payload:
     }
 
 
-class BudgetService(BudgetPort, BudgetStatePort):
+class BudgetService(BudgetPort, BudgetStatePort, BudgetExecutionStatePort):
     def __init__(self, store: PostgresRecordStore) -> None:
         self.store = store
         self.transactions = TransactionalStore(store.database)
 
     async def _read_state(
-        self, ctx: TrustedExecutionContext, reservation_id: str | None = None
+        self,
+        ctx: TrustedExecutionContext,
+        reservation_id: str | None = None,
+        *,
+        execution: bool = False,
     ) -> Payload:
         validate_contract("TrustedExecutionContext", ctx.wire())
         if not ctx.run_id:
@@ -116,6 +120,29 @@ class BudgetService(BudgetPort, BudgetStatePort):
         validate_contract("BudgetReservation", reservation.payload)
         if reservation.payload["revision"] != reservation.revision:
             raise StoreConflict()
+        if execution:
+            result = {
+                "ledger": ledger.payload,
+                "reservation": reservation.payload,
+                "attempt": {
+                    **{
+                        key: account.payload[key]
+                        for key in (
+                            "run_id",
+                            "operation_id",
+                            "trace_id",
+                            "attempt_id",
+                            "deadline",
+                            "dispatched",
+                        )
+                    },
+                    "reservation_ref": reference(
+                        "reservation", reservation_id, reservation.revision
+                    ),
+                },
+            }
+            validate_contract("BudgetExecutionSnapshot", result)
+            return result
         return reservation.payload
 
     async def get_ledger(self, ctx: TrustedExecutionContext) -> Payload:
@@ -123,6 +150,9 @@ class BudgetService(BudgetPort, BudgetStatePort):
 
     async def get_reservation(self, reservation_id: str, ctx: TrustedExecutionContext) -> Payload:
         return await self._read_state(ctx, reservation_id)
+
+    async def execution_state(self, reservation_id: str, ctx: TrustedExecutionContext) -> Payload:
+        return await self._read_state(ctx, reservation_id, execution=True)
 
     @staticmethod
     def _context(actor: Principal, ctx: TrustedExecutionContext, run_id: str) -> None:

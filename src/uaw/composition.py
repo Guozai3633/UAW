@@ -27,6 +27,9 @@ from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
 from uaw.run.leases import ExecutionLeaseService
 from uaw.run.permissions import ExecutionPolicyResolver
+from uaw.run.runner_authority import RegisteredRunnerAuthority
+from uaw.run.runner_commands import RunnerCommands
+from uaw.run.runner_devices import RunnerDevices
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import CapabilityUnavailable
@@ -83,6 +86,9 @@ class Container:
     model_service: ModelFacade | None = None
     intent_service: IntentFacade | None = None
     context_components: ContextComponents | None = None
+    runner_devices: RunnerDevices | None = None
+    runner_commands: RunnerCommands | None = None
+    runner_authority: RegisteredRunnerAuthority | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -139,6 +145,13 @@ def compose(settings: Settings) -> Container:
     blobs = FSBlobStore(settings.blob_directory) if database else None
     budgets = BudgetService(records) if records else None
     permissions = ExecutionPolicyResolver(records) if records else None
+    leases = ExecutionLeaseService(records) if records else None
+    devices = RunnerDevices(records, configuration.platform) if records and configuration else None
+    commands = (
+        RunnerCommands(records, devices, configuration, permissions, budgets, leases)
+        if records and devices and configuration and permissions and budgets and leases
+        else None
+    )
     policies = (
         PolicyResolver(records, configuration, permissions) if records and configuration else None
     )
@@ -181,7 +194,7 @@ def compose(settings: Settings) -> Container:
         configuration=configuration,
         run_service=run,
         budgets=budgets,
-        execution_leases=ExecutionLeaseService(records) if records else None,
+        execution_leases=leases,
         approvals=ApprovalService(records, configuration, permissions=permissions)
         if records and configuration
         else None,
@@ -189,4 +202,7 @@ def compose(settings: Settings) -> Container:
         model_service=model,
         intent_service=intent,
         context_components=contexts.components if contexts else None,
+        runner_devices=devices,
+        runner_commands=commands,
+        runner_authority=RegisteredRunnerAuthority(commands) if commands else None,
     )

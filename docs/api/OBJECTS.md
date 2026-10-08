@@ -945,6 +945,8 @@
 | [ApprovalsDecideRequest](objects/ApprovalsDecideRequest.md) | 用户审批。 |
 | [ApprovalsGetRequest](objects/ApprovalsGetRequest.md) | 审批详情。 |
 | [Budget](objects/Budget.md) | 运行总预算/子预算请求。 |
+| [BudgetAttemptState](objects/BudgetAttemptState.md) | 预算owning-domain当前实际意图/期限，查询不授权发送。 |
+| [BudgetExecutionSnapshot](objects/BudgetExecutionSnapshot.md) | 单次MVCC读取的预算执行状态，保留未知费用语义。 |
 | [BudgetReservation](objects/BudgetReservation.md) | 所有重试和子Agent共享父预算账本。 |
 | [BudgetReserveRequest](objects/BudgetReserveRequest.md) | 原子预留账本。 |
 | [BudgetSettleRequest](objects/BudgetSettleRequest.md) | 使用已发生账单结算。 |
@@ -1133,6 +1135,17 @@
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |
+| [RunnerBindingState](objects/RunnerBindingState.md) | 取值含义见字段及协议约束。 |
+| [RunnerChannelSnapshot](objects/RunnerChannelSnapshot.md) | 独立可信通道源读取的当前设备拥有者及认证身份，不接受网络/模型自报。 |
+| [RunnerCommandDraft](objects/RunnerCommandDraft.md) | 控制服务从独立登记源构建的签字正文。 |
+| [RunnerCommandRecord](objects/RunnerCommandRecord.md) | 已签名不可变命令及登记来源；状态撤销不覆盖签字正文。 |
+| [RunnerCommandRegisterRequest](objects/RunnerCommandRegisterRequest.md) | 仅内部控制服务可创建签字记录，不发送命令。 |
+| [RunnerCommandState](objects/RunnerCommandState.md) | 取值含义见字段及协议约束。 |
+| [RunnerDeviceBindRequest](objects/RunnerDeviceBindRequest.md) | 内部认证控制服务登记当前真实通道，不接受owner声明。 |
+| [RunnerDeviceBinding](objects/RunnerDeviceBinding.md) | 平台拥有的设备/通道归属，撤销与到期不自动复活。 |
+| [RunnerRequestRecord](objects/RunnerRequestRecord.md) | 版本1的原请求/原尝试，不是执行权限。 |
+| [RunnerRequestRegisterRequest](objects/RunnerRequestRegisterRequest.md) | 内部控制服务登记不可变实际业务参数。 |
+| [RunnerRootSnapshot](objects/RunnerRootSnapshot.md) | 真实授权根来源的当前opaque元数据，不包含本机路径。 |
 | [RunsCheckpointRequest](objects/RunsCheckpointRequest.md) | 创建可恢复检查点。 |
 | [RunsControlRequest](objects/RunsControlRequest.md) | 用户干预。 |
 | [RunsGetRequest](objects/RunsGetRequest.md) | 运行状态。 |

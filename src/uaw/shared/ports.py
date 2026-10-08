@@ -142,6 +142,49 @@ class AsyncRunnerAuthorityPort(Protocol):
     ) -> JsonObject: ...
 
 
+class RunnerChannelSourcePort(Protocol):
+    """Independently authenticate channel/owner/device/key and current data access.
+
+    Return RunnerChannelSnapshot. A Ref or actor body never proves a pairing.
+    """
+
+    async def read(self, channel_ref: Ref, *, device_id: str) -> JsonObject: ...
+
+
+class RunnerRootSourcePort(Protocol):
+    """Actual native grant owner checks current root/version, not a chat path."""
+
+    async def current(
+        self, device_id: str, workspace_ref: Ref, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
+class RunnerActionGatePort(Protocol):
+    """Check actual role, all resources and required consent for the fixed request."""
+
+    async def check(self, request: JsonObject, ctx: TrustedExecutionContext) -> None: ...
+
+
+class RunnerCommandSigningPort(Protocol):
+    """Use an actual current control key; no private material in parameters/results.
+
+    sign returns RunnerCommand and covers the exact RunnerCommandDraft fields.
+    verify must recheck current trusted control key role/revocation plus signature.
+    """
+
+    async def sign(self, draft: JsonObject, *, device_id: str) -> JsonObject: ...
+
+    async def verify(self, command: JsonObject, *, device_id: str) -> None: ...
+
+
+class BudgetExecutionStatePort(Protocol):
+    """Current actual dispatch intent/deadline; recovery read is not admission."""
+
+    async def execution_state(
+        self, reservation_id: str, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
 class ExecutionLeasePort(Protocol):
     """Run-owned root coordination, not a permission or command authorization.
 

@@ -39523,6 +39523,412 @@
         ],
         "additionalProperties": false
       },
+      "RunnerBindingState": {
+        "description": "取值含义见字段及协议约束。",
+        "type": "string",
+        "enum": [
+          "active",
+          "revoked",
+          "expired"
+        ]
+      },
+      "RunnerCommandState": {
+        "description": "取值含义见字段及协议约束。",
+        "type": "string",
+        "enum": [
+          "active",
+          "revoked"
+        ]
+      },
+      "RunnerChannelSnapshot": {
+        "type": "object",
+        "description": "独立可信通道源读取的当前设备拥有者及认证身份，不接受网络/模型自报。",
+        "properties": {
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "设备"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "原用户"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "当前认证Runner"
+          },
+          "pairing_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际配对版本"
+          },
+          "channel_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际通道版本"
+          },
+          "key_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "设备公钥版本"
+          },
+          "connected": {
+            "$ref": "#/components/schemas/Bool",
+            "description": "实际在线"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "当前通道期限"
+          }
+        },
+        "required": [
+          "device_id",
+          "owner",
+          "actor",
+          "pairing_ref",
+          "channel_ref",
+          "key_ref",
+          "connected",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerDeviceBinding": {
+        "type": "object",
+        "description": "平台拥有的设备/通道归属，撤销与到期不自动复活。",
+        "properties": {
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "设备"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS"
+          },
+          "source": {
+            "$ref": "#/components/schemas/RunnerChannelSnapshot",
+            "description": "登记时实际来源"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RunnerBindingState",
+            "description": "当前状态"
+          }
+        },
+        "required": [
+          "device_id",
+          "revision",
+          "source",
+          "state"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerDeviceBindRequest": {
+        "type": "object",
+        "description": "内部认证控制服务登记当前真实通道，不接受owner声明。",
+        "properties": {
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "设备"
+          },
+          "channel_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "独立来源"
+          },
+          "expected_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前CAS"
+          }
+        },
+        "required": [
+          "device_id",
+          "channel_ref",
+          "expected_revision"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerRequestRegisterRequest": {
+        "type": "object",
+        "description": "内部控制服务登记不可变实际业务参数。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "稳定请求"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/RunnerParameters",
+            "description": "实际业务参数"
+          }
+        },
+        "required": [
+          "id",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerRequestRecord": {
+        "type": "object",
+        "description": "版本1的原请求/原尝试，不是执行权限。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "稳定请求"
+          },
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "服务取得的原上下文"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/RunnerParameters",
+            "description": "原业务参数"
+          }
+        },
+        "required": [
+          "id",
+          "context",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerRootSnapshot": {
+        "type": "object",
+        "description": "真实授权根来源的当前opaque元数据，不包含本机路径。",
+        "properties": {
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "原用户"
+          },
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "设备"
+          },
+          "workspace_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际工作区"
+          },
+          "root_handle": {
+            "$ref": "#/components/schemas/ID",
+            "description": "授权根"
+          },
+          "binding_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "根版本"
+          },
+          "allowed_actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ID"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "当前获准读动作"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "根期限"
+          }
+        },
+        "required": [
+          "owner",
+          "device_id",
+          "workspace_ref",
+          "root_handle",
+          "binding_revision",
+          "allowed_actions",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerCommandDraft": {
+        "type": "object",
+        "description": "控制服务从独立登记源构建的签字正文。",
+        "properties": {
+          "command_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "命令"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原操作"
+          },
+          "request_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原请求"
+          },
+          "trusted_context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "原上下文"
+          },
+          "fencing_token": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前栅栏"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "有界期限"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/RunnerParameters",
+            "description": "原业务参数"
+          }
+        },
+        "required": [
+          "command_id",
+          "operation_id",
+          "request_ref",
+          "trusted_context",
+          "fencing_token",
+          "expires_at",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerCommandRegisterRequest": {
+        "type": "object",
+        "description": "仅内部控制服务可创建签字记录，不发送命令。",
+        "properties": {
+          "command_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "稳定命令"
+          },
+          "request_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "已登记实际请求"
+          },
+          "device_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前设备绑定"
+          },
+          "lease_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前根租约"
+          },
+          "fencing_token": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "栅栏"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "期限"
+          }
+        },
+        "required": [
+          "command_id",
+          "request_ref",
+          "device_ref",
+          "lease_ref",
+          "fencing_token",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerCommandRecord": {
+        "type": "object",
+        "description": "已签名不可变命令及登记来源；状态撤销不覆盖签字正文。",
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/RunnerCommand",
+            "description": "实际签字正文"
+          },
+          "device_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定设备绑定"
+          },
+          "lease_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定租约"
+          },
+          "holder": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "真实执行服务"
+          },
+          "root": {
+            "$ref": "#/components/schemas/RunnerRootSnapshot",
+            "description": "实际根来源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "登记状态CAS"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RunnerCommandState",
+            "description": "是否允许新准入"
+          }
+        },
+        "required": [
+          "command",
+          "device_ref",
+          "lease_ref",
+          "holder",
+          "root",
+          "revision",
+          "state"
+        ],
+        "additionalProperties": false
+      },
+      "BudgetAttemptState": {
+        "type": "object",
+        "description": "预算owning-domain当前实际意图/期限，查询不授权发送。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "运行"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原操作"
+          },
+          "trace_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原trace"
+          },
+          "attempt_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原尝试"
+          },
+          "reservation_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前预留版本"
+          },
+          "deadline": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "实际尝试期限"
+          },
+          "dispatched": {
+            "$ref": "#/components/schemas/Bool",
+            "description": "已保存预算dispatch意图"
+          }
+        },
+        "required": [
+          "run_id",
+          "operation_id",
+          "trace_id",
+          "attempt_id",
+          "reservation_ref",
+          "deadline",
+          "dispatched"
+        ],
+        "additionalProperties": false
+      },
+      "BudgetExecutionSnapshot": {
+        "type": "object",
+        "description": "单次MVCC读取的预算执行状态，保留未知费用语义。",
+        "properties": {
+          "ledger": {
+            "$ref": "#/components/schemas/RootBudgetLedger",
+            "description": "当前根预算"
+          },
+          "reservation": {
+            "$ref": "#/components/schemas/BudgetReservation",
+            "description": "原尝试预留"
+          },
+          "attempt": {
+            "$ref": "#/components/schemas/BudgetAttemptState",
+            "description": "原尝试状态"
+          }
+        },
+        "required": [
+          "ledger",
+          "reservation",
+          "attempt"
+        ],
+        "additionalProperties": false
+      },
       "ExecutionLeaseTtl": {
         "description": "有界租约TTL毫秒，不超过Run截止时间。",
         "type": "integer",
