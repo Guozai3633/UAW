@@ -2,7 +2,7 @@
   "date": "2026-10-08",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g reviewed current Run/fixed model/Tool role and data sources, final registered Context assembly, verified text-tool results and explicit Runner mapping/signing assembly; full milestone regression in progress",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g 1077 unique passing integration nodes across original full run and affected-module repair; final Context, Tool, Runner, current Run/model/role/recovery sources and internal assemblies; actual LLM/IPC/user confirmation/execution still not proved",
   "components": {
     "fastapi": {
       "installed": true,
@@ -139,7 +139,7 @@
     "runner_control_signer_wiring": true
   },
   "test_counts": {
-    "tests": 841,
+    "tests": 1077,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -147,7 +147,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "2d55aee0e1658c59147e789177343c6cc80036a02a6ab7b2bfe4e182dafdf7a8",
+  "test_evidence_sha256": "bd5b8e36389a69ad3483187748bcea28846adf8191b158489d9e451d1cdba8c2",
   "runtime_implementation": "development_control_plane_intent_model_and_context_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -328,7 +328,7 @@
     "tests/integration/tool/recovery_facade_child.py": "c60582dba2b0672155f95bcf6df6d17efa7d260accea7b34dfa9387c43ab6682",
     "tests/integration/tool/recovery_fixtures.py": "ea4dad0c7b0f88448cff8a313d1bdf62644ec0206e93fbf91ebef05568ba801c",
     "tests/integration/tool/test_durable.py": "61cb9ba94268e7e5839bf2ebcf06539a0dda9bcf8860e8e134efc2cf866256e4",
-    "tests/integration/tool/test_text_dispatch_postgres.py": "fb8b4096cec284d316049e86ec106aad9d700a32678eed55ca960a2500bb0e58",
+    "tests/integration/tool/test_text_dispatch_postgres.py": "6403e4b7e8a7baf1a23895b71a1ae35cb4c5827b196be0105d001b09a6ae3bab",
     "tests/integration/tool/test_text_recovery_process_postgres.py": "ad3d717cc8d509ecacf88c2c949a552c648be0c96f1b1938c66fcd1e9dceae6a",
     "tests/integration/tool/test_text_results_postgres.py": "b644975cd27130dc377e01ba2be759111a88a3df9a940e2832d946f118a9a312",
     "tests/integration/tool/test_tool_reconciliation_postgres.py": "3ca6d381153a5db5c6cdaaa04e5a0a2f6ecfda6dff1d2cd1aeedaa5242cff11a",
@@ -365,123 +365,65 @@
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
   "verification_lineage": {
-    "full_runtime_receipt_ref": "ms-i2f2",
-    "full_runtime_tests": 841,
-    "full_regression_repeated_for_current_phase": false,
-    "source_hashes_purpose": "Current reviewed bytes. Historical full JUnit remains associated with ms-i2f2; new source coverage is recorded in focused and worker receipts, not claimed as a new full run.",
-    "focused_receipts": [
-      {
-        "path": "docs/implementation/evidence/ms-i2g-focused-tests.xml",
-        "sha256": "d3c4daf9cef1faf1153e6773f62d1b019233d79fde99426950ee8f38809cf2e5",
-        "counts": {
-          "tests": 234,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        }
+    "full_runtime_receipt_ref": "ms-i2g",
+    "full_runtime_tests": 1077,
+    "full_regression_repeated_for_current_phase": true,
+    "full_receipt": {
+      "path": "docs/implementation/evidence/ms-i2g-accepted-tests.xml",
+      "sha256": "bd5b8e36389a69ad3483187748bcea28846adf8191b158489d9e451d1cdba8c2",
+      "counts": {
+        "tests": 1077,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
       },
-      {
-        "path": "docs/implementation/evidence/ms-i2g-wiring-tests.xml",
-        "sha256": "3130e5f5315eded40618992925f798cc902f7ffe7203f842d7475e2ca54f304d",
-        "counts": {
-          "tests": 41,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        }
-      },
-      {
-        "path": "docs/implementation/evidence/ms-i2g-tool-focused-tests.xml",
-        "sha256": "699e8a24c7281482e24b296d1dd369b3c8a6a88b344bb960518e5a6489bc63f8",
-        "counts": {
-          "tests": 27,
-          "failures": 0,
-          "errors": 0,
-          "skipped": 0
-        }
-      }
-    ],
-    "focused_different_passing_nodes": 268,
-    "worker_receipts": "docs/implementation/evidence/ms-i2g-worker-receipts.json",
-    "worker_receipts_sha256": "b93c4c9e685d702397a9e2241a7fc5c855ebf18eef7e24ac1c2cf8a480ca7d8b",
-    "changed_reviewed_sources_from_preparation": [
-      "apps/local_runner/uaw_runner/assembly.py",
-      "apps/local_runner/uaw_runner/async_admission.py",
-      "apps/local_runner/uaw_runner/control_signing.py",
-      "apps/local_runner/uaw_runner/keys.py",
-      "apps/local_runner/uaw_runner/pairing.py",
-      "apps/local_runner/uaw_runner/protocol.py",
-      "apps/local_runner/uaw_runner/root_source.py",
-      "apps/local_runner/uaw_runner/state.py",
-      "contracts/interface_catalog.py",
-      "contracts/uaw.schema.json",
-      "src/uaw/composition.py",
-      "src/uaw/context/authority.py",
-      "src/uaw/context/cache.py",
-      "src/uaw/context/composer.py",
-      "src/uaw/context/contracts.py",
-      "src/uaw/context/ports.py",
-      "src/uaw/context/readers.py",
-      "src/uaw/context/registered.py",
-      "src/uaw/run/context_sources.py",
-      "src/uaw/run/execution_sources.py",
-      "src/uaw/run/runner_mapping.py",
-      "src/uaw/run/tool_sources.py",
-      "src/uaw/tool/facade.py",
-      "src/uaw/tool/invocation/dispatch.py",
-      "src/uaw/tool/ledger.py",
-      "src/uaw/tool/ports.py",
-      "src/uaw/tool/providers/__init__.py",
-      "src/uaw/tool/providers/text.py",
-      "src/uaw/tool/receipt_store.py",
-      "src/uaw/tool/results.py",
-      "src/uaw/workspace/binding.py",
-      "src/uaw/workspace/ports.py",
-      "tests/integration/context/registered_fixture.py",
-      "tests/integration/context/test_registered_chain_postgres.py",
-      "tests/integration/context/test_registered_postgres.py",
-      "tests/integration/runner/root_source_child.py",
-      "tests/integration/runner/test_native_root_source.py",
-      "tests/integration/runner/test_windows_control_keys.py",
-      "tests/integration/test_runtime_sources.py",
-      "tests/integration/test_stage_wiring.py",
-      "tests/integration/tool/test_text_dispatch_postgres.py",
-      "tests/integration/tool/test_text_recovery_process_postgres.py",
-      "tests/integration/tool/test_text_results_postgres.py",
-      "tests/integration/tool/text_pipeline_fixture.py",
-      "tests/integration/tool/text_recovery_child.py",
-      "tests/unit/context/test_registration.py",
-      "tests/unit/runner/test_async_admission.py",
-      "tests/unit/runner/test_control_signing.py",
-      "tests/unit/tool/test_durable_results.py",
-      "tests/unit/tool/test_text_inspect.py"
-    ],
-    "focused_receipts_ref": "ms-i2g-a1; preceding phase, not a repeat of all nodes after B final merge",
-    "stage_acceptance": {
-      "B": "accepted component, 293 unique worker nodes",
-      "C": "accepted component",
-      "D": "accepted component"
+      "different_passing_nodes": 1077,
+      "seconds": 4289.456999999999,
+      "execution": "Disjoint 1074 passing nodes from original full run plus all 3 affected-module nodes rerun after watchdog-only test repair; not a single all-passing 1077 run."
     },
+    "execution_source_baseline": "ms-i2h-start",
+    "execution_source_baseline_sha": "f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8",
+    "runtime_sources_identical_to_execution_baseline": true,
+    "test_source_changes_after_full_run": [
+      "tests/integration/tool/test_text_dispatch_postgres.py"
+    ],
+    "original_full_run": {
+      "path": "docs/implementation/evidence/ms-i2g-full-tests.xml",
+      "sha256": "76212b3ca15fed45ea45c7ea4a1ada3b7f701ea8b7dcc2a11a22a799b69ccfe5",
+      "counts": {
+        "tests": 1077,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 4247.485
+    },
+    "targeted_repair": {
+      "path": "docs/implementation/evidence/ms-i2g-dispatch-repair-tests.xml",
+      "sha256": "f84be3a515552a34b2509a072cde58f239ae0c3a733704d2117d709610a6dc7c",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Only test watchdog 20s -> 60s; assertions and production runtime unchanged."
+    },
+    "previous_full_runtime_ref": "ms-i2f2",
+    "previous_tests": 841,
+    "previous_nodes_preserved": 841,
+    "new_nodes": 236,
+    "worker_receipts": "docs/implementation/evidence/ms-i2g-worker-receipts.json",
+    "worker_receipts_sha256": "b162edd25b3494517cb990af1baa782fb2f10cca4671cd514f0233ec7b47ffdf",
     "static_checks": {
       "ruff": "passed",
       "format_files": 188,
       "mypy_source_files": 117
     },
     "limitations": [
-      "Full 1077-node milestone regression still in progress; not P1 acceptance.",
-      "No external LLM/trusted IPC/actual native consent/file or process execution verified.",
-      "Context source read amplification reduced in B final implementation; quantitative follow-up remains."
-    ],
-    "current_final_wiring_receipt": {
-      "path": "docs/implementation/evidence/ms-i2g-final-wiring-tests.xml",
-      "sha256": "acb178a59d75afb8a50ba659c9ae8c32495828b4a1ee333eec2798743682cfbe",
-      "counts": {
-        "tests": 2,
-        "failures": 0,
-        "errors": 0,
-        "skipped": 0
-      },
-      "scope": "Two current assembly chains after final B merge; complete milestone still running."
-    }
+      "No real external LLM, production authentication, trusted IPC, native user confirmation or file/process execution verified.",
+      "P1 product and semantic acceptance remain separate; flags unchanged.",
+      "Context query/time measurements continue in MS-C6; test wall time is not product latency."
+    ]
   }
 }

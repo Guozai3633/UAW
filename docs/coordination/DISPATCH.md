@@ -1,15 +1,15 @@
 # 多 session 派发和集成记录
 
-日期：2026-10-08。A维护。**MS-I2g实际来源与装配开发中。B/C/D阶段版已分别合入；C/MS-T2d和D/MS-R2d已按最终组件范围接受，B/MS-C5最终8cc445a/233a5c3已合入b47fd81并按组件接受。MS-I2g全量1077节点正在执行；上一完整回执仍为ms-i2f2。**
+日期：2026-10-08。A维护。**MS-I2g实际来源与装配开发集成已接受。B/C/D阶段版已分别合入；C/MS-T2d和D/MS-R2d已按最终组件范围接受，B/MS-C5最终8cc445a/233a5c3已合入b47fd81并按组件接受。完整回归覆盖1077个不同节点，最终接受覆盖均通过：首轮1076通过/1测试超时，定向修复后受影响模块3项通过；去重采用首轮其余1074＋复跑3。原841全部保留，新增236，两个批次实际合计4289.46秒。完整开发集成范围接受；最新完整标签ms-i2g，worker开工标签仍为ms-i2h-start。**
 
-## A当前已验证阶段版本：ms-i2g-a1
+## 历史接线阶段：ms-i2g-a1
 
 - 源码/证据提交：**8b581af6eca951a2af2919361feaaeb85afa2477**；固定阶段标签ms-i2g-a1包含随后状态记录，不移动ms-i2g-start或旧集成标签。
 - A当前来源/内部装配与C/D最终组件接受完成。234/41/27三个实际批次去重268项通过；Ruff/格式186文件/Mypy117源码通过。详见[实际范围](../implementation/MS-I2g-A1.md)及[方法/输入输出/策略](requests/A/MS-I2g-wiring.md)。
 - 该阶段不是完整MS-I2g里程碑，历史全量841仍属于ms-i2f2。B继续固定ms-i2g-start完成MS-C5；C/D本包无需重做，下一包未派发。没有代替worker切分支、合并或发聊天消息。
 - 新增RunToolAccessBinding及其文档/资源副本；旧请求/响应、shared ports/contracts、uv.lock不变。当前schema/hash以environment.json和该阶段标签为准。
 
-## 最近已验收的运行代码版本（ms-i2f2）
+## 历史完整运行版本（ms-i2f2）
 
 - 目录/分支：`E:/UAW` / `integration`；仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)。
 - 已验证代码/证据提交：`9422fcaba180fdc04515c993776e7f4a09d526b2`；固定标签 **ms-i2f2** 包含随后状态记录，旧标签不移动。
@@ -17,7 +17,7 @@
 - 新增231项检查，原610项完整重跑。[实际范围/回执](../implementation/MS-I2f2.md) 与 [接口/目录/策略](requests/A/MS-I2f2-integration.md)。
 - Worker原开工基线是 `ms-i2e / ba2f3b0d9417e6d695eaa74c2f766217c98b01f1`；A原基线是 `ms-i2f1 / d3fca34528237da155617a2a86df2abcb0db86b3`。交付后再同步新版本，不中途换基线。
 
-## 本轮接受
+## 历史MS-I2f2接受
 
 | Session | 原目录 / 分支 | 原源码 / handoff | A merge | 接受结果 |
 | --- | --- | --- | --- | --- |
@@ -72,4 +72,17 @@ C 的100个SQL是首轮原70＋最终新增30的不同通过节点覆盖，不�
 
 ## 下一轮准备：ms-i2h-start
 
-[MS-I2h详细范围](requests/A/MS-I2h-parallel-packages.md)：A单Agent根实例/循环，B/MS-C6多规则语义评估与读取测量，C/MS-T2e权限先行混合工具检索，D/MS-R2e实际file.read组件。四个连续里程碑、两个交付点，互不依赖开发分支。固定开发标签ms-i2h-start发布；代码合并来源b47fd81及当前2条组合链（274.16秒）通过，Ruff/188格式/Mypy117通过，worker按NEXT_WAVE同步开新包。完整1077节点回归由A继续，不把开发基线称为全量验收。实际标签SHA由git rev-parse ms-i2h-start^{commit}核对，发布回执会补录。
+[MS-I2h详细范围](requests/A/MS-I2h-parallel-packages.md)：A单Agent根实例/循环，B/MS-C6多规则语义评估与读取测量，C/MS-T2e权限先行混合工具检索，D/MS-R2e实际file.read组件。四个连续里程碑、两个交付点，互不依赖开发分支。固定开发标签ms-i2h-start发布；代码合并来源b47fd81及当前2条组合链（274.16秒）通过，Ruff/188格式/Mypy117通过，worker按NEXT_WAVE同步开新包。完整1077节点随后由A通过，验收标签ms-i2g单独发布；worker仍按ms-i2h-start开发，不移动该标签。实际标签SHA由git rev-parse ms-i2h-start^{commit}核对，实际发布回执见下节。
+
+### ms-i2h-start实际发布回执与固定摘要
+
+- 固定开发标签及远程peeled commit：**f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8**；atomic push已成功，ls-remote实际核对integration和标签一致。标签不移动；后续完整MS-I2g验收标签另发，worker不在包中途换基线。
+- B/C/D新包状态published_ready_to_start，实际开工以其报告为准；A没有替其同步或向聊天发消息。历史ms-i2g-start表不用于新包摘要。
+
+| 文件 | ms-i2h-start SHA256 |
+| --- | --- |
+| `contracts/uaw.schema.json` | `595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d` |
+| `src/uaw/shared/ports.py` | `fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104` |
+| `src/uaw/shared/contracts.py` | `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b` |
+| `uv.lock` | `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f` |
+| `src/uaw/resources/prompts/intent-understand-v1.txt` | `3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400` |

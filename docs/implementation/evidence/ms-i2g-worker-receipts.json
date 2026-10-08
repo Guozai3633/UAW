@@ -187,9 +187,20 @@
       }
     }
   },
-  "acceptance": "All three component scopes accepted. A full integration milestone regression is in progress.",
+  "acceptance": "All three component scopes accepted; A 1077-node development integration coverage passed across full run plus targeted repair. Original full run had one test-watchdog timeout; raw receipt retained. P1 product/semantic acceptance remains separate.",
   "limitations": [
     "No real external LLM, trusted IPC, native user confirmation or file/process execution proved.",
     "No product flags or routes activated."
-  ]
+  ],
+  "full_integration_receipt": {
+    "path": "docs/implementation/evidence/ms-i2g-accepted-tests.xml",
+    "sha256": "bd5b8e36389a69ad3483187748bcea28846adf8191b158489d9e451d1cdba8c2",
+    "counts": {
+      "tests": 1077,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "different_passing_nodes": 1077
+  }
 }

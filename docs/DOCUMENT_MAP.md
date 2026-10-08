@@ -4,7 +4,7 @@
 
 ## 1. 权威与阅读顺序
 
-当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。B/C/D最终组件已接受，完整MS-I2g回归进行中；[下一轮能力包](coordination/requests/A/MS-I2h-parallel-packages.md)已发布独立开发基线，完整里程碑仍由A执行。
+当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。B/C/D最终组件已接受，完整MS-I2g/1077节点回归已通过；[下一轮能力包](coordination/requests/A/MS-I2h-parallel-packages.md)已发布独立开发基线，完整里程碑已接受，worker仍固定该开发基线。
 
 | 层级/位置 | 作用 | 谁维护、怎样更新 |
 | --- | --- | --- |

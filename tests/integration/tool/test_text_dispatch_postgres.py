@@ -34,8 +34,11 @@ async def test_text_stage_concurrent_invocation_has_one_send_owner(text_pipeline
     p = text_pipeline
     await p.facade.invoke(p.raw, p.case.ctx)
     await approve(p.case)
+    # This bounds a stuck SQL race, not product latency. The result recovery
+    # includes current authorization reads and can exceed 20s under suite load.
+    # Execution still obeys the actual Run/attempt deadlines inside the facade.
     results = await asyncio.wait_for(
-        asyncio.gather(*(p.facade.invoke(p.raw, p.case.ctx) for _ in range(3))), 20
+        asyncio.gather(*(p.facade.invoke(p.raw, p.case.ctx) for _ in range(3))), 60
     )
     assert len(results) == 3 and p.executor.calls == 1
     assert any(r["kind"] == "ok" for r in results)

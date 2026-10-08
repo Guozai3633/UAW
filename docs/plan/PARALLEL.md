@@ -9,7 +9,7 @@ v0.9 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量841项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量1077项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
 - **MS-I2f2已验证，MS-C4/MS-T2c/MS-R2c组件已接受。** A接通登记命令Reader，提供缓存可选组装并统一content回执引用。B/C/D已同步ms-i2f2；下一包MS-C5/MS-T2d/MS-R2d按完整能力发布，固定准备版本ms-i2g-start，A并行处理接口与接线。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 

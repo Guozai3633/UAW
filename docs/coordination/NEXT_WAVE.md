@@ -1,6 +1,6 @@
 # 下一轮可直接转发：MS-I2h
 
-日期2026-10-08。B/MS-C5、C/MS-T2d、D/MS-R2d三个最终组件已接受；A在B最终合入后2条实际组装复验通过。新包共同固定开发基线 **ms-i2h-start**（实际SHA见[DISPATCH](DISPATCH.md)；git rev-parse标签核对）。完整MS-I2g/1077节点回归由A继续，新包可以同时开发。旧任务下移为历史记录，不再重做。
+日期2026-10-08。B/MS-C5、C/MS-T2d、D/MS-R2d三个最终组件已接受；A在B最终合入后2条实际组装复验通过。新包共同固定开发基线 **ms-i2h-start**（实际SHA见[DISPATCH](DISPATCH.md)；git rev-parse标签核对）。完整MS-I2g/1077节点随后已由A通过；验收标签ms-i2g另发，worker仍用ms-i2h-start。旧任务下移为历史记录，不再重做。
 
 [完整输入输出/策略/四里程碑/目录](requests/A/MS-I2h-parallel-packages.md)。以下分别转发给B、C、D；A没有发送其他聊天消息或替worker同步。
 
@@ -36,7 +36,7 @@ RegisteredRuleProvider(inputs,*,assessor=None)保留旧构造；assessor只做�
 
 ## A同时推进
 
-A继续MS-I2g完整回归和发布验收结果，随后进入MS-I2h根实例/有限步单Agent循环；阶段接口到达即接线，worker自己实跑模块SQL。开发基线发布不是整个P1或真实LLM/IPC/exec已通过。
+A已完成MS-I2g/1077节点全量，下一步MS-I2h根实例/有限步单Agent循环；阶段接口到达即接线，worker自己实跑模块SQL。开发基线发布不是整个P1或真实LLM/IPC/exec已通过。
 
 ---
 
