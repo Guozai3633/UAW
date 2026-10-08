@@ -168,3 +168,86 @@ git diff --check
 - 真实签字adapter需要current目录适配器及受保护CredentialStore组装；临时SQLite不是部署选择，Memory与fixture不能注册成真实用户能力。A接async authority不能阻塞async SQL或用缓存当当前授权。
 - A审阅并合入本包，再在集成SHA做组合/整链验收；D只提交自有文件，不处理公共冲突或自行进入后续包。下一包工作区干净后按A发布基线同步，不重写本包历史。
 - 回退由A移除新公共接线并保持flags禁用，再revert `2049c3d`；凭据/外部效果另由owner撤销，Git回退不能代替。
+
+
+# Session D：MS-R2b 交接（2026-10-08，追加保留历史）
+
+状态：异步协议消费组件与必要验证完成，待A审阅合入。完整MS-R2继续等待；未挂载生产authority/映射/可信IPC，不开放实际执行。
+
+## 真实位置与同步
+
+- worktree `E:/UAW/.worktrees/runner`；分支 `dev/runner`。开工工作区干净，原HEAD `45e0f56cd15ff6fe13434cb6290267e422714bea`。
+- 已执行 `git fetch origin --tags`、`git merge --ff-only ms-i2c`；快进成功，核对HEAD与 `ms-i2c^{commit}` 均为 `1411f6aa477b0d000bee871c0f324fbfd67b4ff5`。无reset/旧历史重写。
+- 已读DISPATCH、Session D、新 `requests/A/MS-I2c-ports.md`，仅消费发布基线；不读取其他worker未交接源码，不写其他session/统一派发表，不创建session。
+- 本worktree独立 `.cache/uv` 下 `uv sync --frozen --extra agent-engine --link-mode copy` 成功（91 packages检查），锁未修改；Python3.14.6，沿用cryptography50.0.2和独立.venv，没有复制私有配置/.data/凭据或使用A缓存。
+- schema0.1 SHA256 `b5d7cdf9df23002e6e3d3965741cbcd82b7efa34ff438b09b236e3b0b886d583`；shared ports SHA256 `cce4db2349b92a6a2fca815917725cb7bb51fcb5ab9db86c2f456d3df2b679cd`；uv.lock SHA256 `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`。最终canonical/package schema一致且公共摘要未漂移。
+
+## 实现提交与文件
+
+- 实际实现/测试/提案提交：`5b9724730eb1d19a244a43305d364c7318f4b5eb` / `dev/runner`，父基线为上述ms-i2c。此handoff随后单独提交，避免自引用SHA。
+- 允许范围内的改动：
+  - `src/uaw/workspace/contracts.py`：严格RunnerAuthoritySnapshot wrapper，现有权威schema，15字段全部必填。
+  - `src/uaw/workspace/ports.py`：独立可信设备/通道归属port与带锁内guard的admission仓储port。
+  - `src/uaw/workspace/repository.py`：MemoryAdmissionRepository新增guarded CAS，旧reserve兼容。
+  - `apps/local_runner/uaw_runner/protocol.py`：可选异步依赖/可信clock，新增admit_async，旧同步admit/dispatch/回执兼容。
+  - `apps/local_runner/uaw_runner/async_admission.py`：公开async authority消费、完整声明比较、关键检查后再查询、时钟/取消与off-loop本机复核。
+  - `apps/local_runner/uaw_runner/admissions.py`：显式临时SQLite持久admission去重/CAS/取消tombstone。
+  - `tests/unit/runner/test_async_admission.py`：70项新增异步组件用例，全部使用真实Ed25519/临时key目录，authority/mapping明示组件来源。
+  - `docs/coordination/requests/D/R2b-001-async-wiring.md`；本handoff追加。
+- 无公共schema/ports/依赖锁/生成物/数据库迁移/flags/模型/原文/提示词/组装根/API修改。没有安装系统环境、启动服务或读写真实用户项目，无远端推送。
+
+## 公开组件接口与实际边界
+
+- `RunnerAuthoritySnapshot(ContractModel)`消费公共严格JSON schema：context、device_id、root_handle、workspace_ref、binding_revision、fencing_token、lease_expires_at、request_ref、request_parameters、policy_ref、required_scope_capability、allowed_actions、feature_enabled、connected、cancelled全部必填，严格类型/Ref/期限/RunnerParameters分支，extra/null/defaultgrant不接受。
+- `RunnerProtocol(..., async_authority=None, principal_mapping=None, clock=None).admit_async(data, *, authenticated_principal:Principal)->Admission`；clock默认UTC实际时间，仅组装根可注入。缺async authority/mapping/signature/guardedCAS明确不可用，不回退同步authority。
+- 认证Principal来自可信通道adapter，不能从command构造。`RunnerPrincipalMappingPort.owner(*,authenticated_principal,device_id)->Principal`必须真实查设备/用户/认证session关系，缺登记不可用；user必须实际拥有设备，runner关系由可信adapter验证，admin/service不默认取得项目读权。D没有生产关系reader，只检查内部port结果与声明。
+- 调用共享 `AsyncRunnerAuthorityPort.current(command.wire(), *, authenticated_principal)`，与独立owner比较；返回wrapper严格验证。全部context字段与本次command精确匹配，包括principal/session、scope、operation/attempt/trace、deadline、Run/agent/node、原model/budget/policy引用。request/parameters/policy/fence与签字声明比较；workspace固定版本/scope能力/current actions/flags/connection/cancel核对，root/revision通过当前本机绑定。
+- 流程：owner→current1→真实签名/key/root外部检查→owner2→current2→整个snapshot精确比较→线程再次查当前签名key/root并检查时钟→锁内期限/取消guard→admission CAS→await返回后clock检查。每次await后重取clock；重放也重新查询，未缓存许可。
+- key/path/SQLite等同步阻塞操作通过 `asyncio.to_thread` 移出事件循环；没有asyncio.run桥接。CancelledError直接传播，取消Event阻止尚未写入的CAS；不把协作取消变成普通成功/失败包。
+- 旧 `admit(data,now)` 行为保留；同步入口仍是原组件边界。现有SignaturePort继续真实Ed25519，pairing/RootSelection流程未重新解释。本轮没有dispatch_async/executor、文件读取或网络入口。
+
+## 持久所有者、CAS、幂等与竞态
+
+- PersistentAdmissions只是显式临时开发SQLite记录，不决定D01、不冒充控制面持久DTO/正式SQL。键 `(principal_id,device_id,command_id)`，字段attempt_id/fingerprint/state/revision；没有private/path/rawcode。
+- fingerprint沿用原规则，含真实参数、原context模型/预算/政策/scope及fence/root/revision；逻辑重复返回原attempt/state，改参数同ID冲突。原admitted记录cancel(expected_revision)后保留tombstone，重启/重放不恢复；Run仍拥有真正取消/租约/任务状态。
+- `reserve_checked(...,check)`在仓储锁/SQLite事务取得后执行clock/cancel guard，重放同样检查。SQLite插入后再guard，异常回滚。锁等待期间过期不会用await前的旧期限准入。
+- 如果CAS已真实提交、协程返回前才发生期限/取消变化，保留原记录并返回失败/取消；不能说记录没发生，更不能把它当执行/签字成功receipt。
+- 两次权威查询、本机复核、本地CAS不是跨域原子授权。最终snapshot之后权限/映射/flag/key/root仍可能变化，执行前必须A的租约/fence/动作消费与当前撤销协调；admission不能缓存作执行许可。本包不声明消除文件TOCTOU、跨服务竞态或OS隔离。
+
+## 三组可执行对接示例
+
+```powershell
+.venv/Scripts/python.exe -m pytest tests/unit/runner/test_async_admission.py -q -k real_signed_async_admission
+.venv/Scripts/python.exe -m pytest tests/unit/runner/test_async_admission.py -q -k "wrong_authenticated_channel or missing_async_dependencies or changes_during_await"
+.venv/Scripts/python.exe -m pytest tests/unit/runner/test_async_admission.py -q -k persistent_concurrent_restart
+```
+
+- 成功：真实control Ed25519命令＋明示组件登记关系/authority＋临时read根→Admission(admitted)，没有文件IO或执行。
+- 拒绝：错通道session/user、scope/上下文/model/version变化、flag/取消/lease/fence失效拒绝；缺生产authority/映射或未接可信通道不挂载产品入口。
+- 重复/冲突：16并发相同cmd得到同一持久record；重新打开仓储后仍原attempt；取消tombstone保留；已签新参数复用原cmd冲突。不是第二次dispatch。
+
+## 实际验证和回执
+
+环境：本worktree独立.venv / Python3.14.6，全部临时根、key目录和SQLite在 `tests/.artifacts/D/MS-R2b/`。未运行共享数据库、OS密钥库或真实IPC/用户配对/LLM/项目任务。
+
+```powershell
+.venv/Scripts/python.exe -m ruff check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m ruff format --check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m mypy src/uaw/workspace apps/local_runner/uaw_runner --cache-dir .cache/mypy
+.venv/Scripts/python.exe -m pytest tests/unit/runner tests/integration/runner tests/unit/shared/test_contracts.py tests/unit/test_runner_signatures.py --basetemp tests/.artifacts/D/MS-R2b/tmp-final -q --junitxml tests/.artifacts/D/MS-R2b/junit.xml
+git diff --check
+```
+
+- 最终：**172 passed，0 failed/error/skip，无warning**；Ruff/format/mypy/diff-check均exit0，20文件格式检查、11源码Mypy。新增70项异步用例与旧同步/真实签字/跨进程ticket消费/本机路径/公共契约必要回归。
+- 实际新验证：公开DTO15字段缺失及严格bool/null/time/extra、完整context声明、独立user/runner通道/关系、异步各阶段到点、第二份authority变化/key/root撤销、真实签字篡改、当前取消、等待authority/阻塞local check/排队CAS的协作取消、事件循环仍能响应、真实SQLite锁竞争clock复核、16并发及重启/冲突/取消重放、CAS后过期记录如实保留。
+- 原始忽略回执：`tests/.artifacts/D/MS-R2b/{checks.json,ruff.log,format.log,mypy.log,pytest.log,junit.xml,diff-check.log}`，含命令/退出码、基线、环境、公共hash。验证后代码不再改动；提交只记录已验证代码和文档。
+- ComponentAuthority/ComponentMapping是明确组件记录来源，忽略传入命令重建自己的fixture记录，**不是生产SQL/权限/IPC服务**；全部异步命令真实Ed25519。既有MS-R2a NativeFixture/CredentialFixture仍是替身，不冒充真实用户确认或OS保护后端实连。
+- 初版格式检查提示已修复；当前无未通过组件检查。
+
+## 未满足项、A接线与范围终止
+
+- [D-R2b-001](../requests/D/R2b-001-async-wiring.md)列出了真实认证通道、当前设备/用户映射、生产AsyncRunnerAuthorityPort、current key/root、guarded持久admission和执行前跨域协调。A处理共享导出/组装/API/迁移/目录ACL，发布版本后D才消费；不假定这些reader已经实现。
+- 没有可信生产IPC/关系/authority就不可用，不挂网络入口，不从command的principal或公钥自证；不使用缓存authority或asyncio.run桥接。真实SQL控制面/OS凭据库/配对/租约与执行协调尚未实连或验收。
+- 不发布pairing V2，不改变或重解释内部Ticket.document的签字profile为公开协议；旧pair.complete仍不具挑战证明。D01/D03/D06不决定，flags保持关闭，不安装/写文件/exec，不标P1-04 accepted，**完整MS-R2继续等待**。
+- A审阅合入并在实际集成SHA执行组合/整链回归；本包只交自有提交。下一包按A新固定基线在干净目录同步，不重写交接提交。
+- 回退由A保持flags关闭、移除接线并revert实现提交 `5b97247`；凭据/已发生外部效果由owner处理，Git回退不能代替撤销。

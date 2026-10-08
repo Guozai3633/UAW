@@ -2,14 +2,22 @@
 
 import hashlib
 import json
-from datetime import datetime
+from collections.abc import Callable
+from datetime import UTC, datetime
 
-from uaw.shared.contracts import TrustedExecutionContext
+from uaw.shared.contracts import Principal, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.ports import AsyncRunnerAuthorityPort
 from uaw.shared.schema import parse_json
 from uaw.workspace.binding import RootBindings, aware
 from uaw.workspace.contracts import RunnerCommand, RunnerReceipt
-from uaw.workspace.ports import Admission, AdmissionRepository, AuthorityPort, SignaturePort
+from uaw.workspace.ports import (
+    Admission,
+    AdmissionRepository,
+    AuthorityPort,
+    RunnerPrincipalMappingPort,
+    SignaturePort,
+)
 
 
 def timestamp(value: str) -> datetime:
@@ -43,12 +51,18 @@ class RunnerProtocol:
         admissions: AdmissionRepository,
         signatures: SignaturePort | None = None,
         authority: AuthorityPort | None = None,
+        async_authority: AsyncRunnerAuthorityPort | None = None,
+        principal_mapping: RunnerPrincipalMappingPort | None = None,
+        clock: Callable[[], datetime] | None = None,
     ) -> None:
         self.device_id = device_id
         self.bindings = bindings
         self.admissions = admissions
         self.signatures = signatures
         self.authority = authority
+        self.async_authority = async_authority
+        self.principal_mapping = principal_mapping
+        self.clock = clock or (lambda: datetime.now(UTC))
 
     def admit(self, data: str | bytes, *, now: datetime) -> Admission:
         parse_json(data)  # Reject duplicate keys/non-finite values before Pydantic JSON parsing.
@@ -129,6 +143,24 @@ class RunnerProtocol:
                 ),
             ),
         )
+
+    async def admit_async(
+        self,
+        data: str | bytes,
+        *,
+        authenticated_principal: Principal,
+    ) -> Admission:
+        from uaw_runner.async_admission import AsyncAdmission
+
+        return await AsyncAdmission(
+            device_id=self.device_id,
+            bindings=self.bindings,
+            admissions=self.admissions,
+            signatures=self.signatures,
+            authority=self.async_authority,
+            mapping=self.principal_mapping,
+            clock=self.clock,
+        ).admit(data, authenticated_principal=authenticated_principal)
 
     def verify_receipt(self, data: str | bytes, *, command: RunnerCommand) -> RunnerReceipt:
         command = RunnerCommand.model_validate_json(json.dumps(command.wire()))

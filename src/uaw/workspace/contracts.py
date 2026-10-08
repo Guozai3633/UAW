@@ -43,3 +43,23 @@ class RootSelection(ContractModel):
     display_name: str = Field(min_length=1)
     expires_at: Timestamp
     root_handle: ID
+
+
+class RunnerAuthoritySnapshot(ContractModel):
+    """Typed consumer of A's published complete schema; no default authority fields."""
+
+    context: TrustedExecutionContext
+    device_id: ID
+    root_handle: ID
+    workspace_ref: Ref
+    binding_revision: Revision
+    fencing_token: Revision
+    lease_expires_at: Timestamp
+    request_ref: Ref
+    request_parameters: JsonObject
+    policy_ref: Ref
+    required_scope_capability: str = Field(min_length=1)
+    allowed_actions: tuple[ID, ...]
+    feature_enabled: bool
+    connected: bool
+    cancelled: bool
