@@ -6,6 +6,7 @@ trusted IPC is claimed. The exact bounded text spec exercises resource authority
 
 import asyncio
 from contextlib import contextmanager
+from pathlib import Path
 
 import pytest
 
@@ -34,6 +35,8 @@ from uaw.tool.authority import ToolApprovalAuthority
 from uaw.tool.discovery import require_entry
 from uaw.tool.invocation.schema import normalize
 from uaw.tool.registry import AdapterBinding
+
+RUNNER_SOURCE = Path(__file__).resolve().parents[2] / "apps/local_runner"
 
 
 @contextmanager
@@ -492,3 +495,62 @@ async def test_runner_assembly_supplies_actual_mapping_to_root_factory(case):
         await assembly.principals.owner(
             authenticated_principal=runner_case.actor, device_id=runner_case.device["device_id"]
         )
+
+
+async def test_sql_registered_commands_consume_d_control_signer_and_live_key(
+    case, tmp_path, monkeypatch
+):
+    # Source-package loading, matching the existing runner fixture. Memory vault
+    # is explicitly controlled; D's separate receipt proves the real OS backend.
+    monkeypatch.syspath_prepend(str(RUNNER_SOURCE))
+    from uaw_runner.control_signing import ControlCommandSigner, ControlKeyBinding
+    from uaw_runner.keys import ProtectedSigner
+    from uaw_runner.state import LocalState
+
+    from tests.unit.runner.test_real_keys import CredentialFixture
+    from uaw.run.runner_commands import pin
+    from uaw.shared.runner_signatures import VerificationKey
+
+    config, run, _ = case.domain
+    directory = LocalState(tmp_path / "control-keys.sqlite")
+    protected = ProtectedSigner(directory, CredentialFixture())
+    public = await protected.provision_private(credential_handle="cross-module-control")
+    directory.register_key(
+        VerificationKey("actual-control", case.device["device_id"], public, "control")
+    )
+    signing = ControlCommandSigner(
+        (ControlKeyBinding(case.device["device_id"], "actual-control", "cross-module-control"),),
+        directory=directory,
+        signer=protected,
+    )
+    control = Container(
+        settings=Settings(profile="development", development_principal_id="assembly-user"),
+        bindings=RuntimeBindings(),
+        records=run.store,
+        configuration=config,
+        execution_permissions=ExecutionPolicyResolver(run.store),
+        budgets=case.budgets,
+        execution_leases=case.leases,
+    )
+    assembly = assemble_runner_control(
+        control,
+        channels=case.channel,
+        root_factory=lambda _: case.root,
+        gate=case.gate,
+        signer=signing,
+    )
+    await case.dispatch()
+    record = await assembly.commands.register(
+        {**case.registered, "command_id": "actual-control-command"},
+        meta("actual-control-register"),
+        authenticated_service=config.platform,
+    )
+    command_ref = Ref.model_validate(pin("content", "actual-control-command", record["command"]))
+    registered = await assembly.receipt_commands.resolve(
+        command_ref, authenticated_principal=case.actor
+    )
+    assert registered.owner == case.ctx.principal
+    assert registered.command.trusted_context.model_policy_ref == case.ctx.model_policy_ref
+    directory.revoke_key("actual-control", expected_revision=0)
+    with pytest.raises(DomainError):
+        await assembly.receipt_commands.resolve(command_ref, authenticated_principal=case.actor)

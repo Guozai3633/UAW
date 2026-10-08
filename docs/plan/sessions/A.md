@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2g准备已验证，独立数据库脚本已发布；并行处理阶段版接口、当前来源和跨模块接线。以DISPATCH的固定版本与派发为准。
+状态：MS-I2g已实现实际Run/固定模型/Tool角色与恢复数据来源；B/C/D阶段版逐包合入，跨模块装配验证中。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
@@ -47,6 +47,8 @@
 - `tests/integration/test_runner_receipt_wiring.py`
 - `tests/integration/test_context_wiring.py`
 - `tests/unit/model/`
+- `tests/integration/test_runtime_sources.py`
+- `tests/integration/test_stage_wiring.py`
 - `tests/integration/test_approvals.py`
 - `tests/unit/test_runner_signatures.py`
 - `tests/integration/test_execution_permissions.py`

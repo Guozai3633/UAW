@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：用户已报告同步ms-i2f2；新包MS-R2d已发布待转发，完成OS控制签名/授权根来源及装配。以DISPATCH的固定版本与派发为准。
+状态：MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
@@ -146,7 +146,7 @@
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前执行MS-R2d。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2g-start同步本工作分支；失败先报告，不reset，保留已有历史。
+当前状态：MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。只整理现有交接与依赖提案，不自动开始下一包。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

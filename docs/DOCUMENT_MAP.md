@@ -4,6 +4,8 @@
 
 ## 1. 权威与阅读顺序
 
+当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。C/D按组件接受，B完整包和集成里程碑仍待完成。
+
 | 层级/位置 | 作用 | 谁维护、怎样更新 |
 | --- | --- | --- |
 | [ARCHITECTURE.md](../ARCHITECTURE.md) | 当前产品决策、Runtime边界与版本变更 | 人工审阅；用户纠正优先，不由生成器改产品方向 |

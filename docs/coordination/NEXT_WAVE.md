@@ -1,5 +1,9 @@
 # 下一轮可直接转发：完整能力包
 
+**2026-10-08 当前更新：下方MS-C5/MS-T2d/MS-R2d为已经执行的本轮派发原文。B继续MS-C5后半段；C/D最终组件已接受，不再转发原任务让其重做。A已逐包合入并完成实际来源/装配验证，详见[MS-I2g-A1](../implementation/MS-I2g-A1.md)和[DISPATCH](DISPATCH.md)。开发中的B保持ms-i2g-start，下一包另列清楚依赖和目录后再开工。**
+
+## 历史开工消息（保留）
+
 日期：2026-10-08。B/C/D已向用户报告同步ms-i2f2且工作区干净。新包已准备，共同标签 **ms-i2g-start**；SHA见[DISPATCH](DISPATCH.md)。详细接口/目录/里程碑见[MS-I2g范围](requests/A/MS-I2g-parallel-packages.md)，实际产品进度见[进度说明](../implementation/PROGRESS-2026-10-08.md)。
 
 ## 发给B：MS-C5

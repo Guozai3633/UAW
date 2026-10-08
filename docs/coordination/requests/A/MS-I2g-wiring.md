@@ -70,4 +70,21 @@ Container 默认提供内部 run_sources/tool_access/runner_principals；没有�
 
 A 当前来源的27项用例实际通过，包含真实 SQL：角色登记与重建、审批 authority 消费、kind/session隔离、固定政策/模型/范围、修改失效、撤销后丢失响应重试、并发CAS、取消后结果数据读取、provider撤销、实际设备mapping及装配。实际回执 `docs/implementation/evidence/ms-i2g-sources-tests.xml`。该回执不替代 worker 模块 SQL 或集成里程碑全量。
 
-阶段版分别审阅 C 的 C-005、D 的 R2d-001、B 的 MS-C5-stage-interface；最终组件接受须各自后半包完整回执。A 的边界改动与 worker 的领域实现分别保留提交，公共接线由 A 维护。
+阶段版分别审阅 C 的 C-005、D 的 R2d-001、B 的 MS-C5-stage-interface；C-006及D最终交接随后已分别接受，B最终包仍待回执。A 的边界改动与 worker 的领域实现分别保留提交，公共接线由 A 维护。
+
+## 6. 阶段最终装配入口
+
+```python
+assemble_registered_context(container, *, registry=None, cache=None)
+    -> RegisteredContextBindings(inputs, components, model_inputs)
+assemble_text_tool(container, *, registry, tool_ref, provider, currency="USD")
+    -> TextToolBindings(facade, invocation, ledger, approvals, responses, executor, results)
+assemble_runner_control(container, *, channels, root_factory, gate, signer)
+    -> RunnerControlBindings(devices, principals, commands, authority, receipt_commands)
+```
+
+均为内部可信构造入口，缺当前records/config/blobs/policy等必要来源抛ConfigurationError；没有HTTP/模型注册入口。Text装配使用C最终ToolReceiptStore、独立TextInspectVerifier、ToolReconciler和ToolResults，source同时接Lookup/ReceiptReader/evidence，不再停留在raw响应阶段。currency由实际预算配置提供，预算服务仍拒绝不一致。
+
+RegisteredRunContextSources额外核对实际用户选择来源；RegisteredToolSetValidator严格匹配每个真实注册ToolSpec及版本/hash，检查当前角色/权限/flags/provider并在await后复查。不接registry时只能明确空工具集，不能默默删掉原本非空的tools。
+
+实际Context.build的fixed Ref可作为GenericModelInputs或ContextModelInputs.generic消费者输入；Model Runtime现有理解输入走legacy路径。装配返回对象，由正式可信启动入口决定何时挂载；角色登记与用户审批由各自入口完成，构造过程不自产批准或任务完成记录。真实组合测试与当前验证范围见MS-I2g-A1。

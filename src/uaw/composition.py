@@ -3,15 +3,20 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from uaw.context.authority import RegisteredCompositionAuthority
 from uaw.context.cache import PureComputationCache
 from uaw.context.facade import ContextComponents
 from uaw.context.intent import IntentContexts, UnderstandingRules
 from uaw.context.model_input import GenericModelInputs
+from uaw.context.readers import RegisteredContextReader, RegisteredRuleProvider
+from uaw.context.registered import RegisteredContextInputs
+from uaw.context.repository import ContextRepository
 from uaw.context.seed import StoredModelInputs
 from uaw.infrastructure.blob.filesystem import FSBlobStore
 from uaw.infrastructure.credentials import WindowsCredentialStore
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.session import Database
+from uaw.infrastructure.db.transactions import TransactionalStore
 from uaw.intent.facade import IntentFacade
 from uaw.intent.frame import FrameRepository
 from uaw.intent.original import OriginalReader
@@ -24,6 +29,7 @@ from uaw.model.policy import PolicyResolver
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
 from uaw.run.context import RunContextSources
+from uaw.run.context_sources import RegisteredRunContextSources, RegisteredToolSetValidator
 from uaw.run.events import EventReader
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
@@ -35,9 +41,9 @@ from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
 from uaw.run.runner_mapping import RegisteredRunnerPrincipalMapping
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
-from uaw.run.tool_sources import RunToolAccessSources
+from uaw.run.tool_sources import PureTextResourceReader, RunToolAccessSources, RunToolRecoveryAccess
 from uaw.shared.configuration import ConfigurationService
-from uaw.shared.contracts import Principal
+from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable
 from uaw.shared.ports import (
     AgentPort,
@@ -53,6 +59,17 @@ from uaw.shared.ports import (
     WorkspacePort,
 )
 from uaw.shared.settings import ConfigurationError, Settings
+from uaw.tool.approval import ToolApprovalAdapter
+from uaw.tool.authority import ToolApprovalAuthority
+from uaw.tool.budget import ToolBudgetAdapter
+from uaw.tool.facade import ToolFacade
+from uaw.tool.invocation.dispatch import ToolInvocation
+from uaw.tool.ledger import ToolLedger
+from uaw.tool.providers.text import TextInspectExecutor, TextInspectVerifier, text_estimates
+from uaw.tool.receipt_store import ToolReceiptStore
+from uaw.tool.reconciliation import ToolReconciler
+from uaw.tool.registry import ToolRegistry
+from uaw.tool.results import ToolResults
 
 
 @dataclass(frozen=True)
@@ -250,6 +267,131 @@ class RunnerControlBindings:
     commands: RunnerCommands
     authority: RegisteredRunnerAuthority
     receipt_commands: RegisteredReceiptCommandReader
+
+
+@dataclass(frozen=True)
+class RegisteredContextBindings:
+    inputs: RegisteredContextInputs
+    components: ContextComponents
+    model_inputs: GenericModelInputs
+
+
+def assemble_registered_context(
+    container: Container,
+    *,
+    registry: ToolRegistry | None = None,
+    cache: PureComputationCache | None = None,
+) -> RegisteredContextBindings:
+    records, config, blobs, sources = (
+        container.records,
+        container.configuration,
+        container.blobs,
+        container.run_sources,
+    )
+    if not records or not config or not blobs or not sources:
+        raise ConfigurationError("Registered Context requires the configured control-plane sources")
+    runs = RegisteredRunContextSources(sources)
+    transactions = TransactionalStore(records.database)
+    inputs = RegisteredContextInputs(
+        controller=config.platform,
+        records=records,
+        blobs=blobs,
+        transactions=transactions,
+        runs=runs,
+        tool_validator=RegisteredToolSetValidator(registry, container.tool_access),
+    )
+    reader = RegisteredContextReader(inputs)
+    components = ContextComponents(
+        readers={"input": reader, "content": reader, "rule": reader, "configuration": reader},
+        cancellation=runs,
+        rules=RegisteredRuleProvider(inputs),
+        models=FixedModelWindow(PolicyResolver(records, config, sources.permissions)),
+        repository=ContextRepository(records, transactions),
+        authority=RegisteredCompositionAuthority(inputs),
+        cache=cache,
+    )
+    return RegisteredContextBindings(
+        inputs, components, GenericModelInputs(components.composer, cache=cache)
+    )
+
+
+@dataclass(frozen=True)
+class TextToolBindings:
+    facade: ToolFacade
+    invocation: ToolInvocation
+    ledger: ToolLedger
+    approvals: ApprovalService
+    responses: ToolReceiptStore
+    executor: TextInspectExecutor
+    results: ToolResults
+
+
+def assemble_text_tool(
+    container: Container,
+    *,
+    registry: ToolRegistry,
+    tool_ref: Ref,
+    provider: Principal,
+    currency: str = "USD",
+) -> TextToolBindings:
+    """Consume C's actual verifier, receipt source and original-attempt recovery.
+
+    The caller registers the exact implemented adapter and role through trusted
+    services. This assembly does not install a product catalogue or activate API.
+    """
+    records, config, blobs, access, budgets, policies = (
+        container.records,
+        container.configuration,
+        container.blobs,
+        container.tool_access,
+        container.budgets,
+        container.execution_permissions,
+    )
+    if not records or not config or not blobs or not access or not budgets or not policies:
+        raise ConfigurationError("Text Tool requires the configured control-plane sources")
+    spec = registry.get(tool_ref.wire()).spec()
+    provider_ref = Ref.model_validate(spec["provider_ref"])
+    ledger = ToolLedger(records)
+    resources = PureTextResourceReader(registry, access, tool_ref)
+    authority = ToolApprovalAuthority(
+        ledger, registry, config, access, resources, policies=policies
+    )
+    service = ApprovalService(records, config, authority, permissions=policies)
+    gates = ToolApprovalAdapter(ledger, authority, service)
+    budget = ToolBudgetAdapter(ledger, budgets, gates, state=budgets)
+    source = ToolReceiptStore(
+        ledger,
+        blobs,
+        provider_ref=provider_ref,
+        provider=provider,
+        access=RunToolRecoveryAccess(
+            resources, ledger, provider_ref=provider_ref, provider=provider
+        ),
+        verifier=TextInspectVerifier(provider_ref),
+    )
+    executor = TextInspectExecutor(source, provider=provider, currency=currency)
+    reconciler = ToolReconciler(ledger, budget, receipts=source, evidence=source)
+    results = ToolResults(source, reconciler)
+    invocation = ToolInvocation(
+        registry,
+        ledger,
+        budget,
+        gates,
+        access=access,
+        executor=executor,
+        estimates=text_estimates(currency),
+        prepare=executor.check,
+        results=results,
+    )
+    return TextToolBindings(
+        ToolFacade(registry, access, invocation=invocation, lookup=source, reconciler=reconciler),
+        invocation,
+        ledger,
+        service,
+        source,
+        executor,
+        results,
+    )
 
 
 def assemble_runner_control(

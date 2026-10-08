@@ -1,5 +1,15 @@
 # MS-I2e 接受追加 · 2026-10-08
 
+## MS-I2g-A1 当前接线阶段（2026-10-08）
+
+- A当前Run/固定模型、可信角色登记与当前ToolAccess、结果恢复数据权限、Context工具集验证和Runner完整owner适配已实现；内部Context/Text/Runner显式装配入口完成。固定版本/SHA见DISPATCH。
+- B/C/D阶段版逐包合入，无合并冲突；C最终859f5d0/db09a69和D最终7d946de/366c916按组件接受。C162单元＋100不同当前SQL覆盖，D326实际检查含Windows凭据passed/cleaned；未重复将所有模块SQL集中到A。
+- A234/41/27三个实际批次去重268个通过节点；Ruff/186文件格式/Mypy117源码通过，1282 schema/272接口/304反例及计划检查通过。历史841全量仍对应ms-i2f2，当前阶段未宣称新全量。
+- B/MS-C5保持本包固定基线继续后半段；整体MS-I2g里程碑待B完整交接后全量。Context整链SQL重复较多已给独立反馈，A去除自身重复权限调用，保留实际当前检查；不宣称性能已达产品要求。
+- 完整Agent/页面、真实LLM/可信IPC/实际本机确认与文件进程执行仍待门槛；没有开放flags。详细[范围与证据](../../implementation/MS-I2g-A1.md)、[接口/目录/策略](../requests/A/MS-I2g-wiring.md)、[Context读取反馈](../requests/A/MS-C5-read-amplification.md)。
+
+## 以下历史记录保留
+
 - MS-T2b源码c78d371、handoff3c76bb2已合入daaae658，无合并冲突；97单元＋43实际SQL通过，140项167.62s。
 - 首次跨目录收集发现两个test_reconciliation.py冲突，A仅将SQL文件改名test_tool_reconciliation_postgres.py；原worker记录与worktree保留。
 - 全量563通过，0failure/error/skip；Ruff/138文件格式与Mypy95源码通过。实际代码/证据提交8278a5aa7b47df0b35765cfce4d2b4eb43db0c97，标签ms-i2e含随后派发状态。

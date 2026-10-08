@@ -1,5 +1,7 @@
 # 当前实现与开发启动
 
+2026-10-08 MS-I2g-A1：当前Run/固定模型、真实登记角色及结果数据权限和跨模块装配已实现；B/C/D阶段版逐包合入，C/D最终组件接受，B完整包仍开发中。A受影响检查268个不同节点通过；历史841项仍为ms-i2f2完整回执，新里程碑全量待B最终交付。详细范围/回执/性能缺口见[MS-I2g-A1](MS-I2g-A1.md)，逐方法策略见[接线文档](../coordination/requests/A/MS-I2g-wiring.md)。
+
 2026-10-08：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
 
 当前全量 **841 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/C/D 的 MS-C3/MS-T2b/MS-R2b 已接受；MS-I2d 的根执行租约和输入路由、MS-I2e 的 Tool 核对集成已验证。MS-I2f1 设备/原请求/签字命令登记和当前权威组件已接受，MS-C4/MS-T2c/MS-R2c组件及MS-I2f2集成范围已接受，含真实SQL恢复Reader与缓存可选组装；生产来源仍缺，B/C/D保留交付边界，A继续完整 MS-I2f 产品来源接线。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[MS-I2d](MS-I2d.md)、[MS-I2e](MS-I2e.md)、[MS-I2f1](MS-I2f1.md)、[MS-I2f2](MS-I2f2.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。

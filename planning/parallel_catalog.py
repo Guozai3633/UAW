@@ -35,6 +35,7 @@ RESERVED = [
     "tests/integration/test_bootstrap.py", "tests/integration/model/",
     "tests/integration/intent/", "README.md", "DEVELOPMENT_PLAN.md", ".gitignore", ".gitattributes",
     "tests/integration/test_runner_control.py", "tests/integration/test_runner_receipt_wiring.py", "tests/integration/test_context_wiring.py", "tests/unit/model/",
+    "tests/integration/test_runtime_sources.py", "tests/integration/test_stage_wiring.py",
     "tests/integration/test_approvals.py", "tests/unit/test_runner_signatures.py",
     "tests/integration/test_execution_permissions.py", "tests/integration/test_execution_leases.py", "tests/integration/test_model_input_routing.py", "tests/unit/shared/",
     "docs/plan/", "docs/api/", "docs/design/", "docs/technology/",
@@ -90,10 +91,10 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2g准备已验证，独立数据库脚本已发布；并行处理阶段版接口、当前来源和跨模块接线。", package="MS-I2g", ready=True, base_ref="ms-i2g-start"),
-    "B": dict(state="用户已报告同步ms-i2f2；新包MS-C5已发布待转发，完成通用登记/当前权威/读取到模型输入。", package="MS-C5", ready=True, base_ref="ms-i2g-start"),
-    "C": dict(state="用户已报告同步ms-i2f2；新包MS-T2d已发布待转发，完成只读调用编排/实际adapter/持久结果。", package="MS-T2d", ready=True, base_ref="ms-i2g-start"),
-    "D": dict(state="用户已报告同步ms-i2f2；新包MS-R2d已发布待转发，完成OS控制签名/授权根来源及装配。", package="MS-R2d", ready=True, base_ref="ms-i2g-start"),
+    "A": dict(state="MS-I2g已实现实际Run/固定模型/Tool角色与恢复数据来源；B/C/D阶段版逐包合入，跨模块装配验证中。", package="MS-I2g", ready=True, base_ref="ms-i2g-start"),
+    "B": dict(state="MS-C5阶段源码d0ad58f已合入；继续同包快照/引用/模型输入和最终SQL回执，尚未完整接受。", package="MS-C5", ready=True, base_ref="ms-i2g-start"),
+    "C": dict(state="MS-T2d最终859f5d0/db09a69已合入并按组件范围接受；162单元、100个不同SQL通过，当前A实际权限接线验证。", package="MS-T2d", ready=False, base_ref="ms-i2g-start"),
+    "D": dict(state="MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。", package="MS-R2d", ready=False, base_ref="ms-i2g-start"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
 }
 
@@ -106,7 +107,7 @@ PACKAGE_PROGRESS = {
     "MS-C3": "accepted_component", "MS-T2b": "accepted_component", "MS-R2b": "accepted_component",
     "MS-I2d": "accepted_development", "MS-I2e": "accepted_development",
     "MS-I2f1": "accepted_development", "MS-I2f2": "accepted_development", "MS-I2f": "in_progress", "MS-C4": "accepted_component", "MS-T2c": "accepted_component", "MS-R2c": "accepted_component",
-    "MS-C5": "ready_to_start", "MS-T2d": "ready_to_start", "MS-R2d": "ready_to_start", "MS-I2g": "in_progress",
+    "MS-C5": "in_progress", "MS-T2d": "accepted_component", "MS-R2d": "accepted_component", "MS-I2g": "in_progress",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 

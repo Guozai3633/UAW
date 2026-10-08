@@ -11,6 +11,8 @@
 - `ops/model_probe.py`：批准配置下的显式模型诊断，操作说明位于 `docs/implementation/MODEL_CONNECTION.md`。
 - `infrastructure/db/transactions.py、records.py、models.py` 与 `ops/migrations/`：事务、CAS、版本记录、去重和数据库结构。
 - `contracts/implementation_catalog.py`：逐接口登记实际实现范围；代码与JUnit摘要位于 `docs/implementation/evidence/`。
+- `run/execution_sources.py、tool_sources.py、context_sources.py、runner_mapping.py`：MS-I2g实际Run/固定模型、可信角色与结果数据权限、Context工具验证和Runner当前owner适配。内部装配入口在`composition.py`，策略和签名见[MS-I2g接线](coordination/requests/A/MS-I2g-wiring.md)。
+- `context/registered.py、authority.py、readers.py`：通用材料/规则/配方登记源；`tool/invocation/dispatch.py、receipt_store.py、results.py、providers/text.py`：实际纯文本调用/结果恢复；`apps/local_runner/uaw_runner/control_signing.py、root_source.py、assembly.py`：控制签字和有期限的本机授权根组件。组件接受与产品启用见[MS-I2g-A1](implementation/MS-I2g-A1.md)。
 
 实际代码按已实现职责拆分，不先生成目标目录中的空实现；业务执行器尚未接入。启动与管理员操作见[开发控制层说明](implementation/CONTROL_PLANE.md)。
 

@@ -1,0 +1,7 @@
+{
+  "backend": "keyring.backends.Windows.WinVaultKeyring",
+  "status": "passed",
+  "namespace": "D-MS-R2d-test-a462650c302348aaa555f05354fcb6e3",
+  "handle": "control-a41895f54a004bdcaf50e72c84594204",
+  "cleaned": true
+}

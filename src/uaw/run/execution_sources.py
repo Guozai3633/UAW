@@ -65,10 +65,10 @@ class RunExecutionSources:
         run = (await self.store.get(ctx.principal, "runs", ctx.run_id or "")).payload
         if (
             ctx.scope.principal_id != ctx.principal.id
-            or ctx.conversation_id != run["conversation_id"]
+            or ctx.conversation_id not in (None, run["conversation_id"])
             or ctx.scope.conversation_id != run["conversation_id"]
-            or ctx.task_id != run["task_id"]
-            or ctx.scope.task_id != run["task_id"]
+            or ctx.task_id not in (None, run["task_id"])
+            or ctx.scope.task_id not in (None, run["task_id"])
             or ctx.scope.project_id is not None
         ):
             raise reject("run_source_scope_denied", "Context differs from the owned Run", 403)

@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-08",
+  "baseline": "ms-i2g-start",
+  "sessions": {
+    "B": {
+      "state": "stage_only",
+      "source": "d0ad58f",
+      "merge": "80b86b7",
+      "commits": {
+        "source": "d0ad58fbedd4515511544bb3d63bf5f231dad384",
+        "merge": "80b86b796295aad3ee24ccca40ac3cba42fd8227"
+      },
+      "receipts": [],
+      "different_passing_nodes": 0
+    },
+    "C": {
+      "state": "accepted_component",
+      "source": "859f5d0",
+      "handoff": "db09a69",
+      "merge": "5721ad4",
+      "commits": {
+        "source": "859f5d0f1ac90dc51e8500282b70d1acee924c06",
+        "handoff": "db09a698190057870911a9351f5f428bf9919050",
+        "merge": "5721ad42492a2547da491135a5fce9e9bd82a709"
+      },
+      "receipts": [
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2d/unit.xml",
+          "sha256": "58b8a33373592059294b32021fc45bf6fd69e094ac433552cc2a6ebd8902cfb2",
+          "counts": {
+            "tests": 162,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-c-unit.xml"
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2d/sql-initial.xml",
+          "sha256": "58c822accba7da1d75dafd2f198c0efc30f90aec8849ef8bf94b4184bfb9f473",
+          "counts": {
+            "tests": 97,
+            "failures": 1,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-c-sql-initial.xml"
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2d/sql-new.xml",
+          "sha256": "4b1551496699eb4ed4c472dfe25625789a5dea78995effc4b3744e43d96adebe",
+          "counts": {
+            "tests": 30,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-c-sql-new.xml"
+        }
+      ],
+      "different_passing_nodes": 262,
+      "obsolete_initial_test_names_excluded": [
+        [
+          "tests.integration.tool.test_text_results_postgres",
+          "test_text_saved_bad_output_is_not_success_even_with_transport_200[schema]"
+        ],
+        [
+          "tests.integration.tool.test_text_results_postgres",
+          "test_text_saved_bad_output_is_not_success_even_with_transport_200[semantics]"
+        ]
+      ],
+      "sql_different_passing_nodes": 100,
+      "initial_failure": "One new test used deny instead of decline; all 30 final new SQL rerun. Old 70 test files unchanged.",
+      "original_sql_source_files_unchanged": [
+        "tests/integration/tool/conftest.py",
+        "tests/integration/tool/receipt_fixtures.py",
+        "tests/integration/tool/reconcile_child.py",
+        "tests/integration/tool/recovery_facade_child.py",
+        "tests/integration/tool/recovery_fixtures.py",
+        "tests/integration/tool/test_durable.py",
+        "tests/integration/tool/test_tool_reconciliation_postgres.py",
+        "tests/integration/tool/test_tool_recovery_facade_postgres.py"
+      ]
+    },
+    "D": {
+      "state": "accepted_component",
+      "source": "7d946de",
+      "handoff": "366c916",
+      "merge": "b735407",
+      "commits": {
+        "source": "7d946de7a8aa2321e32ee1af5bdb18610a09ead1",
+        "handoff": "366c9165d3ea99707d18943534cc4d0245a97e82",
+        "merge": "b73540771b891df44e76abd22c31e59f6d7c2f49"
+      },
+      "receipts": [
+        {
+          "path": ".worktrees/runner/tests/.artifacts/D/MS-R2d/junit.xml",
+          "sha256": "b4fa8a15200c3c30f23836492394a8dec463f2241b62db06cce7bd5792defb17",
+          "counts": {
+            "tests": 326,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-d-junit.xml"
+        }
+      ],
+      "different_passing_nodes": 326,
+      "actual_os": {
+        "path": ".worktrees/runner/tests/.artifacts/D/MS-R2d/windows-control-receipt.json",
+        "sha256": "1f1ebf37be737e96e09033fcbd7e6eeef3c5f79abd20bb5d56e0bc5e27d7e575",
+        "backend": "keyring.backends.Windows.WinVaultKeyring",
+        "status": "passed",
+        "cleaned": true,
+        "public_copy": "docs/implementation/evidence/ms-i2g-d-windows-control-receipt.json"
+      }
+    }
+  },
+  "acceptance": "Component scopes only. A source/wiring JUnit is recorded separately; full milestone awaits B final handoff.",
+  "limitations": [
+    "No real external LLM, trusted IPC, native user confirmation or file/process execution proved.",
+    "B stage not complete package. No product flags or routes activated."
+  ]
+}
