@@ -4,7 +4,17 @@ from __future__ import annotations
 
 import json
 from typing import Any
+from uuid import uuid4
 
+from uaw.context.cache import (
+    PureComputationCache,
+    cache_enabled,
+    lookup,
+    make_key,
+    reading_key,
+    remember,
+    window_key,
+)
 from uaw.context.contracts import (
     Allocation,
     PreservationSpec,
@@ -29,6 +39,7 @@ class ConservativeTokenCounter:
     """
 
     name = "utf8_bytes_plus_64_estimate"
+    cache_version = "1"
 
     def count(self, reading: Reading) -> int:
         block = {
@@ -46,16 +57,23 @@ class Selector:
         sources: SourceResolver,
         models: ModelWindowProvider | None,
         counter: TokenCounter | None = None,
+        *,
+        cache: PureComputationCache | None = None,
     ) -> None:
         self.sources = sources
         self.models = models
         self.counter = counter or ConservativeTokenCounter()
+        self.cache = cache
+        self._counter_identity = uuid4().hex
+        self._keyed_counter = self.counter
 
     async def allocate(
         self,
         request: SelectionRequest,
         ctx: TrustedExecutionContext,
         preserve: PreservationSpec | None = None,
+        *,
+        cache_boundary: dict[str, Any] | None = None,
     ) -> Allocation:
         await self.sources.guard.check(ctx)
         if self.models is None or ctx.model_policy_ref is None:
@@ -127,7 +145,18 @@ class Selector:
                 if not matches:
                     raise CapabilityUnavailable("context.verified_requirement_binding")
                 mandatory.update(ref_key(r.ref) for r in matches)
-        costs = {ref_key(r.ref): self.counter.count(r) for r in readings}
+        # All current Reader/model/preservation checks above precede pure estimates.
+        if cache_enabled(self.cache):
+            boundary = {
+                "selection": request.wire(),
+                "preserve": preserve.wire() if preserve is not None else None,
+                "window": window_key(window),
+                "composition": cache_boundary,
+                "readings": [reading_key(r) for r in readings],
+            }
+            costs = {ref_key(r.ref): self._count(r, ctx, boundary) for r in readings}
+        else:
+            costs = {ref_key(r.ref): self.counter.count(r) for r in readings}
         if any(type(cost) is not int or cost < 0 for cost in costs.values()):
             raise reject("schema_invalid", "Token counter returned invalid counts")
         protected = [r for r in readings if ref_key(r.ref) in mandatory]
@@ -158,6 +187,51 @@ class Selector:
         )
         validate_contract("SelectionResult", result.wire())
         return result
+
+    def _count(
+        self, reading: Reading, ctx: TrustedExecutionContext, boundary: dict[str, Any]
+    ) -> int:
+        # Custom counters opt in with a stable cache_version covering all parameters.
+        # Retain per-instance identity; replacement cannot reuse another counter's count.
+        if self._keyed_counter is not self.counter:
+            self._counter_identity = uuid4().hex
+            self._keyed_counter = self.counter
+        try:
+            version = getattr(self.counter, "cache_version", None)
+        except Exception:
+            version = None
+        key = None
+        if isinstance(version, str) and version:
+            key = make_key(
+                self.cache,
+                ctx,
+                algorithm="selection-token-estimate:v1",
+                inputs={
+                    "counter": {
+                        "type": (
+                            type(self.counter).__module__ + "." + type(self.counter).__qualname__
+                        ),
+                        "name": self.counter.name,
+                        "identity": self._counter_identity,
+                        "version": version,
+                    },
+                    "reading": reading_key(reading),
+                    "boundary": boundary,
+                },
+                readings=(reading,),
+            )
+        cached = lookup(self.cache, key)
+        if cached is not None:
+            try:
+                value = json.loads(cached)
+                if type(value) is int and value >= 0:
+                    return value
+            except ValueError, TypeError:
+                pass
+        value = self.counter.count(reading)
+        if type(value) is int and value >= 0:
+            remember(self.cache, key, str(value).encode("ascii"))
+        return value
 
     async def handle(self, request: dict[str, Any], ctx: TrustedExecutionContext) -> dict[str, Any]:
         async def operation() -> dict[str, Any]:

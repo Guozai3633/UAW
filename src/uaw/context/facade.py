@@ -3,6 +3,7 @@
 from collections.abc import Mapping
 from typing import Any
 
+from uaw.context.cache import PureComputationCache
 from uaw.context.composer import Composer
 from uaw.context.contracts import ContextRequest, digest, from_wire
 from uaw.context.ports import (
@@ -34,10 +35,11 @@ class ContextComponents:
         counter: TokenCounter | None = None,
         repository: ContextRepository | None = None,
         authority: CompositionAuthority | None = None,
+        cache: PureComputationCache | None = None,
     ) -> None:
         self.sources = SourceResolver(readers, Guard(cancellation))
         self.rules = RuleResolver(self.sources, rules)
-        self.selection = Selector(self.sources, models, counter)
+        self.selection = Selector(self.sources, models, counter, cache=cache)
         self.composer = (
             Composer(self.sources, self.rules, self.selection, repository, authority)
             if repository is not None and authority is not None
