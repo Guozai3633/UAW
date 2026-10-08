@@ -127,6 +127,7 @@ def binding_key(binding: CompositionBinding) -> dict[str, object]:
         "capability_ref": binding.capability_ref.wire(),
         "preserve": binding.preserve.wire(),
         "dependency_refs": [ref.wire() for ref in binding.dependency_refs],
+        "request": binding.request.wire() if binding.request is not None else None,
     }
 
 
