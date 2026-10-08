@@ -87,7 +87,7 @@ paths.extend((ROOT / "src/uaw/resources/prompts").glob("*.txt"))
 paths = [p for p in paths if "__pycache__" not in p.parts and p.name != "local.toml"]
 report = {
     "date": "2026-10-08", "platform": platform.system(), "machine": platform.machine(),
-    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation and MS-I2e integration; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
     "components": components,
     "python_packages": {package: version(package) for package in packages.values()},
     "compatibility": {"core_checks": True, "langgraph_basic_api": True,
@@ -99,6 +99,8 @@ report = {
                       "live_parent_policy_checks": True,
                       "root_execution_lease_components": True,
                       "generic_model_input_routing": True,
+                      "tool_reconciliation_components": True,
+                      "tool_budget_policy_port_consumption": True,
                       "external_llm_verified": False, "model_agent_runner": False},
     "test_counts": test_counts,
     "engine_metadata": engine_metadata,

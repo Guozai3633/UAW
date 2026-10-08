@@ -2,7 +2,7 @@
   "date": "2026-10-08",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation and MS-I2e integration; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
   "components": {
     "fastapi": {
       "installed": true,
@@ -122,11 +122,13 @@
     "live_parent_policy_checks": true,
     "root_execution_lease_components": true,
     "generic_model_input_routing": true,
+    "tool_reconciliation_components": true,
+    "tool_budget_policy_port_consumption": true,
     "external_llm_verified": false,
     "model_agent_runner": false
   },
   "test_counts": {
-    "tests": 506,
+    "tests": 563,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -134,7 +136,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "ac0c8cccae08ee5af0905bd221e31393c015e1277995da7e0fa52a8feb61be64",
+  "test_evidence_sha256": "4badd7000fbbcbdf6376cbf981c697eba29d14f9576c21446fba84fa177b10ac",
   "runtime_implementation": "development_control_plane_intent_model_and_context_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -152,7 +154,7 @@
     "contracts/interface_catalog.py": "fa6e842e4f20be349aabd9b0eece16426c9bf0a25cebae918203353cb1fda22f",
     "contracts/uaw.schema.json": "45161b36f2e81622e73f86c23b048cda8d55686e7045248f0394ab51d13dbe6b",
     "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
-    "ops/capture_environment.py": "00184777e093976f1b0a156d2d36d1cc64775d1f4a2f57a0399d4bb6c18c5dd5",
+    "ops/capture_environment.py": "d63c8aad68d9739d749fbb363220a872ac5e6bcd6235933a11bf995b23efffb1",
     "ops/check.ps1": "a364de174696f578c320c9045464d4abafd94c8de1ca01eeff5f602ab1715860",
     "ops/compose.yaml": "8bcd492f7b77573aefbf4250722d371d90c5e0724d8b27f1395a5fdb261d79a8",
     "ops/database-development.toml": "47adff9a258b9d1cf4ef262f511f984c6b853dfea755365c96f062178f7bb2bc",
@@ -238,8 +240,8 @@
     "src/uaw/shared/stores.py": "47e0f6b70a843bebf9fd1477e3a8c507b75cad8d8b01f03a2ea1b0b5f26fd300",
     "src/uaw/tool/__init__.py": "4dee1e11c9ba1f07e9fc9c5fd8a6cfaaeba06e4b78668f7399627ff9799d6cb0",
     "src/uaw/tool/approval.py": "128e62fdaf0995a10809123b89aa1564fc377b915b13d68e675167c82cc6fc02",
-    "src/uaw/tool/authority.py": "ced7e3d6235f1be5b59d42a7dfa8aa572af5af48cc6c62553b454f8e50d06034",
-    "src/uaw/tool/budget.py": "05424a77a5e5ead38474a5b28ac5b0ba7159e5f1860a9d8bbb6de47c53d373c3",
+    "src/uaw/tool/authority.py": "3a359584f805230e1c5efac7426b9c26945383e25e465cd6e0adb21b8405bd8e",
+    "src/uaw/tool/budget.py": "e96c7906acc1dc38cef6b3af80aa98c6bf3f68c88f2dc6a4a2fcdcebec5cb6f1",
     "src/uaw/tool/contracts.py": "c5ed6b8ecbf7ae42a79c770bf934a8e38f831243e8bb0a5aa62b854c6d640ced",
     "src/uaw/tool/discovery.py": "db950fcc478f7007b11be8c563d49965a991933cc725a01dda705180dcf10a61",
     "src/uaw/tool/errors.py": "cc7beaa45e2a4458c6c49b6981e877a0d78b98c39c99cb2671d10a307a9e8dba",
@@ -247,8 +249,9 @@
     "src/uaw/tool/identity.py": "06c425b858ffaa9177fe93f377b01eb31a70af3315f23672fc157a37be2b00a9",
     "src/uaw/tool/invocation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/uaw/tool/invocation/schema.py": "7dda57c1fa955e52e47bf20695a9e44ece13488de885e834c5c257b26b7ca196",
-    "src/uaw/tool/ledger.py": "fbdd108451eeb29d5f81f20a78339d084fa5ec5c31d604e9d1c4435ade5dc49b",
+    "src/uaw/tool/ledger.py": "9b43e3c25eb94b06b606538400c376e1ed8accfce27a08af54826e19a880c316",
     "src/uaw/tool/ports.py": "e23f26dc963fb122046cd229c095c47f28d0faa090dfdd89f27abe8aeb766ba3",
+    "src/uaw/tool/reconciliation.py": "2f4543546357a80423e856fb06f215b9c58610004a51186d95940cd363178950",
     "src/uaw/tool/registry.py": "724c73823d5a3a9b445269b7a75c076bbc5fb21f84b6a88e0e568febbaac4960",
     "src/uaw/tool/schema.py": "8523506938030a5121880b4c6d68f99c0200ef15b7926d7560ca09685b4b7a7c",
     "src/uaw/workspace/binding.py": "f9ba394ba68c3956bc477525eb588503ffc4fba92dd36f6c1cfd821477e2bce1",
@@ -273,8 +276,11 @@
     "tests/integration/test_execution_leases.py": "10d321e73d0dae09d6717053f277bc9e9eb5cc23159e890ecbca944164d072f1",
     "tests/integration/test_execution_permissions.py": "bbc3009da8a610de38565bbab5d6c711b95259522e4474bb459c6d9c121103be",
     "tests/integration/test_model_input_routing.py": "a9b59879057abc1fa498776e7db27c51fbef6645a43ddbef8e02b45ede2efc7f",
-    "tests/integration/tool/conftest.py": "b70237e0057275aac99ac5a68af8648c6bd76ff921ac669ec3bf51c035c70d28",
-    "tests/integration/tool/test_durable.py": "3df31d5e5d78ca01906e1172aa22d92ba5b595b299f428e6bcb387b06a0f4b29",
+    "tests/integration/tool/conftest.py": "e5fbf071785384f3fc3f64ec1f9efd1e1811487102bd9357c5b1378a7080a562",
+    "tests/integration/tool/receipt_fixtures.py": "26e212c8e3a26ff1dc07b0728940259c62cc4703bd8058f010c48c2c38469598",
+    "tests/integration/tool/reconcile_child.py": "e36d4c3be23aad2aa65a59e6bf8947bd75520efb3b6d5597931e9610376f7088",
+    "tests/integration/tool/test_durable.py": "61cb9ba94268e7e5839bf2ebcf06539a0dda9bcf8860e8e134efc2cf866256e4",
+    "tests/integration/tool/test_tool_reconciliation_postgres.py": "3ca6d381153a5db5c6cdaaa04e5a0a2f6ecfda6dff1d2cd1aeedaa5242cff11a",
     "tests/unit/context/test_components.py": "beb412007cb1c12c597abbd048e76fb2d72b0007b26fb683beb70a5c1ae1e06a",
     "tests/unit/context/test_model_input.py": "3c51c7af575c0f03339f508af018f28c03419354b832d8d9945513354539e24d",
     "tests/unit/context/test_snapshots.py": "cd06f000104f2750866c0dfcefb0087914776c39966e5b0df302164d2a7972b2",
@@ -292,6 +298,8 @@
     "tests/unit/tool/test_access_identity.py": "5b8437d94c7fd0b3a1c3a101b61a1268b4be3942e55f34f61bb5ad7f21d30b62",
     "tests/unit/tool/test_durable_adapters.py": "6a358dade7c09aa2ac5f14b5a81792060590bfe7adf29d1e605aabbfe0c283a5",
     "tests/unit/tool/test_gate_ports.py": "ec5af733b316ac333f058e22648282f771a4efdc1c18c77e0b5b16f660928c27",
+    "tests/unit/tool/test_port_consumption.py": "894293dcaf8086d887cae74f2b306df7ee1d386eebfeda8a5a3d75abac729c06",
+    "tests/unit/tool/test_reconciliation.py": "93da73453039d71a06662f90677debc2033fbd7958f38e0e68f52e211d79434d",
     "tests/unit/tool/test_registry_schema.py": "b92174b62401da11108d416ba41df9694e2a244d711b93a8edee98a54e9cfad8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   }
