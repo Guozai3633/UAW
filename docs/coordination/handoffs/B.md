@@ -561,3 +561,48 @@ $bContextPaths = @('cache','contracts','facade','ports','repository','sources','
 命令：. ./ops/start-dev-db.ps1 -Session B；.venv/Scripts/python.exe -m alembic upgrade head；python -m pytest tests/unit/context -q；python -m pytest tests/integration/context/test_assessment_postgres.py -vv --require-postgres（两项修复 -k 'tools or policy'）；python -m ruff check src/uaw/context tests/unit/context tests/integration/context；python -m mypy src/uaw/context --cache-dir .cache/mypy/B。均锁定 .venv/Scripts/python.exe；B DB55433，无复制 A URL/凭据。
 
 剩余：真实完整链、当前 A Run/Model 来源成本比较、批内重复读取调整、并发/新进程/缓存及原模块 SQL 回归。A 可立即消费阶段 port，自行提供固定 Model adapter；不把阶段协议测试当真实模型、产品或 P1 验收。
+
+## MS-C6 最终交接（四里程碑，2026-10-09）
+
+实际 worktree E:/UAW/.worktrees/context，实际分支 dev/context。固定基线 ms-i2h-start / f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8；开工 clean、fetch origin --tags、merge --ff-only、HEAD==tag^{commit}、uv sync --frozen 均成功，未 reset/rebase/中途换基线。阶段源码 17e468279586638c543e20b20acb0325e4d28797，阶段 handoff a19188c47b4f2d2fedaad89bb0776215d0d649f6。最终源码 467b743873a347f30e1954f74ab1f0246797ae23；本记录单独提交。旧提交/交接保持。
+
+### 修改和公开接口
+
+从固定基线起改动14文件：context/{ports,readers,rules,registered,authority}.py；unit/context/test_assessment.py；integration/context/{registered_fixture,test_assessment_postgres,test_assessment_chain_postgres,test_read_batches_postgres,test_registered_chain_postgres}.py；requests/B/{MS-C6-stage-interface,MS-C6-final-wiring}.md；handoffs/B.md。未修改 seed/intent、shared/schema、Model/Run/API/composition、锁、ops、其他session或worktree。
+
+`RegisteredRuleAssessor.assess(candidates: tuple[RuleCandidate,...], ctx: TrustedExecutionContext) -> RulePlan`；`RegisteredRuleProvider(inputs, *, assessor=None)` 保留旧构造。实际登记、最多64候选、完整rule/正文/level/scope/Ref/真实选择顺序/targets固定并深复制；建议只能涉及topic/value/critical/supersedes/conflict_refs，输出重建自实际候选。缺多规则assessor unavailable，缺/伪造/重复候选、非完整冲突Ref、输入变异、越权覆盖均拒绝。重要冲突携实际固定evidence_refs要求澄清；后来的user_current显式同topic覆盖先前同级才允许；平台与能力政策正文保留且不可降级/覆盖。原文保留、材料仍数据、工具和Runtime权限独立当前复查；无词典伪装语义判断。
+
+模型等待前后通过当前输入批核验配方/材料/规则/工具/实际Run原文及patch/完整主体scope/model/policy、取消/期限；评估异常也复查，task取消传播，stalled assessor/Reader受可信deadline限制。`RegisteredContextInputs.inspect(ctx)->tuple[RegisteredRecipe,tuple[Ref,...]]`是B内部有界批，批前后实际当前authority、来源两遍实读（含实际blob/hash/owner/seal/版本/分类）、配方/tool validator中间和批末复查；不存Reading、授权或模型建议，不跨请求/主体复用。公开read/current/recipe的前后闸门保留，snapshot提交与ModelInput最终检查仍由原组件执行。
+
+A可用[阶段接口](../requests/B/MS-C6-stage-interface.md)立即接实际固定Model assessor；实际构造、缓存可选/零容量关闭、错误/取消语义、当前权威要求和指标见[最终接线](../requests/B/MS-C6-final-wiring.md)。GenericModelInputs/TokenCounter签名不变，cache默认关闭，仅已完成当前校验的格式化/序列化/token估算复用。
+
+### 真实验证与性能
+
+最终不同节点：单元246（原208＋38）；真实SQL105（MS-C6新20＋原Context74＋已发布接线11），共351；均通过，失败/错误/跳过为0。最终回执：final-unit.xml/.exit=0，10.62秒；final-new-sql.xml/.exit=0，891.66秒；original-sql.xml/.exit=0，1981.50秒。Ruff check/format check通过（32文件），mypy context16文件通过，alembic head通过，Python3.14.6；自身PowerShell . ./ops/start-dev-db.ps1 -Session B，独立55433。URL/密码不出现在日志/命令参数，不复制A配置/凭据，不修改其他库或共享evidence。
+
+自身ignored tests/.artifacts/B/MS-C6/validation.json索引去重当前完整JUnit/exit与历史失败，read-cost.json含namespace查询分布/Reader与registered内部读取次数/assessor次数/单调耗时/消息摘要；office-input.json另存自身本包，旧MS-C5回执没有覆盖。真实多规则新进程/并发快照、规则CAS竞争、来源修订/撤销、模型/政策/取消等待变化、实际blob腐坏、最后一遍工具变化、stalled Reader期限及原窗口/路由/缓存回归都已实跑。
+
+成本比较为同一真实A RunExecutionSources/当前Model/policy、SQL和blob的“阶段式公共展开策略”与最终批读取，测试策略复现旧展开结构，并非旧commit整体二进制基准；两个build不同operation_id避免幂等重放，相同ModelPrompt/InstructionSet/引用正文。authority.resolve get 547→222；rules 1917→1267；build 17205→11088（35.55%）、101.894222→65.759718秒；ModelInput 14515→9427（35.05%）、70.807426→55.694873秒。仍存在较高当前查询成本，不宣称生产延迟达标。两策略build/ModelInput各assessor2次；缓存冷/暖/零容量均9427 get与assessor2、相同结果；不缓存模型建议或授权，不宣称provider prompt cache、Token节省或缓存时延收益。材料撤销后两策略均resource_missing；完整输入估算6075、消息摘要542544a0d5c832c934e5fe14f2dc0e814b795654221fa505f52e1aa4283ca14b。
+
+### 命令与失败修复历史
+
+```powershell
+. ./ops/start-dev-db.ps1 -Session B
+.venv/Scripts/python.exe -m alembic upgrade head
+.venv/Scripts/python.exe -m pytest tests/unit/context -q --junitxml=tests/.artifacts/B/MS-C6/final-unit.xml
+.venv/Scripts/python.exe -m pytest tests/integration/context/test_assessment_chain_postgres.py tests/integration/context/test_read_batches_postgres.py tests/integration/context/test_assessment_postgres.py -vv --require-postgres --junitxml=tests/.artifacts/B/MS-C6/final-new-sql.xml
+$env:UAW_CONTEXT_EVIDENCE_DIR='tests/.artifacts/B/MS-C6'
+.venv/Scripts/python.exe -m pytest tests/integration/context/test_snapshots_postgres.py tests/integration/context/test_model_input_postgres.py tests/integration/context/test_cache_postgres.py tests/integration/context/test_registered_postgres.py tests/integration/context/test_registered_chain_postgres.py tests/integration/test_context_wiring.py tests/integration/test_model_input_routing.py -vv --require-postgres --junitxml=tests/.artifacts/B/MS-C6/original-sql.xml
+.venv/Scripts/python.exe -m ruff check src/uaw/context tests/unit/context tests/integration/context
+.venv/Scripts/python.exe -m ruff format --check src/uaw/context tests/unit/context tests/integration/context
+.venv/Scripts/python.exe -m mypy src/uaw/context --cache-dir .cache/mypy/B
+.venv/Scripts/python.exe tests/.artifacts/B/MS-C6/index-receipts.py
+```
+
+历史失败全部保留：阶段两个mypy错误修正bounded Coroutine签名和recipe注解；单元首次收集用非法空ScopeSelector，修复后246；阶段SQL 6pass/2fail误用Record.id，又误用key，按resource_id修正2pass；batch-sql8pass；chain-sql6pass/1fail误将原记录dict和消息text比较，改text；last-pass-sql4pass/1fail发现真实实现缺批末tools复查，补末尾_recipe；last-pass-repair4pass/1fail此时已拒绝但断言错误期望context_dependency_changed，按原实际source_changed修正；最终新20与原85全通过。静态格式/import首轮失败修复，最终均通过。一次自动审批因额度未完成，新增测试命令没执行；用户“继续”后批准重试，没有绕过审查，未完成运行不计通过。
+
+### A接线和剩余边界
+
+A注入真实认证/controller、已发布RegisteredRunContextSources(actual_run_sources)、当前非空工具validator、实际固定用户Model assessor，并处理澄清/不可用；评估输入应消费固定候选数据，不能递归调用同一多规则GenericModelInputs；purpose沿用agent_step。完整候选版本建议需要稳定，语义metadata变化会使旧InstructionSet/snapshot失败，不借旧结果生成。受控assessor只证明协议/来源/拒绝链，不证明真实LLM语义质量；本包不发送模型请求，不改Model配置或私有provider类型。默认flags不变；Workspace/Board/专业压缩/分页等未实现来源仍 unavailable，完整权限登录session与最终Model派发由A接线。
+
+批读取不能让外部文件/ACL变更与SQL成为原子事务，A派发前仍查当前固定Model/来源/权限；公共RecordStore批读port未新增，本包不依赖公共变更。A审阅/合入/处理公共冲突及受影响跨模块链，不把这351组件节点或本包标P1/P4整轮accepted。交接后停止，不自动下一包。
