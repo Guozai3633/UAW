@@ -1,6 +1,6 @@
 # Session B交接记录
 
-最新状态：MS-C2 已提交，真实 SQL 待 A 执行。下节保留 MS-C1 首包当时报告；A 已在 ms-i1 接受该组件。
+最新状态：MS-C3 已提交，真实 SQL 待 A 执行及生产接线。下节保留 MS-C1/MS-C2 当时报告；A 已分别在 ms-i1 和后续基线接受这些组件。
 
 ## MS-C1 历史交接报告
 
@@ -208,3 +208,108 @@ SQL 检查覆盖实际原文打开、原子写入、durable replay、参数冲�
 - 本包不需要 schema 生成、锁更新或迁移；部署权威 D01、Runner D03、真实模型 D06 保持待定。A 接线/权限所有者变化需要独立公共提案和实际新基线。
 - A 按 ms-i1..dev/context 审阅本包，实现与接线提交区分。可正常 revert B 实现提交或独立 A 接线提交；已有不可变数据库记录不会被源码 revert 删除，后续读取仍受当前授权约束。
 - 未自动创建/联系其他 session。接受状态由 A 在 DISPATCH 维护；MS-C2 组件交付不自动接受 P1-02。
+
+
+## MS-C3：通用模型输入实际交接
+
+日期：2026-10-08（Asia/Shanghai）。状态：**组件已提交，待 A 审阅、真实 SQL 执行及生产路由/authority 接线；完整 P1-02 / Agent 运行未验收。**
+
+### 基线、环境和实际提交
+
+- 实际目录/分支：`E:/UAW/.worktrees/context` / `dev/context`。
+- 从干净的 `c6ae25dc7526f811f2b614508e93a017e09ecdd1` 执行 `git fetch origin --tags`、`git merge --ff-only ms-i2c`，均成功，保留历史。同步后 HEAD 和标签解析 commit 均为 **`1411f6aa477b0d000bee871c0f324fbfd67b4ff5`**。
+- 已阅读新 DISPATCH、Session B 和 `requests/A/MS-I2c-ports.md`；A 已接受 MS-C2，本次仅消费 ms-i2c，不消费 C/D 未交接分支。
+- 按锁执行 `uv sync --frozen --extra agent-engine --link-mode copy`，exit 0；UV_CACHE_DIR 指向本 worktree `.cache/uv`。新增锁内 cryptography/cffi/pycparser 与本项目重装，未改变 pyproject/uv.lock。
+- 本包实现提交：**`396b5481694e4279aa3680edb1c25b84a26b0f02`**，`feat(context): resolve generic snapshots into public model prompts`。
+- 本 handoff 另作后续提交；准确文档 SHA 用 `git log -1 --format=%H -- docs/coordination/handoffs/B.md` 查询。A 对比 `ms-i2c..dev/context`，不要把同步后的基线变化算为 B 本轮修改。
+- 固定公共摘要符合 DISPATCH：schema `b5d7cdf9df23002e6e3d3965741cbcd82b7efa34ff438b09b236e3b0b886d583`；shared ports `cce4db2349b92a6a2fca815917725cb7bb51fcb5ab9db86c2f456d3df2b679cd`；shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`；lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；理解提示词仍为 `3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400`。
+- A 保留的 seed.py、intent.py、Model、组装根、shared、公共 schema、锁及迁移相对 ms-i2c 无修改。未改 Runtime 绑定或 flags；D01/D03/D06 不自行定案。
+
+### 本包文件
+
+实现提交的五个文件：
+
+- `src/uaw/context/model_input.py`
+- `tests/unit/context/test_model_input.py`
+- `tests/integration/context/model_input_fixture.py`
+- `tests/integration/context/test_model_input_postgres.py`
+- `docs/coordination/requests/B/MS-C3-model-input-wiring.md`
+
+后续仅提交本 handoff。回执在本 session 忽略目录，未进入提交。
+
+### 公开接口及样例
+
+`GenericModelInputs(composer: Composer | None)` 结构兼容 A 的公开 ModelInputPort：
+
+```python
+from uaw.context.model_input import GenericModelInputs
+
+inputs = GenericModelInputs(context_components.composer)
+prompt = await inputs.resolve(snapshot_ref, trusted_context)
+# prompt: uaw.model.contracts.ModelPrompt
+# messages: tuple[dict, ...]; tools: tuple[ToolSpec dict, ...]; estimated_tokens: int
+```
+
+只读导入公开 ModelPrompt，不导入 ProviderRequest/ProviderResponse，也不调用提供方或 Model 私有 adapter。没有新公共 DTO/字段/HTTP/工具入口。
+
+- 成功：真实固定 InstructionSet 的平台指令为 system 消息；原文 `"  原文 123.40\r\n"` 为完全相同的 user 消息；获准工具 ToolSpec 与实际读取集合一致。
+- 外部资料：user 消息内的 JSON 为 `{"context_kind":"data","kind":"material","trust":"external","source_refs":[实际Ref],"text":原文}`；资料中的 role/system/工具字符串不会变成结构性消息/工具定义。
+- 项目/技能/角色/偏好：user 消息内 registered_instruction 对象记录 level、scope、source_ref、text；不升为 system。当前用户要求保留原文，同源原文/用户规则只发送一次。
+- 失败：缺 Composer/authority/能力 Reader → capability_unavailable；跨 Run/Scope → permission_denied；来源删除 → 明确 missing 对应 DomainError；固定版本/hash、规则/工具/epoch 变化 → stale 对应 DomainError；窗口不足 → context_insufficient；Run/Python 取消 → cancelled；超期 → deadline_exceeded。
+- 重复：同一已保存 Ref 即使重新建 repository/解析器或更换模型调用 operation/attempt，在权限及版本有效时得到相同 prompt，不写数据库或新增幂等记录。快照仍严格绑定原 Run/Scope。
+- 原始 JSON 成功、重复、跨 Run 拒绝、撤权、stale、预算不足回执：`tests/.artifacts/B/MS-C3/examples.json`，明确受控组件执行，不是真实 LLM/Runner/SQL 回执。
+
+**tools 格式：** ms-i2c ModelGateway 直接消费 ToolSpec，provider adapter 才转换 native function schema。B 返回完整 ToolSpec，包含 id/version/input_schema/output_schema/权限/提供方等固定元数据，不自行构造 provider 函数名或改变结果格式。只有实际读取的集合为空才返回空 tuple，缺来源不能假造空工具。
+
+### 读取、身份、版本与预算
+
+- 使用已有 ContextRepository/Composer/SourceResolver，加载 `context.generic.*` revision=1 快照、InstructionSet、请求与 Run/Scope 绑定，检查快照 hash、manifest 与实际输入块一致；无理解模板 fallback。
+- Composer 在读取前后重查当前 epoch、规则、保护、额外依赖、当前政策及固定窗口；解析器重读每个已选固定内容/hash/位置/分类、实际能力集合和有效规则文本。资料信任字段本身不成为指令。
+- 工具集合检查 ModelToolSet schema、所属 Run、重复名称及 required_capabilities 对当前 ctx.scope 的子集；实际 flags、角色/资源、提供方 eligibility 来自可信 Reader/CompositionAuthority.verify，仍须 A 注入。
+- 最后再次执行 Composer/authority 检查并比较 binding/模型窗口，取消/截止时间覆盖全过程。原文不 trim/归一化/改换行，不把无真实角色/call ID 的历史或工具文本冒充 assistant/tool 消息。
+- 估算覆盖 JSON 消息、全部 ToolSpec 输入/输出 schema 和元数据、每项序列化余量，取不低于快照估算；保留输出、工具和模型 envelope 空间。包含针对旧/低估计快照的完整重计数反例。
+- 估算不是供应商 tokenizer/计费；A 的 Gateway 必须继续计算包含输出 schema/参数的完整 native 请求并核对当前模型配置。窗口不足不删条件、不换模型。
+- 返回是读取结果，不是工具或执行授权；无仓储写入、事件、幂等状态、权限变更。SQL 与外部撤权/发送不原子，最终发送/执行闸门继续复核。未做真实 LLM 语义遵循/注入防护验收。
+
+### 实际验证
+
+本 worktree .venv / Python 3.14.6；无需新增锁外依赖。B 没有 UAW_TEST_DATABASE_URL，未读取或复制凭据/私有 .data，未启动第二套数据库/迁移/服务。
+
+`<B files>` 是十个 B 文件 facade/contracts/ports/sources/rules/selection/composer/repository/references/model_input.py；不检查或格式化 A 保留的 seed.py/intent.py。
+
+| 命令 | 实际结果 | 回执 |
+| --- | --- | --- |
+| uv sync --frozen --extra agent-engine --link-mode copy（本目录缓存） | exit 0，锁未变，editable 指向本 worktree | 开工工具回执；validation.json 摘要 |
+| ./.venv/Scripts/python.exe -m ruff check <B files> tests/unit/context tests/integration/context | exit 0 / All checks passed | tests/.artifacts/B/MS-C3/ruff.txt |
+| ./.venv/Scripts/python.exe -m ruff format --check <B files> tests/unit/context tests/integration/context | exit 0 / 16 files already formatted | tests/.artifacts/B/MS-C3/format.txt |
+| ./.venv/Scripts/python.exe -m mypy <B files> --cache-dir .cache/mypy/B | exit 0 / 10 source files | tests/.artifacts/B/MS-C3/mypy.txt |
+| ./.venv/Scripts/python.exe -m pytest tests/unit/context -q -o cache_dir=.cache/pytest/B --junitxml=tests/.artifacts/B/MS-C3/unit.xml | **107 passed，0 failed/skipped/warning**（原 64 + MS-C3 43） | tests/.artifacts/B/MS-C3/unit.txt、unit.xml |
+| ./.venv/Scripts/python.exe -m pytest tests/integration/context/test_model_input_postgres.py --collect-only -q -o cache_dir=.cache/pytest/B | **15 collected；未执行 SQL** | tests/.artifacts/B/MS-C3/sql-collection.txt |
+| git diff --cached --check（实现提交前） | exit 0 | 提交工具回执 |
+
+完整环境/命令/exit_code/公共摘要见 `tests/.artifacts/B/MS-C3/validation.json`。组件 fixture 是标注的内存事务、Reader 和 authority；最终检查无失败。早期大描述 fixture 超出 NonEmptyText 16384 上限，已按权威 schema 更正并重新验证；负例失败是预期断言，不计为未通过项。
+
+### 真正 PostgreSQL 用例交 A 执行
+
+`tests/integration/context/test_model_input_postgres.py` 新增 15 项，包括新数据库连接与新 Python 子进程重建。快照、原文、规则/工具/材料/epoch 请求实际存到 PostgreSQL；原文/当前权限/取消/固定模型解析使用 ms-i2c 已发布适配器。通用规则与工具目录及 authority 是测试注册，未声称产品服务已可用；窗口缩小反例是明确受控 Window wrapper。
+
+子进程重新创建数据库、仓储、configuration 与 resolver，使用 Windows `control_plane_loop`；数据库 URL 仅由测试通过 stdin 传递，不进命令参数、文件或回执。无模型/工具/Runner 请求。root database/principal fixture 随机主体清理，不 truncate。
+
+A 在已安排 SQL 环境/集成 SHA 运行：
+
+```powershell
+./.venv/Scripts/python.exe -m pytest tests/integration/context/test_model_input_postgres.py -q --require-postgres
+```
+
+**15 项尚未实际执行，进程重启/实际 SQL 的运行结果未验证；收集不算通过。** A 实跑后再回归已有 MS-C2、理解输入、Model 原生估算和全链路。B 本次未运行这些 A 负责的全量检查。
+
+### 未通过项、接线要求及回退
+
+- SQL 环境缺失：新 15 项及跨进程恢复仅完成代码/收集，待 A 实跑。真实 LLM/Agent、语义质量、工具/Runner 执行均未验收。
+- 通用生产 authority、能力 Reader、目的规则/输入路由缺失：注入不足明确不可用，不能把 SQL fixture 的工具定义或空集合挂成生产服务。
+- A 负责 `GenericModelInputs(context_components.composer)` 接线及快照命名空间/purpose 路由。缺通用依赖时保持 unavailable；不修改理解 builder，agent_step 不走 understanding 模板。
+- A 的 Model/Tool 发送边界继续核对实际当前权限/flags、fixed model、native body、预算/取消及 lease/fence。本组件只检查已注入的真实 port，不授予权限、不自建 Runtime 入口。
+- 真实 assistant/tool 历史角色与工具调用 ID、压缩输入的已验证内容、Workspace/Board/Memory Reader 尚缺，分别保持数据身份或明确不可用；不自行补假字段。
+- 最小接线提案：`requests/B/MS-C3-model-input-wiring.md`；无公共接口改动审批被假定为已通过。A 决定与新基线写 DISPATCH。
+- 实现与 A 的路由接线应独立提交，正常 revert B 新 adapter/测试不删已有 Context 记录；不修改 D01/D03/D06，不把 MS-C3 组件交付标为完整 P1-02/Agent accepted。
+- 未创建、修改或联系其他 session；A 审阅/合入/处理公共冲突并执行整条链路回归。
