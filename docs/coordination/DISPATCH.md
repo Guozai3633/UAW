@@ -31,7 +31,7 @@ A另增10项跨模块SQL/组装测试，独立组件674项通过。原worker缺�
 
 ## 当前发包准备版本：ms-i2g-start
 
-- 准备代码/证据提交：`PREPARATION_SHA_PENDING`；固定标签 **ms-i2g-start** 包含最终派发状态记录。
+- 准备代码/证据提交：`ea89d30747a492c12447b8450ba28302ed262834`；固定标签 **ms-i2g-start** 包含最终派发状态记录。
 - 运行源码、公共schema/ports/contracts、依赖锁及提示词相对ms-i2f2未变。本次改独立开发库脚本和分工/进度文档；A旧库兼容及8项真实SQL复验通过，B/C/D配置隔离已检查，实际库由worker自行启动。
 - 841项是上个运行版本完整回执，本次没有重跑全部841项；补充验证及源码范围见[MS-I2g准备](../implementation/MS-I2g-preparation.md)。
 
