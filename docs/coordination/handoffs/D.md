@@ -321,3 +321,16 @@ git diff --check
 - file.list的既有FilePage缺workspace/path签字字段，保持原verify_receipt边界，不从snapshot_revision推断资源；需要更强证明由A发布新版本。
 - 接线成功/缺Reader拒绝/重复/冲突代码例子见 [R2c-001](../requests/D/R2c-001-journal-wiring.md)。生产Reader未提供，未挂载网络/API/IPC，也未接配对V2或真实OS凭据；测试签名均为受控协议fixture，不是真实Runner执行回执。
 - 完整MS-R2、D01/D03/D06仍等待；没有安装、项目写入/exec、Tool outcome映射或flags开放。A负责审阅、合入、公共冲突和整链回归；本分支只提交D改动，不创建其他session。
+
+
+## MS-R2d阶段版：里程碑1/2（2026-10-08）
+
+- 实际目录/分支：E:/UAW/.worktrees/runner / dev/runner；开工干净，fetch tags与ff-only成功。
+- 固定基线：ms-i2g-start / `0bd8e2b8387a46e16435dc033956c2b69bb1a859`，同步后HEAD精确一致；`uv sync --frozen`通过，锁未改，独立环境Python3.14.6。
+- 阶段源码SHA：**92ddf118cf3005bfe32eea630ce950c6325bd76d**。本阶段handoff单独提交，不自动结束本包；继续里程碑3/4。
+- 文件：control_signing.py、keys.py、test_control_signing.py、test_windows_control_keys.py、requests/D/R2d-001-adapter-wiring.md；全在D允许目录。
+- 接口：`ControlKeyBinding(device_id,key_id,credential_handle)`；`ControlCommandSigner(bindings, *, directory, signer, clock=None)`；实现共享 `sign(draft, *, device_id)->RunnerCommand wire` / `verify(command, *, device_id)->None`。
+- 独立构造固定control key/device/handle；只加signature，不改draft正文；当前key、control角色、撤销、deadline与await后的时钟再查，取消传播。ProtectedSigner深拷贝document，当前目录IO off-loop；无OS回退。恢复verify不以历史deadline拒绝，不授予admission/dispatch。
+- 实际回执：27 passed，0 failure/error/skip，1.85s；Ruff/格式27文件与Mypy13源码文件通过。命令/构造例子见[R2d-001](../requests/D/R2d-001-adapter-wiring.md)，JUnit在tests/.artifacts/D/MS-R2d/stage-junit.xml。
+- **真实OS用例1项通过**：WindowsCredentialStore直接WinVaultKeyring后端；随机namespace/handle生成、读取、签名、重建、再签、当前撤销，finally清理并证明missing，windows-control-receipt.json为passed/cleaned=true；没有输出secret或触碰既有凭据。其余原语+memoryvault测试明确fixture。
+- 仍缺：生产control绑定生命周期/可信channel/native确认与正式OS部署；前两项不是完整MS-R2或实际Runner执行。未启动PG（本阶段不需要SQL），不实现IPC/配对V2/安装写入exec，不决定D03。

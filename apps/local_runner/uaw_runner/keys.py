@@ -1,5 +1,6 @@
 """Fresh key authorization and protected signing. No plaintext private-key fallback."""
 
+import asyncio
 import base64
 import json
 
@@ -88,7 +89,9 @@ class ProtectedSigner:
     ) -> str:
         if self.credentials is None:
             raise CapabilityUnavailable("runner.protected_credentials")
-        key = self.directory.lookup(key_id, device_id=device_id)
+        # Snapshot the caller's document before credential IO; never sign mutable claims.
+        document = json.loads(json.dumps(document, ensure_ascii=False, allow_nan=False))
+        key = await asyncio.to_thread(self.directory.lookup, key_id, device_id=device_id)
         required_role = "control" if domain == "command" else "device"
         if key.revoked or key.role != required_role:
             raise reject(
@@ -108,6 +111,6 @@ class ProtectedSigner:
                 "permission_denied", "Protected key is invalid", 403, "permission"
             ) from None
         # Do not sign with a key revoked while awaiting the credential store.
-        if self.directory.lookup(key_id, device_id=device_id) != key:
+        if await asyncio.to_thread(self.directory.lookup, key_id, device_id=device_id) != key:
             raise reject("permission_denied", "Signing key changed", 403, "permission")
         return signature
