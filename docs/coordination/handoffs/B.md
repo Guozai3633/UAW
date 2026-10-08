@@ -1,6 +1,6 @@
 # Session B交接记录
 
-最新状态：MS-C3 已提交，真实 SQL 待 A 执行及生产接线。下节保留 MS-C1/MS-C2 当时报告；A 已分别在 ms-i1 和后续基线接受这些组件。
+最新状态：MS-C4局部组件已提交；174项单元/静态通过，35项SQL本轮待A实跑，缓存默认关闭。MS-C3已由A在ms-i2e接受（原15项实际SQL通过），两处Ref/Windows兼容修复已保留。下节保留MS-C1/MS-C2/MS-C3各自当时报告。
 
 ## MS-C1 历史交接报告
 
@@ -313,3 +313,139 @@ A 在已安排 SQL 环境/集成 SHA 运行：
 - 最小接线提案：`requests/B/MS-C3-model-input-wiring.md`；无公共接口改动审批被假定为已通过。A 决定与新基线写 DISPATCH。
 - 实现与 A 的路由接线应独立提交，正常 revert B 新 adapter/测试不删已有 Context 记录；不修改 D01/D03/D06，不把 MS-C3 组件交付标为完整 P1-02/Agent accepted。
 - 未创建、修改或联系其他 session；A 审阅/合入/处理公共冲突并执行整条链路回归。
+
+## MS-C4：上下文纯计算有界缓存交接
+
+日期：2026-10-08（Asia/Shanghai）。状态：**局部组件已提交；B 单元/静态检查通过，35项SQL本轮待A实跑；默认关闭，未标P1-02/P4-04整轮accepted。**
+
+### 实际基线与提交
+
+- 包 / 原轮：B / MS-C4 / P1-02（参考P4-04缓存边界）。
+- 实际目录 / 分支：`E:/UAW/.worktrees/context` / `dev/context`。
+- 开始前工作区干净，原HEAD `00332fc07de1e72ba97199ac8e25352219ac2606`。执行 `git fetch origin --tags`、`git merge --ff-only ms-i2e`，均exit 0；没有reset/rebase或单独覆盖公共文件。
+- 快进后HEAD和 `ms-i2e^{commit}` 一致：**`ba2f3b0d9417e6d695eaa74c2f766217c98b01f1`**。按此固定版本开发，不混入其他worker未交接代码。
+- 按锁同步：`UV_CACHE_DIR=.cache/uv` 下执行 `uv sync --frozen --extra agent-engine --link-mode copy`，exit 0，Checked 91 packages。Python **3.14.6**，prefix为本worktree `.venv`；锁未改。
+- 本包实现提交：**`acc68fc670ed5edb5186908219408c1bc4c1dfda`**，`feat(context): add optional bounded pure computation cache`。
+- 本交接另作单独提交；其实际SHA由 `git log -1 --format=%H -- docs/coordination/handoffs/B.md` 查询，并在最终回执报告。不改写已交接历史，不push。
+- A 的MS-C3接受与原15项实际SQL通过见固定基线DISPATCH/MS-I2e；A在 `285258a` 的Ref/Windows测试修复已随快进保留。`tests/integration/context/model_input_fixture.py`、`test_model_input_postgres.py` 与ms-i2e逐字节相同，B本包未修改它们。下面旧MS-C3章节的“待SQL”是当时历史回执。
+
+### 修改清单
+
+源码提交仅8个B允许文件；交接提交只更新本文件：
+
+| 文件 | 本包变化 |
+| --- | --- |
+| `src/uaw/context/cache.py` | 新增进程内主体分区、有界LRU、不可变bytes、完整摘要键和只对缓存故障的best effort适配 |
+| `src/uaw/context/model_input.py` | 可选cache构造注入；原身份/分类验证保留，纯格式化/序列化/完整估算单独复用；最终复查仍执行 |
+| `src/uaw/context/selection.py` | 保持count签名/原估算公式；在已验证Reading之后可选缓存整数估算；counter实例/版本纳入键 |
+| `src/uaw/context/composer.py` | 向selector内部键材料传实际snapshot/request/epoch/binding/instructions；不缓存授权结论 |
+| `src/uaw/context/facade.py` | 可选内部cache参数传selector，既有调用默认关闭 |
+| `tests/unit/context/test_cache.py` | 新增67项受控组件检查（含参数化），原107项不改 |
+| `tests/integration/context/test_cache_postgres.py` | 新增11项SQL用例，模块名与unit不同；本轮尚未实跑 |
+| `docs/coordination/requests/B/MS-C4-cache-wiring.md` | A最小可选接线/关闭示例、消费方影响和待SQL清单；无公共契约缺口 |
+
+没有修改seed.py、intent.py、Model、组装根、API、shared/schema/依赖锁、公共测试fixture、迁移、README/DISPATCH、其他session或worktree。公共五项摘要与固定基线逐字节复核：schema `45161b36f2e81622e73f86c23b048cda8d55686e7045248f0394ab51d13dbe6b`；shared ports `453cd9cd21b92a77c6e370fc6f0463072a3903a2c6b5beee56dec4f93b0c27a5`；shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`；uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；理解提示词 `3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400`。
+
+### 接口与缓存边界
+
+公开调用保持：
+
+```python
+await GenericModelInputs(composer).resolve(snapshot_ref, ctx)  # -> ModelPrompt
+counter.count(reading)  # -> int；TokenCounter protocol没有新增要求
+```
+
+可选内部构造：`ContextComponents(..., cache=cache)` / `Selector(..., cache=cache)`；`GenericModelInputs(composer, cache=cache)`。`PureComputationCache(max_entries=..., max_bytes=...)`，`get/put/clear`及只读frozen `stats(entries,size_bytes,hits,misses,evictions)`均是B内部接口，不新增wire对象。两个入口可以各自注入或共享同一有界实例；输入格式化不会自动继承selector缓存。
+
+- 每次依旧读取实际Repository/InstructionSet、current authority、所有实际来源/分类/ModelToolSet和固定窗口；完整scope、Run、epoch、依赖版本、flags/权限、preserve、取消与期限由原port继续验证。所有既有await后和最终composer/authority/window/guard复查保留。
+- 缓存只存纯消息格式化bytes、序列化估算及纯counter整数bytes，不存旧Reading、CompositionBinding、访问许可或旧ModelPrompt授权结论。模型输出没有缓存；工具集合仍每次真实解析验证，不假造空tools。
+- generic键包括实际snapshot Ref/完整snapshot/request/instructions、binding全字段的摘要材料、全部Reading原文/Ref/location/access_scope/kind/trust/required/requirement_ids、实际capability/完整ToolSpec（含input/output schema）、fixed window/全部预留、formatter类型和算法版本。selector键包括selection/preserve/window/全部Reading及composer传来的snapshot/epoch/规则/工具边界。
+- 主体kind/id分区，完整Principal（含auth session）、完整Scope、Run、fixed model/capability/budget refs及agent/node进入键。operation/trace/attempt/deadline不属于纯输入身份；新的当前授权与取消/期限仍检查。相同body但分类/保护元数据改变不命中旧值。
+- 来源或snapshot缺hash、键无法完整序列化时绕过；同ID/version不同body先由原读取校验拒绝。cache键只留两个摘要，不保存原始key数据。
+- 进程内LRU同时限制条目数和字节；字节accounting为payload＋两个摘要UTF-8字节，额外Python容器开销由条目上限限制，不声称RSS精确上限。超大条目绕过，容量任一为0关闭，默认构造关闭。条目淘汰/clear/进程终止后可重算；没有TTL授权、跨主体共享、Redis、语义命中、持久缓存、负权限缓存或在途合并。
+- 返回缓存格式化数据时重新JSON解析成副本；真实tools每次重新解析，ModelPrompt每次新建。调用方修改消息/嵌套tool schema不会修改随后命中或真实来源。
+- 缓存启用/get/put或内部不可解析条目故障允许重算；这些小范围best effort不包裹任何实际Reader/authority/模型/纯计算错误。撤销、取消、窗口不足或来源变化依旧原样失败。
+- 默认ConservativeTokenCounter依旧UTF-8 bytes＋64估算，内部 `cache_version="1"`。自定义counter默认不缓存；只有具体纯计算实现显式提供覆盖算法/全部配置的非空字符串cache_version才启用。key同时包含类型/name、每个counter实例身份和版本；替换实例或改版本不复用旧计数。
+
+### 可选注入与默认关闭示例
+
+以下变量必须由A提供真实port；不代表生产通用authority已就绪。
+
+```python
+from uaw.context.cache import PureComputationCache
+from uaw.context.facade import ContextComponents
+from uaw.context.model_input import GenericModelInputs
+
+
+def make_inputs(cache=None):
+    components = ContextComponents(
+        readers=registered_readers,
+        cancellation=current_cancellation,
+        rules=registered_purpose_rules,
+        models=fixed_model_window,
+        repository=context_repository,
+        authority=current_composition_authority,
+        cache=cache,
+    )
+    return components, GenericModelInputs(components.composer, cache=cache)
+
+
+bounded = PureComputationCache(max_entries=128, max_bytes=2 * 1024 * 1024)
+components, inputs = make_inputs(bounded)  # 可选启用两个内部入口
+components_off, inputs_off = make_inputs()  # 默认关闭
+components_zero, inputs_zero = make_inputs(
+    PureComputationCache(max_entries=0, max_bytes=2 * 1024 * 1024)
+)  # 显式零容量同样关闭；max_bytes=0也关闭
+prompt = await inputs.resolve(snapshot_ref, trusted_context)
+```
+
+A目前composition和Model路由没有被B修改，产品缓存保持默认关闭；真实通用组件的缺authority/Reader分支仍unavailable。
+
+### 三组真实受控例子
+
+来自本worktree实际运行的 `tests/.artifacts/B/MS-C4/examples.json`，完全是受控内存Reader/authority组件，不是SQL/真实LLM或Runner回执：
+
+1. 成功：原文 `"  原文 123.40\r\n"` 仍为user文本；唯一显式generic平台规则为system `"Follow the user"`；approved.read保留完整ToolSpec。估算和无缓存结果相同，没有模型Token减少。
+2. 重复：两次相同纯输入，format累计 **1次**、三个Reading的counter累计 **3次**，第二次新增均为0。两次各自仍执行Reader read **16次**、authority.verify **4次**、window.resolve **6次**、rule provider **2次**；正文/来源/规则读取没有减少。零容量对照单元断言两次format为2、counter为12。只证明本地纯计算次数减少，不证明实际延迟/内存/Provider prompt cache收益。
+3. 拒绝/版本：warm后撤销Reader返回 `permission_denied`；warm后取消返回 `cancelled`；旧body/classification/rule/tools/epoch改变拒绝，合法新版本snapshot不复用旧格式化。仅固定窗口增1但仍可容纳，格式化累计变2、counter变6；窗口不足仍budget失败，最终命中后发生撤销/取消/epoch/window变化同样失败。
+
+### 实际验证命令与回执
+
+独立忽略回执目录：`tests/.artifacts/B/MS-C4/`。`validation.json`保存实际命令数组、返回码、Python/prefix、公共SHA256和SQL未运行状态；`unit.xml`/`unit.txt`、`ruff.txt`、`format.txt`、`mypy.txt`、`sql-collection.txt`、`sql-fixture-plan.txt`及 `examples.json`保留原始输出。
+
+| 检查 | 本worktree实际结果 |
+| --- | --- |
+| Ruff check：11个B源码＋B Context unit/integration | exit0，All checks passed |
+| Ruff format --check：同范围 | exit0，19 files already formatted |
+| Mypy strict：11个B源码 | exit0，Success |
+| Context unit全量 | **174 passed，0 failed/error/skip**（原107＋C4新增67）；最终回执9.35s |
+| unit＋SQL跨目录collect-only | exit0，**209 tests collected**＝174 unit＋35 SQL；收集没有执行SQL |
+| 新SQL `--setup-plan` | exit0，fixture依赖/Windows control-plane loop图可解析，**no tests ran** |
+| git diff / cached --check及允许路径检查 | 通过；实现提交仅上列8个文件 |
+| 公共文件及A两处兼容修复与ms-i2e逐字节比较 | 通过，均未改动 |
+
+实际静态命令的路径展开见validation.json，可复跑：
+
+```powershell
+$bContextPaths = @('cache', 'contracts', 'facade', 'ports', 'repository', 'sources',
+    'rules', 'selection', 'composer', 'references', 'model_input') |
+    ForEach-Object { "src/uaw/context/$_.py" }
+./.venv/Scripts/python.exe -m ruff check @bContextPaths tests/unit/context tests/integration/context
+./.venv/Scripts/python.exe -m ruff format --check @bContextPaths tests/unit/context tests/integration/context
+./.venv/Scripts/python.exe -m mypy @bContextPaths --cache-dir .cache/mypy/B
+./.venv/Scripts/python.exe -m pytest tests/unit/context -q -o cache_dir=.cache/pytest/B --junitxml=tests/.artifacts/B/MS-C4/unit.xml
+./.venv/Scripts/python.exe -m pytest tests/unit/context tests/integration/context --collect-only -q -o cache_dir=.cache/pytest/B
+./.venv/Scripts/python.exe -m pytest tests/integration/context/test_cache_postgres.py --setup-plan -q -o cache_dir=.cache/pytest/B
+```
+
+开发中已修复局部变量类型名、lint及新SQL错误loop标记；最终静态/单元/收集无未通过项。这不把数据库缺环境改称通过。
+
+### SQL未通过项与A接线要求
+
+- 本worktree `UAW_TEST_DATABASE_URL` **缺失**；本轮 **35项SQL尚未实际执行**：原C2 9＋原C3 15＋C4新增11。原C3已由A在基线实跑15的历史接受保持，本轮改动后仍需A实际回归。collect-only/setup plan不是SQL通过，B没有复制A私有配置/凭据或启动共享数据库。
+- 新SQL独立模块 `test_cache_postgres.py`：warm重复和返回变异、实际规则/工具/材料/epoch更新、实际政策撤销、实际Run取消、实际原文删除、cache clear/新缓存实例、固定窗口变化、跨Run。读取用真实PostgreSQL，通用规则/tools/epoch是明确受控fixture；窗口变化wrapper也是受控。新实例不冒充进程重启，原C3独立Python进程恢复用例保持。
+- A在实际测试连接/集成SHA运行 `./.venv/Scripts/python.exe -m pytest tests/integration/context -q --require-postgres`（35项），按原随机主体清理，不truncate。随后由A执行Model路由、理解输入/native envelope和整条链路回归。
+- A决定内部cache是否注入及具体容量；默认不开产品缓存。缺真实生产purpose authority、capability Reader或窗口/取消来源继续不可用，不能挂fixture或用理解模板兜底。
+- 无公共DTO/port/配置新增需求；接线说明见 `requests/B/MS-C4-cache-wiring.md`。B不改composition/API/Model/shared/锁，不启用flag，不决定D01/D03/D06。
+- 此包仅局部组件，未验证实际Provider、LLM/Agent质量、Runner执行或P4-04多层缓存。缓存不保存唯一状态；退出/clear即丢，回退本包不删除Context持久记录。A负责审阅、合入、公共冲突和完整链路验收。
+- 源码与handoff分别提交；本包交接后停止，不自动开始下一包。没有创建或联系其他session。
