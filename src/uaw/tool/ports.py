@@ -85,4 +85,6 @@ class ToolOutputVerifierPort(Protocol):
 
 
 class ToolInvocationResultsPort(Protocol):
+    def ready(self) -> None: ...
+
     async def resume(self, call: JsonObject, ctx: TrustedExecutionContext) -> JsonObject: ...

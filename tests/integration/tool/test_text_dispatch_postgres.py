@@ -1,4 +1,4 @@
-"""Stage milestone SQL: genuine approvals/budget, actual local text computation."""
+"""Genuine approvals/budget, actual local text computation and normalized results."""
 
 import asyncio
 
@@ -17,13 +17,14 @@ async def test_text_stage_approved_once_send_actual_response_durable(text_pipeli
     assert await c.ledger.get("tool.budget.reserved", c.ctx.attempt_id, c.ctx) is None
     await approve(c)
     stage = await p.facade.invoke(p.raw, c.ctx)
-    assert stage["failure"]["code"] == "dependency_unavailable"
+    assert stage["kind"] == "ok" and stage["payload"]["status"] == "succeeded"
     actual = await p.source.provider_receipt(c.ctx)
     validate_contract("ProviderReceipt", actual)
     output = await p.source.read_raw(Ref.model_validate(actual["raw_result_ref"]), c.ctx)
     assert output == inspect_text(p.raw["arguments"]["text"])
     assert (
-        p.executor.calls == 1 and (await c.ledger.effect_from_attempt(c.ctx))["state"] == "unknown"
+        p.executor.calls == 1
+        and (await c.ledger.effect_from_attempt(c.ctx))["state"] == "confirmed"
     )
     await p.facade.invoke(p.raw, c.ctx)
     assert p.executor.calls == 1
@@ -37,6 +38,11 @@ async def test_text_stage_concurrent_invocation_has_one_send_owner(text_pipeline
         asyncio.gather(*(p.facade.invoke(p.raw, p.case.ctx) for _ in range(3))), 20
     )
     assert len(results) == 3 and p.executor.calls == 1
+    assert any(r["kind"] == "ok" for r in results)
+    assert all(
+        r["kind"] == "ok" or r["failure"]["code"] in {"unknown_effect", "reconciliation_pending"}
+        for r in results
+    )
     assert await p.source.provider_receipt(p.case.ctx) is not None
 
 

@@ -4,13 +4,13 @@ import json
 from typing import Any
 
 from uaw.infrastructure.db.records import parameter_hash
-from uaw.infrastructure.db.transactions import RecordTransaction
+from uaw.infrastructure.db.transactions import RecordTransaction, reference, timestamp
 from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.stores import BlobStorePort
 from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.ledger import ToolLedger, action_key, immutable
-from uaw.tool.ports import ToolRecoveryAccessPort
-from uaw.tool.schema import canonical, digest
+from uaw.tool.ports import ToolOutputVerifierPort, ToolRecoveryAccessPort
+from uaw.tool.schema import canonical, compile_schema, digest
 
 Payload = dict[str, Any]
 
@@ -189,3 +189,225 @@ class ToolResponseStore:
                 status=412,
             )
         return data
+
+
+class ToolReceiptStore(ToolResponseStore):
+    """Actual fixed provider response -> verified read evidence -> recovery source.
+
+    Implements ActionReceiptLookupPort, ToolReceiptReaderPort and the evidence Reader.
+    Does not infer outcome from transport, Runner, timeout or a budget record.
+    """
+
+    def __init__(
+        self,
+        ledger: ToolLedger,
+        blobs: BlobStorePort,
+        *,
+        provider_ref: Ref,
+        provider: Principal,
+        access: ToolRecoveryAccessPort | None = None,
+        verifier: ToolOutputVerifierPort | None = None,
+    ) -> None:
+        super().__init__(ledger, blobs, provider_ref=provider_ref, provider=provider, access=access)
+        self.verifier = verifier
+
+    async def verified(self, receipt: Payload, ctx: TrustedExecutionContext) -> JsonObject:
+        receipt = json.loads(canonical(receipt))
+        validate_dependency("ProviderReceipt", receipt, "normalize_result")
+        actual = await self.provider_receipt(ctx)
+        if actual != receipt:
+            raise fail(
+                "receipt_binding_conflict",
+                "Provider response differs from saved original",
+                phase="normalize_result",
+                category="conflict",
+                status=409,
+            )
+        if self.verifier is None:
+            raise fail(
+                "dependency_unavailable",
+                "Actual tool output verifier is not wired",
+                phase="normalize_result",
+                category="dependency",
+                status=503,
+            )
+        if receipt["effect_state"] != "confirmed":
+            raise fail(
+                "unknown_effect",
+                "Provider computation remains unresolved",
+                phase="normalize_result",
+                category="unknown_effect",
+                status=409,
+            )
+        call, spec = await self.binding(ctx)
+        data = await self.read_raw(Ref.model_validate(receipt["raw_result_ref"]), ctx)
+        if not compile_schema(spec["output_schema"]).is_valid(data):
+            raise fail(
+                "tool_output_invalid",
+                "Actual output violates fixed tool schema",
+                phase="normalize_result",
+                category="dependency",
+                status=503,
+            )
+        frozen = canonical({"data": data, "call": call, "spec": spec})
+        await self.verifier.verify(data, call, spec, ctx)
+        if frozen != canonical({"data": data, "call": call, "spec": spec}):
+            raise fail(
+                "tool_output_invalid",
+                "Output verifier changed fixed data",
+                phase="normalize_result",
+                category="conflict",
+                status=409,
+            )
+        await self.binding(ctx)
+        if await self.provider_receipt(ctx) != receipt:
+            raise fail(
+                "receipt_version_stale",
+                "Provider source changed after output verification",
+                phase="normalize_result",
+                category="conflict",
+                status=412,
+            )
+        return data
+
+    def receipt_ref(self, receipt: Payload, ctx: TrustedExecutionContext) -> Ref:
+        # Digest pins the real provider observation plus independently fixed ownership.
+        # It is not a self-referential hash of the reconciliation envelope.
+        return Ref(
+            kind="content",
+            id="tool-receipt-" + parameter_hash({"run": ctx.run_id, "attempt": ctx.attempt_id}),
+            version="1",
+            content_hash=digest(
+                {
+                    "receipt": receipt,
+                    "context": ctx.wire(),
+                    "provider": self.provider.wire(),
+                    "provider_ref": self.provider_ref.wire(),
+                }
+            ),
+        )
+
+    async def publish(
+        self,
+        receipt: JsonObject,
+        ctx: TrustedExecutionContext,
+        *,
+        authenticated_provider: Principal,
+    ) -> Ref:
+        self.authenticate(authenticated_provider)
+        fixed: Payload = json.loads(canonical(receipt))
+        await self.verified(fixed, ctx)
+        call, spec = await self.binding(ctx)
+        ref = self.receipt_ref(fixed, ctx)
+
+        async def write(tx: RecordTransaction) -> Payload:
+            previous = await self.ledger_optional(tx, ctx)
+            if previous is not None:
+                if previous["receipt_ref"] != ref.wire() or previous["usage"] != fixed["usage"]:
+                    raise fail(
+                        "receipt_conflict",
+                        "Published source observation changed",
+                        phase="result_source",
+                        category="conflict",
+                        status=409,
+                    )
+                return previous
+            value = {
+                "action_ref": reference("tool_call", action_key(ctx, call["action_id"])),
+                "attempt_id": ctx.attempt_id,
+                "provider_ref": spec["provider_ref"],
+                "receipt_ref": ref.wire(),
+                "outcome": "applied",
+                "evidence_refs": [fixed["raw_result_ref"]],
+                "usage": fixed["usage"],
+                "observed_at": timestamp(),
+            }
+            return await immutable(
+                tx, "tool.source.receipts", ctx.attempt_id, "ToolReconciliationReceipt", value
+            )
+
+        await self.ledger.transactions.inspect(ctx.principal, self.ledger.aggregate(ctx), write)
+        return ref
+
+    @staticmethod
+    async def ledger_optional(
+        tx: RecordTransaction, ctx: TrustedExecutionContext
+    ) -> Payload | None:
+        from uaw.tool.ledger import optional
+
+        return await optional(tx, "tool.source.receipts", ctx.attempt_id)
+
+    async def find(self, action_id: str, ctx: TrustedExecutionContext) -> Ref | None:
+        call, _ = await self.binding(ctx)
+        if action_id != call["action_id"]:
+            raise fail(
+                "receipt_binding_conflict",
+                "Lookup action differs from original attempt",
+                phase="result_source",
+                category="conflict",
+                status=409,
+            )
+        stored = await self.ledger.get("tool.source.receipts", ctx.attempt_id, ctx)
+        if stored is None:
+            return None
+        ref = Ref.model_validate(stored["receipt_ref"])
+        await self.read(ref, ctx)
+        return ref
+
+    async def read(self, receipt_ref: Ref, ctx: TrustedExecutionContext) -> JsonObject:
+        call, spec = await self.binding(ctx)
+        value = await self.ledger.get("tool.source.receipts", ctx.attempt_id, ctx)
+        if value is None:
+            from uaw.shared.stores import StoreMissing
+
+            raise StoreMissing()
+        validate_dependency("ToolReconciliationReceipt", value, "result_source")
+        raw = await self.provider_receipt(ctx)
+        if raw is None:
+            raise fail(
+                "dependency_unavailable",
+                "Published receipt has no actual provider source",
+                phase="result_source",
+                category="dependency",
+                status=503,
+            )
+        if (
+            value["receipt_ref"] != receipt_ref.wire()
+            or receipt_ref != self.receipt_ref(raw, ctx)
+            or value["action_ref"] != reference("tool_call", action_key(ctx, call["action_id"]))
+            or value["attempt_id"] != ctx.attempt_id
+            or value["provider_ref"] != spec["provider_ref"]
+            or value["outcome"] != "applied"
+            or value["evidence_refs"] != [raw["raw_result_ref"]]
+            or value["usage"] != raw["usage"]
+        ):
+            raise fail(
+                "receipt_binding_conflict",
+                "Published receipt differs from actual saved computation",
+                phase="result_source",
+                category="conflict",
+                status=409,
+            )
+        await self.verified(raw, ctx)
+        if await self.ledger.get("tool.source.receipts", ctx.attempt_id, ctx) != value:
+            raise fail(
+                "receipt_version_stale",
+                "Published receipt changed during recovery read",
+                phase="result_source",
+                category="conflict",
+                status=412,
+            )
+        return value
+
+    async def check(self, ref: Ref, ctx: TrustedExecutionContext) -> Ref:
+        receipt = await self.provider_receipt(ctx)
+        if receipt is None or receipt["raw_result_ref"] != ref.wire():
+            raise fail(
+                "receipt_binding_conflict",
+                "Evidence is not this attempt's actual raw response",
+                phase="evidence",
+                category="conflict",
+                status=409,
+            )
+        await self.verified(receipt, ctx)
+        return Ref.model_validate(receipt["raw_result_ref"])

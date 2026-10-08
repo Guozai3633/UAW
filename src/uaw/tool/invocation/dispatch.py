@@ -10,7 +10,7 @@ from uaw.tool.budget import ToolBudgetAdapter
 from uaw.tool.discovery import check_access, require_entry
 from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.invocation.schema import normalize
-from uaw.tool.ledger import ToolLedger
+from uaw.tool.ledger import ToolLedger, action_key
 from uaw.tool.ports import ToolAccessPort, ToolExecutorPort, ToolInvocationResultsPort
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.schema import canonical
@@ -24,7 +24,7 @@ class ToolInvocation:
         registry: ToolRegistry,
         ledger: ToolLedger,
         budgets: ToolBudgetAdapter,
-        approvals: ToolApprovalAdapter,
+        approvals: ToolApprovalAdapter | None,
         *,
         access: ToolAccessPort | None = None,
         executor: ToolExecutorPort | None = None,
@@ -78,6 +78,15 @@ class ToolInvocation:
     async def invoke(self, request: JsonObject, ctx: TrustedExecutionContext) -> JsonObject:
         call = normalize(request, self.registry)
         spec = self.registry.get(call["tool_ref"]).spec()
+        existing = await self.ledger.get("tool.effects", action_key(ctx, call["action_id"]), ctx)
+        if existing and existing["attempt_ids"] and existing["attempt_ids"] != [ctx.attempt_id]:
+            raise fail(
+                "unknown_effect",
+                "Action already belongs to its original send attempt",
+                phase="dispatch",
+                category="unknown_effect",
+                status=409,
+            )
         prior = await self.ledger.get("tool.attempt.contexts", ctx.attempt_id, ctx)
         if prior is not None:
             pinned = await self.ledger.attempt(ctx)
@@ -102,10 +111,15 @@ class ToolInvocation:
                     )
                 return await self.resume(call, ctx)
         await self.gate(call, spec, ctx)
-        if self.executor is None or self.estimates is None:
+        if (
+            self.executor is None
+            or self.estimates is None
+            or self.results is None
+            or self.approvals is None
+        ):
             raise fail(
                 "dependency_unavailable",
-                "Read executor/estimates are not wired",
+                "Read executor/estimates/approvals/results are not wired",
                 phase="dispatch",
                 category="dependency",
                 status=503,
@@ -118,14 +132,29 @@ class ToolInvocation:
                 category="dependency",
                 status=503,
             )
+        self.results.ready()
         self.prepare(call, spec)
         validate_dependency("ResourceVector", self.estimates, "reserve")
+        before = canonical({"call": call, "spec": spec, "ctx": ctx.wire()})
+
+        def unchanged() -> None:
+            if before != canonical({"call": call, "spec": spec, "ctx": ctx.wire()}):
+                raise fail(
+                    "action_conflict",
+                    "Admission dependency changed fixed inputs",
+                    phase="precheck",
+                    category="conflict",
+                    status=409,
+                )
+
         decision = await self.approvals.precheck(call, spec, ctx)
+        unchanged()
         validate_dependency("ComponentToolInvocationPrecheckResult", decision, "precheck")
         if decision["kind"] != "ok":
             return decision
         await self.gate(call, spec, ctx)
         checked = await self.approvals.recheck(call, spec, decision, ctx)
+        unchanged()
         validate_dependency("ComponentToolInvocationRecheckResult", checked, "recheck")
         if checked["kind"] != "ok":
             return checked
@@ -137,41 +166,58 @@ class ToolInvocation:
                 category="authorization",
                 status=403,
             )
-        # Bound estimates and the actual reservation plan survive response loss.
-        await self.budgets.reserve(self.estimates, ctx)
-        await self.gate(call, spec, ctx)
-        await self.approvals.require_approved(ctx)
-        owned = await self.budgets.mark_dispatch(ctx)
-        if not owned:
+        # Cleanup is limited to this admitted reserve/send operation. A malformed
+        # or conflicting request must never release the original attempt's holds.
+        try:
+            # Bound estimates and the actual reservation plan survive response loss.
+            await self.budgets.reserve(self.estimates, ctx)
+            await self.gate(call, spec, ctx)
+            await self.approvals.require_approved(ctx)
+            owned = await self.budgets.mark_dispatch(ctx)
+            if not owned:
+                return await self.resume(call, ctx)
+            # Accounting await is not a send grant. Recheck actual admission immediately
+            # before invoking the trusted executor. Failure leaves the claimed unknown.
+            await self.gate(call, spec, ctx)
+            await self.approvals.require_approved(ctx)
+            unchanged()
+            fixed = before
+            receipt = await self.executor.execute(call, spec, ctx)
+            if fixed != canonical({"call": call, "spec": spec, "ctx": ctx.wire()}):
+                raise fail(
+                    "action_conflict",
+                    "Executor mutated original inputs",
+                    phase="dispatch",
+                    category="conflict",
+                    status=409,
+                )
+            receipt = json.loads(canonical(receipt))
+            validate_dependency("ProviderReceipt", receipt, "dispatch")
+            if (
+                receipt["attempt_id"] != ctx.attempt_id
+                or receipt["usage"]["attempt_id"] != ctx.attempt_id
+            ):
+                raise fail(
+                    "receipt_binding_conflict",
+                    "Provider receipt belongs to another attempt",
+                    phase="dispatch",
+                    category="conflict",
+                    status=409,
+                )
+            await self.ledger.save(
+                "tool.invocation.receipts", ctx.attempt_id, "ProviderReceipt", receipt, ctx
+            )
             return await self.resume(call, ctx)
-        # Accounting await is not a send grant. Recheck actual admission immediately
-        # before invoking the trusted executor. Failure leaves the claimed unknown.
-        await self.gate(call, spec, ctx)
-        await self.approvals.require_approved(ctx)
-        fixed = canonical({"call": call, "spec": spec, "ctx": ctx.wire()})
-        receipt = await self.executor.execute(call, spec, ctx)
-        if fixed != canonical({"call": call, "spec": spec, "ctx": ctx.wire()}):
-            raise fail(
-                "action_conflict",
-                "Executor mutated original inputs",
-                phase="dispatch",
-                category="conflict",
-                status=409,
-            )
-        receipt = json.loads(canonical(receipt))
-        validate_dependency("ProviderReceipt", receipt, "dispatch")
-        if (
-            receipt["attempt_id"] != ctx.attempt_id
-            or receipt["usage"]["attempt_id"] != ctx.attempt_id
-        ):
-            raise fail(
-                "receipt_binding_conflict",
-                "Provider receipt belongs to another attempt",
-                phase="dispatch",
-                category="conflict",
-                status=409,
-            )
-        await self.ledger.save(
-            "tool.invocation.receipts", ctx.attempt_id, "ProviderReceipt", receipt, ctx
-        )
-        return await self.resume(call, ctx)
+        except BaseException:
+            # Only unsent reservations can be released. Claimed intent remains
+            # unknown even if the following executor never replied.
+            try:
+                effect = await self.ledger.effect_from_attempt(ctx)
+                if ctx.attempt_id not in effect["attempt_ids"]:
+                    await self.budgets.recover_reserved(ctx)
+                    await self.budgets.release(ctx)
+            except Exception:
+                # Leave durable accounting for recovery; preserve the original
+                # error/cancellation, and never report an invented release.
+                pass
+            raise

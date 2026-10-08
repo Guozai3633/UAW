@@ -1,4 +1,4 @@
-"""Tool discovery/admission and original-attempt recovery; no executor is wired."""
+"""Tool admission, optional read executor and original-attempt result recovery."""
 
 import json
 from typing import Any, cast
