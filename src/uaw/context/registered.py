@@ -30,11 +30,12 @@ from uaw.context.contracts import (
 from uaw.context.model_input import serialize
 from uaw.context.ports import RegisteredRunSource, RegisteredToolValidator
 from uaw.context.sources import Guard
+from uaw.infrastructure.db.models import utcnow
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
-from uaw.shared.stores import BlobStorePort, RecordStorePort, StoreConflict, StoreMissing
+from uaw.shared.stores import BlobStorePort, Record, RecordStorePort, StoreConflict, StoreMissing
 
 MATERIALS = "context.registered.materials"
 RULES = "context.registered.rules"
@@ -43,6 +44,8 @@ RECIPE_RULES = "context.registered.recipe_rules"
 TOOLS = "context.registered.tools"
 BINDINGS = "context.registered.bindings"
 CATALOG = "context.registered.catalog"
+SEALS = "context.registered.seals"
+REVOKED = "context.registered.revoked"
 MAX_TEXT_BYTES = 65536
 MAX_ENTRIES = 64
 MAX_REQUEST_BYTES = 262144
@@ -126,8 +129,7 @@ class RegisteredContextInputs:
         self.transactions, self.runs, self.tool_validator = transactions, runs, tool_validator
         self.guard = Guard(runs)
 
-    @bounded
-    async def current(self, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
+    async def _access(self, ctx: TrustedExecutionContext) -> tuple[Record, Record]:
         await self.guard.check(ctx)
         if self.runs is None:
             raise CapabilityUnavailable("context.registered_run_source")
@@ -150,24 +152,33 @@ class RegisteredContextInputs:
             or state.payload["original_input_ref"] != binding.payload["input_ref"]
         ):
             raise reject("source_changed", "Admitted source set changed", 410)
+        return binding, state
+
+    @bounded
+    async def current(self, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
+        before = await self._access(ctx)
+        state = before[1]
+        assert self.runs is not None
+        if len(state.payload["patch_refs"]) >= MAX_ENTRIES:
+            raise reject(
+                "context_registration_too_large", "Run exceeds protected source bounds", 413
+            )
         pins = []
         for data in (state.payload["original_input_ref"], *state.payload["patch_refs"]):
-            read = await self.runs.read(from_wire(Ref, data), "pinned", ctx)
+            requested = from_wire(Ref, data)
+            reading = await self.runs.read(requested, "pinned", ctx)
             if (
-                read.kind != "user_input"
-                or read.trust != "user"
-                or not read.required
-                or read.ref.content_hash != hashlib.sha256(read.text.encode("utf-8")).hexdigest()
+                not matches_pin(requested, reading.ref)
+                or reading.kind != "user_input"
+                or reading.trust != "user"
+                or not reading.required
+                or reading.ref.content_hash
+                != hashlib.sha256(reading.text.encode("utf-8")).hexdigest()
             ):
                 raise reject("source_changed", "Run source lost its original identity", 410)
-            pins.append(read.ref)
-        # Source-set/model changes during I/O must fail before any registration/read.
-        if (await self.records.get(ctx.principal, state.namespace, state.resource_id)) != state or (
-            await self.records.get(ctx.principal, binding.namespace, binding.resource_id)
-        ) != binding:
+            pins.append(reading.ref)
+        if await self._access(ctx) != before:
             raise reject("source_changed", "Run bindings changed during source read", 410)
-        await self.runs.authorize(ctx)
-        await self.guard.check(ctx)
         return tuple(pins)
 
     async def _service(self, actor: Principal, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
@@ -203,6 +214,27 @@ class RegisteredContextInputs:
                 "permission_denied", "Registration is outside its full owner/Run/scope", 403
             )
         return owner
+
+    async def _seal(
+        self,
+        identifier: str,
+        revision: int,
+        entries: tuple[tuple[str, str, dict[str, Any]], ...],
+        ctx: TrustedExecutionContext,
+    ) -> None:
+        row = await self.records.get(ctx.principal, SEALS, identifier)
+        expected = Ref(
+            kind="content",
+            id=identifier,
+            version=str(revision),
+            content_hash=digest({"entries": entries, "owner": identity(ctx)}),
+        )
+        if (
+            row.schema_name != "Ref"
+            or row.revision != revision
+            or from_wire(Ref, row.payload) != expected
+        ):
+            raise reject("source_changed", "Registered payload/metadata integrity changed", 410)
 
     async def _catalog(
         self, tx: RecordTransaction, identifier: str, pin: Ref, ctx: TrustedExecutionContext
@@ -263,6 +295,18 @@ class RegisteredContextInputs:
                 await tx.write(BINDINGS, identifier, "TrustedExecutionContext", ctx.wire())
             for namespace, schema, value in entries:
                 await tx.write(namespace, identifier, schema, value, expected)
+            await tx.write(
+                SEALS,
+                identifier,
+                "Ref",
+                Ref(
+                    kind="content",
+                    id=identifier,
+                    version=str(expected + 1),
+                    content_hash=digest({"entries": entries, "owner": identity(ctx)}),
+                ).wire(),
+                expected,
+            )
             if catalog:
                 await self._catalog(tx, identifier, pin, ctx)
             await verify()
@@ -354,6 +398,8 @@ class RegisteredContextInputs:
         original = await self._service(authenticated_service, ctx)
         self._meta(expected_revision, meta)
         rule = from_wire(InstructionRule, rule.wire())
+        if not rule.text or len(rule.text.encode("utf-8")) > MAX_TEXT_BYTES:
+            raise reject("context_registration_too_large", "Rule must be 1..65536 UTF-8 bytes", 413)
         if rule.id.startswith(("material-", "recipe-")):
             raise reject("context_reference_invalid", "Rule ID uses a reserved namespace")
         if (
@@ -420,7 +466,11 @@ class RegisteredContextInputs:
         if tools.tools:
             if self.tool_validator is None:
                 raise CapabilityUnavailable("context.current_tool_validation_source")
-            await self.tool_validator.check(tools, ctx)
+            before = tools.wire()
+            offered = from_wire(ModelToolSet, before)
+            await self.tool_validator.check(offered, ctx)
+            if offered.wire() != before:
+                raise reject("source_changed", "Tool validator changed the fixed definitions", 410)
         await self.guard.check(ctx)
 
     @bounded
@@ -538,7 +588,7 @@ class RegisteredContextInputs:
 
     @bounded
     async def recipe(self, ctx: TrustedExecutionContext) -> RegisteredRecipe:
-        await self.current(ctx)
+        before = await self._access(ctx)
         identifier = recipe_id(ctx)
         owner = await self._owner(identifier, ctx)
         row = await self.records.get(ctx.principal, RECIPES, identifier)
@@ -555,6 +605,16 @@ class RegisteredContextInputs:
             or request.purpose != "agent_step"
         ):
             raise reject("source_changed", "Recipe revision/schema changed", 410)
+        await self._seal(
+            identifier,
+            row.revision,
+            (
+                (RECIPES, row.schema_name, row.payload),
+                (RECIPE_RULES, rules.schema_name, rules.payload),
+                (TOOLS, tools.schema_name, tools.payload),
+            ),
+            ctx,
+        )
         selected = from_wire(RulesRequest, rules.payload)
         actual_tools = from_wire(ModelToolSet, tools.payload)
         pin = Ref(
@@ -578,12 +638,13 @@ class RegisteredContextInputs:
             or await self._owner(identifier, ctx) != owner
         ):
             raise reject("source_changed", "Recipe changed during read", 410)
-        await self.current(ctx)
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during recipe read", 410)
         return RegisteredRecipe(pin, request, selected, actual_tools, owner)
 
     @bounded
     async def read(self, pin: Ref, ctx: TrustedExecutionContext) -> Reading:
-        await self.current(ctx)
+        before = await self._access(ctx)
         numeric(pin)
         if pin.access_scope is not None:
             raise reject("permission_denied", "Ref access_scope does not grant access", 403)
@@ -599,6 +660,9 @@ class RegisteredContextInputs:
             validate_contract(schema, row.payload)
             if row.schema_name != schema or row.revision != numeric(pin):
                 raise reject("source_changed", "Registered source revision changed", 410)
+            await self._seal(
+                pin.id, row.revision, ((namespace, row.schema_name, row.payload),), ctx
+            )
             kind: BlockKind
             trust: Trust
             rule_value: InstructionRule | None = None
@@ -683,7 +747,8 @@ class RegisteredContextInputs:
             result = Reading(actual, text, kind="material", trust="platform", required=True)
         else:
             raise CapabilityUnavailable(f"context.registered_reader.{pin.kind}")
-        await self.current(ctx)
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during source read", 410)
         return result
 
     @bounded
@@ -696,22 +761,62 @@ class RegisteredContextInputs:
         expected_revision: int,
         meta: RequestMeta,
     ) -> None:
-        await self._service(authenticated_service, ctx)
         self._meta(expected_revision, meta)
-        await self._owner(ref.id, ctx)
-        if ref.kind == "content" and ref.id == recipe_id(ctx):
-            actual = (await self.recipe(ctx)).ref
-            namespace = RECIPES
-        else:
-            actual = (await self.read(ref, ctx)).ref
-            namespace = MATERIALS if ref.kind == "content" else RULES
-        if ref != actual or numeric(ref) != expected_revision:
-            raise StoreConflict()
-        await self.records.delete(
-            ctx.principal,
-            namespace,
-            ref.id,
-            expected_revision=expected_revision,
-            request_id=meta.request_id,
+        if (
+            numeric(ref) != expected_revision
+            or ref.location is not None
+            or ref.access_scope is not None
+            or not ref.content_hash
+            or ref.kind not in ("content", "rule")
+        ):
+            raise reject("context_reference_invalid", "Revocation requires the exact whole pin")
+        namespace = (
+            RECIPES
+            if ref.kind == "content" and ref.id == recipe_id(ctx)
+            else MATERIALS
+            if ref.kind == "content"
+            else RULES
         )
-        await self._service(authenticated_service, ctx)
+
+        async def verify() -> None:
+            await self._service(authenticated_service, ctx)
+            await self._owner(ref.id, ctx)
+
+        async def remove(tx: RecordTransaction) -> dict[str, Any]:
+            # A delete and its typed pin receipt share the registration CAS lock.
+            # Replays still verify current identity/policy/cancellation above.
+            actual = (
+                (await self.recipe(ctx)).ref
+                if namespace == RECIPES
+                else (await self.read(ref, ctx)).ref
+            )
+            row = await tx.load(namespace, ref.id)
+            if actual != ref or row.revision != expected_revision:
+                raise StoreConflict()
+            await verify()
+            row.deleted, row.revision, row.updated_at = True, expected_revision + 1, utcnow()
+            await tx.write(REVOKED, ref.id, "Ref", ref.wire())
+            return {"ref": ref.wire()}
+
+        result = await self.transactions.execute(
+            ctx.principal,
+            "registered-context-" + digest({"run": ctx.run_id}),
+            meta,
+            {
+                "action": "revoke",
+                "ref": ref.wire(),
+                "expected": expected_revision,
+                "controller": authenticated_service.wire(),
+                "owner": identity(ctx),
+            },
+            remove,
+            verify,
+        )
+        await verify()
+        receipt = await self.records.get(ctx.principal, REVOKED, ref.id)
+        if (
+            receipt.schema_name != "Ref"
+            or receipt.payload != result["ref"]
+            or result["ref"] != ref.wire()
+        ):
+            raise reject("source_changed", "Revocation receipt differs", 410)
