@@ -39523,6 +39523,103 @@
         ],
         "additionalProperties": false
       },
+      "ExecutionLeaseTtl": {
+        "description": "有界租约TTL毫秒，不超过Run截止时间。",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 300000
+      },
+      "ExecutionLeaseState": {
+        "description": "取值含义见字段及协议约束。",
+        "type": "string",
+        "enum": [
+          "active",
+          "released",
+          "expired",
+          "revoked"
+        ]
+      },
+      "ExecutionLeaseStateRecord": {
+        "type": "object",
+        "description": "同Run根执行租约的当前持久状态，终态不因时钟回退复活。",
+        "properties": {
+          "lease": {
+            "$ref": "#/components/schemas/ExecutionLease",
+            "description": "当前租约"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ExecutionLeaseState",
+            "description": "状态"
+          }
+        },
+        "required": [
+          "lease",
+          "state"
+        ],
+        "additionalProperties": false
+      },
+      "ExecutionLeaseAcquireRequest": {
+        "type": "object",
+        "description": "内部可信执行服务申请根租约。",
+        "properties": {
+          "lease_ttl_ms": {
+            "$ref": "#/components/schemas/ExecutionLeaseTtl",
+            "description": "有界期限"
+          },
+          "expected_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前状态CAS，初次为0"
+          }
+        },
+        "required": [
+          "lease_ttl_ms",
+          "expected_revision"
+        ],
+        "additionalProperties": false
+      },
+      "ExecutionLeaseRenewRequest": {
+        "type": "object",
+        "description": "同一真实holder续约，不延长Run上限。",
+        "properties": {
+          "lease_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前固定租约"
+          },
+          "fencing_token": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前栅栏"
+          },
+          "lease_ttl_ms": {
+            "$ref": "#/components/schemas/ExecutionLeaseTtl",
+            "description": "新期限"
+          }
+        },
+        "required": [
+          "lease_ref",
+          "fencing_token",
+          "lease_ttl_ms"
+        ],
+        "additionalProperties": false
+      },
+      "ExecutionLeaseReleaseRequest": {
+        "type": "object",
+        "description": "同一holder释放原租约，可在Run取消后清理。",
+        "properties": {
+          "lease_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前固定租约"
+          },
+          "fencing_token": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前栅栏"
+          }
+        },
+        "required": [
+          "lease_ref",
+          "fencing_token"
+        ],
+        "additionalProperties": false
+      },
       "ReconciliationOutcome": {
         "description": "取值含义见字段及协议约束。",
         "type": "string",

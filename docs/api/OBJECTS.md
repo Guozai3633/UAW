@@ -1012,6 +1012,12 @@
 | [EventsReadRequest](objects/EventsReadRequest.md) | 分页读取历史事件。 |
 | [EventsStreamRequest](objects/EventsStreamRequest.md) | SSE续接。 |
 | [ExecutionLease](objects/ExecutionLease.md) | Run/节点恢复租约归Run，与Agent对话控制租约区分。 |
+| [ExecutionLeaseAcquireRequest](objects/ExecutionLeaseAcquireRequest.md) | 内部可信执行服务申请根租约。 |
+| [ExecutionLeaseReleaseRequest](objects/ExecutionLeaseReleaseRequest.md) | 同一holder释放原租约，可在Run取消后清理。 |
+| [ExecutionLeaseRenewRequest](objects/ExecutionLeaseRenewRequest.md) | 同一真实holder续约，不延长Run上限。 |
+| [ExecutionLeaseState](objects/ExecutionLeaseState.md) | 取值含义见字段及协议约束。 |
+| [ExecutionLeaseStateRecord](objects/ExecutionLeaseStateRecord.md) | 同Run根执行租约的当前持久状态，终态不因时钟回退复活。 |
+| [ExecutionLeaseTtl](objects/ExecutionLeaseTtl.md) | 有界租约TTL毫秒，不超过Run截止时间。 |
 | [ExecutionPolicySnapshot](objects/ExecutionPolicySnapshot.md) | 实时父子权限交集，非可复用授权；来源均为当前主体持久政策。 |
 | [HttpApprovalsDecideEnvelope](objects/HttpApprovalsDecideEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpApprovalsDecideResult](objects/HttpApprovalsDecideResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |

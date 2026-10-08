@@ -140,3 +140,53 @@ class AsyncRunnerAuthorityPort(Protocol):
     async def current(
         self, command: JsonObject, *, authenticated_principal: Principal
     ) -> JsonObject: ...
+
+
+class ExecutionLeasePort(Protocol):
+    """Run-owned root coordination, not a permission or command authorization.
+
+    holder is an authenticated internal service identity from composition/transport,
+    never HTTP/model body. Reads check exact revision/fence/holder and current Run.
+    Nested node leases are unavailable. Return ExecutionLease; release returns
+    ExecutionLeaseStateRecord. A consumer must recheck before sending or executing.
+    """
+
+    async def acquire(
+        self,
+        request: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+        *,
+        holder: Principal,
+    ) -> JsonObject: ...
+
+    async def renew(
+        self,
+        request: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+        *,
+        holder: Principal,
+    ) -> JsonObject: ...
+
+    async def release(
+        self,
+        request: JsonObject,
+        meta: RequestMeta,
+        ctx: TrustedExecutionContext,
+        *,
+        holder: Principal,
+    ) -> JsonObject: ...
+
+    async def current(
+        self,
+        lease_ref: Ref,
+        fencing_token: int,
+        ctx: TrustedExecutionContext,
+        *,
+        holder: Principal,
+    ) -> JsonObject: ...
+
+    async def state(self, ctx: TrustedExecutionContext, *, holder: Principal) -> JsonObject:
+        """Owned ExecutionLeaseStateRecord for takeover/cleanup, not execution permission."""
+        ...

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from uaw.context.facade import ContextComponents
 from uaw.context.intent import IntentContexts, UnderstandingRules
+from uaw.context.model_input import GenericModelInputs
 from uaw.context.seed import StoredModelInputs
 from uaw.infrastructure.blob.filesystem import FSBlobStore
 from uaw.infrastructure.credentials import WindowsCredentialStore
@@ -16,6 +17,7 @@ from uaw.model.adapters import ChatCompletionsAdapter
 from uaw.model.context import FixedModelWindow
 from uaw.model.facade import ModelFacade
 from uaw.model.gateway import ModelGateway
+from uaw.model.input_router import ContextModelInputs
 from uaw.model.policy import PolicyResolver
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
@@ -23,6 +25,7 @@ from uaw.run.context import RunContextSources
 from uaw.run.events import EventReader
 from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
+from uaw.run.leases import ExecutionLeaseService
 from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal
@@ -74,6 +77,7 @@ class Container:
     configuration: ConfigurationService | None = None
     run_service: RunFacade | None = None
     budgets: BudgetService | None = None
+    execution_leases: ExecutionLeaseService | None = None
     approvals: ApprovalService | None = None
     execution_permissions: ExecutionPolicyResolver | None = None
     model_service: ModelFacade | None = None
@@ -144,7 +148,11 @@ def compose(settings: Settings) -> Container:
             ModelGateway(
                 records,
                 policies,
-                StoredModelInputs(records, blobs, contexts),
+                ContextModelInputs(
+                    records,
+                    StoredModelInputs(records, blobs, contexts),
+                    GenericModelInputs(contexts.components.composer),
+                ),
                 budgets,
                 blobs,
                 ChatCompletionsAdapter(),
@@ -173,6 +181,7 @@ def compose(settings: Settings) -> Container:
         configuration=configuration,
         run_service=run,
         budgets=budgets,
+        execution_leases=ExecutionLeaseService(records) if records else None,
         approvals=ApprovalService(records, configuration, permissions=permissions)
         if records and configuration
         else None,

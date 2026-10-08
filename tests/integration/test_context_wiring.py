@@ -191,7 +191,7 @@ async def test_composition_shares_components_without_enabling_general_build(doma
         assert container.intent_service is not None and container.model_service is not None
         assert container.intent_service.contexts.components is container.context_components
         assert (
-            container.model_service.gateway.inputs.understanding
+            container.model_service.gateway.inputs.legacy.understanding
             is container.intent_service.contexts
         )
         assert not container.bindings.availability()["context"]

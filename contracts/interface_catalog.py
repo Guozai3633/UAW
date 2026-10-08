@@ -1764,6 +1764,12 @@ PRIVATE_FIELD_NOTES.update({
 })
 
 def finalize(graph,strategies):
+    scalar("ExecutionLeaseTtl","run","有界租约TTL毫秒，不超过Run截止时间。",type="integer",minimum=1,maximum=300000)
+    enum("ExecutionLeaseState","active|released|expired|revoked","run")
+    record("ExecutionLeaseStateRecord","run","同Run根执行租约的当前持久状态，终态不因时钟回退复活。","lease|ExecutionLease|当前租约\nstate|ExecutionLeaseState|状态",["行revision等于lease.revision；新接管递增fencing_token，续约不改变fence；不授予工具/文件/设备权限。"])
+    record("ExecutionLeaseAcquireRequest","run","内部可信执行服务申请根租约。","lease_ttl_ms|ExecutionLeaseTtl|有界期限\nexpected_revision|Revision|当前状态CAS，初次为0")
+    record("ExecutionLeaseRenewRequest","run","同一真实holder续约，不延长Run上限。","lease_ref|Ref|当前固定租约\nfencing_token|Revision|当前栅栏\nlease_ttl_ms|ExecutionLeaseTtl|新期限")
+    record("ExecutionLeaseReleaseRequest","run","同一holder释放原租约，可在Run取消后清理。","lease_ref|Ref|当前固定租约\nfencing_token|Revision|当前栅栏")
     enum("ReconciliationOutcome","applied|not_applied|unknown","tool")
     record("ToolReconciliationReceipt","tool","可信提供方的固定动作核对回执，不能由模型或超时推测构造。","action_ref|Ref|固定动作\nattempt_id|ID|实际尝试\nprovider_ref|Ref|固定提供方\nreceipt_ref|Ref|当前读取回执\noutcome|ReconciliationOutcome|效果结论\nevidence_refs|[](Ref)|可重新读取的证明\nusage|Usage|实际或待核对消耗\nobserved_at|Timestamp|观察时间",["Reader校验真实来源、主体、签名/完整性和固定版本；调用方比较action/attempt/provider/receipt，并核对usage.attempt_id。", "applied/not_applied必须有证据；not_applied不代表零用量或允许重发；unknown保留额度，不从超时或未记dispatch推导未执行。"])
     TYPES["ToolReconciliationReceipt"]["allOf"]=[{"if":{"properties":{"outcome":{"enum":["applied","not_applied"]}},"required":["outcome"]},"then":{"properties":{"evidence_refs":{"minItems":1}}}}]

@@ -3931,6 +3931,44 @@
       "arguments": {},
       "action_id": "example_001"
     },
+    "ExecutionLeaseTtl": 1,
+    "ExecutionLeaseState": "active",
+    "ExecutionLeaseStateRecord": {
+      "lease": {
+        "id": "example_001",
+        "run_id": "example_001",
+        "holder": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "fencing_token": 0,
+        "expires_at": "2026-10-07T02:00:00Z",
+        "revision": 0
+      },
+      "state": "active"
+    },
+    "ExecutionLeaseAcquireRequest": {
+      "lease_ttl_ms": 1,
+      "expected_revision": 0
+    },
+    "ExecutionLeaseRenewRequest": {
+      "lease_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "fencing_token": 0,
+      "lease_ttl_ms": 1
+    },
+    "ExecutionLeaseReleaseRequest": {
+      "lease_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "fencing_token": 0
+    },
     "ReconciliationOutcome": "applied",
     "ToolReconciliationReceipt": {
       "action_ref": {

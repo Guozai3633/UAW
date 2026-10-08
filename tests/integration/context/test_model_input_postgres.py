@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import subprocess
 import sys
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
@@ -172,23 +173,19 @@ async def test_sql_process_restart_reconstructs_public_model_prompt(model_inputs
         "context": s.ctx.wire(),
         "ref": s.pin,
     }
-    process = await asyncio.create_subprocess_exec(
-        sys.executable,
-        "-m",
-        "tests.integration.context.model_input_fixture",
-        stdin=asyncio.subprocess.PIPE,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
+    # PostgreSQL uses the Windows selector loop, which has no subprocess API.
+    # The child still creates its own control-plane loop; credentials stay in stdin.
+    process = await asyncio.to_thread(
+        subprocess.run,
+        [sys.executable, "-m", "tests.integration.context.model_input_fixture"],
+        input=json.dumps(payload).encode(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=45,
+        check=False,
     )
-    try:
-        async with asyncio.timeout(45):
-            stdout, _ = await process.communicate(json.dumps(payload).encode())
-    except BaseException:
-        process.kill()
-        await process.wait()
-        raise
     assert process.returncode == 0, "Child resolver failed; no credentials are printed"
-    result = json.loads(stdout)
+    result = json.loads(process.stdout)
     assert result == {
         "messages_hash": digest(first.messages),
         "tools_hash": digest(first.tools),

@@ -13,6 +13,7 @@ from uaw.context.contracts import (
     RulePlan,
     RulesRequest,
     from_wire,
+    matches_pin,
 )
 from uaw.context.facade import ContextComponents
 from uaw.context.model_input import GenericModelInputs, serialize
@@ -64,7 +65,7 @@ class SQLSources:
     async def check(self, pin, ctx):
         await self.authority.authorize(ctx)
         current = await self.current(pin.kind, ctx)
-        if current.ref != pin:
+        if not matches_pin(pin, current.ref):
             raise reject("source_changed", "SQL fixture source version changed", 410)
 
     async def read(self, pin, revision_policy, ctx):
