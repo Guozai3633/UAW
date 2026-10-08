@@ -6,15 +6,22 @@ import math
 from datetime import UTC, datetime
 from typing import Literal, cast
 
-from uaw.shared.contracts import JsonObject, TrustedExecutionContext
+from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
 from uaw.shared.errors import DomainError
 from uaw.shared.schema import validate_contract
 from uaw.tool.discovery import check_access, require_entry
-from uaw.tool.embedding import EmbeddingBinding, ToolEmbeddingPort, validate_batch
+from uaw.tool.embedding import (
+    EmbeddingBinding,
+    ToolEmbeddingPort,
+    text_hash,
+    validate_batch,
+    vector,
+)
 from uaw.tool.errors import fail
-from uaw.tool.ports import ToolAccessPort
+from uaw.tool.index import IndexDocument, IndexPlan, ToolVectorIndexPort
+from uaw.tool.ports import ToolAccess, ToolAccessPort
 from uaw.tool.registry import RegistryEntry, ToolRegistry
-from uaw.tool.schema import canonical
+from uaw.tool.schema import canonical, digest
 
 MAX_QUERY_BYTES = 8192
 MAX_ENTRIES = 128
@@ -57,10 +64,12 @@ class ToolRetriever:
         *,
         mode: Literal["lexical-only", "semantic-required"] = "semantic-required",
         embeddings: ToolEmbeddingPort | None = None,
+        index: ToolVectorIndexPort | None = None,
     ) -> None:
         if mode not in {"lexical-only", "semantic-required"}:
             raise ValueError("Explicit lexical-only or semantic-required mode required")
         self.registry, self.access, self.mode, self.embeddings = registry, access, mode, embeddings
+        self.index = index
 
     async def discover(
         self, query: str, categories: list[str], max_candidates: int, ctx: TrustedExecutionContext
@@ -110,8 +119,27 @@ class ToolRetriever:
         if len(entries) > MAX_ENTRIES:
             raise fail("registry_limit", "Retrieval catalogue exceeds 128 tools", phase="retrieval")
 
+        original_access: ToolAccess | None = None
+
         async def allowed() -> tuple[RegistryEntry, ...]:
+            nonlocal original_access
+            if self.access is None:
+                raise fail(
+                    "dependency_unavailable",
+                    "Current Tool access is not wired",
+                    phase="retrieval",
+                    category="dependency",
+                    status=503,
+                )
             access = await self.access.snapshot(ctx)
+            if not isinstance(access, ToolAccess):
+                raise fail(
+                    "dependency_protocol_invalid",
+                    "Invalid current Tool access snapshot",
+                    phase="retrieval",
+                    category="dependency",
+                    status=503,
+                )
             check_access(access, ctx)
             if canonical(ctx.wire()) != frozen or self.registry.snapshot() != (revision, entries):
                 raise fail(
@@ -120,6 +148,16 @@ class ToolRetriever:
                     phase="retrieval",
                     category="conflict",
                     status=412,
+                )
+            if original_access is None:
+                original_access = access
+            elif access != original_access:
+                raise fail(
+                    "access_changed",
+                    "Current role/flags/scope/provider snapshot changed",
+                    phase="retrieval",
+                    category="authorization",
+                    status=403,
                 )
             result = []
             for entry in entries:
@@ -176,9 +214,49 @@ class ToolRetriever:
             self._binding(binding)
             await guard()
             texts = tuple(projection(e) for e in eligible)
-            batch = await self.embeddings.embed((query, *texts), ctx)
+            plan = IndexPlan(
+                digest(ctx.principal.wire()),
+                binding,
+                tuple(
+                    IndexDocument(
+                        Ref.model_validate(self.registry.reference(e)),
+                        Ref.model_validate(e.spec()["provider_ref"]),
+                        text_hash(t),
+                    )
+                    for e, t in zip(eligible, texts, strict=True)
+                ),
+            )
+            cached = await self.index.read(plan) if self.index is not None else None
             await guard()
-            vectors = validate_batch(batch, binding, (query, *texts))
+            if self.index is not None:
+                after_index = await self.embeddings.current(ctx)
+                self._binding(after_index)
+                await guard()
+                if after_index != binding:
+                    raise fail(
+                        "embedding_changed",
+                        "Embedding changed during index read",
+                        phase="retrieval",
+                        category="conflict",
+                        status=412,
+                    )
+            if cached is not None:
+                if type(cached) is not tuple or len(cached) != len(texts):
+                    raise fail("index_invalid", "Index batch count differs", phase="retrieval")
+                try:
+                    documents = tuple(vector(v, binding.dimensions) for v in cached)
+                except (ValueError, TypeError, OverflowError) as exc:
+                    raise fail(
+                        "index_invalid", "Invalid cached vectors", phase="retrieval"
+                    ) from exc
+                batch = await self.embeddings.embed((query,), ctx)
+                await guard()
+                query_vector = validate_batch(batch, binding, (query,))[0]
+            else:
+                batch = await self.embeddings.embed((query, *texts), ctx)
+                await guard()
+                observed = validate_batch(batch, binding, (query, *texts))
+                query_vector, documents = observed[0], observed[1:]
             current = await self.embeddings.current(ctx)
             self._binding(current)
             await guard()
@@ -190,11 +268,25 @@ class ToolRetriever:
                     category="conflict",
                     status=412,
                 )
+            if cached is None and self.index is not None:
+                await self.index.replace(plan, documents)
+                await guard()
+                final_binding = await self.embeddings.current(ctx)
+                self._binding(final_binding)
+                await guard()
+                if final_binding != binding:
+                    raise fail(
+                        "embedding_changed",
+                        "Embedding changed during index update",
+                        phase="retrieval",
+                        category="conflict",
+                        status=412,
+                    )
             semantic = order(
                 [
-                    (i, cosine(vectors[0], v))
-                    for i, v in enumerate(vectors[1:])
-                    if cosine(vectors[0], v) > 0
+                    (i, cosine(query_vector, v))
+                    for i, v in enumerate(documents)
+                    if cosine(query_vector, v) > 0
                 ]
             )
             # Reciprocal rank fusion, k=60; deterministic tie order and score in [0,1].
@@ -203,7 +295,21 @@ class ToolRetriever:
                 for rank, (i, _) in enumerate(ranking, 1):
                     scores[i] = scores.get(i, 0.0) + 61.0 / (2 * (60 + rank))
         ranked = order(list(scores.items()))[:limit]
-        await guard()
+        if self.mode == "semantic-required":
+            assert self.embeddings is not None
+            final = await self.embeddings.current(ctx)
+            self._binding(final)
+            await guard()
+            if final != binding:
+                raise fail(
+                    "embedding_changed",
+                    "Embedding changed before retrieval returned",
+                    phase="retrieval",
+                    category="conflict",
+                    status=412,
+                )
+        else:
+            await guard()
         if not ranked:
             raise fail(
                 "capability_gap",
