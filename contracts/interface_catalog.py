@@ -1764,6 +1764,10 @@ PRIVATE_FIELD_NOTES.update({
 })
 
 def finalize(graph,strategies):
+    enum("ReconciliationOutcome","applied|not_applied|unknown","tool")
+    record("ToolReconciliationReceipt","tool","可信提供方的固定动作核对回执，不能由模型或超时推测构造。","action_ref|Ref|固定动作\nattempt_id|ID|实际尝试\nprovider_ref|Ref|固定提供方\nreceipt_ref|Ref|当前读取回执\noutcome|ReconciliationOutcome|效果结论\nevidence_refs|[](Ref)|可重新读取的证明\nusage|Usage|实际或待核对消耗\nobserved_at|Timestamp|观察时间",["Reader校验真实来源、主体、签名/完整性和固定版本；调用方比较action/attempt/provider/receipt，并核对usage.attempt_id。", "applied/not_applied必须有证据；not_applied不代表零用量或允许重发；unknown保留额度，不从超时或未记dispatch推导未执行。"])
+    TYPES["ToolReconciliationReceipt"]["allOf"]=[{"if":{"properties":{"outcome":{"enum":["applied","not_applied"]}},"required":["outcome"]},"then":{"properties":{"evidence_refs":{"minItems":1}}}}]
+    record("RunnerAuthoritySnapshot","workspace","可信异步通道及服务记录解析的当前执行权威；没有本机路径或自报批准字段。","context|TrustedExecutionContext|实际授权上下文\ndevice_id|ID|当前设备\nroot_handle|ID|实际授权根\nworkspace_ref|Ref|工作区版本\nbinding_revision|Revision|根绑定版本\nfencing_token|Revision|当前栅栏\nlease_expires_at|Timestamp|当前租约期限\nrequest_ref|Ref|存储业务请求\nrequest_parameters|RunnerParameters|存储业务参数\npolicy_ref|Ref|当前政策\nrequired_scope_capability|NonEmptyText|需要的能力\nallowed_actions|[](ID)|当前获准动作\nfeature_enabled|Bool|实际开关\nconnected|Bool|实际连接\ncancelled|Bool|当前取消状态",["来源必须是认证通道和拥有者存储，command.trusted_context仅供对比，不能作为权威来源。", "snapshot不允许缓存后执行；所有字段必需，无默认批准/无限期限；没有真实authority或IPC时不可用。"])
     TYPES["UserInputRef"]={"description":"真实用户输入或已认证用户配置动作的引用；结构限制为input，来源真实性仍由Run核验。","allOf":[ref("Ref"),{"properties":{"kind":{"const":"input"}}}]}
     OWNERS["UserInputRef"]="common";RULES["UserInputRef"]=["必须解析到同主体真实用户行为记录；不能引用网页/模型输出授权创建、模型覆盖或审批。"]
     record("AuthenticationFailure","common","认证失败不透露受保护资源存在性。","code|ID|稳定认证错误码\nmessage|Text|安全提示\nrequest_id|ID|关联")
@@ -1895,12 +1899,12 @@ def finalize(graph,strategies):
     # Observations may be incomplete after a provider failure. Unknown costs are omitted,
     # never represented by a fabricated zero; reservations retain the corresponding estimate.
     measured=copy.deepcopy(TYPES["ResourceVector"])
-    measured["description"]="已观察用量；pending时未知Token/金额字段省略，不能用0代替未知。"
-    measured["required"]=[k for k in measured["required"] if k not in ["input_tokens","output_tokens","money"]]
+    measured["description"]="已观察用量；pending时所有未知维度均省略，币种必需，不能用0代替未知。"
+    measured["required"]=["currency"]
     TYPES["MeasuredResources"]=measured;OWNERS["MeasuredResources"]="run"
     RULES["MeasuredResources"]=["缺失项维持预留；确认账单前不能释放未知消耗。"]
     TYPES["Usage"]["properties"]["resources"]=dict(ref("MeasuredResources"),description="真实观察值；未知项省略。")
-    TYPES["Usage"]["allOf"]=[{"if":{"properties":{"billing_state":{"enum":["confirmed","estimated"]}},"required":["billing_state"]},"then":{"properties":{"resources":{"required":["input_tokens","output_tokens","money"]}}}},{"if":{"properties":{"billing_state":{"const":"pending"}},"required":["billing_state"]},"then":{"properties":{"resources":{"not":{"required":["money"]}}}}}]
+    TYPES["Usage"]["allOf"]=[{"if":{"properties":{"billing_state":{"enum":["confirmed","estimated"]}},"required":["billing_state"]},"then":{"properties":{"resources":{"required":list(TYPES["ResourceVector"]["required"])}}}},{"if":{"properties":{"billing_state":{"const":"pending"}},"required":["billing_state"]},"then":{"properties":{"resources":{"not":{"required":["money"]}}}}}]
     record("RootBudgetLedger","run","根预算的事务权威；所有attempt与待核对额度保留。","id|ID|账本\nrun_id|ID|运行\nrevision|Revision|CAS\nlimits|ResourceVector|总额\nheld|ResourceVector|尚未确认的额度\nused|ResourceVector|已观察消耗\nbilling_pending|Bool|待确认\noverdrawn|Bool|实际超额\ncancel_requested|Bool|停止新准入\ndeadline|Timestamp|截止")
     record("AttemptTrace","support","脱敏运行观测，不保存输入正文、认证头或秘密。","operation_id|ID|操作\ntrace_id|ID|链路\nattempt_id|ID|尝试\nrun_id|ID|运行\nreservation_ref|Ref|额度\nstatus|NonEmptyText|实际结果\nusage_ref|Ref|实际用量\ncreated_at|Timestamp|记录时间")
     record("ReservationAccounting","run","每个attempt独占预留；发出调用意图后保留未知用量。","run_id|ID|运行\noperation_id|ID|操作\ntrace_id|ID|链路\nattempt_id|ID|尝试\ndeadline|Timestamp|预留截止\ndispatched|Bool|已经提交调用意图\nheld|ResourceVector|待确认额度\nused|ResourceVector|已观察消耗\nbilling_pending|Bool|账单待确认\nusage?|Usage|最近实际观察\nusage_revision?|Revision|用量修订")

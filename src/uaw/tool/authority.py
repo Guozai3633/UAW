@@ -198,7 +198,7 @@ class ToolApprovalAuthority(ApprovalAuthorityPort):
                 status=503,
             )
         row = await store.get(self.configuration.platform, "providers", provider["id"])
-        if str(row.revision) != provider["version"] or row.payload["state"] != "connected":
+        if str(row.revision) != provider["version"] or row.payload["state"] != "active":
             raise fail(
                 "dependency_unavailable",
                 "Provider is unavailable or revoked",

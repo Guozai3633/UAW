@@ -1,4 +1,5 @@
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -8,6 +9,37 @@ from uaw.shared.contracts import Principal, RequestMeta, ScopeSelector, TrustedE
 from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 
 ROOT = Path(__file__).resolve().parents[3]
+
+
+def test_reconciliation_known_effect_requires_evidence_and_no_self_approval() -> None:
+    examples = json.loads((ROOT / "contracts/examples.json").read_text(encoding="utf-8"))[
+        "examples"
+    ]
+    receipt = examples["ToolReconciliationReceipt"]
+    for outcome in ("applied", "not_applied"):
+        with pytest.raises(ContractViolation):
+            validate_contract(
+                "ToolReconciliationReceipt", {**receipt, "outcome": outcome, "evidence_refs": []}
+            )
+    validate_contract(
+        "ToolReconciliationReceipt", {**receipt, "outcome": "unknown", "evidence_refs": []}
+    )
+    with pytest.raises(ContractViolation):
+        validate_contract("ToolReconciliationReceipt", {**receipt, "approved": True})
+
+
+def test_runner_authority_has_no_implicit_defaults_or_native_path() -> None:
+    examples = json.loads((ROOT / "contracts/examples.json").read_text(encoding="utf-8"))[
+        "examples"
+    ]
+    authority = examples["RunnerAuthoritySnapshot"]
+    for field in ("context", "fencing_token", "lease_expires_at", "connected", "feature_enabled"):
+        with pytest.raises(ContractViolation):
+            validate_contract(
+                "RunnerAuthoritySnapshot", {k: v for k, v in authority.items() if k != field}
+            )
+    with pytest.raises(ContractViolation):
+        validate_contract("RunnerAuthoritySnapshot", {**authority, "native_path": "C:/private"})
 
 
 def test_packaged_schema_has_not_drifted() -> None:

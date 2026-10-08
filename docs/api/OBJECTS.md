@@ -598,6 +598,7 @@
 | [ProviderReceipt](objects/ProviderReceipt.md) | 适配器原始结果指针，业务语义交规范器。 |
 | [RecheckDecision](objects/RecheckDecision.md) | 审批后再次核对参数/资源/权限。 |
 | [ReconcileRequest](objects/ReconcileRequest.md) | 针对未知效果查回执，先查后恢复。 |
+| [ReconciliationOutcome](objects/ReconciliationOutcome.md) | 取值含义见字段及协议约束。 |
 | [RemoteCapabilityRequest](objects/RemoteCapabilityRequest.md) | 远端能力规范注册。 |
 | [RetryPolicy](objects/RetryPolicy.md) | 恢复次数和可重试类别有界。 |
 | [RuntimeToolruntimeDiscoverResult](objects/RuntimeToolruntimeDiscoverResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -610,6 +611,7 @@
 | [ToolCall](objects/ToolCall.md) | 模型只能提出工具名、参数和动作去重键。 |
 | [ToolCandidate](objects/ToolCandidate.md) | 检索后交给LLM选择的摘要。 |
 | [ToolPage](objects/ToolPage.md) | 稳定筛选条件的分页结果。 |
+| [ToolReconciliationReceipt](objects/ToolReconciliationReceipt.md) | 可信提供方的固定动作核对回执，不能由模型或超时推测构造。 |
 | [ToolResult](objects/ToolResult.md) | 基础设施响应成功和业务成功分别表达。 |
 | [ToolResultPageRequest](objects/ToolResultPageRequest.md) | 已登记工具结果分页。 |
 | [ToolRuntimeContext](objects/ToolRuntimeContext.md) | 可信调用上下文扩展，非模型ContextSnapshot。 |
@@ -770,6 +772,7 @@
 | [ReviewsDecideRequest](objects/ReviewsDecideRequest.md) | 接受/反馈。 |
 | [ReviewsGetRequest](objects/ReviewsGetRequest.md) | 查看审阅。 |
 | [RootSelection](objects/RootSelection.md) | 本机选择证明，网页绑定不拿明文根目录。 |
+| [RunnerAuthoritySnapshot](objects/RunnerAuthoritySnapshot.md) | 可信异步通道及服务记录解析的当前执行权威；没有本机路径或自报批准字段。 |
 | [RunnerChangesCaptureResult](objects/RunnerChangesCaptureResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RunnerChangesMergeResult](objects/RunnerChangesMergeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RunnerChangesRevertResult](objects/RunnerChangesRevertResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -1110,7 +1113,7 @@
 | [InternalUiRequestSubmit](objects/InternalUiRequestSubmit.md) | 按action选择的独立参数/结果分支。 |
 | [ItemPage](objects/ItemPage.md) | 稳定筛选条件的分页结果。 |
 | [ItemPatch](objects/ItemPatch.md) | 增量文本不可与整段替换混淆。 |
-| [MeasuredResources](objects/MeasuredResources.md) | 已观察用量；pending时未知Token/金额字段省略，不能用0代替未知。 |
+| [MeasuredResources](objects/MeasuredResources.md) | 已观察用量；pending时所有未知维度均省略，币种必需，不能用0代替未知。 |
 | [OverlapPolicy](objects/OverlapPolicy.md) | 取值含义见字段及协议约束。 |
 | [RecoveryMode](objects/RecoveryMode.md) | 取值含义见字段及协议约束。 |
 | [ReservationAccounting](objects/ReservationAccounting.md) | 每个attempt独占预留；发出调用意图后保留未知用量。 |

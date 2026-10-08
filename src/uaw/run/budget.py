@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from decimal import Decimal, localcontext
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import and_, or_, select
 
 from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
@@ -18,9 +18,9 @@ from uaw.infrastructure.db.transactions import (
 from uaw.run.facade import zero_resources
 from uaw.shared.contracts import Principal, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
-from uaw.shared.ports import BudgetPort
+from uaw.shared.ports import BudgetPort, BudgetStatePort
 from uaw.shared.schema import validate_contract
-from uaw.shared.stores import StoreConflict
+from uaw.shared.stores import StoreConflict, StoreMissing
 
 Payload = dict[str, Any]
 
@@ -53,10 +53,76 @@ def remaining(ledger: Payload) -> Payload:
     }
 
 
-class BudgetService(BudgetPort):
+class BudgetService(BudgetPort, BudgetStatePort):
     def __init__(self, store: PostgresRecordStore) -> None:
         self.store = store
         self.transactions = TransactionalStore(store.database)
+
+    async def _read_state(
+        self, ctx: TrustedExecutionContext, reservation_id: str | None = None
+    ) -> Payload:
+        validate_contract("TrustedExecutionContext", ctx.wire())
+        if not ctx.run_id:
+            raise reject("budget_context_missing", "Run context is required", 403, "authorization")
+        keys = [("runs", ctx.run_id), ("budget.ledgers", ctx.run_id)]
+        if reservation_id is not None:
+            validate_contract("ID", reservation_id)
+            keys += [("budget.reservations", reservation_id), ("budget.accounting", reservation_id)]
+        # One statement gives all joined ownership/state records one MVCC snapshot.
+        async with self.store.database.sessions() as session:
+            rows = list(
+                await session.scalars(
+                    select(RecordRow).where(
+                        RecordRow.principal_id == ctx.principal.id,
+                        RecordRow.deleted.is_(False),
+                        or_(
+                            *[
+                                and_(
+                                    RecordRow.namespace == namespace,
+                                    RecordRow.resource_id == identifier,
+                                )
+                                for namespace, identifier in keys
+                            ]
+                        ),
+                    )
+                )
+            )
+        records = {(row.namespace, row.resource_id): self.store._record(row) for row in rows}
+        if any(key not in records for key in keys):
+            raise StoreMissing()
+        run = records[("runs", ctx.run_id)].payload
+        if (
+            ctx.scope.conversation_id != run["conversation_id"]
+            or (ctx.conversation_id is not None and ctx.conversation_id != run["conversation_id"])
+            or any(
+                value is not None and value != run["task_id"]
+                for value in (ctx.task_id, ctx.scope.task_id)
+            )
+            or ctx.scope.project_id is not None
+        ):
+            raise reject(
+                "budget_scope_denied", "Budget scope is outside the owned Run", 403, "authorization"
+            )
+        ledger = records[("budget.ledgers", ctx.run_id)]
+        validate_contract("RootBudgetLedger", ledger.payload)
+        if ledger.payload["revision"] != ledger.revision or ledger.payload["run_id"] != ctx.run_id:
+            raise StoreConflict()
+        if reservation_id is None:
+            return ledger.payload
+        account = records[("budget.accounting", reservation_id)]
+        validate_contract("ReservationAccounting", account.payload)
+        self._attempt(account.payload, ctx)
+        reservation = records[("budget.reservations", reservation_id)]
+        validate_contract("BudgetReservation", reservation.payload)
+        if reservation.payload["revision"] != reservation.revision:
+            raise StoreConflict()
+        return reservation.payload
+
+    async def get_ledger(self, ctx: TrustedExecutionContext) -> Payload:
+        return await self._read_state(ctx)
+
+    async def get_reservation(self, reservation_id: str, ctx: TrustedExecutionContext) -> Payload:
+        return await self._read_state(ctx, reservation_id)
 
     @staticmethod
     def _context(actor: Principal, ctx: TrustedExecutionContext, run_id: str) -> None:

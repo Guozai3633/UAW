@@ -102,3 +102,41 @@ class BudgetPort(Protocol):
         *,
         status: str,
     ) -> JsonObject: ...
+
+
+class BudgetStatePort(Protocol):
+    """Current owned state for recovery, never an admission or dispatch authorization.
+
+    Return RootBudgetLedger / BudgetReservation. Reservation reads require the
+    exact Run, operation, trace and attempt owner. Cancellation/expiry does not
+    prevent recovery reads. Callers still use CAS and the mutating BudgetPort.
+    """
+
+    async def get_ledger(self, ctx: TrustedExecutionContext) -> JsonObject: ...
+
+    async def get_reservation(
+        self, reservation_id: str, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
+class ToolReceiptReaderPort(Protocol):
+    """Read a trusted provider receipt, never model assertions or timeout inference.
+
+    Validate source ownership, signature/provenance and pinned Ref before returning
+    ToolReconciliationReceipt. No reader means reconciliation is unavailable.
+    """
+
+    async def read(self, receipt_ref: Ref, ctx: TrustedExecutionContext) -> JsonObject: ...
+
+
+class AsyncRunnerAuthorityPort(Protocol):
+    """Fresh authority from authenticated transport and owned records.
+
+    authenticated_principal is supplied by a trusted channel adapter, never a body
+    field. Return RunnerAuthoritySnapshot. Command context is a claim to compare,
+    not the source of Run, policy, device, workspace, lease or request authority.
+    """
+
+    async def current(
+        self, command: JsonObject, *, authenticated_principal: Principal
+    ) -> JsonObject: ...

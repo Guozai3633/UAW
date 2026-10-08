@@ -1,4 +1,8 @@
-"""Provider-private types. Public wire objects still use the authoritative JSON Schema."""
+"""ModelPrompt is the public ModelInputPort result; provider types are adapter-private.
+
+Public wire objects still use the authoritative JSON Schema. Context adapters may
+construct ModelPrompt without importing ProviderRequest or ProviderResponse.
+"""
 
 from dataclasses import dataclass
 from typing import Any

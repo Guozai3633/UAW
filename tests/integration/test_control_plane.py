@@ -430,6 +430,71 @@ async def prepared_budget(domain, principal):
     return record, budgets, ctx, reservation
 
 
+async def test_budget_state_reads_are_owned_and_available_for_cancelled_recovery(domain, principal):
+    record, budgets, ctx, reservation = await prepared_budget(domain, principal)
+    assert (await budgets.get_ledger(ctx))["revision"] == 2
+    assert await budgets.get_reservation(reservation["id"], ctx) == reservation
+    with pytest.raises(DomainError) as wrong_attempt:
+        await budgets.get_reservation(
+            reservation["id"], ctx.model_copy(update={"attempt_id": "other"})
+        )
+    assert wrong_attempt.value.failure.code == "attempt_scope_denied"
+    wrong_scope = ctx.scope.model_copy(update={"conversation_id": "other"})
+    with pytest.raises(DomainError) as wrong_conversation:
+        await budgets.get_ledger(
+            ctx.model_copy(update={"conversation_id": "other", "scope": wrong_scope})
+        )
+    assert wrong_conversation.value.failure.code == "budget_scope_denied"
+    other = principal.model_copy(update={"id": "other-principal"})
+    foreign_ctx = ctx.model_copy(
+        update={
+            "principal": other,
+            "scope": ctx.scope.model_copy(update={"principal_id": other.id}),
+        }
+    )
+    with pytest.raises(DomainError) as foreign:
+        await budgets.get_reservation(reservation["id"], foreign_ctx)
+    assert foreign.value.failure.code == "resource_missing"
+    await domain[1].control(
+        principal,
+        {
+            "run_id": record["id"],
+            "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
+        },
+        meta("state-stop", 2),
+    )
+    expired = ctx.model_copy(update={"deadline": "2020-01-01T00:00:00Z"})
+    assert (await budgets.get_ledger(expired))["cancel_requested"]
+    assert await budgets.get_reservation(reservation["id"], expired) == reservation
+    assert (await budgets.get_ledger(expired))["held"] == reservation["estimates"]
+
+
+async def test_unknown_usage_preserves_every_unobserved_dimension(domain, principal):
+    record, budgets, ctx, reservation = await prepared_budget(domain, principal)
+    ref = reference("reservation", reservation["id"])
+    await budgets.dispatch(principal, ref, meta("unknown-dispatch"), ctx)
+    usage = {
+        "attempt_id": ctx.attempt_id,
+        "resources": {"currency": "USD"},
+        "billing_state": "pending",
+    }
+    result = await budgets.settle(
+        principal,
+        {"reservation_ref": ref, "usage": usage, "expected_ledger_revision": 3},
+        meta("unknown-settle"),
+        ctx,
+        status="unknown",
+    )
+    assert result["billing_pending"]
+    ledger = await budgets.get_ledger(ctx)
+    assert ledger["run_id"] == record["id"] and ledger["held"] == reservation["estimates"]
+    assert ledger["used"]["currency"] == "USD"
+    assert all(
+        Decimal(str(value)) == 0 for key, value in ledger["used"].items() if key != "currency"
+    )
+    assert (await budgets.get_reservation(reservation["id"], ctx))["status"] == "partially_settled"
+
+
 async def test_failed_attempt_unknown_money_held_then_reconciled_once(domain, principal):
     record, budgets, ctx, reservation = await prepared_budget(domain, principal)
     ref = reference("reservation", reservation["id"])

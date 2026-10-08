@@ -86,8 +86,8 @@ paths.extend(ROOT / "contracts" / name for name in (
 paths.extend((ROOT / "src/uaw/resources/prompts").glob("*.txt"))
 paths = [p for p in paths if "__pycache__" not in p.parts and p.name != "local.toml"]
 report = {
-    "date": "2026-10-07", "platform": platform.system(), "machine": platform.machine(),
-    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+    "date": "2026-10-08", "platform": platform.system(), "machine": platform.machine(),
+    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
     "components": components,
     "python_packages": {package: version(package) for package in packages.values()},
     "compatibility": {"core_checks": True, "langgraph_basic_api": True,

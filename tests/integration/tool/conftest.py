@@ -80,7 +80,7 @@ async def tool_case(domain, principal):
         "providers",
         "fixture-provider",
         "ProviderBinding",
-        {**row.payload, "revision": 2, "state": "connected"},
+        {**row.payload, "revision": 2, "state": "active"},
         expected_revision=1,
         request_id="fixture-connected-metadata",
     )

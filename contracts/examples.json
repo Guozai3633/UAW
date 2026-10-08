@@ -101,13 +101,13 @@
     "Usage": {
       "attempt_id": "example_001",
       "resources": {
+        "currency": "CNY",
+        "input_tokens": 0,
+        "output_tokens": 0,
         "model_calls": 0,
         "tool_calls": 0,
         "child_agents": 0,
         "wall_time_ms": 0,
-        "currency": "CNY",
-        "input_tokens": 0,
-        "output_tokens": 0,
         "money": "0"
       },
       "billing_state": "confirmed"
@@ -1457,13 +1457,13 @@
       "usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -3643,13 +3643,13 @@
       "usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -3796,13 +3796,13 @@
       "usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -3930,6 +3930,113 @@
       },
       "arguments": {},
       "action_id": "example_001"
+    },
+    "ReconciliationOutcome": "applied",
+    "ToolReconciliationReceipt": {
+      "action_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "attempt_id": "example_001",
+      "provider_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "receipt_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "outcome": "applied",
+      "evidence_refs": [
+        {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      ],
+      "usage": {
+        "attempt_id": "example_001",
+        "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0"
+        },
+        "billing_state": "confirmed"
+      },
+      "observed_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerAuthoritySnapshot": {
+      "context": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "scope": {
+          "principal_id": "example_001"
+        },
+        "operation_id": "example_001",
+        "trace_id": "example_001",
+        "attempt_id": "example_001",
+        "deadline": "2026-10-07T02:00:00Z",
+        "capability_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      },
+      "device_id": "example_001",
+      "root_handle": "example_001",
+      "workspace_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "binding_revision": 0,
+      "fencing_token": 0,
+      "lease_expires_at": "2026-10-07T02:00:00Z",
+      "request_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "request_parameters": {
+        "action": "workspace.capture",
+        "parameters": {
+          "source_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "base_kind": "commit",
+          "include_rules": {
+            "include_uncommitted": true,
+            "include_untracked": true,
+            "include_paths": [],
+            "exclude_paths": [],
+            "max_total_bytes": 0
+          },
+          "expected_source_revision": "example_001"
+        }
+      },
+      "policy_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "required_scope_capability": "example_001",
+      "allowed_actions": [],
+      "feature_enabled": true,
+      "connected": true,
+      "cancelled": true
     },
     "UserInputRef": {
       "kind": "input",
@@ -4962,13 +5069,13 @@
       "usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -5070,10 +5177,6 @@
       }
     },
     "MeasuredResources": {
-      "model_calls": 0,
-      "tool_calls": 0,
-      "child_agents": 0,
-      "wall_time_ms": 0,
       "currency": "CNY"
     },
     "RootBudgetLedger": {
@@ -7345,13 +7448,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -7501,13 +7604,13 @@
       "usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -8620,13 +8723,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -9604,13 +9707,13 @@
       "attempt_usage": {
         "attempt_id": "example_001",
         "resources": {
+          "currency": "CNY",
+          "input_tokens": 0,
+          "output_tokens": 0,
           "model_calls": 0,
           "tool_calls": 0,
           "child_agents": 0,
           "wall_time_ms": 0,
-          "currency": "CNY",
-          "input_tokens": 0,
-          "output_tokens": 0,
           "money": "0"
         },
         "billing_state": "confirmed"
@@ -13658,13 +13761,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -14912,13 +15015,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -15204,13 +15307,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -15233,13 +15336,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -15651,13 +15754,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"
@@ -16026,13 +16129,13 @@
         "usage": {
           "attempt_id": "example_001",
           "resources": {
+            "currency": "CNY",
+            "input_tokens": 0,
+            "output_tokens": 0,
             "model_calls": 0,
             "tool_calls": 0,
             "child_agents": 0,
             "wall_time_ms": 0,
-            "currency": "CNY",
-            "input_tokens": 0,
-            "output_tokens": 0,
             "money": "0"
           },
           "billing_state": "confirmed"

@@ -34,13 +34,13 @@
     "usage": {
       "attempt_id": "example_001",
       "resources": {
+        "currency": "CNY",
+        "input_tokens": 0,
+        "output_tokens": 0,
         "model_calls": 0,
         "tool_calls": 0,
         "child_agents": 0,
         "wall_time_ms": 0,
-        "currency": "CNY",
-        "input_tokens": 0,
-        "output_tokens": 0,
         "money": "0"
       },
       "billing_state": "confirmed"

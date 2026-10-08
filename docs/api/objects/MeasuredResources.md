@@ -2,7 +2,7 @@
 
 状态：对象契约0.1；可用范围见具体接口与实施记录。所属：运行与会话。
 
-已观察用量；pending时未知Token/金额字段省略，不能用0代替未知。
+已观察用量；pending时所有未知维度均省略，币种必需，不能用0代替未知。
 
 [对象总索引](../OBJECTS.md) · [接口总入口](../README.md)
 
@@ -12,10 +12,10 @@
 | --- | --- | --- | --- | --- |
 | `input_tokens` | [Count](./Count.md) | 否 | 输入token | 类型约束见对应对象 |
 | `output_tokens` | [Count](./Count.md) | 否 | 输出token | 类型约束见对应对象 |
-| `model_calls` | [Count](./Count.md) | 是 | 模型调用 | 类型约束见对应对象 |
-| `tool_calls` | [Count](./Count.md) | 是 | 工具调用 | 类型约束见对应对象 |
-| `child_agents` | [Count](./Count.md) | 是 | 子实例数 | 类型约束见对应对象 |
-| `wall_time_ms` | [Duration](./Duration.md) | 是 | 任务墙钟时间 | 类型约束见对应对象 |
+| `model_calls` | [Count](./Count.md) | 否 | 模型调用 | 类型约束见对应对象 |
+| `tool_calls` | [Count](./Count.md) | 否 | 工具调用 | 类型约束见对应对象 |
+| `child_agents` | [Count](./Count.md) | 否 | 子实例数 | 类型约束见对应对象 |
+| `wall_time_ms` | [Duration](./Duration.md) | 否 | 任务墙钟时间 | 类型约束见对应对象 |
 | `money` | [Decimal](./Decimal.md) | 否 | 金额 | 类型约束见对应对象 |
 | `currency` | string | 是 | 币种 | 正则 `^[A-Z]{3}$` |
 
@@ -31,10 +31,6 @@
 
 ```json
 {
-  "model_calls": 0,
-  "tool_calls": 0,
-  "child_agents": 0,
-  "wall_time_ms": 0,
   "currency": "CNY"
 }
 ```
