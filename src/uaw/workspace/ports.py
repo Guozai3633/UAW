@@ -1,11 +1,12 @@
 """Internal trusted adapter ports, never accepted from HTTP/model parameters."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
-from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
+from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.runner_signatures import VerificationKey
 from uaw.workspace.contracts import RootSelection, RunnerCommand
 
@@ -128,4 +129,32 @@ class NativeConfirmationPort(Protocol):
         document_hash: str,
     ) -> NativeConfirmation:
         """Authenticate local user/channel, show exact request, confirm and bind its hash."""
+        ...
+
+
+class RunnerPrincipalMappingPort(Protocol):
+    async def owner(
+        self,
+        *,
+        authenticated_principal: Principal,
+        device_id: str,
+    ) -> Principal:
+        """Read current registered device ownership and validate the authenticated channel.
+
+        Missing relationships are unavailable. Never derive the user from command claims.
+        """
+        ...
+
+
+@runtime_checkable
+class CheckedAdmissionRepository(Protocol):
+    def reserve_checked(
+        self,
+        principal_id: str,
+        device_id: str,
+        admission: Admission,
+        *,
+        check: Callable[[], None],
+    ) -> Admission:
+        """Run deadline/cancellation checks inside the same CAS/lock, including replay."""
         ...

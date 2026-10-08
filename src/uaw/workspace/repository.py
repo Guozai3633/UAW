@@ -1,5 +1,6 @@
 """Process-local component stores. No durable pairing/execution or D01 decision."""
 
+from collections.abc import Callable
 from dataclasses import replace
 from threading import RLock
 
@@ -42,8 +43,19 @@ class MemoryAdmissionRepository:
         self._lock = RLock()
 
     def reserve(self, principal_id: str, device_id: str, admission: Admission) -> Admission:
+        return self.reserve_checked(principal_id, device_id, admission, check=lambda: None)
+
+    def reserve_checked(
+        self,
+        principal_id: str,
+        device_id: str,
+        admission: Admission,
+        *,
+        check: Callable[[], None],
+    ) -> Admission:
         key = (principal_id, device_id, admission.command_id)
         with self._lock:
+            check()
             previous = self._records.get(key)
             if previous is not None:
                 if previous.fingerprint != admission.fingerprint:
