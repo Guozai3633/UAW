@@ -72,3 +72,9 @@ uv sync --frozen --extra agent-engine
 补齐D06提供方/模型/私有凭据与真实调用回执，完成P0-05及Intent语义验收。B开发固定快照/引用，A落实Tool/Runner公共接线后派发C/D下一包，随后接Agent闭环。办公、学术和代码样例在后续真实任务阶段验收。组件基线通过不代表已经通过P0真实模型门槛。
 
 最新内部服务：[执行租约与输入路由](../coordination/requests/A/MS-I2d-ports.md)。租约/fence仅协调workers，不能代替权限或真实执行授权。
+
+## 本轮并行准备（未完成新功能包）
+
+2026-10-08：用户已确认B/C/D均同步ms-i2f2。新完整能力包MS-C5/MS-T2d/MS-R2d已发布；固定环境准备标签ms-i2g-start。A旧数据库兼容及8项SQL复验通过，新worker独立库由各自启动。
+
+841项是ms-i2f2运行代码的完整回执，本次环境/分工准备没有重新执行841项；运行源码不变。详细记录见[MS-I2g准备](MS-I2g-preparation.md)、[项目实际进度](PROGRESS-2026-10-08.md)及[完整功能包](../coordination/requests/A/MS-I2g-parallel-packages.md)。

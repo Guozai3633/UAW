@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.7 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.8 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -11,7 +11,7 @@ v0.7 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
 - 当前全量841项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **MS-I2f2已验证，MS-C4/MS-T2c/MS-R2c组件已接受。** A接通登记命令Reader，提供缓存可选组装并统一content回执引用。B/C/D保留交付边界，待明确下一包；A继续完整MS-I2f真实来源接线。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
+- **MS-I2f2已验证，MS-C4/MS-T2c/MS-R2c组件已接受。** A接通登记命令Reader，提供缓存可选组装并统一content回执引用。B/C/D已同步ms-i2f2；下一包MS-C5/MS-T2d/MS-R2d按完整能力发布，固定准备版本ms-i2g-start，A并行处理接口与接线。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 
 沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 
@@ -75,7 +75,14 @@ flowchart TD
   B4 --> I2f2
   C2c --> I2f2
   D2c --> I2f2
-  I2f2 --> I2f["A：真实来源 MS-I2f"]
+  I2f2 --> B5["B：通用来源/输入链 MS-C5"]
+  I2f2 --> C2d["C：只读调用/结果源 MS-T2d"]
+  I2f2 --> D2d["D：OS签名/根源 MS-R2d"]
+  I2f2 --> I2g["A：环境/并行接线 MS-I2g"]
+  B5 -.最终交付.-> I2g
+  C2d -.最终交付.-> I2g
+  D2d -.最终交付.-> I2g
+  I2g --> I2f["A：真实来源 MS-I2f"]
   I2f --> I2
   C2c --> I2
   D2c --> I2
@@ -124,6 +131,10 @@ flowchart TD
 | MS-R2c | D | 签名终态回执持久journal | MS-I2e | [P1-04](rounds/P1-04.md) |
 | MS-I2f1 | A | 设备/命令登记及当前权威组件 | MS-I2e | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md) |
 | MS-I2f2 | A | 缓存/工具恢复/journal接受与登记Reader接线 | MS-I2f1、MS-C4、MS-T2c、MS-R2c | [P1-02](rounds/P1-02.md)、[P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md)、[P4-04](rounds/P4-04.md) |
+| MS-C5 | B | 通用上下文登记/当前权威/完整输入链 | MS-I2f2 | [P1-02](rounds/P1-02.md)、[P1-07](rounds/P1-07.md) |
+| MS-T2d | C | 只读工具调用编排/实际adapter/持久结果源 | MS-I2f2 | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
+| MS-R2d | D | OS控制签名/授权根来源/适配器装配 | MS-I2f2 | [P1-04](rounds/P1-04.md) |
+| MS-I2g | A | 独立验证环境/阶段接口接线/并行集成 | MS-I2f2 | [P0-02](rounds/P0-02.md)、[P1-02](rounds/P1-02.md)、[P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-07](rounds/P1-07.md) |
 | MS-I2f | A | 实际设备归属、登记命令与当前权威 | MS-I2f2 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md) |
 | MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2f、MS-T2c、MS-R2c | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |

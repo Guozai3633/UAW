@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "plan_rounds": 50,
   "phase_counts": {
     "P0": 5,
@@ -30,7 +30,7 @@
   "dependency_graph_acyclic": true,
   "final_core_gate_covers_required_rounds": true,
   "optional_rounds_do_not_block_first_core_trial": true,
-  "local_document_links_checked": 3896,
+  "local_document_links_checked": 3900,
   "generated_files": 72,
   "errors": [],
   "runtime_implementation": "not_inferred_from_plan_checks",

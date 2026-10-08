@@ -114,3 +114,11 @@
 - A实现PostgreSQL原命令→独立设备owner→签名journal Reader，提供缓存可选组装且默认关闭；D journal固定引用统一content，原artifact提交保留，不新增RefKind/schema/依赖/迁移/flags。
 - 本次只按组件/集成开发范围接受。完整MS-I2f/MS-I2/MS-T2/MS-R2及P1仍待生产Lookup/Reader/executor、channel/root/role-resource-consent/signing/IPC与原决策门槛。
 - 新版本ms-i2f2，B/C/D保留交付边界，下一包待A发布实际输入输出，不自动进入执行包或重写旧提交。[详细设计](../requests/A/MS-I2f2-integration.md)、[实际回执](../../implementation/MS-I2f2.md)、[派发表](../DISPATCH.md)。
+
+## MS-I2g 准备与新完整能力包
+
+- 用户已转交B/C/D同步ms-i2f2的干净回执；新包MS-C5/MS-T2d/MS-R2d已按完整能力发布，四个里程碑/两个交付点，未将旧同步当作新包开工。
+- A发布Session隔离开发数据库支持：A/B/C/D独立Docker project/loopback端口/volume，默认A兼容；8项实际SQL通过，四份渲染配置隔离核对通过。B/C/D库由worker接收标签后自行启动，A没有改写worker工作区或凭据。
+- 运行源码/测试/公共契约/锁/提示词不变，原841项回执保留；本次只改两项开发环境源与计划文档，未重跑841项，补充证据明确区分。
+- 固定准备标签ms-i2g-start，实际SHA见DISPATCH。A继续阶段版接口/当前来源和跨模块接线；不再把领域适配器实现全部集中到A。模块验证由worker承担，全量在集成里程碑执行。
+- [完整包范围](../requests/A/MS-I2g-parallel-packages.md)、[实际准备回执](../../implementation/MS-I2g-preparation.md)、[实际项目进度](../../implementation/PROGRESS-2026-10-08.md)、[可转发任务](../NEXT_WAVE.md)。完整P1/Tool/Runner/Agent及D01/D03/D06门槛保留。

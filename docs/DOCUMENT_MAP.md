@@ -137,3 +137,9 @@
 - [详细接线设计](coordination/requests/A/MS-I2f2-integration.md)：包/目录映射、Reader实际来源、可选缓存、content Ref裁决和退出条件。
 - [实际实现记录](implementation/MS-I2f2.md)：原提交/合并、SQL和全量回执、组件接受及生产缺口。
 - [下一轮安排](coordination/NEXT_WAVE.md)：B/C/D保持交付边界，A先补真实来源后发布明确下一包。
+
+## MS-I2g：较完整功能包、独立验证环境和实际进度
+
+- [项目实际进度](implementation/PROGRESS-2026-10-08.md)：已实现/未接线/未开发及首条真实任务关键路径，不把轮数或测试数当产品完成比例。
+- [发包详细范围](coordination/requests/A/MS-I2g-parallel-packages.md)：B/C/D各四个里程碑、输入输出/目录、阶段版交接、独立SQL和A接线职责。
+- [准备实际回执](implementation/MS-I2g-preparation.md)：开发库隔离和本次有限检查范围。

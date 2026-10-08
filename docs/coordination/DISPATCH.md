@@ -1,8 +1,8 @@
 # 多 session 派发和集成记录
 
-日期：2026-10-08。A维护。**MS-C4/MS-T2c/MS-R2c组件已接受；MS-I2f2集成范围完成。B/C/D保留交付边界，A继续完整MS-I2f真实来源接线。**
+日期：2026-10-08。A维护。**MS-C4/MS-T2c/MS-R2c组件已接受；MS-I2f2集成范围完成。用户已报告B/C/D均同步ms-i2f2；新包MS-C5/MS-T2d/MS-R2d已发布待转发，A执行MS-I2g准备与并行接线。**
 
-## 当前集成版本
+## 最近已验收的运行代码版本（ms-i2f2）
 
 - 目录/分支：`E:/UAW` / `integration`；仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)。
 - 已验证代码/证据提交：`9422fcaba180fdc04515c993776e7f4a09d526b2`；固定标签 **ms-i2f2** 包含随后状态记录，旧标签不移动。
@@ -29,17 +29,23 @@ A另增10项跨模块SQL/组装测试，独立组件674项通过。原worker缺�
 3. 可选纯计算缓存显式注入selection/formatter，默认关闭；当前权限/来源/最终复查不缓存。
 4. 没有生产Tool Lookup/Reader/executor，没有Runner到Tool效果的推断映射；受控签名failed receipt不证明外部执行。公开Tool/Workspace/通用Context/Agent仍未绑定，flags仍关闭。
 
-## 下一轮
+## 当前发包准备版本：ms-i2g-start
 
-| Session | 当前状态 | 依赖/下一步 |
-| --- | --- | --- |
-| A | 完整MS-I2f继续 | 实际认证channel、native root、当前role/resource/consent、control signing及Tool来源/执行关联 |
-| B | MS-C4已接受，未派新包 | 包边界同步ms-i2f2，等待通用authority/Reader与明确任务 |
-| C | MS-T2c已接受，未派新包 | 等待生产Lookup/Reader/executor；不进入完整MS-T2 |
-| D | MS-R2c已接受，未派新包 | A登记Reader可消费；可信IPC/配对/OS后端和完整MS-R2仍待依赖 |
-| E | 未派发 | 保持可选 |
+- 准备代码/证据提交：`PREPARATION_SHA_PENDING`；固定标签 **ms-i2g-start** 包含最终派发状态记录。
+- 运行源码、公共schema/ports/contracts、依赖锁及提示词相对ms-i2f2未变。本次改独立开发库脚本和分工/进度文档；A旧库兼容及8项真实SQL复验通过，B/C/D配置隔离已检查，实际库由worker自行启动。
+- 841项是上个运行版本完整回执，本次没有重跑全部841项；补充验证及源码范围见[MS-I2g准备](../implementation/MS-I2g-preparation.md)。
 
-同步与可转发说明见[NEXT_WAVE](NEXT_WAVE.md)。包定义在planning/parallel_catalog.py，文件归属在docs/plan/sessions；新包必须先发布具体输入输出/依赖。D01/D03/D06及完整阶段门槛保留。
+| Session | 新包 | 范围 | 发布状态 |
+| --- | --- | --- | --- |
+| A | MS-I2g | 独立DB、阶段版接口、当前来源及跨模块接线 | 准备已验证，集成开发中 |
+| B | MS-C5 | 通用登记/当前authority/Reader→快照→模型输入 | 原分支已同步ms-i2f2；新包文档已发布，待用户转发开工 |
+| C | MS-T2d | 只读调用编排/实际text adapter/持久结果Lookup与Reader | 同上；不依赖D开发分支 |
+| D | MS-R2d | 真实OS控制签名/授权根来源/装配验证 | 同上；IPC/写入exec仍在后续门槛 |
+| E | 未派发 | 保持可选 | 不创建新工作区 |
+
+每包四个连续里程碑、两个交付点；阶段版接口提交后继续同包，不等待最终集成才做后半包。具体输入输出、策略、目录和数据库命令见[发包定义](requests/A/MS-I2g-parallel-packages.md)，可转发内容见[NEXT_WAVE](NEXT_WAVE.md)。A没有替worker切分支或向其聊天发消息。
+
+完整MS-I2f/MS-I2/MS-T2/MS-R2仍未接受，D01/D03/D06不因此改变。新包按ready_to_start记录，不把用户旧同步报告当成新包已开工。
 
 ## 当前固定公共文件摘要（与ms-i2f1相同）
 

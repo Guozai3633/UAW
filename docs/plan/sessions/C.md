@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2c组件接受，135单元和70实际SQL通过；等待生产Lookup/Reader/executor，不进入完整MS-T2。以DISPATCH的固定版本与派发为准。
+状态：用户已报告同步ms-i2f2；新包MS-T2d已发布待转发，完成只读调用编排/实际adapter/持久结果。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -100,6 +100,23 @@
 - 内部Lookup只返回已登记原尝试来源，不接受模型额外receipt_ref；生产Lookup由A接线。
 - 保留43项SQL和unknown语义，无新增执行/重试授权；精确接口见MS-I2e-next-packages。
 
+### MS-T2d：只读工具调用编排/实际adapter/持久结果源
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2f2。
+
+任务：
+
+1. 以现有审批/预算/账本串联invoke闸门和持久发送所有权，内部可选executor消费固定call/spec/ctx。
+2. 实现有界实际text.inspect只读adapter及输出schema/真实响应保存，不依赖D新IPC或注册为产品目录。
+3. 实现固定结果source的publish/Lookup/Reader，规范ToolResult并接已有reconcile/read_outcome，效果与费用独立恢复。
+4. 独立SQL覆盖waiting/拒绝/批准、一次发送、并发/重启、超时取消/响应丢失、输出错误和费用中断，原70项SQL回归。
+
+交付检查：
+
+- 阶段版后继续同包恢复与验证；无executor先拒绝，未知发送不重新attempt，缺生产权限仍不可用。
+- 真实本地只读结果有证据，不从Runner回执或传输200推断成功；完整MS-T2/P1仍待集成。
+
 ### MS-T2：工具真实dispatch及结算接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
@@ -124,7 +141,7 @@
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-T2c组件接受，135单元和70实际SQL通过；等待生产Lookup/Reader/executor，不进入完整MS-T2。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-T2d。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2g-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

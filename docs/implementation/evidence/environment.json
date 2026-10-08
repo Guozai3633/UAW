@@ -2,7 +2,7 @@
   "date": "2026-10-08",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g development environment preparation verified by 8 supplemental SQL tests and four rendered isolated Compose configurations; full 841-test runtime receipt originates from unchanged ms-i2f2 runtime sources",
   "components": {
     "fastapi": {
       "installed": true,
@@ -163,7 +163,7 @@
     "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
     "ops/capture_environment.py": "883f98207a7dda30dd79c50bc6b804170736f9cc3a4d762cbaf4b927f5116fe2",
     "ops/check.ps1": "a364de174696f578c320c9045464d4abafd94c8de1ca01eeff5f602ab1715860",
-    "ops/compose.yaml": "8bcd492f7b77573aefbf4250722d371d90c5e0724d8b27f1395a5fdb261d79a8",
+    "ops/compose.yaml": "c7ad2ad10451d6c8b3a1f2ed14eb3b8ed307dc1bca2b6125e7b098b5c3793c54",
     "ops/database-development.toml": "47adff9a258b9d1cf4ef262f511f984c6b853dfea755365c96f062178f7bb2bc",
     "ops/development.toml": "23f5ce047a5785359653aa50b2bc9f64668a63c969b9d241915565e56f58b968",
     "ops/migrations/env.py": "61b755ee484f227260626fcb509bee1a68a68e61893c18065ee7332383440e8c",
@@ -172,7 +172,7 @@
     "ops/migrations/versions/0003_attempt_identity.py": "7b01953ea32a6cfc85185ec1a61d92cd31a17bdb87bac12faede5d5db98d88c3",
     "ops/model_probe.py": "4b39354b787943f76a867c8bce8d4bd2fea4265bffc26c89c33c01796f99996c",
     "ops/provision_dev_auth.py": "6ce5089fceacc797c2dd60096c0f698686061f8259d837b509b4dd639f503528",
-    "ops/start-dev-db.ps1": "6e5b90aea6bbee828ca2f243c206ac97e49f06f881cdab8b0a9101d275b65565",
+    "ops/start-dev-db.ps1": "141b48b2b8845c2d19a80a53c4614328f21cf3bd9456ed06617d8d04ef769b13",
     "ops/start.ps1": "4bb586c3ae4e3994871689c33716f2ec801e44aa86565a6b63089919abf25446",
     "ops/sync_runtime_contracts.py": "81d7d25e8cfef345f851b1f27563926e78c3f58ffc6240f94de5dce6e6672683",
     "pyproject.toml": "88dde572e68deb3c6340f2067c7a3d4164d7f53bd5485b7e8d76fd0b27a2d07f",
@@ -326,5 +326,23 @@
     "tests/unit/tool/test_recovery_facade.py": "bb0486e93d56fad2cd61eb706959fc47e49ca6a4fe135ce3f47b8bcc0e2e2eeb",
     "tests/unit/tool/test_registry_schema.py": "b92174b62401da11108d416ba41df9694e2a244d711b93a8edee98a54e9cfad8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+  },
+  "verification_lineage": {
+    "full_runtime_receipt_ref": "ms-i2f2",
+    "full_runtime_tests": 841,
+    "full_regression_repeated_for_preparation": false,
+    "changed_reviewed_sources": [
+      "ops/compose.yaml",
+      "ops/start-dev-db.ps1"
+    ],
+    "runtime_source_files_changed": [],
+    "supplemental_evidence": "docs/implementation/evidence/ms-i2g-preparation.json",
+    "supplemental_evidence_sha256": "7ef70b54f1a6e1d121c56680e89ff589936241697e7e701327fcea76f006beb1",
+    "supplemental_test_counts": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
   }
 }

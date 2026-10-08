@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2f2集成范围已验证；完整MS-I2f继续补实际认证通道/根/签名及工具来源。以DISPATCH的固定版本与派发为准。
+状态：MS-I2g准备已验证，独立数据库脚本已发布；并行处理阶段版接口、当前来源和跨模块接线。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -74,7 +74,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D保留交付边界，A继续完整MS-I2f真实来源接线。
+- MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D以ms-i2g-start分别开发MS-C5/MS-T2d/MS-R2d完整能力包；A提供独立验证环境并并行接线。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -230,6 +230,23 @@
 
 - SQL/静态/全量841项通过，无隐藏错误/跳过；原worker回执和提交保持。
 - 仅组件接受；生产Lookup/Reader/executor和IPC/配对仍待依赖，不改变完整阶段状态。
+
+### MS-I2g：独立验证环境/阶段接口接线/并行集成
+
+对应原轮：[P0-02](../rounds/P0-02.md)、[P1-02](../rounds/P1-02.md)、[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-07](../rounds/P1-07.md)。
+开发前置：MS-I2f2。
+
+任务：
+
+1. 发布ms-i2g-start、完整功能包和A/B/C/D独立Docker project/端口/volume，验证A旧入口兼容。
+2. 并行处理阶段版签名、公共提案与既有Run/政策/模型来源装配；领域实现归各worker，最终逐包合入。
+3. 受影响模块和跨模块验证优先，worker实跑自己的模块SQL；全量只在集成里程碑或具体风险要求时扩跑。
+4. 接通通用上下文/只读工具/签名根来源，列明channel/IPC/真实LLM及Agent循环剩余关键路径。
+
+交付检查：
+
+- 准备发布不代表三个包已开工/接受；记录阶段版和最终真实回执与SHA，原阶段门槛保留。
+- 不存在worker互相依赖开发分支；生产来源和flags只在实际集成验收后开放。
 
 ### MS-I2f：实际设备归属、登记命令与当前权威
 

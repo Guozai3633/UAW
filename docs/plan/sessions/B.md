@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-C4组件接受，174单元和35实际SQL通过；等待通用authority/Reader及明确下一包。以DISPATCH的固定版本与派发为准。
+状态：用户已报告同步ms-i2f2；新包MS-C5已发布待转发，完成通用登记/当前权威/读取到模型输入。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4。
+- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -25,6 +25,9 @@
 - `src/uaw/context/references.py`
 - `src/uaw/context/model_input.py`
 - `src/uaw/context/cache.py`
+- `src/uaw/context/registered.py`
+- `src/uaw/context/authority.py`
+- `src/uaw/context/readers.py`
 - `tests/unit/context/`
 - `tests/integration/context/`
 - `docs/coordination/handoffs/B.md`
@@ -109,6 +112,23 @@
 - 缓存不保存访问许可/唯一状态/模型输出，不跳过来源读取或最终检查；异常不靠旧值掩盖。
 - 只报告实际本地计算变化，不宣称provider缓存或Token/延迟收益；详细范围见MS-I2e-next-packages。
 
+### MS-C5：通用上下文登记/当前权威/完整输入链
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-07](../rounds/P1-07.md)。
+开发前置：MS-I2f2。
+
+任务：
+
+1. 实现可信登记入口、主体隔离blob及已有命名schema的SQL来源/配方记录，CAS/幂等/修订/撤销。
+2. 从实际Run/原文/政策和登记记录构建CompositionAuthority、Reader及RuleProvider，保持固定用户模型和原文保护。
+3. 接通登记→Context.build→snapshot/reference→GenericModelInputs；缓存不替代当前检查，非空工具集缺验证源拒绝。
+4. 阶段版先报告固定接口与SHA，然后继续真实SQL/blob重启/隔离/修订/撤销和原模块回归；详见MS-I2g-parallel-packages。
+
+交付检查：
+
+- 单个完整能力包四个里程碑；前两个阶段提交后继续本包，不等待最终集成才做后两项。
+- 真实源不来自测试目录，受控provider清楚标注；缺LLM/文件源不宣称产品闭环或整轮验收。
+
 ## 可复制到新session的开工说明
 
 下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
@@ -118,7 +138,7 @@
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-C4组件接受，174单元和35实际SQL通过；等待通用authority/Reader及明确下一包。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-C5。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2g-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

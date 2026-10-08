@@ -1,7 +1,7 @@
 {
   "plan_version": "0.1",
   "architecture_version": "0.10",
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "status": "development_plan_only",
   "module_groups_are_services": false,
   "interface_associations_are_readiness": false,
@@ -326,7 +326,9 @@
         "tests/integration/persistence/"
       ],
       "implementation_record_target": "docs/implementation/P0-02.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-I2g"
+      ]
     },
     {
       "id": "P0-03",
@@ -1218,7 +1220,9 @@
         "MS-C3",
         "MS-I2d",
         "MS-C4",
-        "MS-I2f2"
+        "MS-I2f2",
+        "MS-C5",
+        "MS-I2g"
       ]
     },
     {
@@ -1504,6 +1508,8 @@
         "MS-T2c",
         "MS-I2f1",
         "MS-I2f2",
+        "MS-T2d",
+        "MS-I2g",
         "MS-I2f",
         "MS-I2",
         "MS-T2"
@@ -1680,6 +1686,8 @@
         "MS-R2c",
         "MS-I2f1",
         "MS-I2f2",
+        "MS-R2d",
+        "MS-I2g",
         "MS-I2f",
         "MS-I2",
         "MS-R2"
@@ -2279,6 +2287,8 @@
       "implementation_record_target": "docs/implementation/P1-07.md",
       "parallel_packages": [
         "MS-C3",
+        "MS-C5",
+        "MS-I2g",
         "MS-I3"
       ]
     },
@@ -2584,6 +2594,7 @@
         "MS-T2c",
         "MS-I2f1",
         "MS-I2f2",
+        "MS-T2d",
         "MS-I2f",
         "MS-T2",
         "MS-I3"

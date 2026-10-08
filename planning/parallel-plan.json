@@ -1,24 +1,24 @@
 {
-  "plan_version": "0.7",
+  "plan_version": "0.8",
   "date": "2026-10-08",
-  "status": "ms_i2f2_integrated_waiting_production_sources",
+  "status": "ms_i2g_preparation_and_larger_packages_ready",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "9422fcaba180fdc04515c993776e7f4a09d526b2",
-    "commit_kind": "verified_code_before_dispatch_metadata",
+    "commit": "PREPARATION_SHA_PENDING",
+    "commit_kind": "verified_development_environment_and_dispatch_preparation",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
-    "dispatch_ref": "ms-i2f2",
+    "dispatch_ref": "ms-i2g-start",
     "integration_ref": "ms-i2f2",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
     "code_baseline_verified": true,
     "last_verified_tests": 841,
     "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing and MS-T2b/MS-I2e reconciliation integration, MS-I2f1 Runner registration/current-authority components, MS-C4 cache/MS-T2c recovery facade/MS-R2c journal and MS-I2f2 registered Reader integration; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
-    "current_unverified_round": null,
+    "current_unverified_round": "MS-I2g",
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
       "D01 final storage authority",
@@ -29,27 +29,28 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2f2集成范围已验证；完整MS-I2f继续补实际认证通道/根/签名及工具来源。",
-      "package": "MS-I2f",
-      "ready": true
+      "state": "MS-I2g准备已验证，独立数据库脚本已发布；并行处理阶段版接口、当前来源和跨模块接线。",
+      "package": "MS-I2g",
+      "ready": true,
+      "base_ref": "ms-i2g-start"
     },
     "B": {
-      "state": "MS-C4组件接受，174单元和35实际SQL通过；等待通用authority/Reader及明确下一包。",
-      "package": "MS-C4",
-      "ready": false,
-      "base_ref": "ms-i2f2"
+      "state": "用户已报告同步ms-i2f2；新包MS-C5已发布待转发，完成通用登记/当前权威/读取到模型输入。",
+      "package": "MS-C5",
+      "ready": true,
+      "base_ref": "ms-i2g-start"
     },
     "C": {
-      "state": "MS-T2c组件接受，135单元和70实际SQL通过；等待生产Lookup/Reader/executor，不进入完整MS-T2。",
-      "package": "MS-T2c",
-      "ready": false,
-      "base_ref": "ms-i2f2"
+      "state": "用户已报告同步ms-i2f2；新包MS-T2d已发布待转发，完成只读调用编排/实际adapter/持久结果。",
+      "package": "MS-T2d",
+      "ready": true,
+      "base_ref": "ms-i2g-start"
     },
     "D": {
-      "state": "MS-R2c组件接受，250项通过；A已接登记Reader并统一content Ref，真实IPC/配对仍待依赖。",
-      "package": "MS-R2c",
-      "ready": false,
-      "base_ref": "ms-i2f2"
+      "state": "用户已报告同步ms-i2f2；新包MS-R2d已发布待转发，完成OS控制签名/授权根来源及装配。",
+      "package": "MS-R2d",
+      "ready": true,
+      "base_ref": "ms-i2g-start"
     },
     "E": {
       "state": "可选工作区未创建、任务未派发。",
@@ -80,6 +81,10 @@
     "MS-C4": "accepted_component",
     "MS-T2c": "accepted_component",
     "MS-R2c": "accepted_component",
+    "MS-C5": "ready_to_start",
+    "MS-T2d": "ready_to_start",
+    "MS-R2d": "ready_to_start",
+    "MS-I2g": "in_progress",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -176,6 +181,7 @@
         "MS-I2e",
         "MS-I2f1",
         "MS-I2f2",
+        "MS-I2g",
         "MS-I2f",
         "MS-I2",
         "MS-I3"
@@ -186,7 +192,7 @@
         "负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
         "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
         "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-        "MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D保留交付边界，A继续完整MS-I2f真实来源接线。"
+        "MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D以ms-i2g-start分别开发MS-C5/MS-T2d/MS-R2d完整能力包；A提供独立验证环境并并行接线。"
       ]
     },
     "B": {
@@ -205,6 +211,9 @@
         "src/uaw/context/references.py",
         "src/uaw/context/model_input.py",
         "src/uaw/context/cache.py",
+        "src/uaw/context/registered.py",
+        "src/uaw/context/authority.py",
+        "src/uaw/context/readers.py",
         "tests/unit/context/",
         "tests/integration/context/",
         "docs/coordination/handoffs/B.md",
@@ -216,7 +225,8 @@
       "later": [
         "MS-C2",
         "MS-C3",
-        "MS-C4"
+        "MS-C4",
+        "MS-C5"
       ],
       "report": "docs/coordination/handoffs/B.md",
       "request_dir": "docs/coordination/requests/B/",
@@ -244,6 +254,7 @@
         "MS-T2a",
         "MS-T2b",
         "MS-T2c",
+        "MS-T2d",
         "MS-T2"
       ],
       "report": "docs/coordination/handoffs/C.md",
@@ -276,6 +287,7 @@
         "MS-R2a",
         "MS-R2b",
         "MS-R2c",
+        "MS-R2d",
         "MS-R2"
       ],
       "report": "docs/coordination/handoffs/D.md",
@@ -823,6 +835,100 @@
       "acceptance": [
         "SQL/静态/全量841项通过，无隐藏错误/跳过；原worker回执和提交保持。",
         "仅组件接受；生产Lookup/Reader/executor和IPC/配对仍待依赖，不改变完整阶段状态。"
+      ]
+    },
+    {
+      "id": "MS-C5",
+      "session": "B",
+      "rounds": [
+        "P1-02",
+        "P1-07"
+      ],
+      "title": "通用上下文登记/当前权威/完整输入链",
+      "deps": [
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "实现可信登记入口、主体隔离blob及已有命名schema的SQL来源/配方记录，CAS/幂等/修订/撤销。",
+        "从实际Run/原文/政策和登记记录构建CompositionAuthority、Reader及RuleProvider，保持固定用户模型和原文保护。",
+        "接通登记→Context.build→snapshot/reference→GenericModelInputs；缓存不替代当前检查，非空工具集缺验证源拒绝。",
+        "阶段版先报告固定接口与SHA，然后继续真实SQL/blob重启/隔离/修订/撤销和原模块回归；详见MS-I2g-parallel-packages。"
+      ],
+      "acceptance": [
+        "单个完整能力包四个里程碑；前两个阶段提交后继续本包，不等待最终集成才做后两项。",
+        "真实源不来自测试目录，受控provider清楚标注；缺LLM/文件源不宣称产品闭环或整轮验收。"
+      ]
+    },
+    {
+      "id": "MS-T2d",
+      "session": "C",
+      "rounds": [
+        "P1-03",
+        "P1-09"
+      ],
+      "title": "只读工具调用编排/实际adapter/持久结果源",
+      "deps": [
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "以现有审批/预算/账本串联invoke闸门和持久发送所有权，内部可选executor消费固定call/spec/ctx。",
+        "实现有界实际text.inspect只读adapter及输出schema/真实响应保存，不依赖D新IPC或注册为产品目录。",
+        "实现固定结果source的publish/Lookup/Reader，规范ToolResult并接已有reconcile/read_outcome，效果与费用独立恢复。",
+        "独立SQL覆盖waiting/拒绝/批准、一次发送、并发/重启、超时取消/响应丢失、输出错误和费用中断，原70项SQL回归。"
+      ],
+      "acceptance": [
+        "阶段版后继续同包恢复与验证；无executor先拒绝，未知发送不重新attempt，缺生产权限仍不可用。",
+        "真实本地只读结果有证据，不从Runner回执或传输200推断成功；完整MS-T2/P1仍待集成。"
+      ]
+    },
+    {
+      "id": "MS-R2d",
+      "session": "D",
+      "rounds": [
+        "P1-04"
+      ],
+      "title": "OS控制签名/授权根来源/适配器装配",
+      "deps": [
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "实现既有RunnerCommandSigningPort，对独立control key映射和OS凭据真实签名/当前撤销检查。",
+        "在随机临时测试namespace验证WindowsCredentialStore与ProtectedSigner，并清理；不输出或修改现有凭据。",
+        "从真实已消费选择/grant/期限/目录身份和独立owner映射实现RunnerRootSourcePort，不从command自报ctx授权。",
+        "给出签名/根/authority/ReceiptReader装配样例，临时目录与重启/撤销/过期/跨主体验证；原journal/admission回归保留。"
+      ],
+      "acceptance": [
+        "四个里程碑两个交付点，OS实际回执与受控fixture区分；缺期限/确认/通道拒绝。",
+        "不开放IPC/配对V2/文件动作/安装写入exec，不自行决定D03或把组件验收当完整MS-R2。"
+      ]
+    },
+    {
+      "id": "MS-I2g",
+      "session": "A",
+      "rounds": [
+        "P0-02",
+        "P1-02",
+        "P1-03",
+        "P1-04",
+        "P1-07"
+      ],
+      "title": "独立验证环境/阶段接口接线/并行集成",
+      "deps": [
+        "MS-I2f2"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "发布ms-i2g-start、完整功能包和A/B/C/D独立Docker project/端口/volume，验证A旧入口兼容。",
+        "并行处理阶段版签名、公共提案与既有Run/政策/模型来源装配；领域实现归各worker，最终逐包合入。",
+        "受影响模块和跨模块验证优先，worker实跑自己的模块SQL；全量只在集成里程碑或具体风险要求时扩跑。",
+        "接通通用上下文/只读工具/签名根来源，列明channel/IPC/真实LLM及Agent循环剩余关键路径。"
+      ],
+      "acceptance": [
+        "准备发布不代表三个包已开工/接受；记录阶段版和最终真实回执与SHA，原阶段门槛保留。",
+        "不存在worker互相依赖开发分支；生产来源和flags只在实际集成验收后开放。"
       ]
     },
     {

@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-08",
+  "baseline_runtime_ref": "ms-i2f2",
+  "scope": "development database isolation and larger-package dispatch preparation",
+  "runtime_sources_unchanged": true,
+  "unchanged_reviewed_sources": 179,
+  "changed_reviewed_sources": {
+    "ops/compose.yaml": {
+      "previous": "8bcd492f7b77573aefbf4250722d371d90c5e0724d8b27f1395a5fdb261d79a8",
+      "current": "c7ad2ad10451d6c8b3a1f2ed14eb3b8ed307dc1bca2b6125e7b098b5c3793c54"
+    },
+    "ops/start-dev-db.ps1": {
+      "previous": "6e5b90aea6bbee828ca2f243c206ac97e49f06f881cdab8b0a9101d275b65565",
+      "current": "141b48b2b8845c2d19a80a53c4614328f21cf3bd9456ed06617d8d04ef769b13"
+    }
+  },
+  "supplemental_test_counts": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "supplemental_junit_sha256": "6447e10bad583199988b695da9f2b20642719dbe0aac62d1110960c318ce0a46",
+  "session_database_configurations": [
+    {
+      "loopback_port": 55432,
+      "volume": "uaw-development_postgres_data",
+      "session": "A",
+      "rendered_config_verified": true,
+      "worker_database_started": false,
+      "project": "uaw-development"
+    },
+    {
+      "loopback_port": 55433,
+      "volume": "uaw-development-b_postgres_data",
+      "session": "B",
+      "rendered_config_verified": true,
+      "worker_database_started": false,
+      "project": "uaw-development-b"
+    },
+    {
+      "loopback_port": 55434,
+      "volume": "uaw-development-c_postgres_data",
+      "session": "C",
+      "rendered_config_verified": true,
+      "worker_database_started": false,
+      "project": "uaw-development-c"
+    },
+    {
+      "loopback_port": 55435,
+      "volume": "uaw-development-d_postgres_data",
+      "session": "D",
+      "rendered_config_verified": true,
+      "worker_database_started": false,
+      "project": "uaw-development-d"
+    }
+  ],
+  "full_regression_not_repeated": true,
+  "previous_full_regression_tests": 841,
+  "previous_full_regression_ref": "ms-i2f2",
+  "limitations": [
+    "B/C/D rendered Compose configs verified, not started or migrated by A",
+    "new MS-C5/MS-T2d/MS-R2d packages are ready to start, not implemented or accepted",
+    "8 supplemental tests overlap prior regression; do not add to the 841 unique-test count"
+  ]
+}
