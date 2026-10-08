@@ -11,6 +11,16 @@ import asyncio
 import json
 from typing import Any
 
+from uaw.context.cache import (
+    PureComputationCache,
+    binding_key,
+    cache_enabled,
+    lookup,
+    make_key,
+    reading_key,
+    remember,
+    window_key,
+)
 from uaw.context.composer import Composer
 from uaw.context.contracts import InstructionSet, Reading, from_wire, matches_pin, ref_key
 from uaw.model.contracts import ModelPrompt
@@ -28,13 +38,17 @@ def serialize(value: object) -> str:
 class GenericModelInputs:
     """Inject the same Composer/Reader/authority as generic Context construction.
 
-    No prompt cache: every resolution reloads persisted records and live sources.
+    Every resolution reloads persisted records and live sources. Optional caching
+    only reuses formatting/serialization/estimation after current validation.
     Missing Composer/authority/capability Reader fails explicitly. operation_id
     may differ from the build operation; the snapshot remains bound to Run/scope.
     """
 
-    def __init__(self, composer: Composer | None) -> None:
+    def __init__(
+        self, composer: Composer | None, *, cache: PureComputationCache | None = None
+    ) -> None:
         self.composer = composer
+        self.cache = cache
 
     async def resolve(self, ref: dict[str, Any], ctx: TrustedExecutionContext) -> ModelPrompt:
         if self.composer is None:
@@ -125,7 +139,6 @@ class GenericModelInputs:
         # Current flags, provider/role/resource eligibility remain authority-owned.
         # A missing live Reader/authority never becomes an empty tool set.
 
-        messages: list[dict[str, Any]] = []
         rule_sources: set[str] = set()
         for rule in instructions.rules:
             rule_reading = readings.get(ref_key(rule.source_ref))
@@ -136,59 +149,17 @@ class GenericModelInputs:
             ):
                 raise reject("snapshot_changed", "An effective rule has no exact read block", 410)
             rule_sources.add(ref_key(rule_reading.ref))
-            if rule.level in ("platform", "capability_policy"):
-                if rule_reading.trust != "platform":
-                    raise reject(
-                        "permission_denied", "Non-platform rule cannot be a system message", 403
-                    )
-                messages.append({"role": "system", "content": rule_reading.text})
-            elif rule.level == "user_current":
-                messages.append({"role": "user", "content": rule_reading.text})
-            else:
-                # Registered lower-priority rules retain their scope/level, never system rank.
-                messages.append(
-                    {
-                        "role": "user",
-                        "content": serialize(
-                            {
-                                "context_kind": "registered_instruction",
-                                "level": rule.level,
-                                "source_ref": rule_reading.ref.wire(),
-                                "scope": rule.scope.wire(),
-                                "text": rule_reading.text,
-                            }
-                        ),
-                    }
+            if rule.level in ("platform", "capability_policy") and rule_reading.trust != "platform":
+                raise reject(
+                    "permission_denied", "Non-platform rule cannot be a system message", 403
                 )
-        for block in snapshot["blocks"]:
-            reading = readings[ref_key(from_wire(Ref, block["content_ref"]))]
+        for reading in readings.values():
             if ref_key(reading.ref) in rule_sources or reading.ref == capability.ref:
                 continue
             if reading.kind in ("instruction", "skill"):
                 raise reject("permission_denied", "Unresolved rule cannot enter the prompt", 403)
-            if reading.kind == "user_input":
-                if reading.trust != "user":
-                    raise reject(
-                        "permission_denied", "Original input must retain user identity", 403
-                    )
-                messages.append({"role": "user", "content": reading.text})
-            else:
-                # History/tools/material lack authenticated provider role/call IDs here.
-                # They are source-tagged data, never assistant/tool/system messages.
-                messages.append(
-                    {
-                        "role": "user",
-                        "content": serialize(
-                            {
-                                "context_kind": "data",
-                                "kind": reading.kind,
-                                "trust": reading.trust,
-                                "source_refs": [reading.ref.wire()],
-                                "text": reading.text,
-                            }
-                        ),
-                    }
-                )
+            if reading.kind == "user_input" and reading.trust != "user":
+                raise reject("permission_denied", "Original input must retain user identity", 403)
 
         dependencies = tuple(
             from_wire(Ref, value) for value in snapshot["manifest"]["dependency_refs"]
@@ -213,11 +184,55 @@ class GenericModelInputs:
             or window.serialization_reserve < 0
         ):
             raise reject("model_policy_conflict", "Fixed model window is invalid or changed", 409)
-        estimate = max(
-            snapshot["input_tokens"],
-            len(serialize({"messages": messages, "tools": tools}).encode("utf-8"))
-            + 64 * (len(messages) + len(tools) + 1),
-        )
+        computation_key = None
+        if cache_enabled(self.cache):
+            computation_key = make_key(
+                self.cache,
+                ctx,
+                algorithm="generic-model-input-format:utf8-envelope-64:v1",
+                inputs={
+                    "formatter": type(self).__module__ + "." + type(self).__qualname__,
+                    "snapshot_ref": pin.wire(),
+                    "snapshot": snapshot,
+                    "request": saved,
+                    "binding": binding_key(binding),
+                    "instructions": instructions.wire(),
+                    "readings": [reading_key(r) for r in readings.values()],
+                    "capability": reading_key(capability),
+                    "tools": tools,
+                    "window": window_key(window),
+                },
+                readings=(*readings.values(), capability),
+                pins=(pin,),
+            )
+        cached = lookup(self.cache, computation_key)
+        pure = None
+        if cached is not None:
+            try:
+                candidate = json.loads(cached)
+                if (
+                    isinstance(candidate, dict)
+                    and set(candidate) == {"messages", "estimated_tokens"}
+                    and isinstance(candidate["messages"], list)
+                    and all(
+                        isinstance(m, dict)
+                        and set(m) == {"role", "content"}
+                        and m["role"] in ("user", "system")
+                        and isinstance(m["content"], str)
+                        for m in candidate["messages"]
+                    )
+                    and type(candidate["estimated_tokens"]) is int
+                    and candidate["estimated_tokens"] >= snapshot["input_tokens"]
+                ):
+                    pure = candidate
+            except ValueError, TypeError:
+                pass
+        if pure is None:
+            messages, estimate = self._format(instructions, readings, capability, tools, snapshot)
+            pure = {"messages": messages, "estimated_tokens": estimate}
+            if computation_key is not None:
+                remember(self.cache, computation_key, serialize(pure).encode("utf-8"))
+        messages, estimate = pure["messages"], pure["estimated_tokens"]
         if (
             not 1 <= snapshot["output_reserve"] <= window.max_output_tokens
             or estimate
@@ -241,3 +256,64 @@ class GenericModelInputs:
             raise reject("model_policy_conflict", "Model window changed during input read", 409)
         await sources.guard.check(ctx)
         return ModelPrompt(tuple(messages), tools, estimate)
+
+    @staticmethod
+    def _format(
+        instructions: InstructionSet,
+        readings: dict[str, Reading],
+        capability: Reading,
+        tools: tuple[dict[str, Any], ...],
+        snapshot: dict[str, Any],
+    ) -> tuple[list[dict[str, Any]], int]:
+        """Pure formatting of already validated data; never Reader/authority lookup."""
+        messages: list[dict[str, Any]] = []
+        rule_sources: set[str] = set()
+        for rule in instructions.rules:
+            reading = readings[ref_key(rule.source_ref)]
+            rule_sources.add(ref_key(reading.ref))
+            if rule.level in ("platform", "capability_policy"):
+                messages.append({"role": "system", "content": reading.text})
+            elif rule.level == "user_current":
+                messages.append({"role": "user", "content": reading.text})
+            else:
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": serialize(
+                            {
+                                "context_kind": "registered_instruction",
+                                "level": rule.level,
+                                "source_ref": reading.ref.wire(),
+                                "scope": rule.scope.wire(),
+                                "text": reading.text,
+                            }
+                        ),
+                    }
+                )
+        for reading in readings.values():
+            if ref_key(reading.ref) in rule_sources or reading.ref == capability.ref:
+                continue
+            if reading.kind == "user_input":
+                messages.append({"role": "user", "content": reading.text})
+            else:
+                # History/material/tool data retain source identity, never provider roles.
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": serialize(
+                            {
+                                "context_kind": "data",
+                                "kind": reading.kind,
+                                "trust": reading.trust,
+                                "source_refs": [reading.ref.wire()],
+                                "text": reading.text,
+                            }
+                        ),
+                    }
+                )
+        estimate = max(
+            snapshot["input_tokens"],
+            len(serialize({"messages": messages, "tools": tools}).encode("utf-8"))
+            + 64 * (len(messages) + len(tools) + 1),
+        )
+        return messages, estimate

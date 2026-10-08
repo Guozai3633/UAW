@@ -6,6 +6,7 @@ import json
 from datetime import UTC, datetime
 from typing import Any
 
+from uaw.context.cache import binding_key
 from uaw.context.contracts import (
     CompositionBinding,
     ContextRequest,
@@ -149,6 +150,11 @@ class Composer:
             ),
             ctx,
             protected,
+            cache_boundary={
+                "snapshot_id": identifier,
+                "request": request.wire(),
+                "binding": binding_key(binding),
+            },
         )
         for reading in allocation.selected:
             if reading.kind in ("instruction", "skill") and not any(
@@ -301,6 +307,12 @@ class Composer:
             ),
             ctx,
             required,
+            cache_boundary={
+                "snapshot": snapshot,
+                "request": saved_request.wire(),
+                "binding": binding_key(binding),
+                "instructions": instructions,
+            },
         )
         if allocation.omitted:
             raise reject(
