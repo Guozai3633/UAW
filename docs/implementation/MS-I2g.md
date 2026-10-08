@@ -40,4 +40,4 @@ A已有三个内部组装入口均保留，B固定构造与GenericModelInputs签
 
 [去重接受JUnit](evidence/ms-i2g-accepted-tests.xml)是首轮其余1074个成功节点＋复跑3项的无重叠汇总；p0-tests.xml是其副本，不累加测试数。并非单次1077全部通过；没有隐藏首轮失败，也没有无依据重跑70分钟全量。environment.json保存各原始摘要及仅一处测试修复。
 
-已验证运行源码基线：f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8（ms-i2h-start）；新的代码/证据提交和ms-i2g远程发布SHA见DISPATCH。三个worker继续自己的ms-i2h-start新包，不要求中途同步。P1产品任务、真实模型语义及外部执行仍未接受。
+已验证运行源码基线：f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8（ms-i2h-start）；实际代码/证据提交：5d42970d1dd6761f33351c6e54f22e6f7fce312d；ms-i2g固定验收标签包含随后状态记录，远程发布见DISPATCH。三个worker继续自己的ms-i2h-start新包，不要求中途同步。P1产品任务、真实模型语义及外部执行仍未接受。
