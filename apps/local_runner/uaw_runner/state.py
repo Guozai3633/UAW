@@ -379,3 +379,33 @@ class LocalState:
                 (ticket_id,),
             )
             return self.load_current(db, ticket_id, now=now)
+
+    def consumed_root(self, ticket_id: str, *, now: datetime) -> tuple[Ticket, str, datetime]:
+        """Read persisted approval deadline/proof for an already consumed root selection.
+
+        This never approves/consumes a pending ticket or extends an old grant's lifetime.
+        """
+        with self.transaction() as db:
+            ticket = self.load_current(db, ticket_id, now=now)
+            row = db.execute(
+                "SELECT confirmation_hash,confirmation_expires_at FROM tickets WHERE ticket_id=?",
+                (ticket_id,),
+            ).fetchone()
+            if (
+                ticket.kind != "root"
+                or ticket.state != "consumed"
+                or ticket.revision != 2
+                or row is None
+                or not row["confirmation_hash"]
+                or not row["confirmation_expires_at"]
+            ):
+                raise reject(
+                    "permission_denied", "Consumed native root proof unavailable", 403, "permission"
+                )
+            deadline = aware(datetime.fromisoformat(row["confirmation_expires_at"]))
+            if not aware(now) < deadline <= ticket.expires_at:
+                raise reject(
+                    "deadline_exceeded", "Consumed root confirmation expired", 410, "timeout"
+                )
+            self.require_device_key(db, ticket)
+            return ticket, row["confirmation_hash"], deadline

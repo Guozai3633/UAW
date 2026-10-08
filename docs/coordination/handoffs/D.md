@@ -334,3 +334,100 @@ git diff --check
 - 实际回执：27 passed，0 failure/error/skip，1.85s；Ruff/格式27文件与Mypy13源码文件通过。命令/构造例子见[R2d-001](../requests/D/R2d-001-adapter-wiring.md)，JUnit在tests/.artifacts/D/MS-R2d/stage-junit.xml。
 - **真实OS用例1项通过**：WindowsCredentialStore直接WinVaultKeyring后端；随机namespace/handle生成、读取、签名、重建、再签、当前撤销，finally清理并证明missing，windows-control-receipt.json为passed/cleaned=true；没有输出secret或触碰既有凭据。其余原语+memoryvault测试明确fixture。
 - 仍缺：生产control绑定生命周期/可信channel/native确认与正式OS部署；前两项不是完整MS-R2或实际Runner执行。未启动PG（本阶段不需要SQL），不实现IPC/配对V2/安装写入exec，不决定D03。
+
+
+## MS-R2d最终交接：OS控制签名、授权根来源与装配（2026-10-08）
+
+- 实际目录/分支：**E:/UAW/.worktrees/runner / dev/runner**；保持原worktree、原提交和旧handoff，不创建其他session。
+- 实际固定基线：**ms-i2g-start / 0bd8e2b8387a46e16435dc033956c2b69bb1a859**；开工干净，fetch tags / merge --ff-only成功，HEAD与标签commit精确相同。
+- 环境：独立`.venv` Python3.14.6，`UV_CACHE_DIR=E:/UAW/.worktrees/runner/.cache/uv`；`uv sync --frozen`成功，未改锁。按指令未选择agent-engine extra，移除了本工作区27个可选包；没有其他worktree环境变更。
+- 阶段源码SHA：**92ddf118cf3005bfe32eea630ce950c6325bd76d**；阶段handoff：**1287a053da9e3963703091ccbfc9ff0f032c8dc1**。前两里程碑先交可审阅接口/OS回执后，连续完成后两里程碑，没有等待最终接受。
+- 最终后半包源码SHA：**7d946de7a8aa2321e32ee1af5bdb18610a09ead1**。本节handoff独立提交；最终交接SHA由随后Git历史和交付消息给出，避免自引用改写源码提交。
+- 本包四项组件目标完成，待A审阅/接线/接受；**完整MS-R2、P1-04及可信IPC/真实用户确认/实际文件执行仍未验收**。
+
+### 实际文件清单
+
+阶段源码5文件：`apps/local_runner/uaw_runner/control_signing.py`、`keys.py`；`tests/unit/runner/test_control_signing.py`；`tests/integration/runner/test_windows_control_keys.py`；`docs/coordination/requests/D/R2d-001-adapter-wiring.md`。
+后半包12文件：`apps/local_runner/uaw_runner/assembly.py`、`root_source.py`、`async_admission.py`、`protocol.py`、`pairing.py`、`state.py`；`src/uaw/workspace/binding.py`、`ports.py`；`tests/unit/runner/test_async_admission.py`；`tests/integration/runner/test_native_root_source.py`、`root_source_child.py`；同一R2d-001接线文档。本handoff单独提交。
+所有改动在D允许目录；shared/schema/锁/composition/API/公共迁移/其他worktree均未修改，不读取其他worker未交接代码。未启动PG：本包仅本机OS/SQLite/路径后端测试，不需要平台SQL，未宣称真实PostgreSQL接线验证。
+
+### 可消费接口与构造样例
+
+```python
+ControlKeyBinding(device_id, key_id, credential_handle)
+ControlCommandSigner(bindings, *, directory, signer, clock=None)
+await signer.sign(draft, *, device_id) -> JsonObject  # RunnerCommand
+await signer.verify(command, *, device_id) -> None
+PersistentRootGrants(path)  # RootRepository + RootGrantLookup
+NativeRootSource(bindings, *, grants, selections, native_roots, mapping,
+                 directory=None, clock=None)
+await roots.current(device_id, workspace_ref, ctx) -> JsonObject  # RunnerRootSnapshot
+await roots.bind(selection, workspace_ref, *, device_id, authenticated_principal) -> None
+RegisteredPrincipalMapping(devices)  # adapts RunnerDevices.owner(actor, device_id)
+assemble_runner_adapters(*, device_id, control_bindings, directory, credentials,
+    grants, admissions, selections, native_roots, mapping, authority,
+    receipt_commands, journal_path, clock=None) -> RunnerAdapters
+```
+
+- control key→device→protected_handle仅由独立可信构造映射固定。严格RunnerCommandDraft，只新增signature、深拷贝且不改正文；当前key/control角色/撤销/实际Ed25519验签/异步OS读取后时钟与期限复查。取消传播；verify可恢复历史签名而不新准入。ProtectedSigner复制document并off-loop查key，无明文fallback。
+- 根来源按独立owner/session与实际device映射找完整固定workspace的唯一持久grant；消费前检查独立当前device key。授权元数据来自真实已消费票据/确认hash/原root-selection域签名和有限期限、持久grant、真实dev/inode/native目录；签名/目录/映射/撤销查询后重查。旧缺owner/证明/有效期记录明确拒绝，无无限期限补值。
+- Snapshot严格只含发布的owner/device/workspace/root_handle/revision/allowed_actions/expires_at，路径opaque；read能力映射file.read/file.list元数据，绝不执行这些动作。真实确认期限可比ticket更短，取最小值；到期检查触发持久撤销，clock rollback/重启不恢复旧grant。
+- RootBindings同步兼容，新增可选owner与proof/期限字段是内部dataclass。既有sync和async admission都将当前时钟传入grant范围复查，最终CAS前原真实签名/取消/当前权限检查保持；没有asyncio.run生产桥接，SQLite/stat/key查询off-loop。
+- 装配只连接已给定适配器，不挂载网络/API/IPC/Tool，不生成批准/选择/执行回执或flags。缺actual directory/mapping/native选择/authority/Reader/OSbackend时相应入口明确不可用。采用A已接受**content固定Ref**，无新RefKind、无artifact旧pin别名。
+
+实际A装配示例：
+
+```python
+mapping = RegisteredPrincipalMapping(container.runner_devices)
+parts = assemble_runner_adapters(
+    device_id=actual_device_id,
+    control_bindings=(ControlKeyBinding(actual_device_id, registered_control_key_id, protected_handle),),
+    directory=current_key_directory,
+    credentials=WindowsCredentialStore(private_service_namespace),
+    grants=persistent_native_grants,
+    admissions=actual_admissions,
+    selections=actual_consumed_selection_state,
+    native_roots=actual_native_root_directory,
+    mapping=mapping,
+    authority=container.runner_authority,
+    receipt_commands=container.runner_receipt_commands,
+    journal_path=private_native_dir / "terminal-receipts.sqlite",
+)
+# A在真实可信构造点接线，仍须真实channel/gate/Run/policy/model/lease/fence全部依赖。
+container.runner_commands.signer = parts.control_signing
+container.runner_commands.roots = parts.roots
+snapshot = await parts.roots.current(actual_device_id, actual_workspace_ref, trusted_ctx)
+command = await parts.control_signing.sign(actual_registered_draft, device_id=actual_device_id)
+await parts.control_signing.verify(command, device_id=actual_device_id)
+```
+
+缺source/OS拒绝、版本/内容冲突、默认未挂载与真实收件后journal调用例子见[R2d-001](../requests/D/R2d-001-adapter-wiring.md)。示例里的真实来源参数不是本包fixture，不能从模型/command正文填充。受控装配测试另用明确登记源/authority/native确认fixture，无真实平台channel/source claim。
+
+### 实际验证命令和回执
+
+```powershell
+.venv/Scripts/python.exe -m ruff check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m ruff format --check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m mypy src/uaw/workspace apps/local_runner/uaw_runner --cache-dir .cache/mypy
+.venv/Scripts/python.exe -m pytest tests/unit/runner tests/integration/runner tests/unit/shared/test_contracts.py tests/unit/test_runner_signatures.py --basetemp tests/.artifacts/D/MS-R2d/tmp-final2 -q --junitxml tests/.artifacts/D/MS-R2d/junit.xml
+git diff --check
+```
+
+**最终326 passed，0 failure/error/skip，45.05s**；新增76项（22控制签名、1实际OS、52native root后端/装配、1异步admission根期限），原250项journal/admission/公共签名与DTO回归完整保留。Ruff通过，格式31文件通过，Mypy15源码文件通过，所有退出码0。消费前全局key撤销改动单独复验root与原persistent pairing共73项通过，然后取得最终326项组合回执。
+
+**OS实际实连：**WindowsCredentialStore直接使用`keyring.backends.Windows.WinVaultKeyring`，随机本包namespace/handle验证不存在→ProtectedSigner真实生成→OS写入/读取→Ed25519签名/verify→重建store及目录再签→当前key撤销拒绝→finally删除并再次证明missing。阶段和最终均passed/cleaned=true；没有打印/落盘private secret，没有操作已有用户凭据。OS不可用分支无fixture冒充成功，本机本次OS验证没有未通过项。
+
+**本机授权根：**真实临时目录、SQLite消费/grant与dev/inode检查、有限确认期限、重启及新Python进程恢复、8线程revoke CAS唯一胜者、替换/Windows临时junction越界拒绝、clock rollback、主体/session/device/workspace跨界、缺证明/缺字段旧记录拒绝、当前key错误角色/域/撤销、await期间期限/源变更与协作取消。Native用户确认及owner/channel服务明确为受控fixture，不证明真正认证用户完成配对。
+
+回执路径全部本session ignored：`tests/.artifacts/D/MS-R2d/checks.json`、`public-hashes.json`、`static-checks.json`、`pytest-check.json`、`ruff.log`、`format.log`、`mypy.log`、`diff.log`、`pytest.log`、`junit.xml`；阶段`stage-junit.xml`、`stage-windows-control-receipt.json`；最终`windows-control-receipt.json`（只含backend/status/随机namespace/handle/cleaned，无secret）。测试SQLite和根仅位于相应本session basetemp。早期开发阶段语法/fixture import/局部mypy调用范围等失败已修复，不计入最终成功回执；无最终失败/跳过项。
+
+公共字节与ms-i2g-start完全一致：schema及资源副本`cc5dbc6ba7bdaba40529ed196fe1249176b49967f741ecf017e40275417a8c45`，shared ports`fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104`，shared contracts`08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`，uv.lock`a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；composition摘要和完整核对见public-hashes.json。
+
+### 仍缺真实来源和接线要求
+
+- A提供真实control/device key登记与构造绑定生命周期、channel/device-owner关系、native用户选择/possession/确认回执及实际有限期限、固定workspace来源、当前role/resource/consent gate；默认生产channel/signer/root组合仍由A接线验收。实际OS后端成功不自动证明这些来源存在。
+- 本机grant存具体字段的明确SQLite组件后端，选择control库/native目录/grant/journal各自私有文件，不决定D01；正式部署ACL/备份/保留/导入旧记录/根重新授权生命周期由A协调。多binding/无完整pin不自动挑选，旧缺证明记录不迁移成授权。
+- 选择消费与grant写入不是共同事务，consume后中断可能丢可用性但不得重放；已commit后取消/源撤销保留真实状态，下一次current仍复查。worker线程无法撤回已完成的consume/commit；多次复查不能证明跨服务原子权限，也没有OS句柄TOCTOU隔离或断电/磁盘损坏验收。
+- ProtectedSigner provisioning仍需可信单owner随机handle：公共CredentialStorePort缺create-only CAS，没有自行扩shared或覆盖已有handle。真正OS凭据生命周期/多实例provision协调交A处理。
+- 原内部Ticket.document签名只服务既有组件proof，没有重解释为公开配对V2；可信IPC/真实本机用户确认尚缺。没有签发实际执行回执：装配测试收到的failed回执明确为协议fixture，admission不证明执行。
+- 不从Runner ok推Tool applied，不从failed/cancelled推not_applied/零费用；journal恢复不重新准入。没有文件动作/安装/写入exec、产品flags/API开放或D03决策。完整MS-R2继续等待A发布后续依赖与任务。
