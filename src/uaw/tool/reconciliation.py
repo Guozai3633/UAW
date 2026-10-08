@@ -3,7 +3,7 @@
 import asyncio
 import json
 from datetime import UTC, datetime
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 from uaw.infrastructure.db.transactions import reference
 from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
@@ -39,6 +39,101 @@ class ToolReconciler:
     ) -> None:
         self.ledger, self.budgets = ledger, budgets
         self.receipts, self.evidence = receipts, evidence
+
+    async def check_action(self, action_id: str, ctx: TrustedExecutionContext) -> None:
+        """Verify the fixed Tool binding only; owning Readers still authorize access."""
+        validate_contract("ID", action_id)
+        call = await self.ledger.attempt(ctx)
+        if call["action_id"] != action_id:
+            raise fail(
+                "receipt_binding_conflict",
+                "Requested action differs from the original attempt",
+                phase="reconcile",
+                category="conflict",
+                status=409,
+            )
+        await self.ledger.action(action_id, ctx)
+
+    async def _accepted(
+        self, action_id: str, ctx: TrustedExecutionContext
+    ) -> tuple[Payload, Payload]:
+        await self.check_action(action_id, ctx)
+        effect = await self.ledger.effect(action_id, ctx)
+        wire = effect.get("receipt_ref")
+        if wire is None:
+            raise fail(
+                "receipt_missing",
+                "Action has no accepted outcome receipt",
+                phase="receipt",
+                category="dependency",
+                status=404,
+            )
+        validate_dependency("Ref", wire, "receipt")
+        key = self.ledger.receipt_key({"receipt_ref": wire})
+        accepted = await self.ledger.get("tool.reconciliation.receipts", key, ctx)
+        if accepted is not None:
+            validate_dependency("ToolReconciliationReceipt", accepted, "receipt")
+        active = await self.ledger.get("tool.reconciliation.active", ctx.attempt_id, ctx)
+        intent = await self.ledger.get("tool.dispatch.intents", action_key(ctx, action_id), ctx)
+        if (
+            accepted is None
+            or active != accepted
+            or accepted["receipt_ref"] != wire
+            or ctx.attempt_id not in effect["attempt_ids"]
+            or intent is None
+        ):
+            raise fail(
+                "receipt_binding_conflict",
+                "Effect does not reference this attempt's accepted receipt",
+                phase="receipt",
+                category="conflict",
+                status=409,
+            )
+        return effect, accepted
+
+    async def read_outcome(self, action_id: str, ctx: TrustedExecutionContext) -> JsonObject:
+        """Recheck an accepted receipt's actual source/evidence, without accounting.
+
+        Acceptance of an effect observation does not require completed fee settlement.
+        Read the fixed accepted version, never an unaccepted newer Lookup result.
+        No receipt means no inferred outcome, even if EffectRecord says confirmed.
+        """
+        try:
+            effect, accepted = await self._accepted(action_id, ctx)
+            ref = Ref.model_validate_json(json.dumps(accepted["receipt_ref"]))
+            actual = await self._read(ref, ctx)
+            if canonical(actual) != canonical(accepted):
+                raise fail(
+                    "receipt_conflict",
+                    "Accepted receipt version changed its contents",
+                    phase="receipt",
+                    category="conflict",
+                    status=409,
+                )
+            # No source await under Tool locks. Refuse a concurrently superseded
+            # observation rather than returning it as the action's current outcome.
+            current, pinned = await self._accepted(action_id, ctx)
+            if current != effect or pinned != accepted:
+                raise fail(
+                    "receipt_version_stale",
+                    "Accepted outcome changed while reading its sources",
+                    phase="receipt",
+                    category="conflict",
+                    status=412,
+                )
+            return cast(JsonObject, json.loads(canonical(actual)))
+        except (ContractViolation, ValueError, TypeError, OverflowError, RecursionError) as exc:
+            raise fail(
+                "receipt_invalid", "Outcome receipt violates its strict contract", phase="receipt"
+            ) from exc
+        except TimeoutError as exc:
+            raise fail(
+                "reconciliation_interrupted",
+                "Outcome source response is unresolved",
+                phase="receipt",
+                category="infrastructure",
+                status=503,
+            ) from exc
 
     async def _read(self, receipt_ref: Ref, ctx: TrustedExecutionContext) -> Payload:
         if self.receipts is None:

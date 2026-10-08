@@ -242,3 +242,79 @@ A安排受控PG和独立测试主体，在实际集成SHA重跑43项SQL与组合
 C-003的公共缺口待A决定：现有ReconcileRequest仅action_id/revision，真实receipt查找需权威Lookup/独立版本；EffectRecord.confirmed消费方必须查询outcome而非宣告成功；BudgetService新pending增量/最终费用调整与orphan未记账意图的清理规则需公共owner明定。没有私加字段/扩schema/写budget.accounting。本轮不新增事件/迁移/依赖，不启用flags/目录；D01/D03/D06未自行设定。
 
 待SQL/接线接受与A发布下一基线，不自动开始完整MS-T2。回退由A revert源码提交`c78d37101a4c203cbe487f15cb5cabc063ca5f76`及后续公共接线，保留持久unknown/实际费用，代码回退不证明已撤销外部效果。没有真实业务动作发生。
+
+
+# MS-T2c 交接追加 · 2026-10-08
+
+状态：**统一核对入口、明确outcome读取及组件验证已交付；本工作区真实SQL待A实跑/接受，生产接线和完整MS-T2继续等待。** 原handoff保持原文；MS-T2b已由A合入ms-i2e，97单元＋43真实SQL通过，A仅将SQL模块改为`test_tool_reconciliation_postgres.py`解决同名收集冲突。本包保留这43项和模块名。
+
+## 实际位置、基线与提交
+
+- 目录`E:/UAW/.worktrees/tool`，分支`dev/tool`。
+- 开工工作区干净；实际执行`git fetch origin --tags`、`git merge --ff-only ms-i2e`成功。同步后HEAD与`ms-i2e^{commit}`完全一致：**`ba2f3b0d9417e6d695eaa74c2f766217c98b01f1`**。无reset/rebase、历史改写或公共文件覆盖。
+- `uv sync --frozen --extra agent-engine --link-mode copy`通过，91 packages checked；独立`.venv`及`.cache/uv`，Python 3.14.6，未重写锁。
+- **源码与测试提交：`3d8cda36d1422a70fb877a87868affe587c1441c`**。本交接与C-004作为独立文档提交，A审阅dev/tool这两笔提交；文档提交实际SHA由Git日志及ignored environment.json给出，避免把自引用占位当SHA。
+- 公共SHA256保留ms-i2e：schema `45161b36f2e81622e73f86c23b048cda8d55686e7045248f0394ab51d13dbe6b`；shared ports `453cd9cd21b92a77c6e370fc6f0463072a3903a2c6b5beee56dec4f93b0c27a5`；shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`；uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`。
+
+## 本轮改动文件
+
+源码/测试提交7文件：
+
+- `src/uaw/tool/receipt_lookup.py`
+- `src/uaw/tool/facade.py`
+- `src/uaw/tool/reconciliation.py`
+- `tests/unit/tool/test_recovery_facade.py`
+- `tests/integration/tool/recovery_fixtures.py`
+- `tests/integration/tool/recovery_facade_child.py`
+- `tests/integration/tool/test_tool_recovery_facade_postgres.py`
+
+独立文档提交：本`docs/coordination/handoffs/C.md`追加与`docs/coordination/requests/C/C-004-ms-t2c-facade-outcome-wiring.md`。只有C允许路径；不改shared/schema/锁/composition/API/迁移、其他worker或其他worktree。A的active provider和pending Usage契约保留。
+
+## 实际接口与行为
+
+- 新内部`ActionReceiptLookupPort.find(action_id, ctx) -> Ref | None`，默认不提供生产实现；owning domain从独立已登记原action/attempt来源查找实际固定回执，复核当下恢复数据权限和完整绑定。查找不是执行权限、效果证明或记账完成。
+- `ToolFacade(..., lookup=None, reconciler=None).reconcile(request, ctx)`严格消费已有ReconcileRequest，输出已有RuntimeToolruntimeReconcileResult。先冻结/校验仅action_id与严格整数expected_revision，额外receipt_ref等字段拒绝；Lookup前后校验真实原attempt/action/context，返回Ref仍由原ToolReconciler检查Reader/证据/全部绑定/版本/CAS/原费用计划。缺Lookup/Reconciler/实际Reader不可用；Lookup None仅missing，保留unknown/已有结果/额度。
+- 恢复入口不调用新执行`_access`、invoke或discover；当下来源/证据Reader独立授权恢复数据，执行撤销、取消/过期后的原尝试清理与新动作准入区分。不新建action/attempt，不reserve/dispatch/retry、不授权重发。
+- `ToolReconciler.check_action`只核对固定账本身份，不授权当前来源。`ToolReconciler.read_outcome(action_id,ctx)`与facade委托方法返回实际已接受ToolReconciliationReceipt wire；失败抛DomainError，async取消传播。
+- read_outcome读取EffectRecord.receipt_ref的已接受固定版本和当前attempt核对记录，重新校验实际来源/证据/action/attempt/provider/receipt/Usage绑定，与已接受内容严格比较；同版本变化冲突、并发替代后stale，不跟随Lookup未接受新回执。返回复制，不写账本/调用预算服务。没有已接受回执不推断outcome；费用未完成/回复丢失/明确拒绝不妨碍独立真实效果读取。
+- **confirmed和核对ok不等于applied、工具成功或Task完成。** 必须消费实际outcome；not_applied可有非零费用，unknown保留未知维度额度且不重发。费用完成来自BudgetState/实际UsageSettlement，不从效果或receipt Usage推断完成。
+- MS-T2b固定原attempt/上下文/费用计划及CAS去重保留，来源和BudgetService均不在Tool会话事务锁内调用；未修改现有账本/预算核心实现。
+
+## 接线、可执行例子与未决边界
+
+[C-004接线说明](../requests/C/C-004-ms-t2c-facade-outcome-wiring.md)给出A实际Container.records/budgets的可选注入、默认不可用、成功/拒绝/重复与版本冲突示例、错误语义及outcome消费表。
+
+1. `test_sql_facade_lookup_explicit_outcome_and_independent_fees`：只输入action_id/revision，经独立已登记受控来源查找；not_applied与0.03费用独立，unknown/pending保留0.01等未知额度，再读真实outcome。
+2. `test_sql_facade_model_receipt_ref_rejected_before_lookup`及跨主体/attempt/Run/action/独立登记provider用例：额外或伪造绑定拒绝，没有核对新动作/费用写入。
+3. `test_sql_facade_duplicate_restart_and_read_outcome_have_one_fee_plan`、并发、新进程：重建后查找原来源，固定结算去重。新进程只接收既有request/context，不接收receipt_ref或凭据。
+4. 执行政策撤销＋取消后允许当前恢复数据读取；Lookup/Receipt/Evidence当前来源撤销拒绝。同版本body变化与未知新Lookup来源不能冒充已接受outcome。
+5. 费用响应丢失仍能读已接受not_applied，再重放固定费用计划。新SQL预算守卫禁止reserve/dispatch，原执行阶段记录守卫禁止新增attempt/身份/发送；单元补read_outcome完全不调用预算、费用确定拒绝、超时/取消及并发替代。
+
+以上SQL代码尚未在本工作区执行到业务断言。Lookup/Reader/角色/环境/提供方metadata均明示受控组件；未注册为产品能力，未使用真实LLM、Runner、IPC或executor。
+
+## 验证命令、回执和未通过项
+
+```powershell
+Set-Location E:/UAW/.worktrees/tool
+.venv/Scripts/python.exe -m ruff check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m ruff format --check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m mypy --cache-dir .cache/mypy-tool src/uaw/tool
+.venv/Scripts/python.exe -m pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2c/unit.xml
+.venv/Scripts/python.exe -m pytest tests/unit/tool tests/integration/tool --collect-only -q -p no:cacheprovider
+.venv/Scripts/python.exe -m pytest tests/integration/tool -q -p no:cacheprovider --require-postgres --junitxml=tests/.artifacts/C/MS-T2c/sql.xml
+```
+
+- **135 unit passed，0 failure/error/skip**：原97＋本轮38，unit.txt/unit.xml。
+- Ruff通过（ruff.txt）；33文件格式通过（format.txt）；Mypy strict 17源码文件通过（mypy.txt）；diff/staged diff --check通过。
+- 合并收集**205项**（135单元＋70 SQL），collection.txt，无同名单元/SQL模块冲突；原43 SQL＋本轮27，旧SQL文件未改。
+- 真实SQL实际尝试：**70 setup errors，0 passed/failure/skip，exit 1**；唯一共同原因`UAW_TEST_DATABASE_URL`缺失。sql.txt/sql.xml记录原始错误，没有连接PG/执行断言，不以收集或内存fixture宣称SQL通过。
+- ignored回执位置`E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2c/`，包含unit.txt/xml、sql.txt/xml、ruff.txt、format.txt、mypy.txt、collection.txt及environment.json，后者保存真实基线/源码/文档提交、公共与本轮源码摘要。
+- 未运行本包真实PG、全量组合/Agent闭环、生产Lookup/Receipt/EvidenceReader、真实provider/LLM/Runner/executor。未复制连接凭据/.data、未启动共享DB/迁移/端口服务。
+
+## A 接受要求与回退
+
+A在受控PG、随机隔离测试主体及实际集成SHA实跑全部70项SQL（保留原43回归）并组合审阅，失败由C修组件业务。A实现/接入独立已登记原attempt的生产Lookup及可信Reader，核对签名/来源/当前数据访问和固定版本；保留旧版本恢复能力，不能把fixtures登记为产品。当前Tool Runtime仍未绑，shared.ToolPort只有invoke；若挂新操作，公共port/HTTP/组装与实施范围由A处理。
+
+C-003的pending增量预算/最终费用调整、orphan会计协调仍由A决定，本包没有扩EffectRecord或ReconcileRequest、私写预算账本或设定公共规则。没有新依赖/迁移/事件，不开放flags或工具目录；完整MS-T2、生产执行与D01/D03/D06继续等待，不自动扩包。
+
+回退由A revert源码`3d8cda36d1422a70fb877a87868affe587c1441c`及后续接线提交，保留原持久unknown/费用/实际回执；代码回退不证明外部效果已撤销。本包没有真实业务dispatch。
