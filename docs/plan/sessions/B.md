@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-C3已接受，15个真实SQL已复验；暂无新包，保留干净交付边界。以DISPATCH的固定版本与派发为准。
+状态：MS-C3已接受；MS-C4可独立开发上下文纯计算缓存，当前授权仍每次复核。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2、MS-C3。
+- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -24,6 +24,7 @@
 - `src/uaw/context/composer.py`
 - `src/uaw/context/references.py`
 - `src/uaw/context/model_input.py`
+- `src/uaw/context/cache.py`
 - `tests/unit/context/`
 - `tests/integration/context/`
 - `docs/coordination/handoffs/B.md`
@@ -91,6 +92,23 @@
 - 消息文本与真实来源一致，外部材料无法变成系统权限或新增工具。
 - 缺工具来源不能伪造空工具，快照不授权当前读取；不修改A保留的seed/intent/model/composition。
 
+### MS-C4：上下文纯计算有界缓存
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P4-04](../rounds/P4-04.md)。
+开发前置：MS-I2e。
+
+任务：
+
+1. 在context/cache.py新增可选进程内有界缓存，仅复用已校验数据的格式化/序列化/token估算。
+2. 保持现有GenericModelInputs/TokenCounter公开签名；当前scope/authority/Reader/epoch/规则/工具/窗口/取消每次复核。
+3. 键覆盖实际完整内容/元数据、主体/Run、模型/权限/预留和算法版本；容量/字节有界、结果复制、默认关闭。
+4. 验证纯计算次数减少、输入/信任/窗口变化失效、跨主体隔离、撤销/取消与容量；实际SQL原回归保留。
+
+交付检查：
+
+- 缓存不保存访问许可/唯一状态/模型输出，不跳过来源读取或最终检查；异常不靠旧值掩盖。
+- 只报告实际本地计算变化，不宣称provider缓存或Token/延迟收益；详细范围见MS-I2e-next-packages。
+
 ## 可复制到新session的开工说明
 
 下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
@@ -100,7 +118,7 @@
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-C3已接受，15个真实SQL已复验；暂无新包，保留干净交付边界。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-C4。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2e同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

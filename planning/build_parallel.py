@@ -117,7 +117,7 @@ def build_overview():
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
              f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **MS-I2d根租约/模型输入路由已验证，MS-C3/MS-R2b组件已接受。** B/D暂无新包；C继续固定`ms-i2c`的MS-T2b，A继续真实设备关系/命令权威接线。集成标签为`ms-i2d`，不要求worker开发中途混入新公共文件。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "- **MS-I2e已验证，MS-C3/MS-T2b/MS-R2b组件已接受。** B/C/D在包边界同步`ms-i2e`，分别执行MS-C4纯计算缓存、MS-T2c统一核对、MS-R2c签名回执journal；A执行MS-I2f实际设备/命令权威。这三个组件包互不依赖开发分支。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
@@ -140,7 +140,9 @@ def build_overview():
               "  I2b --> I2",
               "  C2a --> I2c[\"A：组件接受和消费接口 MS-I2c\"]", "  D2a --> I2c", "  I2b --> I2c",
               "  I2c --> B3[\"B：Model输入 MS-C3\"]", "  I2c --> C2b[\"C：核对 MS-T2b\"]", "  I2c --> D2b[\"D：异步协议 MS-R2b\"]",
-              "  B3 --> I2d[\"A：根租约与输入路由 MS-I2d\"]", "  D2b --> I2d", "  I2d --> I2", "  C2b --> I2",
+              "  B3 --> I2d[\"A：根租约与输入路由 MS-I2d\"]", "  D2b --> I2d", "  I2d --> I2e[\"A：Tool接受及新基线 MS-I2e\"]", "  C2b --> I2e",
+              "  I2e --> B4[\"B：纯计算缓存 MS-C4\"]", "  I2e --> C2c[\"C：统一核对 MS-T2c\"]", "  I2e --> D2c[\"D：回执journal MS-R2c\"]",
+              "  I2e --> I2f[\"A：设备/命令权威 MS-I2f\"]", "  I2f --> I2", "  C2c --> I2", "  D2c --> I2",
               "  I2 --> C2[\"C：真实dispatch/结算 MS-T2\"]", "  I2 --> D2[\"D：真实IPC；获准后执行 MS-R2\"]",
               "  B2 --> I3[\"A：汇合；按原P1轮次进入Agent闭环\"]", "  C2 --> I3", "  D2 --> I3", "```", "",
               "每次合入发布新集成SHA。开发session在包边界同步后进入下一包；未完成的分支不会直接作为另一个session的依赖。MS-I3仅是汇合入口，P1-06变更、P1-10真实界面等原工作包仍须另行完成。", "",
@@ -172,7 +174,7 @@ def main():
             target.write_text(f"# Session {key}交接记录\n\n当前：未派发。基线SHA：待A完成MS-00后公布。\n\n负责：{session['name']}。首包：{'、'.join(session['starts'])}。\n\n本文件只由本session填写实际提交；A在[DISPATCH.md](../DISPATCH.md)记录派发与接受。模板见[HANDOFF_TEMPLATE.md](../HANDOFF_TEMPLATE.md)。\n\n## 实际提交\n\n- 所依据的真实基线SHA：待定。\n- 提交SHA/修改文件/验证证据：未开工。\n- 公共接口提案/接线需求：未提交。\n- 未通过项：待执行。\n", encoding="utf-8")
     build_sessions()
     build_overview()
-    report = {"plan_version": VERSION, "date": DATE, "status": "ms_i2d_integrated_waiting_tool_and_real_authority", "baseline": BASELINE,
+    report = {"plan_version": VERSION, "date": DATE, "status": "ms_i2e_integrated_next_wave_ready", "baseline": BASELINE,
               "session_progress": SESSION_PROGRESS, "package_progress": PACKAGE_PROGRESS,
               "recommended_sessions": 4, "configurations": CONFIGURATIONS, "sessions": SESSIONS,
               "packages": PACKAGES, "full_round_dependencies_unchanged": True, "runtime_gates_unchanged": True}

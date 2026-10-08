@@ -1,3 +1,11 @@
+# MS-I2e 接受追加 · 2026-10-08
+
+- MS-T2b源码c78d371、handoff3c76bb2已合入daaae658，无合并冲突；97单元＋43实际SQL通过，140项167.62s。
+- 首次跨目录收集发现两个test_reconciliation.py冲突，A仅将SQL文件改名test_tool_reconciliation_postgres.py；原worker记录与worktree保留。
+- 全量563通过，0failure/error/skip；Ruff/138文件格式与Mypy95源码通过。实际代码/证据提交8278a5aa7b47df0b35765cfce4d2b4eb43db0c97，标签ms-i2e含随后派发状态。
+- 下一包：B MS-C4纯计算缓存、C MS-T2c统一核对/outcome、D MS-R2c签名回执journal，统一ms-i2e；A MS-I2f实际设备/命令权威。逐包合入，开发中不强制换基线。
+- 详细边界见[下一包契约](../requests/A/MS-I2e-next-packages.md)、[接受记录](../../implementation/MS-I2e.md)、[可转发消息](../NEXT_WAVE.md)。完整MS-I2/P1-02/03/04、实际Reader/IPC/LLM/exec与Agent仍未验收，flags不变。
+
 # Session A交接记录
 
 ## MS-I2d 当前交付（2026-10-08）

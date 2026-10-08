@@ -2,7 +2,7 @@
 
 2026-10-08：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
 
-当前全量 **506 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/D 的 MS-C3/MS-R2b 已接受并暂无新包；A完成 MS-I2d 根执行租约和输入路由，继续完整 MS-I2 设备/命令权威接线。C仍按 ms-i2c 继续 MS-T2b。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[MS-I2d](MS-I2d.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
+当前全量 **563 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/C/D 的 MS-C3/MS-T2b/MS-R2b 已接受；MS-I2d 的根执行租约和输入路由、MS-I2e 的 Tool 核对集成已验证。下一包统一 ms-i2e，B/C/D 执行 MS-C4/MS-T2c/MS-R2c，A继续 MS-I2f 设备/命令权威接线。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[MS-I2d](MS-I2d.md)、[MS-I2e](MS-I2e.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
 
 ## 已实现的代码
 
@@ -22,6 +22,8 @@
 - Context通用快照/引用仓储、Composer和References组件已通过实际SQL验证；生产authority/能力Reader尚未注入，通用Context仍未绑定。
 - 人工单次审批持久化与认证查询/决定/执行前复核；默认缺Tool动作权限adapter则拒绝，不自动发送工具。
 - 实时父子权限链统一检查：Context/Model/Approval共用，八级内逐级核对当前版本、范围/网络收窄和deny；Model工作中撤销父政策会停止本地调用，未知费用保留。
+- Tool可信固定回执核对、独立费用恢复及BudgetState/ExecutionPolicy公开port消费已通过43项真实SQL；实际Reader/dispatch未注入。
+- PostgreSQL根执行租约与按真实binding命名空间的Model输入路由已验证；lease不是执行权限，通用Context authority仍缺失。
 - Tool固定目录、持久调用账本、审批/预算恢复组件；Runner真实签名、当前key撤销、开发配对状态一次使用CAS已合入。预算恢复读port已有真实SQL实现。生产工具目录为空，实际配对/IPC/服务端设备key目录和执行尚未接入。
 
 [开发控制层操作说明](CONTROL_PLANE.md) 包含管理员配置流程、请求格式和本轮限制。

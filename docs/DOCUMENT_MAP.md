@@ -107,14 +107,20 @@
 - 改代码路径：更新目录说明与设计生成器映射，不能制造指向不存在实现的“已实现”标识。
 - 真正开发后：实现与验收记录另存，逐节点填入真实证据，不能只把implemented布尔值改为true。
 
-## 最新集成与派发
+## MS-I2c历史集成与派发
 
 - [MS-I2c接受记录](implementation/MS-I2c.md)：C/D组件及预算恢复接口，360项全量检查。
 - [MS-I2c消费契约](coordination/requests/A/MS-I2c-ports.md)：BudgetState、ToolReceipt、AsyncRunnerAuthority和ModelPrompt边界。
 - [直接转发到B/C/D的消息](coordination/NEXT_WAVE.md)：MS-C3/MS-T2b/MS-R2b，统一ms-i2c。
 
-## MS-I2d最新接续
+## MS-I2d历史接续
 
 - [本轮接受记录](implementation/MS-I2d.md)：MS-C3/MS-R2b和A根执行租约、Model输入路由；完整MS-I2仍开发中。
 - [消费接口](coordination/requests/A/MS-I2d-ports.md)：ExecutionLeasePort/CAS/fence/期限/清理与真实命名空间路由。
 - B/D保留交付边界，C继续ms-i2c/MS-T2b；当前安排见[派发表](coordination/DISPATCH.md)。
+
+## MS-I2e当前集成与下一轮
+
+- [本轮接受记录](implementation/MS-I2e.md)：MS-T2b的97项单元/43项真实SQL及563项全量回归。
+- [下一轮详细策略](coordination/requests/A/MS-I2e-next-packages.md)：B纯计算缓存、C统一核对、D签名回执journal与A设备/命令权威的输入、输出、目录和验收。
+- [可转发的B/C/D任务](coordination/NEXT_WAVE.md)与[固定派发表](coordination/DISPATCH.md)：统一同步ms-i2e，不读取其他开发分支。

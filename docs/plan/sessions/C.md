@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2a组件已接受；本轮MS-T2b预算读port与回执核对可独立开发。以DISPATCH的固定版本与派发为准。
+状态：MS-T2b已接受且43项SQL复验通过；MS-T2c补统一核对入口与明确outcome读取。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -83,6 +83,23 @@
 - 不直接读取A预算私有表，不用超时/预算状态推断副作用。
 - 受控Reader明示组件范围；没有生产Reader/executor返回不可用，完整MS-T2继续等待。
 
+### MS-T2c：统一核对入口与效果结论读取
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2e。
+
+任务：
+
+1. ToolFacade.reconcile消费现有ReconcileRequest和RuntimeToolruntimeReconcileResult；通过可选ActionReceiptLookupPort找到原attempt实际固定回执。
+2. 继续交ToolReconciler严校验Reader/证据/绑定/CAS/费用，缺port/无来源不推断未应用，不新建attempt或reserve/dispatch。
+3. 提供read_outcome返回实际已接受且当前可读的ToolReconciliationReceipt；confirmed/核对ok不等于applied或Task成功。
+4. 真实SQL覆盖查找/越权/重启/重复/撤销/取消恢复和效果费用独立；不改schema/HTTP/flags。
+
+交付检查：
+
+- 内部Lookup只返回已登记原尝试来源，不接受模型额外receipt_ref；生产Lookup由A接线。
+- 保留43项SQL和unknown语义，无新增执行/重试授权；精确接口见MS-I2e-next-packages。
+
 ### MS-T2：工具真实dispatch及结算接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
@@ -107,7 +124,7 @@
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前执行MS-T2b。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2c同步本工作分支；失败先报告，不reset，保留已有历史。
+当前执行MS-T2c。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2e同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

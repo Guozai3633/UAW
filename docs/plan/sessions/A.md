@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2d根租约/模型输入路由与B/D组件已验证；继续完整MS-I2设备关系和权威接线。以DISPATCH的固定版本与派发为准。
+状态：MS-I2e集成范围已验证；下一包MS-I2f建设实际设备/登记命令/当前权威。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -72,7 +72,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C3/MS-R2b组件已接受；B/D暂无新包，C按ms-i2c继续MS-T2b；A继续生产关系与Runner权威接线。
+- MS-C3/MS-T2b/MS-R2b已接受；B/C/D在包边界同步ms-i2e，分别做MS-C4/MS-T2c/MS-R2c；A继续MS-I2f真实设备与命令权威。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -179,10 +179,43 @@
 - 真实SQL并发/恢复/过期/取消/锁等待/旧holder验证通过，输入路由与原理解回归通过。
 - lease不授权执行；真实设备/命令/IPC/authority仍待接线，无新能力flags或真实执行声明。
 
+### MS-I2e：接受Tool核对组件并发布下一轮范围
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2d、MS-T2b。
+
+任务：
+
+1. 合入C的MS-T2b，复跑97项单元与43项实际SQL，修复跨测试目录的模块名冲突。
+2. 验证预算/政策port消费、实际回执与效果/费用分离、并发及新进程恢复；全量回归并核对源码摘要。
+3. 发布ms-i2e和三个互不依赖开发分支的组件包，保留真实Reader/executor与原阶段门槛。
+
+交付检查：
+
+- 真实SQL/静态/全量回归通过，无隐藏失败/跳过；C原缺连接回执保留。
+- C只接受组件范围；实际dispatch/配对/LLM不因此开放，A不改写worker分支。
+
+### MS-I2f：实际设备归属、登记命令与当前权威
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2e。
+
+任务：
+
+1. 实现有来源的设备/通道归属和不可变请求/命令登记；认证服务入口不消费模型自报owner或授权。
+2. 先发布对象/port/错误/撤销与恢复读取语义，再从实际记录组装当前权限/配置/预算审批/根/lease/fence的AsyncRunnerAuthority。
+3. 给通用Context与Tool/Runner实际Reader补明确接线；按包边界接受B/C/D，不在worker开发中途强迫同步。
+4. 真实SQL验证拥有者/版本/参数/lease/撤销，缺配对/可信通道/资源来源拒绝；IPC/OS凭据和D03另过门槛。
+
+交付检查：
+
+- authority来自实际独立拥有者数据，不回显command自报ctx；签名密钥不进普通记录。
+- lease与权限/准入不同，恢复不新建动作；实际IPC/exec未通过时继续关闭。
+
 ### MS-I2：合入Tool与Runner并完成真实权威接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
-开发前置：MS-I2d、MS-T2b。
+开发前置：MS-I2f、MS-T2c、MS-R2c。
 
 任务：
 

@@ -1054,6 +1054,7 @@
         "docs/implementation/MS-I2b.md",
         "docs/implementation/MS-I2c.md",
         "docs/implementation/MS-I2d.md",
+        "docs/implementation/MS-I2e.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1215,7 +1216,8 @@
         "MS-I2b",
         "MS-I2c",
         "MS-C3",
-        "MS-I2d"
+        "MS-I2d",
+        "MS-C4"
       ]
     },
     {
@@ -1274,6 +1276,7 @@
         "docs/implementation/MS-I2b.md",
         "docs/implementation/MS-I2c.md",
         "docs/implementation/MS-I2d.md",
+        "docs/implementation/MS-I2e.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1494,6 +1497,9 @@
         "MS-I2b",
         "MS-I2c",
         "MS-T2b",
+        "MS-I2e",
+        "MS-T2c",
+        "MS-I2f",
         "MS-I2",
         "MS-T2"
       ]
@@ -1542,6 +1548,7 @@
         "docs/implementation/MS-I2b.md",
         "docs/implementation/MS-I2c.md",
         "docs/implementation/MS-I2d.md",
+        "docs/implementation/MS-I2e.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1663,6 +1670,8 @@
         "MS-I2c",
         "MS-R2b",
         "MS-I2d",
+        "MS-R2c",
+        "MS-I2f",
         "MS-I2",
         "MS-R2"
       ]
@@ -2562,6 +2571,9 @@
         "MS-T2a",
         "MS-T2b",
         "MS-I2d",
+        "MS-I2e",
+        "MS-T2c",
+        "MS-I2f",
         "MS-T2",
         "MS-I3"
       ]
@@ -5993,7 +6005,9 @@
         "tests/evaluation/cache/"
       ],
       "implementation_record_target": "docs/implementation/P4-04.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-C4"
+      ]
     },
     {
       "id": "P4-05",
