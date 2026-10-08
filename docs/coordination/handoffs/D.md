@@ -431,3 +431,16 @@ git diff --check
 - ProtectedSigner provisioning仍需可信单owner随机handle：公共CredentialStorePort缺create-only CAS，没有自行扩shared或覆盖已有handle。真正OS凭据生命周期/多实例provision协调交A处理。
 - 原内部Ticket.document签名只服务既有组件proof，没有重解释为公开配对V2；可信IPC/真实本机用户确认尚缺。没有签发实际执行回执：装配测试收到的failed回执明确为协议fixture，admission不证明执行。
 - 不从Runner ok推Tool applied，不从failed/cancelled推not_applied/零费用；journal恢复不重新准入。没有文件动作/安装/写入exec、产品flags/API开放或D03决策。完整MS-R2继续等待A发布后续依赖与任务。
+
+
+## MS-R2e 阶段交接（2026-10-08，前两项）
+
+- 实际目录/分支：E:/UAW/.worktrees/runner / dev/runner；干净后 fetch origin --tags、merge --ff-only ms-i2h-start 成功，HEAD/tag 同为 f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8；uv sync --frozen 成功，64 packages checked。
+- 阶段源码：8d3fd1c9053ab9b02b85999ecd6dc0e5779b10cb。改动为 D 的 handle_read.py/read_executor.py/read_state.py、workspace/contracts.py typed snapshot wrappers、D 两个新测试和 requests/D/MS-R2e-ports.md；公共 schema/ports/锁/composition/API 未改。
+- 固定构造、execute(command: RunnerCommand, *, authenticated_principal: Principal)->RunnerReceipt、独立 Ref/Reader/channel/authority/RootBindings/ProtectedSigner、成功/拒绝/重复例子见 requests/D/MS-R2e-ports.md。只 file.read/whole/text_span，UTF-8、1MiB 总量、64KiB/16384字符双上限；没有 list/IPC/写/安装/exec。
+- 实际 Windows CreateFileW 根/各级目录/文件只读句柄 + GetFinalPathNameByHandleW/FileIdInfo/Basic/StandardInfo；拒绝链接/硬链接/特殊目标，持有无 write/delete share 句柄至签名和提交。OS 操作在线程；实际临时文件内容/完整 SHA256/片段范围进入现有签名终态 journal，未知一次使用不重读。
+- 阶段验证：`.venv/Scripts/python.exe -m pytest tests/unit/runner/test_handle_read.py tests/integration/runner/test_read_executor.py -q --basetemp tests/.artifacts/D/MS-R2e/tmp-stage-4 --junitxml tests/.artifacts/D/MS-R2e/stage-junit-4.xml`：37 passed / 7.74s，0 fail/error/skip。Ruff check、format --check 20文件、Mypy workspace+runner 18源码、git diff --check 通过。
+- 历史未通过：pytest.exe 直接入口缺 tests namespace 导入（stage-junit.xml），改 python -m pytest；stage-junit-2/3 各3失败，暴露 Text 16384字符约束和 Windows fixture 换行转换；组件保留双上限、fixture 用原始 UTF-8 bytes 后通过。一次修复脚本默认 GBK 读 UTF-8 失败，改显式 UTF-8。失败回执保留，不删除检查。
+- 精确公共提案：仅 FileContent.text 的 maxLength 提升至65536，由 A 发布；当前不消费未发布更改。channel/owner/authority/登记源均为明示组件 fixture，真实密码学/SQLite/Windows句柄已验证，但本阶段不是可信 IPC/用户确认/生产 Runner 或 Tool applied。
+- 接线：每个登记 command 使用实际固定 command_ref/channel_ref 构造，actor 来源可信入口；Reader 每次检查当前数据访问/root/key/device/owner，恢复独立于 Run 新准入。默认缺生产来源拒绝。开发 SQLite 不决定 D01，D03/D06 和 flags 不改。
+- 下一步继续同包后两项：并发/新进程/重启/未知中断/已签名发布恢复、撤销/期限/协作取消、实际 OS 随机凭据回执及原 D 回归；此记录不宣称最终交付。
