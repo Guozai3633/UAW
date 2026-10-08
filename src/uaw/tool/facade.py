@@ -9,6 +9,7 @@ from uaw.shared.schema import ContractViolation, validate_contract
 from uaw.tool.discovery import check_access, discover, require_entry
 from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.identity import ActionIdentities
+from uaw.tool.invocation.dispatch import ToolInvocation
 from uaw.tool.invocation.schema import normalize
 from uaw.tool.ports import PrecheckPort, RecheckPort, ToolAccess, ToolAccessPort
 from uaw.tool.receipt_lookup import ActionReceiptLookupPort
@@ -28,11 +29,13 @@ class ToolFacade:
         identities: ActionIdentities | None = None,
         lookup: ActionReceiptLookupPort | None = None,
         reconciler: ToolReconciler | None = None,
+        invocation: ToolInvocation | None = None,
     ) -> None:
         self.registry, self.access = registry, access
         self.precheck, self.recheck = precheck, recheck
         self.identities = identities or ActionIdentities()
         self.lookup, self.reconciler = lookup, reconciler
+        self.invocation = invocation
 
     def _reconciler(self) -> ToolReconciler:
         if self.reconciler is None:
@@ -167,13 +170,27 @@ class ToolFacade:
 
     async def invoke(self, request: JsonObject, ctx: TrustedExecutionContext) -> JsonObject:
         try:
-            result = await self._invoke(request, ctx)
+            result = (
+                await self.invocation.invoke(request, ctx)
+                if self.invocation is not None
+                else await self._invoke(request, ctx)
+            )
         except ContractViolation, ValueError, RecursionError, OverflowError:
             result = error_result(
                 fail("invalid_arguments", "Invalid call or dependency response", phase="normalize")
             )
         except DomainError as exc:
             result = error_result(exc)
+        except TimeoutError:
+            result = error_result(
+                fail(
+                    "invocation_interrupted",
+                    "Execution/result response unresolved; recover original attempt",
+                    phase="dispatch",
+                    category="infrastructure",
+                    status=503,
+                )
+            )
         validate_contract("RuntimeToolruntimeInvokeResult", result)
         return result
 

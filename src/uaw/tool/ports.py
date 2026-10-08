@@ -7,7 +7,7 @@ never construct them from model input. A owns production adapters and storage wi
 from dataclasses import dataclass
 from typing import Protocol
 
-from uaw.shared.contracts import JsonObject, Ref, Scope, TrustedExecutionContext
+from uaw.shared.contracts import JsonObject, Principal, Ref, Scope, TrustedExecutionContext
 
 
 @dataclass(frozen=True)
@@ -41,3 +41,48 @@ class RecheckPort(Protocol):
     async def recheck(
         self, call: JsonObject, spec: JsonObject, precheck: JsonObject, ctx: TrustedExecutionContext
     ) -> JsonObject: ...
+
+
+class ToolExecutorPort(Protocol):
+    """Trusted composition binds the executor; output is a strict ProviderReceipt."""
+
+    async def execute(
+        self, call: JsonObject, spec: JsonObject, ctx: TrustedExecutionContext
+    ) -> JsonObject: ...
+
+
+class ToolRecoveryAccessPort(Protocol):
+    """Current owned result-data access, distinct from new execution admission.
+
+    Must verify complete principal/session, original Run/model/scope and provider
+    identity against current independent sources. Saved Refs or ctx are not grants.
+    """
+
+    async def check(
+        self,
+        call: JsonObject,
+        spec: JsonObject,
+        ctx: TrustedExecutionContext,
+        *,
+        provider: Principal,
+    ) -> None: ...
+
+
+class ToolOutputVerifierPort(Protocol):
+    """Verify actual successful read output from the owning adapter's semantics.
+
+    A transport status, effect_state or Runner receipt is insufficient evidence.
+    No generic default verifier is supplied.
+    """
+
+    async def verify(
+        self,
+        data: JsonObject,
+        call: JsonObject,
+        spec: JsonObject,
+        ctx: TrustedExecutionContext,
+    ) -> None: ...
+
+
+class ToolInvocationResultsPort(Protocol):
+    async def resume(self, call: JsonObject, ctx: TrustedExecutionContext) -> JsonObject: ...

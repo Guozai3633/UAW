@@ -29,6 +29,7 @@ PHASE_SCHEMAS = {
     "tool.budget.unknown.settled": "UsageSettlement",
     "tool.reconciliation.budget.plans": "BudgetSettleRequest",
     "tool.reconciliation.failures": "Failure",
+    "tool.invocation.receipts": "ProviderReceipt",
 }
 
 
