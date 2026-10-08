@@ -163,3 +163,82 @@ A须安排受控PG及独立测试主体，先在本分支/实际集成SHA运行�
 公共缺口：完整MS-T2需要带实际action/attempt/provider/receipt/evidence/Usage绑定的对账port/DTO；confirmed-not-applied不可从超时推出，本包没有消费建议字段。BudgetPort缺状态查询port，当前按A现有storage读取RootBudgetLedger/实际BudgetReservation用于CAS与只恢复已提交预留；若A要求收拢跨域读，应先发布BudgetStatePort。字段与版本决定在C-002交A，C没有直接扩充公共schema。
 
 MS-T2a范围到此；等待SQL回执、A审阅及新基线，不自动进入完整MS-T2。D01/D03/D06保持未决定。A负责合入、公共冲突、配置/事件/实施范围登记和整链路回归。无新依赖或迁移；回退源码提交`e3a19dd2d800b44005c95daabc4a96cecd04892e`与后续A接线提交即可，但不得删除持久unknown意图或用代码revert声称已撤销外部效果。
+
+
+# MS-T2b 交接追加 · 2026-10-08
+
+状态：**本包源码、组件验证和SQL用例已交付；真实SQL本轮尚未通过环境准备，待A复跑与接受。完整MS-T2继续等待。** 上方两包历史保留；MS-T2a已由A在ms-i2c接受并实跑，不改写原worker当时缺连接的回执。
+
+## 实际基线、位置与提交
+
+- 工作目录：`E:/UAW/.worktrees/tool`，分支：`dev/tool`。
+- 开工工作区干净；实际执行fetch origin --tags、merge --ff-only ms-i2c成功，没有reset/改写历史。同步后HEAD与标签commit相同：`1411f6aa477b0d000bee871c0f324fbfd67b4ff5`。
+- uv sync --frozen --extra agent-engine --link-mode copy通过（91 packages checked），独立缓存`.cache/uv`，本目录`.venv`/Python 3.14.6。
+- **源码/测试/提案提交：`c78d37101a4c203cbe487f15cb5cabc063ca5f76`**；本交接记录另作仅文档追加提交，A审阅当前dev/tool两笔提交。
+- schema SHA256 `b5d7cdf9df23002e6e3d3965741cbcd82b7efa34ff438b09b236e3b0b886d583`，shared ports `cce4db2349b92a6a2fca815917725cb7bb51fcb5ab9db86c2f456d3df2b679cd`，uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；均保持ms-i2c摘要。
+- 只修改C允许目录，不改公共schema/锁/组装/API/迁移/其他worker文件；A的ProviderBinding.active及pending Usage省略未知维度契约保留，无connected字段回退。
+
+## 本轮文件
+
+- `docs/coordination/requests/C/C-003-ms-t2b-reconciliation-wiring.md`
+- `src/uaw/tool/authority.py`
+- `src/uaw/tool/budget.py`
+- `src/uaw/tool/ledger.py`
+- `src/uaw/tool/reconciliation.py`
+- `tests/integration/tool/conftest.py`
+- `tests/integration/tool/receipt_fixtures.py`
+- `tests/integration/tool/reconcile_child.py`
+- `tests/integration/tool/test_durable.py`
+- `tests/integration/tool/test_reconciliation.py`
+- `tests/unit/tool/test_port_consumption.py`
+- `tests/unit/tool/test_reconciliation.py`
+- `docs/coordination/handoffs/C.md`（本追加）。
+
+## 实际接口、数据所有者与接线
+
+- `ToolApprovalAuthority(..., policies: ExecutionPolicyPort | None=None)`：消费当前父链snapshot，检查Run/scope/叶policy版本摘要/capability绑定，不再读取execution.policies或预算私有记录；固定模型、角色、实际资源、固定/当前配置、active提供方、flags和环境校验仍保留。缺policies/access/Reader明确不可用。
+- `ToolBudgetAdapter(..., state: BudgetStatePort | None=None)`：由`Container.budgets`明确注入读写两个port，使用get_ledger/get_reservation取真实revision及原attempt所有权；缺state拒绝，禁止私有表回退。查询可用于取消/过期原尝试恢复，但不是新准入，后续写仍CAS。原attempt上下文、operation、trace、模型、参数和期限不改动。
+- `ToolLedger.claim(intent, ctx, *, budget, reservation)`：只消费已由读port取得的snapshot，原子保存Tool意图，不授予发送权限，最后BudgetPort仍核验当前状态；公开发送仍不可用，lease/fence/实际executor留给A完整接线。
+- 新增`ToolReconciler(ledger, budgets, *, receipts=None, evidence=None).reconcile(receipt_ref: Ref, ctx, *, expected_revision: int)`：内部可信固定Ref入口，输出既有RuntimeToolruntimeReconcileResult；默认没有Reader，返回dependency_unavailable。没有新增公共请求字段或HTTP/产品挂载。
+- ToolReceiptReaderPort为A发布接口；Reader独立验证本人范围、来源、签名/协议完整性和固定版本。C核查action_ref、实际attempt、固定provider、实际读取receipt_ref、usage.attempt_id和observed_at，再核对实际证据；同版本内容/版本变化、伪造绑定拒绝。
+- `ToolEvidenceReaderPort.check(ref, ctx) -> Ref`为本包内部证据来源port，必须实时读取/核验当前访问、真实版本/摘要并返回实际Ref；没有接口实现不能把Ref当证明。applied/not_applied至少一条证据，证据后再次读取receipt检测来源变化/撤销。Reader的恢复数据权限与新执行准入分开，取消/过期原尝试允许核算，来源拒绝则保留已有unknown/结论和额度。
+- 账本新方法`begin_reconciliation/finish_reconciliation/receipt_key/effect_from_attempt`：首次核对EffectRecord revision CAS，同principal receipt kind/id/version唯一；同版本改body/hash/location冲突。固定ToolReconciliationReceipt和当前attempt核对计划、BudgetSettleRequest费用计划、真实UsageSettlement、明确Failure都用已有命名schema持久化，无Object私有扩展。
+- 工具事务只操作本owner记录；不在Tool会话锁内调用BudgetService/Reader。预算查询/服务调用在锁外，CAS确定失败才最多4次重读；超时/响应丢失重放同一固定费用请求，不覆盖旧计划、不换attempt或重发动作。前一未决计划阻止新回执抢占；确定费用拒绝保留实际效果并允许随后confirmed账单。旧未完成回执被新证据替代后拒绝重新抢占。
+- `settle_receipt`：费用与效果分开；检查结算返回预留kind/id/推进版本和Usage引用，不把跨尝试响应登记为费用完成。pending只记录真实观察字段，未知维度保留原额度。same Usage的新效果证明和历史MS-T2a pending计划桥接复用实际费用回执，不重复记账。费用失败/中断不回滚真实已知效果；confirmed费用也不把unknown效果变成applied。
+- **EffectRecord.confirmed表示效果结论确定，不等于工具应用成功。** applied/not_applied区别必须读取严格ToolReconciliationReceipt.outcome；not_applied仍可能有费用，且本包不给retry授权。unknown始终不重发，核对/清理不调用reserve/dispatch推断结果。
+- 状态所有者不变：Run拥有审批/预算/取消，C拥有动作/尝试/意图/效果和核对阶段。新tool.reconciliation.*表/DTO对照、实际容器属性`execution_permissions`/`budgets`及最小接线见[C-003](../requests/C/C-003-ms-t2b-reconciliation-wiring.md)。生产Reader/证据/角色/资源/executor未提供，Tool目录/flags/实际dispatch从未开启。
+
+## 可执行例子与边界
+
+1. `test_sql_reconcile_restart_duplicate_and_no_repeated_fees`：受控来源提供严格applied回执，保存效果与实际费用；实例重建后重复回执不多记账。`test_sql_new_process_resumes_same_fee_plan_after_lost_reply`在真实新进程重放已保存费用计划，子进程用公共Windows控制面loop factory和继承环境URL，不传/打印凭据。
+2. `test_sql_effect_and_cost_are_independent_and_unknown_dimensions_held`：not_applied可记录非零confirmed费用；applied可保留pending费用；unknown可有已确认费用；缺观察维度继续held，不填0。`test_sql_missing_or_revoked_readers_keep_unknown_and_all_unobserved_holds`缺/撤销来源时不推断未执行。
+3. `test_sql_fee_reply_loss_replays_fixed_plan_after_restart`、`test_sql_tool_finish_reply_loss_reuses_completed_receipt`、并发同回执/冲突回执：Budget/Tool提交后响应丢失，重复重放固定计划；同版本冲突/确定结论反转拒绝，不倒退效果或重复费用。
+4. `test_sql_recovery_after_cancel_and_policy_revoke_does_not_admit_new_action`与到期恢复用例：原尝试实际费用清理可以继续，未来reserve/dispatch仍拒绝；`test_sql_tool_can_run_with_all_private_budget_policy_reads_blocked`以SQL守卫禁止Tool跨owner读取，`test_sql_tool_parent_chain_is_decided_by_execution_policy_port`验证统一真实父链拒绝。
+5. `test_sql_effect_is_not_rolled_back_by_rejected_fee_update`：更丰富pending费用被现有BudgetService明确拒绝，真实applied证据仍保存；后来confirmed账单继续，不伪造完整Usage或旧账单完成。
+
+上述SQL用例均为真实SQL测试代码，但本轮环境未运行到业务断言；受控Reader明确是组件fixture，不是实际provider/Runner回执。已经运行的31个新增单元覆盖真实C算法与端口协议，仍不能代替SQL/真实业务验收。
+
+## 验证、回执与未通过项
+
+```powershell
+Set-Location E:/UAW/.worktrees/tool
+.venv/Scripts/python.exe -m ruff check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m ruff format --check src/uaw/tool tests/unit/tool tests/integration/tool
+.venv/Scripts/python.exe -m mypy --cache-dir .cache/mypy-tool src/uaw/tool
+.venv/Scripts/python.exe -m pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2b/unit.xml
+.venv/Scripts/python.exe -m pytest tests/integration/tool -q -p no:cacheprovider --require-postgres --junitxml=tests/.artifacts/C/MS-T2b/sql.xml
+```
+
+- Unit：**97 passed，0 failure/skip**（原66＋新31），回执unit.txt/unit.xml。
+- Ruff通过；28文件格式通过；Mypy strict 16个源码文件无错误；diff/staged diff whitespace通过。对应ruff.txt/format.txt/mypy.txt。
+- SQL：**43 setup errors，0 passed/skip，exit 1**（原17＋新26）；共同原因`UAW_TEST_DATABASE_URL`缺失，测试尚未连接PG/执行断言。已实际用--require-postgres尝试，sql.txt/sql.xml保留此失败，未用跳过或mock假冒。
+- ignored本机证据目录`tests/.artifacts/C/MS-T2b/`；environment.json保存真实位置、同步命令、基线及共享SHA256/检查范围；源码摘要与实际提交SHA一并保存。原MS-T2a被A接受的记录仍在DISPATCH，不把其17项通过当本包变更已通过。
+- 未运行本包真实PG、全量整链路、真实LLM/生产Receipt/EvidenceReader/executor/可信IPC；没有数据库启动/迁移、密码/私有配置/.data复制或共享端口服务。
+
+## A 后续要求、提案与回退
+
+A安排受控PG和独立测试主体，在实际集成SHA重跑43项SQL与组合回归，失败由C修本包业务。A将`Container.execution_permissions`和读写`Container.budgets`明确注入；Reader须真实来源/签名/版本与当前数据访问，不能用tests fixture接产品。真实发送/执行前租约、fence、撤销/取消和句柄仍待完整MS-T2。
+
+C-003的公共缺口待A决定：现有ReconcileRequest仅action_id/revision，真实receipt查找需权威Lookup/独立版本；EffectRecord.confirmed消费方必须查询outcome而非宣告成功；BudgetService新pending增量/最终费用调整与orphan未记账意图的清理规则需公共owner明定。没有私加字段/扩schema/写budget.accounting。本轮不新增事件/迁移/依赖，不启用flags/目录；D01/D03/D06未自行设定。
+
+待SQL/接线接受与A发布下一基线，不自动开始完整MS-T2。回退由A revert源码提交`c78d37101a4c203cbe487f15cb5cabc063ca5f76`及后续公共接线，保留持久unknown/实际费用，代码回退不证明已撤销外部效果。没有真实业务动作发生。
