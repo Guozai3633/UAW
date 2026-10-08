@@ -1,5 +1,6 @@
 """The sole assembly root; no domain creates framework/ORM singletons."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from uaw.context.cache import PureComputationCache
@@ -24,6 +25,7 @@ from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
 from uaw.run.context import RunContextSources
 from uaw.run.events import EventReader
+from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
 from uaw.run.leases import ExecutionLeaseService
@@ -31,7 +33,9 @@ from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.run.runner_authority import RegisteredRunnerAuthority
 from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
+from uaw.run.runner_mapping import RegisteredRunnerPrincipalMapping
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
+from uaw.run.tool_sources import RunToolAccessSources
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import CapabilityUnavailable
@@ -40,6 +44,10 @@ from uaw.shared.ports import (
     ContextPort,
     IntentPort,
     ModelPort,
+    RunnerActionGatePort,
+    RunnerChannelSourcePort,
+    RunnerCommandSigningPort,
+    RunnerRootSourcePort,
     RunPort,
     ToolPort,
     WorkspacePort,
@@ -85,6 +93,8 @@ class Container:
     execution_leases: ExecutionLeaseService | None = None
     approvals: ApprovalService | None = None
     execution_permissions: ExecutionPolicyResolver | None = None
+    run_sources: RunExecutionSources | None = None
+    tool_access: RunToolAccessSources | None = None
     model_service: ModelFacade | None = None
     intent_service: IntentFacade | None = None
     context_components: ContextComponents | None = None
@@ -92,6 +102,7 @@ class Container:
     runner_commands: RunnerCommands | None = None
     runner_authority: RegisteredRunnerAuthority | None = None
     runner_receipt_commands: RegisteredReceiptCommandReader | None = None
+    runner_principals: RegisteredRunnerPrincipalMapping | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -152,6 +163,11 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
     blobs = FSBlobStore(settings.blob_directory) if database else None
     budgets = BudgetService(records) if records else None
     permissions = ExecutionPolicyResolver(records) if records else None
+    sources = (
+        RunExecutionSources(records, configuration, permissions)
+        if records and configuration and permissions
+        else None
+    )
     leases = ExecutionLeaseService(records) if records else None
     devices = RunnerDevices(records, configuration.platform) if records and configuration else None
     commands = (
@@ -210,6 +226,12 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
         if records and configuration
         else None,
         execution_permissions=permissions,
+        run_sources=sources,
+        tool_access=RunToolAccessSources(
+            records, configuration, sources, environment=settings.profile
+        )
+        if records and configuration and sources
+        else None,
         model_service=model,
         intent_service=intent,
         context_components=contexts.components if contexts else None,
@@ -217,4 +239,59 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
         runner_commands=commands,
         runner_authority=RegisteredRunnerAuthority(commands) if commands else None,
         runner_receipt_commands=RegisteredReceiptCommandReader(commands) if commands else None,
+        runner_principals=RegisteredRunnerPrincipalMapping(devices) if devices else None,
+    )
+
+
+@dataclass(frozen=True)
+class RunnerControlBindings:
+    devices: RunnerDevices
+    principals: RegisteredRunnerPrincipalMapping
+    commands: RunnerCommands
+    authority: RegisteredRunnerAuthority
+    receipt_commands: RegisteredReceiptCommandReader
+
+
+def assemble_runner_control(
+    container: Container,
+    *,
+    channels: RunnerChannelSourcePort,
+    root_factory: Callable[[RegisteredRunnerPrincipalMapping], RunnerRootSourcePort],
+    gate: RunnerActionGatePort,
+    signer: RunnerCommandSigningPort,
+) -> RunnerControlBindings:
+    """Explicit trusted adapters; construct roots with the actual device owner mapping.
+
+    Returns internal bindings without publishing product routes or changing flags.
+    Native confirmation and transport proof remain responsibilities of adapters.
+    The default container never invents any of these missing dependencies.
+    """
+    records, config = container.records, container.configuration
+    policies, budgets, leases = (
+        container.execution_permissions,
+        container.budgets,
+        container.execution_leases,
+    )
+    if not records or not config or not policies or not budgets or not leases:
+        raise ConfigurationError("Runner assembly requires the configured control-plane sources")
+    devices = RunnerDevices(records, config.platform, channels)
+    principals = RegisteredRunnerPrincipalMapping(devices)
+    roots = root_factory(principals)
+    commands = RunnerCommands(
+        records,
+        devices,
+        config,
+        policies,
+        budgets,
+        leases,
+        roots=roots,
+        gate=gate,
+        signer=signer,
+    )
+    return RunnerControlBindings(
+        devices,
+        principals,
+        commands,
+        RegisteredRunnerAuthority(commands),
+        RegisteredReceiptCommandReader(commands),
     )

@@ -1135,6 +1135,7 @@
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |
+| [RunToolAccessBinding](objects/RunToolAccessBinding.md) | 可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。 |
 | [RunnerBindingState](objects/RunnerBindingState.md) | 取值含义见字段及协议约束。 |
 | [RunnerChannelSnapshot](objects/RunnerChannelSnapshot.md) | 独立可信通道源读取的当前设备拥有者及认证身份，不接受网络/模型自报。 |
 | [RunnerCommandDraft](objects/RunnerCommandDraft.md) | 控制服务从独立登记源构建的签字正文。 |

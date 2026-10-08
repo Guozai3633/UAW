@@ -5715,6 +5715,35 @@
       },
       "turn_id": "example_001"
     },
+    "RunToolAccessBinding": {
+      "run_id": "example_001",
+      "principal": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "scope": {
+        "principal_id": "example_001"
+      },
+      "model_policy_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "capability_policy_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "role_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "environment": "example_001",
+      "revision": 0,
+      "state": "active"
+    },
     "ApprovalBinding": {
       "context": {
         "principal": {

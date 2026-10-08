@@ -42541,6 +42541,68 @@
         ],
         "additionalProperties": false
       },
+      "RunToolAccessBinding": {
+        "type": "object",
+        "description": "可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "实际Run"
+          },
+          "agent_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "单个Agent槽位"
+          },
+          "principal": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "完整用户与认证会话"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope",
+            "description": "固定执行范围"
+          },
+          "model_policy_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定用户模型"
+          },
+          "capability_policy_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际权限版本"
+          },
+          "role_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际角色版本及摘要"
+          },
+          "environment": {
+            "$ref": "#/components/schemas/ID",
+            "description": "部署环境"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS版本"
+          },
+          "state": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "active或revoked",
+            "enum": [
+              "active",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "run_id",
+          "principal",
+          "scope",
+          "model_policy_ref",
+          "capability_policy_ref",
+          "role_ref",
+          "environment",
+          "revision",
+          "state"
+        ],
+        "additionalProperties": false
+      },
       "ApprovalBinding": {
         "type": "object",
         "description": "审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。",

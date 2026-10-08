@@ -1929,6 +1929,9 @@ def finalize(graph,strategies):
     record("ReservationAccounting","run","每个attempt独占预留；发出调用意图后保留未知用量。","run_id|ID|运行\noperation_id|ID|操作\ntrace_id|ID|链路\nattempt_id|ID|尝试\ndeadline|Timestamp|预留截止\ndispatched|Bool|已经提交调用意图\nheld|ResourceVector|待确认额度\nused|ResourceVector|已观察消耗\nbilling_pending|Bool|账单待确认\nusage?|Usage|最近实际观察\nusage_revision?|Revision|用量修订")
     TYPES["ReservationAccounting"]["dependentRequired"]={"usage":["usage_revision"],"usage_revision":["usage"]}
     record("RunAdmissionBinding","run","受理时固定实际来源、用户模型政策和配置。","input_ref|UserInputRef|原始输入\nmodel_policy_ref|Ref|用户选择\nconfiguration_ref|Ref|固定配置\nturn_id|ID|提交轮次")
+    record("RunToolAccessBinding","run","可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。","run_id|ID|实际Run\nagent_id?|ID|单个Agent槽位\nprincipal|Principal|完整用户与认证会话\nscope|Scope|固定执行范围\nmodel_policy_ref|Ref|固定用户模型\ncapability_policy_ref|Ref|实际权限版本\nrole_ref|Ref|实际角色版本及摘要\nenvironment|ID|部署环境\nrevision|Revision|CAS版本\nstate|NonEmptyText|active或revoked")
+    TYPES["RunToolAccessBinding"]["properties"]["state"]["enum"]=["active","revoked"]
+    RULES["RunToolAccessBinding"]=["仅内部已认证controller可登记/撤销；HTTP和模型工具不接受此对象。", "Run/Agent槽位、完整Principal/session、scope和固定政策逐次匹配。", "角色类别不授权资源，不替换固定模型；当前Run/权限/配置/提供方均须复查。"]
     record("ApprovalBinding","run","审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。","context|TrustedExecutionContext|固定主体、Run、动作上下文\nrequest|ApprovalCreateRequest|固定动作参数摘要、资源和效果\nconfiguration_ref|Ref|Run受理配置\napproval_policy_ref|Ref|固定审批政策")
     record("ExecutionPolicySnapshot","run","实时父子权限交集，非可复用授权；来源均为当前主体持久政策。","run_id|ID|已受理运行\nscope|Scope|当前可信请求作用域\npolicy_refs|[](Ref)|叶到根当前版本与摘要\nallowed_capabilities|[](ID)|在全部父政策允许的当前scope能力\ndenied_capabilities|[](ID)|祖先显式禁止的并集\nnetwork_allowlist|[](NonEmptyText)|网络范围交集\nfeature_flag_refs|[](Ref)|需另行核验的开关引用",["不创建权限、不证明角色/设备/资源/租约或执行器已就绪；模型不能提供该对象来取得授权；执行前必须重查当前状态。"])
     TYPES["ExecutionPolicySnapshot"]["properties"]["policy_refs"].update(minItems=1,maxItems=8)
