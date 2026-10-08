@@ -1,5 +1,6 @@
 """Runner wire DTOs: the published schema, with no private wire extensions."""
 
+from dataclasses import dataclass
 from typing import Literal
 
 from pydantic import Field
@@ -9,6 +10,7 @@ from uaw.shared.contracts import (
     ContractModel,
     Failure,
     JsonObject,
+    Principal,
     Ref,
     Revision,
     Timestamp,
@@ -63,3 +65,12 @@ class RunnerAuthoritySnapshot(ContractModel):
     feature_enabled: bool
     connected: bool
     cancelled: bool
+
+
+@dataclass(frozen=True)
+class RegisteredReceiptCommand:
+    """Internal Reader result from an independent registered source, never a wire DTO."""
+
+    command: RunnerCommand
+    device_id: str
+    owner: Principal

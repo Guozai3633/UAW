@@ -8,7 +8,7 @@ from typing import Protocol, runtime_checkable
 
 from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.runner_signatures import VerificationKey
-from uaw.workspace.contracts import RootSelection, RunnerCommand
+from uaw.workspace.contracts import RegisteredReceiptCommand, RootSelection, RunnerCommand
 
 
 @dataclass(frozen=True)
@@ -157,4 +157,17 @@ class CheckedAdmissionRepository(Protocol):
         check: Callable[[], None],
     ) -> Admission:
         """Run deadline/cancellation checks inside the same CAS/lock, including replay."""
+        ...
+
+
+class ReceiptCommandReaderPort(Protocol):
+    async def resolve(
+        self, command_ref: Ref, *, authenticated_principal: Principal
+    ) -> RegisteredReceiptCommand:
+        """Read immutable command/device/owner and check current recovery access.
+
+        Verify the fixed version/hash and actual channel/device ownership independently.
+        Run cancellation/expiry is distinct from data/key revocation. Never synthesize
+        the registration from receipt or incoming command claims.
+        """
         ...
