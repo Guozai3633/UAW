@@ -549,3 +549,15 @@ $bContextPaths = @('cache','contracts','facade','ports','repository','sources','
 4. cache默认None；A可显式选择`PureComputationCache(max_entries=128,max_bytes=2097152)`并同时给components/model inputs；任一容量0关闭。仍读取当前authority/Reader/tool/规则/window/取消并最终复查，只减少已验证内容的纯格式化/估算；不宣称provider prompt cache或Token/延迟收益。
 5. 多个规则的真实固定模型冲突判断、skill/memory/Board/本机文件、scope_paths、requirements/pending actions以及分页/压缩来源仍明确不可用；空工具/空或单规则仅限实际显式登记。Model实际网络调用仍待D06。未实现依赖没有空fallback或替身成功。
 6. A审阅、合入、处理公共冲突，按最终源码实跑关键链及相关受影响模块；集成里程碑再做全量，不把本包模块293通过当P1整轮验收。不开放flags，不自行决定D01/D03/D06；保留accepted C3/C4及历史handoff，本包交接后停止。
+
+## MS-C6 阶段交接（里程碑 1/2，2026-10-08）
+
+实际 worktree E:/UAW/.worktrees/context；实际分支 dev/context。fetch origin --tags / merge --ff-only ms-i2h-start / HEAD==tag^{commit} / uv sync --frozen 成功，固定基线 f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8。阶段源码 17e468279586638c543e20b20acb0325e4d28797；本记录单独提交。继续里程碑 3/4，不等 A 最终合入。
+
+改动：context/ports.py、readers.py、registered.py、rules.py；unit/context/test_assessment.py、integration/context/test_assessment_postgres.py；requests/B/MS-C6-stage-interface.md。RegisteredRuleAssessor.assess(tuple[RuleCandidate,...], ctx)->RulePlan，RegisteredRuleProvider(inputs, *, assessor=None) 兼容旧构造。固定实际身份、严格建议再校验、当前来源等待前后复查、取消传播和 policy 正文不被语义分组丢弃。接口、示例、错误及 A 固定 Model 接线见[阶段说明](../requests/B/MS-C6-stage-interface.md)。未实现真实 LLM 语义质量；不缓存建议或权限，不改 flags。
+
+真实回执（均自身 ignored tests/.artifacts/B/MS-C6/）：alembic.exit=0；stage-unit 首次因测试错误空 ScopeSelector 收集失败，修复 stage-unit-repair=246 passed / exit0；stage-sql=6 passed/2 failed（测试错误用 Record.id）；stage-sql-repair 又误用 key 两项失败；读实际类型后改为 resource_id，stage-sql-repair-2 两项通过。8 个不同 SQL 节点已通过，失败历史完整保留。静态 mypy context 16 文件成功；ruff check 成功。无当前未解决阶段失败。
+
+命令：. ./ops/start-dev-db.ps1 -Session B；.venv/Scripts/python.exe -m alembic upgrade head；python -m pytest tests/unit/context -q；python -m pytest tests/integration/context/test_assessment_postgres.py -vv --require-postgres（两项修复 -k 'tools or policy'）；python -m ruff check src/uaw/context tests/unit/context tests/integration/context；python -m mypy src/uaw/context --cache-dir .cache/mypy/B。均锁定 .venv/Scripts/python.exe；B DB55433，无复制 A URL/凭据。
+
+剩余：真实完整链、当前 A Run/Model 来源成本比较、批内重复读取调整、并发/新进程/缓存及原模块 SQL 回归。A 可立即消费阶段 port，自行提供固定 Model adapter；不把阶段协议测试当真实模型、产品或 P1 验收。
