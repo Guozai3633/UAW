@@ -71,7 +71,7 @@ Reader 从独立登记命令源及当前通道/主体归属取得这些值，校
 
 ### 内部服务输入与输出
 
-- `publish(command_ref, receipt_data, *, authenticated_principal) -> Ref`：保存实际收到的 `RunnerReceipt` 原始数据，经严格解析/签名/绑定验证后返回真实 `runner_receipt` 固定 Ref。
+- `publish(command_ref, receipt_data, *, authenticated_principal) -> Ref`：保存实际收到的 `RunnerReceipt` 原始数据，经严格解析/签名/绑定验证后返回真实 `content` 固定 Ref。2026-10-08 勘误：`runner_receipt` 只是 owning-domain 命名空间，当前公开 RefKind 没有该值；详见 `MS-I2f1-scope.md` §5，不需要切换基线。
 - `read(receipt_ref, *, authenticated_principal) -> RunnerReceipt`：读取实际已保存版本，再核验当前命令源、主体/设备归属和 device key；不伪造或重新签署结果。
 - `authenticated_principal` 只能由可信适配器传入；本包不新增网络接口。
 

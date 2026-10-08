@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2e集成范围已验证；下一包MS-I2f建设实际设备/登记命令/当前权威。以DISPATCH的固定版本与派发为准。
+状态：MS-I2e集成范围已验证；MS-I2f1已接受设备与命令登记/当前权威组件；完整MS-I2f继续等待产品来源。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -43,6 +43,7 @@
 - `DEVELOPMENT_PLAN.md`
 - `.gitignore`
 - `.gitattributes`
+- `tests/integration/test_runner_control.py`
 - `tests/integration/test_context_wiring.py`
 - `tests/unit/model/`
 - `tests/integration/test_approvals.py`
@@ -195,10 +196,27 @@
 - 真实SQL/静态/全量回归通过，无隐藏失败/跳过；C原缺连接回执保留。
 - C只接受组件范围；实际dispatch/配对/LLM不因此开放，A不改写worker分支。
 
-### MS-I2f：实际设备归属、登记命令与当前权威
+### MS-I2f1：设备/命令登记及当前权威组件
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
 开发前置：MS-I2e。
+
+任务：
+
+1. 实现平台拥有的设备/通道归属与CAS撤销、不可变原请求/签字命令和原attempt唯一登记。
+2. 增加实际预算dispatch状态port；以原存储ctx组合当前政策/固定模型绑定/配置/预算/lease、独立根/动作gate/签名。
+3. 组装Container内部服务，缺真实通道/根/审批/密钥后端不准入，不挂载HTTP/工具/执行。
+4. 真实SQL与Ed25519验证响应丢失、并发、撤销/期限/伪造、取消后恢复和缺来源；详细范围见MS-I2f1-scope。
+
+交付检查：
+
+- 命令声明只作比对；通道/根/gate为明确受控组件测试源，不冒充真实配对/IPC/OS后端。
+- 本子包接受与完整MS-I2f/阶段验收分开；worker开发中的基线继续ms-i2e。
+
+### MS-I2f：实际设备归属、登记命令与当前权威
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2f1。
 
 任务：
 

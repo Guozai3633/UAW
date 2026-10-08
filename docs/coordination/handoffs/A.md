@@ -97,3 +97,12 @@
 - 新 ExecutionPolicyPort / ExecutionPolicySnapshot；无新依赖锁、迁移、能力flag或HTTP工具入口。默认Tool/Workspace/通用Context Runtime仍未绑定，审批仍缺真实动作adapter，角色/设备/租约/实际执行仍需后续接线。
 - C/D当前包固定`ms-i2a`，不要求中途混入新公共文件；B已接受MS-C2，保留交付边界。A继续完整MS-I2和公共提案集成；未发送聊天消息或修改worker分支，D01/D03/D06保持待定。
 - [实际范围/证据](../../implementation/MS-I2b.md)、[完整消费规则](../requests/A/MS-I2b-permissions.md)、[派发表](../DISPATCH.md)。
+
+## MS-I2f1 当前交付
+
+- 开发基线 ms-i2e / ba2f3b0；固定集成版本 ms-i2f1。源码/证据提交见 DISPATCH。
+- 平台设备/独立通道归属、原请求与签字命令登记、原attempt唯一身份及异步当前权威组件；预算执行状态 port 和资源flag范围检查；内部 composition 服务，生产来源缺失明确不可用。
+- 新13个命名对象、来源ports；原入口26项，无依赖/迁移/RefKind新增或flags开放。真实SQL/Ed25519 47项新增、全量610项通过，Ruff/格式142文件、Mypy98源码文件通过。
+- B/C/D已由用户确认并行开工，继续MS-C4/MS-T2c/MS-R2c与固定ms-i2e。D的journal使用content Ref，runner_receipt只是命名空间，原说明笔误已勘误。没有改写worker原分支/工作区/handoff或发送聊天消息。
+- 完整MS-I2f/MS-I2和真实配对/IPC/native root/role-resource-consent/OS signing后端仍未验收；安装/写入/exec关闭，D01/D03/D06保持待定。
+- [实际证据](../../implementation/MS-I2f1.md)、[完整范围/接口/来源](../requests/A/MS-I2f1-scope.md)、[派发表](../DISPATCH.md)。

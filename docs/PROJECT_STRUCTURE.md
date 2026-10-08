@@ -131,6 +131,7 @@ UAW/
 │  │     adapters.py, recovery.py, usage.py
 │  ├─ run/
 │  │  ├─ facade.py, contracts.py, ports.py, repository.py
+│  │  ├─ runner_devices.py, runner_commands.py, runner_authority.py # 已实现控制服务组件，真实执行来源未接
 │  │  ├─ history.py, state.py, events.py, budget.py,
 │  │  │  approval.py, checkpoint.py, cancel.py, trigger.py
 │  │  └─ resume/

@@ -1277,6 +1277,7 @@
         "docs/implementation/MS-I2c.md",
         "docs/implementation/MS-I2d.md",
         "docs/implementation/MS-I2e.md",
+        "docs/implementation/MS-I2f1.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1499,6 +1500,7 @@
         "MS-T2b",
         "MS-I2e",
         "MS-T2c",
+        "MS-I2f1",
         "MS-I2f",
         "MS-I2",
         "MS-T2"
@@ -1549,6 +1551,7 @@
         "docs/implementation/MS-I2c.md",
         "docs/implementation/MS-I2d.md",
         "docs/implementation/MS-I2e.md",
+        "docs/implementation/MS-I2f1.md",
         "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml"
       ],
@@ -1671,6 +1674,7 @@
         "MS-R2b",
         "MS-I2d",
         "MS-R2c",
+        "MS-I2f1",
         "MS-I2f",
         "MS-I2",
         "MS-R2"
@@ -2573,6 +2577,7 @@
         "MS-I2d",
         "MS-I2e",
         "MS-T2c",
+        "MS-I2f1",
         "MS-I2f",
         "MS-T2",
         "MS-I3"

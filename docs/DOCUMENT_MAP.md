@@ -119,8 +119,15 @@
 - [消费接口](coordination/requests/A/MS-I2d-ports.md)：ExecutionLeasePort/CAS/fence/期限/清理与真实命名空间路由。
 - B/D保留交付边界，C继续ms-i2c/MS-T2b；当前安排见[派发表](coordination/DISPATCH.md)。
 
-## MS-I2e当前集成与下一轮
+## MS-I2e集成与开发中的并行包
 
 - [本轮接受记录](implementation/MS-I2e.md)：MS-T2b的97项单元/43项真实SQL及563项全量回归。
 - [下一轮详细策略](coordination/requests/A/MS-I2e-next-packages.md)：B纯计算缓存、C统一核对、D签名回执journal与A设备/命令权威的输入、输出、目录和验收。
 - [可转发的B/C/D任务](coordination/NEXT_WAVE.md)与[固定派发表](coordination/DISPATCH.md)：统一同步ms-i2e，不读取其他开发分支。
+
+## MS-I2f1：A 当前子包与包范围定义
+
+- [功能包定义源](../planning/parallel_catalog.py) 的 PACKAGES：每包目标、负责人、依赖、原轮与验收；[session 页](plan/sessions/A.md) 定义可写目录。
+- [A 详细范围](coordination/requests/A/MS-I2f1-scope.md)：设备/通道归属、原请求/签字命令登记、当前权威的输入、输出、来源、策略和退出条件。
+- [A 实际实现记录](implementation/MS-I2f1.md)：代码位置、执行链路、验证与缺失产品依赖。
+- B/C/D 已确认开工，继续 ms-i2e；当前各功能包范围在 [下一轮详细策略](coordination/requests/A/MS-I2e-next-packages.md)，D 的 Ref 勘误不要求更换基线。

@@ -1,23 +1,23 @@
 {
-  "plan_version": "0.5",
+  "plan_version": "0.6",
   "date": "2026-10-08",
   "status": "ms_i2e_integrated_next_wave_ready",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "8278a5aa7b47df0b35765cfce4d2b4eb43db0c97",
+    "commit": "98ea1ce2a4512f48dd6a4465ff15a83e003dc9c6",
     "commit_kind": "verified_code_before_dispatch_metadata",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
     "dispatch_ref": "ms-i2e",
-    "integration_ref": "ms-i2e",
+    "integration_ref": "ms-i2f1",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
     "code_baseline_verified": true,
-    "last_verified_tests": 563,
-    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing and MS-T2b/MS-I2e reconciliation integration; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
+    "last_verified_tests": 610,
+    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing and MS-T2b/MS-I2e reconciliation integration, MS-I2f1 Runner registration/current-authority components; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
     "current_unverified_round": null,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
@@ -29,24 +29,24 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2e集成范围已验证；下一包MS-I2f建设实际设备/登记命令/当前权威。",
+      "state": "MS-I2e集成范围已验证；MS-I2f1已接受设备与命令登记/当前权威组件；完整MS-I2f继续等待产品来源。",
       "package": "MS-I2f",
       "ready": true
     },
     "B": {
-      "state": "MS-C3已接受；MS-C4可独立开发上下文纯计算缓存，当前授权仍每次复核。",
+      "state": "MS-C3已接受；MS-C4已由用户确认开工，开发上下文纯计算缓存，当前授权仍每次复核。",
       "package": "MS-C4",
       "ready": true,
       "base_ref": "ms-i2e"
     },
     "C": {
-      "state": "MS-T2b已接受且43项SQL复验通过；MS-T2c补统一核对入口与明确outcome读取。",
+      "state": "MS-T2b已接受且43项SQL复验通过；MS-T2c已由用户确认开工，补统一核对入口与明确outcome读取。",
       "package": "MS-T2c",
       "ready": true,
       "base_ref": "ms-i2e"
     },
     "D": {
-      "state": "MS-R2b已接受；MS-R2c可独立开发签名终态回执journal，实际登记Reader/IPC仍待A。",
+      "state": "MS-R2b已接受；MS-R2c已由用户确认开工，开发签名终态回执journal，实际登记Reader/IPC仍待A。",
       "package": "MS-R2c",
       "ready": true,
       "base_ref": "ms-i2e"
@@ -74,10 +74,11 @@
     "MS-R2b": "accepted_component",
     "MS-I2d": "accepted_development",
     "MS-I2e": "accepted_development",
-    "MS-I2f": "assigned_ready",
-    "MS-C4": "assigned_ready",
-    "MS-T2c": "assigned_ready",
-    "MS-R2c": "assigned_ready",
+    "MS-I2f1": "accepted_development",
+    "MS-I2f": "in_progress",
+    "MS-C4": "in_progress",
+    "MS-T2c": "in_progress",
+    "MS-R2c": "in_progress",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -138,6 +139,7 @@
         "DEVELOPMENT_PLAN.md",
         ".gitignore",
         ".gitattributes",
+        "tests/integration/test_runner_control.py",
         "tests/integration/test_context_wiring.py",
         "tests/unit/model/",
         "tests/integration/test_approvals.py",
@@ -170,6 +172,7 @@
         "MS-I2c",
         "MS-I2d",
         "MS-I2e",
+        "MS-I2f1",
         "MS-I2f",
         "MS-I2",
         "MS-I3"
@@ -767,6 +770,30 @@
       ]
     },
     {
+      "id": "MS-I2f1",
+      "session": "A",
+      "rounds": [
+        "P1-03",
+        "P1-04",
+        "P1-09"
+      ],
+      "title": "设备/命令登记及当前权威组件",
+      "deps": [
+        "MS-I2e"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "实现平台拥有的设备/通道归属与CAS撤销、不可变原请求/签字命令和原attempt唯一登记。",
+        "增加实际预算dispatch状态port；以原存储ctx组合当前政策/固定模型绑定/配置/预算/lease、独立根/动作gate/签名。",
+        "组装Container内部服务，缺真实通道/根/审批/密钥后端不准入，不挂载HTTP/工具/执行。",
+        "真实SQL与Ed25519验证响应丢失、并发、撤销/期限/伪造、取消后恢复和缺来源；详细范围见MS-I2f1-scope。"
+      ],
+      "acceptance": [
+        "命令声明只作比对；通道/根/gate为明确受控组件测试源，不冒充真实配对/IPC/OS后端。",
+        "本子包接受与完整MS-I2f/阶段验收分开；worker开发中的基线继续ms-i2e。"
+      ]
+    },
+    {
       "id": "MS-I2f",
       "session": "A",
       "rounds": [
@@ -776,7 +803,7 @@
       ],
       "title": "实际设备归属、登记命令与当前权威",
       "deps": [
-        "MS-I2e"
+        "MS-I2f1"
       ],
       "scope": "integration",
       "tasks": [

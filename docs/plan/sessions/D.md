@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2b已接受；MS-R2c可独立开发签名终态回执journal，实际登记Reader/IPC仍待A。以DISPATCH的固定版本与派发为准。
+状态：MS-R2b已接受；MS-R2c已由用户确认开工，开发签名终态回执journal，实际登记Reader/IPC仍待A。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 

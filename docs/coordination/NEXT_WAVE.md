@@ -1,6 +1,6 @@
 # 下一轮可直接转发的任务
 
-日期：2026-10-08。共同标签 **ms-i2e**，实际代码提交和公共摘要见 [DISPATCH](DISPATCH.md)。B/C/D 的上一包已接受；以下三个新包可并行，不需要等待另一个 worker 开发结束。
+日期：2026-10-08。共同标签 **ms-i2e**，实际代码提交和公共摘要见 [DISPATCH](DISPATCH.md)。B/C/D 的上一包已接受；用户已确认以下三个包同时开工，固定基线继续 ms-i2e。A 正在执行 MS-I2f1，详细范围见 requests/A/MS-I2f1-scope.md。
 
 每个 session 在自己的原 worktree 开工。A 没有代为切换分支或向其他聊天发送消息；将对应代码框内容发给原 session 即可。
 
@@ -48,3 +48,9 @@
 A 执行 MS-I2f：实现实际设备/通道归属与不可变命令登记，发布当前权威和恢复读取契约，再组装 policy、配置、审批/预算、根、lease/fence 及撤销。通用 Context authority、真实回执来源、可信 IPC/OS 凭据和实际执行仍需逐项接线。
 
 A 收到任意一个包即可审阅、合入和回归，不必等待三个同时完成。开发中的 session 保持固定 ms-i2e；新公共契约只在包边界同步。完成后用户转交报告，A统一发布接受结果与下一基线。
+
+## 2026-10-08 开发中补充
+
+工作包定义源是 `planning/parallel_catalog.py` 的 PACKAGES；session 页定义可写路径；`MS-I2e-next-packages.md` 定义 B/C/D 当前输入输出与策略。A 本轮首个子包的详细范围见 [MS-I2f1-scope](requests/A/MS-I2f1-scope.md)。
+
+D 的当前说明勘误：journal 返回已有 `content` Ref；`runner_receipt` 只是命名空间，不能新增私有 RefKind。无需中途换基线。

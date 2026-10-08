@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2b已接受且43项SQL复验通过；MS-T2c补统一核对入口与明确outcome读取。以DISPATCH的固定版本与派发为准。
+状态：MS-T2b已接受且43项SQL复验通过；MS-T2c已由用户确认开工，补统一核对入口与明确outcome读取。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
