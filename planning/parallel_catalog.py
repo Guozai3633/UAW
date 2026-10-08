@@ -6,7 +6,7 @@ BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "CODE_SHA_PENDING",
+    "commit": "9422fcaba180fdc04515c993776e7f4a09d526b2",
     "commit_kind": "verified_code_before_dispatch_metadata",
     "remote_baseline_verified": True,
     "dispatch_ready": True,

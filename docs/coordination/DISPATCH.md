@@ -5,7 +5,7 @@
 ## 当前集成版本
 
 - 目录/分支：`E:/UAW` / `integration`；仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)。
-- 已验证代码/证据提交：`CODE_SHA_PENDING`；固定标签 **ms-i2f2** 包含随后状态记录，旧标签不移动。
+- 已验证代码/证据提交：`9422fcaba180fdc04515c993776e7f4a09d526b2`；固定标签 **ms-i2f2** 包含随后状态记录，旧标签不移动。
 - 全量 **841 passed，0 failure/error/skip**；Ruff/格式156文件，Mypy102源码文件通过。1281 schemas、272接口、26已实现公开操作。
 - 新增231项检查，原610项完整重跑。[实际范围/回执](../implementation/MS-I2f2.md) 与 [接口/目录/策略](requests/A/MS-I2f2-integration.md)。
 - Worker原开工基线是 `ms-i2e / ba2f3b0d9417e6d695eaa74c2f766217c98b01f1`；A原基线是 `ms-i2f1 / d3fca34528237da155617a2a86df2abcb0db86b3`。交付后再同步新版本，不中途换基线。
@@ -14,7 +14,7 @@
 
 | Session | 原目录 / 分支 | 原源码 / handoff | A merge | 接受结果 |
 | --- | --- | --- | --- | --- |
-| A | E:/UAW / integration | CODE_SHA_PENDING | 本分支 | MS-I2f2集成开发范围接受；完整MS-I2f/MS-I2继续 |
+| A | E:/UAW / integration | 9422fcaba180fdc04515c993776e7f4a09d526b2 | 本分支 | MS-I2f2集成开发范围接受；完整MS-I2f/MS-I2继续 |
 | B | E:/UAW/.worktrees/context / dev/context | acc68fc / 1acedb4 | 2f674ec | MS-C4组件接受；174单元＋35实际SQL通过 |
 | C | E:/UAW/.worktrees/tool / dev/tool | 3d8cda3 / 3c0cd99 | 23739a1 | MS-T2c组件接受；135单元＋70实际SQL通过 |
 | D | E:/UAW/.worktrees/runner / dev/runner | 38ee809 / 1e89d5c | 5b8c1ad | MS-R2c组件接受；250组件/原公共检查通过 |
