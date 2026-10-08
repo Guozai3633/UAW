@@ -318,3 +318,67 @@ A在受控PG、随机隔离测试主体及实际集成SHA实跑全部70项SQL（
 C-003的pending增量预算/最终费用调整、orphan会计协调仍由A决定，本包没有扩EffectRecord或ReconcileRequest、私写预算账本或设定公共规则。没有新依赖/迁移/事件，不开放flags或工具目录；完整MS-T2、生产执行与D01/D03/D06继续等待，不自动扩包。
 
 回退由A revert源码`3d8cda36d1422a70fb877a87868affe587c1441c`及后续接线提交，保留原持久unknown/费用/实际回执；代码回退不证明外部效果已撤销。本包没有真实业务dispatch。
+
+
+# MS-T2d 交接追加 · 2026-10-08
+
+状态：**四个连续里程碑已完成并交付可审阅源码；162单元与100个不同真实SQL用例通过，生产接线及完整MS-T2/P1-03等待A整链审阅接受。** 不重做此前已接受包；原handoff全部原文保留。没有读取D开发分支或修改其他worktree。
+
+## 位置、固定基线和提交
+
+- 实际目录`E:/UAW/.worktrees/tool`，实际分支`dev/tool`。开工工作区干净，`git fetch origin --tags`和`git merge --ff-only ms-i2g-start`成功；同步时HEAD与标签解析出的commit一致：**`0bd8e2b8387a46e16435dc033956c2b69bb1a859`**。未reset/rebase或覆盖公共文件。
+- 按本worktree锁执行`uv sync --frozen --extra agent-engine --link-mode copy`，91 packages checked，Python3.14.6；私有`.venv/.cache/uv`，锁未更改。
+- **阶段源码（里程碑1/2）：`27d17a3c2f3d2637ce5c7e386ae6eec3d2a9be63`**；阶段接口/样例文档：**`717c2371c407b6c5a7be083c9b8f601f5fd0d87f`**，C-005保留。阶段141单元＋3真实SQL通过；已向用户报告阶段SHA后继续后两项，没有等待A最终集成。
+- **最终源码/测试（里程碑3/4）：`859f5d0f1ac90dc51e8500282b70d1acee924c06`**。A在dev/tool审阅阶段源码、阶段文档、最终源码和本次独立handoff文档提交。文档提交的实际SHA由Git日志和ignored environment.json记录，不以自引用占位假装实际SHA。
+- 公共文件与固定基线字节一致：schema SHA256 `cc5dbc6ba7bdaba40529ed196fe1249176b49967f741ecf017e40275417a8c45`，shared ports `fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104`，shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`，uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`。无shared/schema/锁/composition/API/迁移/其他worker变更。
+
+## 实际改动文件
+
+本包两笔源码提交合计15文件（最终增量提交14文件）：
+
+- `src/uaw/tool/facade.py`
+- `src/uaw/tool/invocation/dispatch.py`
+- `src/uaw/tool/ledger.py`
+- `src/uaw/tool/ports.py`
+- `src/uaw/tool/providers/__init__.py`
+- `src/uaw/tool/providers/text.py`
+- `src/uaw/tool/receipt_store.py`
+- `src/uaw/tool/results.py`
+- `tests/integration/tool/test_text_dispatch_postgres.py`
+- `tests/integration/tool/test_text_recovery_process_postgres.py`
+- `tests/integration/tool/test_text_results_postgres.py`
+- `tests/integration/tool/text_pipeline_fixture.py`
+- `tests/integration/tool/text_recovery_child.py`
+- `tests/unit/tool/test_durable_results.py`
+- `tests/unit/tool/test_text_inspect.py`
+
+本次独立文档：`docs/coordination/requests/C/C-006-ms-t2d-results-wiring.md`和本handoff追加；阶段C-005独立文档原文保留。仅C允许目录，ignored缓存/私有DB环境/回执不提交。
+
+## 实现、公开内部接口与接线
+
+- `ToolInvocation(registry,ledger,budgets,approvals,*,access=None,executor=None,estimates=None,results=None,prepare=None)`与可选`ToolFacade(...,invocation=...)`：normalize/固定配置与当前access→真实Approval waiting/批准recheck→原尝试账本→真实Budget reserve→当前gate→持久CAS dispatch意图与记账→当前角色/配置/权限/资源/批准复查→一次executor。所有外部await在Tool会话SQL事务锁外；缺executor/实现校验器/results/权限依赖预留前明确不可用。
+- 实际`TextInspectExecutor(source,*,provider,currency)`、`TextInspectVerifier(provider_ref)`、`text_spec(provider_ref)`与`text_estimates(currency)`：唯一text参数，最大32768 UTF-8 bytes，原文不归一化；真实输出characters/utf8_bytes/lines/sha256，严格ProviderReceipt指向真实主体隔离raw blob。完整provider服务Principal固定在可信构造，不能从模型正文提供。固定本地免费计费定义、1次tool_call、实际纯计算wall_time；不从HTTP/Runner/confirmed推断成功或零费用，不联网、不读用户目录、不执行写入/exec。
+- `ToolReceiptStore(ledger,blobs,*,provider_ref,provider,access=None,verifier=None)`实现严格`publish(receipt,ctx,*,authenticated_provider)->Ref`、`find(action_id,ctx)->Ref|None`、`read(ref,ctx)->ToolReconciliationReceipt`与实际证据`check(ref,ctx)->Ref`。独立provider记录、实际raw响应、严格usage.attempt_id、固定action/attempt/spec/provider/receipt绑定及当前恢复数据权限反复校验。缺实际来源或验证器不可用；Lookup不是授权，不从预算/EffectRecord生成回执。
+- `ToolResults(source,reconciler).ready()/resume(call,ctx)`及`read_result(action_id,ctx)`：固定业务output_schema与独立真实文本核对后发布实际证据；原ToolReconciler分别接受效果和恢复费用，实际settlement usage Ref齐备后保存既有ToolResult，读取返回既有RuntimeToolruntimeInvokeResult。`ToolFacade.reconcile`仍严格接受既有ReconcileRequest，无额外receipt_ref；`read_outcome`返回实际明确ToolReconciliationReceipt。confirmed/reconcile ok不代表applied、工具成功或Task完成。
+- 发送意图后的超时/异步取消/未保存响应保持unknown和未知额度；不能从超时、未记Budget dispatch或本地发送回执丢失推断未执行。原尝试只恢复已实际保存响应/固定费用计划，不新attempt/reserve/dispatch/retry。明确无意图的本次已准入reserve/send失败才释放原预留；畸形/冲突请求不能释放原尝试额度。
+- 实际结果/Lookup/Reader无需新执行access，使用当前恢复数据权限；原取消/过期不阻止授权的原账务恢复，但权限撤销会拒绝读取旧结果。费用响应丢失时applied可独立读取，不能以效果确认代替实际费用Ref。原not_applied与费用非零、unknown维度保留逻辑由原70项回归覆盖。
+- 具体构造、输入输出样例、命名记录/schema、错误与缺口见[C-006](../requests/C/C-006-ms-t2d-results-wiring.md)。新增命名行全部使用已有具体schema，无无约束Object表或迁移。raw/content固定version1，receipt hash固定实际ProviderReceipt＋ctx＋完整provider绑定；首次observed_at与发布Ref重放不变。
+
+## 验证命令与实际回执
+
+在本worktree运行`. ./ops/start-dev-db.ps1 -Session C`，独立Docker project `uaw-development-c`、loopback **55434**、独立volume，随机秘密仅生成于本地ignored `.data/dev-db.env`；未复制A配置、打印/提交URL、修改共享evidence、操作其他库或清除volume。随后`.venv/Scripts/python.exe -m alembic upgrade head`成功。
+
+1. 最终单元：`.venv/Scripts/python.exe -m pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2d/unit.xml` → **162 passed / 0 failures / 0 errors / 0 skipped**，18.25s。含原135与新27；测试权限/费用替身明确受控，单元不冒充SQL或真实LLM/Runner。
+2. 首轮SQL：`.venv/Scripts/python.exe -m pytest tests/integration/tool -q -p no:cacheprovider --require-postgres --basetemp=E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2d/tmp --junitxml=tests/.artifacts/C/MS-T2d/sql.xml` → **96 passed / 1 failed / 0 errors / 0 skipped**，624.35s。原70项全部通过。失败来自新测试decision误用deny，公共枚举实际为decline；修正C测试，没有改公共契约。原回执保存为`sql-initial.xml/sql-initial.txt`。
+3. 最终新增SQL全量复验：`.venv/Scripts/python.exe -m pytest tests/integration/tool/test_text_dispatch_postgres.py tests/integration/tool/test_text_results_postgres.py tests/integration/tool/test_text_recovery_process_postgres.py -q -p no:cacheprovider --require-postgres --basetemp=E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2d/tmp-final --junitxml=tests/.artifacts/C/MS-T2d/sql-new.xml` → **30 passed / 0 failures / 0 errors / 0 skipped**，332.47s。新增缺approval及冲突请求保护和独立新Python进程恢复也通过。
+4. **真实SQL覆盖合计100个不同通过用例＝原70＋最终新增30，最终无未通过用例。** 这是两份实际回执的覆盖合计，不是一次100项完整运行；旧70模块与基线字节相同，最终修正只影响新增路径，全数新SQL已复跑。旧cancel/expired/policy/provider/resource变化、主体/attempt/provider隔离、not_applied费用独立、unknown额度、固定CAS费用计划和并发核对保留。新增覆盖实际text输入→审批→预留→一次发送→真实raw/ProviderReceipt→严格输出→publish/Lookup→原reconcile/outcome→ToolResult→重复/重启读取，明确无来源/缺依赖、拒绝/取消/撤销、响应/发布/费用丢失、schema/语义错误、回执/结果篡改、未知不重发和新进程无executor恢复。
+5. `.venv/Scripts/python.exe -m ruff check src/uaw/tool tests/unit/tool tests/integration/tool`通过；`ruff format --check` **45 files already formatted**；`.venv/Scripts/python.exe -m mypy src/uaw/tool` **22 source files通过**；`git diff --check`通过。
+
+ignored回执：`tests/.artifacts/C/MS-T2d/{unit.xml,unit.txt,sql-initial.xml,sql-initial.txt,sql-new.xml,sql-new.txt,ruff.txt,format.txt,mypy.txt,environment.json}`；阶段回执保留在`tests/.artifacts/C/MS-T2d-stage/`。未隐藏首轮失败；没有当前未解决测试失败。真实SQL与blob、实际文本计算、独立进程读取是真实实现；角色/资源/恢复权限Reader仍明示受控组件，不是生产授权或真实LLM/Runner回执。
+
+## A尚需接线与未验收边界
+
+- A提供实际ToolAccess/current角色环境、原资源Reader与配置/Run/ExecutionPolicyPort、真实Approval/Budget/State、可信固定provider Principal和当前恢复数据权限；将最终source/Verifier/results/executor注入既有Facade。不能注册C受控测试Reader/role metadata为产品能力。默认Container的Tool Lookup/Reader/executor仍待挂载，缺依赖明确unavailable。
+- C-005阶段结果消费port现补`ready()`；A提前组装应按C-006使用实际ToolResults，阶段raw store替换为ToolReceiptStore。不需要修改公共请求或EffectRecord。实际内部本地text工具只有A明确登记固定spec与真实环境绑定后才可用，C未开放产品目录/flags。
+- pending增量预算规则、orphan会计协调仍属A；无响应/坏输出保留实际记录与未知额度供可信恢复，不虚构not_applied或自行释放已发送费用。A须保持实际预算currency与本地tariff一致。
+- 本包没有真实产品API/用户权限整体接线回归，也没有网络LLM、Runner/IPC或用户文件/写入/exec验证。D01/D03/D06不自行决定，固定用户模型不替换；完整MS-T2/P1-03仍待A整链验收，不扩入下一包。
