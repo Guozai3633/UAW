@@ -5,17 +5,19 @@ CAS retries use new immutable plans only after a definite conflict, never on tim
 Unknown send intent prevents its own release and any new write attempt.
 """
 
+import json
 from typing import Any
 
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.db.transactions import RecordTransaction, reference
 from uaw.shared.contracts import RequestMeta, TrustedExecutionContext
-from uaw.shared.ports import BudgetPort
+from uaw.shared.ports import BudgetPort, BudgetStatePort
 from uaw.shared.schema import validate_contract
-from uaw.shared.stores import StoreConflict
+from uaw.shared.stores import StoreConflict, StoreMissing
 from uaw.tool.approval import ToolApprovalAdapter
 from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.ledger import ToolLedger, action_key
+from uaw.tool.schema import canonical
 
 Payload = dict[str, Any]
 
@@ -28,9 +30,14 @@ def step_meta(step: str, key: str) -> RequestMeta:
 
 class ToolBudgetAdapter:
     def __init__(
-        self, ledger: ToolLedger, budgets: BudgetPort, approvals: ToolApprovalAdapter | None = None
+        self,
+        ledger: ToolLedger,
+        budgets: BudgetPort,
+        approvals: ToolApprovalAdapter | None = None,
+        *,
+        state: BudgetStatePort | None = None,
     ) -> None:
-        self.ledger, self.budgets, self.approvals = ledger, budgets, approvals
+        self.ledger, self.budgets, self.approvals, self.state = ledger, budgets, approvals, state
 
     async def _authorize(self, ctx: TrustedExecutionContext) -> None:
         if self.approvals is None:
@@ -69,14 +76,21 @@ class ToolBudgetAdapter:
                 status=409,
             )
         if previous:
+            current = await self.get_reservation(previous["id"], ctx)
+            if current["status"] != "reserved":
+                raise fail(
+                    "attempt_released",
+                    "Attempt is no longer reserved",
+                    phase="reserve",
+                    category="conflict",
+                    status=409,
+                )
             return previous
         for index in range(4):
             key = "plan-" + parameter_hash({"attempt": ctx.attempt_id, "index": index})
             request = await self.ledger.get("tool.budget.reserve.plans", key, ctx)
             if request is None:
-                ledger = (
-                    await self.ledger.store.get(ctx.principal, "budget.ledgers", ctx.run_id or "")
-                ).payload
+                ledger = await self.get_ledger(ctx)
                 request = {
                     "reservation_id": "tool-reservation-"
                     + parameter_hash({"attempt": ctx.attempt_id}),
@@ -143,7 +157,9 @@ class ToolBudgetAdapter:
             "reservation_ref": ref,
             "provider_binding_ref": spec["provider_ref"],
         }
-        new = await self.ledger.claim(intent, ctx)
+        budget = await self.get_ledger(ctx)
+        reserved = await self.get_reservation(ref["id"], ctx)
+        new = await self.ledger.claim(intent, ctx, budget=budget, reservation=reserved)
         # Crash between claim and BudgetPort.dispatch retains unknown. Recovery replays
         # only accounting with the same request ID, never the executor/send.
         if await self.ledger.get("tool.budget.dispatched", ctx.attempt_id, ctx):
@@ -206,6 +222,14 @@ class ToolBudgetAdapter:
 
     async def settle_unknown(self, ctx: TrustedExecutionContext) -> Payload:
         """No invented measured usage. Pending billing retains all unobserved holds."""
+        if await self.ledger.get("tool.reconciliation.active", ctx.attempt_id, ctx):
+            raise fail(
+                "reconciliation_pending",
+                "This attempt now uses its trusted receipt plans",
+                phase="settle",
+                category="conflict",
+                status=409,
+            )
         call = await self.ledger.attempt(ctx)
         effect = await self.ledger.effect(call["action_id"], ctx)
         if effect["attempt_ids"] != [ctx.attempt_id] or effect["state"] != "unknown":
@@ -223,9 +247,7 @@ class ToolBudgetAdapter:
             key = "plan-" + parameter_hash({"attempt": ctx.attempt_id, "index": index})
             request = await self.ledger.get("tool.budget.settle.plans", key, ctx)
             if request is None:
-                ledger = (
-                    await self.ledger.store.get(ctx.principal, "budget.ledgers", ctx.run_id or "")
-                ).payload
+                ledger = await self.get_ledger(ctx)
                 request = {
                     "reservation_ref": ref,
                     "usage": {
@@ -266,8 +288,7 @@ class ToolBudgetAdapter:
             previous = await optional(tx, namespace, key)
             if previous is not None:
                 return previous
-            current = await tx.load("budget.ledgers", ctx.run_id or "")
-            value = {**request, "expected_ledger_revision": current.revision}
+            value = request
             await tx.write(namespace, key, schema, value)
             return value
 
@@ -284,6 +305,7 @@ class ToolBudgetAdapter:
         await self.ledger.attempt(ctx)
         receipt = await self.ledger.get("tool.budget.reserved", ctx.attempt_id, ctx)
         if receipt:
+            await self.get_reservation(receipt["id"], ctx)
             return receipt
         for index in range(4):
             key = "plan-" + parameter_hash({"attempt": ctx.attempt_id, "index": index})
@@ -291,8 +313,9 @@ class ToolBudgetAdapter:
             if plan is None:
                 break
             # Recovery must never create a reservation after policy/approval revocation.
-            committed = await self.ledger.get("budget.reservations", plan["reservation_id"], ctx)
-            if committed is None:
+            try:
+                await self.get_reservation(plan["reservation_id"], ctx)
+            except StoreMissing:
                 continue
             try:
                 receipt = await self.budgets.reserve(
@@ -311,4 +334,115 @@ class ToolBudgetAdapter:
             phase="reserve",
             category="dependency",
             status=503,
+        )
+
+    async def get_ledger(self, ctx: TrustedExecutionContext) -> Payload:
+        if self.state is None:
+            raise fail(
+                "dependency_unavailable",
+                "Budget state port is not wired",
+                phase="budget_state",
+                category="dependency",
+                status=503,
+            )
+        result = await self.state.get_ledger(ctx)
+        validate_dependency("RootBudgetLedger", result, "budget_state")
+        if result["run_id"] != ctx.run_id or result["id"] != ctx.run_id:
+            raise fail(
+                "attempt_scope_denied",
+                "Budget state differs from this Run",
+                phase="budget_state",
+                category="authorization",
+                status=403,
+            )
+        return json.loads(canonical(result))  # type: ignore[no-any-return]
+
+    async def get_reservation(self, reservation_id: str, ctx: TrustedExecutionContext) -> Payload:
+        if self.state is None:
+            raise fail(
+                "dependency_unavailable",
+                "Budget state port is not wired",
+                phase="budget_state",
+                category="dependency",
+                status=503,
+            )
+        result = await self.state.get_reservation(reservation_id, ctx)
+        validate_dependency("BudgetReservation", result, "budget_state")
+        if result["id"] != reservation_id:
+            raise fail(
+                "attempt_scope_denied",
+                "Reservation state differs from this attempt",
+                phase="budget_state",
+                category="authorization",
+                status=403,
+            )
+        return json.loads(canonical(result))  # type: ignore[no-any-return]
+
+    async def settle_receipt(
+        self, receipt: Payload, receipt_key: str, ctx: TrustedExecutionContext
+    ) -> Payload:
+        """Recovery of original accounting only; no live execution permission is issued."""
+        await self.ledger.attempt(ctx)
+        validate_contract("ToolReconciliationReceipt", receipt)
+        if (
+            receipt["attempt_id"] != ctx.attempt_id
+            or receipt["usage"]["attempt_id"] != ctx.attempt_id
+        ):
+            raise fail(
+                "attempt_scope_denied",
+                "Receipt usage belongs to another attempt",
+                phase="settle",
+                category="authorization",
+                status=403,
+            )
+        original = await self.recover_reserved(ctx)
+        status = {"applied": "succeeded", "not_applied": "failed", "unknown": "unknown"}[
+            receipt["outcome"]
+        ]
+        for index in range(4):
+            key = "reconcile-plan-" + parameter_hash({"receipt": receipt_key, "index": index})
+            plan = await self.ledger.get("tool.reconciliation.budget.plans", key, ctx)
+            if plan is None:
+                budget = await self.get_ledger(ctx)
+                reservation = await self.get_reservation(original["id"], ctx)
+                plan = {
+                    "reservation_ref": reference(
+                        "reservation", reservation["id"], reservation["revision"]
+                    ),
+                    "usage": receipt["usage"],
+                    "expected_ledger_revision": budget["revision"],
+                }
+                plan = await self._plan(
+                    "tool.reconciliation.budget.plans", key, "BudgetSettleRequest", plan, ctx
+                )
+            try:
+                result: Payload = await self.budgets.settle(
+                    ctx.principal, plan, step_meta("reconcile", key), ctx, status=status
+                )
+                validate_dependency("UsageSettlement", result, "settle")
+                if (
+                    result["reservation_ref"]["kind"] != "reservation"
+                    or result["reservation_ref"]["id"] != plan["reservation_ref"]["id"]
+                    or result["reservation_ref"]["version"]
+                    != str(int(plan["reservation_ref"]["version"]) + 1)
+                    or not result["usage_refs"]
+                    or any(ref["kind"] != "usage" for ref in result["usage_refs"])
+                ):
+                    raise fail(
+                        "dependency_protocol_invalid",
+                        "Settlement receipt differs from the fixed attempt plan",
+                        phase="settle",
+                        category="dependency",
+                        status=503,
+                    )
+                return result
+            except StoreConflict as exc:
+                if exc.failure.code != "revision_conflict":
+                    raise
+        raise fail(
+            "revision_conflict",
+            "Receipt accounting exceeded bounded CAS recovery",
+            phase="settle",
+            category="conflict",
+            status=409,
         )

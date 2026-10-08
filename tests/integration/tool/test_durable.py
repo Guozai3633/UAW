@@ -12,6 +12,7 @@ from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
+from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.shared.errors import DomainError
 from uaw.tool.approval import ToolApprovalAdapter
 from uaw.tool.authority import ToolApprovalAuthority
@@ -23,7 +24,12 @@ from uaw.tool.ledger import ToolLedger, action_key
 def restarted(case):
     ledger = ToolLedger(PostgresRecordStore(case.ledger.store.database))
     authority = ToolApprovalAuthority(
-        ledger, case.registry, case.domain[0], case.authority.access, case.reader
+        ledger,
+        case.registry,
+        case.domain[0],
+        case.authority.access,
+        case.reader,
+        policies=ExecutionPolicyResolver(ledger.store),
     )
     service = ApprovalService(ledger.store, case.domain[0], authority)
     approvals = ToolApprovalAdapter(ledger, authority, service)
@@ -33,7 +39,9 @@ def restarted(case):
         authority=authority,
         service=service,
         approvals=approvals,
-        budget=ToolBudgetAdapter(ledger, BudgetService(ledger.store), approvals),
+        budget=ToolBudgetAdapter(
+            ledger, BudgetService(ledger.store), approvals, state=BudgetService(ledger.store)
+        ),
     )
 
 
@@ -164,7 +172,9 @@ async def test_sql_crash_after_service_commit_recovers_same_budget_request(tool_
         await case.budget.reserve(estimates(), case.ctx)
     if phase == "settle":
         await case.budget.mark_dispatch(case.ctx)
-    broken = ToolBudgetAdapter(case.ledger, LoseReceipt(), case.approvals)
+    broken = ToolBudgetAdapter(
+        case.ledger, LoseReceipt(), case.approvals, state=BudgetService(case.ledger.store)
+    )
     methods = {
         "reserve": lambda: broken.reserve(estimates(), case.ctx),
         "dispatch": lambda: broken.mark_dispatch(case.ctx),
@@ -276,7 +286,12 @@ async def test_sql_claim_commit_before_accounting_crash_never_reissues_send(tool
         async def dispatch(self, *args, **kwargs):
             raise TimeoutError("Injected crash after claim, before budget accounting")
 
-    broken = ToolBudgetAdapter(case.ledger, FailBeforeDispatch(case.ledger.store), case.approvals)
+    broken = ToolBudgetAdapter(
+        case.ledger,
+        FailBeforeDispatch(case.ledger.store),
+        case.approvals,
+        state=BudgetService(case.ledger.store),
+    )
     with pytest.raises(TimeoutError):
         await broken.mark_dispatch(case.ctx)
     case = restarted(case)
@@ -336,9 +351,12 @@ async def test_sql_cancel_after_lost_reserve_receipt_releases_only_actual_commit
             raise TimeoutError("Response lost after SQL reserve commit")
 
     with pytest.raises(TimeoutError):
-        await ToolBudgetAdapter(case.ledger, LoseReserveReceipt(), case.approvals).reserve(
-            estimates(), case.ctx
-        )
+        await ToolBudgetAdapter(
+            case.ledger,
+            LoseReserveReceipt(),
+            case.approvals,
+            state=BudgetService(case.ledger.store),
+        ).reserve(estimates(), case.ctx)
     await cancel(case)
     assert (await restarted(case).budget.release(case.ctx))["status"] == "released"
 

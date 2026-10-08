@@ -27,6 +27,8 @@ PHASE_SCHEMAS = {
     "tool.budget.dispatched": "Acknowledgement",
     "tool.budget.settle.plans": "BudgetSettleRequest",
     "tool.budget.unknown.settled": "UsageSettlement",
+    "tool.reconciliation.budget.plans": "BudgetSettleRequest",
+    "tool.reconciliation.failures": "Failure",
 }
 
 
@@ -94,6 +96,12 @@ class ToolLedger:
         return "tool-run:" + ctx.run_id
 
     async def get(self, namespace: str, key: str, ctx: TrustedExecutionContext) -> Payload | None:
+        if not namespace.startswith("tool."):
+            raise fail(
+                "phase_schema_invalid",
+                "Tool reads cannot access another owner's namespace",
+                phase="repository",
+            )
         try:
             return dict((await self.store.get(ctx.principal, namespace, key)).payload)
         except StoreMissing:
@@ -242,20 +250,29 @@ class ToolLedger:
             ).payload
         )
 
-    async def claim(self, intent: Payload, ctx: TrustedExecutionContext) -> bool:
+    async def claim(
+        self,
+        intent: Payload,
+        ctx: TrustedExecutionContext,
+        *,
+        budget: Payload,
+        reservation: Payload,
+    ) -> bool:
         """Record one send intent, never send. Ambiguous claims are irrevocably unknown.
 
         Internal composition must do live approval/resource checks first. MS-T2a
         has no executor and does not call this from its public invoke boundary.
         """
         validate_contract("InternalToolInvocationDispatchRequest", intent)
+        validate_contract("RootBudgetLedger", budget)
+        validate_contract("BudgetReservation", reservation)
         call = await self.attempt(ctx)
         key = action_key(ctx, call["action_id"])
         intent = json.loads(canonical(intent))
 
         async def write(tx: RecordTransaction) -> Payload:
             run = (await tx.load("runs", ctx.run_id or "")).payload
-            ledger = (await tx.load("budget.ledgers", ctx.run_id or "")).payload
+            ledger = budget
             if ledger["cancel_requested"] or run["status"] not in (
                 "preparing",
                 "running",
@@ -275,37 +292,7 @@ class ToolLedger:
                     category="conflict",
                     status=409,
                 )
-            reserved = await tx.load("budget.reservations", intent["reservation_ref"]["id"])
-            account = (await tx.load("budget.accounting", reserved.resource_id)).payload
             fixed = (await tx.load("tool.specs", key)).payload
-            if (
-                intent["validated_action_ref"] != reference("tool_call", key)
-                or intent["provider_binding_ref"] != fixed["provider_ref"]
-                or intent["reservation_ref"]
-                != reference("reservation", reserved.resource_id, reserved.revision)
-                or any(
-                    account[k] != getattr(ctx, k)
-                    for k in ("run_id", "attempt_id", "operation_id", "trace_id")
-                )
-                or reserved.payload["status"] != "reserved"
-            ):
-                raise fail(
-                    "dispatch_binding_stale",
-                    "Dispatch inputs differ from their authority",
-                    phase="dispatch",
-                    category="conflict",
-                    status=412,
-                )
-            if min(
-                datetime.fromisoformat(s.replace("Z", "+00:00"))
-                for s in (ctx.deadline, account["deadline"], ledger["deadline"])
-            ) <= datetime.now(UTC):
-                raise fail(
-                    "deadline_exceeded",
-                    "Dispatch deadline expired",
-                    phase="dispatch",
-                    category="timeout",
-                )
             existing = await optional(tx, "tool.dispatch.intents", key)
             if existing:
                 if existing != intent:
@@ -317,13 +304,30 @@ class ToolLedger:
                         status=409,
                     )
                 return {"claimed": False}
-            if account["dispatched"]:
+            if (
+                intent["validated_action_ref"] != reference("tool_call", key)
+                or intent["provider_binding_ref"] != fixed["provider_ref"]
+                or intent["reservation_ref"]
+                != reference("reservation", reservation["id"], reservation["revision"])
+                or ledger["run_id"] != ctx.run_id
+                or reservation["status"] != "reserved"
+            ):
                 raise fail(
-                    "unknown_effect",
-                    "Reservation already dispatched without this intent",
+                    "dispatch_binding_stale",
+                    "Dispatch state differs from its read port",
                     phase="dispatch",
-                    category="unknown_effect",
-                    status=409,
+                    category="conflict",
+                    status=412,
+                )
+            if min(
+                datetime.fromisoformat(s.replace("Z", "+00:00"))
+                for s in (ctx.deadline, ledger["deadline"])
+            ) <= datetime.now(UTC):
+                raise fail(
+                    "deadline_exceeded",
+                    "Dispatch deadline expired",
+                    phase="dispatch",
+                    category="timeout",
                 )
             effect = await tx.load("tool.effects", key)
             if effect.payload["state"] != "pending" or effect.payload["attempt_ids"]:
@@ -377,3 +381,167 @@ class ToolLedger:
             return receipt
 
         return await self.transactions.inspect(ctx.principal, self.aggregate(ctx), write)
+
+    async def effect_from_attempt(self, ctx: TrustedExecutionContext) -> Payload:
+        call = await self.attempt(ctx)
+        return await self.effect(call["action_id"], ctx)
+
+    @staticmethod
+    def receipt_key(receipt: Payload) -> str:
+        ref = receipt["receipt_ref"]
+        # Same version with a changed hash/location/body conflicts, not a new invoice.
+        return "receipt-" + parameter_hash({k: ref[k] for k in ("kind", "id", "version")})
+
+    async def begin_reconciliation(
+        self, receipt: Payload, ctx: TrustedExecutionContext, expected_revision: int
+    ) -> Payload:
+        validate_contract("ToolReconciliationReceipt", receipt)
+        receipt = json.loads(canonical(receipt))
+        call = await self.attempt(ctx)
+        key, action = self.receipt_key(receipt), action_key(ctx, call["action_id"])
+
+        async def write(tx: RecordTransaction) -> Payload:
+            fixed = (await tx.load("tool.specs", action)).payload
+            effect = await tx.load("tool.effects", action)
+            if (
+                receipt["action_ref"] != reference("tool_call", action)
+                or receipt["provider_ref"] != fixed["provider_ref"]
+                or receipt["attempt_id"] != ctx.attempt_id
+                or receipt["usage"]["attempt_id"] != ctx.attempt_id
+                or ctx.attempt_id not in effect.payload["attempt_ids"]
+                or await optional(tx, "tool.dispatch.intents", action) is None
+            ):
+                raise fail(
+                    "receipt_binding_conflict",
+                    "Receipt does not match a persisted send intent",
+                    phase="reconcile",
+                    category="conflict",
+                    status=409,
+                )
+            previous = await optional(tx, "tool.reconciliation.receipts", key)
+            if previous is not None:
+                if previous != receipt:
+                    raise fail(
+                        "receipt_conflict",
+                        "Pinned receipt version changed its contents",
+                        phase="reconcile",
+                        category="conflict",
+                        status=409,
+                    )
+                done = await optional(tx, "tool.reconciliation.settled", key)
+                active = await optional(tx, "tool.reconciliation.active", ctx.attempt_id)
+                if done is None and active is not None and self.receipt_key(active) != key:
+                    raise fail(
+                        "receipt_version_stale",
+                        "This unfinished receipt was superseded by later evidence",
+                        phase="reconcile",
+                        category="conflict",
+                        status=412,
+                    )
+                return {"key": key, "settlement": done}
+            if effect.revision != expected_revision:
+                raise fail(
+                    "revision_conflict",
+                    "Effect revision changed before reconciliation",
+                    phase="reconcile",
+                    category="conflict",
+                    status=409,
+                )
+            active = await optional(tx, "tool.reconciliation.active", ctx.attempt_id)
+            reuse = None
+            if active is not None:
+                active_key = self.receipt_key(active)
+                done = await optional(tx, "tool.reconciliation.settled", active_key)
+                rejected = await optional(tx, "tool.reconciliation.failures", active_key)
+                if done is None and rejected is None:
+                    raise fail(
+                        "reconciliation_pending",
+                        "Previous fixed accounting plan needs recovery",
+                        phase="reconcile",
+                        category="conflict",
+                        status=409,
+                    )
+                if active["outcome"] != "unknown" and active["outcome"] != receipt["outcome"]:
+                    raise fail(
+                        "receipt_conflict",
+                        "A deterministic outcome cannot be reversed",
+                        phase="reconcile",
+                        category="conflict",
+                        status=409,
+                    )
+                if datetime.fromisoformat(
+                    receipt["observed_at"].replace("Z", "+00:00")
+                ) < datetime.fromisoformat(active["observed_at"].replace("Z", "+00:00")):
+                    raise fail(
+                        "receipt_version_stale",
+                        "New evidence predates the accepted observation",
+                        phase="reconcile",
+                        category="conflict",
+                        status=412,
+                    )
+                if done is not None and active["usage"] == receipt["usage"]:
+                    reuse = done
+            else:
+                # Bridge accepted MS-T2a pending accounting without charging it twice.
+                old = await optional(tx, "tool.budget.unknown.settled", ctx.attempt_id)
+                if old is not None:
+                    for index in range(4):
+                        plan_key = "plan-" + parameter_hash(
+                            {"attempt": ctx.attempt_id, "index": index}
+                        )
+                        plan = await optional(tx, "tool.budget.settle.plans", plan_key)
+                        if plan and plan["usage"] == receipt["usage"]:
+                            reuse = old
+                            break
+            await tx.write(
+                "tool.reconciliation.receipts", key, "ToolReconciliationReceipt", receipt
+            )
+            if active is None:
+                await tx.write(
+                    "tool.reconciliation.active",
+                    ctx.attempt_id,
+                    "ToolReconciliationReceipt",
+                    receipt,
+                )
+            else:
+                row = await tx.load("tool.reconciliation.active", ctx.attempt_id)
+                await tx.write(
+                    "tool.reconciliation.active",
+                    ctx.attempt_id,
+                    "ToolReconciliationReceipt",
+                    receipt,
+                    row.revision,
+                )
+            # Effect knowledge is independent of the subsequent fee service call.
+            value = {
+                **effect.payload,
+                "revision": effect.revision + 1,
+                "receipt_ref": receipt["receipt_ref"],
+                "state": "unknown" if receipt["outcome"] == "unknown" else "confirmed",
+            }
+            await tx.write("tool.effects", action, "EffectRecord", value, effect.revision)
+            return {"key": key, "settlement": reuse}
+
+        return await self.transactions.inspect(ctx.principal, self.aggregate(ctx), write)
+
+    async def finish_reconciliation(
+        self, receipt: Payload, settlement: Payload, ctx: TrustedExecutionContext
+    ) -> None:
+        validate_contract("UsageSettlement", settlement)
+        key = self.receipt_key(receipt)
+
+        async def write(tx: RecordTransaction) -> Payload:
+            stored = await tx.load("tool.reconciliation.receipts", key)
+            if stored.payload != receipt:
+                raise fail(
+                    "receipt_conflict",
+                    "Cannot finalize another receipt",
+                    phase="reconcile",
+                    category="conflict",
+                    status=409,
+                )
+            return await immutable(
+                tx, "tool.reconciliation.settled", key, "UsageSettlement", settlement
+            )
+
+        await self.transactions.inspect(ctx.principal, self.aggregate(ctx), write)

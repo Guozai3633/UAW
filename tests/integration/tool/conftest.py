@@ -13,6 +13,7 @@ from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import reference
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
+from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.shared.contracts import Ref, Scope, TrustedExecutionContext
 from uaw.shared.errors import reject
 from uaw.tool.approval import ToolApprovalAdapter
@@ -212,7 +213,12 @@ async def tool_case(domain, principal):
     await ledger.bind(call, spec, ctx)
     reader = ControlledSQLReader(run.store, source)
     authority = ToolApprovalAuthority(
-        ledger, registry, configuration, ControlledRoleEnvironment(), reader
+        ledger,
+        registry,
+        configuration,
+        ControlledRoleEnvironment(),
+        reader,
+        policies=ExecutionPolicyResolver(run.store),
     )
     service = ApprovalService(run.store, configuration, authority)
     approvals = ToolApprovalAdapter(ledger, authority, service)
@@ -221,7 +227,9 @@ async def tool_case(domain, principal):
         registry,
         authority,
         approvals,
-        ToolBudgetAdapter(ledger, BudgetService(run.store), approvals),
+        ToolBudgetAdapter(
+            ledger, BudgetService(run.store), approvals, state=BudgetService(run.store)
+        ),
         service,
         ctx,
         call,
