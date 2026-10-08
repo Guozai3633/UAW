@@ -56,9 +56,9 @@ class SavedReceipt:
     receipt_hash: str
 
     def ref(self) -> Ref:
-        # ms-i2e RefKind has no runner_receipt enum. Use its existing artifact container
-        # with an internal runner_receipt namespace; a new public kind belongs to A.
-        return Ref(kind="artifact", id=self.receipt_id, version="1", content_hash=self.receipt_hash)
+        # A's integration convention: content is the existing wire kind;
+        # runner_receipt is the owning Reader namespace, never an artifact delivery.
+        return Ref(kind="content", id=self.receipt_id, version="1", content_hash=self.receipt_hash)
 
 
 def receipt_id(owner: Principal, device_id: str, command: RunnerCommand) -> str:

@@ -130,7 +130,7 @@ async def test_terminal_raw_usage_restart_and_replay(journal_case, kind):
         receipt["failure"]["code"] = "cancelled"
     data = signed(case, receipt)
     ref = await publish(case, data)
-    assert ref.kind == "artifact" and ref.id.startswith("runner_receipt-") and ref.version == "1"
+    assert ref.kind == "content" and ref.id.startswith("runner_receipt-") and ref.version == "1"
     assert ref.content_hash == digest(json.loads(data))
     assert await publish(case, json.dumps(json.loads(data))) == ref  # JSON layout is not content.
     rebuilt = ReceiptJournal(case[0].path, protocol=case[5], reader=case[1])

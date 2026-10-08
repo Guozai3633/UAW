@@ -513,11 +513,11 @@ IMPLEMENTATION_STATUS = {
         "docs/implementation/evidence/p0-tests.xml",
     ]),
     "P1-03": dict(status="in_progress", implementation_evidence=[
-        "docs/implementation/MS-I1.md", "docs/implementation/MS-I2a.md", "docs/implementation/MS-I2b.md", "docs/implementation/MS-I2c.md", "docs/implementation/MS-I2d.md", "docs/implementation/MS-I2e.md", "docs/implementation/MS-I2f1.md", "docs/implementation/evidence/environment.json",
+        "docs/implementation/MS-I1.md", "docs/implementation/MS-I2a.md", "docs/implementation/MS-I2b.md", "docs/implementation/MS-I2c.md", "docs/implementation/MS-I2d.md", "docs/implementation/MS-I2e.md", "docs/implementation/MS-I2f1.md", "docs/implementation/MS-I2f2.md", "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml",
     ]),
     "P1-04": dict(status="in_progress", implementation_evidence=[
-        "docs/implementation/MS-I1.md", "docs/implementation/MS-I2a.md", "docs/implementation/MS-I2b.md", "docs/implementation/MS-I2c.md", "docs/implementation/MS-I2d.md", "docs/implementation/MS-I2e.md", "docs/implementation/MS-I2f1.md", "docs/implementation/evidence/environment.json",
+        "docs/implementation/MS-I1.md", "docs/implementation/MS-I2a.md", "docs/implementation/MS-I2b.md", "docs/implementation/MS-I2c.md", "docs/implementation/MS-I2d.md", "docs/implementation/MS-I2e.md", "docs/implementation/MS-I2f1.md", "docs/implementation/MS-I2f2.md", "docs/implementation/evidence/environment.json",
         "docs/implementation/evidence/p0-tests.xml",
     ]),
     "P1-01": dict(status="in_progress", implementation_evidence=[

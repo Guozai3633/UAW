@@ -131,3 +131,9 @@
 - [A 详细范围](coordination/requests/A/MS-I2f1-scope.md)：设备/通道归属、原请求/签字命令登记、当前权威的输入、输出、来源、策略和退出条件。
 - [A 实际实现记录](implementation/MS-I2f1.md)：代码位置、执行链路、验证与缺失产品依赖。
 - B/C/D 已确认开工，继续 ms-i2e；当前各功能包范围在 [下一轮详细策略](coordination/requests/A/MS-I2e-next-packages.md)，D 的 Ref 勘误不要求更换基线。
+
+## MS-I2f2：当前集成与恢复引用
+
+- [详细接线设计](coordination/requests/A/MS-I2f2-integration.md)：包/目录映射、Reader实际来源、可选缓存、content Ref裁决和退出条件。
+- [实际实现记录](implementation/MS-I2f2.md)：原提交/合并、SQL和全量回执、组件接受及生产缺口。
+- [下一轮安排](coordination/NEXT_WAVE.md)：B/C/D保持交付边界，A先补真实来源后发布明确下一包。

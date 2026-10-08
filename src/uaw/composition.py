@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+from uaw.context.cache import PureComputationCache
 from uaw.context.facade import ContextComponents
 from uaw.context.intent import IntentContexts, UnderstandingRules
 from uaw.context.model_input import GenericModelInputs
@@ -30,6 +31,7 @@ from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.run.runner_authority import RegisteredRunnerAuthority
 from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
+from uaw.run.runner_receipts import RegisteredReceiptCommandReader
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import CapabilityUnavailable
@@ -89,6 +91,7 @@ class Container:
     runner_devices: RunnerDevices | None = None
     runner_commands: RunnerCommands | None = None
     runner_authority: RegisteredRunnerAuthority | None = None
+    runner_receipt_commands: RegisteredReceiptCommandReader | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -111,7 +114,10 @@ class Container:
 
 
 def compose_understanding_context(
-    records: PostgresRecordStore, policies: PolicyResolver
+    records: PostgresRecordStore,
+    policies: PolicyResolver,
+    *,
+    cache: PureComputationCache | None = None,
 ) -> IntentContexts:
     """Real adapters shared by Intent and Model; general Context.build remains unbound."""
     sources = RunContextSources(records, policies.permissions)
@@ -121,11 +127,12 @@ def compose_understanding_context(
         cancellation=sources,
         rules=rules,
         models=FixedModelWindow(policies),
+        cache=cache,
     )
     return IntentContexts(records, RunInputReader(records), components)
 
 
-def compose(settings: Settings) -> Container:
+def compose(settings: Settings, *, context_cache: PureComputationCache | None = None) -> Container:
     database = Database(settings.database_url.get_secret_value()) if settings.database_url else None
     records = PostgresRecordStore(database) if database else None
     configuration = (
@@ -155,7 +162,11 @@ def compose(settings: Settings) -> Container:
     policies = (
         PolicyResolver(records, configuration, permissions) if records and configuration else None
     )
-    contexts = compose_understanding_context(records, policies) if records and policies else None
+    contexts = (
+        compose_understanding_context(records, policies, cache=context_cache)
+        if records and policies
+        else None
+    )
     model = (
         ModelFacade(
             ModelGateway(
@@ -164,7 +175,7 @@ def compose(settings: Settings) -> Container:
                 ContextModelInputs(
                     records,
                     StoredModelInputs(records, blobs, contexts),
-                    GenericModelInputs(contexts.components.composer),
+                    GenericModelInputs(contexts.components.composer, cache=context_cache),
                 ),
                 budgets,
                 blobs,
@@ -205,4 +216,5 @@ def compose(settings: Settings) -> Container:
         runner_devices=devices,
         runner_commands=commands,
         runner_authority=RegisteredRunnerAuthority(commands) if commands else None,
+        runner_receipt_commands=RegisteredReceiptCommandReader(commands) if commands else None,
     )

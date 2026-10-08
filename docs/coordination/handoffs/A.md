@@ -106,3 +106,11 @@
 - B/C/D已由用户确认并行开工，继续MS-C4/MS-T2c/MS-R2c与固定ms-i2e。D的journal使用content Ref，runner_receipt只是命名空间，原说明笔误已勘误。没有改写worker原分支/工作区/handoff或发送聊天消息。
 - 完整MS-I2f/MS-I2和真实配对/IPC/native root/role-resource-consent/OS signing后端仍未验收；安装/写入/exec关闭，D01/D03/D06保持待定。
 - [实际证据](../../implementation/MS-I2f1.md)、[完整范围/接口/来源](../requests/A/MS-I2f1-scope.md)、[派发表](../DISPATCH.md)。
+
+## MS-I2f2 当前交付
+
+- MS-C4/MS-T2c/MS-R2c逐包无冲突合入，原worker分支/worktree/交接保持；源码/merge SHA与接受见DISPATCH及MS-I2f2实现记录。
+- 独立674项通过：B174单元＋35真实SQL，C135单元＋70真实SQL，D250原组件/公共回归，A10跨模块SQL检查。全量841项、Ruff/格式156文件、Mypy102源码文件通过，无失败/错误/跳过。
+- A实现PostgreSQL原命令→独立设备owner→签名journal Reader，提供缓存可选组装且默认关闭；D journal固定引用统一content，原artifact提交保留，不新增RefKind/schema/依赖/迁移/flags。
+- 本次只按组件/集成开发范围接受。完整MS-I2f/MS-I2/MS-T2/MS-R2及P1仍待生产Lookup/Reader/executor、channel/root/role-resource-consent/signing/IPC与原决策门槛。
+- 新版本ms-i2f2，B/C/D保留交付边界，下一包待A发布实际输入输出，不自动进入执行包或重写旧提交。[详细设计](../requests/A/MS-I2f2-integration.md)、[实际回执](../../implementation/MS-I2f2.md)、[派发表](../DISPATCH.md)。

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2e集成范围已验证；MS-I2f1已接受设备与命令登记/当前权威组件；完整MS-I2f继续等待产品来源。以DISPATCH的固定版本与派发为准。
+状态：MS-I2f2集成范围已验证；完整MS-I2f继续补实际认证通道/根/签名及工具来源。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -44,6 +44,7 @@
 - `.gitignore`
 - `.gitattributes`
 - `tests/integration/test_runner_control.py`
+- `tests/integration/test_runner_receipt_wiring.py`
 - `tests/integration/test_context_wiring.py`
 - `tests/unit/model/`
 - `tests/integration/test_approvals.py`
@@ -73,7 +74,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C3/MS-T2b/MS-R2b已接受；B/C/D在包边界同步ms-i2e，分别做MS-C4/MS-T2c/MS-R2c；A继续MS-I2f真实设备与命令权威。
+- MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D保留交付边界，A继续完整MS-I2f真实来源接线。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -213,10 +214,27 @@
 - 命令声明只作比对；通道/根/gate为明确受控组件测试源，不冒充真实配对/IPC/OS后端。
 - 本子包接受与完整MS-I2f/阶段验收分开；worker开发中的基线继续ms-i2e。
 
+### MS-I2f2：缓存/工具恢复/journal接受与登记Reader接线
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)、[P4-04](../rounds/P4-04.md)。
+开发前置：MS-I2f1、MS-C4、MS-T2c、MS-R2c。
+
+任务：
+
+1. 逐包合入B/C/D，实跑Context35和Tool70个真实SQL以及原签名/持久回归。
+2. 组装可选纯计算缓存，默认关闭且当前权限/来源检查保留；统一journal固定Ref为content。
+3. 从实际PostgreSQL命令和独立设备owner实现ReceiptCommandReader，恢复不重新准入或reserve/dispatch。
+4. 验证跨模块签名journal恢复、撤销/取消/重启，发布固定基线；详细接口与目录见MS-I2f2-integration。
+
+交付检查：
+
+- SQL/静态/全量841项通过，无隐藏错误/跳过；原worker回执和提交保持。
+- 仅组件接受；生产Lookup/Reader/executor和IPC/配对仍待依赖，不改变完整阶段状态。
+
 ### MS-I2f：实际设备归属、登记命令与当前权威
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
-开发前置：MS-I2f1。
+开发前置：MS-I2f2。
 
 任务：
 

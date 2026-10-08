@@ -87,7 +87,7 @@ paths.extend((ROOT / "src/uaw/resources/prompts").glob("*.txt"))
 paths = [p for p in paths if "__pycache__" not in p.parts and p.name != "local.toml"]
 report = {
     "date": "2026-10-08", "platform": platform.system(), "machine": platform.machine(),
-    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration and MS-I2f1 Runner registration/current-authority components; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
+    "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution",
     "components": components,
     "python_packages": {package: version(package) for package in packages.values()},
     "compatibility": {"core_checks": True, "langgraph_basic_api": True,
@@ -102,6 +102,10 @@ report = {
                       "tool_reconciliation_components": True,
                       "tool_budget_policy_port_consumption": True,
                       "runner_registration_authority_components": True,
+                      "context_pure_computation_cache_components": True,
+                      "tool_recovery_facade_components": True,
+                      "runner_signed_terminal_journal_components": True,
+                      "runner_registered_receipt_reader_wiring": True,
                       "runner_production_source_binding": False,
                       "external_llm_verified": False, "model_agent_runner": False},
     "test_counts": test_counts,

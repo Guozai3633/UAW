@@ -4,7 +4,7 @@ UAW 面向办公、开发与学术任务，采用 Python 构建可扩展 Agent R
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-P1-01协议、上下文组件、MS-T2a/MS-R2a和MS-I2c公共恢复接口已合入，当前全量610项检查通过；真实模型语义质量、实际配对与执行仍待验收。Git远端已关联[项目仓库](https://github.com/Guozai3633/UAW)，集成分支为`integration`。采用 **3个开发session＋1个集成session**；MS-C3/MS-T2b/MS-R2b已接受，集成版本`ms-i2f1`另包含设备/签字命令登记及当前权威组件；B/C/D正在固定ms-i2e执行MS-C4/MS-T2c/MS-R2c，A继续完整MS-I2f真实来源接线，见[统一记录](docs/coordination/DISPATCH.md)：[分工计划](docs/plan/PARALLEL.md) · [开工和合并](docs/plan/PARALLEL_WORKFLOW.md)。
+P1-01协议、上下文组件、MS-T2a/MS-R2a和MS-I2c公共恢复接口已合入，当前全量841项检查通过；真实模型语义质量、实际配对与执行仍待验收。Git远端已关联[项目仓库](https://github.com/Guozai3633/UAW)，集成分支为`integration`。采用 **3个开发session＋1个集成session**；MS-C4/MS-T2c/MS-R2c组件已接受，集成版本`ms-i2f2`接通登记命令Reader，提供缓存可选组装并统一content回执引用；B/C/D保留交付边界，A继续完整MS-I2f真实来源接线，见[统一记录](docs/coordination/DISPATCH.md)：[分工计划](docs/plan/PARALLEL.md) · [开工和合并](docs/plan/PARALLEL_WORKFLOW.md)。
 
 ## 先看这些入口
 
