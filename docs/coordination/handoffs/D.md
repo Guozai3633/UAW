@@ -251,3 +251,73 @@ git diff --check
 - 不发布pairing V2，不改变或重解释内部Ticket.document的签字profile为公开协议；旧pair.complete仍不具挑战证明。D01/D03/D06不决定，flags保持关闭，不安装/写文件/exec，不标P1-04 accepted，**完整MS-R2继续等待**。
 - A审阅合入并在实际集成SHA执行组合/整链回归；本包只交自有提交。下一包按A新固定基线在干净目录同步，不重写交接提交。
 - 回退由A保持flags关闭、移除接线并revert实现提交 `5b97247`；凭据/已发生外部效果由owner处理，Git回退不能代替撤销。
+
+
+## MS-R2c：签名终态回执持久 journal（2026-10-08）
+
+- 实际目录 / 分支：`E:/UAW/.worktrees/runner` / `dev/runner`。
+- 开工 HEAD：`76fbb36e4b2a283e928822700eb6740ee9a660a4`，工作区干净；`git fetch origin --tags` 和 `git merge --ff-only ms-i2e` 成功。
+- 实际固定基线：`ms-i2e` / **ba2f3b0d9417e6d695eaa74c2f766217c98b01f1**，同步后 HEAD 与 `ms-i2e^{commit}` 完全一致。
+- 环境：本目录 `.venv` Python 3.14.6；`UV_CACHE_DIR=E:/UAW/.worktrees/runner/.cache/uv`，`uv sync --frozen --extra agent-engine --link-mode copy` 成功，91 packages checked，锁未修改。
+- 源码/测试/接线提案提交：**38ee8099129fd54571435faaeb8bd0b4f339a17c**。本节 handoff 单独提交，最终 SHA 由本分支 Git 历史及交付消息给出；不改写源码提交。
+- 范围只到 MS-R2c 组件交付；**完整 MS-R2 / P1-04 未验收**，待 A 审阅、合入和组合回归。
+
+### 实际修改文件
+
+1. `apps/local_runner/uaw_runner/receipts.py`：可选 Reader 的异步 publish/read、开发 SQLite 唯一终态 CAS、原始数据保存与固定 Ref、当前源/key 复查、错误/中断/取消边界。
+2. `src/uaw/workspace/contracts.py`：仅添加内部 frozen `RegisteredReceiptCommand(command, device_id, owner)`，没有公开 wire 扩展。
+3. `src/uaw/workspace/ports.py`：添加 A 第4节批准的内部 `ReceiptCommandReaderPort`。
+4. `tests/unit/runner/test_receipts.py`：73 项真实签名/SQLite 组件检查，独立受控登记源明确标识。
+5. `tests/integration/runner/receipt_child.py`：独立测试进程，从单独受控 registry 读取实际 fixture 登记源，仅持公钥/已签数据。
+6. `tests/integration/runner/test_receipt_journal_processes.py`：5 项实际进程并发/冲突/重建/撤销验证。
+7. `docs/coordination/requests/D/R2c-001-journal-wiring.md`：Reader、持久化和 Ref 缺口；成功、默认失败、重复和冲突接线例子。
+8. `docs/coordination/handoffs/D.md`：本节（单独提交）。
+
+没有修改 shared/schema/锁/composition/API、授权根、flags、其他 worktree，未使用其他 worker 未交接源码。
+
+### 内部公开消费接口与实际语义
+
+```python
+ReceiptCommandReaderPort.resolve(command_ref: Ref, *, authenticated_principal: Principal)
+    -> RegisteredReceiptCommand
+ReceiptJournal(path: Path, *, protocol: RunnerProtocol, reader: ReceiptCommandReaderPort | None = None)
+ReceiptJournal.publish(command_ref: Ref, receipt_data: str | bytes, *, authenticated_principal: Principal)
+    -> Ref
+ReceiptJournal.read(receipt_ref: Ref, *, authenticated_principal: Principal) -> RunnerReceipt
+```
+
+认证主体仅由可信适配器传入。Reader 从独立登记源校验实际固定 command/device/user-owner 与当下通道/恢复数据权限；Journal 比较完整 owner、device 和固定命令摘要，并在关键外部校验/await 后重读源。缺 Reader 默认 unavailable 且不触碰 SQLite；缺签名 verifier、错误角色/域/device、当前key或来源撤销均拒绝。
+复用 `RunnerProtocol.verify_receipt` 和真实 Ed25519 receipt domain；command_id、原 attempt、usage.attempt_id、action、既有 file.read 资源/版本/path 核对保留。仅 ok/failed/cancelled，waiting 明确 unavailable，不改既有协议方法。
+开发 SQLite 按 owner kind/id、device、command、attempt 唯一，revision=1。同一已验证内容返回实际原 Ref，JSON 排版不影响去重；不同内容冲突、不覆盖历史，完整首个 JSON 原文和 Usage 保留。数据库不保存命令全文、私钥或认证凭据；完整 owner 仅存必要摘要与 kind/id 索引。
+恢复不调用 admission、dispatch、reserve 或 executor，不要求历史执行期限/flag/lease 仍可新执行；取消/过期后的原回执可在当前数据和key权限有效时读取。不从 ok 推出 Tool applied，也不从 failed/cancelled 推出 not_applied/零费用。
+
+**Ref 接线缺口：** ms-i2e 的 RefKind 没有 runner_receipt/runner_command。本组件用合法 `artifact` 容器及 `runner_receipt-<唯一身份SHA256>` ID 返回确实保存的 Ref，version="1"、content_hash 为完整 RunnerReceipt wire（含原签名）的 canonical JSON SHA256；不是非法新 kind。A须确认该封装用于生产，或先发布 RefKind 新值/摘要约定再交 D 消费；详见 R2c-001。command Ref 同样要求完整固定 wire 摘要，whole Ref 不带 location/access_scope，读取精确比较实际全部 Ref。
+
+### 实际验证命令与回执
+
+在 `E:/UAW/.worktrees/runner` 本目录实跑：
+
+```powershell
+.venv/Scripts/python.exe -m ruff check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m ruff format --check src/uaw/workspace apps/local_runner/uaw_runner tests/unit/runner tests/integration/runner
+.venv/Scripts/python.exe -m mypy src/uaw/workspace apps/local_runner/uaw_runner --cache-dir .cache/mypy
+.venv/Scripts/python.exe -m pytest tests/unit/runner tests/integration/runner tests/unit/shared/test_contracts.py tests/unit/test_runner_signatures.py --basetemp tests/.artifacts/D/MS-R2c/tmp-final -q --junitxml tests/.artifacts/D/MS-R2c/junit.xml
+git diff --check
+```
+
+结果：**250 passed，0 failure/error/skip，23.60s**；本包新增 **78**（73 unit＋5实际进程）。Ruff通过、格式24文件通过、Mypy12源码文件通过、diff检查通过，所有 exit_code=0。
+真实验证包括 Ed25519 篡改/错误域/当前 device 角色/撤销、跨 owner/device/attempt、Usage/action/资源绑定、固定 Ref/摘要、同 Ref 变更、16并发实例、6个并发Python进程唯一提交、新进程恢复和冲突唯一赢家、当前来源/通道撤销、取消后恢复、实际SQLite锁下及时取消，以及插入后中断回滚/提交后拒绝返回但保留事实。
+回执：`tests/.artifacts/D/MS-R2c/checks.json`、`static-checks.json`、`pytest-check.json`、`public-hashes.json`、`ruff.log`、`format.log`、`mypy.log`、`diff.log`、`pytest.log`、`junit.xml`。全部为本session忽略文件，临时SQLite仅在本session basetemp下。
+开发首轮 fixture 缺必需 currency、basetemp父目录和计数检查曾失败，已修复；上述250项为修复后的实际最终回执。无最终失败/跳过项，没有实际 PostgreSQL 或生产 Reader/IPC 验收。
+
+公共字节核对与 ms-i2e 完全一致：schema及资源副本 `45161b36f2e81622e73f86c23b048cda8d55686e7045248f0394ab51d13dbe6b`；shared ports `453cd9cd21b92a77c6e370fc6f0463072a3903a2c6b5beee56dec4f93b0c27a5`；shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`；uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；composition `816352f89dc15eb4fea88555b039d448f62c40cf084e3ba1bfc8055022f30bc4`。
+
+### 故障、未满足项与 A 接线要求
+
+- SQLite显式配置为开发组件 journal，构造无DB IO；异步服务将SQLite/当前key/验签移至线程，没有生产 asyncio.run 桥接。BEGIN IMMEDIATE、唯一键与最后验签/取消 guard 控制本地CAS；busy/IO/DB错误为 unavailable，不退回内存或假回执。
+- 提交前异常关闭事务回滚；提交后取消/访问撤销保留真实记录但不给调用者旧权限。线程无法撤回已完成 commit，重试须复查当前源/key再去重。不宣称断电/磁盘损坏测试或跨服务原子撤销。
+- A提供真实登记命令 Reader、可信通道及device-owner映射、当前device key目录、命令/回执固定 Ref 约定、生产私有目录ACL/保留/备份与持久化策略。journal与SQLite key目录使用独立文件，不复制其他session配置/凭据。SQLite不决定D01。
+- Reader/key目录/journal不是共同事务；提交后的来源复查只能拒绝返回，不能证明整条执行链原子性。根ExecutionLease不是执行权限，journal不借它签发实际操作回执或新attempt。
+- file.list的既有FilePage缺workspace/path签字字段，保持原verify_receipt边界，不从snapshot_revision推断资源；需要更强证明由A发布新版本。
+- 接线成功/缺Reader拒绝/重复/冲突代码例子见 [R2c-001](../requests/D/R2c-001-journal-wiring.md)。生产Reader未提供，未挂载网络/API/IPC，也未接配对V2或真实OS凭据；测试签名均为受控协议fixture，不是真实Runner执行回执。
+- 完整MS-R2、D01/D03/D06仍等待；没有安装、项目写入/exec、Tool outcome映射或flags开放。A负责审阅、合入、公共冲突和整链回归；本分支只提交D改动，不创建其他session。
