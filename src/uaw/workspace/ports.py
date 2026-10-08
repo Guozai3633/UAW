@@ -20,6 +20,10 @@ class SelectedRoot:
     native_path: Path
     capabilities: frozenset[str]
     expires_at: datetime
+    selection_ticket_id: str | None = None
+    selection_key_id: str | None = None
+    selection_signature: str | None = None
+    confirmation_expires_at: datetime | None = None
 
 
 @dataclass(frozen=True)
@@ -33,6 +37,12 @@ class RootGrant:
     capabilities: frozenset[str]
     revision: int = 0
     revoked: bool = False
+    owner: Principal | None = None
+    expires_at: datetime | None = None
+    selection_ticket_id: str | None = None
+    selection_key_id: str | None = None
+    selection_signature: str | None = None
+    confirmation_expires_at: datetime | None = None
 
 
 @dataclass(frozen=True)
@@ -170,4 +180,10 @@ class ReceiptCommandReaderPort(Protocol):
         Run cancellation/expiry is distinct from data/key revocation. Never synthesize
         the registration from receipt or incoming command claims.
         """
+        ...
+
+
+class RootGrantLookup(RootRepository, Protocol):
+    def find(self, *, principal_id: str, device_id: str, workspace_ref: Ref) -> RootGrant:
+        """Find one independently persisted grant, rejecting missing/ambiguous bindings."""
         ...

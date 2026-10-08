@@ -1,10 +1,11 @@
 """Local root binding and read admission; never accepts a chat path as authority."""
 
+import json
 from datetime import datetime
 from ntpath import isreserved
 from pathlib import Path, PureWindowsPath
 
-from uaw.shared.contracts import Ref
+from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
 from uaw.workspace.contracts import RootSelection
@@ -33,9 +34,14 @@ class RootBindings:
         workspace_ref: Ref,
         capabilities: frozenset[str],
         now: datetime,
+        owner: Principal | None = None,
     ) -> RootGrant:
         selection = RootSelection.model_validate(selection.wire())
         aware(now)
+        if owner is not None:
+            owner = Principal.model_validate_json(json.dumps(owner.wire()))
+            if owner.kind != "user" or owner.id != principal_id:
+                raise reject("permission_denied", "Root grant owner mismatch", 403, "permission")
         if self.selection_port is None:
             raise CapabilityUnavailable("runner.root_selection")
         if not capabilities or not capabilities <= {"read"}:
@@ -80,6 +86,12 @@ class RootBindings:
             root,
             (stat.st_dev, stat.st_ino),
             capabilities,
+            owner=owner,
+            expires_at=expiry,
+            selection_ticket_id=selected.selection_ticket_id,
+            selection_key_id=selected.selection_key_id,
+            selection_signature=selected.selection_signature,
+            confirmation_expires_at=selected.confirmation_expires_at,
         )
         return self.repository.add(grant)
 
@@ -92,8 +104,15 @@ class RootBindings:
         workspace_ref: Ref,
         expected_revision: int,
         relative_path: str,
+        now: datetime | None = None,
     ) -> Path:
         grant = self.repository.get(root_handle)
+        if now is not None and grant.expires_at is not None:
+            deadline = grant.expires_at
+            if grant.confirmation_expires_at is not None:
+                deadline = min(deadline, grant.confirmation_expires_at)
+            if aware(deadline) <= aware(now):
+                raise reject("deadline_exceeded", "Root grant expired", 410, "timeout")
         if grant.revoked:
             raise reject("permission_denied", "Root authorization revoked", 403, "permission")
         if (

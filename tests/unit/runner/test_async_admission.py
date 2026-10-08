@@ -514,3 +514,24 @@ async def test_legacy_cas_without_guard_is_unavailable_for_async_only(async_setu
     protocol.admissions = LegacyRepository()
     with pytest.raises(CapabilityUnavailable, match="checked_admission_CAS"):
         await protocol.admit_async(wire(command), authenticated_principal=actor)
+
+
+@pytest.mark.asyncio
+async def test_bounded_native_grant_expiry_during_authority_await_rejects_admission(async_setup):
+    # Existing component authority remains explicitly a fixture; actual signature/path checks
+    # must independently reject its stale root permission after the local grant expires.
+    from dataclasses import replace
+
+    protocol, command, actor, authority, _, clock, *_ = async_setup
+    old = protocol.bindings.repository.get("r1")
+    protocol.bindings.repository._roots["r1"] = replace(old, expires_at=NOW + timedelta(seconds=1))
+
+    async def expire_at_second_lookup(n):
+        if n == 2:
+            clock[0] = NOW + timedelta(seconds=1)
+
+    authority.before = expire_at_second_lookup
+    with pytest.raises(DomainError) as error:
+        await protocol.admit_async(wire(command), authenticated_principal=actor)
+    assert error.value.failure.code == "deadline_exceeded"
+    assert not protocol.admissions._records

@@ -9,7 +9,7 @@ from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_signatures import VerificationKey, signing_bytes, verify
 from uaw.workspace.binding import aware
 from uaw.workspace.contracts import RootSelection
-from uaw.workspace.ports import NativeConfirmationPort, SelectedRoot
+from uaw.workspace.ports import CurrentKeyDirectory, NativeConfirmationPort, SelectedRoot
 from uaw_runner.keys import Ed25519SignatureAdapter, ProtectedSigner
 from uaw_runner.state import LocalState, Ticket
 
@@ -182,11 +182,14 @@ class PairingVerifier:
 
 
 class PersistentRootSelection:
-    def __init__(self, state: LocalState, roots: LocalRoots) -> None:
+    def __init__(
+        self, state: LocalState, roots: LocalRoots, *, directory: CurrentKeyDirectory | None = None
+    ) -> None:
         if state.path == roots.state.path:
             raise ValueError("Control records and native roots require separate directories")
         self.state, self.roots = state, roots
-        self.signatures = Ed25519SignatureAdapter(state)
+        self.directory = directory if directory is not None else state
+        self.signatures = Ed25519SignatureAdapter(self.directory)
 
     def consume(
         self,
@@ -217,6 +220,17 @@ class PersistentRootSelection:
             raise reject(
                 "permission_denied", "Root selection identity/state mismatch", 403, "permission"
             )
+        key = self.directory.lookup(ticket.key_id, device_id=device_id)
+        if (
+            key.revoked
+            or key.role != "device"
+            or key.device_id != device_id
+            or key.key_id != ticket.key_id
+            or key.public_bytes != ticket.public_bytes
+        ):
+            raise reject(
+                "permission_denied", "Actual root selection key differs", 403, "permission"
+            )
         if not self.signatures.verify_document(
             {**ticket.document(), "signature": selection.selection_token},
             device_id=device_id,
@@ -224,7 +238,11 @@ class PersistentRootSelection:
         ):
             raise reject("permission_denied", "Root token signature rejected", 403, "permission")
         root = self.roots.current(ticket)
+        if self.directory.lookup(ticket.key_id, device_id=device_id) != key:
+            raise reject("permission_denied", "Root selection key changed", 403, "permission")
         self.state.consume(ticket_id, expected_revision=ticket.revision, now=now)
+        # Keep the actual bounded native confirmation metadata; no infinite old-grant fallback.
+        _, _, confirmation_deadline = self.state.consumed_root(ticket_id, now=now)
         # Crash after consumption may lose availability; the credential cannot be replayed.
         return SelectedRoot(
             principal_id,
@@ -233,4 +251,8 @@ class PersistentRootSelection:
             root,
             frozenset({"read"}),
             ticket.expires_at,
+            selection_ticket_id=ticket.ticket_id,
+            selection_key_id=ticket.key_id,
+            selection_signature=selection.selection_token,
+            confirmation_expires_at=confirmation_deadline,
         )

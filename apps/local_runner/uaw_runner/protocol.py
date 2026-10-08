@@ -129,6 +129,7 @@ class RunnerProtocol:
             workspace_ref=current.workspace_ref,
             expected_revision=current.binding_revision,
             relative_path=path,
+            now=now,
         )
         return self.admissions.reserve(
             ctx.principal.id,

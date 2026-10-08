@@ -166,6 +166,7 @@ class AsyncAdmission:
             workspace_ref=current.workspace_ref,
             expected_revision=current.binding_revision,
             relative_path=parameters["path"],
+            now=aware(self.clock()),
         )
         self.deadline(command, current)
 
