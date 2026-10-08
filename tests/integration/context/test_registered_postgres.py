@@ -257,3 +257,79 @@ async def test_sql_rule_scope_source_and_missing_nonempty_tool_validation(regist
     assert caught.value.failure.code == "capability_unavailable"
     with pytest.raises(StoreMissing):
         await s.records.get(s.ctx.principal, RECIPES, recipe_id(s.ctx))
+
+
+async def test_sql_build_snapshot_prompt_and_located_reference_full_chain(registration):
+    import json
+
+    s = registration
+    mat = await material(s)
+    rp = await register_rule(s)
+    current, _ = await recipe(s, (mat,), (rp,))
+    result = await s.components.build(current.request.wire(), s.ctx)
+    assert result["kind"] == "ok", result
+    snapshot = result["payload"]
+    prompt = await s.model.resolve(result["output_refs"][0], s.ctx)
+    assert prompt.messages[0] == {"role": "system", "content": rule(s).text}
+    assert prompt.messages[1] == {"role": "user", "content": s.original["text"]}
+    assert json.loads(prompt.messages[2]["content"])["trust"] == "external"
+    assert (
+        json.loads(prompt.messages[2]["content"])["text"] == (await s.inputs.read(mat, s.ctx)).text
+    )
+    assert snapshot["epoch"] == 1 and prompt.tools == () and not s.case.requests
+    assert await s.model.resolve(result["output_refs"][0], s.ctx) == prompt
+    opened = await s.components.resolve_reference({"ref": mat.wire()}, s.ctx)
+    assert opened["kind"] == "ok" and opened["payload"]["record"]["content_ref"] == mat.wire()
+    located = await s.components.references.read(
+        {"reference": mat.wire(), "location": {"kind": "text_span", "start": 0, "end": 9}}, s.ctx
+    )
+    assert located["text"] == (await s.inputs.read(mat, s.ctx)).text[:9]
+
+
+async def test_sql_build_rejects_request_not_in_actual_recipe(registration):
+    s = registration
+    current, _ = await recipe(s)
+    result = await s.components.build({**current.request.wire(), "output_reserve": 129}, s.ctx)
+    assert result["failure"]["code"] == "context_recipe_conflict"
+
+
+@pytest.mark.parametrize("change", ["delete-source", "cancel-run"])
+async def test_sql_reader_final_recheck_after_actual_blob_io(
+    registration, domain, monkeypatch, change
+):
+    s = registration
+    mat = await material(s)
+    real_get = s.inputs.blobs.get
+
+    async def changed_after_io(owner, content_hash):
+        text = await real_get(owner, content_hash)
+        if change == "delete-source":
+            await s.records.delete(
+                owner,
+                MATERIALS,
+                mat.id,
+                expected_revision=1,
+                request_id="delete-after-actual-blob-io",
+            )
+        else:
+            await domain[1].control(
+                owner,
+                {
+                    "run_id": s.ctx.run_id,
+                    "control": {
+                        "mode": "cancel",
+                        "preserve_refs": [],
+                        "reason": "cancel during actual B blob I/O",
+                    },
+                },
+                meta("cancel-during-source-read", 2),
+            )
+        return text
+
+    # Only timing is controlled. Returned bytes and the deletion/cancel are actual FS/SQL.
+    monkeypatch.setattr(s.inputs.blobs, "get", changed_after_io)
+    with pytest.raises(DomainError) as caught:
+        await s.inputs.read(mat, s.ctx)
+    assert caught.value.failure.code == (
+        "resource_missing" if change == "delete-source" else "cancelled"
+    )
