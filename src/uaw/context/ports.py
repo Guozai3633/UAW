@@ -4,6 +4,7 @@ from typing import Protocol
 
 from uaw.context.contracts import (
     CompositionBinding,
+    ModelToolSet,
     ModelWindow,
     Reading,
     RulePlan,
@@ -74,5 +75,21 @@ class CompositionAuthority(Protocol):
 
         Called before/inside commit and on replay/read. External source changes
         are not made atomic by SQL; adapters must supply real revision checks.
+        """
+        ...
+
+
+class RegisteredRunSource(Reader, Cancellation, Protocol):
+    async def authorize(self, ctx: TrustedExecutionContext) -> None:
+        """Actual admitted Run/current policy source, e.g. RunContextSources."""
+        ...
+
+
+class RegisteredToolValidator(Protocol):
+    async def check(self, tools: ModelToolSet, ctx: TrustedExecutionContext) -> None:
+        """Check every exact ToolSpec/version against current trusted discovery.
+
+        Also check current role, permissions/flags and source revocation. The set
+        itself and a controller registration never grant Tool execution authority.
         """
         ...

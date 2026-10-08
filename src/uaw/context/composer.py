@@ -60,6 +60,10 @@ class Composer:
         if ctx.model_policy_ref is None or request.model_policy_ref != ctx.model_policy_ref:
             raise reject("model_policy_conflict", "Build must keep the fixed user policy", 409)
         binding = await self.authority.resolve(request.purpose, ctx)
+        if binding.request is not None and binding.request != request:
+            raise reject(
+                "context_recipe_conflict", "Build differs from current registered recipe", 409
+            )
         validate_contract("Revision", binding.epoch)
         if binding.epoch != request.expected_epoch:
             raise reject("context_epoch_conflict", "Context epoch changed", 409)

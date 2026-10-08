@@ -198,6 +198,7 @@ class CompositionBinding:
     capability_ref: Ref
     preserve: PreservationSpec
     dependency_refs: tuple[Ref, ...] = ()
+    request: ContextRequest | None = None  # Optional exact registered recipe boundary.
 
 
 @dataclass(frozen=True)
@@ -206,3 +207,8 @@ class PreparedSnapshot:
     instructions: dict[str, Any]
     references: tuple[dict[str, Any], ...]
     request: dict[str, Any]
+
+
+class ModelToolSet(ContractModel):
+    run_id: ID
+    tools: tuple[dict[str, Any], ...]
