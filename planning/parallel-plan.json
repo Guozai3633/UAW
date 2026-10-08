@@ -6,13 +6,16 @@
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "ea89d30747a492c12447b8450ba28302ed262834",
-    "commit_kind": "verified_development_environment_and_dispatch_preparation",
+    "commit": "8b581af6eca951a2af2919361feaaeb85afa2477",
+    "commit_kind": "verified_current_sources_and_component_integration_phase",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
     "dispatch_ref": "ms-i2g-start",
-    "integration_ref": "ms-i2f2",
+    "integration_ref": "ms-i2g-a1",
+    "last_full_runtime_ref": "ms-i2f2",
+    "phase_different_passing_nodes": 268,
+    "phase_is_full_milestone": false,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
     "code_baseline_verified": true,
@@ -29,7 +32,7 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2g已实现实际Run/固定模型/Tool角色与恢复数据来源；B/C/D阶段版逐包合入，跨模块装配验证中。",
+      "state": "MS-I2g-A1实际来源和装配阶段已验证并冻结；268不同受影响节点通过，B/C/D阶段分别合入；完整里程碑待B最终交付及全量。",
       "package": "MS-I2g",
       "ready": true,
       "base_ref": "ms-i2g-start"

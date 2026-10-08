@@ -2,6 +2,8 @@
 
 日期2026-10-08；A / E:/UAW / integration；开工基线ms-i2g-start。**本阶段开发与受影响范围验证完成；完整MS-I2g里程碑仍等待B的最终交接及里程碑全量。**
 
+已验证源码/证据提交：`8b581af6eca951a2af2919361feaaeb85afa2477`。固定阶段标签ms-i2g-a1包含随后状态记录；worker正在开发的固定标签ms-i2g-start保持不变。
+
 ## 1. A实际实现
 
 - `run/execution_sources.py`：当前实际Run/政策链/配置和用户固定模型选择来源；结果数据读取与新执行准入分开。

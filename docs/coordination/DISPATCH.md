@@ -2,6 +2,13 @@
 
 日期：2026-10-08。A维护。**MS-I2g实际来源与装配开发中。B/C/D阶段版已分别合入；C/MS-T2d和D/MS-R2d已按最终组件范围接受，B/MS-C5继续后半包。上一完整运行回执仍为ms-i2f2。**
 
+## A当前已验证阶段版本：ms-i2g-a1
+
+- 源码/证据提交：**8b581af6eca951a2af2919361feaaeb85afa2477**；固定阶段标签ms-i2g-a1包含随后状态记录，不移动ms-i2g-start或旧集成标签。
+- A当前来源/内部装配与C/D最终组件接受完成。234/41/27三个实际批次去重268项通过；Ruff/格式186文件/Mypy117源码通过。详见[实际范围](../implementation/MS-I2g-A1.md)及[方法/输入输出/策略](requests/A/MS-I2g-wiring.md)。
+- 该阶段不是完整MS-I2g里程碑，历史全量841仍属于ms-i2f2。B继续固定ms-i2g-start完成MS-C5；C/D本包无需重做，下一包未派发。没有代替worker切分支、合并或发聊天消息。
+- 新增RunToolAccessBinding及其文档/资源副本；旧请求/响应、shared ports/contracts、uv.lock不变。当前schema/hash以environment.json和该阶段标签为准。
+
 ## 最近已验收的运行代码版本（ms-i2f2）
 
 - 目录/分支：`E:/UAW` / `integration`；仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)。

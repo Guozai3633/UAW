@@ -6,13 +6,16 @@ BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "ea89d30747a492c12447b8450ba28302ed262834",
-    "commit_kind": "verified_development_environment_and_dispatch_preparation",
+    "commit": "8b581af6eca951a2af2919361feaaeb85afa2477",
+    "commit_kind": "verified_current_sources_and_component_integration_phase",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2g-start",
-    "integration_ref": "ms-i2f2",
+    "integration_ref": "ms-i2g-a1",
+    "last_full_runtime_ref": "ms-i2f2",
+    "phase_different_passing_nodes": 268,
+    "phase_is_full_milestone": False,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
     "code_baseline_verified": True,
@@ -91,7 +94,7 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2g已实现实际Run/固定模型/Tool角色与恢复数据来源；B/C/D阶段版逐包合入，跨模块装配验证中。", package="MS-I2g", ready=True, base_ref="ms-i2g-start"),
+    "A": dict(state="MS-I2g-A1实际来源和装配阶段已验证并冻结；268不同受影响节点通过，B/C/D阶段分别合入；完整里程碑待B最终交付及全量。", package="MS-I2g", ready=True, base_ref="ms-i2g-start"),
     "B": dict(state="MS-C5阶段源码d0ad58f已合入；继续同包快照/引用/模型输入和最终SQL回执，尚未完整接受。", package="MS-C5", ready=True, base_ref="ms-i2g-start"),
     "C": dict(state="MS-T2d最终859f5d0/db09a69已合入并按组件范围接受；162单元、100个不同SQL通过，当前A实际权限接线验证。", package="MS-T2d", ready=False, base_ref="ms-i2g-start"),
     "D": dict(state="MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。", package="MS-R2d", ready=False, base_ref="ms-i2g-start"),
