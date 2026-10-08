@@ -179,6 +179,12 @@ class ControlledInputs:
             rules=self.request, request=self.recipe_value.request, generation=self.generation
         )
 
+    async def inspect(self, ctx):
+        saved = await self.recipe(ctx)
+        for pin in (*saved.request.source_refs, *saved.rules.user_instruction_refs):
+            await self.read(pin, ctx)
+        return saved, await self.current(ctx)
+
     async def current(self, ctx):
         return self.recipe_value.request.source_refs
 

@@ -27,9 +27,20 @@ def assemble(
     *,
     cache=None,
     tool_validator=None,
+    assessor=None,
+    current_runs=False,
+    inputs_type=RegisteredContextInputs,
 ):
     runs = RunContextSources(records)
-    inputs = RegisteredContextInputs(
+    if current_runs:
+        from uaw.run.context_sources import RegisteredRunContextSources
+        from uaw.run.execution_sources import RunExecutionSources
+        from uaw.run.permissions import ExecutionPolicyResolver
+
+        runs = RegisteredRunContextSources(
+            RunExecutionSources(records, configuration, ExecutionPolicyResolver(records))
+        )
+    inputs = inputs_type(
         controller=controller,
         records=records,
         blobs=FSBlobStore(directory),
@@ -41,13 +52,22 @@ def assemble(
     components = ContextComponents(
         readers={"input": reader, "content": reader, "rule": reader, "configuration": reader},
         cancellation=runs,
-        rules=RegisteredRuleProvider(inputs),
+        rules=RegisteredRuleProvider(inputs, assessor=assessor),
         models=FixedModelWindow(PolicyResolver(records, configuration)),
         repository=ContextRepository(records, TransactionalStore(records.database)),
         authority=RegisteredCompositionAuthority(inputs),
         cache=cache,
     )
     return inputs, components, GenericModelInputs(components.composer, cache=cache)
+
+
+def restart_assessor(payload):
+    if not payload.get("controlled_assessor"):
+        return None
+    # Only this explicit test flag constructs controlled semantic advice.
+    from tests.integration.context.test_assessment_postgres import ControlledAdvice
+
+    return ControlledAdvice()
 
 
 async def restart(payload):
@@ -70,6 +90,8 @@ async def restart(payload):
             Path(payload["blob_directory"]),
             from_wire(Principal, payload["controller"]),
             cache=PureComputationCache(max_entries=128, max_bytes=2097152),
+            current_runs=payload.get("current_runs", False),
+            assessor=restart_assessor(payload),
         )
         if payload.get("register_material"):
             from uaw.shared.contracts import RequestMeta

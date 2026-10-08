@@ -224,13 +224,9 @@ class RegisteredRuleProvider(RuleProvider):
         candidates: tuple[RuleCandidate, ...],
         ctx: TrustedExecutionContext,
     ) -> None:
-        if await self.inputs.recipe(ctx) != recipe:
+        current_recipe, _ = await self.inputs.inspect(ctx)
+        if current_recipe != recipe:
             raise reject("context_dependency_changed", "Rule recipe changed during assessment", 410)
-        original = await self.inputs.current(ctx)
-        if any(pin not in recipe.request.source_refs for pin in original):
-            raise reject("context_dependency_changed", "Actual Run source set changed", 410)
-        for pin in (*recipe.request.source_refs, *recipe.rules.user_instruction_refs):
-            await self.inputs.read(pin, ctx)
         for candidate in candidates:
             row = await self.inputs.records.get(ctx.principal, RULES, candidate.rule.source_ref.id)
             if (
@@ -238,5 +234,5 @@ class RegisteredRuleProvider(RuleProvider):
                 or from_wire(InstructionRule, row.payload) != candidate.rule
             ):
                 raise reject("source_changed", "Fixed rule changed during assessment", 410)
-        if await self.inputs.recipe(ctx) != recipe or await self.inputs.current(ctx) != original:
-            raise reject("context_dependency_changed", "Assessment source boundary changed", 410)
+        if await self.inputs.recipe(ctx) != recipe:
+            raise reject("context_dependency_changed", "Assessment final authority changed", 410)

@@ -10,6 +10,7 @@ import asyncio
 import copy
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from datetime import UTC, datetime, timedelta
@@ -125,7 +126,10 @@ async def test_sql_registered_cache_is_optional_detached_and_office_input_review
     assert await off.resolve(s.pin, s.ctx) == original_prompt
     assert await off.resolve(s.pin, s.ctx) == original_prompt
     assert off.calls == 2 and disabled.stats.entries == 0
-    evidence = Path("tests/.artifacts/B/MS-C5/office-input.json")
+    evidence = (
+        Path(os.getenv("UAW_CONTEXT_EVIDENCE_DIR", "tests/.artifacts/B/MS-C5"))
+        / "office-input.json"
+    )
     evidence.parent.mkdir(parents=True, exist_ok=True)
     await asyncio.to_thread(
         evidence.write_text,
