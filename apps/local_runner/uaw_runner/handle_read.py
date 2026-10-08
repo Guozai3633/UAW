@@ -9,7 +9,8 @@ import os
 import unicodedata
 from ctypes import wintypes
 from dataclasses import dataclass
-from pathlib import Path
+from ntpath import isreserved
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from uaw.shared.contracts import JsonObject
@@ -110,7 +111,20 @@ class WindowsReadHandle:
         self.initial: list[HandleIdentity] = []
         self.grant = grant
         try:
+            validate_contract("RelativePath", relative_path)
+            windows = PureWindowsPath(relative_path)
             parts = relative_path.replace("\\", "/").split("/")
+            if (
+                windows.drive
+                or windows.root
+                or ":" in relative_path
+                or "\x00" in relative_path
+                or isreserved(relative_path)
+                or any(
+                    part == ".." or (part != "." and part.endswith((".", " "))) for part in parts
+                )
+            ):
+                raise reject("permission_denied", "Unsafe opened relative path", 403, "permission")
             parts = [part for part in parts if part not in ("", ".")]
             if not parts:
                 raise reject("file_not_regular", "A regular file is required")

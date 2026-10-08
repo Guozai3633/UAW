@@ -168,7 +168,16 @@ class ReadOnlyRunner:
             raise reject("revision_conflict", "Read authority changed", 409)
         await asyncio.to_thread(self.admission.external, command, current)
         self.admission.deadline(command, current)
-        return current, channel
+        # Query current authority AFTER critical external work, with a fresh owner/channel.
+        final_owner = await self.admission.owner(command, actor)
+        final_channel = await self.channel_current(actor, final_owner)
+        self.admission.deadline(command, current)
+        if final_channel.wire() != channel.wire():
+            raise reject("revision_conflict", "Channel changed during external checks", 409)
+        final = await self.admission.current(command, actor, final_owner)
+        if final.wire() != current.wire():
+            raise reject("revision_conflict", "Authority changed during external checks", 409)
+        return final, final_channel
 
     def guard(
         self,
@@ -199,6 +208,12 @@ class ReadOnlyRunner:
         await self.channel_current(actor, owner)
 
         def root_access() -> None:
+            if self.protocol.signatures is None or not self.protocol.signatures.verify_command(
+                source.command, device_id=source.device_id
+            ):
+                raise reject(
+                    "permission_denied", "Recovery command key rejected", 403, "permission"
+                )
             grant = self.protocol.bindings.repository.get(attempt.root_handle)
             if (
                 grant.revoked
@@ -237,6 +252,8 @@ class ReadOnlyRunner:
         await asyncio.to_thread(root_access)
         await self.channel_current(actor, owner)
         await self.journal._resolve(self.command_ref, actor, source)
+        await asyncio.to_thread(root_access)
+        await asyncio.to_thread(self.journal._verify, canonical(receipt.wire()), source)
         return receipt
 
     async def execute(
@@ -277,6 +294,14 @@ class ReadOnlyRunner:
         started = time.perf_counter_ns()
         try:
             first, channel = await self.current(command, actor, source)
+            assert self.signer is not None and self.device_key is not None
+            await self.signer.check_private(
+                device_id=self.protocol.device_id,
+                key_id=self.device_key.key_id,
+                credential_handle=self.device_key.credential_handle,
+            )
+            self.admission.deadline(command, first)
+            await self.current(command, actor, source, first, channel)
             admitted = await self.protocol.admit_async(
                 canonical(command.wire()), authenticated_principal=actor
             )

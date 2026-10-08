@@ -78,6 +78,31 @@ class ProtectedSigner:
         await self.credentials.put(credential_handle, secret)
         return private.public_key().public_bytes_raw()
 
+    async def check_private(self, *, device_id: str, key_id: str, credential_handle: str) -> None:
+        """Prove current receipt key access before reading; no synthetic receipt is signed."""
+        if self.credentials is None:
+            raise CapabilityUnavailable("runner.protected_credentials")
+        key = await asyncio.to_thread(self.directory.lookup, key_id, device_id=device_id)
+        if (
+            key.revoked
+            or key.role != "device"
+            or key.device_id != device_id
+            or key.key_id != key_id
+        ):
+            raise reject("permission_denied", "Receipt signing key rejected", 403, "permission")
+        secret = await self.credentials.resolve(credential_handle)
+        try:
+            raw = base64.b64decode(secret.get_secret_value(), validate=True)
+            private = Ed25519PrivateKey.from_private_bytes(raw)
+            if private.public_key().public_bytes_raw() != key.public_bytes:
+                raise ValueError("Key mismatch")
+        except ValueError, TypeError:
+            raise reject(
+                "permission_denied", "Protected key is invalid", 403, "permission"
+            ) from None
+        if await asyncio.to_thread(self.directory.lookup, key_id, device_id=device_id) != key:
+            raise reject("permission_denied", "Receipt signing key changed", 403, "permission")
+
     async def sign_document(
         self,
         document: JsonObject,

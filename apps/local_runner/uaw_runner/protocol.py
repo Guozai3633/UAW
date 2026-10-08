@@ -208,6 +208,8 @@ class RunnerProtocol:
             if (
                 result["workspace_ref"] != parameters["workspace_ref"]
                 or result["path"] != parameters["path"]
+                or result["location"] != parameters.get("location", {"kind": "whole"})
+                or result["encoding"] != "utf-8"
             ):
                 raise reject("revision_conflict", "Receipt resource/version mismatch", 409)
         return receipt
