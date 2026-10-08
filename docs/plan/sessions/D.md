@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2a已安排，开工说明待转发；完整MS-R2仍等待。以DISPATCH的固定版本与派发为准。
+状态：MS-R2a组件已接受；本轮MS-R2b异步协议可独立开发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2a、MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -71,6 +71,23 @@
 - 签名测试使用真实密码学；持久一次消费与权限来源有真实测试，不以测试布尔量自证。
 - D01/D03和IPC未满足项明确，不开放安装/写/exec，不声称真实用户配对完成。
 
+### MS-R2b：异步Runner协议消费入口
+
+对应原轮：[P1-04](../rounds/P1-04.md)。
+开发前置：MS-I2c。
+
+任务：
+
+1. 使用共享AsyncRunnerAuthorityPort和RunnerAuthoritySnapshot，在D目录增加严格typed wrapper与异步admit入口。
+2. 认证主体由可信适配器独立传入，当前权威与command声明逐项比较；没有真实映射/authority/IPC不开放入口。
+3. 每次await后重查实际时钟、取消/撤销/版本/租约/fence；关键检查后再取当前权威，拒绝参数或授权变化，不缓存执行许可。
+4. 保留同步接口兼容；测试异步期间过期/撤销/主体变化、阻塞和取消、重启/并发admission；无asyncio.run桥接。
+
+交付检查：
+
+- 协议使用公开JSON DTO并保持真实签名与当前key检查；组件authority替身不宣称实连。
+- 本轮不发布配对V2或重解释私有Ticket签名；D01/D03和OS凭据/真实IPC仍待实际接线。
+
 ### MS-R2：真实IPC配对和获准执行接线
 
 对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
@@ -95,7 +112,7 @@
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前执行MS-R2a。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2a同步本工作分支；失败先报告，不reset，保留已有历史。
+当前执行MS-R2b。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2c同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

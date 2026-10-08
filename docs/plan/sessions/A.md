@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2b实时父子权限接线已验证；继续完整MS-I2汇合和Runner权威接线。以DISPATCH的固定版本与派发为准。
+状态：MS-I2c组件集成/恢复port已验证；继续完整MS-I2权威和输入路由接线。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -48,6 +48,7 @@
 - `tests/integration/test_approvals.py`
 - `tests/unit/test_runner_signatures.py`
 - `tests/integration/test_execution_permissions.py`
+- `tests/unit/shared/`
 - `docs/plan/`
 - `docs/api/`
 - `docs/design/`
@@ -69,7 +70,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C2组件已合入；B等待下一包，C/D继续MS-T2a/MS-R2a；A继续完整MS-I2接线。
+- MS-T2a/MS-R2a组件已合入；发布MS-I2c后B/C/D分别开始MS-C3/MS-T2b/MS-R2b；A继续公共组装。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -143,10 +144,26 @@
 - 真实SQL覆盖父deny/扩大/循环/深度/撤销/并发变化/快照转用；既有Context/Model/审批回归通过。
 - snapshot不是可重放授权或dispatch租约；角色/flags/模型/预算/资源/Runner还需各所有者实际校验，不提前解锁完整MS-I2。
 
+### MS-I2c：接受基础组件并发布恢复/异步消费接口
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
+开发前置：MS-I2b、MS-T2a、MS-R2a。
+
+任务：
+
+1. 审阅合入C/D，修复Provider状态枚举和未知用量共享schema兼容。
+2. 实现BudgetStatePort，发布ToolReconciliationReceipt/Reader和AsyncRunnerAuthorityPort/DTO；明确ModelPrompt公开消费边界。
+3. 执行真实PG/密码学/静态全量回归；发布固定ms-i2c，三份下一包不互相消费未合入源码。
+
+交付检查：
+
+- C的17项真实SQL与D真实签名/跨进程一次消费通过，原回执保持。
+- 读port有实际实现；生产receipt/authority缺失明确，无安装/写入/exec或假配对。
+
 ### MS-I2：合入Tool与Runner并完成真实权威接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)。
-开发前置：MS-I2b、MS-T2a、MS-R2a。
+开发前置：MS-I2c、MS-C3、MS-T2b、MS-R2b。
 
 任务：
 

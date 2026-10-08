@@ -35,8 +35,8 @@
 | [implementation/P1-01.md](implementation/P1-01.md) | 本轮写入代码、未完成验证和A收尾清单 | 当前部分实现记录，不是验收通过报告 |
 | [implementation/MS-I1.md](implementation/MS-I1.md)、[A接线说明](coordination/requests/A/MS-I1-adapters.md) | 三份组件接受、真实Context接线、消费边界与下一包 | 222项回归通过；通用build/真实配对与执行仍未验收 |
 | [implementation/MS-I2a.md](implementation/MS-I2a.md)、[公共消费协议](coordination/requests/A/MS-I2a-ports.md) | 人工审批持久化、真实签名原语和C/D后续子包 | 原251项通过；实际工具执行、配对/IPC仍待接线 |
-| [implementation/MS-C2-acceptance.md](implementation/MS-C2-acceptance.md)、[A接收决定](coordination/requests/A/MS-C2-integration.md) | 固定快照/引用组件接受、真实SQL与生产适配器缺口 | 当时285项通过；P1-02仍开发中，B暂无新包 |
-| [implementation/MS-I2b.md](implementation/MS-I2b.md)、[权限接口说明](coordination/requests/A/MS-I2b-permissions.md) | Context/Model/Approval统一实时父子权限、当前撤销和模型停止 | 当前300项通过；不代表工具/Runner执行已就绪 |
+| [implementation/MS-C2-acceptance.md](implementation/MS-C2-acceptance.md)、[A接收决定](coordination/requests/A/MS-C2-integration.md) | 固定快照/引用组件接受、真实SQL与生产适配器缺口 | 当时285项通过；P1-02仍开发中，当前B执行MS-C3 |
+| [implementation/MS-I2b.md](implementation/MS-I2b.md)、[权限接口说明](coordination/requests/A/MS-I2b-permissions.md) | Context/Model/Approval统一实时父子权限、当前撤销和模型停止 | 当时300项通过；不代表工具/Runner执行已就绪 |
 | [coordination/DISPATCH.md](coordination/DISPATCH.md)、[转发消息](coordination/NEXT_WAVE.md) | 当前基线、接受范围和各session开工状态 | A维护；没有代替worker切换分支或发送消息 |
 | [implementation/MODEL_CONNECTION.md](implementation/MODEL_CONNECTION.md) | 批准提供方profile、私有凭据及实连CLI | 按实际提供方配置执行，回执保存在私有.data |
 | [implementation/CONTROL_PLANE.md](implementation/CONTROL_PLANE.md) | 开发用户/管理员认证、配置发布与任务受理操作 | 仅本机开发入口；不声称公网登录或模型已连通 |
@@ -106,3 +106,9 @@
 - 改技术组件：修改technology/catalog.py及必要跨模块说明，重建technology/build_stack.py；补实际兼容门槛并同步计划。不能把主选设计改写成已运行证据。
 - 改代码路径：更新目录说明与设计生成器映射，不能制造指向不存在实现的“已实现”标识。
 - 真正开发后：实现与验收记录另存，逐节点填入真实证据，不能只把implemented布尔值改为true。
+
+## 最新集成与派发
+
+- [MS-I2c接受记录](implementation/MS-I2c.md)：C/D组件及预算恢复接口，360项全量检查。
+- [MS-I2c消费契约](coordination/requests/A/MS-I2c-ports.md)：BudgetState、ToolReceipt、AsyncRunnerAuthority和ModelPrompt边界。
+- [直接转发到B/C/D的消息](coordination/NEXT_WAVE.md)：MS-C3/MS-T2b/MS-R2b，统一ms-i2c。

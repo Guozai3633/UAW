@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-C2组件已接受，9项真实SQL通过；没有新任务，保留干净交付边界。以DISPATCH的固定版本与派发为准。
+状态：MS-C2已接受；本轮MS-C3通用模型输入可独立开发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2。
+- 首包：MS-C1；后续：MS-C2、MS-C3。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -23,6 +23,7 @@
 - `src/uaw/context/selection.py`
 - `src/uaw/context/composer.py`
 - `src/uaw/context/references.py`
+- `src/uaw/context/model_input.py`
 - `tests/unit/context/`
 - `tests/integration/context/`
 - `docs/coordination/handoffs/B.md`
@@ -73,6 +74,23 @@
 - Ref只指向真实读取来源；当前授权仍复核。
 - 代码和证据可合入，不修改A保留文件。
 
+### MS-C3：通用快照到Model输入转换
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-07](../rounds/P1-07.md)。
+开发前置：MS-I2c。
+
+任务：
+
+1. 在context/model_input.py实现公开ModelInputPort.resolve，构造ModelPrompt，不导入Model私有provider类型。
+2. 消费已有持久快照/InstructionSet/实际Reader和ModelToolSet，复核当前scope、epoch、依赖版本和撤销；缺authority/能力Reader不可用。
+3. 稳定装配获准指令、保留原文、区分外部材料数据，估算完整消息/工具schema；不使用理解专用模板处理agent_step。
+4. 组件及真实SQL覆盖重启、换Run、规则/工具/来源/epoch变化、窗口不足及取消；A后续负责composition与Model输入路由。
+
+交付检查：
+
+- 消息文本与真实来源一致，外部材料无法变成系统权限或新增工具。
+- 缺工具来源不能伪造空工具，快照不授权当前读取；不修改A保留的seed/intent/model/composition。
+
 ## 可复制到新session的开工说明
 
 下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
@@ -82,7 +100,7 @@
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-C2组件已接受，9项真实SQL通过；没有新任务，保留干净交付边界。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-C3。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2c同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

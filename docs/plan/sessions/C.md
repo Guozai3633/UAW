@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2a已安排，开工说明待转发；完整MS-T2仍等待。以DISPATCH的固定版本与派发为准。
+状态：MS-T2a组件已接受；本轮MS-T2b预算读port与回执核对可独立开发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -66,6 +66,23 @@
 - 真实审批与预算可消费；等待引用真实，未知写效果不重发，测试adapter不注册产品。
 - 无Runner/executor保持不可用，不自动进入完整MS-T2或宣布P1-03接受。
 
+### MS-T2b：预算接口收敛和可信结果核对
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-I2c。
+
+任务：
+
+1. 注入BudgetStatePort替换跨所有者budget.*读取；消费ExecutionPolicyPort替换重复父链决策并保留角色/资源/配置检查。
+2. 实现ToolReceiptReaderPort驱动的核对入口，验证固定action/attempt/provider/receipt、usage和实际证据；持久核对计划与CAS去重。
+3. 独立处理效果与费用，unknown不重发，not_applied不推定零用量；允许原attempt账务恢复但不新准入。
+4. 真实SQL验证重启、响应丢失、重复/冲突回执、并发核对、撤销/取消、Reader缺失与unknown保留；不接真实dispatch。
+
+交付检查：
+
+- 不直接读取A预算私有表，不用超时/预算状态推断副作用。
+- 受控Reader明示组件范围；没有生产Reader/executor返回不可用，完整MS-T2继续等待。
+
 ### MS-T2：工具真实dispatch及结算接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
@@ -90,7 +107,7 @@
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前执行MS-T2a。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2a同步本工作分支；失败先报告，不reset，保留已有历史。
+当前执行MS-T2b。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2c同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

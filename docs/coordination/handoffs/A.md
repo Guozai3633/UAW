@@ -1,5 +1,16 @@
 # Session A交接记录
 
+## MS-I2c 当前交付与派发（2026-10-08）
+
+- C 实现 e3a19dd / 交接 827f6ca，A merge 3148cf1；D 实现 2049c3d / 交接 45e0f56，A merge 440d2fc。无合并冲突，不改写 worker 历史或 handoff。
+- 已验证代码/证据提交 ad4ed8704cc2481ab749d1b5b16ab8284c509fd8；固定标签 ms-i2c 包含随后状态记录。旧标签保留。C/D 基础包 accepted_component，完整 MS-I2/P1-02/03/04 仍 in_progress。
+- C 的 66 个组件与 17 个真实 SQL 用例通过；D 原汇报 100 项范围由 A 实跑，含真实 Ed25519 和跨进程单次消费。全量 360 passed、0失败/错误/跳过（286.20秒），Ruff/格式121文件、Mypy89源码文件通过；契约1262对象/272接口/26已实现操作通过，源码摘要146文件。
+- A 最小修复 ProviderBinding active 枚举与 pending Usage 未观察维度；不伪造零用量，未知额度继续保留。新增 BudgetStatePort 实际SQL读服务、ToolReceipt契约、异步Runner权威port/DTO和ModelPrompt公开消费边界。没有新迁移、锁或能力flag。
+- SQL 首跑发现 C fixture/authority connected 状态与契约不符；A 两个新测试断言曾把金额格式/部分结算状态写错，修正后完整重跑通过。失败历史在接受文档说明，不计为通过回执。
+- B/C/D 下一包分别 MS-C3/MS-T2b/MS-R2b，只依赖固定 ms-i2c，可独立并行。没有向其他聊天发送消息，也没有替 worker 同步。用户转发 NEXT_WAVE 的三份说明，worker 自行快进并记录实际基线。
+- 生产 Tool/Workspace/通用 Context 未绑定；真实 receipt/authority/IPC/用户配对/OS凭据、Agent循环、实际LLM和安装/写入/exec仍缺。D的内部签名profile/SQLite不决定公开配对V2或D01。D01/D03/D06保持待定。
+- [接受与验证](../../implementation/MS-I2c.md)、[公共消费接口](../requests/A/MS-I2c-ports.md)、[转发说明](../NEXT_WAVE.md)、[权威派发表](../DISPATCH.md)。
+
 日期：2026-10-07。MS-I2b实时父子权限接线已验证；C/D继续原子包安排，B暂无新任务。完整MS-I2仍在开发中。以下保留历史记录。
 
 ## 代码基线
