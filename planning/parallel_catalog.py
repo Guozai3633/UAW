@@ -1,23 +1,23 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.3"
+VERSION = "0.4"
 DATE = "2026-10-08"
 BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "ad4ed8704cc2481ab749d1b5b16ab8284c509fd8",
+    "commit": "285258a7c532745acc413f2b800db15cb53daa36",
     "commit_kind": "verified_code_before_dispatch_metadata",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2c",
-    "integration_ref": "ms-i2c",
+    "integration_ref": "ms-i2d",
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
     "code_baseline_verified": True,
-    "last_verified_tests": 360,
-    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
+    "last_verified_tests": 506,
+    "last_verified_scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a consent/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing; real SQL and controlled HTTP, no actual LLM/pairing/Runner execution",
     "current_unverified_round": None,
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": ["D01 final storage authority", "D06 actual model provider", "D03 Runner execution mode"],
@@ -36,7 +36,7 @@ RESERVED = [
     "tests/integration/intent/", "README.md", "DEVELOPMENT_PLAN.md", ".gitignore", ".gitattributes",
     "tests/integration/test_context_wiring.py", "tests/unit/model/",
     "tests/integration/test_approvals.py", "tests/unit/test_runner_signatures.py",
-    "tests/integration/test_execution_permissions.py", "tests/unit/shared/",
+    "tests/integration/test_execution_permissions.py", "tests/integration/test_execution_leases.py", "tests/integration/test_model_input_routing.py", "tests/unit/shared/",
     "docs/plan/", "docs/api/", "docs/design/", "docs/technology/",
     "docs/implementation/",
     "docs/DOCUMENT_MAP.md", "docs/PROJECT_STRUCTURE.md",
@@ -46,13 +46,13 @@ RESERVED = [
 
 SESSIONS = {
     "A": dict(name="集成与任务理解", branch="integration", worktree="E:/UAW",
-              owns=RESERVED, starts=["MS-00"], later=["MS-I1", "MS-I2a", "MS-I2b", "MS-I2c", "MS-I2", "MS-I3"],
+              owns=RESERVED, starts=["MS-00"], later=["MS-I1", "MS-I2a", "MS-I2b", "MS-I2c", "MS-I2d", "MS-I2", "MS-I3"],
               report="docs/coordination/handoffs/A.md",
               request_dir="docs/coordination/requests/A/",
               rules=["负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。",
                      "独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。",
                      "逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。",
-                     "MS-T2a/MS-R2a组件已合入；发布MS-I2c后B/C/D分别开始MS-C3/MS-T2b/MS-R2b；A继续公共组装。"]),
+                     "MS-C3/MS-R2b组件已接受；B/D暂无新包，C按ms-i2c继续MS-T2b；A继续生产关系与Runner权威接线。"]),
     "B": dict(name="上下文组件", branch="dev/context", worktree="E:/UAW/.worktrees/context",
               owns=["src/uaw/context/facade.py", "src/uaw/context/contracts.py", "src/uaw/context/ports.py",
                     "src/uaw/context/repository.py", "src/uaw/context/sources.py", "src/uaw/context/rules.py",
@@ -90,10 +90,10 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2c组件集成/恢复port已验证；继续完整MS-I2权威和输入路由接线。", package="MS-I2", ready=True),
-    "B": dict(state="MS-C2已接受；本轮MS-C3通用模型输入可独立开发。", package="MS-C3", ready=True, base_ref="ms-i2c"),
+    "A": dict(state="MS-I2d根租约/模型输入路由与B/D组件已验证；继续完整MS-I2设备关系和权威接线。", package="MS-I2", ready=True),
+    "B": dict(state="MS-C3已接受，15个真实SQL已复验；暂无新包，保留干净交付边界。", package="MS-C3", ready=False, base_ref="ms-i2c"),
     "C": dict(state="MS-T2a组件已接受；本轮MS-T2b预算读port与回执核对可独立开发。", package="MS-T2b", ready=True, base_ref="ms-i2c"),
-    "D": dict(state="MS-R2a组件已接受；本轮MS-R2b异步协议可独立开发。", package="MS-R2b", ready=True, base_ref="ms-i2c"),
+    "D": dict(state="MS-R2b已接受，172项组件复验通过；生产关系/authority/IPC仍待A，暂无新包。", package="MS-R2b", ready=False, base_ref="ms-i2c"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
 }
 
@@ -103,7 +103,8 @@ PACKAGE_PROGRESS = {
     "MS-I1": "accepted_development", "MS-C2": "accepted_component",
     "MS-I2a": "accepted_development", "MS-T2a": "accepted_component", "MS-R2a": "accepted_component",
     "MS-I2b": "accepted_development", "MS-I2c": "accepted_development",
-    "MS-C3": "assigned_ready", "MS-T2b": "assigned_ready", "MS-R2b": "assigned_ready",
+    "MS-C3": "accepted_component", "MS-T2b": "assigned_ready", "MS-R2b": "accepted_component",
+    "MS-I2d": "accepted_development",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 
@@ -211,7 +212,14 @@ PACKAGES = [
           "保留同步接口兼容；测试异步期间过期/撤销/主体变化、阻塞和取消、重启/并发admission；无asyncio.run桥接。"],
          acceptance=["协议使用公开JSON DTO并保持真实签名与当前key检查；组件authority替身不宣称实连。",
           "本轮不发布配对V2或重解释私有Ticket签名；D01/D03和OS凭据/真实IPC仍待实际接线。"]),
-    dict(id="MS-I2", session="A", rounds=["P1-03", "P1-04"], title="合入Tool与Runner并完成真实权威接线", deps=["MS-I2c", "MS-C3", "MS-T2b", "MS-R2b"],
+    dict(id="MS-I2d", session="A", rounds=["P1-02", "P1-04", "P1-09"], title="B/D组件接受、根执行租约与输入路由", deps=["MS-I2c", "MS-C3", "MS-R2b"],
+         scope="integration", tasks=["合入B/D，真实SQL复验通用模型输入并修测试Reader pin及Windows子进程兼容。",
+          "实现根ExecutionLeasePort及真实PostgreSQL服务，当前holder/session、scope、CAS、单调fence、持久终态、取消清理与响应丢失重试。",
+          "按真实存储命名空间路由Model输入，冲突拒绝；通用authority缺失不退回理解模板。",
+          "验证调用期限与根租约隔离，发布固定ms-i2d；C当前包仍固定ms-i2c，B/D不强派依赖未满足的新包。"],
+         acceptance=["真实SQL并发/恢复/过期/取消/锁等待/旧holder验证通过，输入路由与原理解回归通过。",
+          "lease不授权执行；真实设备/命令/IPC/authority仍待接线，无新能力flags或真实执行声明。"]),
+    dict(id="MS-I2", session="A", rounds=["P1-03", "P1-04"], title="合入Tool与Runner并完成真实权威接线", deps=["MS-I2d", "MS-T2b"],
          scope="integration", tasks=["分别审阅合入C/D基础包，统一批准契约/依赖/数据库变更。",
           "确认审批、预算、配置、Runner调用port及调用顺序；修跨边界失败返回。",
           "发布第二个集成SHA供C/D同步；真实执行仍等待后续接线和授权。"],

@@ -1,85 +1,65 @@
 # 多 session 派发和集成记录
 
-日期：2026-10-08。A 维护。**MS-T2a / MS-R2a 组件已接受，发布 ms-i2c 供 B/C/D 在包边界同步。完整 MS-I2、MS-T2、MS-R2 与 P1-02/03/04 继续开发中。**
+日期：2026-10-08。A维护。**MS-C3 / MS-R2b组件已接受，A完成MS-I2d根执行租约和Model输入路由。B/D暂无新包；C继续原MS-T2b/ms-i2c。完整MS-I2与真实执行仍开发中。**
 
-## 固定版本
+## 当前集成版本
 
 - 目录/分支：`E:/UAW` / `integration`；仓库：[Guozai3633/UAW](https://github.com/Guozai3633/UAW)。
-- 已验证代码/证据提交：`ad4ed8704cc2481ab749d1b5b16ab8284c509fd8`；固定标签 **ms-i2c** 包含随后派发状态记录。标签解析出的真实 commit 是本轮三份工作包的共同基线。
-- 全量 **360 passed，0 failure/error/skip**；Ruff/格式通过（121 文件）；Mypy 89 个源码文件。1262 schema、272 接口、26 已挂载实现操作；新增内部 port 不计为新生产入口。
-- 原标签 ms-i2b、ms-i2a、ms-c2-accepted、ms-i1、parallel-wave-1 保留，不移动；原 worker handoff 和提交历史保留。
+- 已验证代码/证据提交：`285258a7c532745acc413f2b800db15cb53daa36`；固定标签 **ms-i2d** 包含后续状态记录。旧标签不移动。
+- 全量 **506 passed，0 failure/error/skip**；Ruff/格式132文件、Mypy94源码文件通过。1268 schema、272接口、26已实现操作。执行租约内部port与Model输入路由不计为新增生产Runtime入口。
+- C当前工作包的固定版本仍 **ms-i2c / 1411f6aa477b0d000bee871c0f324fbfd67b4ff5**，对应已验证代码 ad4ed87。不要求开发中途切换。
 
-## 当前接受与下一包
+## 本轮接受和当前任务
 
-| Session | 本轮已接受 | 实现 / 交接 | A merge | 下一包 | 固定基线 |
-| --- | --- | --- | --- | --- | --- |
-| A | MS-I2c 开发集成 | 见代码提交及证据 | integration | 完整 MS-I2 公共组装继续 | ms-i2c |
-| B | MS-C2 组件 | c85bf52 / c6ae25d | aa421be | **MS-C3：通用模型输入** | ms-i2c |
-| C | MS-T2a 组件 | e3a19dd / 827f6ca | 3148cf1 | **MS-T2b：预算读接口与结果核对** | ms-i2c |
-| D | MS-R2a 组件 | 2049c3d / 45e0f56 | 440d2fc | **MS-R2b：异步 Runner 协议** | ms-i2c |
-| E | 未创建/未派发 | — | — | MS-Q1 仍可选 | 未固定 |
+| Session | 原目录 / 分支 | 已交付提交 | A merge | 接受 / 接续 |
+| --- | --- | --- | --- | --- |
+| A | E:/UAW / integration | 285258a7c532745acc413f2b800db15cb53daa36 | 本分支 | MS-I2d开发范围完成；完整MS-I2继续设备关系/命令权威接线 |
+| B | E:/UAW/.worktrees/context / dev/context | 396b548 / 00332fc | 0d6521d | **MS-C3组件接受，暂无新包** |
+| C | E:/UAW/.worktrees/tool / dev/tool | 上轮e3a19dd / 827f6ca | 上轮3148cf1 | **MS-T2b保持ms-i2c原安排**，未收到本包交付 |
+| D | E:/UAW/.worktrees/runner / dev/runner | 5b97247 / 76fbb36 | 38492df | **MS-R2b组件接受，暂无新包** |
+| E | 未创建 | — | — | MS-Q1仍可选、未派发 |
 
-C 的 66 个组件用例及 17 个真实 PostgreSQL 用例已实际通过，fixture active 状态不代表联网。D 汇报范围的 100 项已由 A 复核，含真实密码学和跨进程竞争，但不等于真实配对/IPC可用。接受和兼容修复见 [MS-I2c](../implementation/MS-I2c.md)。
+B的107项组件和15项真实SQL已验收；原SQL“仅收集”的worker记录仍保留，实际运行与两处平台/Ref兼容修复由A记录。D的172项含旧组件/公共签字回归，不当作172项新增。A新增18项SQL验证租约和路由，完整回归包含所有组件。
 
-三个新包均只依赖已发布的 ms-i2c，不消费其他 worker 的开发分支。接口签名、严格 DTO、缺失依赖和实际实现位置见 [公共消费说明](requests/A/MS-I2c-ports.md)，完整任务见 [B](../plan/sessions/B.md)、[C](../plan/sessions/C.md)、[D](../plan/sessions/D.md)。
+没有合并冲突，没有改写worker原worktree、分支、提交或handoff。没有向其他聊天发送消息；[当前可转发说明](NEXT_WAVE.md)说明B/D保留交付边界、C继续原包。
 
-## 本轮转发与同步
+## 公共接口和约束
 
-没有向其他聊天发送消息，也没有替 worker 切换或改写分支。复制 [B/C/D 三份消息](NEXT_WAVE.md) 到对应原聊天即可开始。
+- `Container.execution_leases` 已组装真实开发 PostgreSQL 服务。acquire/renew/release/current/state均有实现：根租约单holder、严格CAS、完整holder/session、拥有者scope、期限上限、不可复活终态和接管fence递增。
+- 调用自身过期不全局作废根lease；Run取消、根deadline或租约本身过期才封存终态。node lease不可用。lease本身不授予任何设备/文件/工具权限。
+- `ContextModelInputs` 已接ModelGateway，单次SQL按真实binding命名空间路由。generic缺authority/Reader不退回理解模板；生产通用Composer仍未就绪。
+- 详细方法、对象、幂等/期限与消费要求见 [MS-I2d ports](requests/A/MS-I2d-ports.md)，实现与失败历史见 [本轮接受记录](../implementation/MS-I2d.md)。
+- 生产Runner authority、当前设备/通道归属、已登记命令、可信IPC与lease/fence/撤销消费协调仍缺。D组件检查与本地admission不证明跨服务原子执行。
+- Tool/Workspace/通用Context仍未完整绑定。真实Provider、Runner私钥OS库实连、实际配对、安装/写入/exec与Agent闭环仍未验收。flags关闭，D01/D03/D06和完整P1门槛保留。
 
-| Session | 原 worktree | 原分支 |
-| --- | --- | --- |
-| B | E:/UAW/.worktrees/context | dev/context |
-| C | E:/UAW/.worktrees/tool | dev/tool |
-| D | E:/UAW/.worktrees/runner | dev/runner |
+## 两套固定公共摘要
 
-各 worker 在自己的目录确认干净后执行：
-
-```powershell
-git fetch origin --tags
-git merge --ff-only ms-i2c
-git rev-parse HEAD
-git rev-parse 'ms-i2c^{commit}'
-uv sync --frozen --extra agent-engine --link-mode copy
-```
-
-两项 SHA 应一致。快进失败保留现场并报告，不 reset。自己使用 worktree 内的缓存与临时目录，不复制凭据、私有配置或 .data。真实 SQL 使用独立测试主体；没有 URL 时提交用例给 A 实跑，不把收集成功记为通过。
-
-## 固定公共文件摘要
-
-以下来自代码提交 ad4ed8704cc2481ab749d1b5b16ab8284c509fd8；所有 worker 在新标签上验证。不再使用 ms-i2a 的旧摘要判断本轮公共接口。
+### 新集成 ms-i2d（来自 285258a7c532745acc413f2b800db15cb53daa36）
 
 | 文件 | SHA256 |
 | --- | --- |
-| `contracts/uaw.schema.json` | `b5d7cdf9df23002e6e3d3965741cbcd82b7efa34ff438b09b236e3b0b886d583` |
-| `src/uaw/shared/ports.py` | `cce4db2349b92a6a2fca815917725cb7bb51fcb5ab9db86c2f456d3df2b679cd` |
+| `contracts/uaw.schema.json` | `45161b36f2e81622e73f86c23b048cda8d55686e7045248f0394ab51d13dbe6b` |
+| `src/uaw/shared/ports.py` | `453cd9cd21b92a77c6e370fc6f0463072a3903a2c6b5beee56dec4f93b0c27a5` |
 | `src/uaw/shared/contracts.py` | `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b` |
 | `uv.lock` | `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f` |
 | `src/uaw/resources/prompts/intent-understand-v1.txt` | `3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400` |
 
-共享 schema/port 的修改由 A 合入和发布。共享 typed 基础对象、锁与原文理解提示词本轮未变。保留源码字节，.data、凭据、缓存、venv、worktrees 不入库。
+### C当前包 ms-i2c（保持不变）
 
-## 公共接线与仍未满足项
+| 文件 | SHA256 |
+| --- | --- |
+| contracts/uaw.schema.json | b5d7cdf9df23002e6e3d3965741cbcd82b7efa34ff438b09b236e3b0b886d583 |
+| src/uaw/shared/ports.py | cce4db2349b92a6a2fca815917725cb7bb51fcb5ab9db86c2f456d3df2b679cd |
+| src/uaw/shared/contracts.py | 08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b |
+| uv.lock | a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f |
+| src/uaw/resources/prompts/intent-understand-v1.txt | 3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400 |
 
-- BudgetStatePort 已有真实 SQL 实现，可从 Container.budgets 消费。当前/取消/过期恢复查询有主体和尝试校验；不授权新调用。
-- pending Usage 仅币种必填，未知维度省略并保留额度；confirmed/estimated 必须完整观察记录。
-- ToolReceiptReaderPort / ToolReconciliationReceipt、AsyncRunnerAuthorityPort / RunnerAuthoritySnapshot 已发布。生产 Reader 与 authority 尚未注入，测试适配器不冒充真实服务。
-- ModelPrompt 已明确为 ModelInputPort 公开结果；B 不修改 Model 私有适配器，A 负责后续输入路由。
-- C 后续统一消费 ExecutionPolicyPort；Tool 自己的角色、实际资源、配置、审批、预算与 executor 检查仍需保留。
-- 原 pair.complete 缺真实证明仍不可用；D 的 Ticket.document 是开发签名 profile，配对 V2 留待独立公共版本。SQLite 不代替 D01 决策。
-- Tool/Workspace/通用 Context Runtime 未绑定。Agent 循环、实际 LLM/可信 IPC/真实用户配对/OS密钥库实连/安装/写入/exec 均未验收。能力 flags 不开放，D01/D03/D06 保留。
+公共变更由A发布固定版本，开发中不混用。锁/typed基础对象/原文理解提示词本轮未变，无新迁移。缓存、凭据、.data、venv、worktrees不入库。
 
-## 接受历史
+## 继续方式与历史
 
-| 包 | Worker 提交 | A merge / 代码 | 范围 |
-| --- | --- | --- | --- |
-| MS-C1 | 307a49b / 0da308f | 2f0a427 | Context 首包组件 |
-| MS-T1 | f9622ca / 5dd77c2 | e7b4a74 | Tool 首包组件 |
-| MS-R1 | d77bf35 / 300bdf5 | c8a40d6 | Runner 首包组件 |
-| MS-I1 | A | c43bbc5 / f33d162 | 222 项开发接线 |
-| MS-I2a | A | ec5313b / ac9bf621 | 251 项人工审批/签名基础 |
-| MS-C2 | c85bf52 / c6ae25d | aa421be / 603a0ac | 285 项时接受快照/引用组件 |
-| MS-I2b | A | 27cb489 / cd43b17 | 300 项实时父子政策接线 |
-| MS-T2a / MS-R2a / MS-I2c | 见当前表 | ad4ed8704cc2481ab749d1b5b16ab8284c509fd8 | 360 项组件与公共恢复接口 |
+B/D没有新的已派发任务，保留各自干净分支。C已经获分配MS-T2b，仍按[Session C](../plan/sessions/C.md)执行。仅在下一个包边界按A发布的版本同步：fetch origin --tags，merge --ff-only 指定标签；失败保留现场报告，不reset。
 
-worktree 提供独立源码、HEAD 和 index，仍共享 Git 历史。端口、数据库、凭据和 OS 隔离不由聊天自动提供。继续使用原三个目录，不需要新建 session。
+旧接受记录：[MS-I2c](../implementation/MS-I2c.md)、[MS-I2b](../implementation/MS-I2b.md)、[MS-C2](../implementation/MS-C2-acceptance.md)、[MS-I2a](../implementation/MS-I2a.md)、[MS-I1](../implementation/MS-I1.md)。旧ms-i2c/ms-i2b/ms-i2a/ms-i1/parallel-wave-1标签和worker原交接历史保留。
+
+worktree分离HEAD/index/源码，不自动隔离端口、数据库、凭据或OS执行。继续使用原工作区；本轮没有创建或移除聊天/worktree。

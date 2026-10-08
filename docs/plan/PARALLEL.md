@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.3 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.4 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -9,9 +9,9 @@ v0.3 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个
 - P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。
 - P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。
 - P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。
-- 当前全量360项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
+- 当前全量506项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。
 - `E:/UAW`已建立`integration`分支，`origin`关联`https://github.com/Guozai3633/UAW.git`。
-- **MS-I2c已验证，MS-T2a/MS-R2a组件已接受。** B/C/D在包边界同步`ms-i2c`，分别开始MS-C3/MS-T2b/MS-R2b；三个包互不依赖未合入源码，A继续完整MS-I2公共接线，真实执行包仍等待。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
+- **MS-I2d根租约/模型输入路由已验证，MS-C3/MS-R2b组件已接受。** B/D暂无新包；C继续固定`ms-i2c`的MS-T2b，A继续真实设备关系/命令权威接线。集成标签为`ms-i2d`，不要求worker开发中途混入新公共文件。接受与安排见[统一派发表](../coordination/DISPATCH.md)。
 
 沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见[开工、合并与交接流程](PARALLEL_WORKFLOW.md)。
 
@@ -63,9 +63,10 @@ flowchart TD
   I2c --> B3["B：Model输入 MS-C3"]
   I2c --> C2b["C：核对 MS-T2b"]
   I2c --> D2b["D：异步协议 MS-R2b"]
-  B3 --> I2
+  B3 --> I2d["A：根租约与输入路由 MS-I2d"]
+  D2b --> I2d
+  I2d --> I2
   C2b --> I2
-  D2b --> I2
   I2 --> C2["C：真实dispatch/结算 MS-T2"]
   I2 --> D2["D：真实IPC；获准后执行 MS-R2"]
   B2 --> I3["A：汇合；按原P1轮次进入Agent闭环"]
@@ -104,7 +105,8 @@ flowchart TD
 | MS-C3 | B | 通用快照到Model输入转换 | MS-I2c | [P1-02](rounds/P1-02.md)、[P1-07](rounds/P1-07.md) |
 | MS-T2b | C | 预算接口收敛和可信结果核对 | MS-I2c | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
 | MS-R2b | D | 异步Runner协议消费入口 | MS-I2c | [P1-04](rounds/P1-04.md) |
-| MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2c、MS-C3、MS-T2b、MS-R2b | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
+| MS-I2d | A | B/D组件接受、根执行租约与输入路由 | MS-I2c、MS-C3、MS-R2b | [P1-02](rounds/P1-02.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md) |
+| MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2d、MS-T2b | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
 | MS-R2 | D | 真实IPC配对和获准执行接线 | MS-I2、MS-R2a | [P1-04](rounds/P1-04.md)、[P1-05](rounds/P1-05.md) |
 | MS-I3 | A | 汇合后进入Agent闭环 | MS-C2、MS-T2、MS-R2 | [P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md)、[P1-11](rounds/P1-11.md) |

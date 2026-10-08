@@ -230,7 +230,7 @@ def build_readme():
               f"| {link(path, 'planning/plan.json', '机器可读计划')} | 消费全部任务与输入/输出接口关联 |",
               f"| {link(path, 'planning/plan-map.json', '节点到轮次映射')} | 反查节点由哪些轮逐步实现 |",
               f"| {link(path, 'docs/plan/plan-check.json', '计划检查结果')} | 依赖无环、节点/接口关联、文档链接检查；不是Runtime测试 |", "",
-              "## 4. 当前接续入口", "", "P0工程/受理基础已经实施；真实模型仍待配置。" + round_link(path, "P1-01", True) + "协议及MS-I2c集成范围通过360项全量检查，语义质量仍待实际模型验证。B/C/D同步ms-i2c执行MS-C3/MS-T2b/MS-R2b，A继续公共组装；见" + link(path, "docs/plan/PARALLEL.md", "多session分工") + "，完整轮验收仍遵守原依赖。", "",
+              "## 4. 当前接续入口", "", "P0工程/受理基础已经实施；真实模型仍待配置。" + round_link(path, "P1-01", True) + "协议及MS-I2d集成范围通过506项全量检查，语义质量仍待实际模型验证。B/D的MS-C3/MS-R2b已接受并暂无新包，C继续ms-i2c/MS-T2b，A继续真实设备/命令权威接线；见" + link(path, "docs/plan/PARALLEL.md", "多session分工") + "，完整轮验收仍遵守原依赖。", "",
               "## 5. 计划维护规则", "",
               "- 修改planning/catalog.py后运行 `python planning/build_plan.py`；逐轮/模块/阶段/映射是生成文件。",
               "- 开发报告保存在 `docs/implementation/<轮次>.md`，实际选型保存在 `docs/decisions/`，实施时才创建。",

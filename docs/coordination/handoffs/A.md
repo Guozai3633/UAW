@@ -1,5 +1,17 @@
 # Session A交接记录
 
+## MS-I2d 当前交付（2026-10-08）
+
+- D的MS-R2b实现5b97247/交接76fbb36合入38492df，A实际复验172项通过。B的MS-C3实现396b548/交接00332fc合入0d6521d，107单位及15真实SQL纳入本轮接受；未改写worker原历史/分支/handoff。
+- 已验证代码/证据提交285258a7c532745acc413f2b800db15cb53daa36；标签ms-i2d包含随后状态记录。完整MS-I2/P1-02/03/04仍in_progress，B/D本包accepted_component且暂无新包，C继续MS-T2b/ms-i2c。
+- A实现真实PG根ExecutionLeaseService并注入Container.execution_leases，公开acquire/renew/release/current/state；CAS、holder/session、scope、期限上限、不可复活终态、接管fence递增、重试和取消清理有实际SQL验证。lease不授予执行或工具权限。
+- A的ContextModelInputs接ModelGateway：单SQL按真实binding命名空间路由，冲突拒绝、无错误fallback，通用Composer缺失保持不可用，理解仍共享原上下文。
+- B的SQL首跑15项setup失败，A仅修fixture未附摘要Ref的公共pin语义；随后14通过，Windows Selector loop子进程用例失败，改为线程内有45秒超时的subprocess.run，URL仅经stdin。未放宽生产SourceResolver或修改B业务算法。
+- A新用例误用input_snapshot_ref字段，修正为context_snapshot_ref。审查时补区分调用期限与根lease期限，避免短调用作废其他有效执行。首次完整回归505通过/1失败是旧组合测试未沿legacy分支访问understanding；更新结构断言，通用Runtime未启用的原门槛保留。
+- 最终506项全量通过，无失败/错误/跳过；静态/格式132文件、Mypy94源码文件。契约1268对象/272接口/26已实现操作通过；环境/源码摘要见证据。旧锁/原文提示词/typed基础对象及标签保留，无迁移或新能力flags。
+- D暂无可独立开始的真实执行包，实际设备/通道归属、已登记命令、生产authority/可信IPC/Runner私钥OS库/真实配对与Agent闭环待接线，D01/D03/D06仍待定；lease和本地admission不证明跨域原子执行。未发送聊天消息或替worker同步。
+- [实现/验证](../../implementation/MS-I2d.md)、[消费接口](../requests/A/MS-I2d-ports.md)、[当前转发说明](../NEXT_WAVE.md)、[统一派发表](../DISPATCH.md)。
+
 ## MS-I2c 当前交付与派发（2026-10-08）
 
 - C 实现 e3a19dd / 交接 827f6ca，A merge 3148cf1；D 实现 2049c3d / 交接 45e0f56，A merge 440d2fc。无合并冲突，不改写 worker 历史或 handoff。

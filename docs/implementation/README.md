@@ -2,7 +2,7 @@
 
 2026-10-08：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
 
-当前全量 **360 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/C/D 同步 ms-i2c 分别开始 MS-C3/MS-T2b/MS-R2b；A 继续完整 MS-I2。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
+当前全量 **506 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/D 的 MS-C3/MS-R2b 已接受并暂无新包；A完成 MS-I2d 根执行租约和输入路由，继续完整 MS-I2 设备/命令权威接线。C仍按 ms-i2c 继续 MS-T2b。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[MS-I2d](MS-I2d.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
 
 ## 已实现的代码
 
@@ -66,3 +66,5 @@ uv sync --frozen --extra agent-engine
 ## 后续工作
 
 补齐D06提供方/模型/私有凭据与真实调用回执，完成P0-05及Intent语义验收。B开发固定快照/引用，A落实Tool/Runner公共接线后派发C/D下一包，随后接Agent闭环。办公、学术和代码样例在后续真实任务阶段验收。组件基线通过不代表已经通过P0真实模型门槛。
+
+最新内部服务：[执行租约与输入路由](../coordination/requests/A/MS-I2d-ports.md)。租约/fence仅协调workers，不能代替权限或真实执行授权。
