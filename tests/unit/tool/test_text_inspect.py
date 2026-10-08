@@ -62,6 +62,9 @@ async def test_text_adapter_stores_actual_response_and_strict_measured_usage(ctx
         def authenticate(self, principal):
             assert principal == provider
 
+        async def binding(self, context):
+            assert context == ctx
+
         async def save_response(self, data, usage, context, *, authenticated_provider):
             assert context == ctx and authenticated_provider == provider
             self.saved = (data, usage)

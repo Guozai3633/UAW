@@ -130,8 +130,9 @@ class TextInspectExecutor(ToolExecutorPort):
     async def execute(
         self, call: JsonObject, spec: JsonObject, ctx: TrustedExecutionContext
     ) -> JsonObject:
-        started = time.perf_counter_ns()
         self.check(call, spec)
+        await self.source.binding(ctx)
+        started = time.perf_counter_ns()
         data = inspect_text(check_text_binding(call, spec, self.source.provider_ref))
         measured_ms = math.ceil((time.perf_counter_ns() - started) / 1_000_000)
         usage: JsonObject = {

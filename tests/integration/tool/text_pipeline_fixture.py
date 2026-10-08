@@ -22,9 +22,16 @@ from uaw.tool.budget import ToolBudgetAdapter
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
 from uaw.tool.invocation.schema import normalize
-from uaw.tool.providers.text import TextInspectExecutor, text_estimates, text_spec
-from uaw.tool.receipt_store import ToolResponseStore
+from uaw.tool.providers.text import (
+    TextInspectExecutor,
+    TextInspectVerifier,
+    text_estimates,
+    text_spec,
+)
+from uaw.tool.receipt_store import ToolReceiptStore
+from uaw.tool.reconciliation import ToolReconciler
 from uaw.tool.registry import AdapterBinding, ToolRegistry
+from uaw.tool.results import ToolResults
 
 
 class ControlledTextRole(ControlledRoleEnvironment):
@@ -69,21 +76,6 @@ class CountingTextExecutor(TextInspectExecutor):
     async def execute(self, *args):
         self.calls += 1
         return await super().execute(*args)
-
-
-class StageResponseOnly:
-    """First two milestones deliberately lack normalized ToolResult, no fake ok."""
-
-    def __init__(self, source):
-        self.source = source
-
-    async def resume(self, call, ctx):
-        receipt = await self.source.provider_receipt(ctx)
-        if receipt is not None:
-            await self.source.read_raw(Ref.model_validate(receipt["raw_result_ref"]), ctx)
-        raise reject(
-            "dependency_unavailable", "Stage normalization not yet wired", 503, "dependency"
-        )
 
 
 @pytest.fixture
@@ -137,14 +129,17 @@ async def text_pipeline(tool_case, tmp_path):
     )
     recovery = ControlledRecoveryAuthority(c, provider)
     blob = FSBlobStore(tmp_path / "text-blobs")
-    source = ToolResponseStore(
+    source = ToolReceiptStore(
         c.ledger,
         blob,
         provider_ref=Ref.model_validate(spec["provider_ref"]),
         provider=provider,
         access=recovery,
+        verifier=TextInspectVerifier(Ref.model_validate(spec["provider_ref"])),
     )
     executor = CountingTextExecutor(source, provider=provider)
+    reconciler = ToolReconciler(c.ledger, budget, receipts=source, evidence=source)
+    results = ToolResults(source, reconciler)
     invocation = ToolInvocation(
         registry,
         c.ledger,
@@ -154,9 +149,9 @@ async def text_pipeline(tool_case, tmp_path):
         executor=executor,
         estimates=text_estimates(),
         prepare=executor.check,
-        results=StageResponseOnly(source),
+        results=results,
     )
-    facade = ToolFacade(registry, invocation=invocation)
+    facade = ToolFacade(registry, invocation=invocation, lookup=source, reconciler=reconciler)
     return SimpleNamespace(
         case=c,
         facade=facade,
@@ -167,5 +162,50 @@ async def text_pipeline(tool_case, tmp_path):
         provider=provider,
         recovery=recovery,
         role=role,
+        results=results,
+        reconciler=reconciler,
         blob=blob,
+    )
+
+
+async def approved_pipeline(p):
+    from tests.integration.tool.conftest import approve
+
+    waiting = await p.facade.invoke(p.raw, p.case.ctx)
+    assert waiting["kind"] == "waiting"
+    await approve(p.case)
+    return p
+
+
+def recover_pipeline(p):
+    """Fresh actual SQL/blob/source/results; executor prohibited during recovery."""
+    from uaw.infrastructure.db.records import PostgresRecordStore
+    from uaw.tool.ledger import ToolLedger
+
+    ledger = ToolLedger(PostgresRecordStore(p.case.ledger.store.database))
+    budget_service = BudgetService(ledger.store)
+    budget = ToolBudgetAdapter(ledger, budget_service, state=budget_service)
+    source = ToolReceiptStore(
+        ledger,
+        FSBlobStore(p.blob.directory),
+        provider_ref=p.source.provider_ref,
+        provider=p.provider,
+        access=p.recovery,
+        verifier=TextInspectVerifier(p.source.provider_ref),
+    )
+    reconciler = ToolReconciler(ledger, budget, receipts=source, evidence=source)
+    results = ToolResults(source, reconciler)
+    # No executor/approval/new access needed to resume the existing original attempt.
+    invocation = ToolInvocation(p.case.registry, ledger, budget, p.case.approvals, results=results)
+    facade = ToolFacade(
+        p.case.registry, invocation=invocation, lookup=source, reconciler=reconciler
+    )
+    return SimpleNamespace(
+        ledger=ledger,
+        budget=budget,
+        source=source,
+        reconciler=reconciler,
+        results=results,
+        invocation=invocation,
+        facade=facade,
     )

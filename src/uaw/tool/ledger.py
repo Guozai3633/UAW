@@ -30,6 +30,7 @@ PHASE_SCHEMAS = {
     "tool.reconciliation.budget.plans": "BudgetSettleRequest",
     "tool.reconciliation.failures": "Failure",
     "tool.invocation.receipts": "ProviderReceipt",
+    "tool.results": "ToolResult",
 }
 
 
