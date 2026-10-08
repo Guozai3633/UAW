@@ -15,6 +15,7 @@ from uaw.tool.ports import PrecheckPort, RecheckPort, ToolAccess, ToolAccessPort
 from uaw.tool.receipt_lookup import ActionReceiptLookupPort
 from uaw.tool.reconciliation import ToolReconciler
 from uaw.tool.registry import ToolRegistry
+from uaw.tool.retrieval import ToolRetriever
 from uaw.tool.schema import canonical
 
 
@@ -30,12 +31,16 @@ class ToolFacade:
         lookup: ActionReceiptLookupPort | None = None,
         reconciler: ToolReconciler | None = None,
         invocation: ToolInvocation | None = None,
+        retriever: ToolRetriever | None = None,
     ) -> None:
         self.registry, self.access = registry, access
         self.precheck, self.recheck = precheck, recheck
         self.identities = identities or ActionIdentities()
         self.lookup, self.reconciler = lookup, reconciler
         self.invocation = invocation
+        if retriever is not None and retriever.registry is not registry:
+            raise ValueError("Facade/retriever must share the Tool registry")
+        self.retriever = retriever
 
     def _reconciler(self) -> ToolReconciler:
         if self.reconciler is None:
@@ -149,15 +154,23 @@ class ToolFacade:
         try:
             canonical(request)
             validate_contract("ToolToolsDiscoverInput", request)
-            access = await self._access(ctx)
-            payload = discover(
-                self.registry,
-                cast(str, request["query"]),
-                cast(list[str], request.get("categories", [])),
-                cast(int, request["max_candidates"]),
-                access,
-                ctx,
-            )
+            if self.retriever is not None:
+                payload = await self.retriever.discover(
+                    cast(str, request["query"]),
+                    cast(list[str], request.get("categories", [])),
+                    cast(int, request["max_candidates"]),
+                    ctx,
+                )
+            else:
+                access = await self._access(ctx)
+                payload = discover(
+                    self.registry,
+                    cast(str, request["query"]),
+                    cast(list[str], request.get("categories", [])),
+                    cast(int, request["max_candidates"]),
+                    access,
+                    ctx,
+                )
             result = {"kind": "ok", "payload": payload, "output_refs": []}
         except ContractViolation, ValueError, RecursionError, OverflowError:
             result = error_result(
