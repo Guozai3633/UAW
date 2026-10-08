@@ -382,3 +382,65 @@ ignored回执：`tests/.artifacts/C/MS-T2d/{unit.xml,unit.txt,sql-initial.xml,sq
 - C-005阶段结果消费port现补`ready()`；A提前组装应按C-006使用实际ToolResults，阶段raw store替换为ToolReceiptStore。不需要修改公共请求或EffectRecord。实际内部本地text工具只有A明确登记固定spec与真实环境绑定后才可用，C未开放产品目录/flags。
 - pending增量预算规则、orphan会计协调仍属A；无响应/坏输出保留实际记录与未知额度供可信恢复，不虚构not_applied或自行释放已发送费用。A须保持实际预算currency与本地tariff一致。
 - 本包没有真实产品API/用户权限整体接线回归，也没有网络LLM、Runner/IPC或用户文件/写入/exec验证。D01/D03/D06不自行决定，固定用户模型不替换；完整MS-T2/P1-03仍待A整链验收，不扩入下一包。
+
+
+# MS-T2e 交接追加 · 2026-10-08
+
+状态：**四个连续里程碑已完成，权限先行混合召回与有界SQLite索引组件交付；218单元、124个不同真实SQL用例通过，阶段/原失败回执保留。** 真实embedding提供方、公开Runtime装配及完整MS-T2/P1-03仍待A整链验收。本包后停止，不自动扩包；旧MS-T2d与全部原handoff保留，未读其他worker开发分支。
+
+## 位置、固定基线、阶段与最终SHA
+
+- 实际目录`E:/UAW/.worktrees/tool`，分支`dev/tool`。开工干净，`git fetch origin --tags`与`git merge --ff-only ms-i2h-start`成功，HEAD与标签commit核对一致：**`f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8`**。没有reset/rebase或覆盖公共文件；包中未更换基线。
+- 本worktree按uv.lock执行`uv sync --frozen --extra agent-engine --link-mode copy`，91 packages checked；沿用独立`.venv/.cache/uv`，未改锁或复制A依赖/凭据。
+- **前两里程碑阶段源码：`ba0d11ef4533e71ad8147d86abaef04bd07c114c`**；固定异步接口/接线样例文档：**`8ed211ecb11fb12a7e644d7809f8e7b5c3831a30`**。已向用户报告实际SHA后继续后半包，没有等待最终集成。C-007原文保留。
+- **最终源码/测试：`27fe04f22cf19f734f776da326e79dc52eb7b83e`**。阶段源码4文件，最终增量5文件；两笔源码合计8不同源码/测试文件。C-008与本handoff独立文档提交，文档实际SHA由Git日志及ignored environment.json给出，不使用自引用占位。
+- 公共文件与ms-i2h-start字节一致：schema `595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d`，shared ports `fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104`，shared contracts `08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b`，uv.lock `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`。没有shared/schema/迁移/锁/composition/API/Run/其他worker修改。
+
+## 改动文件
+
+本包源码/测试：
+
+- `src/uaw/tool/embedding.py`
+- `src/uaw/tool/facade.py`
+- `src/uaw/tool/index.py`
+- `src/uaw/tool/registry.py`
+- `src/uaw/tool/retrieval.py`
+- `tests/integration/tool/test_retrieval_postgres.py`
+- `tests/unit/tool/test_retrieval.py`
+- `tests/unit/tool/test_vector_index.py`
+
+文档：`docs/coordination/requests/C/C-007-ms-t2e-stage-retrieval.md`（阶段独立提交）、`docs/coordination/requests/C/C-008-ms-t2e-index-wiring.md`与本handoff追加。旧C handoff所有字节原样作为前缀保留，旧失败与接受记录不覆盖。ignored回执、cache、私有DB配置不提交。
+
+## 固定内部接口、行为与A样例
+
+- `ToolRetriever(registry,access,*,mode="semantic-required",embeddings=None,index=None)`与`async discover(query,categories,max_candidates,ctx)->DiscoveryResult`。`ToolFacade(...,retriever=None)`可选注入，同一Registry；默认无retriever完全沿用原小目录，原invoke/result/reconcile接口不改。模式仅可信构造可配；lexical-only显式省略语义，不静默降级，semantic-required缺真实embedding明确unavailable。
+- `ToolEmbeddingPort.current(ctx)->EmbeddingBinding`及`embed(texts:tuple[str,...],ctx)->EmbeddingBatch`；binding精确provider/configuration-model Ref/hash、维度1..4096、`tool-projection-json-v1`。batch精确actual UTF-8摘要/顺序/数目，向量有限数值且非零有限norm，拒绝NaN/Inf/bool/维度或绑定变化。没有网络adapter/hash或random伪语义向量；测试NumericalEmbedding仅受控数值协议，不证明语义质量。
+- 从实际Registry固定revision/immutable ToolSpec/adapter entries，先当前role/category/有效scope权限/deny、flags、环境与active Tool provider过滤；未允许工具描述不送embedding。query上限8192 UTF-8 bytes、工具上限128、CandidateLimit 1..32；metadata仅允许工具原id/description/categories规范JSON，描述是资料。词法casefold子串与cosine>0向量召回，RRF k60两路等权、按score/id/version确定融合；返回既有ToolCandidate/DiscoveryResult，LLM选择，不执行或授予工具调用。
+- `IndexPlan(namespace,binding,documents)`固定工具完整Ref/hash、provider/version、投影text_hash和embedding提供方/model/维度/规范版本，namespace为完整Principal含kind/session摘要。`ToolVectorIndexPort.read(plan)->tuple|None`、`replace(plan,vectors)->None`与`invalidate(namespace)->None`；`SQLiteVectorIndex(trusted_path,*,max_bytes=16MiB,namespaces=8)`实际结构化两表和二进制float64，非注册/权限/业务状态权威。
+- SQLite整代原子替换、外键删除、重启完整读、checksum/维度/有限数值复查；metadata不同明确miss重建，损坏/unrecognized明确index_invalid，无静默词法降级。namespace数1..32与文件page硬限，容量包含rollback journal/header预留、无WAL累积，默认128x4096实际保存通过。空间耗尽/失败回滚保留原完整generation，显式invalidate清理。缓存只存索引元数据/向量，不保存用户正文/query、凭据、权限/审批结果或Tool调用结果。
+- 每个embedding/current/index await后和返回前重新读取当前ToolAccess完整快照、Registry及embedding绑定；角色/flags/provider变化即使不改变候选集合也拒绝旧观察，工具修订/卸载同样拒绝。索引等待后embedding变化会在文本发送前拒绝。整体期限限异步等待，Timeout明确deadline_exceeded/retrieval_interrupted，异步CancelledError向调用方传播。后台SQLite有限事务可在取消后完成/回滚，但不返回候选、不产生Tool发送或业务执行授权。
+- `ToolRegistry.unregister(tool_ref,*,expected_revision)->revision`仅可信内部CAS卸载，没有新公开API；旧index不能恢复安装或权限。非空ModelToolSet验证仍交A实际当前工具来源，不使用检索分数作为授权。ctx/Ref/query不能自证完整session/角色；实际Access及embedding current由A可信来源提供，固定用户模型不改。
+- 详细输入/输出、默认兼容、索引格式/容量/失败/取消边界及A实际构造样例见[C-008](../requests/C/C-008-ms-t2e-index-wiring.md)。标准库SQLite无需新依赖或公共DTO/flag提案；若产品需要配置字段由A另行公开发布，本包没有私加公共字段。
+
+## 独立环境、命令和实际回执
+
+在C worktree进程`. ./ops/start-dev-db.ps1 -Session C`，own Docker project `uaw-development-c`/独立volume，loopback **55434**；私有随机配置只在当前ignored `.data/dev-db.env`，未打印URL/密码或复制A配置。按锁`.venv/Scripts/python.exe -m alembic upgrade head`成功；未访问其他session库、共享evidence、其他worktree或执行down -v。
+
+1. 阶段Tool单元：`pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2e-stage/unit.xml` → **186 passed / 0 errors/failures/skips**，24.32s，含原162＋新24。初始185passed/1failed为测试非词法query中短词a被既有词法substring命中，修正测试query为明确无字面命中的unmatchedzyx；不是调整融合以迎合替身。initial-unit.xml/txt及初始Mypy标注失败回执保留。
+2. 最终全部Tool单元：`.venv/Scripts/python.exe -m pytest tests/unit/tool -q -p no:cacheprovider --junitxml=tests/.artifacts/C/MS-T2e/unit.xml` → **218 passed / 0 failure/error/skip**，19.02s＝原162＋检索24＋索引32。实际SQLite覆盖重启/新Python进程、原子并发、损坏、空间失败保留原代、绑定变化、卸载、跨session namespace、query不保存、取消/期限及默认128工具x4096维物理边界。
+3. 原调用/结果SQL完整模块：`pytest tests/integration/tool/test_durable.py tests/integration/tool/test_tool_reconciliation_postgres.py tests/integration/tool/test_tool_recovery_facade_postgres.py tests/integration/tool/test_text_dispatch_postgres.py tests/integration/tool/test_text_results_postgres.py tests/integration/tool/test_text_recovery_process_postgres.py -q -p no:cacheprovider --require-postgres --basetemp=E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2e/tmp-original --junitxml=tests/.artifacts/C/MS-T2e/sql-original.xml` → **99 passed / 1 failed / 0 error/skip**，740.98s。既有并发一次发送用例触发20秒wait_for TimeoutError，栈停在实际结果source复查；未证实死锁、重复发送或效果错误。原六个SQL模块全部与基线字节一致。
+4. 定向复跑原并发模块：`pytest tests/integration/tool/test_text_dispatch_postgres.py -q -p no:cacheprovider --require-postgres --durations=4 --basetemp=E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2e/tmp-original-recheck --junitxml=tests/.artifacts/C/MS-T2e/sql-original-recheck.xml` → **3 passed / 0 error/failure/skip**，42.02s，并发15.38s。没有修改原20秒timeout、一次发送断言或源码/原测试；保留首轮失败，不把成功复跑当性能承诺。
+5. 新检索SQL：`pytest tests/integration/tool/test_retrieval_postgres.py -q -p no:cacheprovider --require-postgres --durations=6 --basetemp=E:/UAW/.worktrees/tool/tests/.artifacts/C/MS-T2e/tmp-retrieval-frozen --junitxml=tests/.artifacts/C/MS-T2e/sql-retrieval-final.xml` → **24 passed / 0 failure/error/skip**，84.97s，最终冻结源码对应回执。首次21项70.61s通过、补边界后24项72.46s通过的进度回执亦保留，不重复计入节点数。
+6. **SQL不同通过节点覆盖124＝原100＋新24，最终没有未通过节点。** 这是实际初始/定向复跑/最终新增回执的去重覆盖，不是一次124项完整运行。原unknown/费用独立/审批/取消/版本/重复/并发/响应丢失/跨进程结果全部回归。新增真实SQL消费已发布RunToolAccessSources/Role绑定/Policy/配置/固定用户模型，覆盖过滤前不外发隐藏工具、角色/绑定/provider/政策/取消在embedding或index等待中变化、完整principal/kind/session/scope/model隔离、cache损坏/并发/重启和版本重建、显式缺embedding模式及deadline/异步取消，无调用/费用状态改变。
+7. `.venv/Scripts/python.exe -m ruff check src/uaw/tool tests/unit/tool tests/integration/tool`通过；`ruff format --check` **51文件已格式化**；`.venv/Scripts/python.exe -m mypy src/uaw/tool` **25源码无问题**；`git diff --check`通过。
+
+actual ignored回执`tests/.artifacts/C/MS-T2e/`含unit.xml/txt、sql-original.xml/txt、sql-original-recheck.xml/txt、sql-retrieval-initial.xml/txt、sql-retrieval-progress.xml/txt、sql-retrieval-final.xml/txt、ruff/format/mypy/migration和environment.json；阶段`.artifacts/C/MS-T2e-stage/`的initial-*和通过回执均保留。新SQL模块`test_retrieval_postgres.py`与单元`test_retrieval.py/test_vector_index.py`不同名，不引入测试收集冲突。
+
+开发中一次写入新SQL命令的自动审批审查因账户用量限制未完成，命令未执行；用户继续后重新受审执行，未绕过权限审查。实际SQL/PostgreSQL、结构化SQLite、原Tooltext计算和恢复来源均是真实现；embedding已知数值、连接metadata仍明示受控测试组件，不冒充真实embedding/LLM/Runner或生产用户确认。
+
+## A接线、未验收及性能边界
+
+- A注入实际当前RunToolAccess/角色/权限/flags/环境/provider来源，按C-007实现管理员配置的真实ToolEmbeddingPort；current/embed须独立处理embedding身份/可用性/撤销/授权/自身计费和取消，不把ctx回显当来源。C未改用户固定模型或D06策略，没有真实网络embedding/语义质量回执。
+- A以可信配置提供私有index path/容量/namespace与显式lexical-only或semantic-required，注入ToolFacade optional retriever；旧小目录默认兼容，其他invoke/results参数沿用，不改共享schema/依赖/flags或公开API。缓存可重建、不为Tool注册或权限数据权威；ModelToolSet继续A当前适配器验证。
+- 当前默认产品目录/flags没有开放，受控NumericalEmbedding不注册为产品能力，不执行/安装/写入/exec。原SQL并发超时后无改动复跑通过，但实际环境延迟需要A后续测量，不能宣称生产性能或真实语义任务已验收。
+- 无当前失败节点；真实embedding提供方、整链Agent/公开Runtime/产品用户权限及语义质量未实跑，仍明确待接线/验收。本包停止，完整MS-T2/P1-03、D01/D03/D06不自行接受或设定。
