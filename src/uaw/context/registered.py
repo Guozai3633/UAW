@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Coroutine
 from dataclasses import dataclass
 from functools import wraps
 from typing import Any
@@ -76,7 +76,9 @@ def numeric(ref: Ref) -> int:
     return int(ref.version)
 
 
-def bounded[**P, T](method: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
+def bounded[**P, T](
+    method: Callable[P, Coroutine[Any, Any, T]],
+) -> Callable[P, Coroutine[Any, Any, T]]:
     """One deadline for a public operation; underlying cancellation still propagates."""
 
     @wraps(method)
