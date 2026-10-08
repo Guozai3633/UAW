@@ -1,17 +1,17 @@
 {
-  "plan_version": "0.8",
+  "plan_version": "0.9",
   "date": "2026-10-08",
-  "status": "ms_i2g_preparation_and_larger_packages_ready",
+  "status": "ms_i2h_parallel_capability_packages",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "8b581af6eca951a2af2919361feaaeb85afa2477",
-    "commit_kind": "verified_current_sources_and_component_integration_phase",
+    "commit": "b47fd81c2efd129b98f09377649030527f06c79c",
+    "commit_kind": "three_components_and_two_current_wiring_chains_verified_full_regression_pending",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
-    "dispatch_ref": "ms-i2g-start",
+    "dispatch_ref": "ms-i2h-start",
     "integration_ref": "ms-i2g-a1",
     "last_full_runtime_ref": "ms-i2f2",
     "phase_different_passing_nodes": 268,
@@ -32,28 +32,28 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2g-A1实际来源和装配阶段已验证并冻结；268不同受影响节点通过，B/C/D阶段分别合入；完整里程碑待B最终交付及全量。",
-      "package": "MS-I2g",
+      "state": "B/C/D最终组件已合入；MS-I2g完整回归正在执行，MS-I2h准备根实例与单Agent循环。",
+      "package": "MS-I2h",
       "ready": true,
-      "base_ref": "ms-i2g-start"
+      "base_ref": "ms-i2h-start"
     },
     "B": {
-      "state": "MS-C5阶段源码d0ad58f已合入；继续同包快照/引用/模型输入和最终SQL回执，尚未完整接受。",
-      "package": "MS-C5",
+      "state": "MS-C5最终8cc445a/233a5c3按组件接受；293不同节点通过。MS-C6四里程碑已准备，固定开发基线ms-i2h-start发布，可开始新包。",
+      "package": "MS-C6",
       "ready": true,
-      "base_ref": "ms-i2g-start"
+      "base_ref": "ms-i2h-start"
     },
     "C": {
-      "state": "MS-T2d最终859f5d0/db09a69已合入并按组件范围接受；162单元、100个不同SQL通过，当前A实际权限接线验证。",
-      "package": "MS-T2d",
-      "ready": false,
-      "base_ref": "ms-i2g-start"
+      "state": "MS-T2d组件接受；MS-T2e权限先行混合检索和有界索引已准备，固定开发基线ms-i2h-start发布，可开始新包。",
+      "package": "MS-T2e",
+      "ready": true,
+      "base_ref": "ms-i2h-start"
     },
     "D": {
-      "state": "MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。",
-      "package": "MS-R2d",
-      "ready": false,
-      "base_ref": "ms-i2g-start"
+      "state": "MS-R2d组件接受；MS-R2e真实file.read和journal四里程碑已准备，固定开发基线ms-i2h-start发布，可开始新包。",
+      "package": "MS-R2e",
+      "ready": true,
+      "base_ref": "ms-i2h-start"
     },
     "E": {
       "state": "可选工作区未创建、任务未派发。",
@@ -84,10 +84,14 @@
     "MS-C4": "accepted_component",
     "MS-T2c": "accepted_component",
     "MS-R2c": "accepted_component",
-    "MS-C5": "in_progress",
+    "MS-C5": "accepted_component",
     "MS-T2d": "accepted_component",
     "MS-R2d": "accepted_component",
     "MS-I2g": "in_progress",
+    "MS-C6": "published_ready_to_start",
+    "MS-T2e": "published_ready_to_start",
+    "MS-R2e": "published_ready_to_start",
+    "MS-I2h": "published_ready_to_start",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -127,6 +131,9 @@
         "src/uaw/run/",
         "src/uaw/model/",
         "src/uaw/intent/",
+        "src/uaw/agent/",
+        "tests/unit/agent/",
+        "tests/integration/agent/",
         "src/uaw/context/seed.py",
         "src/uaw/context/intent.py",
         "src/uaw/resources/",
@@ -187,6 +194,7 @@
         "MS-I2f1",
         "MS-I2f2",
         "MS-I2g",
+        "MS-I2h",
         "MS-I2f",
         "MS-I2",
         "MS-I3"
@@ -231,7 +239,8 @@
         "MS-C2",
         "MS-C3",
         "MS-C4",
-        "MS-C5"
+        "MS-C5",
+        "MS-C6"
       ],
       "report": "docs/coordination/handoffs/B.md",
       "request_dir": "docs/coordination/requests/B/",
@@ -260,6 +269,7 @@
         "MS-T2b",
         "MS-T2c",
         "MS-T2d",
+        "MS-T2e",
         "MS-T2"
       ],
       "report": "docs/coordination/handoffs/C.md",
@@ -267,7 +277,7 @@
       "rules": [
         "先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。",
         "审批、预算、配置、Runner通过公开port；未提供真实执行器时不得dispatch。",
-        "不放开禁用flag，不把测试适配器登记为产品工具；向量/MCP仍属后续轮。"
+        "不放开禁用flag，不把测试适配器登记为产品工具；本轮MS-T2e显式扩展检索，MCP仍属后续轮。"
       ]
     },
     "D": {
@@ -293,6 +303,7 @@
         "MS-R2b",
         "MS-R2c",
         "MS-R2d",
+        "MS-R2e",
         "MS-R2"
       ],
       "report": "docs/coordination/handoffs/D.md",
@@ -934,6 +945,103 @@
       "acceptance": [
         "准备发布不代表三个包已开工/接受；记录阶段版和最终真实回执与SHA，原阶段门槛保留。",
         "不存在worker互相依赖开发分支；生产来源和flags只在实际集成验收后开放。"
+      ]
+    },
+    {
+      "id": "MS-C6",
+      "session": "B",
+      "rounds": [
+        "P1-02",
+        "P1-07"
+      ],
+      "title": "多规则语义评估/版本复查/读取测量",
+      "deps": [
+        "MS-C5",
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "显式assessor port与RegisteredRuleProvider兼容构造，固定实际候选，模型不能改正文/level/来源。",
+        "多规则重要冲突、优先级和精确引用评估；缺实际语义来源不可用，等待前后复查。",
+        "登记/build/模型输入/引用整链测量并减少重复展开，禁止缓存当前授权。",
+        "自身数据库真实SQL修订/撤销/并发/重启/缓存和原Context回归；详见MS-I2h-parallel-packages。"
+      ],
+      "acceptance": [
+        "前两里程碑交固定接口后继续同包；受控评估不宣称真实模型语义验收。",
+        "完整规则/模型/来源不变，查询次数和拒绝行为实际对比。"
+      ]
+    },
+    {
+      "id": "MS-T2e",
+      "session": "C",
+      "rounds": [
+        "P1-03"
+      ],
+      "title": "权限先行混合检索/向量索引缓存",
+      "deps": [
+        "MS-T2d",
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "当前role/权限/flag/环境/provider先过滤ToolRegistry固定快照。",
+        "显式embedding port、词法/向量召回与有界融合；返回既有DiscoveryResult，LLM选择工具。",
+        "结构化SQLite向量索引缓存原子更新/失效/重启；索引不是目录或权限权威。",
+        "自身SQL及索引测试覆盖等待期间权限变化、损坏/并发/泄漏和原工具结果回归。"
+      ],
+      "acceptance": [
+        "无embedding不冒充语义向量；lexical-only或降级由构造显式配置。",
+        "不执行工具或修改固定模型，阶段版后继续完整包。"
+      ]
+    },
+    {
+      "id": "MS-R2e",
+      "session": "D",
+      "rounds": [
+        "P1-04",
+        "P1-05"
+      ],
+      "title": "获准根内实际file.read/来源复核/journal",
+      "deps": [
+        "MS-R2d",
+        "MS-I2f2"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "仅已有file.read签名命令，真实有界UTF-8临时文件读取。",
+        "打开后OS句柄路径/文件根身份及竞争复核，特殊/越界/替换目标拒绝。",
+        "实际FileContent和设备签名终态journal，重复恢复不重新执行或自授数据访问。",
+        "临时根撤销/期限/取消/并发/重启和原D回归，随机OS测试凭据清理。"
+      ],
+      "acceptance": [
+        "无实际authority/owner/channel明确不可用；受控channel不是可信IPC实连。",
+        "不开放写入/安装/exec或flags，不决定D03。"
+      ]
+    },
+    {
+      "id": "MS-I2h",
+      "session": "A",
+      "rounds": [
+        "P1-07",
+        "P1-08",
+        "P1-09"
+      ],
+      "title": "根实例/有限步单Agent/阶段版集成",
+      "deps": [
+        "MS-C5",
+        "MS-T2d",
+        "MS-R2d"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "当前Run/TaskFrame/固定用户模型/角色/预算/权限根Factory。",
+        "内部AgentEnginePort与LangGraph封装，动态Context/Model/Tool/观察有限步循环。",
+        "waiting/审批/取消/期限/恢复和完成提案的实际证据核验；模型不得直接写completed。",
+        "阶段版接口和公共提案即时处理，受影响跨模块验证，真实LLM和产品任务另验收。"
+      ],
+      "acceptance": [
+        "先纯文本组件链，不强制依赖所有本机执行能力；公开入口按实际门槛开放。",
+        "所有子模型默认继承用户固定模型；本轮不默认子树/DAG。"
       ]
     },
     {

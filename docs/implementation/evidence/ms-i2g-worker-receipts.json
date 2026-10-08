@@ -3,15 +3,86 @@
   "baseline": "ms-i2g-start",
   "sessions": {
     "B": {
-      "state": "stage_only",
-      "source": "d0ad58f",
-      "merge": "80b86b7",
+      "state": "accepted_component",
+      "source": "8cc445a",
+      "handoff": "233a5c3",
+      "merge": "HEAD",
       "commits": {
-        "source": "d0ad58fbedd4515511544bb3d63bf5f231dad384",
-        "merge": "80b86b796295aad3ee24ccca40ac3cba42fd8227"
+        "source": "8cc445aa4a05a27c25311f9693b8df2bd2ea8c61",
+        "handoff": "233a5c3d1bf5c2c3b939911d13c41dd56d609369",
+        "merge": "b47fd81c2efd129b98f09377649030527f06c79c"
       },
-      "receipts": [],
-      "different_passing_nodes": 0
+      "receipts": [
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/final-unit.xml",
+          "sha256": "3fb5f24145b62d1821290bf0f70ac94767e32360664d4052a3488af0f437a046",
+          "counts": {
+            "tests": 208,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-final-unit.xml"
+        },
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/registered-final.xml",
+          "sha256": "38d0522bdfd1a454da27cd6669245c657846ee2b312e5f57c436d82a0a1fc2ea",
+          "counts": {
+            "tests": 35,
+            "failures": 1,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-registered-final.xml"
+        },
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/cross-run-repair.xml",
+          "sha256": "3a50a1927eec61aff680e25e2619c1d52c3648ba61c5e8635a3e179b3252f597",
+          "counts": {
+            "tests": 1,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-cross-run-repair.xml"
+        },
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/registered-supplement.xml",
+          "sha256": "27b15d3e2f0d7fd94eb126c2cd20b7d5097bfe54c4d87697a3b0fea0d68932d8",
+          "counts": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-registered-supplement.xml"
+        },
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/final-io-recheck.xml",
+          "sha256": "035344808939aa09dea7efee431d299423d78a1e5cb10aa4b8c796505a80b1ab",
+          "counts": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-final-io-recheck.xml"
+        },
+        {
+          "path": ".worktrees/context/tests/.artifacts/B/MS-C5/original-regression.xml",
+          "sha256": "f170eaa3f65b521e490cf120d7f7cbe4d8315586f4118dad878dd26376017d01",
+          "counts": {
+            "tests": 46,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "public_copy": "docs/implementation/evidence/ms-i2g-b-original-regression.xml"
+        }
+      ],
+      "different_passing_nodes": 293,
+      "sql_different_passing_nodes": 85,
+      "initial_failure": "One cross-Run test prepared a queued rather than active Run; repaired via actual Run API and targeted replay passed. Original failed receipt retained."
     },
     "C": {
       "state": "accepted_component",
@@ -62,11 +133,11 @@
       "obsolete_initial_test_names_excluded": [
         [
           "tests.integration.tool.test_text_results_postgres",
-          "test_text_saved_bad_output_is_not_success_even_with_transport_200[schema]"
+          "test_text_saved_bad_output_is_not_success_even_with_transport_200[semantics]"
         ],
         [
           "tests.integration.tool.test_text_results_postgres",
-          "test_text_saved_bad_output_is_not_success_even_with_transport_200[semantics]"
+          "test_text_saved_bad_output_is_not_success_even_with_transport_200[schema]"
         ]
       ],
       "sql_different_passing_nodes": 100,
@@ -116,9 +187,9 @@
       }
     }
   },
-  "acceptance": "Component scopes only. A source/wiring JUnit is recorded separately; full milestone awaits B final handoff.",
+  "acceptance": "All three component scopes accepted. A full integration milestone regression is in progress.",
   "limitations": [
     "No real external LLM, trusted IPC, native user confirmation or file/process execution proved.",
-    "B stage not complete package. No product flags or routes activated."
+    "No product flags or routes activated."
   ]
 }

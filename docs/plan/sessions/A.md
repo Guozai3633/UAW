@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2g-A1实际来源和装配阶段已验证并冻结；268不同受影响节点通过，B/C/D阶段分别合入；完整里程碑待B最终交付及全量。以DISPATCH的固定版本与派发为准。
+状态：B/C/D最终组件已合入；MS-I2g完整回归正在执行，MS-I2h准备根实例与单Agent循环。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -22,6 +22,9 @@
 - `src/uaw/run/`
 - `src/uaw/model/`
 - `src/uaw/intent/`
+- `src/uaw/agent/`
+- `tests/unit/agent/`
+- `tests/integration/agent/`
 - `src/uaw/context/seed.py`
 - `src/uaw/context/intent.py`
 - `src/uaw/resources/`
@@ -249,6 +252,23 @@
 
 - 准备发布不代表三个包已开工/接受；记录阶段版和最终真实回执与SHA，原阶段门槛保留。
 - 不存在worker互相依赖开发分支；生产来源和flags只在实际集成验收后开放。
+
+### MS-I2h：根实例/有限步单Agent/阶段版集成
+
+对应原轮：[P1-07](../rounds/P1-07.md)、[P1-08](../rounds/P1-08.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-C5、MS-T2d、MS-R2d。
+
+任务：
+
+1. 当前Run/TaskFrame/固定用户模型/角色/预算/权限根Factory。
+2. 内部AgentEnginePort与LangGraph封装，动态Context/Model/Tool/观察有限步循环。
+3. waiting/审批/取消/期限/恢复和完成提案的实际证据核验；模型不得直接写completed。
+4. 阶段版接口和公共提案即时处理，受影响跨模块验证，真实LLM和产品任务另验收。
+
+交付检查：
+
+- 先纯文本组件链，不强制依赖所有本机执行能力；公开入口按实际门槛开放。
+- 所有子模型默认继承用户固定模型；本轮不默认子树/DAG。
 
 ### MS-I2f：实际设备归属、登记命令与当前权威
 

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2d最终859f5d0/db09a69已合入并按组件范围接受；162单元、100个不同SQL通过，当前A实际权限接线验证。以DISPATCH的固定版本与派发为准。
+状态：MS-T2d组件接受；MS-T2e权限先行混合检索和有界索引已准备，固定开发基线ms-i2h-start发布，可开始新包。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2e、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -26,7 +26,7 @@
 
 - 先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。
 - 审批、预算、配置、Runner通过公开port；未提供真实执行器时不得dispatch。
-- 不放开禁用flag，不把测试适配器登记为产品工具；向量/MCP仍属后续轮。
+- 不放开禁用flag，不把测试适配器登记为产品工具；本轮MS-T2e显式扩展检索，MCP仍属后续轮。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -117,6 +117,23 @@
 - 阶段版后继续同包恢复与验证；无executor先拒绝，未知发送不重新attempt，缺生产权限仍不可用。
 - 真实本地只读结果有证据，不从Runner回执或传输200推断成功；完整MS-T2/P1仍待集成。
 
+### MS-T2e：权限先行混合检索/向量索引缓存
+
+对应原轮：[P1-03](../rounds/P1-03.md)。
+开发前置：MS-T2d、MS-I2f2。
+
+任务：
+
+1. 当前role/权限/flag/环境/provider先过滤ToolRegistry固定快照。
+2. 显式embedding port、词法/向量召回与有界融合；返回既有DiscoveryResult，LLM选择工具。
+3. 结构化SQLite向量索引缓存原子更新/失效/重启；索引不是目录或权限权威。
+4. 自身SQL及索引测试覆盖等待期间权限变化、损坏/并发/泄漏和原工具结果回归。
+
+交付检查：
+
+- 无embedding不冒充语义向量；lexical-only或降级由构造显式配置。
+- 不执行工具或修改固定模型，阶段版后继续完整包。
+
 ### MS-T2：工具真实dispatch及结算接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
@@ -141,7 +158,7 @@
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-T2d最终859f5d0/db09a69已合入并按组件范围接受；162单元、100个不同SQL通过，当前A实际权限接线验证。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-T2e。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2h-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。以DISPATCH的固定版本与派发为准。
+状态：MS-R2d组件接受；MS-R2e真实file.read和journal四里程碑已准备，固定开发基线ms-i2h-start发布，可开始新包。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -122,6 +122,23 @@
 - 四个里程碑两个交付点，OS实际回执与受控fixture区分；缺期限/确认/通道拒绝。
 - 不开放IPC/配对V2/文件动作/安装写入exec，不自行决定D03或把组件验收当完整MS-R2。
 
+### MS-R2e：获准根内实际file.read/来源复核/journal
+
+对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
+开发前置：MS-R2d、MS-I2f2。
+
+任务：
+
+1. 仅已有file.read签名命令，真实有界UTF-8临时文件读取。
+2. 打开后OS句柄路径/文件根身份及竞争复核，特殊/越界/替换目标拒绝。
+3. 实际FileContent和设备签名终态journal，重复恢复不重新执行或自授数据访问。
+4. 临时根撤销/期限/取消/并发/重启和原D回归，随机OS测试凭据清理。
+
+交付检查：
+
+- 无实际authority/owner/channel明确不可用；受控channel不是可信IPC实连。
+- 不开放写入/安装/exec或flags，不决定D03。
+
 ### MS-R2：真实IPC配对和获准执行接线
 
 对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
@@ -146,7 +163,7 @@
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
 读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-R2d最终7d946de/366c916已合入并按组件范围接受；326项和实际OS清理回执通过，后续包待明确依赖。只整理现有交接与依赖提案，不自动开始下一包。
+当前执行MS-R2e。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2h-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

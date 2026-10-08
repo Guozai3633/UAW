@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.8 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.9 · 2026-10-08 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -135,6 +135,10 @@ flowchart TD
 | MS-T2d | C | 只读工具调用编排/实际adapter/持久结果源 | MS-I2f2 | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |
 | MS-R2d | D | OS控制签名/授权根来源/适配器装配 | MS-I2f2 | [P1-04](rounds/P1-04.md) |
 | MS-I2g | A | 独立验证环境/阶段接口接线/并行集成 | MS-I2f2 | [P0-02](rounds/P0-02.md)、[P1-02](rounds/P1-02.md)、[P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-07](rounds/P1-07.md) |
+| MS-C6 | B | 多规则语义评估/版本复查/读取测量 | MS-C5、MS-I2f2 | [P1-02](rounds/P1-02.md)、[P1-07](rounds/P1-07.md) |
+| MS-T2e | C | 权限先行混合检索/向量索引缓存 | MS-T2d、MS-I2f2 | [P1-03](rounds/P1-03.md) |
+| MS-R2e | D | 获准根内实际file.read/来源复核/journal | MS-R2d、MS-I2f2 | [P1-04](rounds/P1-04.md)、[P1-05](rounds/P1-05.md) |
+| MS-I2h | A | 根实例/有限步单Agent/阶段版集成 | MS-C5、MS-T2d、MS-R2d | [P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md) |
 | MS-I2f | A | 实际设备归属、登记命令与当前权威 | MS-I2f2 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md) |
 | MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2f、MS-T2c、MS-R2c | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |

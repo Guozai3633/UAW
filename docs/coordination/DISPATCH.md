@@ -1,6 +1,6 @@
 # 多 session 派发和集成记录
 
-日期：2026-10-08。A维护。**MS-I2g实际来源与装配开发中。B/C/D阶段版已分别合入；C/MS-T2d和D/MS-R2d已按最终组件范围接受，B/MS-C5继续后半包。上一完整运行回执仍为ms-i2f2。**
+日期：2026-10-08。A维护。**MS-I2g实际来源与装配开发中。B/C/D阶段版已分别合入；C/MS-T2d和D/MS-R2d已按最终组件范围接受，B/MS-C5最终8cc445a/233a5c3已合入b47fd81并按组件接受。MS-I2g全量1077节点正在执行；上一完整回执仍为ms-i2f2。**
 
 ## A当前已验证阶段版本：ms-i2g-a1
 
@@ -45,7 +45,7 @@ A另增10项跨模块SQL/组装测试，独立组件674项通过。原worker缺�
 | Session | 新包 | 范围 | 发布状态 |
 | --- | --- | --- | --- |
 | A | MS-I2g | 当前Run/固定模型/角色/结果数据权限与跨模块装配 | 源码72abb2b＋后续接线，受影响和跨模块验证；完整里程碑待B最终回执 |
-| B | MS-C5 | 通用登记/当前authority/Reader→快照→模型输入 | 阶段d0ad58f合入80b86b7；174单元＋7真实SQL回执，最终包未接受 |
+| B | MS-C5 | 通用登记/当前authority/Reader→快照→模型输入 | 阶段d0ad58f合入80b86b7；最终8cc445a/233a5c3合入b47fd81；208单元＋85不同SQL按组件接受 |
 | C | MS-T2d | 只读调用编排/实际text adapter/持久结果Lookup与Reader | 阶段717c237合入e1503dc；最终859f5d0/db09a69合入5721ad4；162单元＋100不同SQL按组件范围接受 |
 | D | MS-R2d | 真实OS控制签名/授权根来源/装配验证 | 阶段1287a05合入0be96be；最终7d946de/366c916合入b735407；326项通过，OS passed/cleaned；按组件范围接受 |
 | E | 未派发 | 保持可选 | 不创建新工作区 |
@@ -54,7 +54,7 @@ C 的100个SQL是首轮原70＋最终新增30的不同通过节点覆盖，不�
 
 每包四个连续里程碑、两个交付点；阶段版接口提交后继续同包，不等待最终集成才做后半包。具体输入输出、策略、目录和数据库命令见[发包定义](requests/A/MS-I2g-parallel-packages.md)，可转发内容见[NEXT_WAVE](NEXT_WAVE.md)。A没有替worker切分支或向其聊天发消息。
 
-完整MS-I2f/MS-I2/MS-T2/MS-R2仍未接受，D01/D03/D06不因此改变。B按in_progress、C/D按accepted_component记录；不把局部组件接受提升为整轮产品接受。
+完整MS-I2f/MS-I2/MS-T2/MS-R2仍未接受，D01/D03/D06不因此改变。B/C/D按accepted_component记录；不把局部组件接受提升为整轮产品接受。
 
 ## Worker开工基线固定公共文件摘要（ms-i2g-start）
 
@@ -69,3 +69,7 @@ C 的100个SQL是首轮原70＋最终新增30的不同通过节点覆盖，不�
 | `src/uaw/resources/prompts/intent-understand-v1.txt` | `3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400` |
 
 基线摘要来自ms-i2g-start的实际文件；代码提交SHA见本页。`.gitattributes`保留字节；`.data`、私有配置/凭据、缓存、虚拟环境和worktree不进入提交。历史基线与摘要保留在Git旧标签和各实现记录。
+
+## 下一轮准备：ms-i2h-start
+
+[MS-I2h详细范围](requests/A/MS-I2h-parallel-packages.md)：A单Agent根实例/循环，B/MS-C6多规则语义评估与读取测量，C/MS-T2e权限先行混合工具检索，D/MS-R2e实际file.read组件。四个连续里程碑、两个交付点，互不依赖开发分支。固定开发标签ms-i2h-start发布；代码合并来源b47fd81及当前2条组合链（274.16秒）通过，Ruff/188格式/Mypy117通过，worker按NEXT_WAVE同步开新包。完整1077节点回归由A继续，不把开发基线称为全量验收。实际标签SHA由git rev-parse ms-i2h-start^{commit}核对，发布回执会补录。

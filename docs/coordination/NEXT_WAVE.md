@@ -1,6 +1,48 @@
+# 下一轮可直接转发：MS-I2h
+
+日期2026-10-08。B/MS-C5、C/MS-T2d、D/MS-R2d三个最终组件已接受；A在B最终合入后2条实际组装复验通过。新包共同固定开发基线 **ms-i2h-start**（实际SHA见[DISPATCH](DISPATCH.md)；git rev-parse标签核对）。完整MS-I2g/1077节点回归由A继续，新包可以同时开发。旧任务下移为历史记录，不再重做。
+
+[完整输入输出/策略/四里程碑/目录](requests/A/MS-I2h-parallel-packages.md)。以下分别转发给B、C、D；A没有发送其他聊天消息或替worker同步。
+
+## 发给B：MS-C6
+
+```text
+开始UAW Session B完整能力包MS-C6：多规则语义评估接入、固定版本复查与真实读取成本测量。
+继续E:/UAW/.worktrees/context、dev/context。工作区干净后fetch origin --tags、git merge --ff-only ms-i2h-start，核对HEAD等于标签commit；uv sync --frozen。失败报告，不reset/rebase。读MS-I2h-parallel-packages.md第1/2/6节、DISPATCH及session/B目录边界。
+连续完成四项：1固定实际规则候选和可选assessor port；2多规则冲突/优先级/精确引用解析、模型等待前后来源复查；3登记→snapshot→ModelPrompt/引用整链与读取次数/耗时比较；4自身真实SQL的修订/撤销/并发/重启/缓存和原模块回归。前两项提交固定接口、示例和SHA，再继续同包，不等A最终合入。
+RegisteredRuleProvider(inputs,*,assessor=None)保留旧构造；assessor只做语义建议，不改rule正文/level/scope/Ref，不授权。缺来源多规则不可用，不用词典冒充语义。A负责实际固定Model adapter，受控评估器不证明LLM质量。优化不能缓存权限或去掉取消/撤销/提交复查。
+只改B允许路径。自己的PowerShell dot-source ops/start-dev-db.ps1 -Session B，再锁定环境alembic upgrade head，独立55433实跑模块SQL，ignored回执保留失败及修复。公共缺口提案交A，继续独立部分。阶段和最终源码/handoff分开提交，干净后交付；不改flags/Model/shared/锁/组装根，不自动扩包。
+```
+
+## 发给C：MS-T2e
+
+```text
+开始UAW Session C完整能力包MS-T2e：权限先行的混合工具检索与有界向量索引缓存。
+继续E:/UAW/.worktrees/tool、dev/tool。干净后fetch tags、merge --ff-only ms-i2h-start，核对HEAD/tag commit，uv sync --frozen。读MS-I2h-parallel-packages.md第1/3/6节、DISPATCH和session/C；不读其他worker开发分支。
+连续四项：1实际registry固定快照和当前role/权限/flags/provider先过滤；2显式embedding port的词法/向量召回和确定融合，返回现有DiscoveryResult让LLM选择；3绑定spec/provider/model/维度/规范版本的有界持久索引缓存、原子更新/失效/重启；4等待期间权限变化、取消/期限、跨用户泄漏、损坏/并发及原Tool回归。前两项交固定异步retriever/可选facade签名及SHA，再继续同包。
+原小目录默认兼容，lexical-only显式配置；无实际embedding不生成hash/random向量充当语义，不静默冒充语义降级。结构化SQLite是可重建索引缓存，不是Tool注册/权限权威；最终仍复查当前ToolSpec/Access，不执行工具、不改用户固定模型。真实embedding adapter由A/管理员来源接线，受控数值测试只证明计算。
+仅C允许目录；dot-source ops/start-dev-db.ps1 -Session C、alembic upgrade head，独立55434实跑受影响模块SQL和原结果回归。公共schema/依赖/flags先提案A，保留原失败与修复回执。源码/handoff分开提交，工作区干净交付，本包后停止。
+```
+
+## 发给D：MS-R2e
+
+```text
+开始UAW Session D完整能力包MS-R2e：已签名file.read的真实有界文件读取、OS身份复核和终态journal。
+继续E:/UAW/.worktrees/runner、dev/runner。干净后fetch tags、merge --ff-only ms-i2h-start，核对HEAD/tag commit并uv sync --frozen。读MS-I2h-parallel-packages.md第1/4/6节、DISPATCH和session/D。
+连续四项：1现有准入/RootBindings/独立owner与authority后，临时根内UTF-8常规文件读取（总1MiB/返回64KiB）；2打开后实际OS句柄最终路径、文件/根身份与替换竞争检查，关键await和提交前权限/取消/期限复查；3实际FileContent与设备签名journal、一次使用及重启恢复；4临时文件范围、Unicode/空/二进制、链接/越界/替换/同时编辑、撤销/过期/取消/并发与原D回归。前两项交ReadOnlyRunner固定构造/execute签名、依赖和SHA，继续同包。
+只实现已有RunnerParametersFile.read，不新增list/IPC wire。authenticated_principal来自独立可信入口，不从command/body自证；无实际channel/owner/authority/签名拒绝，受控测试channel不是真实IPC。仅真实临时测试根，不碰用户文件；不安装/写入/exec、不改flags、不决定D03。随机OS测试凭据清理并保留回执，Runner ok不自动等于Tool业务成功。
+只改D允许路径；需要SQL时自己的Session D库55435，不改其他库或A文件。公共缺口交A提案后继续独立项。阶段/最终源码与handoff分开提交，干净交付；本包后停止。
+```
+
+## A同时推进
+
+A继续MS-I2g完整回归和发布验收结果，随后进入MS-I2h根实例/有限步单Agent循环；阶段接口到达即接线，worker自己实跑模块SQL。开发基线发布不是整个P1或真实LLM/IPC/exec已通过。
+
+---
+
 # 下一轮可直接转发：完整能力包
 
-**2026-10-08 当前更新：下方MS-C5/MS-T2d/MS-R2d为已经执行的本轮派发原文。B继续MS-C5后半段；C/D最终组件已接受，不再转发原任务让其重做。A已逐包合入并完成实际来源/装配验证，详见[MS-I2g-A1](../implementation/MS-I2g-A1.md)和[DISPATCH](DISPATCH.md)。开发中的B保持ms-i2g-start，下一包另列清楚依赖和目录后再开工。**
+**2026-10-08 当前更新：下方MS-C5/MS-T2d/MS-R2d为已经执行的本轮派发原文。B/C/D三个最终组件均已接受，不再转发下方原任务让其重做。A已逐包合入并完成实际来源/装配验证，详见[MS-I2g-A1](../implementation/MS-I2g-A1.md)和[DISPATCH](DISPATCH.md)。MS-I2g全量回归运行中；下一轮完整范围见[MS-I2h能力包](requests/A/MS-I2h-parallel-packages.md)，固定基线发布后再开工。**
 
 ## 历史开工消息（保留）
 

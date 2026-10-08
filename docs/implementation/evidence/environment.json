@@ -2,7 +2,7 @@
   "date": "2026-10-08",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g-A1 current Run/fixed model/Tool role and data sources, registered Context assembly, verified text-tool results and explicit Runner mapping/signing assembly; full milestone still awaits B final delivery",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g reviewed current Run/fixed model/Tool role and data sources, final registered Context assembly, verified text-tool results and explicit Runner mapping/signing assembly; full milestone regression in progress",
   "components": {
     "fastapi": {
       "installed": true,
@@ -202,7 +202,7 @@
     "src/uaw/context/ports.py": "cbdd4929efb6541de8cb58fac4006a916656151a6e85c9df0b6f674f6d034764",
     "src/uaw/context/readers.py": "ec7a27b18d5614663ac426311e693d42438921ce3b3f0894ee075fefa6221576",
     "src/uaw/context/references.py": "684103813c105495f510da83987785cc2971038c3fa595d640751469143611bc",
-    "src/uaw/context/registered.py": "ea5db6320e741c48caa8fb30103cea425246181ddab7a0cf63514312a75fad4b",
+    "src/uaw/context/registered.py": "d8715286a8696aac60a39e76a88bbb06c5b1c36c0cf9617e23150ed27a78862d",
     "src/uaw/context/repository.py": "36e3ca44623200e537bb596379a9557c5c03b1604380c5d85939ac512b2edee6",
     "src/uaw/context/rules.py": "202a2962e733e5cbc341445198d04feff961a10e36146b289494041338199e06",
     "src/uaw/context/seed.py": "58d8ca66a989355a419f0d6d28f6a4991f45587958279f645cf063da02028afe",
@@ -296,7 +296,8 @@
     "tests/integration/context/registered_fixture.py": "fbe5986918eef39201752962709623e7dfc0fe75515099362729d2c2b79b9029",
     "tests/integration/context/test_cache_postgres.py": "a5f2791e58123fc488ba1493065c9f3b31a5f1ea9b221cd852e240fc2b6381ba",
     "tests/integration/context/test_model_input_postgres.py": "de4d2d67ca2e2f05dff0f40ffc9de13cb603b9f94f1575c98b32cce7d54c05a4",
-    "tests/integration/context/test_registered_postgres.py": "e625612ad4c69db5ff1a16c205c05d10f384b385014af5ab84d87f3de808e396",
+    "tests/integration/context/test_registered_chain_postgres.py": "b8f52e9ba7b39afeb2184576b36ef1070156110e1500630cf88948c083edb1d6",
+    "tests/integration/context/test_registered_postgres.py": "65d74b2c274bab9673b3baca974908a1ee9eb5c43d8ae5de21507989f202407f",
     "tests/integration/context/test_snapshots_postgres.py": "23b4629f58ca4cc9dc5298530d82508c7419c130d876c96f745d4529c4b1d36d",
     "tests/integration/intent/test_understanding.py": "1bb1d58bac9b0aa7db2851a889f287c95bfe22b5fcde4018e922c91713a70c3a",
     "tests/integration/model/test_gateway.py": "1769b29a03ad7d807e0a64019fbb53025cc825e1ee073f7bb72d981729738f0b",
@@ -337,6 +338,7 @@
     "tests/unit/context/test_cache.py": "748354cac1d0784803d050a2530b2e9fb2d37f41d444e4fae772ba07cd1cce4c",
     "tests/unit/context/test_components.py": "beb412007cb1c12c597abbd048e76fb2d72b0007b26fb683beb70a5c1ae1e06a",
     "tests/unit/context/test_model_input.py": "3c51c7af575c0f03339f508af018f28c03419354b832d8d9945513354539e24d",
+    "tests/unit/context/test_registration.py": "05100e74829c7ce529dfde5e211be4fb76a04a0382174bca82ddeb46a76f2d9c",
     "tests/unit/context/test_snapshots.py": "cd06f000104f2750866c0dfcefb0087914776c39966e5b0df302164d2a7972b2",
     "tests/unit/model/test_adapter.py": "4b3e9a5d9b2264f748dbbd9b326548a0276427c4f080df22b4e2334890d2a5dd",
     "tests/unit/runner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -401,7 +403,7 @@
     ],
     "focused_different_passing_nodes": 268,
     "worker_receipts": "docs/implementation/evidence/ms-i2g-worker-receipts.json",
-    "worker_receipts_sha256": "edd9a2a747743f6e688ceb25026d7ae998b73f56f89c5b253a163fa1b01a2707",
+    "worker_receipts_sha256": "b93c4c9e685d702397a9e2241a7fc5c855ebf18eef7e24ac1c2cf8a480ca7d8b",
     "changed_reviewed_sources_from_preparation": [
       "apps/local_runner/uaw_runner/assembly.py",
       "apps/local_runner/uaw_runner/async_admission.py",
@@ -436,6 +438,7 @@
       "src/uaw/workspace/binding.py",
       "src/uaw/workspace/ports.py",
       "tests/integration/context/registered_fixture.py",
+      "tests/integration/context/test_registered_chain_postgres.py",
       "tests/integration/context/test_registered_postgres.py",
       "tests/integration/runner/root_source_child.py",
       "tests/integration/runner/test_native_root_source.py",
@@ -447,25 +450,38 @@
       "tests/integration/tool/test_text_results_postgres.py",
       "tests/integration/tool/text_pipeline_fixture.py",
       "tests/integration/tool/text_recovery_child.py",
+      "tests/unit/context/test_registration.py",
       "tests/unit/runner/test_async_admission.py",
       "tests/unit/runner/test_control_signing.py",
       "tests/unit/tool/test_durable_results.py",
       "tests/unit/tool/test_text_inspect.py"
     ],
+    "focused_receipts_ref": "ms-i2g-a1; preceding phase, not a repeat of all nodes after B final merge",
     "stage_acceptance": {
-      "B": "stage only; final package pending",
+      "B": "accepted component, 293 unique worker nodes",
       "C": "accepted component",
       "D": "accepted component"
     },
     "static_checks": {
       "ruff": "passed",
-      "format_files": 186,
+      "format_files": 188,
       "mypy_source_files": 117
     },
     "limitations": [
-      "Current phase is not full MS-I2g milestone or P1 acceptance.",
+      "Full 1077-node milestone regression still in progress; not P1 acceptance.",
       "No external LLM/trusted IPC/actual native consent/file or process execution verified.",
-      "Context registration/build/input source rechecks show significant SQL read amplification; follow-up recorded."
-    ]
+      "Context source read amplification reduced in B final implementation; quantitative follow-up remains."
+    ],
+    "current_final_wiring_receipt": {
+      "path": "docs/implementation/evidence/ms-i2g-final-wiring-tests.xml",
+      "sha256": "acb178a59d75afb8a50ba659c9ae8c32495828b4a1ee333eec2798743682cfbe",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Two current assembly chains after final B merge; complete milestone still running."
+    }
   }
 }

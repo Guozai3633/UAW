@@ -4,7 +4,7 @@
 
 ## 1. 权威与阅读顺序
 
-当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。C/D按组件接受，B完整包和集成里程碑仍待完成。
+当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。B/C/D最终组件已接受，完整MS-I2g回归进行中；[下一轮能力包](coordination/requests/A/MS-I2h-parallel-packages.md)已发布独立开发基线，完整里程碑仍由A执行。
 
 | 层级/位置 | 作用 | 谁维护、怎样更新 |
 | --- | --- | --- |
@@ -145,3 +145,5 @@
 - [项目实际进度](implementation/PROGRESS-2026-10-08.md)：已实现/未接线/未开发及首条真实任务关键路径，不把轮数或测试数当产品完成比例。
 - [发包详细范围](coordination/requests/A/MS-I2g-parallel-packages.md)：B/C/D各四个里程碑、输入输出/目录、阶段版交接、独立SQL和A接线职责。
 - [准备实际回执](implementation/MS-I2g-preparation.md)：开发库隔离和本次有限检查范围。
+
+本轮最终组件接受与全量状态：[MS-I2g](implementation/MS-I2g.md)。
