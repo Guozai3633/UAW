@@ -169,6 +169,10 @@ class RuleResolver:
                             "Important requirements conflict",
                             (previous.rule.source_ref, candidate.rule.source_ref),
                         )
+                    # Semantic grouping cannot remove actual platform/policy instructions.
+                    if candidate.rule.level in ("platform", "capability_policy"):
+                        chosen.append(candidate)
+                        continue
                     overrides.append((candidate.rule.source_ref, previous.rule.source_ref))
                     continue
                 topics[candidate.topic] = candidate

@@ -7,6 +7,7 @@ from uaw.context.contracts import (
     ModelToolSet,
     ModelWindow,
     Reading,
+    RuleCandidate,
     RulePlan,
     RulesRequest,
 )
@@ -91,5 +92,19 @@ class RegisteredToolValidator(Protocol):
 
         Also check current role, permissions/flags and source revocation. The set
         itself and a controller registration never grant Tool execution authority.
+        """
+        ...
+
+
+class RegisteredRuleAssessor(Protocol):
+    async def assess(
+        self, candidates: tuple[RuleCandidate, ...], ctx: TrustedExecutionContext
+    ) -> RulePlan:
+        """Semantic advice using A's actual fixed Model adapter; never authorization.
+
+        Preserve every candidate's exact rule, Ref, level, scope, order and targets.
+        Only topic/value/critical/supersedes/conflict_refs describe semantics. The
+        Context boundary copies inputs, validates output and rechecks live sources.
+        Controlled assessors demonstrate protocol behavior, not LLM quality.
         """
         ...

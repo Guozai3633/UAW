@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Coroutine
 from dataclasses import dataclass
 from functools import wraps
 from typing import Any
@@ -76,7 +76,9 @@ def numeric(ref: Ref) -> int:
     return int(ref.version)
 
 
-def bounded[**P, T](method: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
+def bounded[**P, T](
+    method: Callable[P, Coroutine[Any, Any, T]],
+) -> Callable[P, Coroutine[Any, Any, T]]:
     """One deadline for a public operation; underlying cancellation still propagates."""
 
     @wraps(method)
@@ -157,7 +159,12 @@ class RegisteredContextInputs:
     @bounded
     async def current(self, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
         before = await self._access(ctx)
-        state = before[1]
+        pins = await self._current(ctx, before[1])
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run bindings changed during source read", 410)
+        return pins
+
+    async def _current(self, ctx: TrustedExecutionContext, state: Record) -> tuple[Ref, ...]:
         assert self.runs is not None
         if len(state.payload["patch_refs"]) >= MAX_ENTRIES:
             raise reject(
@@ -177,8 +184,6 @@ class RegisteredContextInputs:
             ):
                 raise reject("source_changed", "Run source lost its original identity", 410)
             pins.append(reading.ref)
-        if await self._access(ctx) != before:
-            raise reject("source_changed", "Run bindings changed during source read", 410)
         return tuple(pins)
 
     async def _service(self, actor: Principal, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
@@ -589,6 +594,12 @@ class RegisteredContextInputs:
     @bounded
     async def recipe(self, ctx: TrustedExecutionContext) -> RegisteredRecipe:
         before = await self._access(ctx)
+        result = await self._recipe(ctx)
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during recipe read", 410)
+        return result
+
+    async def _recipe(self, ctx: TrustedExecutionContext) -> RegisteredRecipe:
         identifier = recipe_id(ctx)
         owner = await self._owner(identifier, ctx)
         row = await self.records.get(ctx.principal, RECIPES, identifier)
@@ -638,13 +649,17 @@ class RegisteredContextInputs:
             or await self._owner(identifier, ctx) != owner
         ):
             raise reject("source_changed", "Recipe changed during read", 410)
-        if await self._access(ctx) != before:
-            raise reject("source_changed", "Run binding changed during recipe read", 410)
         return RegisteredRecipe(pin, request, selected, actual_tools, owner)
 
     @bounded
     async def read(self, pin: Ref, ctx: TrustedExecutionContext) -> Reading:
         before = await self._access(ctx)
+        result = await self._read(pin, ctx)
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during source read", 410)
+        return result
+
+    async def _read(self, pin: Ref, ctx: TrustedExecutionContext) -> Reading:
         numeric(pin)
         if pin.access_scope is not None:
             raise reject("permission_denied", "Ref access_scope does not grant access", 403)
@@ -734,7 +749,7 @@ class RegisteredContextInputs:
                 raise reject("source_changed", "Source changed during blob read", 410)
             result = Reading(actual, text, kind=kind, trust=trust, required=required)
         elif pin.kind == "configuration" and pin.id == recipe_id(ctx):
-            recipe = await self.recipe(ctx)
+            recipe = await self._recipe(ctx)
             text = serialize(recipe.tools.wire())
             actual = Ref(
                 kind="configuration",
@@ -747,9 +762,51 @@ class RegisteredContextInputs:
             result = Reading(actual, text, kind="material", trust="platform", required=True)
         else:
             raise CapabilityUnavailable(f"context.registered_reader.{pin.kind}")
-        if await self._access(ctx) != before:
-            raise reject("source_changed", "Run binding changed during source read", 410)
         return result
+
+    @bounded
+    async def inspect(
+        self, ctx: TrustedExecutionContext
+    ) -> tuple[RegisteredRecipe, tuple[Ref, ...]]:
+        """One bounded source batch, with fresh authority before and after, never cached.
+
+        Internal helpers only belong to this batch/public gated methods. Read each
+        source twice around current recipe/tools awaits, including real blob hashes.
+        Actual Run readers still authorize their own reads. No Reading/permission is
+        retained on the instance, across operations, or across owner/Run boundaries.
+        """
+        before = await self._access(ctx)
+        recipe = await self._recipe(ctx)
+        original = await self._current(ctx, before[1])
+        if any(
+            not any(matches_pin(pin, saved) for saved in recipe.request.source_refs)
+            for pin in original
+        ):
+            raise reject("context_dependency_changed", "Actual Run source set changed", 410)
+        pins = tuple(
+            dict.fromkeys((*recipe.request.source_refs, *recipe.rules.user_instruction_refs))
+        )
+        if len(pins) > MAX_ENTRIES * 2:
+            raise reject("context_registration_too_large", "Source batch exceeds bounds", 413)
+        readings = tuple([await self._read(pin, ctx) for pin in pins])
+        if await self._recipe(ctx) != recipe:
+            raise reject(
+                "context_dependency_changed", "Recipe/tools changed during source batch", 410
+            )
+        state = await self.records.get(ctx.principal, "run.input_sets", ctx.run_id or "")
+        if await self._current(ctx, state) != original:
+            raise reject(
+                "context_dependency_changed", "Run originals changed during source batch", 410
+            )
+        if tuple([await self._read(pin, ctx) for pin in pins]) != readings:
+            raise reject("source_changed", "Actual content changed during source batch", 410)
+        if await self._recipe(ctx) != recipe:
+            raise reject(
+                "context_dependency_changed", "Recipe/tools changed in final source pass", 410
+            )
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during source batch", 410)
+        return recipe, original
 
     @bounded
     async def revoke(
