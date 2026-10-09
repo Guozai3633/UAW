@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-09",
+  "phase": "MS-I2h-A3",
+  "baseline": "ms-i2h-a2",
+  "status": "accepted_bounded_live_runtime_phase",
+  "full_milestone": false,
+  "full_regression_repeated": false,
+  "last_full_ref": "ms-i2g",
+  "last_full_passing_coverage": 1077,
+  "different_passing_nodes": 31,
+  "receipts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2h-live-connection-tests.xml",
+      "sha256": "caf9e274ec8d3e738b979deaeefac88289ec779ab536c0e813166444a15f9f26",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-live-affected-tests.xml",
+      "sha256": "3680b321397e4b1cd6f09c4925106dd96c0750c8aae72e92b90a715aa0eaac36",
+      "counts": {
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-live-grounding-sql.xml",
+      "sha256": "87636fc9210209381c3377b75723a5cc55b54fa5a80c6588e91c1b0c34c243bd",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "aggregate": {
+    "path": "docs/implementation/evidence/ms-i2h-a3-accepted-tests.xml",
+    "sha256": "480994cc1ca6a062ecc4a512518b5dba8117461954c19019e4ad8e4738f95810"
+  },
+  "live_evidence": {
+    "path": "docs/implementation/evidence/ms-i2h-a3-live.json",
+    "sha256": "3193fcec37fa4cf464a896b32978c206c1fe6cdd04186373060ee28e67ad49d2",
+    "actual_model_attempts": 13,
+    "passed_final_runtime_samples": 3,
+    "preserved_failed_runtime_samples": 3,
+    "manual_content_samples_accepted": 3
+  },
+  "static_checks": {
+    "ruff": "passed",
+    "format_files": 233,
+    "mypy_source_files": 141
+  },
+  "exploratory_checks": [
+    "Broad ops lint identified existing ops/admin_cli.py and ops/capture_environment.py style violations outside ops/check.ps1 gate; no unrelated changes.",
+    "Broad tests format included intentional developer fixtures; final existing gate excludes fixtures.",
+    "Pre-refresh contract checker reported four expected stale evidence hashes; repeat after source hash refresh."
+  ],
+  "limits": [
+    "No general semantic quality benchmark/independent Delivery verifier/Run completion.",
+    "No actual fixed Model rule assessor, embedding, production IPC/native user confirmation or public Agent binding.",
+    "Original affected tests started before final output-reserve/prompt refinement; final academic live sample verifies that refinement.",
+    "Failed live attempts are included in actual token/call totals; fee settlement remains pending."
+  ]
+}

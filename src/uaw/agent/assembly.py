@@ -43,7 +43,10 @@ def assemble_agent_runtime(
     registry: ToolRegistry,
     completion: AgentCompletionPort | None = None,
     retriever: ToolRetriever | None = None,
+    max_output_tokens: int = 512,
 ) -> AgentAssembly:
+    if type(max_output_tokens) is not int or not 1 <= max_output_tokens <= 16384:
+        raise ConfigurationError("Root output reserve must be between 1 and 16384 tokens")
     if (
         container.records is None
         or container.run_sources is None
@@ -78,8 +81,11 @@ def assemble_agent_runtime(
         registry=registry,
         access=container.tool_access,
         retriever=retriever,
+        output_reserve=max_output_tokens,
     )
-    models = RegisteredAgentModels(model, original.policies, sources)
+    models = RegisteredAgentModels(
+        model, original.policies, sources, max_output_tokens=max_output_tokens
+    )
     access = AgentToolAccess(container.tool_access, repository, sources)
     existing = tools.invocation
     invocation = ToolInvocation(

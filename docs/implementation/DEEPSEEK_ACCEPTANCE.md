@@ -1,6 +1,6 @@
 # DeepSeek 实连与任务验收
 
-日期2026-10-09。之前缺管理员批准的实际提供方、模型和凭据，所以只有受控HTTP协议验证。现在可以准备真实验收；当前文件不代表已经发送或通过真实调用。
+日期2026-10-09。此前缺实际模型与受保护凭据，只有受控协议测试。用户提供模型名和凭据句柄后，已完成13次真实调用及办公、文本工具、学术三个最终有界样例；原失败和修复保留。[实际报告](MS-I2h-A3.md) · [回执](evidence/ms-i2h-a3-live.json)。
 
 ## 1. 凭据录入
 
@@ -14,7 +14,7 @@
 
 最后一个命令使用隐藏输入，把凭据写入Windows凭据库，通过实际ConfigurationService登记CredentialMetadata。只输出provider_id、credential_handle和版本；不启动HTTP服务器，不打印Key，不保存到Git或命令参数。它要求受保护的本机开发管理员身份和实际开发数据库。用户提供输出句柄、期望模型名与实际endpoint后，A再登记和发布提供方/模型配置。
 
-已有配置可直接给句柄和模型ID；不覆盖既有密钥或替换当前会话模型。provider-id与CredentialMetadata的绑定必须匹配。私人测试材料和完整输出保存在ignored `.data`/私有Blob，公开验收记录只收脱敏状态、来源和摘要。
+已有配置可直接给句柄和模型ID；provider-id与CredentialMetadata的绑定必须匹配。当前句柄已核验属于deepseek-live；用户显示模型DeepSeek-V4.1-Flash对应deepseek-flash，真实鉴权模型清单也核验通过。[官方说明](https://api-docs.deepseek.com/news/news260910/)。私人测试材料和完整输出保存在ignored `.data`/私有Blob，公开验收记录只收脱敏状态、来源和摘要。
 
 ## 2. 显式协议配置
 
@@ -30,7 +30,7 @@ DeepSeek官方接口列出的结构化返回是`json_object`，与原适配器�
   "profile_ref": {"kind": "provider_profile", "id": "model.chat_completions", "version": "1"},
   "credential_handle": "实际录入返回的句柄",
   "settings": {
-    "model_name": "用户明确指定的实际模型名",
+    "model_name": "deepseek-flash",
     "timeout_ms": 60000,
     "output_token_parameter": "max_tokens",
     "reservation_money": "0.25",
@@ -43,7 +43,7 @@ DeepSeek官方接口列出的结构化返回是`json_object`，与原适配器�
 }
 ```
 
-这不是自动激活的配置。`reservation_money`只是每次开发尝试的预留估计，不能当实际单价或账户费用上限。真实用量读API响应，未知费用仍由账本保留；不得把pending记成免费。
+以上仍是配置形状示例，当前实际开发配置已通过ConfigurationService发布。`reservation_money`只是每次开发尝试的预留估计，不能当实际单价或账户费用上限。真实用量读API响应，未知费用仍由账本保留；不得把pending记成免费。
 
 `json_object`模式发送JSON格式和明确schema指令，UAW仍用同一个有界JSON Schema验证完整返回，错误结果不能进入工具执行。其含义是UAW的schema校验协议可用，**不声称供应商原生严格保证schema**。省略该字段保持原有`json_schema`请求，不对供应商报错自动降级。实际原生请求包含schema指令的完整估算，再走预算/窗口准入。
 
@@ -60,6 +60,18 @@ DeepSeek官方接口列出的结构化返回是`json_object`，与原适配器�
 
 ## 4. 当前状态
 
-- 适配代码和隐藏录入工具已准备；真实API Key/模型选择尚待用户提供。
-- 当前自动测试仍使用受控HTTP与受控数值embedding，未证明DeepSeek实连或真实任务质量。
+- 已接入实际DeepSeek-V4.1-Flash / deepseek-flash，13次调用包含首次失败；总输入17895、输出3525 Token。Usage报告缓存2176 Token；解析失败调用的缓存明细没有进入Usage，不能把它当完整缓存总数。费用pending。
+- 三个最终小样例及31个不同受影响回归通过；办公直接回答，文本任务由模型选择工具、脚本批准精确只读动作、执行与观察后回答，学术样例说明观测与不确定性。运行未标completed，未证明通用专业成果质量。
+- 真实调用与受控自动回归分别登记，受控HTTP/数值embedding仍只验证组件机制。首个办公引用定位失败、学术截断与JSON漏字段失败都有独立回执，没有用后一次成功覆盖原失败。
 - 多规则、工具检索与Windows只读组件已在MS-I2h-A2按组件接受；实际Model评估器、真实embedding、生产认证/IPC/用户确认、专业交付和公开flags仍按各自门槛验收。
+
+## 5. 有界实跑命令
+
+每次明确的新逻辑验收使用唯一request-id。既有回执不能直接覆盖或盲目重试。
+
+```powershell
+. ./ops/start-dev-db.ps1 -Session A
+.venv/Scripts/python.exe ops/agent_probe.py --model-id deepseek-flash --text-file .data/your-task.txt --request-id your-explicit-new-probe --max-steps 3 --max-output-tokens 2048
+```
+
+需测试精确文本工具审批时，显式追加 `--approve-text-inspection`；它只授权开发样例的原始只读text.inspect，不是自动批准任意动作。输入/完整输出不提交Git，输出限额和当前账本继续执行。

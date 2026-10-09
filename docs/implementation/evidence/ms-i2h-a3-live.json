@@ -1,0 +1,873 @@
+{
+  "date": "2026-10-09",
+  "provider": "deepseek-live",
+  "display_model": "DeepSeek-V4.1-Flash",
+  "api_model": "deepseek-flash",
+  "models_endpoint_verified": true,
+  "structured_mode": "json_object plus strict local schema validation",
+  "reasoning_level": "none",
+  "protocol_text_probe": {
+    "date": "2026-10-09T04:35:43.054878+00:00",
+    "scope": "explicit_model_protocol_probe",
+    "conversation_id": "conversation-d997853f651b4b9582a78a5b2c68ca76",
+    "run_id": "run-a82c13edbeca493ea7d40473d0192b0c",
+    "actual_config": {
+      "model_id": "deepseek-flash",
+      "catalog_revision": 1,
+      "provider_ref": {
+        "id": "deepseek-live",
+        "kind": "provider",
+        "version": "1"
+      },
+      "policy_ref": {
+        "id": "model-policy-60c24b4a55514e0b83d2e59e095c5fab",
+        "kind": "policy",
+        "version": "1"
+      },
+      "max_output_tokens": 128,
+      "provider_model_name": "deepseek-flash",
+      "reasoning_level": "none",
+      "response_model_name": "deepseek-flash"
+    },
+    "attempt_id": "probe-attempt-c400e4d5d78e28fbbc1783e9783828ec89fe7902d142e94e36fb9827293d8138",
+    "usage": {
+      "attempt_id": "probe-attempt-c400e4d5d78e28fbbc1783e9783828ec89fe7902d142e94e36fb9827293d8138",
+      "billing_state": "pending",
+      "resources": {
+        "model_calls": 1,
+        "tool_calls": 0,
+        "child_agents": 0,
+        "wall_time_ms": 883,
+        "currency": "USD",
+        "input_tokens": 30,
+        "output_tokens": 6
+      },
+      "cached_input_tokens": 0,
+      "provider_receipt_id": "585f1855-07f8-421e-a677-aee5e3a10d59"
+    },
+    "output_content_hash": "2c45750dc83cdee07033ffcc555dd1c8e5e1a6c66fa2938f770ae756e82dbd2c",
+    "finish_reason": "stop",
+    "task_semantic_completion": false
+  },
+  "trials": [
+    {
+      "case": "office-01",
+      "run_id": "run-32b161d27f274498b1c7b2098352ba70",
+      "conversation_id": "conversation-2d070b6062194ae4bcd0fe3f3f1834b4",
+      "input_sha256": "5b1e4609b241dac7bdc82923f7a4fb3db85c1ffbce8685618e6f642f0574c014",
+      "private_receipt": ".data/agent-probes/a5b3d2a97acb60fb66a17c6a6653550d63aeedfcc77c755b1d1c72538758da52.json",
+      "receipt_sha256": "f30494be88bbe648d418b0541fbaa0315b1f902c38d0cc2fb966d53deac23243",
+      "runtime_probe_passed": false,
+      "terminal_action": null,
+      "run_status": null,
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "failed",
+          "action": null,
+          "failure_code": "intent_quote_invalid"
+        }
+      ],
+      "final_answer": null,
+      "tool_exactly_verified": false,
+      "max_root_output_tokens": 512,
+      "independent_completion": false,
+      "manual_content_review": "not_accepted"
+    },
+    {
+      "case": "office-02",
+      "run_id": "run-84114ebf307a422daf3365862243bbfd",
+      "conversation_id": "conversation-c30855ceda0743f6a1af75cf1452d818",
+      "input_sha256": "5b1e4609b241dac7bdc82923f7a4fb3db85c1ffbce8685618e6f642f0574c014",
+      "private_receipt": ".data/agent-probes/62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7.json",
+      "receipt_sha256": "5ad7a4100ffc5a1146b1b9459b324bc7c764356f2f11467a059da525f05d5f2f",
+      "runtime_probe_passed": true,
+      "terminal_action": "respond",
+      "run_status": "preparing",
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "root_start",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1",
+          "kind": "ok",
+          "action": "respond",
+          "failure_code": null
+        }
+      ],
+      "final_answer": "1. 周一：提交预算\n2. 周三：核对数据\n3. 周五：发送报告",
+      "tool_exactly_verified": false,
+      "max_root_output_tokens": 512,
+      "independent_completion": false,
+      "manual_content_review": "accepted_selected_sample"
+    },
+    {
+      "case": "tool-01",
+      "run_id": "run-0416112f0d87421ea4c5c48daf49129e",
+      "conversation_id": "conversation-cbd15d4c74344d8faad52f5f449bf6e2",
+      "input_sha256": "465d0f94ada0618193f92d48b82f1c05c7f287d48a822e77caf23ba86f7d5450",
+      "private_receipt": ".data/agent-probes/3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d.json",
+      "receipt_sha256": "6470d3ed3a198bc2ce5f8f5300de020b9bd2b98f7d6c4986ed2398b5552d744a",
+      "runtime_probe_passed": true,
+      "terminal_action": "respond",
+      "run_status": "preparing",
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "root_start",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1",
+          "kind": "waiting",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1_resume",
+          "kind": "ok",
+          "action": "call_tools",
+          "failure_code": null
+        },
+        {
+          "name": "step_1_tool_observation",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_2",
+          "kind": "ok",
+          "action": "respond",
+          "failure_code": null
+        }
+      ],
+      "final_answer": "已使用 text.inspect 工具检查文本“UAW 学术讨论”（输入仅包含引号内文字，保留中间空格），工具实际返回结果如下：\n\n- 字符数：8\n- UTF-8 字节数：16\n- SHA256：d4f0c9f872bfa45c569cf71aa5ddc9ee5d3fc6cbe34768a29fc463360adab5bc\n\n（说明：8 个字符为 U、A、W、空格、学、术、讨、论；其中 ASCII 的 4 个字符各占 1 字节，4 个汉字各占 3 字节，合计 16 字节。）",
+      "tool_exactly_verified": true,
+      "max_root_output_tokens": 512,
+      "independent_completion": false,
+      "manual_content_review": "accepted_selected_sample"
+    },
+    {
+      "case": "academic-01",
+      "run_id": "run-6e5373cc9c534747b0bab0b8c8e56894",
+      "conversation_id": "conversation-8750c76138314799876d8799aecd7d45",
+      "input_sha256": "53442cda3edbc75f671d0b238ba593c8f14774b5b7fedb70e40efbb4e2b027c7",
+      "private_receipt": ".data/agent-probes/f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a.json",
+      "receipt_sha256": "af3a20b01b29ab05730d6853cbe77f870e9192b613bfcc960785e1fdadfa2ec7",
+      "runtime_probe_passed": false,
+      "terminal_action": null,
+      "run_status": null,
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "root_start",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1",
+          "kind": "conflict",
+          "action": null,
+          "failure_code": "agent_decision_invalid"
+        }
+      ],
+      "final_answer": null,
+      "tool_exactly_verified": false,
+      "max_root_output_tokens": 512,
+      "independent_completion": false,
+      "manual_content_review": "not_accepted"
+    },
+    {
+      "case": "academic-02",
+      "run_id": "run-46724a2af3884e9492f8f7beee426dbc",
+      "conversation_id": "conversation-001857eb0cf945e7876883e4d7e28b2d",
+      "input_sha256": "53442cda3edbc75f671d0b238ba593c8f14774b5b7fedb70e40efbb4e2b027c7",
+      "private_receipt": ".data/agent-probes/d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6.json",
+      "receipt_sha256": "7fe41958ba54abd5d3e41fde752a819a613ea56e33c94976635fa3d70e40f146",
+      "runtime_probe_passed": false,
+      "terminal_action": null,
+      "run_status": null,
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "root_start",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1",
+          "kind": "failed",
+          "action": null,
+          "failure_code": "provider_structured_output_invalid"
+        }
+      ],
+      "final_answer": null,
+      "tool_exactly_verified": false,
+      "max_root_output_tokens": 2048,
+      "independent_completion": false,
+      "manual_content_review": "not_accepted"
+    },
+    {
+      "case": "academic-03",
+      "run_id": "run-5870f135edb040a7a229b96412c69729",
+      "conversation_id": "conversation-eb1c4b55e3a2432f9f8b782379f6a4df",
+      "input_sha256": "53442cda3edbc75f671d0b238ba593c8f14774b5b7fedb70e40efbb4e2b027c7",
+      "private_receipt": ".data/agent-probes/0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818.json",
+      "receipt_sha256": "a9e0d1c70ae95db501234d4ef990eb8c41aef72dd5d8a65bf4533297a3d06fcf",
+      "runtime_probe_passed": true,
+      "terminal_action": "respond",
+      "run_status": "preparing",
+      "phases": [
+        {
+          "name": "intent",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "root_start",
+          "kind": "ok",
+          "action": null,
+          "failure_code": null
+        },
+        {
+          "name": "step_1",
+          "kind": "ok",
+          "action": "respond",
+          "failure_code": null
+        }
+      ],
+      "final_answer": "不能仅凭这两组观测判断“B明显优于A”。\n\n观测事实：A成功6次、失败4次，共10次，成功率0.60；B成功7次、失败3次，共10次，成功率0.70。两者只相差1次成功（或10个百分点）。\n\n为什么不能下“明显”结论：\n\n1. 样本量极小。每个实验只有10次观测，单次结果的变化对成功率影响很大：A再多成功1次就变成0.70，B少成功1次就变成0.60，差距随即消失或反转。\n\n2. 不确定性大。在只有10次观测时，用观测成功率估计真实成功概率会有很大波动。仅凭6/10和7/10，无法排除“两者真实表现相同或接近”的可能性，也无法排除“A实际上更好”的可能性。差异仅1次成功，远不足以称为“明显”。\n\n3. 缺少变异性和重复性信息。成功率是汇总数字，没有说明每次实验的条件是否一致、结果是否稳定、是否存在批次效应或时间趋势。\n\n4. 缺少设计信息。不知道A和B是否在相同条件下、相同对象或样本上比较，是否随机分配，是否存在顺序、学习、疲劳、选择偏差等混淆因素。\n\n5. “明显”本身缺少判定标准。没有事先定义多大差异算明显，也没有给出可接受的错误率或决策规则，因此不能事后把1次成功差异解释为明显优势。\n\n进一步研究需要的信息：\n\n- 每个实验的总次数是否只有10次，是否还有更多观测未提供；两组样本量是否相同、是否独立。\n- 实验A和B的明确定义：处理、条件、对象、环境、时间、测量方式是否一致。\n- 分配机制：是否随机分配、是否有配对或分层、是否存在先后顺序或交叉设计。\n- 结果定义：成功/失败的判定标准、是否客观、是否有测量误差或判定者偏差。\n- 重复与稳定性：是否跨批次、跨时间、跨对象重复；各组结果的分布和趋势。\n- 潜在混杂因素：对象特征、实验条件、操作者、设备、环境等是否在两组间可比。\n- 预先设定的分析计划：主要指标、最小有意义差异、可接受的错误率、样本量依据。\n- 数据的完整记录：原始逐次结果、缺失值、剔除情况、异常值处理。\n\n结论：现有观测只显示B的观测成功率略高（0.70对0.60），但差异仅1次成功，样本量小、不确定性大，不能判断B明显优于A。需要更多观测和上述设计、条件、重复性信息，才能做出可靠判断。",
+      "tool_exactly_verified": false,
+      "max_root_output_tokens": 2048,
+      "independent_completion": false,
+      "manual_content_review": "accepted_selected_sample"
+    }
+  ],
+  "model_attempts": [
+    {
+      "id": "probe-attempt-c400e4d5d78e28fbbc1783e9783828ec89fe7902d142e94e36fb9827293d8138",
+      "invocation_id": "probe-attempt-c400e4d5d78e28fbbc1783e9783828ec89fe7902d142e94e36fb9827293d8138",
+      "run_id": "run-a82c13edbeca493ea7d40473d0192b0c",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 30,
+          "wall_time_ms": 883,
+          "output_tokens": 6
+        },
+        "attempt_id": "probe-attempt-c400e4d5d78e28fbbc1783e9783828ec89fe7902d142e94e36fb9827293d8138",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "585f1855-07f8-421e-a677-aee5e3a10d59"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-60c24b4a55514e0b83d2e59e095c5fab",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "1"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 1,
+        "max_output_tokens": 128,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "4d2b65362222eec6d2c4fcfbe2f36776ded334243abb42b465f0ebc1f1c08735",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "4d2b65362222eec6d2c4fcfbe2f36776ded334243abb42b465f0ebc1f1c08735"
+      }
+    },
+    {
+      "id": "probe-intent-a5b3d2a97acb60fb66a17c6a6653550d63aeedfcc77c755b1d1c72538758da52",
+      "invocation_id": "probe-intent-a5b3d2a97acb60fb66a17c6a6653550d63aeedfcc77c755b1d1c72538758da52",
+      "run_id": "run-32b161d27f274498b1c7b2098352ba70",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1066,
+          "wall_time_ms": 1503,
+          "output_tokens": 188
+        },
+        "attempt_id": "probe-intent-a5b3d2a97acb60fb66a17c6a6653550d63aeedfcc77c755b1d1c72538758da52",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "36e23212-794a-4f1a-9c7f-7d0d368c3bc7"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-4a8fc9409f9541018f1f45cdfd23c556",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "08ff4d81295ef2a4ecc5c9b1d3cd5ead6e0a2c0325b7e378e5b3cb85da2dfb7b",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "08ff4d81295ef2a4ecc5c9b1d3cd5ead6e0a2c0325b7e378e5b3cb85da2dfb7b"
+      }
+    },
+    {
+      "id": "probe-intent-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+      "invocation_id": "probe-intent-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+      "run_id": "run-6e5373cc9c534747b0bab0b8c8e56894",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1079,
+          "wall_time_ms": 1350,
+          "output_tokens": 198
+        },
+        "attempt_id": "probe-intent-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+        "billing_state": "pending",
+        "cached_input_tokens": 128,
+        "provider_receipt_id": "584427ce-ed80-4377-a756-2fd2da2170b0"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-6d37c4764e3944958169da948923b637",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "13309dbfd1e98b0ee39afcd7c4d2f97a4dfff449fcef4e4f4b800d171e4e9ce9",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "13309dbfd1e98b0ee39afcd7c4d2f97a4dfff449fcef4e4f4b800d171e4e9ce9"
+      }
+    },
+    {
+      "id": "probe-intent-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+      "invocation_id": "probe-intent-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+      "run_id": "run-84114ebf307a422daf3365862243bbfd",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1060,
+          "wall_time_ms": 1086,
+          "output_tokens": 147
+        },
+        "attempt_id": "probe-intent-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "edb13847-19b9-45d4-8d0d-885cb1078044"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-6ee3f1ac484547d5b5354ef13143d136",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "90bc24b52b1880fb919d478243655633e8885f4c8f17f76b4c4498661a321b66",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "90bc24b52b1880fb919d478243655633e8885f4c8f17f76b4c4498661a321b66"
+      }
+    },
+    {
+      "id": "probe-step-model-1-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+      "invocation_id": "probe-step-model-1-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+      "run_id": "run-84114ebf307a422daf3365862243bbfd",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1397,
+          "wall_time_ms": 946,
+          "output_tokens": 38
+        },
+        "attempt_id": "probe-step-model-1-62b4fa086c4c469f4740251063e5f390160e9fa7c3972f0f7b8d33df9ddc4de7",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "eacf24db-2333-4858-9ced-2334703fb687"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-6ee3f1ac484547d5b5354ef13143d136",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 512,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "d36edd04b55ee66592c4ffa42ffe1677c9410dde85330f0fd1f4188085e50223",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "d36edd04b55ee66592c4ffa42ffe1677c9410dde85330f0fd1f4188085e50223"
+      }
+    },
+    {
+      "id": "probe-intent-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "invocation_id": "probe-intent-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "run_id": "run-0416112f0d87421ea4c5c48daf49129e",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1072,
+          "wall_time_ms": 1721,
+          "output_tokens": 251
+        },
+        "attempt_id": "probe-intent-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+        "billing_state": "pending",
+        "cached_input_tokens": 128,
+        "provider_receipt_id": "adbc5adf-65af-40ba-8521-5881e3954480"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-23efa34627a94e0587f25415f6ecc09f",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "8bbc969d814001a18f60daa286b3f38dabb6e10012563f3052410e1bd235f02b",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "8bbc969d814001a18f60daa286b3f38dabb6e10012563f3052410e1bd235f02b"
+      }
+    },
+    {
+      "id": "probe-intent-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+      "invocation_id": "probe-intent-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+      "run_id": "run-46724a2af3884e9492f8f7beee426dbc",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1079,
+          "wall_time_ms": 1911,
+          "output_tokens": 255
+        },
+        "attempt_id": "probe-intent-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+        "billing_state": "pending",
+        "cached_input_tokens": 896,
+        "provider_receipt_id": "3e30925b-9042-4954-816b-cf3f17d74aff"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-7211f4f1b49947ab8f36646495a8fcc4",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "901895f1eeade39c070baeab269fcb9c5d13f9a5482389996b08b1a1b16645ae",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "901895f1eeade39c070baeab269fcb9c5d13f9a5482389996b08b1a1b16645ae"
+      }
+    },
+    {
+      "id": "probe-step-model-1-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+      "invocation_id": "probe-step-model-1-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+      "run_id": "run-5870f135edb040a7a229b96412c69729",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1835,
+          "wall_time_ms": 4193,
+          "output_tokens": 616
+        },
+        "attempt_id": "probe-step-model-1-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "8e462655-81fa-4b88-92a2-dd229b4efdeb"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-ddf15405fb9a4f4ab8800b468e03015d",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 2048,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "b702f6c97df87f59c79514448e7bf67f4bacda28c6250948a7838d5578d745e5",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "b702f6c97df87f59c79514448e7bf67f4bacda28c6250948a7838d5578d745e5"
+      }
+    },
+    {
+      "id": "probe-step-model-1-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+      "invocation_id": "probe-step-model-1-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+      "run_id": "run-46724a2af3884e9492f8f7beee426dbc",
+      "state": "failed",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1881,
+          "wall_time_ms": 5375,
+          "output_tokens": 799
+        },
+        "attempt_id": "probe-step-model-1-d79108609ac024698def2b7120a052684eeb1109b186ea30bd3ce4ca2e7595b6",
+        "billing_state": "pending"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-7211f4f1b49947ab8f36646495a8fcc4",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 2048,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "df00a7c2cb2cd99547d8b7261de5fa56e964c0332e6dae14f4c831026d4380e5",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "df00a7c2cb2cd99547d8b7261de5fa56e964c0332e6dae14f4c831026d4380e5"
+      },
+      "failure": {
+        "code": "provider_structured_output_invalid",
+        "message": "Model attempt failed; inspect its protected receipt for status",
+        "category": "model_protocol",
+        "retryable": false,
+        "failed_phase": "model_provider",
+        "side_effect_state": "unknown"
+      }
+    },
+    {
+      "id": "probe-intent-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+      "invocation_id": "probe-intent-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+      "run_id": "run-5870f135edb040a7a229b96412c69729",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1079,
+          "wall_time_ms": 1479,
+          "output_tokens": 204
+        },
+        "attempt_id": "probe-intent-0b20542545da15b6a7316293b2eff9a60c94a99d65f47ccd48050eb1027fd818",
+        "billing_state": "pending",
+        "cached_input_tokens": 896,
+        "provider_receipt_id": "ee607379-4af2-4149-bafc-d951eb0bd9ac"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-ddf15405fb9a4f4ab8800b468e03015d",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 4096,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "1ac04dca553d59c45d7e24b31ca69bdbd92b5f5f18dccdf35d85d7adba9a9e92",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "1ac04dca553d59c45d7e24b31ca69bdbd92b5f5f18dccdf35d85d7adba9a9e92"
+      }
+    },
+    {
+      "id": "probe-step-model-1-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+      "invocation_id": "probe-step-model-1-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+      "run_id": "run-6e5373cc9c534747b0bab0b8c8e56894",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1494,
+          "wall_time_ms": 3716,
+          "output_tokens": 512
+        },
+        "attempt_id": "probe-step-model-1-f59e513b62a24c51f5dee2c881c1237a5930c8ea9b490dbfad8d39326a0d082a",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "af94561f-18a8-4057-a774-b2dc267e8c82"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-6d37c4764e3944958169da948923b637",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 512,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "394f32c2991ceeec89c5ccebf7cefb5cf1d0cedd4f6e72fe60b90397f68fcdd9",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "394f32c2991ceeec89c5ccebf7cefb5cf1d0cedd4f6e72fe60b90397f68fcdd9"
+      }
+    },
+    {
+      "id": "probe-step-model-2-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "invocation_id": "probe-step-model-2-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "run_id": "run-0416112f0d87421ea4c5c48daf49129e",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 3063,
+          "wall_time_ms": 1463,
+          "output_tokens": 175
+        },
+        "attempt_id": "probe-step-model-2-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+        "billing_state": "pending",
+        "cached_input_tokens": 128,
+        "provider_receipt_id": "7533541f-672a-48bf-bb3b-ad0bf6a7e790"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-23efa34627a94e0587f25415f6ecc09f",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 512,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "fc9ce5b16f3e092cd4b48348da233f6d1b4a78956e4de5872a016aa2fd1cb4e8",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "fc9ce5b16f3e092cd4b48348da233f6d1b4a78956e4de5872a016aa2fd1cb4e8"
+      }
+    },
+    {
+      "id": "probe-step-model-1-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "invocation_id": "probe-step-model-1-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+      "run_id": "run-0416112f0d87421ea4c5c48daf49129e",
+      "state": "received",
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 1760,
+          "wall_time_ms": 1014,
+          "output_tokens": 136
+        },
+        "attempt_id": "probe-step-model-1-3ab53305ab1f7ee339d47c79cd89f0e709c669f7bbb30ee23d83f1461281476d",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "9bd86f38-47b9-4835-91b5-0524f343a9a0"
+      },
+      "actual_config": {
+        "model_id": "deepseek-flash",
+        "policy_ref": {
+          "id": "model-policy-23efa34627a94e0587f25415f6ecc09f",
+          "kind": "policy",
+          "version": "1"
+        },
+        "provider_ref": {
+          "id": "deepseek-live",
+          "kind": "provider",
+          "version": "2"
+        },
+        "reasoning_level": "none",
+        "catalog_revision": 2,
+        "max_output_tokens": 512,
+        "provider_model_name": "deepseek-flash"
+      },
+      "response_ref": {
+        "id": "eeb7d4f1b60d8dfd7df81ef21d3f509f7577379c6f3931a95d75fe920e059f64",
+        "kind": "blob",
+        "version": "1",
+        "content_hash": "eeb7d4f1b60d8dfd7df81ef21d3f509f7577379c6f3931a95d75fe920e059f64"
+      }
+    }
+  ],
+  "totals": {
+    "input_tokens": 17895,
+    "output_tokens": 3525,
+    "model_calls": 13,
+    "cached_input_tokens": 2176,
+    "billing_state": "pending",
+    "cache_reporting_scope": "Usage-reported cache counts only; failed parser cache counts unavailable in Usage"
+  },
+  "acceptance": "Three selected runtime samples passed after preserved failed attempts; not general quality benchmark",
+  "manual_approval_scope": "Explicit scripted development approval, exact read-only text.inspect; not UI/native user consent",
+  "original_requirements_preserved": true,
+  "run_completed": false,
+  "flags_enabled": [],
+  "native_function_call_protocol_verified": false,
+  "professional_quality_verified": false,
+  "raw_data_git_tracked": false,
+  "academic_quality": "Selected sample reviewed: observed rates, small-sample uncertainty and design gaps preserved; no invented paper or statistical-test value; not general scientific quality certification"
+}

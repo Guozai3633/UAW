@@ -1,20 +1,20 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.11"
+VERSION = "0.12"
 DATE = "2026-10-09"
 BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
     "commit": "14f844253ab3ddc3b1366fa989e5c1cb7a3573ef",
-    "commit_kind": "focused_verified_three_worker_integration_with_real_provider_pending",
+    "commit_kind": "focused_verified_bounded_deepseek_live_runtime_phase",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2h-start",
-    "integration_ref": "ms-i2h-a2",
+    "integration_ref": "ms-i2h-a3",
     "last_full_runtime_ref": "ms-i2g",
-    "phase_different_passing_nodes": 421,
+    "phase_different_passing_nodes": 31,
     "phase_is_full_milestone": False,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
@@ -23,7 +23,7 @@ BASELINE = {
     "last_verified_scope": "MS-I2g full final Context/Tool/Runner and current Run/model/role/result sources; actual SQL/OS fixture signatures, controlled HTTP; no actual LLM/IPC/native user confirmation/execution",
     "current_unverified_round": "MS-I2h",
     "pending_semantic_acceptance_round": "P1-01",
-    "pending_gates": ["D01 final storage authority", "D06 actual model provider", "D03 Runner execution mode"],
+    "pending_gates": ["D01 final storage authority", "D06 production provider governance", "D03 Runner execution mode"],
     "next_wave_dispatch_channel": "published_documents_for_user_to_forward",
 }
 
@@ -94,7 +94,7 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2h-A2三组件审阅/合入与受影响接线接受，421聚焦节点通过；完整MS-I2h继续。DeepSeek凭据句柄/模型名待用户提供，真实LLM未验收。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
+    "A": dict(state="MS-I2h-A3实际DeepSeek固定模型和三个有界任务样例通过，31聚焦节点通过；完整成果/生产来源/前端及MS-I2h继续。B/C/D组件已接受，下一包未派发。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
     "B": dict(state="MS-C6最终1cd90da合入2969551，351节点原回执复核，组件接受；A补重要正文保护并复验。下一包未派发。", package="MS-C6", ready=False, base_ref="ms-i2h-start"),
     "C": dict(state="MS-T2e最终94c7506合入32961fd，342节点原回执复核，组件接受；A接检索/固定工具可见性。下一包未派发。", package="MS-T2e", ready=False, base_ref="ms-i2h-start"),
     "D": dict(state="MS-R2e最终7d6ee06合入cb087d0，431节点/OS清理复核，组件接受；A发布FileContent局部扩容并实跑受影响读取。下一包未派发。", package="MS-R2e", ready=False, base_ref="ms-i2h-start"),

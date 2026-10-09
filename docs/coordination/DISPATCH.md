@@ -1,6 +1,13 @@
 # 多 session 派发和集成记录
 
-## 当前阶段：MS-I2h-A2（2026-10-09）
+## 当前阶段：MS-I2h-A3（2026-10-09）
+
+- 用户指定DeepSeek-V4.1-Flash并给受保护凭据句柄；真实GET模型清单、ModelRuntime、Intent及根循环已验。13次调用含原失败，三个最终有界样例通过；原文和固定模型保留，费用pending。
+- 31不同聚焦检查通过；Ruff/233格式/Mypy141源码通过，历史全量1077不重写。修复来源定位和根输出额度，严格JSON拒绝与简短必填提示保留。
+- [阶段记录](../implementation/MS-I2h-A3.md)、[回执](../implementation/evidence/ms-i2h-a3.json)。专业成果、生产认证/IPC/用户确认、多规则实际评估器及embedding仍待验；flags/公开入口未开放。
+- 发布标签ms-i2h-a3；代码/证据提交在发布阶段记录。B/C/D组件接受保持，下一包未派发。
+
+## 历史阶段：MS-I2h-A2（2026-10-09）
 
 - B/MS-C6、C/MS-T2e、D/MS-R2e已审阅并按组件接受；正常merge分别2969551/32961fd/cb087d0，无冲突，worker分支/提交未改。
 - 原始回执和来源字节已复核：B351、C342、D431通过；C失败与复跑、D真实Windows回执及cleaned保留，计数不累加成产品进度。

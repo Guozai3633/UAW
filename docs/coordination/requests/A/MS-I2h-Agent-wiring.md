@@ -95,3 +95,11 @@ CompletionPort默认缺失；完成提案没有实际专业质量、交付和当
 assemble_registered_context接受rule_assessor，默认缺实际Model评估器仍拒绝多规则。assemble_text_tool与assemble_agent_runtime接受同Registry的retriever；有检索时最多32候选，无检索保留有界小目录。实际过滤工具Ref/描述/schema作为external材料进入JSON决策模型，独立ModelToolSet和当前目录/权限继续复查。
 
 FileContent单字段字符上限65536、实际读取64KiB UTF-8/全文1MiB，通用Text不变；D组件不等于可信IPC或Tool applied。模型settings结构化模式为显式json_schema或json_object加本地schema校验，不静默降级，默认档位进入实际配置。实施回执见[MS-I2h-A2](../../../implementation/MS-I2h-A2.md)。
+
+## MS-I2h-A3实际DeepSeek与有界输出
+
+实际固定API模型deepseek-flash，json_object加本地schema校验。内部ModelConnectionAcceptance消费管理员身份和实际SQL成功invocation/output，推进提供方配置/绑定同版本；须再登记模型并发布配置，旧Run不迁移。
+
+assemble_agent_runtime新增max_output_tokens=512，合法整数1..16384，同步用于RegisteredAgentContexts输出预留和RegisteredAgentModels上限，再由固定模型/预算约束。ops/agent_probe.py最多4根步骤，显式--approve-text-inspection只批准精确只读text.inspect，原等待操作恢复不重选Model。Intent模型quote可省start/end，Runtime唯一精确定位并保存完整公共IntentProposal；不匹配/重复仍拒绝。外部HTTP/Runtime接口和shared ports/contracts未变，提示词字节及内部JSON schema已更新，worker下包边界以新标签和environment.json核对。
+
+真实样例及失败/质量范围见[MS-I2h-A3](../../../implementation/MS-I2h-A3.md)。

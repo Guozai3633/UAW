@@ -1,5 +1,5 @@
 {
-  "plan_version": "0.11",
+  "plan_version": "0.12",
   "date": "2026-10-09",
   "status": "ms_i2h_parallel_capability_packages",
   "baseline": {
@@ -7,14 +7,14 @@
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
     "commit": "14f844253ab3ddc3b1366fa989e5c1cb7a3573ef",
-    "commit_kind": "focused_verified_three_worker_integration_with_real_provider_pending",
+    "commit_kind": "focused_verified_bounded_deepseek_live_runtime_phase",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
     "dispatch_ref": "ms-i2h-start",
-    "integration_ref": "ms-i2h-a2",
+    "integration_ref": "ms-i2h-a3",
     "last_full_runtime_ref": "ms-i2g",
-    "phase_different_passing_nodes": 421,
+    "phase_different_passing_nodes": 31,
     "phase_is_full_milestone": false,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": true,
@@ -25,14 +25,14 @@
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
       "D01 final storage authority",
-      "D06 actual model provider",
+      "D06 production provider governance",
       "D03 Runner execution mode"
     ],
     "next_wave_dispatch_channel": "published_documents_for_user_to_forward"
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2h-A2三组件审阅/合入与受影响接线接受，421聚焦节点通过；完整MS-I2h继续。DeepSeek凭据句柄/模型名待用户提供，真实LLM未验收。",
+      "state": "MS-I2h-A3实际DeepSeek固定模型和三个有界任务样例通过，31聚焦节点通过；完整成果/生产来源/前端及MS-I2h继续。B/C/D组件已接受，下一包未派发。",
       "package": "MS-I2h",
       "ready": true,
       "base_ref": "ms-i2h-start"

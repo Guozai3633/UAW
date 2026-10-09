@@ -1,10 +1,10 @@
 # UAW 项目全局指引
 
-UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。**工程、开发管理/受理、版本化上下文、模型网关、审批/预算和纯文本工具已有开发实现；本轮接通根Agent的有限步动态循环。真实LLM、完整交付验收、生产认证/IPC/用户确认和正式前端仍未就绪。**
+UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。**工程、开发管理/受理、版本化上下文、模型网关、审批/预算和纯文本工具已有开发实现；本轮接通根Agent的有限步动态循环。DeepSeek真实固定模型、办公/文本工具/学术小样例已验证；完整交付验收、生产认证/IPC/用户确认和正式前端仍未就绪。**
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已审阅合入并按组件接受；[MS-I2h-A2](docs/implementation/MS-I2h-A2.md)有421个不同聚焦节点通过。真实DeepSeek录入与验收见[说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)，凭据/模型名仍待提供。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
+上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已审阅合入并按组件接受；[MS-I2h-A2](docs/implementation/MS-I2h-A2.md)有421个不同聚焦节点通过。真实DeepSeek录入与验收见[说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)，真实模型已在A本机开发配置接入；[MS-I2h-A3](docs/implementation/MS-I2h-A3.md)记录13次调用、首次失败及修复、三个最终小样例和31个不同聚焦检查。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
 
 ## 先看这些入口
 

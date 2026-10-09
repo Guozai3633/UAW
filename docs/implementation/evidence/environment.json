@@ -2,7 +2,7 @@
   "date": "2026-10-09",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g 1077 unique passing integration nodes across original full run and affected-module repair; final Context, Tool, Runner, current Run/model/role/recovery sources and internal assemblies; actual LLM/IPC/user confirmation/execution still not proved; MS-I2h-A1 root/dynamic bounded Agent development component verified by 36 different focused nodes; historical full 1077-node receipt remains MS-I2g, not a current full replay; MS-I2h-A2 worker components reviewed/merged, 421 focused passing nodes after targeted fixes, explicit JSON-object adapter and hidden credential enrollment prepared; actual LLM key/model pending",
+  "scope": "P0/P1-01, first-wave components, MS-I1 wiring, MS-I2a approvals/Ed25519, MS-C2 snapshots/references and MS-I2b live parent policy checks, MS-T2a/MS-R2a components and MS-I2c recovery ports, MS-C3/MS-R2b components and MS-I2d root leases/input routing, MS-T2b reconciliation/MS-I2e integration, MS-I2f1 Runner registration/current-authority components, MS-C4 pure-computation cache, MS-T2c recovery facade, MS-R2c signed terminal journal and MS-I2f2 registered receipt Reader wiring; real PostgreSQL and controlled HTTP replies; no external LLM, real pairing or Runner execution; MS-I2g 1077 unique passing integration nodes across original full run and affected-module repair; final Context, Tool, Runner, current Run/model/role/recovery sources and internal assemblies; actual LLM/IPC/user confirmation/execution still not proved; MS-I2h-A1 root/dynamic bounded Agent development component verified by 36 different focused nodes; historical full 1077-node receipt remains MS-I2g, not a current full replay; MS-I2h-A2 worker components reviewed/merged, 421 focused passing nodes after targeted fixes, explicit JSON-object adapter and hidden credential enrollment prepared; actual LLM key/model pending; MS-I2h-A3 actual DeepSeek fixed-model protocol and three bounded runtime samples accepted after preserved failures; professional delivery and complete milestone pending",
   "components": {
     "fastapi": {
       "installed": true,
@@ -130,7 +130,7 @@
     "runner_signed_terminal_journal_components": true,
     "runner_registered_receipt_reader_wiring": true,
     "runner_production_source_binding": false,
-    "external_llm_verified": false,
+    "external_llm_verified": true,
     "model_agent_runner": false,
     "current_run_model_sources": true,
     "registered_tool_role_sources": true,
@@ -146,7 +146,9 @@
     "tool_retriever_root_assembly": true,
     "root_visible_tool_definitions": true,
     "windows_bounded_read_components": true,
-    "json_object_with_local_schema_validation": true
+    "json_object_with_local_schema_validation": true,
+    "bounded_live_root_agent_verified": true,
+    "professional_delivery_verified": false
   },
   "test_counts": {
     "tests": 1077,
@@ -182,6 +184,7 @@
     "contracts/interface_catalog.py": "43c5d684c81e75c6ff79380cb95b62cfdc439bc5243ed2068e25e5808831d1eb",
     "contracts/uaw.schema.json": "3147f4dbee08f3ecd2681895f563b187f574a2f4d5f74acdbc1ef60c6841e0a1",
     "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
+    "ops/agent_probe.py": "381585ea644af68c17a571384b75efd8d52410ed973530358e45a67e30f8a921",
     "ops/capture_environment.py": "883f98207a7dda30dd79c50bc6b804170736f9cc3a4d762cbaf4b927f5116fe2",
     "ops/check.ps1": "a364de174696f578c320c9045464d4abafd94c8de1ca01eeff5f602ab1715860",
     "ops/compose.yaml": "c7ad2ad10451d6c8b3a1f2ed14eb3b8ed307dc1bca2b6125e7b098b5c3793c54",
@@ -201,7 +204,7 @@
     "src/uaw/__init__.py": "6a6a891da0c35ae75d15b3d12e0c847eb2beb9adf6e879b9e29936172035786a",
     "src/uaw/agent/__init__.py": "5618d0b0140f4006bcd104106cd4bc0812750b76da786eb62f5e23515305aa95",
     "src/uaw/agent/adapters.py": "8e0996e45e5fe20bdd39f00a505f30c00e214754c5581dbc8f11ef506595e287",
-    "src/uaw/agent/assembly.py": "320fa3717c75d64b49855371dcf3c9a4a8dab6856e6ae69acce4e2e036afbef7",
+    "src/uaw/agent/assembly.py": "68819ea47a8df735f86c497e1f7b62975f95b2a42469d1abe2246b5dcddd17fd",
     "src/uaw/agent/contracts.py": "63bd73d5ff0c5431fa08015b853794670e1a1636fe9748e83587a484863fb4b3",
     "src/uaw/agent/engines/__init__.py": "5cd3281b59aa20d4fd454d7a3042015262603210b098e9335e573c236d28fa36",
     "src/uaw/agent/engines/checkpoints.py": "fce5c27bbc38eb8d4c83fb5ab96fffd8713aa34c3a6bbde5d1c0c80a9e989d1a",
@@ -247,13 +250,14 @@
     "src/uaw/infrastructure/db/transactions.py": "a0020ced142502b438852023d3c83f31e424e47edea264b8d43e036fe65a4108",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
-    "src/uaw/intent/facade.py": "ced8cd17e3be2eebc602c65628eb03a0466d4b89d20dfcae614677e89b24ab3e",
+    "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
     "src/uaw/intent/frame.py": "4459d533d5f80c152a5e470c4c26224122bacad6a382bcc38c4c8a236a2946dd",
     "src/uaw/intent/original.py": "e7ca89c5bbcea63d9230245eee44646f9811d8d702d872344accc09929b031b1",
     "src/uaw/intent/ports.py": "aa8da8fd224204f322f7d77f5215e2317af682875d31a25bf4cbfdfc395fef45",
-    "src/uaw/intent/semantic.py": "e5938b872eb135bdab71341a4fad2e60fabf52333848d63d2e83a547559bd318",
+    "src/uaw/intent/semantic.py": "cf6bf3d0349e50c88369d0a80badd10ae2656104dc95ac25e853829b3f4b801d",
     "src/uaw/model/adapters.py": "7115087ce65be69584f08007ecfccd4e207a8f2e8cb3d4d1c2cd494aa7539f70",
     "src/uaw/model/capability.py": "a3ecaba44089eec8311e5c2fab5a44410e97f9e8490555731ac0389562710b7f",
+    "src/uaw/model/connection.py": "4d6095df6c5661b3959cf86f49e46b9079c1cfecdb94848b0116b451c003d486",
     "src/uaw/model/context.py": "95782ebc70f86d74e038b20b8c95912af7422b3c40564b0fb43e3099e124ec08",
     "src/uaw/model/contracts.py": "73e87368229443544f5985b658f47aede104ff7bac95127507b60b1b87335c59",
     "src/uaw/model/facade.py": "66593a455ebac27274b99e1f64b94b0b7c048345e3d8be5a5421a2a8a984ad44",
@@ -262,8 +266,8 @@
     "src/uaw/model/policy.py": "cb8354bd3701eae60037ea95ac3dc192c58b94e0a40763a57b8b619e492b0497",
     "src/uaw/model/ports.py": "fed6d8a541a68c4eb93ef07a9317020b8764d70d9b2beb6f343449f66b28a30e",
     "src/uaw/resources/__init__.py": "422f351371d1d70179a616b510b9e55b8ede11a0ad02395d656531147f6b0009",
-    "src/uaw/resources/prompts/agent-root-v1.txt": "b91d476780d0364988484bf46814437e87550c2802daffa80505a40e53682c6d",
-    "src/uaw/resources/prompts/intent-understand-v1.txt": "3f91702614fca270d1c8b6e3dd2842a950dbfa01685b58d5aa54cbce36114400",
+    "src/uaw/resources/prompts/agent-root-v1.txt": "873ab6d0a770755e7eee416cb6a7eecee601fb9712fb3f4596c3eaa93f1a1352",
+    "src/uaw/resources/prompts/intent-understand-v1.txt": "a61a99f44b40e05c9452d9cdccf0d54ee7421d8cdc4d1b976e95335095d2e01a",
     "src/uaw/run/__init__.py": "a422b2894ffd8197f6426969e000187361fe9c79df7a0eaad7e381f6636b8b7e",
     "src/uaw/run/approval.py": "13bc732c310d8982a50abdf406b91e0155d8979915fc0a58957d5f062fe4f9fb",
     "src/uaw/run/budget.py": "ef1e6782be5810c1c5453908158f80a777b38562df4e56d01b71a97e478c9e7f",
@@ -341,7 +345,8 @@
     "tests/integration/context/test_registered_chain_postgres.py": "6bf493e53a0a1c0c83676100bbc6ea3753d997db5876ec88664357de389a2167",
     "tests/integration/context/test_registered_postgres.py": "65d74b2c274bab9673b3baca974908a1ee9eb5c43d8ae5de21507989f202407f",
     "tests/integration/context/test_snapshots_postgres.py": "23b4629f58ca4cc9dc5298530d82508c7419c130d876c96f745d4529c4b1d36d",
-    "tests/integration/intent/test_understanding.py": "1bb1d58bac9b0aa7db2851a889f287c95bfe22b5fcde4018e922c91713a70c3a",
+    "tests/integration/intent/test_understanding.py": "d71076797ed2f621ff8d7e46c3a15d96db9c85e8d7d016e3ed626311d891e7c3",
+    "tests/integration/model/test_connection_postgres.py": "5025083286241b46d37c79f256c50d4b5c9924297e0efbad34b8d95d2b4e511a",
     "tests/integration/model/test_gateway.py": "7b356ade8f725d27a982af8a533cfa9048c37db0eb011dacffe97efacd559f72",
     "tests/integration/persistence/test_blob.py": "2108c3a75569269b7442e87b15534b79c479dc20734691383e2132b035de016e",
     "tests/integration/persistence/test_postgres.py": "4c75e62f77f2423eceaa9b67aa11cdd205f2c267adceddbb55ce4ee753a601d3",
@@ -400,6 +405,7 @@
     "tests/unit/runner/test_receipts.py": "5915b676e0be13db46db7686e7c46b9566aca15964f41503cdcb86cfe4e16e08",
     "tests/unit/shared/test_contracts.py": "d5f425f620daf0ed62add6b2700c700b4d04b42bf9e77253e74f5c1321d15a89",
     "tests/unit/test_development_boundary.py": "1ef0630afd806645dce974dc8a5159df9efb7f8a1ee78e56c96695ed37274481",
+    "tests/unit/test_intent_grounding.py": "53e62a8be2c16e3b82c6cfd42fcbe5a134a461545e767b30bdbbb798d7cd859d",
     "tests/unit/test_runner_signatures.py": "4cb10d356edcede702dadf3b0b17dbdfd4b63703ba8cb7594db8aa94ef6df42f",
     "tests/unit/tool/conftest.py": "81b3e5cf641fe2f82b5d907afd4b3a9a822e073970fb663efb301b7868552510",
     "tests/unit/tool/test_access_identity.py": "5b8437d94c7fd0b3a1c3a101b61a1268b4be3942e55f34f61bb5ad7f21d30b62",
@@ -477,13 +483,13 @@
       "Context query/time measurements continue in MS-C6; test wall time is not product latency."
     ],
     "latest_focused_phase": {
-      "phase": "MS-I2h-A2",
-      "path": "docs/implementation/evidence/ms-i2h-a2.json",
-      "sha256": "38cb72752317636b0cceb2bf62e45b8f1e5e107634dafcf2ca9494ae53c4b961",
-      "different_passing_nodes": 421,
+      "phase": "MS-I2h-A3",
+      "path": "docs/implementation/evidence/ms-i2h-a3.json",
+      "sha256": "7ee5785694c053b1aba2c125bada504aa9542c91c8bcd0e99b337a26db574134",
+      "different_passing_nodes": 31,
       "full_regression_repeated": false,
-      "previous_environment_sha256": "32b40b8c0af9eac462e69a8305c8ad786888c65e3eb9f8c7c51561c3e04fa93c",
-      "source_hashes_purpose": "Current reviewed bytes use focused and retained worker evidence; historical full1077 stays MS-I2g."
+      "previous_environment_sha256": "5d9462adf37bab6be173d392fb0e27fd6afe771c2e6c73cc5c0318060c35b72d",
+      "source_hashes_purpose": "Current focused and bounded real-provider evidence; full1077 remains historical MS-I2g"
     }
   }
 }

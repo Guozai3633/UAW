@@ -21,11 +21,55 @@ def proposal_schema() -> Payload:
         if not isinstance(node, dict):
             return node
         if "$ref" in node:
-            return expand(deepcopy(definitions[node["$ref"].rsplit("/", 1)[-1]]))
+            name = node["$ref"].rsplit("/", 1)[-1]
+            value = expand(deepcopy(definitions[name]))
+            if name == "IntentQuote":
+                # Compatibility accepts exact legacy spans. New model proposals
+                # quote text only; Runtime supplies unambiguous coordinates.
+                value["required"] = ["source_index", "text"]
+                value["description"] = (
+                    "Exact source quote; omit start/end. Runtime finds its unique match."
+                )
+            return value
         return {key: expand(value) for key, value in node.items() if not key.startswith("x-")}
 
     result: Payload = expand(deepcopy(definitions["IntentProposal"]))
     return result
+
+
+def ground_proposal(proposal: Payload, inputs: InputSet) -> Payload:
+    """Locate exact quotes without trusting a model's character arithmetic.
+
+    Legacy explicit spans still require strict equality. Text-only quotes must
+    occur exactly once within the selected original source, including whitespace.
+    No normalization, fuzzy matching, or inferred text is allowed.
+    """
+    grounded = deepcopy(proposal)
+    for group in ("requirements", "outputs"):
+        for item in grounded[group]:
+            quote = item["quote"]
+            if "start" in quote or "end" in quote:
+                if not {"start", "end"} <= quote.keys():
+                    raise reject("intent_quote_invalid", "Explicit quote span must be complete")
+                located_source(quote, inputs)
+                continue
+            index, text = quote["source_index"], quote["text"]
+            if type(index) is not int or index < 0 or index >= len(inputs.inputs) or not text:
+                raise reject("intent_quote_invalid", "Quote requires a nonempty owned source")
+            source = inputs.inputs[index]["text"]
+            start = source.find(text)
+            if start < 0:
+                raise reject(
+                    "intent_quote_invalid", "Quoted requirement differs from its user source"
+                )
+            if source.find(text, start + 1) >= 0:
+                raise reject(
+                    "intent_quote_ambiguous", "Quote occurs more than once; wider quote required"
+                )
+            quote.update(start=start, end=start + len(text))
+            located_source(quote, inputs)
+    validate_contract("IntentProposal", grounded)
+    return grounded
 
 
 def located_source(quote: Payload, inputs: InputSet) -> Payload:

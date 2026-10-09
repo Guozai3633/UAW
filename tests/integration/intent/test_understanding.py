@@ -158,6 +158,23 @@ async def test_bad_quote_cannot_invent_hard_requirement_and_is_billed(
     assert ledger["used"]["model_calls"] == 1 and len(case.requests) == 1
 
 
+async def test_text_only_quote_is_grounded_with_raw_model_output_preserved(understanding, case):
+    value = proposal(understanding.original["text"])
+    quote = value["requirements"][0]["quote"]
+    quote.pop("start")
+    quote.pop("end")
+    case.responses[:] = [response(value)]
+    result = await understanding.intent.understand(understanding.request, understanding.ctx)
+    assert result["kind"] == "ok", result
+    source = result["payload"]["constraints"][0]["source_refs"][0]
+    assert source["location"] == {"kind": "text_span", "start": 0, "end": len(quote["text"])}
+    output = await understanding.intent.frames.store.get(
+        understanding.ctx.principal, "model.outputs", understanding.ctx.attempt_id
+    )
+    assert output.payload["structured_data"] == value
+    assert result["payload"]["goal"] == understanding.original["text"]
+
+
 async def test_inferred_extra_work_cannot_replace_complete_user_goal(understanding, case):
     value = proposal(understanding.original["text"], "做完后发布到外网")
     value["requirements"], value["assumptions"] = [], ["可能需要发布，用户尚未确认"]

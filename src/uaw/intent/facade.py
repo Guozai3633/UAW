@@ -7,7 +7,7 @@ from uaw.infrastructure.db.transactions import reference
 from uaw.intent.frame import FrameRepository
 from uaw.intent.original import OriginalReader
 from uaw.intent.ports import UnderstandingContextPort
-from uaw.intent.semantic import frame_candidate, proposal_schema
+from uaw.intent.semantic import frame_candidate, ground_proposal, proposal_schema
 from uaw.model.policy import PolicyResolver
 from uaw.shared.contracts import JsonObject, TrustedExecutionContext
 from uaw.shared.errors import DomainError, error_result, reject
@@ -198,8 +198,9 @@ class IntentFacade:
         semantic_ref = reference(
             "semantic_parse", "semantic-" + parameter_hash({"attempt": ctx.attempt_id})
         )
-        proposal = output["structured_data"]
-        assert isinstance(proposal, dict)
+        raw_proposal = output["structured_data"]
+        assert isinstance(raw_proposal, dict)
+        proposal = ground_proposal(raw_proposal, inputs)
         output_attempt = output["attempt_id"]
         assert isinstance(output_attempt, str)
         candidate = frame_candidate(proposal, inputs, semantic_ref)
