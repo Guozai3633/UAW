@@ -15,6 +15,7 @@ from uaw.agent.tool_access import AgentToolAccess
 from uaw.model.facade import ModelFacade
 from uaw.model.gateway import ModelGateway
 from uaw.model.input_router import ContextModelInputs
+from uaw.shared.contracts import Ref
 from uaw.shared.settings import ConfigurationError
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
@@ -22,7 +23,12 @@ from uaw.tool.registry import ToolRegistry
 from uaw.tool.retrieval import ToolRetriever
 
 if TYPE_CHECKING:
-    from uaw.composition import Container, RegisteredContextBindings, TextToolBindings
+    from uaw.composition import (
+        Container,
+        OfficeToolBindings,
+        RegisteredContextBindings,
+        TextToolBindings,
+    )
 
 
 @dataclass(frozen=True)
@@ -38,12 +44,13 @@ class AgentAssembly:
 def assemble_agent_runtime(
     container: Container,
     contexts: RegisteredContextBindings,
-    tools: TextToolBindings,
+    tools: TextToolBindings | OfficeToolBindings,
     *,
     registry: ToolRegistry,
     completion: AgentCompletionPort | None = None,
     retriever: ToolRetriever | None = None,
     max_output_tokens: int = 512,
+    instruction_refs: tuple[Ref, ...] = (),
 ) -> AgentAssembly:
     if type(max_output_tokens) is not int or not 1 <= max_output_tokens <= 16384:
         raise ConfigurationError("Root output reserve must be between 1 and 16384 tokens")
@@ -82,6 +89,7 @@ def assemble_agent_runtime(
         access=container.tool_access,
         retriever=retriever,
         output_reserve=max_output_tokens,
+        instruction_refs=instruction_refs,
     )
     models = RegisteredAgentModels(
         model, original.policies, sources, max_output_tokens=max_output_tokens

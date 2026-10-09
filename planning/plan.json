@@ -1222,7 +1222,10 @@
         "MS-C4",
         "MS-I2f2",
         "MS-C5",
-        "MS-I2g"
+        "MS-I2g",
+        "MS-C6",
+        "MS-C7",
+        "MS-I2i"
       ]
     },
     {
@@ -1510,6 +1513,8 @@
         "MS-I2f2",
         "MS-T2d",
         "MS-I2g",
+        "MS-T2e",
+        "MS-T2f",
         "MS-I2f",
         "MS-I2",
         "MS-T2"
@@ -1688,6 +1693,8 @@
         "MS-I2f2",
         "MS-R2d",
         "MS-I2g",
+        "MS-R2e",
+        "MS-R2f",
         "MS-I2f",
         "MS-I2",
         "MS-R2"
@@ -1945,6 +1952,7 @@
       ],
       "implementation_record_target": "docs/implementation/P1-05.md",
       "parallel_packages": [
+        "MS-R2e",
         "MS-R2"
       ]
     },
@@ -2289,6 +2297,9 @@
         "MS-C3",
         "MS-C5",
         "MS-I2g",
+        "MS-C6",
+        "MS-I2h",
+        "MS-I2i",
         "MS-I3"
       ]
     },
@@ -2450,6 +2461,8 @@
       ],
       "implementation_record_target": "docs/implementation/P1-08.md",
       "parallel_packages": [
+        "MS-I2h",
+        "MS-I2i",
         "MS-I3"
       ]
     },
@@ -2595,6 +2608,8 @@
         "MS-I2f1",
         "MS-I2f2",
         "MS-T2d",
+        "MS-I2h",
+        "MS-I2i",
         "MS-I2f",
         "MS-T2",
         "MS-I3"
@@ -6029,7 +6044,8 @@
       "implementation_record_target": "docs/implementation/P4-04.md",
       "parallel_packages": [
         "MS-C4",
-        "MS-I2f2"
+        "MS-I2f2",
+        "MS-C7"
       ]
     },
     {

@@ -150,6 +150,14 @@ class ConfigurationService:
     @staticmethod
     def _profile(draft: Payload) -> None:
         profile = draft["profile_ref"]
+        if profile == reference("provider_profile", "tool.builtin.office", 1):
+            if (
+                draft["kind"] != "local"
+                or set(draft) != {"id", "kind", "profile_ref", "settings"}
+                or draft["settings"] != {"adapter_version": "1", "currency": "USD"}
+            ):
+                raise reject("builtin_provider_invalid", "Closed built-in office profile required")
+            return
         if (
             profile
             not in (

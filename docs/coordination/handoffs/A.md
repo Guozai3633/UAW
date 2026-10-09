@@ -162,3 +162,12 @@
 - 运行源码/测试/公共契约/锁/提示词不变，原841项回执保留；本次只改两项开发环境源与计划文档，未重跑841项，补充证据明确区分。
 - 固定准备标签ms-i2g-start，实际SHA见DISPATCH。A继续阶段版接口/当前来源和跨模块接线；不再把领域适配器实现全部集中到A。模块验证由worker承担，全量在集成里程碑执行。
 - [完整包范围](../requests/A/MS-I2g-parallel-packages.md)、[实际准备回执](../../implementation/MS-I2g-preparation.md)、[实际项目进度](../../implementation/PROGRESS-2026-10-08.md)、[可转发任务](../NEXT_WAVE.md)。完整P1/Tool/Runner/Agent及D01/D03/D06门槛保留。
+# MS-I2i-A1 阶段交付
+
+- 固定开工 `ms-i2i-start / d8023eb07e1460961782f297697da7428f6ad247`；A实际批读 `ms-i2i-batch-a1 / 65ef26d`已发布。
+- 实际固定模型评估、UTF-8文本/Markdown成果、原要求逐项核验、不可变提案/Bundle、独立用户接受和同会话终态CAS已实现；完整工具账本与终态集合复查保留。
+- C/D最终组件和A真实消费者已接受。B M3已合入，最终模块SQL已到121通过；最终源码/交接SHA仍等worker发布。
+- A跨阶段192不同聚焦节点通过，Ruff/281格式/Mypy164通过。46个真实DeepSeek尝试含全部失败，五类最终任务通过；取消/修订/同级冲突均不能越过完成门槛。
+- [实际范围与失败](../../implementation/MS-I2i-A1.md)、[详细接口和目录](../requests/A/MS-I2i-completion-wiring.md)、[A证据](../../implementation/evidence/ms-i2i-a1.json)。本轮全量尚未执行；旧1077属于MS-I2g。
+- 生产认证/本机用户确认/网页验证/专业文件/前端仍未开放；flags/公开绑定不变，D01/D03/D06未决定。最终汇合后再执行一次本轮全量。
+

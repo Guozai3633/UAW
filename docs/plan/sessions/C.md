@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2e组件接受保留。MS-T2f已发布待开工：两个办公纯数据工具/多executor与verifier/恢复；四里程碑连续开发。以DISPATCH的固定版本与派发为准。
+状态：MS-T2f组件接受：b09fb7d/efb997c，316 unit+178实际SQL。A办公审批/执行/费用/恢复接线通过；完整MS-T2仍按产品门槛。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 

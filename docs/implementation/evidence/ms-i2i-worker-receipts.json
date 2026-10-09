@@ -1,0 +1,145 @@
+{
+  "baseline": "d8023eb07e1460961782f297697da7428f6ad247",
+  "B_status": "M3 merged; final SQL and handoff pending",
+  "workers": [
+    {
+      "session": "C",
+      "package": "MS-T2f",
+      "source": "b09fb7d789026be69a26b5493aa3a7da13649be5",
+      "handoff": "efb997ce88fe9eb5a983546bb07ceef37c9a2d51",
+      "acceptance": "component_and_A_consumer_only",
+      "receipts": [
+        {
+          "file": "m1-unit-initial.xml",
+          "sha256": "9505ec53f2431be13b0bd3813d96f71cc64646b122208b63f8162f4ea4351448",
+          "states": {
+            "passed": 73,
+            "failed": 1,
+            "error": 1
+          }
+        },
+        {
+          "file": "m1-unit-fixed.xml",
+          "sha256": "2b7fde66374bd90bd560638b859b4b4d4eda0189cfc7ea09424a07b93ee9d610",
+          "states": {
+            "passed": 75
+          }
+        },
+        {
+          "file": "m2-unit.xml",
+          "sha256": "15d8f657e25972685722667a853a8075f3c2bcc7db1729a7905a9095c10612d2",
+          "states": {
+            "passed": 92,
+            "failed": 3
+          }
+        },
+        {
+          "file": "m2-unit-fixed.xml",
+          "sha256": "92840e4eec4659cdf221713cd4e55a07b4844a12ec4af86852d3882a90759f18",
+          "states": {
+            "passed": 93,
+            "failed": 1
+          }
+        },
+        {
+          "file": "m2-unit-final.xml",
+          "sha256": "73dff94a83f11fc071093cf9f55ed73ec1ac1b86af22b07458a5974238b7fc14",
+          "states": {
+            "passed": 94
+          }
+        },
+        {
+          "file": "all-unit.xml",
+          "sha256": "23ebaaf44901b0beed887a0a79882051ec3d8135d37e3d3050ebc76e0a27f6ff",
+          "states": {
+            "passed": 312
+          }
+        },
+        {
+          "file": "all-unit-final.xml",
+          "sha256": "9e9af2189fde993d368a3b644bf5e06ea5242596f57365207ac14039db414bde",
+          "states": {
+            "passed": 316
+          }
+        },
+        {
+          "file": "original-sql.xml",
+          "sha256": "c255a39471bd8ea53275945df46927972efc852f5200613c777b11bbb34aefb1",
+          "states": {
+            "passed": 124
+          }
+        },
+        {
+          "file": "office-sql-initial.xml",
+          "sha256": "e3d0d4f199afb16347246048faf238d4f9d4b899078463561b4cb8b550325432",
+          "states": {
+            "passed": 30,
+            "failed": 6
+          }
+        },
+        {
+          "file": "office-sql-fixed.xml",
+          "sha256": "4679b6a5820bed158e6f4d5c5b41ed6958e5cd2a812cd52eedcf716cd1f17a1c",
+          "states": {
+            "passed": 36,
+            "failed": 3
+          }
+        },
+        {
+          "file": "office-recovery-sql.xml",
+          "sha256": "b8e0b2c0313f144ca740f83decacf30bc479ef327047b7b1ff7818d5922997f4",
+          "states": {
+            "passed": 15
+          }
+        },
+        {
+          "file": "text-final-sql.xml",
+          "sha256": "571c3b5d4aa8bd3cdcd789b90995119950d47db531cbcda7ca74e25e9e4b9143",
+          "states": {
+            "passed": 30
+          }
+        },
+        {
+          "file": "mixed-final-sql.xml",
+          "sha256": "8383478f00dacc5a1645223653297e3fb8f5801089118880548c50641a37ffef",
+          "states": {
+            "passed": 3
+          }
+        }
+      ],
+      "historical_latest_states": {
+        "passed": 512,
+        "error": 1,
+        "failed": 1
+      },
+      "distinct_final_states": {
+        "passed": 494
+      },
+      "unit_passed": 316,
+      "sql_passed": 178,
+      "note": "Historical removed/renamed test IDs are retained in the history, not counted as current accepted nodes. Actual final unit receipt and each indexed SQL node verified."
+    },
+    {
+      "session": "D",
+      "package": "MS-R2f",
+      "source": "d3f60771accca99832673820c8a43c4ec32f4cbd",
+      "handoff": "cd6b33ca24596aa0c468a161ffede9ace2ea4fcd",
+      "acceptance": "component_and_A_consumer_only",
+      "receipts": [
+        {
+          "file": "full.xml",
+          "sha256": "580a4f20496ee6df25bc048bf9bc1741ea805305841f067949f5b4e4e4b2a6d2",
+          "states": {
+            "passed": 505
+          }
+        }
+      ],
+      "distinct_latest_states": {
+        "passed": 505
+      },
+      "cleanup_reports": 44,
+      "all_cleaned": true,
+      "scope": "Actual OS IPC/vault/signatures/temp read; independent UAW account/native confirmation fixtures"
+    }
+  ]
+}

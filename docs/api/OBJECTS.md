@@ -146,6 +146,7 @@
 | [BoardStatus](objects/BoardStatus.md) | 取值含义见字段及协议约束。 |
 | [CandidatePage](objects/CandidatePage.md) | 稳定筛选条件的分页结果。 |
 | [CheckPage](objects/CheckPage.md) | 稳定筛选条件的分页结果。 |
+| [CompletionBundle](objects/CompletionBundle.md) | 不可变成果、合同、报告和完成提案的版本关联。 |
 | [CompletionProposalRequest](objects/CompletionProposalRequest.md) | 核对要求、成果、报告与未知效果后提出完成。 |
 | [ComponentAgentAssessmentResult](objects/ComponentAgentAssessmentResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentAgentBoardResult](objects/ComponentAgentBoardResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -638,6 +639,7 @@
 | [AdminEnvironmentsRegisterRequest](objects/AdminEnvironmentsRegisterRequest.md) | 登记初始化模板。 |
 | [ArtifactPage](objects/ArtifactPage.md) | 稳定筛选条件的分页结果。 |
 | [ArtifactRecord](objects/ArtifactRecord.md) | 用户可编辑、预览、导出的版本化成果。 |
+| [ArtifactSourceBinding](objects/ArtifactSourceBinding.md) | 实际文本成果的原模型输出及工具观察归属。 |
 | [ArtifactsExportRequest](objects/ArtifactsExportRequest.md) | 导出固定版本。 |
 | [ArtifactsGetRequest](objects/ArtifactsGetRequest.md) | 成果版本。 |
 | [ArtifactsListRequest](objects/ArtifactsListRequest.md) | 成果列表。 |
@@ -889,6 +891,8 @@
 | [ComponentModelUsageResult](objects/ComponentModelUsageResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ConversationModelChoice](objects/ConversationModelChoice.md) | 用户选择当前会话模型；无法选inherit。 |
 | [ConversationModelMode](objects/ConversationModelMode.md) | 取值含义见字段及协议约束。 |
+| [EvaluationInputBinding](objects/EvaluationInputBinding.md) | 有界评估输入；固定用户模型且不递归展开Context。 |
+| [EvaluationSourcePin](objects/EvaluationSourcePin.md) | 评估器实际读取的对象版本与命名空间。 |
 | [FinishReason](objects/FinishReason.md) | 取值含义见字段及协议约束。 |
 | [HttpAdminModelsRegisterEnvelope](objects/HttpAdminModelsRegisterEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpAdminModelsRegisterResult](objects/HttpAdminModelsRegisterResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -963,6 +967,7 @@
 | [Checkpoint](objects/Checkpoint.md) | 引用跨模块已提交版本，不能声称撤销外部动作。 |
 | [CheckpointCaptureRequest](objects/CheckpointCaptureRequest.md) | 只从各域已提交仓储取得版本，pending游标可缺省。 |
 | [CompatibilityReport](objects/CompatibilityReport.md) | 恢复前兼容性与版本缺口。 |
+| [CompletionAcceptance](objects/CompletionAcceptance.md) | 独立认证用户对确切成果版本的审阅记录。 |
 | [ComponentIngressResult](objects/ComponentIngressResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentRunApprovalResult](objects/ComponentRunApprovalResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentRunBudgetResult](objects/ComponentRunBudgetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |

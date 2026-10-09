@@ -1,7 +1,7 @@
 """Bounded live Intent/root-Agent acceptance with protected local development identity.
 
 All model responses come from the configured provider. No test fixtures are used.
-The explicit approval flag permits only the exact read-only text.inspect adapter.
+Approval flags permit only the exact registered pure text/arithmetic/JSON adapters.
 """
 
 import argparse
@@ -16,17 +16,28 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from uaw.agent.assembly import assemble_agent_runtime
-from uaw.composition import assemble_registered_context, assemble_text_tool, compose
+from uaw.agent.completion.assembly import assemble_completion_runtime
+from uaw.composition import (
+    assemble_office_tools,
+    assemble_registered_context,
+    assemble_text_tool,
+    compose,
+)
 from uaw.context.contracts import InstructionRule
+from uaw.infrastructure.db.context_batch import PostgresContextRecordBatch
 from uaw.infrastructure.db.transactions import reference
 from uaw.infrastructure.event_loop import control_plane_loop
 from uaw.model.gateway import request_meta
 from uaw.run.inputs import RunInputReader
+from uaw.shared.builtin_tools import publish_builtin_office
 from uaw.shared.contracts import Principal, Ref, Scope, ScopeSelector, TrustedExecutionContext
 from uaw.shared.errors import DomainError
 from uaw.shared.settings import ConfigurationError, Settings
 from uaw.shared.stores import StoreMissing
-from uaw.tool.providers.text import check_text_binding, inspect_text, text_spec
+from uaw.tool.invocation.schema import normalize
+from uaw.tool.providers.arithmetic import arithmetic_spec
+from uaw.tool.providers.json_data import json_data_spec
+from uaw.tool.providers.text import text_spec
 from uaw.tool.registry import AdapterBinding, ToolRegistry
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,8 +101,25 @@ async def probe(args: argparse.Namespace) -> int:
         ):
             raise ConfigurationError("Actual database/Intent/Model runtime required")
         records, configuration, runs = control.records, control.configuration, control.run_service
+        local_provider = None
+        if args.office_tools:
+            if not settings.development_admin_token:
+                raise ConfigurationError(
+                    "Protected administrator identity required for local catalogue"
+                )
+            local_provider = await publish_builtin_office(
+                configuration,
+                Principal(
+                    id=settings.development_admin_id,
+                    kind="admin",
+                    auth_session_id="local-office-admin",
+                ),
+                "office-" + identity,
+            )
 
         async def model_receipt(attempt: str) -> None:
+            if any(item["attempt_id"] == attempt for item in receipt["model_outputs"]):
+                return
             try:
                 row = await records.get(actor, "model.invocations", attempt)
             except StoreMissing:
@@ -239,13 +267,31 @@ async def probe(args: argparse.Namespace) -> int:
         if understood["payload"]["goal"] != text:
             raise ConfigurationError("Published goal changed original source")
         registry = ToolRegistry()
-        registry.register(
-            text_spec(provider_ref),
-            expected_revision=0,
-            binding=AdapterBinding(provider_ref, frozenset({"development"}), implemented=True),
+        adapter_provider = local_provider or provider_ref
+        for spec in (
+            (
+                text_spec(adapter_provider),
+                arithmetic_spec(adapter_provider),
+                json_data_spec(adapter_provider),
+            )
+            if args.office_tools
+            else (text_spec(adapter_provider),)
+        ):
+            registry.register(
+                spec,
+                expected_revision=registry.revision,
+                binding=AdapterBinding(
+                    adapter_provider, frozenset({"development"}), implemented=True
+                ),
+            )
+        tool_refs = tuple(Ref.model_validate(registry.reference(e)) for e in registry.snapshot()[1])
+        tool_ref = next(pin for pin in tool_refs if pin.id == "text.inspect")
+        contexts = assemble_registered_context(
+            control,
+            registry=registry,
+            record_batch=PostgresContextRecordBatch(records),
+            batch_required=True,
         )
-        tool_ref = Ref.model_validate(registry.reference(registry.snapshot()[1][0]))
-        contexts = assemble_registered_context(control, registry=registry)
         root_ctx = ctx.model_copy(
             update={
                 "operation_id": "probe-root-" + identity,
@@ -270,13 +316,35 @@ async def probe(args: argparse.Namespace) -> int:
                 update={"expected_revision": 0}
             ),
         )
+        extra_rules = []
+        for index, rule_text in enumerate(args.extra_rule):
+            rule_id = f"probe-extra-{index}-" + identity
+            extra_rules.append(
+                await contexts.inputs.register_rule(
+                    InstructionRule(
+                        id=rule_id,
+                        source_ref=Ref(kind="rule", id=rule_id, version="1"),
+                        level="user_current",
+                        scope=ScopeSelector(conversation_id=conversation["id"]),
+                        text=rule_text,
+                    ),
+                    root_ctx,
+                    authenticated_service=configuration.platform,
+                    expected_revision=0,
+                    meta=request_meta("probe-extra-rule", rule_id).model_copy(
+                        update={"expected_revision": 0}
+                    ),
+                )
+            )
         role = await control.tool_access.register_role(
             {
                 "id": "probe-root-role-" + identity,
                 "version": "1",
                 "description": "Bounded live root Agent text acceptance",
                 "instructions_ref": method.wire(),
-                "tool_categories": ["text"],
+                "tool_categories": ["text", "arithmetic", "data"]
+                if args.office_tools
+                else ["text"],
                 "skill_refs": [],
                 "output_contract": {
                     "goal": "Answer original user task using actual evidence",
@@ -298,15 +366,22 @@ async def probe(args: argparse.Namespace) -> int:
             ),
             authenticated_service=configuration.platform,
         )
-        tools = assemble_text_tool(
-            control,
-            registry=registry,
-            tool_ref=tool_ref,
-            provider=Principal(
-                id="development-text-inspect",
-                kind="service",
-                auth_session_id="internal-text-adapter",
-            ),
+        tool_service = Principal(
+            id="development-local-office" if args.office_tools else "development-text-inspect",
+            kind="service",
+            auth_session_id="internal-local-adapter",
+        )
+        tools = (
+            assemble_office_tools(
+                control, registry=registry, tool_refs=tool_refs, provider=tool_service
+            )
+            if args.office_tools
+            else assemble_text_tool(
+                control,
+                registry=registry,
+                tool_ref=tool_ref,
+                provider=tool_service,
+            )
         )
         assembly = assemble_agent_runtime(
             control,
@@ -314,6 +389,14 @@ async def probe(args: argparse.Namespace) -> int:
             tools,
             registry=registry,
             max_output_tokens=args.max_output_tokens,
+            instruction_refs=tuple(extra_rules),
+        )
+        completion = (
+            assemble_completion_runtime(
+                control, assembly, max_output_tokens=args.max_output_tokens, contexts=contexts
+            )
+            if args.verify_delivery
+            else None
         )
         current = await runs.get_run(actor, run["id"])
         started = await assembly.runtime.start(
@@ -349,7 +432,9 @@ async def probe(args: argparse.Namespace) -> int:
             )
             phase(f"step_{number}", result)
             await model_receipt(step_ctx.attempt_id)
-            if result["kind"] == "waiting" and args.approve_text_inspection:
+            if result["kind"] == "waiting" and (
+                args.approve_text_inspection or args.approve_office_tools
+            ):
                 _, _, state = await assembly.repository.owned(root.id, step_ctx)
                 if state.active_operation_ref is None:
                     raise ConfigurationError("No persisted original waiting operation")
@@ -359,13 +444,13 @@ async def probe(args: argparse.Namespace) -> int:
                 if not operation.proposal or not operation.tool_context:
                     raise ConfigurationError("No persisted original tool proposal")
                 call = operation.proposal["proposed_calls"][0]
-                if call["tool_ref"] != tool_ref.wire():
+                allowed = tool_refs if args.approve_office_tools else (tool_ref,)
+                if call["tool_ref"] not in [pin.wire() for pin in allowed]:
                     raise ConfigurationError("Diagnostic approval limited to exact text.inspect")
                 # Validate the original executor binding and byte bound before approval.
-                from uaw.tool.invocation.schema import normalize
-
                 validated = normalize(call, registry)
-                check_text_binding(validated, text_spec(provider_ref), provider_ref)
+                spec = registry.get(call["tool_ref"]).spec()
+                tools.executor.check(validated, spec)
                 approval = await tools.approvals.get(actor, result["wait_ref"]["id"])
                 await tools.approvals.decide(
                     actor,
@@ -394,9 +479,12 @@ async def probe(args: argparse.Namespace) -> int:
                 phase(f"step_{number}_tool_observation", observation["result"])
                 if observation["result"]["kind"] != "ok":
                     return 1
-                expected = inspect_text(observation["call"]["arguments"]["text"])
-                if observation["result"]["payload"]["data"] != expected:
-                    raise ConfigurationError("Actual tool output differs from exact input")
+                await tools.responses.verifier.verify(
+                    observation["result"]["payload"]["data"],
+                    normalize(observation["call"], registry),
+                    registry.get(observation["call"]["tool_ref"]).spec(),
+                    step_ctx,
+                )
                 receipt["tool_output_exactly_verified"] = True
                 save()
                 continue
@@ -404,10 +492,103 @@ async def probe(args: argparse.Namespace) -> int:
             receipt["final_model_output"] = (
                 await records.get(actor, "model.outputs", step_ctx.attempt_id)
             ).payload
+            if completion is not None:
+                proposal = (
+                    Ref.model_validate(result["payload"]["completion_proposal_ref"])
+                    if "completion_proposal_ref" in result["payload"]
+                    else await completion.coordinator.propose(
+                        root,
+                        {
+                            "kind": "ok",
+                            "output_refs": [result["payload"]["model_output_ref"]],
+                            "payload": receipt["final_model_output"],
+                        },
+                        step_ctx,
+                    )
+                )
+                receipt["completion_proposal"] = (
+                    await records.get(actor, "agent.completion.proposals", proposal.id)
+                ).payload
+                receipt["verification_report"] = (
+                    await records.get(actor, "agent.completion.reports", proposal.id)
+                ).payload
+                reviewed = await records.get(actor, "agent.completion.bundles", proposal.id)
+                from uaw.agent.contracts import identifier
+
+                evaluation_id = identifier(
+                    "evaluation-",
+                    {
+                        "run": step_ctx.run_id,
+                        "operation": step_ctx.operation_id,
+                        "purpose": "completion",
+                    },
+                )
+                await model_receipt(evaluation_id)
+                receipt["artifact"] = (
+                    await records.get(
+                        actor, "workspace.artifacts", reviewed.payload["artifact_ref"]["id"]
+                    )
+                ).payload
+                save()
+                before = await runs.get_run(actor, run["id"])
+                if args.control_after_review:
+                    control_meta = request_meta("probe-review-control", args.request_id).model_copy(
+                        update={"expected_revision": before["revision"]}
+                    )
+                    if args.control_after_review == "cancel":
+                        await runs.control(
+                            actor,
+                            {
+                                "run_id": run["id"],
+                                "control": {
+                                    "mode": "cancel",
+                                    "preserve_refs": [],
+                                    "reason": "Actual post-review cancellation probe",
+                                },
+                            },
+                            control_meta,
+                        )
+                    else:
+                        inputs = await records.get(actor, "run.input_sets", run["id"])
+                        await runs.append_requirement(
+                            actor,
+                            run["id"],
+                            "修订要求：只输出一句话，不按旧交付物完成任务。",
+                            control_meta.model_copy(update={"expected_revision": inputs.revision}),
+                        )
+                    try:
+                        await completion.controller.complete(
+                            proposal,
+                            step_ctx,
+                            request_meta("probe-stale-complete", args.request_id).model_copy(
+                                update={"expected_revision": before["revision"]}
+                            ),
+                        )
+                    except DomainError as denied:
+                        final = await runs.get_run(actor, run["id"])
+                        receipt["completion_guard_failure"] = denied.failure.wire()
+                        receipt["runtime_probe_passed"] = final["status"] != "completed"
+                        receipt["final_run_status"] = final["status"]
+                        receipt["guard_scenario"] = args.control_after_review
+                        save()
+                        return 0 if receipt["runtime_probe_passed"] else 1
+                    raise ConfigurationError("Completion accepted stale/cancelled actual delivery")
+                await completion.controller.complete(
+                    proposal,
+                    step_ctx,
+                    request_meta("probe-complete", args.request_id).model_copy(
+                        update={"expected_revision": before["revision"]}
+                    ),
+                )
             final_run = await runs.get_run(actor, run["id"])
             receipt["final_run_status"] = final_run["status"]
             receipt["runtime_probe_passed"] = (
-                result["payload"]["action"] == "respond" and final_run["status"] != "completed"
+                final_run["status"] == "completed"
+                if completion is not None
+                else result["payload"]["action"] == "respond" and final_run["status"] != "completed"
+            )
+            receipt["task_semantic_completion"] = (
+                completion is not None and final_run["status"] == "completed"
             )
             save()
             return 0 if receipt["runtime_probe_passed"] else 1
@@ -421,6 +602,47 @@ async def probe(args: argparse.Namespace) -> int:
         save()
         raise
     finally:
+        # Include reviewer/rule attempts even when validation fails before a
+        # delivery bundle exists. Never hide charged failed attempts.
+        if control.records and receipt.get("run_id") and "actor" in locals():
+            from sqlalchemy import select
+
+            from uaw.infrastructure.db.models import RecordRow
+
+            try:
+                async with control.records.database.sessions() as session:
+                    invocation_ids = tuple(
+                        await session.scalars(
+                            select(RecordRow.resource_id).where(
+                                RecordRow.principal_id == actor.id,
+                                RecordRow.namespace == "model.invocations",
+                                RecordRow.deleted.is_(False),
+                                RecordRow.payload["run_id"].as_string() == receipt["run_id"],
+                            )
+                        )
+                    )
+                    attempts = tuple(
+                        await session.scalars(
+                            select(RecordRow.payload).where(
+                                RecordRow.principal_id == actor.id,
+                                RecordRow.namespace == "model.attempts",
+                                RecordRow.deleted.is_(False),
+                                RecordRow.payload["invocation_id"].as_string().in_(invocation_ids),
+                            )
+                        )
+                    )
+                for invocation_id in invocation_ids:
+                    await model_receipt(invocation_id)
+                receipt["model_attempts"] = list(attempts)
+                receipt["final_run_status"] = (
+                    (await control.run_service.get_run(actor, receipt["run_id"]))["status"]
+                    if control.run_service
+                    else None
+                )
+                save()
+            except Exception as receipt_error:
+                receipt["attempt_collection_error_type"] = type(receipt_error).__name__
+                save()
         await control.close()
         print(f"Protected live probe receipt: {target}", flush=True)
 
@@ -436,6 +658,15 @@ def main() -> int:
         "--max-output-tokens", type=int, choices=(512, 1024, 2048, 4096), default=512
     )
     parser.add_argument("--approve-text-inspection", action="store_true")
+    parser.add_argument("--office-tools", action="store_true")
+    parser.add_argument("--approve-office-tools", action="store_true")
+    parser.add_argument("--extra-rule", action="append", default=[])
+    parser.add_argument("--control-after-review", choices=("cancel", "steer"))
+    parser.add_argument(
+        "--verify-delivery",
+        action="store_true",
+        help="Run actual fixed-model semantic review and independent completion CAS",
+    )
     args = parser.parse_args()
     try:
         return asyncio.run(probe(args), loop_factory=control_plane_loop)

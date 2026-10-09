@@ -97,6 +97,7 @@ class RegisteredAgentContexts:
         access: RunToolAccessSources,
         output_reserve: int = 512,
         retriever: ToolRetriever | None = None,
+        instruction_refs: tuple[Ref, ...] = (),
     ) -> None:
         self.inputs, self.components = inputs, components
         self.sources, self.observations = sources, observations
@@ -104,6 +105,14 @@ class RegisteredAgentContexts:
         if retriever is not None and retriever.registry is not registry:
             raise ValueError("Agent Context/retriever must share the registry")
         self.retriever = retriever
+        if (
+            type(instruction_refs) is not tuple
+            or len(instruction_refs) > 16
+            or any(pin.kind != "rule" for pin in instruction_refs)
+            or len(set(instruction_refs)) != len(instruction_refs)
+        ):
+            raise ValueError("At most 16 distinct registered instruction Refs required")
+        self.instruction_refs = tuple(pin.model_copy(deep=True) for pin in instruction_refs)
 
     async def prepare(
         self, operation_id: str, observations: tuple[Ref, ...], ctx: TrustedExecutionContext
@@ -207,7 +216,9 @@ class RegisteredAgentContexts:
                 ),
             )
             rule_selection = RulesRequest(
-                scope_paths=(), user_instruction_refs=(rule,), activated_skill_refs=()
+                scope_paths=(),
+                user_instruction_refs=(rule, *self.instruction_refs),
+                activated_skill_refs=(),
             )
             offered = ModelToolSet(run_id=ctx.run_id, tools=tuple(tools))
             value = {

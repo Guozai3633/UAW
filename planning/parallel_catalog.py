@@ -1,6 +1,6 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.13"
+VERSION = "0.14"
 DATE = "2026-10-09"
 BASELINE = {
     "git_repository": True,
@@ -14,10 +14,10 @@ BASELINE = {
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2i-start",
-    "integration_ref": "ms-i2h-a3",
+    "integration_ref": "ms-i2i-batch-a1",
     "last_full_runtime_ref": "ms-i2g",
     "phase_different_passing_nodes": 31,
-    "phase_nodes_relation": "retained MS-I2h-A3 evidence; no new runtime tests in dispatch preparation",
+    "phase_nodes_relation": "MS-I2i A focused development evidence is recorded separately; full milestone pending B final handoff",
     "live_model_ref": "ms-i2h-a3",
     "live_model_calls": 13,
     "live_model_final_samples": 3,
@@ -104,10 +104,10 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2i安排已发布：当前模型评估、文本成果与完成提交、逐包集成；运行来源ms-i2h-a3，原13实连/31聚焦回执保留，本包实现尚未验收。", package="MS-I2i", ready=True, base_ref="ms-i2i-start"),
-    "B": dict(state="MS-C6组件接受保留。MS-C7已发布待开工：Context读取提速/有界批读/来源等价；四里程碑连续开发。", package="MS-C7", ready=True, base_ref="ms-i2i-start"),
-    "C": dict(state="MS-T2e组件接受保留。MS-T2f已发布待开工：两个办公纯数据工具/多executor与verifier/恢复；四里程碑连续开发。", package="MS-T2f", ready=True, base_ref="ms-i2i-start"),
-    "D": dict(state="MS-R2e组件接受保留。MS-R2f已发布待开工：Windows双进程可信IPC/活channel/只读临时根链；四里程碑连续开发。", package="MS-R2f", ready=True, base_ref="ms-i2i-start"),
+    "A": dict(state="MS-I2i开发中：固定模型评估/文本成果/独立完成控制与真实样例；A批读已发布。C/D组件已接受，B最终SQL/交接及本轮全量待汇合。", package="MS-I2i", ready=True, base_ref="ms-i2i-start"),
+    "B": dict(state="MS-C7 M3已审阅合入：来源复查/类型修复/批读等价。B最终SQL/交接仍运行，未提前接受完整包。", package="MS-C7", ready=True, base_ref="ms-i2i-start"),
+    "C": dict(state="MS-T2f组件接受：b09fb7d/efb997c，316 unit+178实际SQL。A办公审批/执行/费用/恢复接线通过；完整MS-T2仍按产品门槛。", package="MS-T2f", ready=True, base_ref="ms-i2i-start"),
+    "D": dict(state="MS-R2f组件接受：d3f6077/cd6b33c，505通过。A实际控制客户端/签名读取通过；UAW配对/native确认仍非生产来源。", package="MS-R2f", ready=True, base_ref="ms-i2i-start"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
 }
 
@@ -122,8 +122,8 @@ PACKAGE_PROGRESS = {
     "MS-I2f1": "accepted_development", "MS-I2f2": "accepted_development", "MS-I2f": "in_progress", "MS-C4": "accepted_component", "MS-T2c": "accepted_component", "MS-R2c": "accepted_component",
     "MS-C5": "accepted_component", "MS-T2d": "accepted_component", "MS-R2d": "accepted_component", "MS-I2g": "accepted_development",
     "MS-C6": "accepted_component", "MS-T2e": "accepted_component", "MS-R2e": "accepted_component", "MS-I2h": "in_progress",
-    "MS-I2i": "released_waiting_start", "MS-C7": "released_waiting_start",
-    "MS-T2f": "released_waiting_start", "MS-R2f": "released_waiting_start",
+    "MS-I2i": "in_progress", "MS-C7": "in_progress",
+    "MS-T2f": "accepted_component", "MS-R2f": "accepted_component",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 

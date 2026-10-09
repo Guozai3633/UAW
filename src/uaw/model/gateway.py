@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 import json
+from collections.abc import Awaitable, Callable
 from contextlib import suppress
 from datetime import UTC, datetime
 from time import monotonic
@@ -52,10 +53,13 @@ class ModelGateway:
         budgets: BudgetService,
         blobs: BlobStorePort,
         adapter: ModelProviderPort,
+        *,
+        dispatch_guard: Callable[[TrustedExecutionContext], Awaitable[None]] | None = None,
     ) -> None:
         self.store, self.policies, self.inputs = store, policies, inputs
         self.budgets, self.blobs, self.adapter = budgets, blobs, adapter
         self.transactions = TransactionalStore(store.database)
+        self.dispatch_guard = dispatch_guard
 
     async def close(self) -> None:
         await self.adapter.close()
@@ -340,6 +344,8 @@ class ModelGateway:
             raise
         try:
             await self.policies.resolve(request.config, ctx)
+            if self.dispatch_guard is not None:
+                await self.dispatch_guard(ctx)
             ack = await self.budgets.dispatch(
                 ctx.principal, reservation_ref, request_meta("model-dispatch", ctx.attempt_id), ctx
             )
@@ -473,6 +479,8 @@ class ModelGateway:
                 datetime.fromisoformat(ctx.deadline.replace("Z", "+00:00")) - datetime.now(UTC)
             ).total_seconds(),
         )
+        if self.dispatch_guard is not None:
+            await self.dispatch_guard(ctx)
         task = asyncio.create_task(self.adapter.generate(request))
         try:
             async with asyncio.timeout(max(0, duration)):

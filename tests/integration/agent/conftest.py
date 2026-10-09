@@ -17,6 +17,7 @@ from tests.integration.test_stage_wiring import container
 from uaw.agent.assembly import assemble_agent_runtime
 from uaw.composition import assemble_registered_context, assemble_text_tool
 from uaw.context.contracts import InstructionRule
+from uaw.infrastructure.db.context_batch import PostgresContextRecordBatch
 from uaw.shared.contracts import Principal, Ref, ScopeSelector
 from uaw.tool.providers.text import text_spec
 from uaw.tool.registry import AdapterBinding, ToolRegistry
@@ -72,7 +73,12 @@ async def agent_case(understanding, case, domain, tmp_path):
         expected_revision=0,
         binding=AdapterBinding(provider_ref, frozenset({"development"}), implemented=True),
     )
-    contexts = assemble_registered_context(control, registry=registry)
+    contexts = assemble_registered_context(
+        control,
+        registry=registry,
+        record_batch=PostgresContextRecordBatch(run.store),
+        batch_required=True,
+    )
     text = files("uaw.resources.prompts").joinpath("agent-root-v1.txt").read_text(encoding="utf-8")
     method = await contexts.inputs.register_rule(
         InstructionRule(

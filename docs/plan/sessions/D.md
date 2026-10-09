@@ -2,7 +2,7 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2e组件接受保留。MS-R2f已发布待开工：Windows双进程可信IPC/活channel/只读临时根链；四里程碑连续开发。以DISPATCH的固定版本与派发为准。
+状态：MS-R2f组件接受：d3f6077/cd6b33c，505通过。A实际控制客户端/签名读取通过；UAW配对/native确认仍非生产来源。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 

@@ -1983,6 +1983,40 @@ def finalize(graph,strategies):
         if operation["id"] in IMPLEMENTATIONS:
             operation["implemented"]=True
             operation["implementation"]=IMPLEMENTATIONS[operation["id"]]
+    # Internal persisted bindings; they do not open an HTTP or model-tool entry.
+    record("EvaluationSourcePin", "model", "评估器实际读取的对象版本与命名空间。",
+           "namespace|ID|实际存储命名空间\nref|Ref|固定版本和完整行摘要\nschema_name|ID|对象结构名称")
+    obj("EvaluationInputBinding", "model", "有界评估输入；固定用户模型且不递归展开Context。", {
+        "id": field("ID", "原评估操作身份"),
+        "revision": field("Revision", "不可变输入版本"),
+        "context": field("TrustedExecutionContext", "可信完整运行关联"),
+        "frame_ref": field("Ref", "实际TaskFrame版本和摘要"),
+        "role_ref": field("Ref", "实际角色版本"),
+        "sources": field(arr("EvaluationSourcePin", 128), "实际对象来源"),
+        "instruction": field("NonEmptyText", "评估职责指令"),
+        "data": field("Object", "TaskFrame与该职责的候选内容"),
+    }, ["总输入最多96KiB；读取和派发前复查当前来源。模型输出不授予权限。"])
+    obj("ArtifactSourceBinding", "workspace", "实际文本成果的原模型输出及工具观察归属。", {
+        "context": field("TrustedExecutionContext", "可信完整运行关联"),
+        "frame_ref": field("Ref", "原TaskFrame"),
+        "model_output_ref": field("Ref", "已完成实际ModelOutput"),
+        "observation_refs": field(arr("Ref", 128), "实际工具观察"),
+    }, ["与ArtifactRecord原子登记；只支持最多64KiB的实际UTF-8文本或Markdown。"])
+    obj("CompletionBundle", "agent", "不可变成果、合同、报告和完成提案的版本关联。", {
+        "id": field("ID", "原Agent操作派生身份"),
+        "context": field("TrustedExecutionContext", "可信完整运行关联"),
+        "instance_id": field("ID", "原Agent实例"),
+        "frame_ref": field("Ref", "实际TaskFrame"),
+        "contract_ref": field("Ref", "原文、约束和输出要求形成的合同"),
+        "artifact_ref": field("Ref", "实际成果"),
+        "report_ref": field("Ref", "逐项VerificationReport"),
+        "proposal_ref": field("Ref", "候选DeliveryProposal"),
+        "source_pins": field(arr("EvaluationSourcePin", 128), "终态前重新读取的实际来源"),
+        "tool_activity_ids": field(arr("ID", 16), "评估时该Run所有已登记工具动作；终态再核对完整集合", True),
+    }, ["Bundle本身不是写权限；独立控制器以当前Run版本提交终态。"])
+    record("CompletionAcceptance", "run", "独立认证用户对确切成果版本的审阅记录。",
+           "bundle_ref|Ref|确切不可变交付Bundle\nprincipal|Principal|真实认证用户\ndecision|DeliveryDecision|用户决定\ncreated_at|Timestamp|实际登记时间",
+           ["当前入口只登记一次；只有accept可满足需要用户接受的合同，拒绝/修订/部分接受不完成Run。"])
     register_private_components(graph,strategies)
     for name,s in TYPES.items():
         for key,value in s.get("properties",{}).items():

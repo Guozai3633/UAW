@@ -13,6 +13,7 @@ from uaw.shared.stores import StoreConflict, StoreMissing
 from uaw.tool.discovery import check_access, require_entry
 from uaw.tool.invocation.schema import normalize
 from uaw.tool.ledger import ToolLedger
+from uaw.tool.parameter_sources import PureParameterResourceReader
 from uaw.tool.ports import ToolAccess
 from uaw.tool.registry import RegistryEntry, ToolRegistry
 
@@ -332,7 +333,7 @@ class RunToolRecoveryAccess:
 
     def __init__(
         self,
-        resources: PureTextResourceReader,
+        resources: PureTextResourceReader | PureParameterResourceReader,
         ledger: ToolLedger,
         *,
         provider_ref: Ref,
@@ -359,6 +360,8 @@ class RunToolRecoveryAccess:
             raise reject("tool_recovery_provider_denied", "Original provider identity differs", 403)
         entry = self.resources.entry(call, spec)
         access = self.resources.access
+        if not isinstance(access, RunToolAccessSources):
+            raise CapabilityUnavailable("tool.current_recovery_authority")
         fixed_call, fixed_spec, _ = await self.ledger.action(str(call["action_id"]), ctx)
         if fixed_call != call or fixed_spec != spec or await self.ledger.attempt(ctx) != call:
             raise reject("tool_recovery_action_denied", "Original registered action differs", 403)

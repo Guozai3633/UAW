@@ -1,5 +1,7 @@
 # 全局文档作用与位置
 
+当前开发阶段：[MS-I2i-A1实际范围](implementation/MS-I2i-A1.md)；[A评估/交付/完成控制接线](coordination/requests/A/MS-I2i-completion-wiring.md)；[当前组件接受](coordination/DISPATCH.md)。完整本轮回归尚未执行。
+
 状态：2026-10-09。入口是[项目README](../README.md)。**产品约束 → 总体职责 → 详细策略/接口 → 技术组件与分轮计划 → 实现/测试证据**分层维护；P0工程/开发存储已开始实现，业务能力仍按实际验收记录判断。
 
 ## 1. 权威与阅读顺序

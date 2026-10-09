@@ -8,7 +8,7 @@ from uaw.context.cache import PureComputationCache
 from uaw.context.facade import ContextComponents
 from uaw.context.intent import IntentContexts, UnderstandingRules
 from uaw.context.model_input import GenericModelInputs
-from uaw.context.ports import RegisteredRuleAssessor
+from uaw.context.ports import ContextRecordBatchPort, RegisteredRuleAssessor
 from uaw.context.readers import RegisteredContextReader, RegisteredRuleProvider
 from uaw.context.registered import RegisteredContextInputs
 from uaw.context.repository import ContextRepository
@@ -66,6 +66,16 @@ from uaw.tool.budget import ToolBudgetAdapter
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
 from uaw.tool.ledger import ToolLedger
+from uaw.tool.parameter_sources import PureParameterRecoveryAccess, PureParameterResourceReader
+from uaw.tool.providers.arithmetic import ArithmeticExecutor, ArithmeticVerifier
+from uaw.tool.providers.json_data import JsonDataExecutor, JsonDataVerifier
+from uaw.tool.providers.local import local_estimates
+from uaw.tool.providers.multiplex import (
+    ToolExecutorBinding,
+    ToolExecutorRouter,
+    ToolOutputVerifierBinding,
+    ToolOutputVerifierRouter,
+)
 from uaw.tool.providers.text import TextInspectExecutor, TextInspectVerifier, text_estimates
 from uaw.tool.receipt_store import ToolReceiptStore
 from uaw.tool.reconciliation import ToolReconciler
@@ -284,6 +294,8 @@ def assemble_registered_context(
     registry: ToolRegistry | None = None,
     cache: PureComputationCache | None = None,
     rule_assessor: RegisteredRuleAssessor | None = None,
+    record_batch: ContextRecordBatchPort | None = None,
+    batch_required: bool = False,
 ) -> RegisteredContextBindings:
     records, config, blobs, sources = (
         container.records,
@@ -302,6 +314,8 @@ def assemble_registered_context(
         transactions=transactions,
         runs=runs,
         tool_validator=RegisteredToolSetValidator(registry, container.tool_access),
+        record_batch=record_batch,
+        batch_required=batch_required,
     )
     reader = RegisteredContextReader(inputs)
     components = ContextComponents(
@@ -401,6 +415,111 @@ def assemble_text_tool(
         service,
         source,
         executor,
+        results,
+    )
+
+
+@dataclass(frozen=True)
+class OfficeToolBindings:
+    facade: ToolFacade
+    invocation: ToolInvocation
+    ledger: ToolLedger
+    approvals: ApprovalService
+    responses: ToolReceiptStore
+    executor: ToolExecutorRouter
+    results: ToolResults
+
+
+def assemble_office_tools(
+    container: Container,
+    *,
+    registry: ToolRegistry,
+    tool_refs: tuple[Ref, ...],
+    provider: Principal,
+    currency: str = "USD",
+    retriever: ToolRetriever | None = None,
+) -> OfficeToolBindings:
+    records, config, blobs = container.records, container.configuration, container.blobs
+    access, budgets, policies = (
+        container.tool_access,
+        container.budgets,
+        container.execution_permissions,
+    )
+    if not records or not config or not blobs or not access or not budgets or not policies:
+        raise ConfigurationError("Office tools require actual control-plane dependencies")
+    if not 1 <= len(tool_refs) <= 3 or currency != "USD":
+        raise ConfigurationError("Closed 1..3 built-in USD adapters required")
+    specs = tuple(registry.get(pin.wire()).spec() for pin in tool_refs)
+    provider_ref = Ref.model_validate(specs[0]["provider_ref"])
+    if any(s["provider_ref"] != provider_ref.wire() for s in specs):
+        raise ConfigurationError("One exact local provider per result source")
+    ledger = ToolLedger(records)
+    resources = PureParameterResourceReader(registry, access, tool_refs)
+    authority = ToolApprovalAuthority(
+        ledger, registry, config, access, resources, policies=policies
+    )
+    approvals = ApprovalService(records, config, authority, permissions=policies)
+    gates = ToolApprovalAdapter(ledger, authority, approvals)
+    budget = ToolBudgetAdapter(ledger, budgets, gates, state=budgets)
+    source = ToolReceiptStore(
+        ledger,
+        blobs,
+        provider_ref=provider_ref,
+        provider=provider,
+        access=PureParameterRecoveryAccess(
+            resources,
+            ledger,
+            authority=RunToolRecoveryAccess(
+                resources, ledger, provider_ref=provider_ref, provider=provider
+            ),
+        ),
+    )
+    bindings, checks = [], []
+    for pin, spec in zip(tool_refs, specs, strict=True):
+        executor: TextInspectExecutor | ArithmeticExecutor | JsonDataExecutor
+        verifier: TextInspectVerifier | ArithmeticVerifier | JsonDataVerifier
+        if spec["id"] == "text.inspect":
+            executor = TextInspectExecutor(source, provider=provider, currency=currency)
+            verifier = TextInspectVerifier(provider_ref)
+        elif spec["id"] == "arithmetic.calculate":
+            executor = ArithmeticExecutor(source, provider=provider, currency=currency)
+            verifier = ArithmeticVerifier(provider_ref)
+        elif spec["id"] == "data.inspect_json":
+            executor = JsonDataExecutor(source, provider=provider, currency=currency)
+            verifier = JsonDataVerifier(provider_ref)
+        else:
+            raise ConfigurationError("No exact trusted built-in implementation")
+        bindings.append(ToolExecutorBinding(pin, provider_ref, executor, executor.check))
+        checks.append(ToolOutputVerifierBinding(pin, provider_ref, verifier))
+    router = ToolExecutorRouter(tuple(bindings))
+    source.verifier = ToolOutputVerifierRouter(tuple(checks))
+    reconciler = ToolReconciler(ledger, budget, receipts=source, evidence=source)
+    results = ToolResults(source, reconciler)
+    invocation = ToolInvocation(
+        registry,
+        ledger,
+        budget,
+        gates,
+        access=access,
+        executor=router,
+        estimates=local_estimates(currency),
+        prepare=router.check,
+        results=results,
+    )
+    return OfficeToolBindings(
+        ToolFacade(
+            registry,
+            access,
+            invocation=invocation,
+            lookup=source,
+            reconciler=reconciler,
+            retriever=retriever,
+        ),
+        invocation,
+        ledger,
+        approvals,
+        source,
+        router,
         results,
     )
 

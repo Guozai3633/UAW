@@ -1,0 +1,450 @@
+{
+  "scope": "actual provider probes, including original failed attempts",
+  "prefix": "ms-i2i-",
+  "recorded_attempts": 46,
+  "known_input_tokens": 89955,
+  "known_output_tokens": 11997,
+  "known_cached_input_tokens": 11904,
+  "confirmed_monetary_cost": null,
+  "cost_note": "Token counts are actual known usage, not monetary invoices. Pending billing and unknown usage remain unresolved; money holds are retained.",
+  "probes": [
+    {
+      "request_id": "ms-i2i-steer-after-review-02",
+      "receipt_file": "07b141010531f0a0b2ca95437980bf7a5cc7feb1cd4ca37b67fb4c006756eb78.json",
+      "receipt_sha256": "f6388f629384bca51eaaf38a953a5b33d16c4d034400e2be3003b0ddfcba8a81",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 5072,
+      "known_output_tokens": 742,
+      "known_cached_input_tokens": 1024,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": "steer",
+      "guard_failure": "agent_frame_stale",
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 5
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-json-delivery-01",
+      "receipt_file": "142a5bcbdbb274b1fefa06872ff84750b41e502881ea3458930fb1bfe610bb9b.json",
+      "receipt_sha256": "e6b0de291d52d592edd52433dbdd1e9d040c30afc1f699816014e009ab390c43",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 10378,
+      "known_output_tokens": 1313,
+      "known_cached_input_tokens": 512,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": true,
+      "run_status": "completed",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 6
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-rules-delivery-01",
+      "receipt_file": "2b13bd560374a9927b458d0f9961481cf81bf45fcce04af2d2ece1e200e7e3af.json",
+      "receipt_sha256": "a70146f7aef4c68b9651f5fc3a02c9712638ba83e5901eb0b29cac35c955d451",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 2,
+      "attempt_states": {
+        "received": 2
+      },
+      "billing_states": {
+        "pending": 2
+      },
+      "known_input_tokens": 3138,
+      "known_output_tokens": 372,
+      "known_cached_input_tokens": 896,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [
+        "context_assessment_override_denied"
+      ],
+      "report_outcome": null,
+      "requirement_states": {},
+      "check_states": {},
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-calculation-delivery-03",
+      "receipt_file": "3dc28cc69ff18e857b0fdaa7fb052a0bf4ed64b4d2f480b82f33d2ef2560d6de.json",
+      "receipt_sha256": "0199dd1c5791e8b6138b9d219289b29542206cf476542857e576e0a2a89a55b2",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 9460,
+      "known_output_tokens": 813,
+      "known_cached_input_tokens": 1152,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": "DomainError",
+      "error_code": "completion_checks_incomplete",
+      "phase_failures": [],
+      "report_outcome": "blocked",
+      "requirement_states": {
+        "passed": 4,
+        "not_run": 1
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-steer-after-review-01",
+      "receipt_file": "4710b8b2a288cbe58243d06cade7397adecc3c8190023586d254e534f0475df1.json",
+      "receipt_sha256": "f0b8443582bb1cdc0d13b0eb09d7bb3ec7f0cb456c17abab8176885514ab5300",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 4590,
+      "known_output_tokens": 561,
+      "known_cached_input_tokens": 1024,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": "StoreConflict",
+      "error_code": "revision_conflict",
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 3
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-calculation-delivery-02",
+      "receipt_file": "5e978048265f69bcfc96ea47d8885b44709301566e771ce92a5d107b7ca9166f.json",
+      "receipt_sha256": "71a262f03cabfd603e1bd6e050902b425b2b36655123e502cf1fb05cce50338f",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 8872,
+      "known_output_tokens": 1110,
+      "known_cached_input_tokens": 1280,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": "DomainError",
+      "error_code": "completion_evidence_invented",
+      "phase_failures": [],
+      "report_outcome": null,
+      "requirement_states": {},
+      "check_states": {},
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-academic-delivery-01",
+      "receipt_file": "687ff14f86d8d539983f2a10192d2b303b23df01feb7fefd8c087d524a5aa002.json",
+      "receipt_sha256": "3d3071207b07b7b23ba3d6c6d2630182b4e4eea07a3d514675889f2a77bc8234",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 6270,
+      "known_output_tokens": 1334,
+      "known_cached_input_tokens": 256,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": true,
+      "run_status": "completed",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 6
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-office-delivery-02",
+      "receipt_file": "9360c1d217f84c1da80b3fc7b1327bfe3e21e8e36d62104670e295db8349154e.json",
+      "receipt_sha256": "d27ec212fcb0f222eebcb920f1012d2496891a9268f930a47334d28d418df118",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 4891,
+      "known_output_tokens": 782,
+      "known_cached_input_tokens": 1024,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": true,
+      "run_status": "completed",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 4
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-rules-delivery-02",
+      "receipt_file": "a092591ca69fcafeb61efb4a7cd96e26f2b470037a7c7f1c22e8c8ced301bfa7.json",
+      "receipt_sha256": "44a99eee35a8ba8ba7e13ad1475ea27b35080afa8a0be6b35d25af06a2d0d807",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 6631,
+      "known_output_tokens": 820,
+      "known_cached_input_tokens": 1024,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": true,
+      "run_status": "completed",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 3
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-office-delivery-01",
+      "receipt_file": "ad518b94a33aecfc64754c898d11638e5d373313022f6d870ae02c2e12bf062e.json",
+      "receipt_sha256": "b7541a0de3ac9480e73a0f1f7eef09c894648b41c0995d0bd1c2ff5faee9550f",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 4304,
+      "known_output_tokens": 601,
+      "known_cached_input_tokens": 256,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": null,
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": "DomainError",
+      "error_code": "completion_checks_incomplete",
+      "phase_failures": [],
+      "report_outcome": "blocked",
+      "requirement_states": {
+        "passed": 3
+      },
+      "check_states": {
+        "passed": 2,
+        "blocked": 1
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-calculation-delivery-04",
+      "receipt_file": "c2cd850de1395540e5faa2c20d47929c22677d3b9233ef18a8e985605887e797.json",
+      "receipt_sha256": "3c86bafe154998a0a85a2370df6f4659dcfbc82e1cb7fa6dcdfc1d14abd4de35",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 9616,
+      "known_output_tokens": 935,
+      "known_cached_input_tokens": 1152,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": true,
+      "run_status": "completed",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 4
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-cancel-after-review-01",
+      "receipt_file": "ce6a6dd58e3aedda033e71785ef70aff7fb08bec44b5760258aab3351dc07acb.json",
+      "receipt_sha256": "46e2adcbf099f3ec1408952df9983d488df37754506033d1f9400595784a74ae",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 3,
+      "attempt_states": {
+        "received": 3
+      },
+      "billing_states": {
+        "pending": 3
+      },
+      "known_input_tokens": 4650,
+      "known_output_tokens": 647,
+      "known_cached_input_tokens": 1024,
+      "runtime_probe_passed": true,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": "cancel",
+      "guard_failure": "execution_cancelled",
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [],
+      "report_outcome": "succeeded",
+      "requirement_states": {
+        "passed": 3
+      },
+      "check_states": {
+        "passed": 2
+      },
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-calculation-delivery-01",
+      "receipt_file": "e645b52abe123cf79a5ad0b557f430a87c27199b115e367041e3806150e9ac2a.json",
+      "receipt_sha256": "9f2662fb4a17d790b991f9487b832c5133891e2e642a432dd2d91ba3cab726dc",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 4,
+      "attempt_states": {
+        "received": 4
+      },
+      "billing_states": {
+        "pending": 4
+      },
+      "known_input_tokens": 9171,
+      "known_output_tokens": 1557,
+      "known_cached_input_tokens": 384,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": "DomainError",
+      "error_code": "completion_coverage_missing",
+      "phase_failures": [],
+      "report_outcome": null,
+      "requirement_states": {},
+      "check_states": {},
+      "attempt_collection_error": null
+    },
+    {
+      "request_id": "ms-i2i-conflicting-rules-01",
+      "receipt_file": "ee8992907ada57acd7890fcf333270962a049125773df11ec0636954e03a4c1e.json",
+      "receipt_sha256": "755ff6fd4bafc174a513af9a97eec4af8d97270e3b48352b6c90f1360af1549f",
+      "model_id": "deepseek-flash",
+      "recorded_attempts": 2,
+      "attempt_states": {
+        "received": 2
+      },
+      "billing_states": {
+        "pending": 2
+      },
+      "known_input_tokens": 2912,
+      "known_output_tokens": 410,
+      "known_cached_input_tokens": 896,
+      "runtime_probe_passed": false,
+      "task_semantic_completion": false,
+      "run_status": "preparing",
+      "guard_scenario": null,
+      "guard_failure": null,
+      "error_type": null,
+      "error_code": null,
+      "phase_failures": [
+        "rule_conflict"
+      ],
+      "report_outcome": null,
+      "requirement_states": {},
+      "check_states": {},
+      "attempt_collection_error": null
+    }
+  ]
+}

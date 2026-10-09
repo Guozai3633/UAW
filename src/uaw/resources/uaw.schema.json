@@ -17696,6 +17696,215 @@
       ],
       "additionalProperties": false
     },
+    "EvaluationSourcePin": {
+      "type": "object",
+      "description": "评估器实际读取的对象版本与命名空间。",
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/ID",
+          "description": "实际存储命名空间"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定版本和完整行摘要"
+        },
+        "schema_name": {
+          "$ref": "#/$defs/ID",
+          "description": "对象结构名称"
+        }
+      },
+      "required": [
+        "namespace",
+        "ref",
+        "schema_name"
+      ],
+      "additionalProperties": false
+    },
+    "EvaluationInputBinding": {
+      "type": "object",
+      "description": "有界评估输入；固定用户模型且不递归展开Context。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原评估操作身份"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "不可变输入版本"
+        },
+        "context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "可信完整运行关联"
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际TaskFrame版本和摘要"
+        },
+        "role_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际角色版本"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvaluationSourcePin"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "description": "实际对象来源"
+        },
+        "instruction": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "评估职责指令"
+        },
+        "data": {
+          "$ref": "#/$defs/Object",
+          "description": "TaskFrame与该职责的候选内容"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "context",
+        "frame_ref",
+        "role_ref",
+        "sources",
+        "instruction",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactSourceBinding": {
+      "type": "object",
+      "description": "实际文本成果的原模型输出及工具观察归属。",
+      "properties": {
+        "context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "可信完整运行关联"
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原TaskFrame"
+        },
+        "model_output_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "已完成实际ModelOutput"
+        },
+        "observation_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "description": "实际工具观察"
+        }
+      },
+      "required": [
+        "context",
+        "frame_ref",
+        "model_output_ref",
+        "observation_refs"
+      ],
+      "additionalProperties": false
+    },
+    "CompletionBundle": {
+      "type": "object",
+      "description": "不可变成果、合同、报告和完成提案的版本关联。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Agent操作派生身份"
+        },
+        "context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "可信完整运行关联"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Agent实例"
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际TaskFrame"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原文、约束和输出要求形成的合同"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际成果"
+        },
+        "report_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "逐项VerificationReport"
+        },
+        "proposal_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "候选DeliveryProposal"
+        },
+        "source_pins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvaluationSourcePin"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "description": "终态前重新读取的实际来源"
+        },
+        "tool_activity_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ID"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "description": "评估时该Run所有已登记工具动作；终态再核对完整集合"
+        }
+      },
+      "required": [
+        "id",
+        "context",
+        "instance_id",
+        "frame_ref",
+        "contract_ref",
+        "artifact_ref",
+        "report_ref",
+        "proposal_ref",
+        "source_pins"
+      ],
+      "additionalProperties": false
+    },
+    "CompletionAcceptance": {
+      "type": "object",
+      "description": "独立认证用户对确切成果版本的审阅记录。",
+      "properties": {
+        "bundle_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "确切不可变交付Bundle"
+        },
+        "principal": {
+          "$ref": "#/$defs/Principal",
+          "description": "真实认证用户"
+        },
+        "decision": {
+          "$ref": "#/$defs/DeliveryDecision",
+          "description": "用户决定"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "实际登记时间"
+        }
+      },
+      "required": [
+        "bundle_ref",
+        "principal",
+        "decision",
+        "created_at"
+      ],
+      "additionalProperties": false
+    },
     "InternalUiRequestSubmit": {
       "type": "object",
       "description": "按action选择的独立参数/结果分支。",
