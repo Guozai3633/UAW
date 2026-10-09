@@ -246,3 +246,87 @@ async def test_recovery_adapter_has_no_implicit_authority_and_never_uses_execute
     recovery.authority = SimpleNamespace(check=check)
     await recovery.check(call, spec, ctx, provider=ctx.principal)
     assert checked == [(ctx, ctx.principal)]
+
+
+async def test_resource_reader_detects_catalogue_binding_changed_during_access(ctx, access):
+    registry, calls, bindings, _ = office_registry()
+    ctx = ctx.model_copy(
+        update={"scope": ctx.scope.model_copy(update={"capabilities": ("tool.invoke",)})}
+    )
+    access.value = replace(
+        access.value,
+        scope=ctx.scope,
+        allowed_capabilities=frozenset({"tool.invoke"}),
+        role_categories=frozenset({"arithmetic"}),
+    )
+    pin = bindings[0].tool_ref
+    reader = PureParameterResourceReader(registry, access, (pin,))
+    original = access.snapshot
+
+    async def changed(context):
+        value = await original(context)
+        registry.unregister(pin.wire(), expected_revision=registry.revision)
+        registry.register(
+            calls[0][1],
+            expected_revision=registry.revision,
+            binding=AdapterBinding(PROVIDER, frozenset({"component-test"}), implemented=False),
+        )
+        return value
+
+    access.snapshot = changed
+    with pytest.raises(DomainError):
+        await reader.resolve(*calls[0], ctx)
+
+
+def test_nested_recovery_dependency_readiness_fails_before_reservation():
+    registry, _, bindings, _ = office_registry()
+    resources = PureParameterResourceReader(registry, None, (bindings[0].tool_ref,))
+    recovery = PureParameterRecoveryAccess(resources, None)
+    from uaw.tool.results import ToolResults
+
+    result = object.__new__(ToolResults)
+    result.source = SimpleNamespace(access=recovery, verifier=object())
+    with pytest.raises(DomainError) as error:
+        result.ready()
+    assert error.value.failure.code == "dependency_unavailable"
+
+
+@pytest.mark.parametrize("kind", ["arithmetic", "json"])
+async def test_real_office_executor_measured_usage_uses_authenticated_source(ctx, kind):
+    from uaw.shared.contracts import Principal
+    from uaw.tool.providers.arithmetic import ArithmeticExecutor
+    from uaw.tool.providers.json_data import JsonDataExecutor
+
+    provider = Principal(id="local-service", kind="service", auth_session_id="local-session")
+    registry, calls, _, data = office_registry()
+    index = 0 if kind == "arithmetic" else 1
+    saved = []
+
+    class ResponseSourceFixture:
+        provider_ref = PROVIDER
+
+        def authenticate(self, actual):
+            if actual != provider:
+                raise ValueError("Wrong provider identity")
+
+        async def binding(self, context):
+            assert context == ctx
+
+        async def save_response(self, output, usage, context, *, authenticated_provider):
+            assert context == ctx and authenticated_provider == provider
+            saved.append((output, usage))
+            return {
+                "attempt_id": ctx.attempt_id,
+                "effect_state": "confirmed",
+                "transport_status": "local_computation_completed",
+                "usage": usage,
+                "raw_result_ref": {"kind": "content", "id": "controlled-source", "version": "1"},
+            }
+
+    source = ResponseSourceFixture()
+    executor = (ArithmeticExecutor if index == 0 else JsonDataExecutor)(source, provider=provider)
+    receipt = await executor.execute(*calls[index], ctx)
+    assert saved[0][0] == data[index] and receipt["usage"] == saved[0][1]
+    assert receipt["usage"]["resources"]["money"] == "0.00"
+    assert receipt["usage"]["resources"]["tool_calls"] == 1
+    assert type(receipt["usage"]["resources"]["wall_time_ms"]) is int
