@@ -7,7 +7,7 @@
 - A去重421个聚焦节点通过，首次失败与修复保留；Ruff/228格式/Mypy138源码通过。多规则组装、检索→固定模型→可见工具定义、JSON-object及64KiB本机读取已验证。完整1077仍属于ms-i2g，完整MS-I2h/P1未接受。
 - 精确修正：检索最多32候选；重要正文不会因相同语义标签被丢弃；仅FileContent扩至65536字符，通用Text16384及返回64KiB字节上限保留。
 - [阶段范围](../implementation/MS-I2h-A2.md)、[A证据](../implementation/evidence/ms-i2h-a2.json)、[worker复核](../implementation/evidence/ms-i2h-worker-receipts.json)。真实DeepSeek凭据/模型名待用户提供，隐藏录入与协议要求见[此处](../implementation/DEEPSEEK_ACCEPTANCE.md)。实际固定Model规则评估器、真实embedding、IPC/用户确认、Tool文件结果和专业交付尚待后续；flags及公开绑定未变。
-- 代码/证据提交及固定标签ms-i2h-a2在发布阶段记录；worker开工ms-i2h-start不移动，下一包未派发。
+- 已验证代码/证据提交：**14f844253ab3ddc3b1366fa989e5c1cb7a3573ef**；固定阶段标签 **ms-i2h-a2** 包含随后状态记录。atomic推送后按ls-remote核对integration及标签，远程结果以实际命令回执为准。worker开工ms-i2h-start不移动，下一包未派发。
 
 ## 历史阶段（以下记录保留）
 

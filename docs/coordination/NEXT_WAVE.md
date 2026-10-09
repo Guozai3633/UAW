@@ -1,3 +1,11 @@
+# 当前交付状态：MS-I2h-A2（2026-10-09）
+
+B/MS-C6、C/MS-T2e、D/MS-R2e已按组件范围接受，A集成阶段421不同聚焦节点通过。代码/证据提交14f844253ab3ddc3b1366fa989e5c1cb7a3573ef，固定阶段标签ms-i2h-a2。新包未派发，不自动重做原包或接完整MS-T2/MS-R2。需要换基线时在包边界由worker自行fetch/快进同步；A不改worker分支。当前A准备真实DeepSeek凭据/模型和剩余实际来源，完整MS-I2h/P1仍待验收。
+
+[最新接受记录](DISPATCH.md) · [阶段报告](../implementation/MS-I2h-A2.md) · [隐藏录入/真实验收](../implementation/DEEPSEEK_ACCEPTANCE.md)。
+
+## 历史派发说明（保留）
+
 # 下一轮可直接转发：MS-I2h
 
 日期2026-10-08。B/MS-C5、C/MS-T2d、D/MS-R2d三个最终组件已接受；A在B最终合入后2条实际组装复验通过。新包共同固定开发基线 **ms-i2h-start**（实际SHA见[DISPATCH](DISPATCH.md)；git rev-parse标签核对）。完整MS-I2g/1077节点随后已由A通过；验收标签ms-i2g另发，worker仍用ms-i2h-start。旧任务下移为历史记录，不再重做。

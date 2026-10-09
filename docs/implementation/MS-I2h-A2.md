@@ -48,3 +48,5 @@
 用户在本机录入Key后提供credential_handle和模型名；随后登记/发布配置，先实连协议，再跑真实理解、根任务、工具选择和质量样例。完整步骤、命令及官方协议来源见[DeepSeek验收说明](DEEPSEEK_ACCEPTANCE.md)。当前固定Model规则评估器、真实embedding、生产认证/IPC/用户确认与专业交付仍待完成。
 
 默认公开Runtime绑定与flags不变，写入/安装/exec未开放。三个worker组件按各自范围接受；本阶段标签与代码提交见[DISPATCH](../coordination/DISPATCH.md)。
+
+已验证代码/证据提交：`14f844253ab3ddc3b1366fa989e5c1cb7a3573ef`。固定阶段标签`ms-i2h-a2`包含随后状态记录，远程推送结果按实际命令回执核对。
