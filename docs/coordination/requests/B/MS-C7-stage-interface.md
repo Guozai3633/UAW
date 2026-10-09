@@ -50,3 +50,37 @@ Own PowerShell dot-sourced `ops/start-dev-db.ps1 -Session B`, PostgreSQL55433 re
 `.venv/Scripts/python.exe -m alembic upgrade head` exited 0.
 Baseline matrix is running under `--require-postgres`; no collection-only success
 is called a SQL pass. Receipts: ignored `tests/.artifacts/B/MS-C7/m1-baseline.log`.
+
+## M2 source ready for A wiring
+
+Source: `ff8a4323b73f482a8702f6cbf0ba110af30aa553` (parent M1 source/doc retained).
+Constructor now implements the shown optional `record_batch`/`batch_required` keywords.
+`GenericModelInputs`, Reader and TokenCounter public signatures are unchanged.
+`RegisteredContextInputs.read_many(pins: tuple[Ref,...], ctx) -> tuple[Reading,...]`
+is an additional gated, <=128-source entry; it never retains its readings on the
+instance. Existing read/check/build/snapshot routes still work without an adapter.
+
+Current Run checks bracket every public group. Recipe metadata reads five current
+rows before **and after** the Tool validator. Source groups read owner/payload/seal
+and re-read them after actual blob I/O (including the seal, stronger than the old
+post-blob pair). At most 42 source slots /126 record keys in a group. Inspection
+has two fresh independent passes around tool/recipe waits. An original just read
+and hash/classification checked by the actual Run Reader satisfies the same exact
+source within that pass; it is freshly read again in the next pass. No policy,
+permission, cancellation, revocation, old Reading, assessor output or model output
+is cached. SourceResolver/public checks and Composer/ModelInput commit/dispatch
+checks remain unchanged.
+
+Example default: `RegisteredContextInputs(..., record_batch=None)` uses sequential
+get; no SQL batching or shared cache claim. Strict: `(..., record_batch=actual_A_port,
+batch_required=True)`. Adapter errors never fall back. A may inject its adapter
+at construction; no composition/shared/SQL store edits were made by B.
+
+M2 receipts: **274 Context unit tests passed**, Ruff passed for changed B files.
+An initial boundary assertion incorrectly expected 126 keys although one slot was
+an original (actual group123); fixed test now checks <=126 and the remainder69.
+Failure `m2-unit-02.log` and successful `m2-unit-03.log` are retained under ignored
+`tests/.artifacts/B/MS-C7`. Baseline real SQL matrix is still in progress; completed
+single/no-tool build: get9134 / SQL9168 /26.725s; cold+warm ModelInput each get/SQL7753,
+23.577s/25.018s. Controlled semantic advice/tool checks never imply production
+semantic quality or ToolAccess. M3/M4 continue without waiting for A's adapter.
