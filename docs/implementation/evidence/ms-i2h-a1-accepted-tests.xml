@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites>
+  <testsuite name="MS-I2h-A1-focused-disjoint-aggregate" tests="36" failures="0" errors="0" skipped="0" time="1474.11">
+    <testcase classname="tests.integration.agent.test_context_epoch_postgres" name="test_root_uses_actual_snapshot_epoch_after_existing_recipe" time="105.259" />
+    <testcase classname="tests.integration.agent.test_limits_postgres" name="test_current_root_limit_and_concurrent_step_prevent_new_model_send" time="187.719" />
+    <testcase classname="tests.integration.agent.test_limits_postgres" name="test_incomplete_task_scope_is_denied_before_root_creation" time="7.919" />
+    <testcase classname="tests.integration.agent.test_loop_postgres" name="test_actual_tool_wait_approval_resume_and_observation[case0]" time="607.435" />
+    <testcase classname="tests.integration.agent.test_loop_postgres" name="test_cancelled_root_stops_before_any_model_send[case0]" time="5.367" />
+    <testcase classname="tests.integration.agent.test_loop_postgres" name="test_langgraph_has_real_postgres_json_checkpoint_and_end_is_not_completion[case0]" time="154.320" />
+    <testcase classname="tests.integration.agent.test_loop_postgres" name="test_unknown_model_send_is_not_resent_by_restart[case0]" time="163.519" />
+    <testcase classname="tests.integration.agent.test_root_postgres" name="test_completion_proposal_needs_current_verifier_and_emits_actual_revision" time="97.935" />
+    <testcase classname="tests.integration.agent.test_root_postgres" name="test_owned_identity_revision_and_budget_are_not_model_parameters" time="10.611" />
+    <testcase classname="tests.integration.agent.test_root_postgres" name="test_respond_uses_actual_context_fixed_model_and_does_not_complete_run" time="102.770" />
+    <testcase classname="tests.integration.agent.test_root_postgres" name="test_root_creation_has_one_instance_and_never_calls_model" time="10.929" />
+    <testcase classname="tests.integration.agent.test_steer_postgres" name="test_new_user_frame_invalidates_unsent_original_step" time="18.609" />
+    <testcase classname="tests.integration.model.test_gateway" name="test_output_refs_dedupe_actual_usage_and_secret_separation" time="1.682" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_are_plain_json_and_reject_pickle" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_enforce_bytes_and_depth" time="0.007" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[inf]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[nan]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[secret]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[unsafe0]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[unsafe4]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_checkpoints_reject_objects_and_non_json[unsafe5]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_decision_has_one_actual_contract_shaped_proposal_and_copy" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_invalid_and_authority_claims_do_not_become_decisions[change0]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_invalid_and_authority_claims_do_not_become_decisions[change1]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_invalid_and_authority_claims_do_not_become_decisions[change2]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_invalid_and_authority_claims_do_not_become_decisions[change3]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_invalid_and_authority_claims_do_not_become_decisions[change4]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_missing_checkpoint_is_not_an_implicit_memory_backend" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_non_tool_decisions_have_no_calls[blocked]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_non_tool_decisions_have_no_calls[propose_completion]" time="0.000" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_non_tool_decisions_have_no_calls[respond]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_non_tool_decisions_have_no_calls[wait]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_role_requirements_never_replace_the_fixed_model[requirements0]" time="0.019" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_role_requirements_never_replace_the_fixed_model[requirements1]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_role_requirements_never_replace_the_fixed_model[requirements2]" time="0.001" />
+    <testcase classname="tests.unit.agent.test_decisions" name="test_role_requirements_never_replace_the_fixed_model[requirements3]" time="0.001" />
+  </testsuite>
+</testsuites>

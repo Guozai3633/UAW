@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="371.417" timestamp="2026-10-09T00:16:49.397004+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_loop_postgres" name="test_actual_tool_wait_approval_resume_and_observation" time="179.046"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'dependency_unavailable', 'message': 'No implemented adapter in this environment', 'category': 'dependency', 'retryable': False, ...}, 'output_refs': []}&#10;assert 'ok' == 'waiting'&#10;  &#10;  - waiting&#10;  + ok">tests\integration\agent\test_loop_postgres.py:26: in test_actual_tool_wait_approval_resume_and_observation
+    assert waiting["kind"] == "waiting", diagnostic["result"]
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'dependency_unavailable', 'message': 'No implemented adapter in this environment', 'category': 'dependency', 'retryable': False, ...}, 'output_refs': []}
+E   assert 'ok' == 'waiting'
+E     
+E     - waiting
+E     + ok</failure></testcase><testcase classname="tests.integration.agent.test_loop_postgres" name="test_unknown_model_send_is_not_resent_by_restart" time="190.574" /></testsuite></testsuites>

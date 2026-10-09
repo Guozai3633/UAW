@@ -1,0 +1,258 @@
+{
+  "date": "2026-10-09",
+  "phase": "MS-I2h-A1",
+  "status": "accepted_development_component",
+  "baseline_ref": "ms-i2g",
+  "fixed_worker_start_ref": "ms-i2h-start",
+  "full_regression_repeated": false,
+  "last_full_ref": "ms-i2g",
+  "last_full_different_passing_nodes": 1077,
+  "different_passing_nodes": 36,
+  "agent_units": 23,
+  "agent_sql": 12,
+  "original_model_compatibility_sql": 1,
+  "accepted_receipts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2h-agent-unit-final.xml",
+      "sha256": "2f5f228d7d8ba3eb6e7f83323baba305457406f3a6e85426744c894ef555861e",
+      "counts": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 0.157,
+      "scope": "Current proposal/model-capability/JSON-checkpoint units"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-limits-compatibility.xml",
+      "sha256": "32e1d9ffedf4e4933776e938d8ec63c74622bb7e86ef57770def3f7b63c7ca18",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 219.111,
+      "scope": "Root identity/concurrency/steps/Task and original Model default; before final refinements"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-tool-chain-task-scope.xml",
+      "sha256": "e7d5ad3c2f5502a6c312733a5a5f0fdd445a6733f2b8c732344a964c89c1c531",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 607.581,
+      "scope": "Actual approval/text/result/observation/next Model chain; before final refinements"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-steer-tests.xml",
+      "sha256": "e3e57a83b0c8af498a60673db63d42565f09b747d699b837eeabd5e9ac869594",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 18.76,
+      "scope": "Actual new user TaskFrame invalidates unsent old step; before final refinements"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-final-gates-tests.xml",
+      "sha256": "5a5e7895bfde177c0dbea8e76ecd13cda1ccf82007b8c6ef33a7d2d3eb8906c7",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 523.059,
+      "scope": "Current unknown Model/cancel/real PG graph/answer/completion and event-revision gates"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-epoch-recovery-tests.xml",
+      "sha256": "a47023e22490c206f784d5d266f3d3163bf2dcb3d245f6332841949e9a1cb418",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 268.846,
+      "scope": "Final prior recipe epoch and unknown-send recovery after Context metadata refinement"
+    }
+  ],
+  "retained_historical_receipts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2h-agent-unit.xml",
+      "sha256": "4e38af81e92e35c706d5b28d4e9f83c287c332227af6e19c9d8fb6889b4d227f",
+      "counts": {
+        "tests": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-loop-repair-tests.xml",
+      "sha256": "393ce0c93f1c2a92b28143ee9657ce4261649c535c9d6f80f9ca4acc0994b3c0",
+      "counts": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-loop-tests.xml",
+      "sha256": "28d4f3c3042dbd3b82b1db451b015ef9aac06c80fa8df987d51d567961154ceb",
+      "counts": {
+        "tests": 4,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-root-tests-repaired.xml",
+      "sha256": "6cd10ca7dc5d25940af302610c9444eb11eb0d3c42390ef075a70f14b8102485",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-root-tests.xml",
+      "sha256": "a4a539e5c8284ebe8d8e89fc3c305d05ce70597b898eca35884e5d7d5f3b33ca",
+      "counts": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-tool-chain-tests.xml",
+      "sha256": "4a3d38411c2c9d7722fa473f116409cd7e3ed6bc2a3353e122ab66f729723e95",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "scope": "Retained diagnostic/earlier revision or repeat receipt; not added to accepted coverage"
+    }
+  ],
+  "aggregate": {
+    "path": "docs/implementation/evidence/ms-i2h-a1-accepted-tests.xml",
+    "sha256": "11d5d858b01d77a9c294bf9649533542a0f92a6d313b1a9fb19e03916c39724e",
+    "scope": "Focused batches with one repeated unknown-send node; latest result selected, not a full or single 36-node run"
+  },
+  "current_final_batch_source_hashes": {
+    "src/uaw/agent/adapters.py": "744d4c1361873134127ada79a535c13998b479b770f0b83f782d6f159c17a734",
+    "src/uaw/agent/assembly.py": "40d1dc9548c2fd7ff6364f1e8d6e78385fa7bb280a2a83ea1315bd1d8113b835",
+    "src/uaw/agent/contracts.py": "63bd73d5ff0c5431fa08015b853794670e1a1636fe9748e83587a484863fb4b3",
+    "src/uaw/agent/facade.py": "a4189f9247c3271df653c415b78e6a0f6491c94b0b5dcf1fa2c6ee18d587bcff",
+    "src/uaw/agent/factory.py": "718e053c465be3eb2d27cb788dd78f8d1fcaea1152e6d9a29da7cad35deec8e5",
+    "src/uaw/agent/loop.py": "f435f1e0c0b838b31b0146efd449b9d3c9c3c9f0c3a326c2d6e6ebd4141a47db",
+    "src/uaw/agent/ports.py": "86d6bce6694fe23961f4551ced490dad655a2c4a08e2d32fb097aee9b7bd8087",
+    "src/uaw/agent/repository.py": "25bdf06649472db04438e435b2f609d310b42fa0196e624237117eb7f04e7472",
+    "src/uaw/agent/sources.py": "21aa68fb7b98d847b8114af524631c01bf34f548bc6665d65e6cc4a00dd066e1",
+    "src/uaw/agent/tool_access.py": "053570874095716d51b8243f2e8d969ac4a293915f24416dc44aeb385c77311d",
+    "src/uaw/agent/__init__.py": "5618d0b0140f4006bcd104106cd4bc0812750b76da786eb62f5e23515305aa95",
+    "src/uaw/agent/engines/checkpoints.py": "fce5c27bbc38eb8d4c83fb5ab96fffd8713aa34c3a6bbde5d1c0c80a9e989d1a",
+    "src/uaw/agent/engines/langgraph.py": "aa2ea942cf7ba7087aa69f1c2d347ebe50e5d35fb00ad9b588b203d91272467e",
+    "src/uaw/agent/engines/__init__.py": "5cd3281b59aa20d4fd454d7a3042015262603210b098e9335e573c236d28fa36",
+    "tests/integration/agent/conftest.py": "63cc0c6bd688a9197c75203f4d017a556ae24ffe9bd0d6bafd5b1e72501bcc2b",
+    "tests/integration/agent/test_context_epoch_postgres.py": "37cca6fc238e91a1c7bde882eb08456dffcf7761b8975a20bcd3b050927f5881",
+    "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
+    "tests/integration/agent/test_loop_postgres.py": "770d59fdb09d03741df0437fa9bd29c07196cd2a3425a55e9684d85fdafddb46",
+    "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
+    "tests/integration/agent/test_steer_postgres.py": "6d4d3a9c486e5a0ff39db4b0d3867768e0d100f9787e05e8008b8ed83b180377",
+    "tests/integration/model/test_gateway.py": "380b2a8b74c96ba4d3d99193ae7d1abd36e481a2dbf945e6c2c25426f01314e0",
+    "src/uaw/resources/prompts/agent-root-v1.txt": "b91d476780d0364988484bf46814437e87550c2802daffa80505a40e53682c6d"
+  },
+  "prior_five_gates_source_hashes": {
+    "src/uaw/agent/adapters.py": "e5fdabf4d926197373e4f1a0ec0ceadcc3dfd15091aff99a54eb65ee9dd6c4bf",
+    "src/uaw/agent/assembly.py": "40d1dc9548c2fd7ff6364f1e8d6e78385fa7bb280a2a83ea1315bd1d8113b835",
+    "src/uaw/agent/contracts.py": "238008aa3c9eed442854fca5e4fffa0e7ab317e01ae8c21dc85b451a13e56af1",
+    "src/uaw/agent/facade.py": "a4189f9247c3271df653c415b78e6a0f6491c94b0b5dcf1fa2c6ee18d587bcff",
+    "src/uaw/agent/factory.py": "718e053c465be3eb2d27cb788dd78f8d1fcaea1152e6d9a29da7cad35deec8e5",
+    "src/uaw/agent/loop.py": "15a3fca78d601eed19d914ed65359e45cf73884e9dca0d021b3c2e2487553ca7",
+    "src/uaw/agent/ports.py": "0240b5216a471c10cb870110bd711105ebd3a7d7436337d093b1b41fee59df1b",
+    "src/uaw/agent/repository.py": "1060b6d8d236ced7a6da31708ca685a1afbd3cb9949e6cac11521f6baf96c743",
+    "src/uaw/agent/sources.py": "21aa68fb7b98d847b8114af524631c01bf34f548bc6665d65e6cc4a00dd066e1",
+    "src/uaw/agent/tool_access.py": "053570874095716d51b8243f2e8d969ac4a293915f24416dc44aeb385c77311d",
+    "src/uaw/agent/__init__.py": "5618d0b0140f4006bcd104106cd4bc0812750b76da786eb62f5e23515305aa95",
+    "src/uaw/agent/engines/checkpoints.py": "fce5c27bbc38eb8d4c83fb5ab96fffd8713aa34c3a6bbde5d1c0c80a9e989d1a",
+    "src/uaw/agent/engines/langgraph.py": "aa2ea942cf7ba7087aa69f1c2d347ebe50e5d35fb00ad9b588b203d91272467e",
+    "src/uaw/agent/engines/__init__.py": "5cd3281b59aa20d4fd454d7a3042015262603210b098e9335e573c236d28fa36",
+    "tests/integration/agent/conftest.py": "63cc0c6bd688a9197c75203f4d017a556ae24ffe9bd0d6bafd5b1e72501bcc2b",
+    "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
+    "tests/integration/agent/test_loop_postgres.py": "9ed9c926049f1e5aadc6738c0e45c51342f2fafab5c7dbd77fd5ce6a2517bc71",
+    "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
+    "tests/integration/agent/test_steer_postgres.py": "6d4d3a9c486e5a0ff39db4b0d3867768e0d100f9787e05e8008b8ed83b180377",
+    "tests/integration/model/test_gateway.py": "380b2a8b74c96ba4d3d99193ae7d1abd36e481a2dbf945e6c2c25426f01314e0",
+    "src/uaw/resources/prompts/agent-root-v1.txt": "b91d476780d0364988484bf46814437e87550c2802daffa80505a40e53682c6d"
+  },
+  "verification_relation": "Earlier limits/text/steer batches precede final failure-status, terminal-resume source revalidation and explicit pre-write event revision refinements. Five SQL gates cover those refinements; final two SQL nodes verify actual snapshot epoch after a prior recipe and repeat unknown-send recovery. Not every Agent node replayed after the final metadata refinement.",
+  "static_checks": {
+    "ruff": "passed",
+    "formatted_files": 209,
+    "mypy_source_files": 131,
+    "scope": "ops/check.ps1 runtime scope; deliberate developer task fixtures excluded"
+  },
+  "worker_deliveries": [
+    {
+      "session": "B",
+      "package": "MS-C6",
+      "source": "467b743873a347f30e1954f74ab1f0246797ae23",
+      "handoff": "1cd90da9c3cebb5da551913dbb0cbee5bace9832",
+      "reported_units": 246,
+      "reported_sql": 105,
+      "base": "f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8",
+      "state": "delivered_pending_review",
+      "evidence_source": "User-forwarded final report; not merged or independently accepted in this A phase"
+    },
+    {
+      "session": "C",
+      "package": "MS-T2e",
+      "source": "27fe04f22cf19f734f776da326e79dc52eb7b83e",
+      "handoff": "94c75066ed1c9a2ddb7f48a871ddafa957d5ba2d",
+      "reported_units": 218,
+      "reported_sql": 124,
+      "base": "f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8",
+      "state": "delivered_pending_review",
+      "evidence_source": "User-forwarded final report; not merged or independently accepted in this A phase"
+    },
+    {
+      "session": "D",
+      "package": "MS-R2e",
+      "source": "ced41378d814b7bfbb641eb531fd875646050776",
+      "handoff": "7d6ee06e35de0dfb89bdec6fbdf3de29e54109f9",
+      "reported_tests": 431,
+      "base": "f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8",
+      "state": "delivered_pending_review",
+      "evidence_source": "User-forwarded final report; not merged or independently accepted in this A phase"
+    }
+  ],
+  "limitations": [
+    "Controlled HTTP replies and fixture provider connectivity metadata; no actual LLM quality proof.",
+    "Actual PG/Context/Run/policy/budget/text computation; default API bindings and flags unchanged.",
+    "Completion adapter missing: proposals explicitly unavailable, Run not completed.",
+    "No subagent definitions/delegation, DAG, production auth, IPC, native consent or file/process execution integration.",
+    "Framework checkpoint is local position only; no global cross-module recovery guarantee.",
+    "New worker packages remain unmerged pending review; complete MS-I2h/P1 not accepted.",
+    "Observed read amplification/latency remains material; actual text chain test roughly 608 seconds."
+  ]
+}

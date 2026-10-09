@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="275.919" timestamp="2026-10-09T00:27:10.647755+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_loop_postgres" name="test_actual_tool_wait_approval_resume_and_observation[case0]" time="274.020"><failure message="AssertionError: {'kind': 'denied', 'failure': {'code': 'permission_denied', 'message': 'Tool context differs from the admitted Run', 'category': 'authorization', 'retryable': False, ...}, 'output_refs': []}&#10;assert 'ok' == 'waiting'&#10;  &#10;  - waiting&#10;  + ok">tests\integration\agent\test_loop_postgres.py:30: in test_actual_tool_wait_approval_resume_and_observation
+    assert waiting["kind"] == "waiting", diagnostic["result"]
+E   AssertionError: {'kind': 'denied', 'failure': {'code': 'permission_denied', 'message': 'Tool context differs from the admitted Run', 'category': 'authorization', 'retryable': False, ...}, 'output_refs': []}
+E   assert 'ok' == 'waiting'
+E     
+E     - waiting
+E     + ok</failure></testcase></testsuite></testsuites>

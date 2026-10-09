@@ -1,10 +1,10 @@
 # 当前实现与开发启动
 
-2026-10-08 MS-I2g完整开发集成接受：完整回归覆盖1077个不同节点，最终接受覆盖均通过：首轮1076通过/1测试超时，定向修复后受影响模块3项通过；去重采用首轮其余1074＋复跑3。原841全部保留，新增236，两个批次实际合计4289.46秒。三个最终组件及A实际来源/内部装配通过，产品Agent/真实LLM/IPC/用户确认与执行仍未验收。[本轮范围和回执](MS-I2g.md)。新包已发布，继续固定ms-i2h-start，见[下一轮](../coordination/NEXT_WAVE.md)。
+2026-10-09：A的MS-I2h-A1根Agent/有限步动态循环开发组件接受；23单元＋12 Agent SQL＋1原Model兼容SQL，去重36个通过节点，原失败及修复记录保留。历史完整1077覆盖仍属于ms-i2g，本阶段没有重新全量。真实LLM、完整交付、生产认证/IPC/用户确认和正式前端未验收。
 
-2026-10-08：P0-01工程基础、P0-03开发管理配置、P0-04受理/事件/资源账本已验证。P0-05模型网关与协议已实现并测试，尚无真实LLM验收回执。P0-02开发持久化已验证，最终D01尚未确认。Agent任务循环、工具执行、Runner和实际Web应用尚未接入。
+本轮方法/目录：[A接线说明](../coordination/requests/A/MS-I2h-Agent-wiring.md)；实际回执：[MS-I2h-A1](MS-I2h-A1.md)；用户视角：[当前进度](PROGRESS-2026-10-09.md)。B/MS-C6、C/MS-T2e、D/MS-R2e已报告最终交付，当前尚未合入或接受。默认公开Runtime绑定与flags未变。
 
-上一已验证运行版本全量 **841 项通过，无失败/错误/跳过**；使用真实 PostgreSQL、本机临时路径、受控模型响应和真实 Ed25519 原语，实际 LLM/配对/Runner 执行仍未验收。MS-I1 完成理解接线，MS-I2a 完成人工审批和签名公共基础，B 的 MS-C2 快照/引用组件已接受，MS-I2b 将 Context/Model/Approval 接入同一实时父子权限服务。MS-T2a/MS-R2a 组件已接受，MS-I2c 补齐预算恢复读与下一轮消费契约。B/C/D 的 MS-C3/MS-T2b/MS-R2b 已接受；MS-I2d 的根执行租约和输入路由、MS-I2e 的 Tool 核对集成已验证。MS-I2f1 设备/原请求/签字命令登记和当前权威组件已接受，MS-C4/MS-T2c/MS-R2c组件及MS-I2f2集成范围已接受，含真实SQL恢复Reader与缓存可选组装；生产来源仍缺，B/C/D保留交付边界，A继续完整 MS-I2f 产品来源接线。见 [MS-I1](MS-I1.md)、[MS-I2a](MS-I2a.md)、[MS-C2 接受记录](MS-C2-acceptance.md)、[MS-I2b](MS-I2b.md)、[MS-I2c](MS-I2c.md)、[MS-I2d](MS-I2d.md)、[MS-I2e](MS-I2e.md)、[MS-I2f1](MS-I2f1.md)、[MS-I2f2](MS-I2f2.md)、[统一派发表](../coordination/DISPATCH.md)及[并行计划](../plan/PARALLEL.md)。
+上一完整范围见[MS-I2g](MS-I2g.md)，固定worker开工标签仍为ms-i2h-start。各次历史源代码与回执保留在旧标签，不累加为产品完成百分比。
 
 ## 已实现的代码
 

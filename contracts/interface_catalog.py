@@ -1932,6 +1932,17 @@ def finalize(graph,strategies):
     record("RunToolAccessBinding","run","可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。","run_id|ID|实际Run\nagent_id?|ID|单个Agent槽位\nprincipal|Principal|完整用户与认证会话\nscope|Scope|固定执行范围\nmodel_policy_ref|Ref|固定用户模型\ncapability_policy_ref|Ref|实际权限版本\nrole_ref|Ref|实际角色版本及摘要\nenvironment|ID|部署环境\nrevision|Revision|CAS版本\nstate|NonEmptyText|active或revoked")
     TYPES["RunToolAccessBinding"]["properties"]["state"]["enum"]=["active","revoked"]
     RULES["RunToolAccessBinding"]=["仅内部已认证controller可登记/撤销；HTTP和模型工具不接受此对象。", "Run/Agent槽位、完整Principal/session、scope和固定政策逐次匹配。", "角色类别不授权资源，不替换固定模型；当前Run/权限/配置/提供方均须复查。"]
+    record("AgentRootBinding","agent","内部根实例固定创建来源，不从模型参数取得认证或角色权限。","context|TrustedExecutionContext|完整拥有者和执行范围\nstart_request|AgentStartRequest|原创建参数\nrole_ref|Ref|实际角色版本\nmax_steps|Revision|有界步数上限")
+    record("AgentLoopState","agent","自有CAS状态；框架检查点不替代此权威。","instance_id|ID|根实例\nrevision|Revision|CAS\nsteps|Revision|已认领模型步骤\nframe_ref|Ref|当前任务理解\nobservation_refs|[](Ref)|已登记观察\nactive_operation_ref?|Ref|原步骤持久意图")
+    record("AgentDecision","agent","固定模型的有界建议，无完成或执行授权。","action|AgentStepAction|拟采取动作\ntext|Text|答复或解释\nproposed_calls|[](ToolCall)|至多一个待授权工具")
+    TYPES["AgentDecision"]["properties"]["text"].update(maxLength=16384)
+    TYPES["AgentDecision"]["properties"]["proposed_calls"].update(maxItems=1)
+    enum("AgentOperationPhase","claimed|prepared|decided|waiting|finished|failed","agent")
+    record("AgentLoopOperation","agent","原步骤及原模型/工具尝试，恢复不换ID重新发送。","id|ID|操作\ninstance_id|ID|根实例\nrevision|Revision|CAS\nstep|Revision|步数\nrequest|AgentStepRequest|固定请求\ncontext|TrustedExecutionContext|原模型尝试\nphase|AgentOperationPhase|持久阶段\nsnapshot_ref?|Ref|实际上下文快照\ncontext_epoch?|Revision|实际快照纪元，不是模型步数\nmodel_request?|ModelCall|原模型调用\nmodel_result?|RuntimeModelruntimeGenerateResult|实际模型回执\nproposal?|AgentDecision|已验证建议\ntool_context?|TrustedExecutionContext|原工具尝试\nobservation_ref?|Ref|登记结果\nresult?|RuntimeAgentruntimeStepResult|实际步骤结果")
+    record("AgentObservation","agent","保存真实工具返回和原调用；失败也进入下一轮观察。","context|TrustedExecutionContext|完整来源绑定\ncall|ToolCall|实际调用\nresult|RuntimeToolruntimeInvokeResult|实际成功等待或失败")
+    record("AgentContextPreparation","agent","原步骤的上下文登记意图；恢复保持原配方CAS参数。","context|TrustedExecutionContext|原步骤上下文\nrequest|ContextRequest|固定配方参数\nrules|InternalContextRulesRequest|固定规则选择\ntools|ModelToolSet|真实工具集合\nrevision|Revision|CAS\nsnapshot_ref?|Ref|实际构建后快照")
+    for name in ["AgentRootBinding","AgentLoopState","AgentLoopOperation","AgentObservation"]:
+        RULES[name]=["仅可信内部适配器写入，当前拥有者/session/Run/固定模型/角色和资源逐次复查。", "不证明框架END、模型建议或传输成功已经完成用户任务。"]
     record("ApprovalBinding","run","审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。","context|TrustedExecutionContext|固定主体、Run、动作上下文\nrequest|ApprovalCreateRequest|固定动作参数摘要、资源和效果\nconfiguration_ref|Ref|Run受理配置\napproval_policy_ref|Ref|固定审批政策")
     record("ExecutionPolicySnapshot","run","实时父子权限交集，非可复用授权；来源均为当前主体持久政策。","run_id|ID|已受理运行\nscope|Scope|当前可信请求作用域\npolicy_refs|[](Ref)|叶到根当前版本与摘要\nallowed_capabilities|[](ID)|在全部父政策允许的当前scope能力\ndenied_capabilities|[](ID)|祖先显式禁止的并集\nnetwork_allowlist|[](NonEmptyText)|网络范围交集\nfeature_flag_refs|[](Ref)|需另行核验的开关引用",["不创建权限、不证明角色/设备/资源/租约或执行器已就绪；模型不能提供该对象来取得授权；执行前必须重查当前状态。"])
     TYPES["ExecutionPolicySnapshot"]["properties"]["policy_refs"].update(minItems=1,maxItems=8)

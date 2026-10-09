@@ -1,10 +1,10 @@
 # UAW 项目全局指引
 
-UAW 面向办公、开发与学术任务，采用 Python 构建可扩展 Agent Runtime。**P0-01工程基础、P0-03管理配置和P0-04任务受理/资源账本已完成开发验证；P0-05模型网关与协议已实现，真实LLM验收待提供方配置；P0-02开发存储已验证，最终部署D01待定。Agent循环、工具执行、Runner和实际前端尚未接入。**
+UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。**工程、开发管理/受理、版本化上下文、模型网关、审批/预算和纯文本工具已有开发实现；本轮接通根Agent的有限步动态循环。真实LLM、完整交付验收、生产认证/IPC/用户确认和正式前端仍未就绪。**
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-P1-01协议、上下文组件、MS-T2a/MS-R2a和MS-I2c公共恢复接口已合入，当前全量841项检查通过；真实模型语义质量、实际配对与执行仍待验收。Git远端已关联[项目仓库](https://github.com/Guozai3633/UAW)，集成分支为`integration`。采用 **3个开发session＋1个集成session**；MS-C4/MS-T2c/MS-R2c组件已接受，集成版本`ms-i2f2`接通登记命令Reader，提供缓存可选组装并统一content回执引用；B/C/D已同步；新包MS-C5/MS-T2d/MS-R2d按完整能力发布，准备标签`ms-i2g-start`含独立数据库支持，A并行处理接口和接线，见[统一记录](docs/coordination/DISPATCH.md)：[分工计划](docs/plan/PARALLEL.md) · [开工和合并](docs/plan/PARALLEL_WORKFLOW.md)。
+上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已报告交付，待A审阅集成。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
 
 ## 先看这些入口
 

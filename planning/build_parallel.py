@@ -115,13 +115,16 @@ def build_overview():
              "- P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。",
              "- P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。",
              "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
-             f"- 当前全量{BASELINE['last_verified_tests']}项通过，无跳过；真实PostgreSQL＋受控模型响应，未运行实际Agent/Runner任务。",
+             f"- 上次完整开发集成{BASELINE['last_full_runtime_ref']}覆盖{BASELINE['last_verified_tests']}个不同通过节点；原失败和定向修复保留，实际批次以DISPATCH为准。当前阶段验证另列，不把历史全量当作新源码全量。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
-             "- **MS-I2f2已验证，MS-C4/MS-T2c/MS-R2c组件已接受。** A接通登记命令Reader，提供缓存可选组装并统一content回执引用。B/C/D已同步ms-i2f2；下一包MS-C5/MS-T2d/MS-R2d按完整能力发布，固定准备版本ms-i2g-start，A并行处理接口与接线。接受与安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
+             "- 当前各session进度由下表列出；根Agent组件开发验证、完整集成及真实产品任务是独立验收范围。固定worker标签、待接受交付和安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
              "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
         lines.append(f"| {link(path, f'docs/plan/sessions/{key}.md', key + '：' + session['name'])} | {session['rules'][0]} | {'、'.join(session['starts'])} | {'第5个可选' if key == 'E' else '推荐4个方案'} |")
+    lines += ["", "### 当前包状态", "", "| Session | 包 | 实际状态 |", "| --- | --- | --- |"]
+    for key, progress in SESSION_PROGRESS.items():
+        lines.append(f"| {key} | {progress['package']} | {progress['state']} |")
     lines += ["", "A既负责当前Intent收尾，也负责后续集成；不额外承担所有模块的开发。B/C/D遇到业务问题自己修复，A集中处理公共接线和归属冲突。", "",
               "## 3. 为什么这些部分现在可以并行", "", "| 子包 | 首包真正依赖 | 此时暂不接入的部分 |", "| --- | --- | --- |",
               "| MS-C1 上下文规则/来源/预算 | 已固定InstructionSet、ContextSnapshot、Scope、Ref和模型窗口契约 | 通用Context到Intent/Model的组装、Runner读文件 |",

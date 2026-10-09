@@ -42603,6 +42603,258 @@
         ],
         "additionalProperties": false
       },
+      "AgentRootBinding": {
+        "type": "object",
+        "description": "内部根实例固定创建来源，不从模型参数取得认证或角色权限。",
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "完整拥有者和执行范围"
+          },
+          "start_request": {
+            "$ref": "#/components/schemas/AgentStartRequest",
+            "description": "原创建参数"
+          },
+          "role_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际角色版本"
+          },
+          "max_steps": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "有界步数上限"
+          }
+        },
+        "required": [
+          "context",
+          "start_request",
+          "role_ref",
+          "max_steps"
+        ],
+        "additionalProperties": false
+      },
+      "AgentLoopState": {
+        "type": "object",
+        "description": "自有CAS状态；框架检查点不替代此权威。",
+        "properties": {
+          "instance_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "根实例"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS"
+          },
+          "steps": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "已认领模型步骤"
+          },
+          "frame_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前任务理解"
+          },
+          "observation_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "已登记观察"
+          },
+          "active_operation_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原步骤持久意图"
+          }
+        },
+        "required": [
+          "instance_id",
+          "revision",
+          "steps",
+          "frame_ref",
+          "observation_refs"
+        ],
+        "additionalProperties": false
+      },
+      "AgentDecision": {
+        "type": "object",
+        "description": "固定模型的有界建议，无完成或执行授权。",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/AgentStepAction",
+            "description": "拟采取动作"
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text",
+            "description": "答复或解释",
+            "maxLength": 16384
+          },
+          "proposed_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCall"
+            },
+            "minItems": 0,
+            "maxItems": 1,
+            "description": "至多一个待授权工具"
+          }
+        },
+        "required": [
+          "action",
+          "text",
+          "proposed_calls"
+        ],
+        "additionalProperties": false
+      },
+      "AgentOperationPhase": {
+        "description": "取值含义见字段及协议约束。",
+        "type": "string",
+        "enum": [
+          "claimed",
+          "prepared",
+          "decided",
+          "waiting",
+          "finished",
+          "failed"
+        ]
+      },
+      "AgentLoopOperation": {
+        "type": "object",
+        "description": "原步骤及原模型/工具尝试，恢复不换ID重新发送。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "操作"
+          },
+          "instance_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "根实例"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS"
+          },
+          "step": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "步数"
+          },
+          "request": {
+            "$ref": "#/components/schemas/AgentStepRequest",
+            "description": "固定请求"
+          },
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "原模型尝试"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/AgentOperationPhase",
+            "description": "持久阶段"
+          },
+          "snapshot_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际上下文快照"
+          },
+          "context_epoch": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "实际快照纪元，不是模型步数"
+          },
+          "model_request": {
+            "$ref": "#/components/schemas/ModelCall",
+            "description": "原模型调用"
+          },
+          "model_result": {
+            "$ref": "#/components/schemas/RuntimeModelruntimeGenerateResult",
+            "description": "实际模型回执"
+          },
+          "proposal": {
+            "$ref": "#/components/schemas/AgentDecision",
+            "description": "已验证建议"
+          },
+          "tool_context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "原工具尝试"
+          },
+          "observation_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "登记结果"
+          },
+          "result": {
+            "$ref": "#/components/schemas/RuntimeAgentruntimeStepResult",
+            "description": "实际步骤结果"
+          }
+        },
+        "required": [
+          "id",
+          "instance_id",
+          "revision",
+          "step",
+          "request",
+          "context",
+          "phase"
+        ],
+        "additionalProperties": false
+      },
+      "AgentObservation": {
+        "type": "object",
+        "description": "保存真实工具返回和原调用；失败也进入下一轮观察。",
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "完整来源绑定"
+          },
+          "call": {
+            "$ref": "#/components/schemas/ToolCall",
+            "description": "实际调用"
+          },
+          "result": {
+            "$ref": "#/components/schemas/RuntimeToolruntimeInvokeResult",
+            "description": "实际成功等待或失败"
+          }
+        },
+        "required": [
+          "context",
+          "call",
+          "result"
+        ],
+        "additionalProperties": false
+      },
+      "AgentContextPreparation": {
+        "type": "object",
+        "description": "原步骤的上下文登记意图；恢复保持原配方CAS参数。",
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "原步骤上下文"
+          },
+          "request": {
+            "$ref": "#/components/schemas/ContextRequest",
+            "description": "固定配方参数"
+          },
+          "rules": {
+            "$ref": "#/components/schemas/InternalContextRulesRequest",
+            "description": "固定规则选择"
+          },
+          "tools": {
+            "$ref": "#/components/schemas/ModelToolSet",
+            "description": "真实工具集合"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS"
+          },
+          "snapshot_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际构建后快照"
+          }
+        },
+        "required": [
+          "context",
+          "request",
+          "rules",
+          "tools",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
       "ApprovalBinding": {
         "type": "object",
         "description": "审批内部权威绑定；只由Run/获准Tool适配器构造，不接受模型或HTTP提供可信上下文。",

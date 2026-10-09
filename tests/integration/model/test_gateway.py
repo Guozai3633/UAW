@@ -91,13 +91,40 @@ async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> A
             },
             meta("model-fixture-provider", 1),
         )
+        provider_revision = 2
+        if getattr(request, "param", {}).get("active_provider_for_tools", False):
+            # Controlled connectivity metadata for Agent/Tool composition tests,
+            # not a real provider probe. Keep config/binding revisions consistent.
+            binding = await run.store.get(configuration.platform, "providers", provider["id"])
+            configured = await run.store.get(
+                configuration.platform, "provider.configs", provider["id"]
+            )
+            await run.store.put(
+                configuration.platform,
+                configured.namespace,
+                provider["id"],
+                "ProviderDraft",
+                configured.payload,
+                expected_revision=2,
+                request_id="agent-fixture-connected-config",
+            )
+            await run.store.put(
+                configuration.platform,
+                binding.namespace,
+                provider["id"],
+                "ProviderBinding",
+                {**binding.payload, "state": "active", "revision": 3},
+                expected_revision=2,
+                request_id="agent-fixture-connected-binding",
+            )
+            provider_revision = 3
         await configuration.register(
             admin,
             "model",
             {
                 "entry": {
                     "id": "fixture-model",
-                    "provider_ref": reference("provider", provider["id"], 2),
+                    "provider_ref": reference("provider", provider["id"], provider_revision),
                     "display_name": "Protocol fixture",
                     "context_limit_tokens": getattr(request, "param", {}).get(
                         "context_limit_tokens", 100000
@@ -122,7 +149,7 @@ async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> A
         }
         draft.update(
             model_refs=[reference("model", "fixture-model", 2)],
-            provider_refs=[reference("provider", "fixture-provider", 2)],
+            provider_refs=[reference("provider", "fixture-provider", provider_revision)],
         )
         staged = await configuration.stage(
             admin, {"configuration": draft}, meta("model-fixture-stage")
@@ -196,7 +223,7 @@ async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> A
             "model_config": {
                 "model_id": "fixture-model",
                 "catalog_revision": 2,
-                "provider_ref": reference("provider", "fixture-provider", 2),
+                "provider_ref": reference("provider", "fixture-provider", provider_revision),
                 "policy_ref": binding["model_policy_ref"],
                 "max_output_tokens": 128,
             },

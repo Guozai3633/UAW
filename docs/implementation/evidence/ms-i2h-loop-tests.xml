@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="506.345" timestamp="2026-10-09T00:05:30.005683+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_loop_postgres" name="test_actual_tool_wait_approval_resume_and_observation" time="154.369"><failure message="AssertionError: {'kind': 'ok', 'payload': {'action': 'call_tools', 'instance_ref': {'id': 'root-6261c6e6441431484be854ab1c7cd2f702bc15...kind': 'content', 'version': '1', 'content_hash': 'c544277a694b394c65adc0ea0941b435a8b718bea41d10dee8baa31fabd50618'}]}&#10;assert 'ok' == 'waiting'&#10;  &#10;  - waiting&#10;  + ok">tests\integration\agent\test_loop_postgres.py:22: in test_actual_tool_wait_approval_resume_and_observation
+    assert waiting["kind"] == "waiting", waiting
+E   AssertionError: {'kind': 'ok', 'payload': {'action': 'call_tools', 'instance_ref': {'id': 'root-6261c6e6441431484be854ab1c7cd2f702bc15...kind': 'content', 'version': '1', 'content_hash': 'c544277a694b394c65adc0ea0941b435a8b718bea41d10dee8baa31fabd50618'}]}
+E   assert 'ok' == 'waiting'
+E     
+E     - waiting
+E     + ok</failure></testcase><testcase classname="tests.integration.agent.test_loop_postgres" name="test_unknown_model_send_is_not_resent_by_restart" time="158.413"><failure message="AssertionError: {'kind': 'conflict', 'failure': {'code': 'revision_conflict', 'category': 'conflict', 'message': 'Stored version or idempotent request parameters conflict', 'retryable': False, ...}, 'output_refs': []}&#10;assert ('conflict' != 'ok' and 'conflict' == 'unknown_effect'&#10;  &#10;  - unknown_effect&#10;  + conflict)">tests\integration\agent\test_loop_postgres.py:118: in test_unknown_model_send_is_not_resent_by_restart
+    assert pending["kind"] != "ok" and pending["failure"]["category"] == "unknown_effect", pending
+E   AssertionError: {'kind': 'conflict', 'failure': {'code': 'revision_conflict', 'category': 'conflict', 'message': 'Stored version or idempotent request parameters conflict', 'retryable': False, ...}, 'output_refs': []}
+E   assert ('conflict' != 'ok' and 'conflict' == 'unknown_effect'
+E     
+E     - unknown_effect
+E     + conflict)</failure></testcase><testcase classname="tests.integration.agent.test_loop_postgres" name="test_cancelled_root_stops_before_any_model_send" time="8.363" /><testcase classname="tests.integration.agent.test_loop_postgres" name="test_langgraph_has_real_postgres_json_checkpoint_and_end_is_not_completion" time="183.770" /></testsuite></testsuites>

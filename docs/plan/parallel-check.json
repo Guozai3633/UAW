@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "status": "passed",
   "packages": 35,
   "session_templates": 5,
   "ownership_paths_disjoint": true,
   "package_dependencies_acyclic": true,
-  "local_links_checked": 254,
+  "local_links_checked": 260,
   "session_dispatch_ready": true,
   "runtime_tests": "not_run_by_plan_generator",
   "git_operations": "not_performed",

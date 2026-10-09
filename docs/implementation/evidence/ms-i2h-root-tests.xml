@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="26.029" timestamp="2026-10-08T23:58:06.288168+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_root_postgres" name="test_root_creation_has_one_instance_and_never_calls_model" time="9.173"><failure message="AssertionError: ({'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent re...st_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []})&#10;assert ({'kind': 'fai...put_refs': []} == {'kind': 'fai...put_refs': []}&#10;  &#10;  Omitting 3 identical items, use -vv to show&#10;  Use -v to get more diff and 'failed' == 'ok'&#10;  &#10;  - ok&#10;  + failed)">tests\integration\agent\test_root_postgres.py:46: in test_root_creation_has_one_instance_and_never_calls_model
+    assert first == again and first["kind"] == "ok", (first, again)
+E   AssertionError: ({'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent re...st_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []})
+E   assert ({'kind': 'fai...put_refs': []} == {'kind': 'fai...put_refs': []}
+E     
+E     Omitting 3 identical items, use -vv to show
+E     Use -v to get more diff and 'failed' == 'ok'
+E     
+E     - ok
+E     + failed)</failure></testcase><testcase classname="tests.integration.agent.test_root_postgres" name="test_respond_uses_actual_context_fixed_model_and_does_not_complete_run" time="7.585"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []}&#10;assert 'failed' == 'ok'&#10;  &#10;  - ok&#10;  + failed">tests\integration\agent\test_root_postgres.py:58: in test_respond_uses_actual_context_fixed_model_and_does_not_complete_run
+    ref = await start(p)
+          ^^^^^^^^^^^^^^
+tests\integration\agent\test_root_postgres.py:14: in start
+    assert result["kind"] == "ok", result
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []}
+E   assert 'failed' == 'ok'
+E     
+E     - ok
+E     + failed</failure></testcase><testcase classname="tests.integration.agent.test_root_postgres" name="test_owned_identity_revision_and_budget_are_not_model_parameters" time="7.891"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []}&#10;assert 'failed' == 'ok'&#10;  &#10;  - ok&#10;  + failed">tests\integration\agent\test_root_postgres.py:79: in test_owned_identity_revision_and_budget_are_not_model_parameters
+    ref = await start(p)
+          ^^^^^^^^^^^^^^
+tests\integration\agent\test_root_postgres.py:14: in start
+    assert result["kind"] == "ok", result
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'agent_request_invalid', 'category': 'arguments', 'message': 'Invalid Agent request', 'retryable': False, ...}, 'output_refs': []}
+E   assert 'failed' == 'ok'
+E     
+E     - ok
+E     + failed</failure></testcase></testsuite></testsuites>

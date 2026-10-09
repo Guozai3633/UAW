@@ -14,7 +14,7 @@
 - `run/execution_sources.py、tool_sources.py、context_sources.py、runner_mapping.py`：MS-I2g实际Run/固定模型、可信角色与结果数据权限、Context工具验证和Runner当前owner适配。内部装配入口在`composition.py`，策略和签名见[MS-I2g接线](coordination/requests/A/MS-I2g-wiring.md)。
 - `context/registered.py、authority.py、readers.py`：通用材料/规则/配方登记源；`tool/invocation/dispatch.py、receipt_store.py、results.py、providers/text.py`：实际纯文本调用/结果恢复；`apps/local_runner/uaw_runner/control_signing.py、root_source.py、assembly.py`：控制签字和有期限的本机授权根组件。组件接受与产品启用见[MS-I2g-A1](implementation/MS-I2g-A1.md)。
 
-实际代码按已实现职责拆分，不先生成目标目录中的空实现；业务执行器尚未接入。启动与管理员操作见[开发控制层说明](implementation/CONTROL_PLANE.md)。
+本轮实际`src/uaw/agent/`包含factory/repository/sources、loop/adapters/tool_access/assembly、facade/contracts/ports和engines。根实例及纯文本执行器可显式组装，默认产品入口与本机执行仍待验收。详细落点和方法见[MS-I2h接线](coordination/requests/A/MS-I2h-Agent-wiring.md)，验证见[MS-I2h-A1](implementation/MS-I2h-A1.md)。下面目录树同时包含未来目标，以实施报告判定实际能力。启动与管理员操作见[开发控制层说明](implementation/CONTROL_PLANE.md)。
 
 ## 1. 目录按职责组织
 

@@ -1,21 +1,21 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.9"
-DATE = "2026-10-08"
+VERSION = "0.10"
+DATE = "2026-10-09"
 BASELINE = {
     "git_repository": True,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
     "commit": "5d42970d1dd6761f33351c6e54f22e6f7fce312d",
-    "commit_kind": "full_verified_runtime_source_baseline_with_separate_evidence_commit",
+    "commit_kind": "focused_verified_root_agent_phase_full_milestone_pending",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2h-start",
-    "integration_ref": "ms-i2g",
+    "integration_ref": "ms-i2h-a1",
     "last_full_runtime_ref": "ms-i2g",
-    "phase_different_passing_nodes": 1077,
-    "phase_is_full_milestone": True,
+    "phase_different_passing_nodes": 36,
+    "phase_is_full_milestone": False,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
     "code_baseline_verified": True,
@@ -94,10 +94,10 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2g完整1077节点通过；三个组件和A实际来源/装配接受。MS-I2h根实例/单Agent包已发布，尚未实现。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
-    "B": dict(state="MS-C5最终8cc445a/233a5c3按组件接受；293不同节点通过。MS-C6四里程碑已准备，固定开发基线ms-i2h-start发布，可开始新包。", package="MS-C6", ready=True, base_ref="ms-i2h-start"),
-    "C": dict(state="MS-T2d组件接受；MS-T2e权限先行混合检索和有界索引已准备，固定开发基线ms-i2h-start发布，可开始新包。", package="MS-T2e", ready=True, base_ref="ms-i2h-start"),
-    "D": dict(state="MS-R2d组件接受；MS-R2e真实file.read和journal四里程碑已准备，固定开发基线ms-i2h-start发布，可开始新包。", package="MS-R2e", ready=True, base_ref="ms-i2h-start"),
+    "A": dict(state="MS-I2h-A1根实例/有限步动态循环开发组件接受；36个不同聚焦节点通过。完整MS-I2h继续，三个新worker包待审阅集成。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
+    "B": dict(state="MS-C6源码467b743/handoff1cd90da已报告交付；246单元＋105 SQL待A核对，未合入或接受，不自动开始新包。", package="MS-C6", ready=False, base_ref="ms-i2h-start"),
+    "C": dict(state="MS-T2e源码27fe04f/handoff94c7506已报告交付；218单元＋124不同SQL待A核对，未合入或接受，不自动开始新包。", package="MS-T2e", ready=False, base_ref="ms-i2h-start"),
+    "D": dict(state="MS-R2e源码ced4137/handoff7d6ee06已报告交付；431项与OS签字清理待A核对，未合入或接受，不自动开始新包。", package="MS-R2e", ready=False, base_ref="ms-i2h-start"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
 }
 
@@ -111,7 +111,7 @@ PACKAGE_PROGRESS = {
     "MS-I2d": "accepted_development", "MS-I2e": "accepted_development",
     "MS-I2f1": "accepted_development", "MS-I2f2": "accepted_development", "MS-I2f": "in_progress", "MS-C4": "accepted_component", "MS-T2c": "accepted_component", "MS-R2c": "accepted_component",
     "MS-C5": "accepted_component", "MS-T2d": "accepted_component", "MS-R2d": "accepted_component", "MS-I2g": "accepted_development",
-    "MS-C6": "published_ready_to_start", "MS-T2e": "published_ready_to_start", "MS-R2e": "published_ready_to_start", "MS-I2h": "published_ready_to_start",
+    "MS-C6": "delivered_pending_review", "MS-T2e": "delivered_pending_review", "MS-R2e": "delivered_pending_review", "MS-I2h": "in_progress",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 

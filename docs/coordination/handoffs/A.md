@@ -1,5 +1,17 @@
 # Session A 集成交接
 
+## MS-I2h-A1（2026-10-09）
+
+- 根Agent及动态单Agent开发组件接受；36不同聚焦节点通过，原失败与定向修复保留，历史1077全量仍为ms-i2g。
+- 新增14个Agent源码文件、精炼根提示词、7内部命名schema与实际SQL链；没有新增公开操作、修改shared ports/contracts或依赖锁。
+- [详细范围](../../implementation/MS-I2h-A1.md)、[接线签名与目录](../requests/A/MS-I2h-Agent-wiring.md)、[证据索引](../../implementation/evidence/ms-i2h-a1.json)。固定阶段代码/标签发布后补录DISPATCH。
+- 用户已转发B/MS-C6、C/MS-T2e、D/MS-R2e最终交付。按本次指示先完成A；三个新包仅登记delivered_pending_review，不合入或提前接受。
+- 默认公开入口/flags不变；当前CompletionPort缺失明确不可用，Run未因回答/框架END/模型建议变completed。真实LLM/认证/IPC/原生确认/专业交付和完整MS-I2h未接受。
+
+## 历史记录（保留）
+
+# Session A 集成交接
+
 ## MS-I2g完整开发集成（2026-10-08）
 
 - B最终8cc445a/233a5c3合入b47fd81，C/D最终已提前分别接受；三组件和当前Run/模型/角色/结果数据来源及内部组装接受。
