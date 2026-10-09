@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-09",
+  "stage": "ms-i2i-batch-a1",
+  "scope": "actual PostgreSQL Context batch adapter only",
+  "worker_interface_source": "ff8a4323b73f482a8702f6cbf0ba110af30aa553",
+  "distinct_batch_passed": 9,
+  "receipt": "tests/.artifacts/A/MS-I2i/completion-batch-fixed-2.xml",
+  "receipt_sha256": "69db02fa9cb57243218074207ae2805e5f684ce6fc75a3c361aba7b802986a3d",
+  "receipt_entire_batch": {
+    "nodes": 17,
+    "failed": 3,
+    "errors": 0
+  },
+  "note": "9 batch nodes passed; 3 separate completion failures in this original aggregate are retained. No current full-regression claim.",
+  "source_sha256": {
+    "src/uaw/infrastructure/db/context_batch.py": "7b4fe4ded93b1ced50221e94f5b1793e755b0307fbf365859c301dc35ed85116",
+    "tests/integration/agent/test_context_batch_postgres.py": "b9f7e19681aa1fefa020d3ecb022eb0c94191226d7a98775a4d3051339bdfcd7"
+  },
+  "public_bindings_changed": false,
+  "flags_changed": false
+}
