@@ -63,7 +63,12 @@ class ContextRecordReads:
                 ]
             )
         else:
-            rows = await self.batch.read(principal, keys)
+            offered = principal.model_copy(deep=True)
+            rows = await self.batch.read(offered, keys)
+            if offered != principal:
+                raise reject(
+                    "context_record_batch_invalid", "Adapter changed Principal identity", 403
+                )
         if type(rows) is not tuple or len(rows) != len(keys):
             raise reject("context_record_batch_invalid", "Incomplete record batch", 410)
         for key, row in zip(keys, rows, strict=True):
@@ -79,5 +84,13 @@ class ContextRecordReads:
                 or type(row.payload) is not dict
             ):
                 raise reject("context_record_batch_invalid", "Record identity differs", 410)
-        # Record is frozen but its payload is not. Never expose adapter-owned data.
-        return deepcopy(rows)
+        # Duplicate lookups in one adapter view cannot name different records.
+        seen = {}
+        for key, row in zip(keys, rows, strict=True):
+            if key in seen and seen[key] != row:
+                raise reject(
+                    "context_record_batch_invalid", "Duplicate record identity differs", 410
+                )
+            seen[key] = row
+        # Record is frozen but its payload is not. Detach each duplicate too.
+        return tuple(deepcopy(row) for row in rows)
