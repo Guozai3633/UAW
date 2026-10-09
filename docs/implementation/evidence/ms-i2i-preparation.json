@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-09",
+  "phase": "MS-I2i-dispatch-preparation",
+  "runtime_baseline_ref": "ms-i2h-a3",
+  "runtime_baseline_commit": "3e5917d9b8dffa767f403c3d71a1884327db8f70",
+  "dispatch_ref": "ms-i2i-start",
+  "status": "prepared_for_publication",
+  "workers": [
+    {
+      "session": "B",
+      "path": "E:/UAW/.worktrees/context",
+      "branch": "dev/context",
+      "head": "1cd90da9c3cebb5da551913dbb0cbee5bace9832",
+      "clean": true,
+      "ancestor_of_runtime_baseline": true,
+      "mutated": false
+    },
+    {
+      "session": "C",
+      "path": "E:/UAW/.worktrees/tool",
+      "branch": "dev/tool",
+      "head": "94c75066ed1c9a2ddb7f48a871ddafa957d5ba2d",
+      "clean": true,
+      "ancestor_of_runtime_baseline": true,
+      "mutated": false
+    },
+    {
+      "session": "D",
+      "path": "E:/UAW/.worktrees/runner",
+      "branch": "dev/runner",
+      "head": "7d6ee06e35de0dfb89bdec6fbdf3de29e54109f9",
+      "clean": true,
+      "ancestor_of_runtime_baseline": true,
+      "mutated": false
+    }
+  ],
+  "runtime_source_changes": [],
+  "retained_source_hashes_verified": 258,
+  "new_runtime_tests": 0,
+  "new_llm_calls": 0,
+  "retained_evidence": {
+    "runtime_phase": "MS-I2h-A3",
+    "focused_nodes": 31,
+    "model_attempts": 13,
+    "last_full_ref": "ms-i2g",
+    "last_full_coverage": 1077
+  },
+  "package_states": {
+    "MS-I2i": "released_waiting_start",
+    "MS-C7": "released_waiting_start",
+    "MS-T2f": "released_waiting_start",
+    "MS-R2f": "released_waiting_start"
+  },
+  "shared_paths_owner": "A",
+  "actual_worker_messages_sent": false,
+  "worktrees_created": false,
+  "flags_changed": false,
+  "planning_check": {
+    "path": "docs/plan/parallel-check.json",
+    "sha256": "aef4e6cc204e9a567fd3cd71a1e9afa0b7ab55f29491bfe221b0383ada12d0a4",
+    "result": {
+      "date": "2026-10-09",
+      "status": "passed",
+      "packages": 39,
+      "session_templates": 5,
+      "ownership_paths_disjoint": true,
+      "package_dependencies_acyclic": true,
+      "local_links_checked": 294,
+      "session_dispatch_ready": true,
+      "runtime_tests": "not_run_by_plan_generator",
+      "git_operations": "not_performed",
+      "errors": []
+    }
+  },
+  "strategy_document": "docs/coordination/requests/A/MS-I2i-parallel-packages.md",
+  "copyable_messages_document": "docs/coordination/NEXT_WAVE.md"
+}

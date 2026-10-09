@@ -1,5 +1,7 @@
 # 当前实现与开发启动
 
+下一轮四session安排见[MS-I2i能力包](../coordination/requests/A/MS-I2i-parallel-packages.md)与[开工消息](../coordination/NEXT_WAVE.md)。本次准备不新增运行能力；最新实际运行验收仍为MS-I2h-A3。
+
 2026-10-09最新阶段：[MS-I2h-A2](MS-I2h-A2.md)已接受三组件审阅/合入及A接线，421不同聚焦节点通过；历史完整1077仍为ms-i2g。根Agent已看见过滤后的工具定义，JSON-object模式保留本地schema验证。真实DeepSeek已接入；[MS-I2h-A3](MS-I2h-A3.md)有13次真实调用和三个最终任务样例、31个不同聚焦检查。首次失败及修复保留；默认flags与公开入口未开放。
 
 以下为前阶段MS-I2h-A1记录；三份新组件的当前接受状态以MS-I2h-A2为准。

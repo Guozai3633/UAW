@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-C6最终1cd90da合入2969551，351节点原回执复核，组件接受；A补重要正文保护并复验。下一包未派发。以DISPATCH的固定版本与派发为准。
+状态：MS-C6组件接受保留。MS-C7已发布待开工：Context读取提速/有界批读/来源等价；四里程碑连续开发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6。
+- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6、MS-C7。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -28,6 +28,8 @@
 - `src/uaw/context/registered.py`
 - `src/uaw/context/authority.py`
 - `src/uaw/context/readers.py`
+- `src/uaw/context/read_batch.py`
+- `src/uaw/context/read_metrics.py`
 - `tests/unit/context/`
 - `tests/integration/context/`
 - `docs/coordination/handoffs/B.md`
@@ -146,16 +148,33 @@
 - 前两里程碑交固定接口后继续同包；受控评估不宣称真实模型语义验收。
 - 完整规则/模型/来源不变，查询次数和拒绝行为实际对比。
 
-## 可复制到新session的开工说明
+### MS-C7：Context读取提速/有界批读/来源等价
 
-下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
+对应原轮：[P1-02](../rounds/P1-02.md)、[P4-04](../rounds/P4-04.md)。
+开发前置：MS-C6。
+
+任务：
+
+1. M1实际SQL基线测量get/往返/Reader/assessor与上下文耗时，尽早交批读内部签名及调用样例。
+2. M2减少重复资料展开和纯计算，操作内有界读取，原公开/等待后/提交/派发前复查保留，不缓存授权。
+3. M3可选ContextRecordBatchPort消费完整owner/Ref/版本，A做SQL适配；兼容方式可独立继续，证明消息/引用/拒绝等价。
+4. M4自身55433实跑原模块与批缺失/删除/撤销/并发/跨主体/新进程，保存实测指标与全部失败修复。
+
+交付检查：
+
+- 完整输入输出/目录/策略以MS-I2i-parallel-packages.md为准；M1阶段说明、M2源码交付后继续M3/M4。
+- 优化不删权限/取消/来源门槛，不承诺虚构比例；真实SQL与受控评估分别记账，完整P1/P4未自动接受。
+
+## 当前session开工说明
+
+沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。
 
 ```text
 你负责UAW并行开发中的Session B：上下文组件。
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
-读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-C6最终1cd90da合入2969551，351节点原回执复核，组件接受；A补重要正文保护并复验。下一包未派发。只整理现有交接与依赖提案，不自动开始下一包。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-C7。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2i-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

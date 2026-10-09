@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2e最终7d6ee06合入cb087d0，431节点/OS清理复核，组件接受；A发布FileContent局部扩容并实跑受影响读取。下一包未派发。以DISPATCH的固定版本与派发为准。
+状态：MS-R2e组件接受保留。MS-R2f已发布待开工：Windows双进程可信IPC/活channel/只读临时根链；四里程碑连续开发。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2f、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -139,6 +139,23 @@
 - 无实际authority/owner/channel明确不可用；受控channel不是可信IPC实连。
 - 不开放写入/安装/exec或flags，不决定D03。
 
+### MS-R2f：Windows可信IPC/活连接来源/只读双进程链
+
+对应原轮：[P1-04](../rounds/P1-04.md)。
+开发前置：MS-R2e。
+
+任务：
+
+1. M1真实命名管道双进程、显式DACL/独立OS与进程身份、nonce/角色key签名、有界帧及关闭接口。
+2. M2connection registry消费登记owner/device/key并适配既有RunnerChannelSourcePort，断连撤销失效、重连新Ref。
+3. M3已登记签名command到ReadOnlyRunner临时根及实际签名journal/receipt，authority/Root/lease/fence/一次使用保留。
+4. M4真实Windows冒名/坏签名/重放/断帧/超长/超时取消/退出重连/回复丢失恢复与原D回归，清理进程管道凭据。
+
+交付检查：
+
+- 实际IPC与受控临时授权来源分别证明；通信不自证用户确认或配对，D03正式部署未代选。
+- 仅D临时根，flags/写入安装exec不开放；M1/M2交付后继续完整包，A负责控制端/实际组装。
+
 ### MS-R2：真实IPC配对和获准执行接线
 
 对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
@@ -154,16 +171,16 @@
 - 实际配对/权限有回执，scope逐次复核。
 - 代码隔离不声称OS隔离，真实代码任务仍需实际test与交付验证。
 
-## 可复制到新session的开工说明
+## 当前session开工说明
 
-下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
+沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。
 
 ```text
 你负责UAW并行开发中的Session D：Runner协议与授权组件。
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
-读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
-当前状态：MS-R2e最终7d6ee06合入cb087d0，431节点/OS清理复核，组件接受；A发布FileContent局部扩容并实跑受影响读取。下一包未派发。只整理现有交接与依赖提案，不自动开始下一包。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-R2f。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2i-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

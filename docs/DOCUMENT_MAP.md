@@ -4,6 +4,8 @@
 
 ## 1. 权威与阅读顺序
 
+下一轮安排：[MS-I2i完整分包/策略/目录](coordination/requests/A/MS-I2i-parallel-packages.md)、[四份开工消息](coordination/NEXT_WAVE.md)、[准备验证](implementation/MS-I2i-preparation.md)。A评估与交付、B提速、C办公工具、D本机IPC，统一ms-i2i-start；状态为已发布待开工。
+
 最新入口：[三组件审阅集成](implementation/MS-I2h-A2.md)、[DeepSeek隐藏录入与验收](implementation/DEEPSEEK_ACCEPTANCE.md)。421不同聚焦节点通过，三个新包已按组件接受；真实DeepSeek和三个有界样例见[MS-I2h-A3](implementation/MS-I2h-A3.md)，31聚焦节点通过；完整MS-I2h和专业产品任务仍待验收。
 
 根Agent基础：[范围与回执](implementation/MS-I2h-A1.md)、[方法/输入输出/策略/实际目录](coordination/requests/A/MS-I2h-Agent-wiring.md)、[当前进度](implementation/PROGRESS-2026-10-09.md)。三个新包已在A2按组件接受，完整MS-I2h及产品验收仍待完成。

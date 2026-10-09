@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2h-A3实际DeepSeek固定模型和三个有界任务样例通过，31聚焦节点通过；完整成果/生产来源/前端及MS-I2h继续。B/C/D组件已接受，下一包未派发。以DISPATCH的固定版本与派发为准。
+状态：MS-I2i安排已发布：当前模型评估、文本成果与完成提交、逐包集成；运行来源ms-i2h-a3，原13实连/31聚焦回执保留，本包实现尚未验收。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -27,6 +27,10 @@
 - `tests/integration/agent/`
 - `src/uaw/context/seed.py`
 - `src/uaw/context/intent.py`
+- `src/uaw/workspace/artifacts.py`
+- `src/uaw/workspace/artifact_repository.py`
+- `tests/unit/artifacts/`
+- `tests/integration/artifacts/`
 - `src/uaw/resources/`
 - `contracts/`
 - `planning/`
@@ -79,7 +83,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C4/MS-T2c/MS-R2c已接受；MS-I2f2接通登记命令Reader；B/C/D以ms-i2g-start分别开发MS-C5/MS-T2d/MS-R2d完整能力包；A提供独立验证环境并并行接线。
+- MS-C6/MS-T2e/MS-R2e组件已接受，当前MS-I2i负责模型评估/成果完成控制和公共适配；B/C/D以ms-i2i-start独立开发，阶段接口到即接线。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -270,6 +274,23 @@
 - 先纯文本组件链，不强制依赖所有本机执行能力；公开入口按实际门槛开放。
 - 所有子模型默认继承用户固定模型；本轮不默认子树/DAG。
 
+### MS-I2i：固定模型评估/成果核验/完成提交与逐包集成
+
+对应原轮：[P1-02](../rounds/P1-02.md)、[P1-07](../rounds/P1-07.md)、[P1-08](../rounds/P1-08.md)、[P1-09](../rounds/P1-09.md)。
+开发前置：MS-C6、MS-T2e、MS-R2e。
+
+任务：
+
+1. M1实际TaskFrame/固定Model/规则成果Ref到有界评估输入，规则评估与语义校验共用来源边界；B接口到达优先做SQL适配。
+2. M2真实文本MarkdownArtifact、逐项VerificationReport、DeliveryProposal和独立Run终态CAS，缺证据/测试不passed。
+3. M3阶段SHA到即审阅/接线，合法本地工具provider/角色/executor/verifier，D独立通道/映射；不等三包齐才处理。
+4. M4真实DeepSeek办公/数据/学术/多规则/修订取消/错误引用样例，保存全尝试费用；汇合后一次全量，完整P1门槛保留。
+
+交付检查：
+
+- 运行输入为ms-i2h-a3，四包固定ms-i2i-start；纯数据成果链不等待D，worker自己实跑模块SQL。
+- 普通worker不能直接completed；公开API/flags依真实门槛，未完成来源明确不可用，不默认子Agent/DAG。
+
 ### MS-I2f：实际设备归属、登记命令与当前权威
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
@@ -319,15 +340,15 @@
 - 50轮主计划的退出标准保持有效。
 - 真正的P1阶段验收需真实用户授权、测试、成果和审阅证据。
 
-## 可复制到新session的开工说明
+## 当前session开工说明
 
-下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
+沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。
 
 ```text
 你负责UAW并行开发中的Session A：集成与任务理解。
 当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
-读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
 当前在integration执行集成任务，不替worker同步或重写分支。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

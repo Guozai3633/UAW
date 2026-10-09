@@ -1,3 +1,50 @@
+# 下一轮可直接转发：MS-I2i（2026-10-09）
+
+固定开工标签 **ms-i2i-start**；实际SHA与远程发布结果见[DISPATCH](DISPATCH.md)。来源为已验收的ms-i2h-a3；本次只准备安排，不把新包记成已开发或已接受。原B/C/D worktree已只读核对且干净，由各session自行在包边界同步，A没有替它们改分支或发消息。
+
+[全部输入输出、策略、四个里程碑与目录](requests/A/MS-I2i-parallel-packages.md)。本轮四个包都连续完成M1至M4；M1尽早交阶段接口，M2交源码/样例后继续本包，A同步接线并逐包接受。模块SQL由worker实跑，全量在最终集成里程碑执行。
+
+## 发给A：MS-I2i
+
+```text
+开始UAW Session A本轮MS-I2i：当前固定模型评估、文本/Markdown成果登记、完成校验与逐包集成。
+继续E:/UAW、integration，读取MS-I2i-parallel-packages.md第1/2/6/7节、DISPATCH及session/A。B/C/D用固定ms-i2i-start独立开发；不替它们切分支、同步或重写提交。
+连续完成：1实际TaskFrame/固定Model/来源到有界评估输入，分别接规则评估和语义核验，避免多规则Context递归；B阶段批读接口到达即优先做A SQL适配。2实际文本/MarkdownArtifact、逐项VerificationReport、DeliveryProposal与独立Run完成控制器；缺证据/测试不能passed，取消/版本/unknown外部效果复核，用户接受按合同需要。3阶段SHA到即审阅/接线，合法本地工具provider/角色、实际executor/verifier及D独立通道映射；组件实现错误交原worker修。4真实DeepSeek办公/学术/多规则/修订取消样例，记录全部失败/成本，最终组件汇合后一次全量。
+默认同用户模型，不开启子Agent/DAG/本机写入安装exec。公开接口/flags只有实际门槛通过再决定；未完成来源明确不可用。只改A保留路径及本轮新增artifacts文件，保留旧验收回执和标签。
+```
+
+## 发给B：MS-C7
+
+```text
+开始UAW Session B完整能力包MS-C7：Context读取提速与来源复查。
+继续E:/UAW/.worktrees/context、dev/context。干净后git fetch origin --tags、git merge --ff-only ms-i2i-start，核对HEAD等于标签commit，uv sync --frozen；失败保留现场不reset/rebase。读MS-I2i-parallel-packages.md第1/2/3/7节、DISPATCH和session/B。
+连续四项：1实际SQL测量单/多规则、有/无工具、冷暖缓存的get/SQL往返/Reader/assessor和build/ModelInput耗时，M1尽早固定ContextRecordBatchPort/RecordReadKey及阶段说明。2精简重复资料展开与纯计算，一次操作内有界批读，不缓存授权/取消/撤销，公开入口与模型/外部等待后及提交/派发前复查保留。3接可选批读port并证明消息/正文/引用/拒绝等价；A负责SQL适配，无适配用已声明的兼容策略，batch-required缺依赖明确不可用，不阻塞原路径开发。4自身55433真实SQL/新进程/并发/修订删除/撤销/跨主体/批缺失回归和测量报告。
+M1发MS-C7-stage-interface.md，M2阶段源码与样例提交后继续M3/M4，A此时即可接线。只改B允许Context文件（seed.py/intent.py归A）、B测试/requests/handoff；不在Context写ORM、不改shared/Run/Model/composition/锁/flags。
+在自己的PowerShell . ./ops/start-dev-db.ps1 -Session B，锁定环境迁移及--require-postgres实跑，回执写ignored tests/.artifacts/B/MS-C7；不复制A凭据或改别的库。保留失败，最终源码与handoff分开提交，干净交付；不自动下一包。
+```
+
+## 发给C：MS-T2f
+
+```text
+开始UAW Session C完整能力包MS-T2f：两个办公数据工具与多适配器执行/验证/恢复。
+继续E:/UAW/.worktrees/tool、dev/tool。干净后fetch tags、merge --ff-only ms-i2i-start，核对HEAD/tag commit，uv sync --frozen；失败不reset/rebase。读MS-I2i-parallel-packages.md第1/2/4/7节、DISPATCH及session/C。
+连续四项：1实际arithmetic.calculate@1（有界Decimal操作，禁止eval/脚本）和data.inspect_json@1（有界JSON、重复键/非有限数/深度检查），完整Spec/函数/executor/verifier，M1固定参数及构造。2按完整ToolRef由可信bindings有限路由executor/verifier，未知/改版/重复/提供方不符拒绝，保持text.inspect兼容。3消费原审批/预算/一次发送/真实receipt/结果发布与恢复；可增纯参数resource/recovery adapter，缺来源拒绝，unknown不换attempt重做。4自身55434真实SQL的两个工具+原text链、混合路由/篡改/撤销取消/并发/重启/费用中断回归，原检索/索引兼容。
+M1交C-009-ms-t2f-stage-tools.md，M2源码及样例后继续M3/M4；A负责合法本地provider、角色、目录、组装及真实DeepSeek选择，不把聊天API当本地执行器。只改C允许Tool/测试/requests/handoff，不依赖D开发分支、不开flags或本机权限、不改用户模型/shared/锁。
+本worktree . ./ops/start-dev-db.ps1 -Session C，迁移及--require-postgres实跑，ignored tests/.artifacts/C/MS-T2f保存所有回执。最终源码/handoff分开提交、干净交付；组件成功不等于任务完成，不自动扩包。
+```
+
+## 发给D：MS-R2f
+
+```text
+开始UAW Session D完整能力包MS-R2f：Windows同机可信IPC与只读Runner组件接入。
+继续E:/UAW/.worktrees/runner、dev/runner。干净后fetch tags、merge --ff-only ms-i2i-start，核对HEAD/tag commit并uv sync --frozen；失败保留现场。读MS-I2i-parallel-packages.md第1/2/5/7节、DISPATCH及session/D。
+连续四项：1真实Windows双进程命名管道、显式本机登录主体ACL/独立OS身份与对端生命周期、nonce/当前角色key签名及256KiB/10秒有界帧，M1先交构造和关闭/错误语义。2可信connection registry适配既有RunnerChannelSourcePort；owner/actor/device/key来自独立登记，不从body自证，断连/到期/进程退出/撤销失效，重连新Ref。3原已登记command到ReadOnlyRunner临时根，保留签名/authority/Root/lease/fence/一次使用和签名journal，IPC收取实际receipt。4真实双进程的冒名/坏签名/重放/断帧/超长/超时取消/退出重连/回复丢失后恢复与原D回归，清理随机OS凭据、管道和子进程。
+M1交MS-R2f-stage-ipc.md，M2阶段源码后继续M3/M4。只改D允许workspace四文件/local_runner/测试/requests/handoff；A控制端和组装归A。标准库/ctypes优先，新依赖先提案；后台helper隐藏启动，不打印私钥。需要SQL才用本session55435，回执ignored tests/.artifacts/D/MS-R2f。
+这是Windows开发通道，不替D03作正式部署决定；native用户确认仍独立，临时授权测试依赖明确标注，通信成功不冒充真实用户配对。不得访问用户项目、开启flags、写入安装exec；未知command不自动重发。最终源码/handoff分开提交、干净交付，不自动下一包。
+```
+
+## 历史状态（以下不作为新包派发）
+
 # 当前交付状态：MS-I2h-A3（2026-10-09）
 
 A已接入用户指定DeepSeek-V4.1-Flash，三个最终有界样例通过，13次调用含原失败，31不同聚焦检查通过。B/C/D原组件接受保持；新包未派发，完整MS-I2h/P1、成果完成校验和生产来源继续。A未改worker分支或发聊天消息；ms-i2h-start及旧标签不移动。

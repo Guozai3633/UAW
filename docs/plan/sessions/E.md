@@ -48,15 +48,15 @@
 - 样本来源与预期可审阅，不能把固定关键词当语义质量验证。
 - 真实LLM质量/费用仍待配置，无对应回执不填评分。
 
-## 可复制到新session的开工说明
+## 当前session开工说明
 
-下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。
+沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。
 
 ```text
 你负责UAW并行开发中的Session E：可选样本与评测。
 当前工作目录必须是E:/UAW/.worktrees/evaluation，分支必须是dev/evaluation。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/E.md。
-读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
 当前状态：可选工作区未创建、任务未派发。只整理现有交接与依赖提案，不自动开始下一包。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

@@ -8,6 +8,8 @@ UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runti
 
 ## 先看这些入口
 
+下一轮四session安排已准备：[A/B/C/D可转发开工消息](docs/coordination/NEXT_WAVE.md) · [MS-I2i完整分包、接口与目录](docs/coordination/requests/A/MS-I2i-parallel-packages.md)。固定标签ms-i2i-start，运行来源ms-i2h-a3；新包状态为已发布待开工。
+
 | 文档 | 用途 |
 | --- | --- |
 | [主架构](ARCHITECTURE.md) | 已确认产品约束、七个 Runtime 的职责与版本变化 |

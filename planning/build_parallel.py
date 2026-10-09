@@ -90,11 +90,11 @@ def build_sessions():
                       "开发前置：" + ("、".join(package["deps"]) or "本session收尾与初始化工作") + "。", "",
                       "任务：", "", *[f"{i}. {task}" for i, task in enumerate(package["tasks"], 1)], "",
                       "交付检查：", "", *[f"- {condition}" for condition in package["acceptance"]], ""]
-        lines += ["## 可复制到新session的开工说明", "", "下面只启动本session任务；用户在独立工作区新建聊天后粘贴。A先在DISPATCH公布真实基线SHA和派发包。", "", "```text",
+        lines += ["## 当前session开工说明", "", "沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。", "", "```text",
                   f"你负责UAW并行开发中的Session {key}：{session['name']}。",
                   f"当前工作目录必须是{session['worktree']}，分支必须是{session['branch']}。",
                   f"先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/{key}.md。",
-                  "读取docs/coordination/DISPATCH.md。首次开工核对HEAD与parallel-wave-1解析出的commit相同；后续按A发布的新基线同步。",
+                  f"读取docs/coordination/DISPATCH.md。本轮核对HEAD与{base_ref}解析出的commit相同；后续在包边界按A发布的新基线同步。",
                   ("当前在integration执行集成任务，不替worker同步或重写分支。" if key == "A" else
                    f"当前执行{progress['package']}。工作区干净后fetch origin --tags，使用git merge --ff-only {base_ref}同步本工作分支；失败先报告，不reset，保留已有历史。"
                    if progress["ready"] else f"当前状态：{progress['state']}只整理现有交接与依赖提案，不自动开始下一包。"),
@@ -113,20 +113,24 @@ def build_overview():
              "先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。", "",
              "## 1. 当前起点", "",
              "- P0-01、P0-03、P0-04已验收；P0-02开发存储已验证，D01最终权威位置待定。",
-             "- P0-05模型网关已实现；真实模型/API凭据尚未配置，D06及真实LLM验收未完成。",
-             "- P1-01原文/逐字来源、理解版本、修订、取消、幂等与当前frame读取的协议检查通过；真实模型语义验收仍待D06。",
+             (f"- P0-05模型网关与实际固定DeepSeek已验证：{BASELINE['live_model_ref']}有{BASELINE['live_model_calls']}次调用含失败、{BASELINE['live_model_final_samples']}个最终有界样例；生产提供方治理仍待验。"
+              if BASELINE.get("live_model_ref") else "- P0-05模型网关已实现；真实提供方/模型仍待验收。"),
+             "- P1-01原文/逐字来源、理解版本、修订、取消和幂等已有协议验证，真实小样例已跑；完整语义质量与P1阶段仍待后续门槛。",
              f"- 上次完整开发集成{BASELINE['last_full_runtime_ref']}覆盖{BASELINE['last_verified_tests']}个不同通过节点；原失败和定向修复保留，实际批次以DISPATCH为准。当前阶段验证另列，不把历史全量当作新源码全量。",
              f"- `E:/UAW`已建立`integration`分支，`origin`关联`{BASELINE['remote']}`。",
              "- 当前各session进度由下表列出；根Agent组件开发验证、完整集成及真实产品任务是独立验收范围。固定worker标签、待接受交付和安排见" + link(path, "docs/coordination/DISPATCH.md", "统一派发表") + "。", "",
              "沿用原三个worktree，开发session自行在包边界同步固定标签；A不改写worker分支。具体见" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工、合并与交接流程") + "。", "",
-             "## 2. 首批session", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
+             "## 2. Session归属与历史首包", "", "| Session | 做什么 | 首个包 | 实际分工 |", "| --- | --- | --- | --- |"]
     for key, session in SESSIONS.items():
         lines.append(f"| {link(path, f'docs/plan/sessions/{key}.md', key + '：' + session['name'])} | {session['rules'][0]} | {'、'.join(session['starts'])} | {'第5个可选' if key == 'E' else '推荐4个方案'} |")
     lines += ["", "### 当前包状态", "", "| Session | 包 | 实际状态 |", "| --- | --- | --- |"]
     for key, progress in SESSION_PROGRESS.items():
         lines.append(f"| {key} | {progress['package']} | {progress['state']} |")
-    lines += ["", "A既负责当前Intent收尾，也负责后续集成；不额外承担所有模块的开发。B/C/D遇到业务问题自己修复，A集中处理公共接线和归属冲突。", "",
-              "## 3. 为什么这些部分现在可以并行", "", "| 子包 | 首包真正依赖 | 此时暂不接入的部分 |", "| --- | --- | --- |",
+    lines += ["", "A负责评估/完成控制与公共接线；B/C/D实现并验证各自组件。阶段接口与源码到即审阅，组件业务错误由原worker修复。", "",
+              "## 3. 本轮为何可以并行", "",
+              link(path, BASELINE.get("package_strategy_document", "docs/coordination/NEXT_WAVE.md"), "当前完整包：输入输出、策略、四里程碑与目录"), "",
+              "各worker从同一固定基线和已接受组件开工，不读其他开发分支；可选A适配到达后接线，独立兼容路径与模块验证继续。A纯数据交付不等待本机通道，最终组件逐包接受后再做一次集成里程碑全量。", "",
+              "### 历史首包依赖（保留）", "", "| 子包 | 首包真正依赖 | 此时暂不接入的部分 |", "| --- | --- | --- |",
               "| MS-C1 上下文规则/来源/预算 | 已固定InstructionSet、ContextSnapshot、Scope、Ref和模型窗口契约 | 通用Context到Intent/Model的组装、Runner读文件 |",
               "| MS-T1 工具注册/过滤/schema | 已固定ToolSpec、ToolCall、CapabilityPolicy、flag和错误契约 | 审批、真实Runner派发及全链路结算 |",
               "| MS-R1 Runner协议/授权范围 | 已固定RunnerCommand/Receipt、RootSelection及可信上下文 | 实际账号配对、真实签名、安装/写入/exec授权 |", "",
