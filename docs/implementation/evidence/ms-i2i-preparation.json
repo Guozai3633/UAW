@@ -4,7 +4,7 @@
   "runtime_baseline_ref": "ms-i2h-a3",
   "runtime_baseline_commit": "3e5917d9b8dffa767f403c3d71a1884327db8f70",
   "dispatch_ref": "ms-i2i-start",
-  "status": "prepared_for_publication",
+  "status": "released_waiting_start",
   "workers": [
     {
       "session": "B",
@@ -73,5 +73,9 @@
     }
   },
   "strategy_document": "docs/coordination/requests/A/MS-I2i-parallel-packages.md",
-  "copyable_messages_document": "docs/coordination/NEXT_WAVE.md"
+  "copyable_messages_document": "docs/coordination/NEXT_WAVE.md",
+  "dispatch_preparation_commit": "af93ca649f848cf50b5373ce143f25f7ff5017b8",
+  "dispatch_commit_resolution": "git rev-parse ms-i2i-start^{commit}",
+  "publication_mode": "annotated_fixed_tag_and_atomic_push",
+  "remote_verification": "Verify remote integration and peeled tag against tag commit after atomic push; actual command result reported separately."
 }

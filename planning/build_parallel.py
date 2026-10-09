@@ -181,7 +181,7 @@ def main():
             target.write_text(f"# Session {key}交接记录\n\n当前：未派发。基线SHA：待A完成MS-00后公布。\n\n负责：{session['name']}。首包：{'、'.join(session['starts'])}。\n\n本文件只由本session填写实际提交；A在[DISPATCH.md](../DISPATCH.md)记录派发与接受。模板见[HANDOFF_TEMPLATE.md](../HANDOFF_TEMPLATE.md)。\n\n## 实际提交\n\n- 所依据的真实基线SHA：待定。\n- 提交SHA/修改文件/验证证据：未开工。\n- 公共接口提案/接线需求：未提交。\n- 未通过项：待执行。\n", encoding="utf-8")
     build_sessions()
     build_overview()
-    report = {"plan_version": VERSION, "date": DATE, "status": "ms_i2h_parallel_capability_packages", "baseline": BASELINE,
+    report = {"plan_version": VERSION, "date": DATE, "status": BASELINE["current_unverified_round"].lower().replace("-", "_") + "_parallel_capability_packages", "baseline": BASELINE,
               "session_progress": SESSION_PROGRESS, "package_progress": PACKAGE_PROGRESS,
               "recommended_sessions": 4, "configurations": CONFIGURATIONS, "sessions": SESSIONS,
               "packages": PACKAGES, "full_round_dependencies_unchanged": True, "runtime_gates_unchanged": True}

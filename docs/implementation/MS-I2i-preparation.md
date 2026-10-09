@@ -2,6 +2,8 @@
 
 日期2026-10-09。本次仅准备下一轮安排与文档/计划生成器；运行源码来源为 `ms-i2h-a3 / 3e5917d9b8dffa767f403c3d71a1884327db8f70`。运行能力与测试回执没有因发包增加。
 
+安排准备提交：**af93ca649f848cf50b5373ce143f25f7ff5017b8**。开工标签 **ms-i2i-start** 包含随后状态元数据；以解析出的标签commit同步。atomic发布后核对远程integration与标签，详见[派发表](../coordination/DISPATCH.md)。
+
 ## 已准备的包
 
 | Session | 包 | 范围 | 状态 |

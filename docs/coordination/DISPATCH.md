@@ -7,7 +7,7 @@
 - 状态均为**已发布待开工**，不等于已实现/接受。各包M1尽早交接口，M2阶段源码后继续M3/M4，A阶段SHA到即审阅并逐包合入；worker实跑模块SQL，A做受影响/跨模块，最终里程碑一次全量。
 - 原B/C/D目录和分支已只读核对，三个工作区干净；当前HEAD分别1cd90da/94c7506/7d6ee06，需worker自行fetch/快进到新标签。A未修改worker分支/工作区，也未发其他聊天消息。新包不依赖其他worker开发分支，纯数据交付不等待D。
 - [全部接口/输入输出/策略/目录/四里程碑](requests/A/MS-I2i-parallel-packages.md)、[四份可转发消息](NEXT_WAVE.md)、[准备记录](../implementation/MS-I2i-preparation.md)。批读A适配在B阶段签名到达后优先交付；原兼容路径可独立继续，缺批读不冒充优化成功。用户模型/原文/版本/权限/取消保持；本机flags、写入/安装/exec及未决定的正式部署不因派发开放。
-- 代码准备提交、固定标签SHA及远程状态在发布步骤记录，旧标签不移动。
+- 安排准备提交：**af93ca649f848cf50b5373ce143f25f7ff5017b8**。固定标签 **ms-i2i-start** 包含随后发布元数据，最终标签commit用 `git rev-parse ms-i2i-start^{commit}` 核对；它与准备提交的运行源码相同。采用atomic推送integration/新标签，随后ls-remote核对两者；实际发布结果以命令回执为准，旧标签不移动。
 
 ## 历史运行阶段（以下记录保留）
 
