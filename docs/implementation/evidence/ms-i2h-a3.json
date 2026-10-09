@@ -60,12 +60,28 @@
   "exploratory_checks": [
     "Broad ops lint identified existing ops/admin_cli.py and ops/capture_environment.py style violations outside ops/check.ps1 gate; no unrelated changes.",
     "Broad tests format included intentional developer fixtures; final existing gate excludes fixtures.",
-    "Pre-refresh contract checker reported four expected stale evidence hashes; repeat after source hash refresh."
+    "Pre-refresh contract checker reported four expected stale evidence hashes; repeat after source hash refresh.",
+    "Plan generator first ran before the new evidence index existed; rerun after creation passed."
   ],
   "limits": [
     "No general semantic quality benchmark/independent Delivery verifier/Run completion.",
     "No actual fixed Model rule assessor, embedding, production IPC/native user confirmation or public Agent binding.",
     "Original affected tests started before final output-reserve/prompt refinement; final academic live sample verifies that refinement.",
     "Failed live attempts are included in actual token/call totals; fee settlement remains pending."
-  ]
+  ],
+  "code_evidence_commit": "20bb296052417743673fcb0b906226b79f5cbeb0",
+  "integration_tag": "ms-i2h-a3",
+  "contract_checks": {
+    "status": "passed",
+    "named_schemas": 1289,
+    "interfaces": 272,
+    "negative_rejections": 304,
+    "source_hashes_verified": 258
+  },
+  "parallel_checks": {
+    "status": "passed",
+    "packages": 35,
+    "ownership_paths_disjoint": true,
+    "new_worker_packages_dispatched": false
+  }
 }

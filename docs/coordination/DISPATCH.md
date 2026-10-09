@@ -5,7 +5,7 @@
 - 用户指定DeepSeek-V4.1-Flash并给受保护凭据句柄；真实GET模型清单、ModelRuntime、Intent及根循环已验。13次调用含原失败，三个最终有界样例通过；原文和固定模型保留，费用pending。
 - 31不同聚焦检查通过；Ruff/233格式/Mypy141源码通过，历史全量1077不重写。修复来源定位和根输出额度，严格JSON拒绝与简短必填提示保留。
 - [阶段记录](../implementation/MS-I2h-A3.md)、[回执](../implementation/evidence/ms-i2h-a3.json)。专业成果、生产认证/IPC/用户确认、多规则实际评估器及embedding仍待验；flags/公开入口未开放。
-- 发布标签ms-i2h-a3；代码/证据提交在发布阶段记录。B/C/D组件接受保持，下一包未派发。
+- 代码/证据提交20bb296052417743673fcb0b906226b79f5cbeb0；固定阶段标签ms-i2h-a3包含后续状态记录，远程按实际push/ls-remote核对。B/C/D组件接受保持，下一包未派发。
 
 ## 历史阶段：MS-I2h-A2（2026-10-09）
 
