@@ -337,14 +337,16 @@
   "flags_opened": false,
   "public_runtime_bindings_opened": false,
   "full_regression": {
-    "state": "running",
-    "one_full_execution_started_after_all_worker_finals": true,
-    "receipt": "tests/.artifacts/A/MS-I2i/full-final.xml",
-    "log": "tests/.artifacts/A/MS-I2i/full-final.log",
-    "source_commit": "30566c6",
+    "state": "running_with_durable_host_supervisor",
+    "collected_nodes": 1691,
+    "original_execution": "interrupted without final XML/exit; not accepted",
+    "interruption_evidence": "docs/implementation/evidence/ms-i2i-full-interruption.json",
+    "receipt": "tests/.artifacts/A/MS-I2i/full-resume-20261010-1.xml",
+    "log": "tests/.artifacts/A/MS-I2i/full-resume-20261010-1.log",
+    "source_commit": "30566c62f7440b363d188910cdc14a8d69b940be",
     "prior_1077_nodes_belong_to": "ms-i2g"
   },
-  "source_commit": "f547429",
-  "all_worker_finals_merged_at": "30566c6",
+  "source_commit": "f547429594264d8c930e70a719968717d0c0e8ad",
+  "all_worker_finals_merged_at": "30566c62f7440b363d188910cdc14a8d69b940be",
   "publication_ref": "ms-i2i-a1"
 }

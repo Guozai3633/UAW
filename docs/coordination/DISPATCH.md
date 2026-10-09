@@ -1,5 +1,14 @@
 # 多 session 派发和集成记录
 
+## 当前验收状态（2026-10-10）
+
+B/MS-C7、C/MS-T2f、D/MS-R2f最终源码与回执均已核对，按组件及A实际消费者接受。
+[三个包的单独接受结论](requests/A/MS-I2i-worker-acceptance.md)。
+原完整回归临时命令中断，未产生XML/exit，未计入通过；[中断现场](../implementation/evidence/ms-i2i-full-interruption.json)保留。
+现在以隐藏持久进程执行完整1691项，逐节点落盘。A完整里程碑待该实际回执，历史1077仍属于MS-I2g。
+下方A1“唯一一次运行中”是中断前的阶段记录。
+
+
 ### 实际推进更新
 
 - A批读阶段已提交并发布 `ms-i2i-batch-a1 / 65ef26d311d137fea6b3852c4fd906e26dc9b88e`；9项真实SQL通过，远程标签已核对。

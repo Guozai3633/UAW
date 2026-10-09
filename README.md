@@ -1,14 +1,16 @@
 # UAW 项目全局指引
 
-UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。**工程、开发管理/受理、版本化上下文、模型网关、审批/预算和纯文本工具已有开发实现；本轮接通根Agent的有限步动态循环。DeepSeek真实固定模型、办公/文本工具/学术小样例已验证；完整交付验收、生产认证/IPC/用户确认和正式前端仍未就绪。**
+UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。**已接通单Agent动态循环、固定模型评估、办公工具、文本/Markdown成果登记、逐项核验与独立完成控制。真实DeepSeek任务和Windows双进程只读组件已有回执；正式前端、生产认证与用户项目授权尚未完成。**
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已审阅合入并按组件接受；[MS-I2h-A2](docs/implementation/MS-I2h-A2.md)有421个不同聚焦节点通过。真实DeepSeek录入与验收见[说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)，真实模型已在A本机开发配置接入；[MS-I2h-A3](docs/implementation/MS-I2h-A3.md)记录13次调用、首次失败及修复、三个最终小样例和31个不同聚焦检查。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
+当前阶段为 `ms-i2i-a1 / ec1cc6877ab9bbfae28f1b6832977b2b5e8c3f50`：A有192个不同聚焦节点通过，B/MS-C7、C/MS-T2f、D/MS-R2f最终组件均已合入并接受；46次真实DeepSeek尝试含全部失败，五类最终任务完成。完整本轮回归正在运行，上次1077节点仍属于历史 `ms-i2g`。
+
+仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支 `integration`，采用3个开发session＋1个集成session。见[实际范围与失败记录](docs/implementation/MS-I2i-A1.md)、[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一派发表](docs/coordination/DISPATCH.md)、[目录和分工](docs/plan/PARALLEL.md)。实际DeepSeek配置和凭据保存在受保护开发目录，操作入口见[接入说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)。
 
 ## 先看这些入口
 
-下一轮四session安排已准备：[A/B/C/D可转发开工消息](docs/coordination/NEXT_WAVE.md) · [MS-I2i完整分包、接口与目录](docs/coordination/requests/A/MS-I2i-parallel-packages.md)。固定标签ms-i2i-start，运行来源ms-i2h-a3；新包状态为已发布待开工。
+本轮原开工安排（历史）：[A/B/C/D可转发开工消息](docs/coordination/NEXT_WAVE.md) · [MS-I2i完整分包、接口与目录](docs/coordination/requests/A/MS-I2i-parallel-packages.md)。固定标签ms-i2i-start，运行来源ms-i2h-a3；当前组件接受及全量结果以本页和DISPATCH为准，不重复派发已完成的包。
 
 | 文档 | 用途 |
 | --- | --- |
@@ -46,7 +48,7 @@ UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runti
 
 已实现的开发基础：`src/uaw/`工程入口、公共契约、存储、受保护配置、会话/Run受理、资源账本及固定模型调用网关；`tests/`必要场景与原始材料；`ops/`启动、管理员/实连客户端、迁移与检查；`pyproject.toml`及`uv.lock`。实际证据在`docs/implementation/`，接口范围逐项记录于`contracts/implementation_catalog.py`。
 
-继续建设：七Runtime的业务能力、`apps/web/`前端、`apps/local_runner/`本地执行器。设计索引中的代码目标不等于全部已实现，未接入能力仍报告不可用。
+继续建设：七Runtime的后续业务能力、`apps/web/`正式前端、`apps/local_runner/`生产用户授权和后续执行能力。设计索引中的代码目标不等于全部已实现，未接入能力仍报告不可用。
 
 ## 维护与实施
 

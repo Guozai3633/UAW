@@ -17,7 +17,7 @@
     "integration_ref": "ms-i2i-a1",
     "last_full_runtime_ref": "ms-i2g",
     "phase_different_passing_nodes": 192,
-    "phase_nodes_relation": "MS-I2i A1: 192 distinct focused checks; all worker finals merged; one full regression running, not yet accepted",
+    "phase_nodes_relation": "MS-I2i A1: 192 distinct focused checks; all worker finals merged; original full interrupted without receipt; durable full1691 running, not yet accepted",
     "live_model_ref": "ms-i2i-a1",
     "live_model_calls": 46,
     "live_model_final_samples": 5,
@@ -39,7 +39,7 @@
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2i开发中：固定模型评估/文本成果/独立完成控制与真实样例；A批读已发布。C/D组件已接受，B最终交接已接受，本轮唯一一次全量运行中。",
+      "state": "MS-I2i开发中：三包最终组件及A实际消费者接受；原全量中断未计，持久1691项完整回归运行中。",
       "package": "MS-I2i",
       "ready": true,
       "base_ref": "ms-i2i-start"

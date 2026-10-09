@@ -17,7 +17,7 @@ BASELINE = {
     "integration_ref": "ms-i2i-a1",
     "last_full_runtime_ref": "ms-i2g",
     "phase_different_passing_nodes": 192,
-    "phase_nodes_relation": "MS-I2i A1: 192 distinct focused checks; all worker finals merged; one full regression running, not yet accepted",
+    "phase_nodes_relation": "MS-I2i A1: 192 distinct focused checks; all worker finals merged; original full interrupted without receipt; durable full1691 running, not yet accepted",
     "live_model_ref": "ms-i2i-a1",
     "live_model_calls": 46,
     "live_model_final_samples": 5,
@@ -104,7 +104,7 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2i开发中：固定模型评估/文本成果/独立完成控制与真实样例；A批读已发布。C/D组件已接受，B最终交接已接受，本轮唯一一次全量运行中。", package="MS-I2i", ready=True, base_ref="ms-i2i-start"),
+    "A": dict(state="MS-I2i开发中：三包最终组件及A实际消费者接受；原全量中断未计，持久1691项完整回归运行中。", package="MS-I2i", ready=True, base_ref="ms-i2i-start"),
     "B": dict(state="MS-C7 M3已审阅合入：来源复查/类型修复/批读等价。B最终fecd218/8611384，277 unit＋128不同SQL通过；组件接受，完整P1/P4未接受。", package="MS-C7", ready=True, base_ref="ms-i2i-start"),
     "C": dict(state="MS-T2f组件接受：b09fb7d/efb997c，316 unit+178实际SQL。A办公审批/执行/费用/恢复接线通过；完整MS-T2仍按产品门槛。", package="MS-T2f", ready=True, base_ref="ms-i2i-start"),
     "D": dict(state="MS-R2f组件接受：d3f6077/cd6b33c，505通过。A实际控制客户端/签名读取通过；UAW配对/native确认仍非生产来源。", package="MS-R2f", ready=True, base_ref="ms-i2i-start"),

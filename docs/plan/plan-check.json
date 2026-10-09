@@ -30,7 +30,7 @@
   "dependency_graph_acyclic": true,
   "final_core_gate_covers_required_rounds": true,
   "optional_rounds_do_not_block_first_core_trial": true,
-  "local_document_links_checked": 3928,
+  "local_document_links_checked": 3927,
   "generated_files": 72,
   "errors": [],
   "runtime_implementation": "not_inferred_from_plan_checks",

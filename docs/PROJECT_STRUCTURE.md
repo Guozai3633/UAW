@@ -1,13 +1,13 @@
 # 项目功能模块与目录设计
 
-状态：v0.10，2026-10-07。Python Runtime职责目录不变；技术主选见[技术栈](../TECHNOLOGY_STACK.md)。P0工程、开发存储、管理配置和Run受理/资源账本已有实际代码，见[实施记录](implementation/README.md)；以下是完整目标目录，未实施部分仍是计划。
+目标目录：v0.10；实际实现位置更新：2026-10-09。Python Runtime职责目录不变；技术主选见[技术栈](../TECHNOLOGY_STACK.md)。P0工程、开发存储、管理配置和Run受理/资源账本已有实际代码，见[实施记录](implementation/README.md)；以下是完整目标目录，未实施部分仍是计划。
 
 ## 当前实现位置
 
-- `api/application.py、authentication.py、routes.py、documentation.py`：HTTP启动、可信身份、19个开发接口及对应OpenAPI。
+- `api/application.py、authentication.py、routes.py、documentation.py`：HTTP启动、可信身份、22个已登记HTTP开发接口及对应OpenAPI。
 - `shared/configuration.py、settings.py、credentials.py`：版本化平台配置、开发部署配置和私有凭据port；Windows实现位于 `infrastructure/credentials.py`。
 - `run/facade.py、history.py、state.py、events.py、budget.py`：原文与模型选择受理、运行/交互项状态、有序事件和attempt账本。
-- `model/facade.py、gateway.py、policy.py、capability.py、adapters.py、contracts.py、ports.py`：固定模型调用、协议能力、持久发送与provider适配；`context/seed.py`仅提供诊断快照，完整Context仍待实现。
+- `model/facade.py、gateway.py、policy.py、capability.py、adapters.py、contracts.py、ports.py`：固定模型调用、协议能力、持久发送与provider适配；`context/seed.py`是理解专用诊断路径；通用Context已有独立登记/当前来源/批读/ModelInput组件，默认产品绑定仍待验收。
 - `ops/model_probe.py`：批准配置下的显式模型诊断，操作说明位于 `docs/implementation/MODEL_CONNECTION.md`。
 - `infrastructure/db/transactions.py、records.py、models.py` 与 `ops/migrations/`：事务、CAS、版本记录、去重和数据库结构。
 - `contracts/implementation_catalog.py`：逐接口登记实际实现范围；代码与JUnit摘要位于 `docs/implementation/evidence/`。
@@ -16,9 +16,27 @@
 
 本轮实际`src/uaw/agent/`包含factory/repository/sources、loop/adapters/tool_access/assembly、facade/contracts/ports和engines。根实例及纯文本执行器可显式组装，默认产品入口与本机执行仍待验收。详细落点和方法见[MS-I2h接线](coordination/requests/A/MS-I2h-Agent-wiring.md)，验证见[MS-I2h-A1](implementation/MS-I2h-A1.md)。下面目录树同时包含未来目标，以实施报告判定实际能力。启动与管理员操作见[开发控制层说明](implementation/CONTROL_PLANE.md)。
 
+## MS-I2i新增实际位置
+
+| 所属模块 | 已实现的文件 | 负责的事情 |
+| --- | --- | --- |
+| Model | `model/evaluation_inputs.py` | 读取固定任务/模型/来源，分别做规则评估和成果语义核验 |
+| Agent | `agent/completion/{contracts,evidence,activity,semantic,delivery,assembly}.py` | 保留原要求，读取实际证据和工具账本，提出逐项报告与交付候选 |
+| Workspace | `workspace/{artifacts,artifact_repository}.py` | 登记实际文本/Markdown Blob、版本和原模型调用来源 |
+| Run | `run/completion.py` | 独立用户接受记录；完成前再次检查取消/修订/未知效果，事务提交终态 |
+| Context/SQL | `context/{read_batch,selection,model_input}.py`、`infrastructure/db/context_batch.py` | B维护读取策略；A适配一次SQL有界批读，权限与最终来源检查继续执行 |
+| Tool | `tool/providers/{arithmetic,json_data,multiplex}.py` | C维护计算/JSON检查、准确工具版本路由与结果核验 |
+| 组装与配置 | `composition.py`、`shared/builtin_tools.py` | A登记实际本地办公提供方，接原审批/预算/一次发送/恢复；默认flags不变 |
+| Runner | `apps/local_runner/uaw_runner/ipc/`、`infrastructure/runner_pipe.py` | D维护Windows双进程端；A维护控制端和原命令/设备签名/结果核验 |
+
+这些是实际内部组件入口。前端、生产账号/设备映射和用户项目授权尚未因此接通。
+详细方法、输入输出和错误见[本轮A接线](coordination/requests/A/MS-I2i-completion-wiring.md)，
+接受范围和回执见[本轮实施记录](implementation/MS-I2i-A1.md)。
+原目标目录树继续作为后续实现位置参考。
+
 ## 1. 目录按职责组织
 
-多session开发的目录归属见[并行分工](plan/PARALLEL.md)，开工和合并见[流程说明](plan/PARALLEL_WORKFLOW.md)。`.worktrees/`是待Git基线完成后使用的忽略目录，不是产品Workspace Runtime；各worktree只修改自己session的允许路径。公共契约、组装根、迁移及依赖锁由集成session集中维护。
+多session开发的目录归属见[并行分工](plan/PARALLEL.md)，开工和合并见[流程说明](plan/PARALLEL_WORKFLOW.md)。`.worktrees/`是B/C/D已经使用的Git隔离开发目录，不是产品Workspace Runtime；各worktree只修改自己session的允许路径。公共契约、组装根、迁移及依赖锁由集成session集中维护。
 
 ```text
 UAW/

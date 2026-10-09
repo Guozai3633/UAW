@@ -1,0 +1,120 @@
+{
+  "phase": "MS-I2i",
+  "baseline": "d8023eb07e1460961782f297697da7428f6ad247",
+  "scope": "Read-only ownership/history/source-byte review; does not execute worker tests",
+  "workers": [
+    {
+      "session": "B",
+      "source": "fecd2184e4533f66624cef1a9e5b1ecb3b9df166",
+      "handoff": "8611384e8910edab9eb6cbc5c0b5bf0ef7fd06de",
+      "handoff_is_ancestor_of_integration": true,
+      "changed_files": [
+        "docs/coordination/handoffs/B.md",
+        "docs/coordination/requests/B/MS-C7-final-wiring.md",
+        "docs/coordination/requests/B/MS-C7-stage-interface.md",
+        "src/uaw/context/contracts.py",
+        "src/uaw/context/ports.py",
+        "src/uaw/context/read_batch.py",
+        "src/uaw/context/registered.py",
+        "tests/integration/context/registered_fixture.py",
+        "tests/integration/context/test_assessment_chain_postgres.py",
+        "tests/integration/context/test_read_cost_postgres.py",
+        "tests/integration/context/test_record_batch_postgres.py",
+        "tests/unit/context/test_read_batch.py",
+        "tests/unit/context/test_record_groups.py"
+      ],
+      "ownership_violations": [],
+      "runtime_test_sources_equal_to_worker_final": true,
+      "source_sha256": {
+        "src/uaw/context/contracts.py": "a024bcfd96ab491c7aacd5e72b062dc146faeb769ba30e990342f2716368dcef",
+        "src/uaw/context/ports.py": "9168de89e47ee8087a320d315020d7aec1aaeea6eaa78c8d1d0e3f7800582b88",
+        "src/uaw/context/read_batch.py": "e19a44be0a0ad69e4b243f5f36ba3b0ec39685b190ef45b3b4db55aa0d3dbc9f",
+        "src/uaw/context/registered.py": "f216bc5a9b0efae5e641290e9b98389a78ad63565e087a9b594032ca4dde7976",
+        "tests/integration/context/registered_fixture.py": "0d56d18652a7a61640b26a23c4f8797f136e8949738f8e6b5e2d42d130766084",
+        "tests/integration/context/test_assessment_chain_postgres.py": "82ef36ca66f8c2461914b8f301f943cd99dbe03fca7d54eec0e6b79f72677e43",
+        "tests/integration/context/test_read_cost_postgres.py": "338b458f175778edb07cf8adcd6675759bfad342913b0881e646cbbf1fcecde0",
+        "tests/integration/context/test_record_batch_postgres.py": "c7ee7b7cf3367ee88b27f75b9ffa1ca8bdd4220835e4cd7ad078faec7a1cd36e",
+        "tests/unit/context/test_read_batch.py": "46fa6bde156744a341acbfaf819495c067d6922df9515d3a577af7b0cd3efcce",
+        "tests/unit/context/test_record_groups.py": "200689c9b1327acff8111f9d17f168d35adc5d264923f5adb7b2f973cdf84d74"
+      }
+    },
+    {
+      "session": "C",
+      "source": "b09fb7d789026be69a26b5493aa3a7da13649be5",
+      "handoff": "efb997ce88fe9eb5a983546bb07ceef37c9a2d51",
+      "handoff_is_ancestor_of_integration": true,
+      "changed_files": [
+        "docs/coordination/handoffs/C.md",
+        "docs/coordination/requests/C/C-009-ms-t2f-stage-tools.md",
+        "docs/coordination/requests/C/C-010-ms-t2f-final-wiring.md",
+        "src/uaw/tool/parameter_sources.py",
+        "src/uaw/tool/providers/arithmetic.py",
+        "src/uaw/tool/providers/json_data.py",
+        "src/uaw/tool/providers/local.py",
+        "src/uaw/tool/providers/multiplex.py",
+        "src/uaw/tool/results.py",
+        "tests/integration/tool/office_pipeline_fixture.py",
+        "tests/integration/tool/office_recovery_child.py",
+        "tests/integration/tool/test_office_recovery_postgres.py",
+        "tests/integration/tool/test_office_tools_postgres.py",
+        "tests/unit/tool/test_office_calculations.py",
+        "tests/unit/tool/test_office_routing.py"
+      ],
+      "ownership_violations": [],
+      "runtime_test_sources_equal_to_worker_final": true,
+      "source_sha256": {
+        "src/uaw/tool/parameter_sources.py": "aae66ee708c9c630f6370c546a30fd364143bcae0ff7efb5f825660c1d9d0caf",
+        "src/uaw/tool/providers/arithmetic.py": "503ba520778be0dffb15574a8ac25cbf525b5d1713a359a54c6c188449679e8a",
+        "src/uaw/tool/providers/json_data.py": "d0d3b9efc545db1e3ba596f0fb15366daf9106e83aea2c7104de534708814234",
+        "src/uaw/tool/providers/local.py": "47db661c2b5f06f05792244236d240c69ce350f014ab37e16b1caf1ae339b8ec",
+        "src/uaw/tool/providers/multiplex.py": "9e8bdb0d3222e2ebd43e10cd0b841cbd5a684d4fe68953a3b6412a4063a4afa3",
+        "src/uaw/tool/results.py": "354f89c4acff25e96431598a1dc2a071cac8a9ee69396336e4ca3460d5dd68d5",
+        "tests/integration/tool/office_pipeline_fixture.py": "d86a1a44e12fb69d5b09a7c3aba84c3d7da3401a2ce99676e35c668741ab798a",
+        "tests/integration/tool/office_recovery_child.py": "13cda0ac37dda8ac179255a8c8753a47cabb6afc431db8cecef8aaaec7fe6e79",
+        "tests/integration/tool/test_office_recovery_postgres.py": "8a7d297a17151ae5957354a696a08e84c1c4dc61d6ae32399b953f429b759831",
+        "tests/integration/tool/test_office_tools_postgres.py": "7c0d83e132c4bc7c73731bcd37bc0600b008f68b91e0886adee6270bb0ee3d89",
+        "tests/unit/tool/test_office_calculations.py": "8af9abbcf494e0c1efde2f0c9e6aa69ea025e1dba48c1944f2804a97318df190",
+        "tests/unit/tool/test_office_routing.py": "7cf88766864fc39b3aacb2b5fc2b7adbfb3ad10fb0ba740e3dae5c1c7860cbd9"
+      }
+    },
+    {
+      "session": "D",
+      "source": "d3f60771accca99832673820c8a43c4ec32f4cbd",
+      "handoff": "cd6b33ca24596aa0c468a161ffede9ace2ea4fcd",
+      "handoff_is_ancestor_of_integration": true,
+      "changed_files": [
+        "apps/local_runner/uaw_runner/ipc/__init__.py",
+        "apps/local_runner/uaw_runner/ipc/channel_source.py",
+        "apps/local_runner/uaw_runner/ipc/frames.py",
+        "apps/local_runner/uaw_runner/ipc/read_endpoint.py",
+        "apps/local_runner/uaw_runner/ipc/sessions.py",
+        "apps/local_runner/uaw_runner/ipc/windows_pipe.py",
+        "docs/coordination/handoffs/D.md",
+        "docs/coordination/requests/D/MS-R2f-final-wiring.md",
+        "docs/coordination/requests/D/MS-R2f-stage-ipc.md",
+        "tests/integration/runner/ipc_child.py",
+        "tests/integration/runner/ipc_fixture.py",
+        "tests/integration/runner/test_native_root_source.py",
+        "tests/integration/runner/test_windows_ipc.py",
+        "tests/integration/runner/test_windows_read_ipc.py",
+        "tests/unit/runner/test_ipc_frames.py"
+      ],
+      "ownership_violations": [],
+      "runtime_test_sources_equal_to_worker_final": true,
+      "source_sha256": {
+        "apps/local_runner/uaw_runner/ipc/__init__.py": "69e9fe62782d844331cdc16cd0e2465f2f524930513a7da21c46a54251a6981c",
+        "apps/local_runner/uaw_runner/ipc/channel_source.py": "81632a6ea6b6f20c58066679aab22dfa0c628ef371d2facef876394ccf883912",
+        "apps/local_runner/uaw_runner/ipc/frames.py": "bb53a6a4209ab30a60384ad77bcac9d7849ce89d592bbc4057cd18280dc00e31",
+        "apps/local_runner/uaw_runner/ipc/read_endpoint.py": "de5c885957014927d4922545d1dfb156aaee2eb60048754747e4cee4a10d819d",
+        "apps/local_runner/uaw_runner/ipc/sessions.py": "b7be591d32e1f41ad980caa0981eb1ef967c8591d81b0d102aa0d602040f1fce",
+        "apps/local_runner/uaw_runner/ipc/windows_pipe.py": "5fad1e00383d33d159cc35038d4fa09c168340b435d2279dd5fcbbc00da77313",
+        "tests/integration/runner/ipc_child.py": "5d1132660a9d0f827374042a8daae3bf578ca623aee08b07a353bffa0b87c49e",
+        "tests/integration/runner/ipc_fixture.py": "0e7a5cab0294fa08a37746d3e168e0259548cc9b4115f8597ab33a00e5495bf9",
+        "tests/integration/runner/test_native_root_source.py": "457f6a83052db05d9b0fc5c6d13129c79a37aedff1a04b82d4ebccad9cf6f66b",
+        "tests/integration/runner/test_windows_ipc.py": "168737084a373494f8bb8f0028655ed8a849baeceee7328c9bae6eae0fedc643",
+        "tests/integration/runner/test_windows_read_ipc.py": "8afcd8f3b045c645e42eea43cd15891b57c8f7862a08419c4fc1c8ce8bf32b68",
+        "tests/unit/runner/test_ipc_frames.py": "0569612b0200c0f2721cf7af75c02ab528bbff91e584bff8d0cb274b58122546"
+      }
+    }
+  ]
+}
