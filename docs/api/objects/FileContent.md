@@ -13,7 +13,7 @@
 | `workspace_ref` | [Ref](./Ref.md) | 是 | 工作区版本 | 类型约束见对应对象 |
 | `path` | [RelativePath](./RelativePath.md) | 是 | 根内路径 | 类型约束见对应对象 |
 | `encoding` | [NonEmptyText](./NonEmptyText.md) | 是 | 例如utf-8 | 类型约束见对应对象 |
-| `text` | [Text](./Text.md) | 是 | 本页内容 | 类型约束见对应对象 |
+| `text` | string | 是 | 实际UTF-8片段；Runner同时限定返回64KiB，不扩大通用Text。 | 最多字符 `65536` |
 | `content_hash` | [Hash](./Hash.md) | 是 | 整个文件摘要 | 类型约束见对应对象 |
 | `location` | [Location](./Location.md) | 是 | 页/行范围 | 类型约束见对应对象 |
 | `next_cursor` | [Cursor](./Cursor.md) | 否 | 下一页 | 类型约束见对应对象 |

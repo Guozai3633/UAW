@@ -173,6 +173,17 @@ class RuleResolver:
                     if candidate.rule.level in ("platform", "capability_policy"):
                         chosen.append(candidate)
                         continue
+                    # Equal semantic labels are advice, not proof that distinct
+                    # important wording can be discarded. Only explicit correction
+                    # may replace a protected requirement.
+                    if (
+                        previous.value == candidate.value
+                        and (previous.critical or candidate.critical)
+                        and previous.rule.text != candidate.rule.text
+                        and not correction
+                    ):
+                        chosen.append(candidate)
+                        continue
                     overrides.append((candidate.rule.source_ref, previous.rule.source_ref))
                     continue
                 topics[candidate.topic] = candidate

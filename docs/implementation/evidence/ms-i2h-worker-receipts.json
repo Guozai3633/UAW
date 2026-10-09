@@ -1,0 +1,292 @@
+{
+  "date": "2026-10-09",
+  "baseline": "f5b08fa6dcc653c0cd3939a32f36deeb0e51dff8",
+  "workers": [
+    {
+      "session": "B",
+      "package": "MS-C6",
+      "worktree": "context",
+      "branch": "dev/context",
+      "source": "467b743873a347f30e1954f74ab1f0246797ae23",
+      "handoff": "1cd90da9c3cebb5da551913dbb0cbee5bace9832",
+      "allowed": [
+        "src/uaw/context/",
+        "tests/unit/context/",
+        "tests/integration/context/",
+        "docs/coordination/requests/B/",
+        "docs/coordination/handoffs/B.md"
+      ],
+      "receipts": [
+        "final-unit.xml",
+        "final-new-sql.xml",
+        "original-sql.xml"
+      ],
+      "total": 351,
+      "files": [
+        "docs/coordination/handoffs/B.md",
+        "docs/coordination/requests/B/MS-C6-final-wiring.md",
+        "docs/coordination/requests/B/MS-C6-stage-interface.md",
+        "src/uaw/context/authority.py",
+        "src/uaw/context/ports.py",
+        "src/uaw/context/readers.py",
+        "src/uaw/context/registered.py",
+        "src/uaw/context/rules.py",
+        "tests/integration/context/registered_fixture.py",
+        "tests/integration/context/test_assessment_chain_postgres.py",
+        "tests/integration/context/test_assessment_postgres.py",
+        "tests/integration/context/test_read_batches_postgres.py",
+        "tests/integration/context/test_registered_chain_postgres.py",
+        "tests/unit/context/test_assessment.py"
+      ],
+      "shared_unchanged": {
+        "contracts/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/resources/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/shared/ports.py": "fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104",
+        "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
+        "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+      },
+      "reviewed_source_hashes": {
+        "src/uaw/context/authority.py": "07de2318b7491db5ccf8d5264e0fb76a0303c1bbca353edbb8598e57d1c72b1e",
+        "src/uaw/context/ports.py": "d8a389fa86567235e8401b5fd62bcb93e9396bf592632af7b7b24e6297cbd184",
+        "src/uaw/context/readers.py": "955a5ad1cebac94c60570510bd356b6cbf1fd4f60fce40e901b5625bba0952a8",
+        "src/uaw/context/registered.py": "f218b0df8d04a6123afc9ec941c9701af26e27a14805b3c1c609e123fdff867b",
+        "src/uaw/context/rules.py": "0c8f1a80cd8a5e9c7d27affd812c36d435f990d9c9f0c82c6ec037c38614f5dc",
+        "tests/integration/context/registered_fixture.py": "e7d19f7ec2afa5e9f5a55a1adde43bff82fec5485b28269f7b58d5855f61f723",
+        "tests/integration/context/test_assessment_chain_postgres.py": "5fc0f80959713d44e619fbbbe5ba4de66857d85141bfa3f8074c411d34782be0",
+        "tests/integration/context/test_assessment_postgres.py": "d434a992cebe8f34c918cc1e1f5bfb66c87862a96bfa15bd17774ecf8cfb3ac7",
+        "tests/integration/context/test_read_batches_postgres.py": "91e097d93b2c8184fbab9ecc0262b61e526dbbfeeca4c13c6634d598b0963b13",
+        "tests/integration/context/test_registered_chain_postgres.py": "6bf493e53a0a1c0c83676100bbc6ea3753d997db5876ec88664357de389a2167",
+        "tests/unit/context/test_assessment.py": "3bf5fde48a66e4aafb95bf9183458e3333dfdc1658eb32dc05034c89cac412c3"
+      },
+      "original_receipts": [
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/B-final-unit.xml",
+          "sha256": "6893515f079eb7e521d39b7662f18d450df7cae20f9a926ac747ad42236a656d",
+          "counts": {
+            "tests": 246,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/B-final-new-sql.xml",
+          "sha256": "c146b5104c6ee8140eee92f954524b2dae30e7aa323b55ca10510c108df9ac95",
+          "counts": {
+            "tests": 20,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/B-original-sql.xml",
+          "sha256": "a68f1163aefff7987bde67e0af4b9a361c263a22a4fbe2ab12449489489adbd6",
+          "counts": {
+            "tests": 85,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "different_passing_nodes": 351,
+      "aggregate": {
+        "path": "docs/implementation/evidence/ms-i2h-workers/B-accepted-coverage.xml",
+        "sha256": "83c14d670c75daa97c44d828e6e3360f910f67a5fd1368bb42550253f0ebd8e6"
+      },
+      "status": "accepted_component",
+      "merge_commit": "296955122546c4709ade798b87c4964c6466b812",
+      "A_changes_after_merge": "Preserve distinct important rule text when semantic labels match; affected Context units and actual assembler chain verified."
+    },
+    {
+      "session": "C",
+      "package": "MS-T2e",
+      "worktree": "tool",
+      "branch": "dev/tool",
+      "source": "27fe04f22cf19f734f776da326e79dc52eb7b83e",
+      "handoff": "94c75066ed1c9a2ddb7f48a871ddafa957d5ba2d",
+      "allowed": [
+        "src/uaw/tool/",
+        "tests/unit/tool/",
+        "tests/integration/tool/",
+        "docs/coordination/requests/C/",
+        "docs/coordination/handoffs/C.md"
+      ],
+      "receipts": [
+        "unit.xml",
+        "sql-original.xml",
+        "sql-original-recheck.xml",
+        "sql-retrieval-final.xml"
+      ],
+      "total": 342,
+      "files": [
+        "docs/coordination/handoffs/C.md",
+        "docs/coordination/requests/C/C-007-ms-t2e-stage-retrieval.md",
+        "docs/coordination/requests/C/C-008-ms-t2e-index-wiring.md",
+        "src/uaw/tool/embedding.py",
+        "src/uaw/tool/facade.py",
+        "src/uaw/tool/index.py",
+        "src/uaw/tool/registry.py",
+        "src/uaw/tool/retrieval.py",
+        "tests/integration/tool/test_retrieval_postgres.py",
+        "tests/unit/tool/test_retrieval.py",
+        "tests/unit/tool/test_vector_index.py"
+      ],
+      "shared_unchanged": {
+        "contracts/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/resources/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/shared/ports.py": "fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104",
+        "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
+        "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+      },
+      "reviewed_source_hashes": {
+        "src/uaw/tool/embedding.py": "f84e47b53cd40b91292e2e2cebac01c97e972ad94d761e2780f565eb78f9ed90",
+        "src/uaw/tool/facade.py": "29b427063eccc13c43b9adbae00994b945b50cfae249b105388ba14ddea7628d",
+        "src/uaw/tool/index.py": "81077120391c00697d26f7ff3f09abad50bf3010731f9963b8dcf482ccf58739",
+        "src/uaw/tool/registry.py": "698281cbde74d00145d7572a6ec2155e602c8d7a13834e6ff6f1ccbdb7b467a9",
+        "src/uaw/tool/retrieval.py": "8c2617eadb10c206f5ebe3ed4ec1c58c9cfb31008b790a6e116839809b7a1450",
+        "tests/integration/tool/test_retrieval_postgres.py": "09ecb5963226d378099ae7899c871169fcbe299f7002f287cbdb1212efc6145f",
+        "tests/unit/tool/test_retrieval.py": "03766e53ce1715d3692c32f5696a41e7cce2221da4abbc53d66cee646246386a",
+        "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8"
+      },
+      "original_receipts": [
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/C-unit.xml",
+          "sha256": "e620a264f586988a906466d59517cf2f9749f9fcae4d5b9795ce5ae37997cc82",
+          "counts": {
+            "tests": 218,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/C-sql-original.xml",
+          "sha256": "385605cd1ae1dc7fd71ecb584e01499eda9d592491dee080923a090932c192c7",
+          "counts": {
+            "tests": 100,
+            "failures": 1,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/C-sql-original-recheck.xml",
+          "sha256": "b132e70926aae09e52f95859b7c9ddd6af35111b9e2439dc9af00fd889f091b4",
+          "counts": {
+            "tests": 3,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/C-sql-retrieval-final.xml",
+          "sha256": "d605fd55dc1ac413af1728c6a31a4fd09c0e7d0c2220ab40be90daa33a3c5343",
+          "counts": {
+            "tests": 24,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "different_passing_nodes": 342,
+      "aggregate": {
+        "path": "docs/implementation/evidence/ms-i2h-workers/C-accepted-coverage.xml",
+        "sha256": "67604212967a4365fb2621bf028abffb144e06c5c2fccb35cbfaa2148f650e5a"
+      },
+      "status": "accepted_component",
+      "merge_commit": "32961fdebde9f4c6a040dd0093d955e294721193",
+      "A_changes_after_merge": "Optional retriever consumed by Context/root facade, with published 32-candidate cap and visible actual definitions."
+    },
+    {
+      "session": "D",
+      "package": "MS-R2e",
+      "worktree": "runner",
+      "branch": "dev/runner",
+      "source": "ced41378d814b7bfbb641eb531fd875646050776",
+      "handoff": "7d6ee06e35de0dfb89bdec6fbdf3de29e54109f9",
+      "allowed": [
+        "apps/local_runner/uaw_runner/",
+        "src/uaw/workspace/contracts.py",
+        "tests/unit/runner/",
+        "tests/integration/runner/",
+        "docs/coordination/requests/D/",
+        "docs/coordination/handoffs/D.md"
+      ],
+      "receipts": [
+        "full-junit-1.xml"
+      ],
+      "total": 431,
+      "files": [
+        "apps/local_runner/uaw_runner/handle_read.py",
+        "apps/local_runner/uaw_runner/keys.py",
+        "apps/local_runner/uaw_runner/protocol.py",
+        "apps/local_runner/uaw_runner/read_executor.py",
+        "apps/local_runner/uaw_runner/read_state.py",
+        "docs/coordination/handoffs/D.md",
+        "docs/coordination/requests/D/MS-R2e-ports.md",
+        "src/uaw/workspace/contracts.py",
+        "tests/integration/runner/read_child.py",
+        "tests/integration/runner/test_native_root_source.py",
+        "tests/integration/runner/test_read_executor.py",
+        "tests/integration/runner/test_windows_read_signing.py",
+        "tests/unit/runner/test_handle_read.py"
+      ],
+      "shared_unchanged": {
+        "contracts/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/resources/uaw.schema.json": "595ebe8f9173b5a6c8608dfac9f339f1c4c7f8e7e5f0599687f04bf6511ef90d",
+        "src/uaw/shared/ports.py": "fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104",
+        "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
+        "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+      },
+      "reviewed_source_hashes": {
+        "apps/local_runner/uaw_runner/handle_read.py": "21bb324054cd454161962fb4138b891980a5eaf039b21c037b07d9f6905b7ae6",
+        "apps/local_runner/uaw_runner/keys.py": "666d094de8279d98a6d09c972dce170e734a0868837e7ba5a025cb32f7a3e43d",
+        "apps/local_runner/uaw_runner/protocol.py": "f9f15080b0098a74cd8db46e1d657c5f89dfcd915c83154276617fa338d4238f",
+        "apps/local_runner/uaw_runner/read_executor.py": "38b0deede5474d898a16dc1c42ac8646d655e8ebd5d0ca3f72d0eaafbe26386f",
+        "apps/local_runner/uaw_runner/read_state.py": "6b173385aa8bbef182bd5226449a2d2f62170b108769ffa10941c10d8634d951",
+        "src/uaw/workspace/contracts.py": "051cc936ae48caafd80f720eb910abb364da2b935249d7716f3a0d1718d02d8e",
+        "tests/integration/runner/read_child.py": "116d29c2f89535d65eb8c513f4b1aeb0b894b8464e0e74b6ac0dedd1b558c456",
+        "tests/integration/runner/test_native_root_source.py": "fdf31dfed4e6ef83d61bc3598ea553f71bdbcc95f59669a4a732740f6466d5df",
+        "tests/integration/runner/test_read_executor.py": "3a039319c6986e148bb92abcc93b361999b10324fee060e52668978a4d8db397",
+        "tests/integration/runner/test_windows_read_signing.py": "b3cb18f083d7062e1b16d35f09be96efadba18249448c042d4d71403fc68b944",
+        "tests/unit/runner/test_handle_read.py": "eec6c8bbf331fc941beef9f141df7e5fdd7b554bb6d2fb8ffe127b54ef3dc834"
+      },
+      "original_receipts": [
+        {
+          "path": "docs/implementation/evidence/ms-i2h-workers/D-full-junit-1.xml",
+          "sha256": "05c7a261036793cb3c9c75f3d43ad92b6caab0b2421f82a9ffffa4ce04f1a690",
+          "counts": {
+            "tests": 431,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "different_passing_nodes": 431,
+      "aggregate": {
+        "path": "docs/implementation/evidence/ms-i2h-workers/D-accepted-coverage.xml",
+        "sha256": "2b75e3c0e5df1d80ab7b667d35e4b543b355524bd2efda235186a538d328fe30"
+      },
+      "native_os_read": {
+        "status": "passed",
+        "cleaned": true,
+        "backend": "keyring.backends.Windows.WinVaultKeyring",
+        "channel": "controlled_component_fixture_not_IPC",
+        "sha256": "ff69b4bc2bedc34f5c0a6f37e9ae62af0ef7b53b50ebb5a66f3eed02d3e4cd87"
+      },
+      "status": "accepted_component",
+      "merge_commit": "cb087d04904b8bf23e95ee10af1929431bda7da9",
+      "A_changes_after_merge": "Accept FileContent-only 65536-char proposal; keep 64KiB UTF8/1MiB file limits; affected real Windows reads/signing verified."
+    }
+  ],
+  "limits": [
+    "Worker scopes overlap shared compatibility tests; totals must not be added together.",
+    "Original C SQL failure retained and covered by unchanged module replay.",
+    "Controlled LLM/embedding/channel adapters are not real provider/IPC acceptance."
+  ]
+}

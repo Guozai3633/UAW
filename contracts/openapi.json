@@ -30631,8 +30631,9 @@
             "description": "例如utf-8"
           },
           "text": {
-            "$ref": "#/components/schemas/Text",
-            "description": "本页内容"
+            "type": "string",
+            "maxLength": 65536,
+            "description": "实际UTF-8片段；Runner同时限定返回64KiB，不扩大通用Text。"
           },
           "content_hash": {
             "$ref": "#/components/schemas/Hash",
@@ -43071,6 +43072,22 @@
             "minItems": 0,
             "maxItems": 256,
             "description": "批准的推理档位"
+          },
+          "structured_output_mode": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "json_schema原生严格模式或json_object加UAW本地schema校验；默认原生模式，不自动降级",
+            "enum": [
+              "json_schema",
+              "json_object"
+            ]
+          },
+          "include_n": {
+            "$ref": "#/components/schemas/Bool",
+            "description": "是否发送n=1；省略时保留旧行为"
+          },
+          "default_reasoning_level": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "管理员批准的默认推理档位，必须属于reasoning_levels，记入实际配置"
           }
         },
         "required": [

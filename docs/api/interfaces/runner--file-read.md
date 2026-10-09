@@ -30,7 +30,7 @@
 | `workspace_ref` | [Ref](../objects/Ref.md) | 是 | 工作区版本 |
 | `path` | [RelativePath](../objects/RelativePath.md) | 是 | 根内路径 |
 | `encoding` | [NonEmptyText](../objects/NonEmptyText.md) | 是 | 例如utf-8 |
-| `text` | [Text](../objects/Text.md) | 是 | 本页内容 |
+| `text` | string | 是 | 实际UTF-8片段；Runner同时限定返回64KiB，不扩大通用Text。 |
 | `content_hash` | [Hash](../objects/Hash.md) | 是 | 整个文件摘要 |
 | `location` | [Location](../objects/Location.md) | 是 | 页/行范围 |
 | `next_cursor` | [Cursor](../objects/Cursor.md) | 否 | 下一页 |

@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-09",
+  "phase": "MS-I2h-A2",
+  "status": "accepted_development_integration_phase",
+  "baseline": "ms-i2h-a1",
+  "worker_baseline": "ms-i2h-start",
+  "different_passing_nodes": 421,
+  "full_milestone": false,
+  "full_regression_repeated": false,
+  "last_full_ref": "ms-i2g",
+  "last_full_different_passing_nodes": 1077,
+  "receipts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2h-merged-focused-tests.xml",
+      "sha256": "7d02f9368f4b571424e9a8bf57aef956b57c2706aa20be536ab2ba79422331ef",
+      "counts": {
+        "tests": 209,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-adapter-repair-tests.xml",
+      "sha256": "3624841ac25aaa1302a65f7c313d3f7c32fc6743db7896d3527f16b04e1a1c59",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-rules-repair-tests.xml",
+      "sha256": "bf6779076c90b4beb6bfee893cd066cc8da46f0f98d8cd8e278f8fee144d2cc3",
+      "counts": {
+        "tests": 246,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-cross-component-tests.xml",
+      "sha256": "69e5904a684010fc1b293904dd838a43e106c4f76d82aee9850f693511cd7b88",
+      "counts": {
+        "tests": 4,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-cross-component-repair-tests.xml",
+      "sha256": "d9cf801701ae2807777716bcd7f5a39e4b832d1238e4c1c23162272f1e8ee8fe",
+      "counts": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2h-tool-visibility-repair-tests.xml",
+      "sha256": "9895a0adcc1a3cf94ff4c228f6d63ec63d87f14b23553044f5b82b8eea3133ec",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "aggregate": {
+    "path": "docs/implementation/evidence/ms-i2h-a2-accepted-tests.xml",
+    "sha256": "662b1ab89cd26cac37c12005c4a936484e2355cd48a7a67152f9938ec2c37f90",
+    "scope": "Latest passing coverage across overlapping focused batches; not a single/full 421-node run"
+  },
+  "worker_index": {
+    "path": "docs/implementation/evidence/ms-i2h-worker-receipts.json",
+    "sha256": "a15f9ad0496a17ed1f8bbb53c09ba34d3c62a43f8fb261435b63b56e38373855"
+  },
+  "static_checks": {
+    "ruff": "passed",
+    "format_files": 228,
+    "mypy_source_files": 138
+  },
+  "real_llm": {
+    "status": "awaiting_user_credential_handle_and_model_selection",
+    "calls": 0,
+    "structured_mode": "explicit json_object plus unchanged bounded local JSON Schema validation"
+  },
+  "fixes": [
+    "First adapter test incorrectly called instance method with None; corrected and nine adapter nodes replayed.",
+    "Agent retrieval used 64 despite public CandidateLimit32; fixed without widening public candidate count.",
+    "Equal semantic labels dropped distinct important rule text; preserve it unless explicit correction.",
+    "JSON decision model lacked tool definitions hidden only in ModelPrompt.tools; expose filtered fixed definitions as external data."
+  ],
+  "relation": "Merged focused batch precedes important-rule protection; all Context units rerun. Original cross batch two old chains pass; repaired multi-rule chain and latest root retrieval/JSON-visible-tools chain pass. Last visibility refinement is tested by the final root node, not a repeat of all 421 nodes.",
+  "limits": [
+    "No actual LLM or embedding quality/IPC/native consent/professional delivery proof.",
+    "Fixed Model assessor adapter still missing; composition accepts an explicit assessor, default multirule remains unavailable.",
+    "Runner component accepted; full Runner-to-Tool business output verification and production transport pending.",
+    "No flags or default API runtime bindings enabled; complete MS-I2h/P1 not accepted.",
+    "Worker scopes overlap compatibility checks; do not add reported module counts into product progress."
+  ]
+}

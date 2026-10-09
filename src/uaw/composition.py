@@ -8,6 +8,7 @@ from uaw.context.cache import PureComputationCache
 from uaw.context.facade import ContextComponents
 from uaw.context.intent import IntentContexts, UnderstandingRules
 from uaw.context.model_input import GenericModelInputs
+from uaw.context.ports import RegisteredRuleAssessor
 from uaw.context.readers import RegisteredContextReader, RegisteredRuleProvider
 from uaw.context.registered import RegisteredContextInputs
 from uaw.context.repository import ContextRepository
@@ -70,6 +71,7 @@ from uaw.tool.receipt_store import ToolReceiptStore
 from uaw.tool.reconciliation import ToolReconciler
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.results import ToolResults
+from uaw.tool.retrieval import ToolRetriever
 
 
 @dataclass(frozen=True)
@@ -281,6 +283,7 @@ def assemble_registered_context(
     *,
     registry: ToolRegistry | None = None,
     cache: PureComputationCache | None = None,
+    rule_assessor: RegisteredRuleAssessor | None = None,
 ) -> RegisteredContextBindings:
     records, config, blobs, sources = (
         container.records,
@@ -304,7 +307,7 @@ def assemble_registered_context(
     components = ContextComponents(
         readers={"input": reader, "content": reader, "rule": reader, "configuration": reader},
         cancellation=runs,
-        rules=RegisteredRuleProvider(inputs),
+        rules=RegisteredRuleProvider(inputs, assessor=rule_assessor),
         models=FixedModelWindow(PolicyResolver(records, config, sources.permissions)),
         repository=ContextRepository(records, transactions),
         authority=RegisteredCompositionAuthority(inputs),
@@ -333,6 +336,7 @@ def assemble_text_tool(
     tool_ref: Ref,
     provider: Principal,
     currency: str = "USD",
+    retriever: ToolRetriever | None = None,
 ) -> TextToolBindings:
     """Consume C's actual verifier, receipt source and original-attempt recovery.
 
@@ -384,7 +388,14 @@ def assemble_text_tool(
         results=results,
     )
     return TextToolBindings(
-        ToolFacade(registry, access, invocation=invocation, lookup=source, reconciler=reconciler),
+        ToolFacade(
+            registry,
+            access,
+            invocation=invocation,
+            lookup=source,
+            reconciler=reconciler,
+            retriever=retriever,
+        ),
         invocation,
         ledger,
         service,

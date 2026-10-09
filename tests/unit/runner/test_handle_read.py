@@ -77,6 +77,23 @@ def test_over_total_limit_rejected(handle_case):
         WindowsReadHandle(grant, "file.txt")
 
 
+def test_ascii_64k_return_uses_file_specific_contract_not_generic_text(handle_case):
+    root, grant, parameters = handle_case
+    original = b"a" * MAX_RETURN_BYTES
+    (root / "file.txt").write_bytes(original)
+    handle = WindowsReadHandle(grant, "file.txt")
+    try:
+        result = handle.read(parameters)
+        assert result["text"].encode() == original
+        assert result["content_hash"] == hashlib.sha256(original).hexdigest()
+        from uaw.shared.schema import validator
+
+        assert validator("FileContent").is_valid(result)
+        assert not validator("Text").is_valid(result["text"])
+    finally:
+        handle.close()
+
+
 @pytest.mark.parametrize("data", [b"\xff", b"abc\x00def", b"\x01", b"\x7f"])
 def test_binary_invalid_utf8_controls_rejected(handle_case, data):
     root, grant, parameters = handle_case

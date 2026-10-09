@@ -1,6 +1,6 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.10"
+VERSION = "0.11"
 DATE = "2026-10-09"
 BASELINE = {
     "git_repository": True,
@@ -12,9 +12,9 @@ BASELINE = {
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2h-start",
-    "integration_ref": "ms-i2h-a1",
+    "integration_ref": "ms-i2h-a2",
     "last_full_runtime_ref": "ms-i2g",
-    "phase_different_passing_nodes": 36,
+    "phase_different_passing_nodes": 421,
     "phase_is_full_milestone": False,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,
@@ -94,10 +94,10 @@ SESSIONS = {
 }
 
 SESSION_PROGRESS = {
-    "A": dict(state="MS-I2h-A1根实例/有限步动态循环开发组件接受；36个不同聚焦节点通过。完整MS-I2h继续，三个新worker包待审阅集成。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
-    "B": dict(state="MS-C6源码467b743/handoff1cd90da已报告交付；246单元＋105 SQL待A核对，未合入或接受，不自动开始新包。", package="MS-C6", ready=False, base_ref="ms-i2h-start"),
-    "C": dict(state="MS-T2e源码27fe04f/handoff94c7506已报告交付；218单元＋124不同SQL待A核对，未合入或接受，不自动开始新包。", package="MS-T2e", ready=False, base_ref="ms-i2h-start"),
-    "D": dict(state="MS-R2e源码ced4137/handoff7d6ee06已报告交付；431项与OS签字清理待A核对，未合入或接受，不自动开始新包。", package="MS-R2e", ready=False, base_ref="ms-i2h-start"),
+    "A": dict(state="MS-I2h-A2三组件审阅/合入与受影响接线接受，421聚焦节点通过；完整MS-I2h继续。DeepSeek凭据句柄/模型名待用户提供，真实LLM未验收。", package="MS-I2h", ready=True, base_ref="ms-i2h-start"),
+    "B": dict(state="MS-C6最终1cd90da合入2969551，351节点原回执复核，组件接受；A补重要正文保护并复验。下一包未派发。", package="MS-C6", ready=False, base_ref="ms-i2h-start"),
+    "C": dict(state="MS-T2e最终94c7506合入32961fd，342节点原回执复核，组件接受；A接检索/固定工具可见性。下一包未派发。", package="MS-T2e", ready=False, base_ref="ms-i2h-start"),
+    "D": dict(state="MS-R2e最终7d6ee06合入cb087d0，431节点/OS清理复核，组件接受；A发布FileContent局部扩容并实跑受影响读取。下一包未派发。", package="MS-R2e", ready=False, base_ref="ms-i2h-start"),
     "E": dict(state="可选工作区未创建、任务未派发。", package="MS-Q1", ready=False),
 }
 
@@ -111,7 +111,7 @@ PACKAGE_PROGRESS = {
     "MS-I2d": "accepted_development", "MS-I2e": "accepted_development",
     "MS-I2f1": "accepted_development", "MS-I2f2": "accepted_development", "MS-I2f": "in_progress", "MS-C4": "accepted_component", "MS-T2c": "accepted_component", "MS-R2c": "accepted_component",
     "MS-C5": "accepted_component", "MS-T2d": "accepted_component", "MS-R2d": "accepted_component", "MS-I2g": "accepted_development",
-    "MS-C6": "delivered_pending_review", "MS-T2e": "delivered_pending_review", "MS-R2e": "delivered_pending_review", "MS-I2h": "in_progress",
+    "MS-C6": "accepted_component", "MS-T2e": "accepted_component", "MS-R2e": "accepted_component", "MS-I2h": "in_progress",
     "MS-I2": "in_progress", "MS-T2": "waiting_not_dispatched", "MS-R2": "waiting_not_dispatched",
 }
 

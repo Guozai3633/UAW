@@ -167,6 +167,10 @@ class ConfigurationService:
             values,
         )
         validate_contract("NonEmptyText", values["model_name"])
+        if "default_reasoning_level" in values and values[
+            "default_reasoning_level"
+        ] not in values.get("reasoning_levels", []):
+            raise reject("provider_reasoning_default_invalid", "Default reasoning must be approved")
         if type(values["timeout_ms"]) is not int or not 1000 <= values["timeout_ms"] <= 300000:
             raise reject("provider_timeout_invalid", "Timeout must be between 1000 and 300000 ms")
         try:

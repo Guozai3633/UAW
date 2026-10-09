@@ -20,6 +20,7 @@ from uaw.shared.stores import StoreMissing
 from uaw.tool.discovery import require_entry
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.results import ToolResults
+from uaw.tool.retrieval import ToolRetriever
 
 OBSERVATIONS = "agent.observations"
 
@@ -95,10 +96,14 @@ class RegisteredAgentContexts:
         registry: ToolRegistry,
         access: RunToolAccessSources,
         output_reserve: int = 512,
+        retriever: ToolRetriever | None = None,
     ) -> None:
         self.inputs, self.components = inputs, components
         self.sources, self.observations = sources, observations
         self.registry, self.access, self.output_reserve = registry, access, output_reserve
+        if retriever is not None and retriever.registry is not registry:
+            raise ValueError("Agent Context/retriever must share the registry")
+        self.retriever = retriever
 
     async def prepare(
         self, operation_id: str, observations: tuple[Ref, ...], ctx: TrustedExecutionContext
@@ -115,18 +120,19 @@ class RegisteredAgentContexts:
             raise reject("agent_context_missing", "Actual Run/model required", 403)
         for ref in observations:
             data["observations"].append(await self.observations.read(ref, ctx))
-        material_ctx = ctx.model_copy(update={"operation_id": operation_id})
-        material = await self.inputs.register_material(
-            json.dumps(data, ensure_ascii=False, allow_nan=False, sort_keys=True),
-            material_ctx,
-            authenticated_service=self.inputs.controller,
-            expected_revision=0,
-            meta=meta("agent-material", operation_id),
-        )
         access = await self.access.snapshot(ctx)
         revision, entries = self.registry.snapshot()
+        selected = entries
+        if self.retriever is not None:
+            discovery = frozen(await self.retriever.discover(view.frame["goal"], [], 32, ctx))
+            validate_contract("DiscoveryResult", discovery)
+            selected = tuple(self.registry.get(t["tool_ref"]) for t in discovery["tools"])
+            if revision != self.registry.snapshot()[0]:
+                raise reject(
+                    "agent_context_changed", "Tool catalogue changed during discovery", 412
+                )
         tools = []
-        for entry in entries:
+        for entry in selected:
             try:
                 require_entry(entry, access)
             except DomainError:
@@ -138,6 +144,33 @@ class RegisteredAgentContexts:
                 "Use a bounded trusted retriever for larger tool sets",
                 503,
             )
+        # JSON decisions do not use native function-call transport. Supply the
+        # actual filtered definitions as external data as well as the sealed tool
+        # set; a model cannot choose tools hidden only in ModelPrompt.tools.
+        data["available_tools"] = [
+            {
+                "tool_ref": self.registry.reference(
+                    self.registry.get(
+                        {
+                            "kind": "configuration",
+                            "id": spec["id"],
+                            "version": spec["version"],
+                        }
+                    )
+                ),
+                "description": spec["description"],
+                "input_schema": spec["input_schema"],
+            }
+            for spec in tools
+        ]
+        material_ctx = ctx.model_copy(update={"operation_id": operation_id})
+        material = await self.inputs.register_material(
+            json.dumps(data, ensure_ascii=False, allow_nan=False, sort_keys=True),
+            material_ctx,
+            authenticated_service=self.inputs.controller,
+            expected_revision=0,
+            meta=meta("agent-material", operation_id),
+        )
         key = identifier("agent-context-", {"run": ctx.run_id, "operation": operation_id})
         try:
             prepared = await self.inputs.records.get(

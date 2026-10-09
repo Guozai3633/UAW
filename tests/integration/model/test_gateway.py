@@ -70,6 +70,14 @@ async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> A
         meta("model-fixture-secret"),
     )
     try:
+        protocol_options = {}
+        if getattr(request, "param", {}).get("json_object_mode", False):
+            protocol_options = {
+                "structured_output_mode": "json_object",
+                "include_n": False,
+                "reasoning_levels": ["none"],
+                "default_reasoning_level": "none",
+            }
         provider = await configuration.register(
             admin,
             "provider",
@@ -86,6 +94,7 @@ async def case(domain, principal, tmp_path, request: pytest.FixtureRequest) -> A
                         "output_token_parameter": "max_completion_tokens",
                         "reservation_money": "0.250000000",
                         "allow_temperature": False,
+                        **protocol_options,
                     },
                 }
             },

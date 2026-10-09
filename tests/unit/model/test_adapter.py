@@ -37,6 +37,51 @@ def request(endpoint: str = "https://protocol.invalid/v1") -> ProviderRequest:
     )
 
 
+async def test_explicit_json_object_mode_keeps_local_schema_validation_and_exact_estimate():
+    base = request()
+    schema = {
+        "type": "object",
+        "properties": {"answer": {"type": "string"}},
+        "required": ["answer"],
+        "additionalProperties": False,
+    }
+    configured = replace(
+        base,
+        settings={**base.settings, "structured_output_mode": "json_object", "include_n": False},
+        protocol="json_schema",
+        output_schema=schema,
+    )
+    body = ChatCompletionsAdapter.body(configured)
+    assert body["response_format"] == {"type": "json_object"} and "n" not in body
+    assert "JSON Schema" in body["messages"][-1]["content"]
+    assert base.prompt.messages == ({"role": "user", "content": "Original prompt"},)
+    native = json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode()
+    adapter = ChatCompletionsAdapter()
+    try:
+        assert adapter.estimate_input_tokens(configured) == len(native) + 64
+    finally:
+        await adapter.close()
+    valid = ChatCompletionsAdapter.parse(json.dumps(reply('{"answer":"ok"}')).encode(), configured)
+    assert valid.structured_data == {"answer": "ok"}
+    with pytest.raises(ProviderFailure) as failed:
+        ChatCompletionsAdapter.parse(json.dumps(reply('{"approved":true}')).encode(), configured)
+    assert failed.value.failure.code == "provider_structured_output_invalid"
+
+
+def test_deepseek_cache_usage_aliases_must_agree():
+    raw = reply()
+    raw["usage"].pop("prompt_tokens_details", None)
+    raw["usage"]["prompt_cache_hit_tokens"] = 5
+    raw["usage"]["prompt_cache_miss_tokens"] = raw["usage"]["prompt_tokens"] - 5
+    assert (
+        ChatCompletionsAdapter.parse(json.dumps(raw).encode(), request()).cached_input_tokens == 5
+    )
+    raw["usage"]["prompt_cache_miss_tokens"] += 1
+    with pytest.raises(ProviderFailure) as failed:
+        ChatCompletionsAdapter.parse(json.dumps(raw).encode(), request())
+    assert failed.value.failure.code == "provider_usage_invalid"
+
+
 async def test_actual_loopback_http_without_environment_proxy(monkeypatch):
     captured = []
 

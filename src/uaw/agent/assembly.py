@@ -19,6 +19,7 @@ from uaw.shared.settings import ConfigurationError
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
 from uaw.tool.registry import ToolRegistry
+from uaw.tool.retrieval import ToolRetriever
 
 if TYPE_CHECKING:
     from uaw.composition import Container, RegisteredContextBindings, TextToolBindings
@@ -41,6 +42,7 @@ def assemble_agent_runtime(
     *,
     registry: ToolRegistry,
     completion: AgentCompletionPort | None = None,
+    retriever: ToolRetriever | None = None,
 ) -> AgentAssembly:
     if (
         container.records is None
@@ -75,6 +77,7 @@ def assemble_agent_runtime(
         observations,
         registry=registry,
         access=container.tool_access,
+        retriever=retriever,
     )
     models = RegisteredAgentModels(model, original.policies, sources)
     access = AgentToolAccess(container.tool_access, repository, sources)
@@ -95,6 +98,7 @@ def assemble_agent_runtime(
         invocation=invocation,
         lookup=tools.facade.lookup,
         reconciler=tools.facade.reconciler,
+        retriever=retriever,
     )
     loop = AgentLoop(
         repository,

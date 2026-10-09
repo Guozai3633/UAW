@@ -89,3 +89,9 @@ Context准备保存原配方和expected_epoch；若材料/配方/快照已提交
 默认公开Agent/Tool/通用Context绑定及flags不变。代码使用已有LangGraph addon，没有更新uv.lock或强迫worker中途安装新依赖。真实PostgreSQL/实际text计算/受控HTTP协议与实际LLM语义质量分开记证据。
 
 CompletionPort默认缺失；完成提案没有实际专业质量、交付和当前证据来源时返回不可用，不登记虚构VerificationReport或DeliveryProposal，也不直接写Run.completed。子Agent定义/实例、DAG、网页/办公成果、生产认证、可信IPC及真实用户确认仍按后续包/门槛建设。
+
+## MS-I2h-A2已接入的可选组件
+
+assemble_registered_context接受rule_assessor，默认缺实际Model评估器仍拒绝多规则。assemble_text_tool与assemble_agent_runtime接受同Registry的retriever；有检索时最多32候选，无检索保留有界小目录。实际过滤工具Ref/描述/schema作为external材料进入JSON决策模型，独立ModelToolSet和当前目录/权限继续复查。
+
+FileContent单字段字符上限65536、实际读取64KiB UTF-8/全文1MiB，通用Text不变；D组件不等于可信IPC或Tool applied。模型settings结构化模式为显式json_schema或json_object加本地schema校验，不静默降级，默认档位进入实际配置。实施回执见[MS-I2h-A2](../../../implementation/MS-I2h-A2.md)。

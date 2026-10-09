@@ -1,5 +1,9 @@
 # 当前实现与开发启动
 
+2026-10-09最新阶段：[MS-I2h-A2](MS-I2h-A2.md)已接受三组件审阅/合入及A接线，421不同聚焦节点通过；历史完整1077仍为ms-i2g。根Agent已看见过滤后的工具定义，JSON-object模式保留本地schema验证。真实DeepSeek录入见[验收说明](DEEPSEEK_ACCEPTANCE.md)，凭据/模型名仍待用户提供；默认flags与公开入口未开放。
+
+以下为前阶段MS-I2h-A1记录；三份新组件的当前接受状态以MS-I2h-A2为准。
+
 2026-10-09：A的MS-I2h-A1根Agent/有限步动态循环开发组件接受；23单元＋12 Agent SQL＋1原Model兼容SQL，去重36个通过节点，原失败及修复记录保留。历史完整1077覆盖仍属于ms-i2g，本阶段没有重新全量。真实LLM、完整交付、生产认证/IPC/用户确认和正式前端未验收。
 
 本轮方法/目录：[A接线说明](../coordination/requests/A/MS-I2h-Agent-wiring.md)；实际回执：[MS-I2h-A1](MS-I2h-A1.md)；用户视角：[当前进度](PROGRESS-2026-10-09.md)。B/MS-C6、C/MS-T2e、D/MS-R2e已报告最终交付，当前尚未合入或接受。默认公开Runtime绑定与flags未变。

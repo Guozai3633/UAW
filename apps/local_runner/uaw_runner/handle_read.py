@@ -20,7 +20,7 @@ from uaw.workspace.ports import RootGrant
 
 MAX_FILE_BYTES = 1024 * 1024
 MAX_RETURN_BYTES = 64 * 1024
-MAX_RETURN_CHARACTERS = 16384  # Published FileContent.text -> Text; A owns widening.
+MAX_RETURN_CHARACTERS = 65536  # FileContent-specific bound; generic Text remains 16384.
 
 
 class FileId(ctypes.Structure):
@@ -267,7 +267,7 @@ class WindowsReadHandle:
         ):
             raise reject(
                 "read_range_too_large",
-                "Selected text exceeds 64 KiB or 16384-character contract limit",
+                "Selected text exceeds 64 KiB or 65536-character contract limit",
             )
         result = {
             "workspace_ref": parameters["workspace_ref"],

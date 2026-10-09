@@ -4,7 +4,7 @@ UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runti
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已报告交付，待A审阅集成。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
+上次完整开发集成为`ms-i2g`，去重接受覆盖1077个节点，原失败和修复批次可追溯。本轮A的[MS-I2h-A1](docs/implementation/MS-I2h-A1.md)有36个不同聚焦节点通过，历史全量不算新源码全量。仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支`integration`。采用**3个开发session＋1个集成session**；B/MS-C6、C/MS-T2e、D/MS-R2e已审阅合入并按组件接受；[MS-I2h-A2](docs/implementation/MS-I2h-A2.md)有421个不同聚焦节点通过。真实DeepSeek录入与验收见[说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)，凭据/模型名仍待提供。见[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一记录](docs/coordination/DISPATCH.md)、[分工](docs/plan/PARALLEL.md)和[合并流程](docs/plan/PARALLEL_WORKFLOW.md)。
 
 ## 先看这些入口
 

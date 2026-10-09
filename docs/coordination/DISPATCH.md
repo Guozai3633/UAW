@@ -1,5 +1,16 @@
 # 多 session 派发和集成记录
 
+## 当前阶段：MS-I2h-A2（2026-10-09）
+
+- B/MS-C6、C/MS-T2e、D/MS-R2e已审阅并按组件接受；正常merge分别2969551/32961fd/cb087d0，无冲突，worker分支/提交未改。
+- 原始回执和来源字节已复核：B351、C342、D431通过；C失败与复跑、D真实Windows回执及cleaned保留，计数不累加成产品进度。
+- A去重421个聚焦节点通过，首次失败与修复保留；Ruff/228格式/Mypy138源码通过。多规则组装、检索→固定模型→可见工具定义、JSON-object及64KiB本机读取已验证。完整1077仍属于ms-i2g，完整MS-I2h/P1未接受。
+- 精确修正：检索最多32候选；重要正文不会因相同语义标签被丢弃；仅FileContent扩至65536字符，通用Text16384及返回64KiB字节上限保留。
+- [阶段范围](../implementation/MS-I2h-A2.md)、[A证据](../implementation/evidence/ms-i2h-a2.json)、[worker复核](../implementation/evidence/ms-i2h-worker-receipts.json)。真实DeepSeek凭据/模型名待用户提供，隐藏录入与协议要求见[此处](../implementation/DEEPSEEK_ACCEPTANCE.md)。实际固定Model规则评估器、真实embedding、IPC/用户确认、Tool文件结果和专业交付尚待后续；flags及公开绑定未变。
+- 代码/证据提交及固定标签ms-i2h-a2在发布阶段记录；worker开工ms-i2h-start不移动，下一包未派发。
+
+## 历史阶段（以下记录保留）
+
 ## 当前阶段：MS-I2h-A1（2026-10-09）
 
 - A根实例/固定用户模型/有限步动态循环开发组件接受；23单元＋12 Agent SQL＋1原Model兼容SQL，去重36项通过，无最终失败/错误/跳过。最后两项含一个重复未知调用节点，聚合选用最新结果。Ruff/209格式/Mypy131源码通过。

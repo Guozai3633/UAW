@@ -716,6 +716,7 @@ content_hash|Hash|整个文件摘要
 location|Location|页/行范围
 next_cursor?|Cursor|下一页
 """)
+TYPES["FileContent"]["properties"]["text"]={"type":"string","maxLength":65536,"description":"实际UTF-8片段；Runner同时限定返回64KiB，不扩大通用Text。"}
 record("ChangeUnit","workspace","可审阅与选择的改动单位。", """
 id|ID|改动块ID
 path|RelativePath|文件
@@ -1951,9 +1952,10 @@ def finalize(graph,strategies):
     record("CredentialMetadata","support","不含密文或明文秘密的句柄归属。","provider_id|ID|提供方\nreceipt|SecretReceipt|回执")
     record("ModelHttpSettings","support","首批HTTP模型配置profile；注册不意味着完成连通或协议适配。","model_name|NonEmptyText|提供方模型名称\ntimeout_ms|Duration|超时")
     TYPES["ModelHttpSettings"]["properties"]["timeout_ms"].update(minimum=1000,maximum=300000)
-    record("ModelChatCompletionsSettings","support","显式Chat Completions协议；预留金额不是价格或实际账单。","model_name|NonEmptyText|固定供应商模型\ntimeout_ms|Duration|总调用上限\noutput_token_parameter|NonEmptyText|供应商输出额度字段\nreservation_money|Decimal|每attempt的管理员预留额度\nallow_temperature|Bool|是否支持temperature\nallowed_response_models?|[](NonEmptyText)|批准的同模型响应别名\nreasoning_levels?|[](NonEmptyText)|批准的推理档位")
+    record("ModelChatCompletionsSettings","support","显式Chat Completions协议；预留金额不是价格或实际账单。","model_name|NonEmptyText|固定供应商模型\ntimeout_ms|Duration|总调用上限\noutput_token_parameter|NonEmptyText|供应商输出额度字段\nreservation_money|Decimal|每attempt的管理员预留额度\nallow_temperature|Bool|是否支持temperature\nallowed_response_models?|[](NonEmptyText)|批准的同模型响应别名\nreasoning_levels?|[](NonEmptyText)|批准的推理档位\nstructured_output_mode?|NonEmptyText|json_schema原生严格模式或json_object加UAW本地schema校验；默认原生模式，不自动降级\ninclude_n?|Bool|是否发送n=1；省略时保留旧行为\ndefault_reasoning_level?|NonEmptyText|管理员批准的默认推理档位，必须属于reasoning_levels，记入实际配置")
     TYPES["ModelChatCompletionsSettings"]["properties"]["timeout_ms"].update(minimum=1000,maximum=300000)
     TYPES["ModelChatCompletionsSettings"]["properties"]["output_token_parameter"]["enum"]=["max_completion_tokens","max_tokens"]
+    TYPES["ModelChatCompletionsSettings"]["properties"]["structured_output_mode"]["enum"]=["json_schema","json_object"]
     record("ModelInvocation","model","持久调用意图；claimed重读不能再发送，finished只重放保存的回执。","id|ID|逻辑调用\nrun_id|ID|运行\nrequest_hash|Hash|精确请求及可信关联摘要\nrequest|ModelCall|固定输入引用、配置与协议\noperation_id|ID|操作\ntrace_id|ID|链路\nstate|NonEmptyText|claimed或finished\nresult?|Object|已校验的Runtime结果\ncreated_at|Timestamp|受理时间")
     TYPES["ModelInvocation"]["properties"]["state"]["enum"]=["claimed","finished"]
     TYPES["ModelInvocation"]["allOf"]=[{"if":{"properties":{"state":{"const":"finished"}},"required":["state"]},"then":{"required":["result"]}}]

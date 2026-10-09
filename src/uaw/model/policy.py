@@ -135,6 +135,7 @@ class PolicyResolver:
                 "Caller cannot supply the provider's response name",
                 403,
             )
-        return Selection(
-            model, provider, binding, {**requested, "provider_model_name": settings["model_name"]}
-        )
+        actual = {**requested, "provider_model_name": settings["model_name"]}
+        if "reasoning_level" not in actual and "default_reasoning_level" in settings:
+            actual["reasoning_level"] = settings["default_reasoning_level"]
+        return Selection(model, provider, binding, actual)

@@ -17,6 +17,9 @@
 | `allow_temperature` | [Bool](./Bool.md) | 是 | 是否支持temperature | 类型约束见对应对象 |
 | `allowed_response_models` | 数组&lt;[NonEmptyText](./NonEmptyText.md)&gt; | 否 | 批准的同模型响应别名 | 最少项 `0`；最多项 `256` |
 | `reasoning_levels` | 数组&lt;[NonEmptyText](./NonEmptyText.md)&gt; | 否 | 批准的推理档位 | 最少项 `0`；最多项 `256` |
+| `structured_output_mode` | [NonEmptyText](./NonEmptyText.md) | 否 | json_schema原生严格模式或json_object加UAW本地schema校验；默认原生模式，不自动降级 | 类型约束见对应对象 |
+| `include_n` | [Bool](./Bool.md) | 否 | 是否发送n=1；省略时保留旧行为 | 类型约束见对应对象 |
+| `default_reasoning_level` | [NonEmptyText](./NonEmptyText.md) | 否 | 管理员批准的默认推理档位，必须属于reasoning_levels，记入实际配置 | 类型约束见对应对象 |
 
 拒绝未声明字段。可选字段省略表示没有提供；只有显式 `null` 分支允许空值。默认注解不会自动写入请求。
 

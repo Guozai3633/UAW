@@ -4,7 +4,9 @@
 
 ## 1. 权威与阅读顺序
 
-当前入口：[根Agent范围与回执](implementation/MS-I2h-A1.md)、[方法/输入输出/策略/实际目录](coordination/requests/A/MS-I2h-Agent-wiring.md)、[项目实际进度](implementation/PROGRESS-2026-10-09.md)。三个新worker包已报告交付，尚待A审阅集成；A组件接受不等同于完整MS-I2h或产品验收。
+最新入口：[三组件审阅集成](implementation/MS-I2h-A2.md)、[DeepSeek隐藏录入与验收](implementation/DEEPSEEK_ACCEPTANCE.md)。421不同聚焦节点通过，三个新包已按组件接受；真实LLM/完整MS-I2h和产品任务仍待验收。
+
+根Agent基础：[范围与回执](implementation/MS-I2h-A1.md)、[方法/输入输出/策略/实际目录](coordination/requests/A/MS-I2h-Agent-wiring.md)、[当前进度](implementation/PROGRESS-2026-10-09.md)。三个新包已在A2按组件接受，完整MS-I2h及产品验收仍待完成。
 
 当前MS-I2g接线入口：[实际阶段范围与证据](implementation/MS-I2g-A1.md)、[方法/输入输出/策略与目录](coordination/requests/A/MS-I2g-wiring.md)、[Context重复读取反馈](coordination/requests/A/MS-C5-read-amplification.md)。B/C/D最终组件已接受，完整MS-I2g/1077节点回归已通过；[下一轮能力包](coordination/requests/A/MS-I2h-parallel-packages.md)已发布独立开发基线，完整里程碑已接受，worker仍固定该开发基线。
 
