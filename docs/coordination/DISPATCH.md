@@ -6,7 +6,7 @@
 - 真正的Context→Model→审批/预算→text→观察→下一模型输入，以及取消/未知调用恢复/真实PG图检查点已验证。实际上下文纪元来自固定快照，不用Agent步数代替。
 - [实际范围与失败修复](../implementation/MS-I2h-A1.md)、[目录/签名/状态链](requests/A/MS-I2h-Agent-wiring.md)、[去重证据索引](../implementation/evidence/ms-i2h-a1.json)。公开绑定、flags和共享port/依赖锁不变；真实LLM/专业交付与产品整轮仍未接受。
 - 上次完整开发集成仍是ms-i2g / 1077；A阶段回执不冒充当前全量。完整MS-I2h在worker合入后的里程碑执行。
-- 代码/证据提交和ms-i2h-a1固定标签发布回执随后补录；worker固定ms-i2h-start不移动。按用户本次指示先完成A；以下交付先登记待验收，没有修改其worktree或发送聊天消息。
+- 已验证代码/证据提交：**4b6213d69aa60a4003844457fabba5d05cf6ffdd**。固定阶段标签 **ms-i2h-a1** 包含随后状态记录；本轮atomic推送后按ls-remote核对integration和标签，远程结果以实际命令回执为准。worker开工ms-i2h-start不移动。按本次指示先完成A；以下交付先登记待验收，没有修改其worktree或发送聊天消息。
 
 | Session / 包 | 用户报告源码 / handoff | 状态 |
 | --- | --- | --- |

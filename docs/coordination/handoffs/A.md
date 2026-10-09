@@ -4,7 +4,7 @@
 
 - 根Agent及动态单Agent开发组件接受；36不同聚焦节点通过，原失败与定向修复保留，历史1077全量仍为ms-i2g。
 - 新增14个Agent源码文件、精炼根提示词、7内部命名schema与实际SQL链；没有新增公开操作、修改shared ports/contracts或依赖锁。
-- [详细范围](../../implementation/MS-I2h-A1.md)、[接线签名与目录](../requests/A/MS-I2h-Agent-wiring.md)、[证据索引](../../implementation/evidence/ms-i2h-a1.json)。固定阶段代码/标签发布后补录DISPATCH。
+- [详细范围](../../implementation/MS-I2h-A1.md)、[接线签名与目录](../requests/A/MS-I2h-Agent-wiring.md)、[证据索引](../../implementation/evidence/ms-i2h-a1.json)。已验证代码/证据提交4b6213d69aa60a4003844457fabba5d05cf6ffdd；阶段标签ms-i2h-a1包含随后状态记录，发布与固定摘要见DISPATCH。
 - 用户已转发B/MS-C6、C/MS-T2e、D/MS-R2e最终交付。按本次指示先完成A；三个新包仅登记delivered_pending_review，不合入或提前接受。
 - 默认公开入口/flags不变；当前CompletionPort缺失明确不可用，Run未因回答/框架END/模型建议变completed。真实LLM/认证/IPC/原生确认/专业交付和完整MS-I2h未接受。
 

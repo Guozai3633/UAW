@@ -84,4 +84,4 @@
 # 按 ops/check.ps1 的静态/格式/类型范围验证；fixtures/developer 是故意缺陷任务材料。
 ```
 
-整批 Agent SQL 命令用于复验，不宣称本阶段已整批重复执行；实际接受依据上表原始批次和去重索引。实际代码/证据提交与固定阶段标签发布后记录于 [DISPATCH](../coordination/DISPATCH.md)。
+整批 Agent SQL 命令用于复验，不宣称本阶段已整批重复执行；实际接受依据上表原始批次和去重索引。已验证代码/证据提交为 `4b6213d69aa60a4003844457fabba5d05cf6ffdd`；固定阶段标签 `ms-i2h-a1` 包含随后状态记录。发布入口见 [DISPATCH](../coordination/DISPATCH.md)。
