@@ -336,5 +336,15 @@
   "confirmed_monetary_cost": null,
   "flags_opened": false,
   "public_runtime_bindings_opened": false,
-  "full_regression": "pending B final handoff; not executed"
+  "full_regression": {
+    "state": "running",
+    "one_full_execution_started_after_all_worker_finals": true,
+    "receipt": "tests/.artifacts/A/MS-I2i/full-final.xml",
+    "log": "tests/.artifacts/A/MS-I2i/full-final.log",
+    "source_commit": "30566c6",
+    "prior_1077_nodes_belong_to": "ms-i2g"
+  },
+  "source_commit": "f547429",
+  "all_worker_finals_merged_at": "30566c6",
+  "publication_ref": "ms-i2i-a1"
 }

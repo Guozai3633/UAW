@@ -1,7 +1,41 @@
 {
   "baseline": "d8023eb07e1460961782f297697da7428f6ad247",
-  "B_status": "M3 merged; final SQL and handoff pending",
   "workers": [
+    {
+      "session": "B",
+      "package": "MS-C7",
+      "source": "fecd2184e4533f66624cef1a9e5b1ecb3b9df166",
+      "handoff": "8611384e8910edab9eb6cbc5c0b5bf0ef7fd06de",
+      "acceptance": "component_and_A_consumer_only",
+      "receipts": [
+        {
+          "file": "final-unit.xml",
+          "sha256": "8af5066a191b0f73fd322f337c0c895099e2b1d7879e3456ea0bf4b4867556a8",
+          "passed": 277
+        },
+        {
+          "file": "final-sql.xml",
+          "sha256": "26a943c3f705529a15f46f16e3be2e1959c6e1ddab495cb80f48b35ac28a206c",
+          "passed": 121
+        },
+        {
+          "file": "routing.xml",
+          "sha256": "c3a1726cef75d231d1cc505fd1113729357e53287ef60a1898ef6557763f4094",
+          "passed": 3
+        }
+      ],
+      "matrix_receipt": {
+        "file": "m4-final-cost.log",
+        "sha256": "f96969c59a42181d23e7cbde1fe4e068105822d9e82beae7d27af74892fbcefe",
+        "passed": 4
+      },
+      "unit_passed": 277,
+      "sql_passed": 128,
+      "distinct_final_states": {
+        "passed": 405
+      },
+      "performance": "SQL executions reduce 4.0-5.6%; actual Run reads reduce37.7-39.3%; warm timing regression retained; no production latency guarantee"
+    },
     {
       "session": "C",
       "package": "MS-T2f",

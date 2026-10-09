@@ -166,8 +166,7 @@
 
 - 固定开工 `ms-i2i-start / d8023eb07e1460961782f297697da7428f6ad247`；A实际批读 `ms-i2i-batch-a1 / 65ef26d`已发布。
 - 实际固定模型评估、UTF-8文本/Markdown成果、原要求逐项核验、不可变提案/Bundle、独立用户接受和同会话终态CAS已实现；完整工具账本与终态集合复查保留。
-- C/D最终组件和A真实消费者已接受。B M3已合入，最终模块SQL已到121通过；最终源码/交接SHA仍等worker发布。
+- C/D最终组件和A真实消费者已接受。B最终fecd218/8611384已合入并按组件接受，277 unit＋128不同SQL通过。
 - A跨阶段192不同聚焦节点通过，Ruff/281格式/Mypy164通过。46个真实DeepSeek尝试含全部失败，五类最终任务通过；取消/修订/同级冲突均不能越过完成门槛。
-- [实际范围与失败](../../implementation/MS-I2i-A1.md)、[详细接口和目录](../requests/A/MS-I2i-completion-wiring.md)、[A证据](../../implementation/evidence/ms-i2i-a1.json)。本轮全量尚未执行；旧1077属于MS-I2g。
-- 生产认证/本机用户确认/网页验证/专业文件/前端仍未开放；flags/公开绑定不变，D01/D03/D06未决定。最终汇合后再执行一次本轮全量。
-
+- [实际范围与失败](../../implementation/MS-I2i-A1.md)、[详细接口和目录](../requests/A/MS-I2i-completion-wiring.md)、[A证据](../../implementation/evidence/ms-i2i-a1.json)。本轮唯一一次全量运行中；旧1077属于MS-I2g。
+- 生产认证/本机用户确认/网页验证/专业文件/前端仍未开放；flags/公开绑定不变，D01/D03/D06未决定。四方最终源码汇合后已启动本轮唯一一次全量，等待实际回执。

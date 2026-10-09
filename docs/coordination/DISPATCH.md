@@ -3,10 +3,10 @@
 ### 实际推进更新
 
 - A批读阶段已提交并发布 `ms-i2i-batch-a1 / 65ef26d311d137fea6b3852c4fd906e26dc9b88e`；9项真实SQL通过，远程标签已核对。
-- B M3 `fecd218 / 09a7cc3`已合入，包含类型修复与不跨await复用原Reading；最终SQL/交接仍由B完成，完整MS-C7未提前接受。
+- B M3 `fecd218 / 09a7cc3`已合入，包含类型修复与不跨await复用原Reading；最终交接8611384已合入，277 unit＋128不同SQL已核对，按组件接受。
 - C最终 `b09fb7d / efb997c`已合入，316 unit＋178不同SQL原节点已核对；A实际办公消费者接线通过，按组件接受。
 - D最终 `d3f6077 / cd6b33c`已合入，505检查/44清理回执已核对；A控制端→D只读端实际Windows双进程通过，按组件接受。生产账号/native确认仍缺。
-- A当前模型评估、成果/报告/独立完成控制与真实样例正收尾。[A实际范围](../implementation/MS-I2i-A1.md)、[详细接线](requests/A/MS-I2i-completion-wiring.md)。本轮全量尚未执行；1077属于MS-I2g。
+- A阶段源码f547429已提交；192聚焦节点与46实际模型尝试已记录。[A实际范围](../implementation/MS-I2i-A1.md)、[详细接线](requests/A/MS-I2i-completion-wiring.md)。四方最终汇合后本轮唯一一次全量已启动；1077仍属于MS-I2g。
 - 下方“准备/待开工”保留历史来源。worker工作区/分支未由A改写，固定开工标签不移动。
 
 ## 当前安排：MS-I2i（2026-10-09）
