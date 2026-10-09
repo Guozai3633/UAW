@@ -106,6 +106,23 @@ class ToolRegistry:
             self._revision += 1
             return self._revision
 
+    def unregister(self, tool_ref: dict[str, Any], *, expected_revision: int) -> int:
+        """Trusted admin/composition CAS removal; cached vectors never keep it installed."""
+        with self._lock:
+            if type(expected_revision) is not int or expected_revision != self._revision:
+                raise fail(
+                    "revision_conflict",
+                    "Catalogue revision changed",
+                    phase="registration",
+                    category="conflict",
+                    status=409,
+                )
+            entry = self.get(tool_ref)
+            spec = entry.spec()
+            del self._entries[(spec["id"], spec["version"])]
+            self._revision += 1
+            return self._revision
+
     def snapshot(self) -> tuple[int, tuple[RegistryEntry, ...]]:
         with self._lock:
             return self._revision, tuple(self._entries.values())
