@@ -498,3 +498,8 @@ git diff --check
 - 阶段/最终入口签名一致；A 用真实注册 command_ref/channel_ref、owner mapping/current authority/根来源、当前 key 目录、OS device private handle、实际数据权限 Reader 和独立持久路径构造。源变化不跨请求缓存许可。需要实际通道绑定/用户确认与部署日志策略后才能开放；默认生产 channel/确认仍缺，受控 fixture 不是可信 IPC、实际用户配对或完整产品执行验收。
 - A负责 Runner→Tool 实际结果核验、引用登记和 composition/API/flags 接线；本包没有自动 Tool applied、IPC wire/配对V2/list/安装/写入/exec，没有决定 D01/D03/D06、开放flags或进入其他包。权威源与本机 SQLite 无跨服务事务，晚失败可能保留真实已签名历史记录；恢复必须仍有当前数据访问。
 - 四个里程碑在本包范围完成；完整MS-R2/真实IPC/用户确认/产品任务验收继续等待。本包后停止，等待 A 审阅和后续派发；最终 handoff 提交后工作区应干净。
+
+
+## MS-R2f M1/M2 阶段交付（2026-10-09）
+
+分支 dev/runner，实际 ms-i2i-start 基线 d8023eb07e1460961782f297697da7428f6ad247，已 fetch/ff-only/tag等值/uv sync --frozen。源码 M1 81bc7cabf997447dd550e27de502e7462a1cb5ce；M2 ea16682101cc4c9a3e4d02398c5ccebbda6254a0。固定构造、关闭/错误语义、文件清单、39项阶段回执及 A 接线要求见 requests/D/MS-R2f-stage-ipc.md。真实 Windows 双进程/OS凭据/身份/角色签名与 registry 通过；账号/pairing/确认来源为独立临时 fixture。原始失败保留并已修复，当前阶段零失败。继续同包 M3/M4。

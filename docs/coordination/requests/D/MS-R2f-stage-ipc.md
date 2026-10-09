@@ -58,3 +58,24 @@ finally:
 M1真实实测：test_windows_ipc.py 实际两Python进程、隐藏helper、random Windows vault control/device key、显式DACL、actual进程/token/logon身份、双nonce当前角色签名及frame往返/退出/关闭；m1-3.xml 1 passed /1.31秒，凭据/管道/子进程finally清理。UAW account/pairing/native-confirmation依赖为独立临时fixture，不宣称真实用户配对或可信授权已完成。首次回执目录缺父目录、venv launcher PID与实际解释器不同的失败保留；直接启动同锁环境实际解释器后通过。M2再提交registry adapter和阶段源码，继续M3/M4。A控制端/组装仍归A，D只提供对称可消费内部transport。
 
 API依据：[微软管道ACL](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipe-security-and-access-rights)、[身份模拟](https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-impersonatenamedpipeclient)。D03部署/exec、native用户确认/生产账号登记仍独立，file_access flags不开放。
+
+## M2 阶段接线（继续同包 M3/M4）
+
+M1 源码 SHA：81bc7cabf997447dd550e27de502e7462a1cb5ce；M2 源码 SHA：ea16682101cc4c9a3e4d02398c5ccebbda6254a0。实际分支 dev/runner；基线仍 d8023eb07e1460961782f297697da7428f6ad247。
+
+```python
+registry = ConnectionRegistry(max_connections=16)  # 1..32，无许可持久缓存
+await session.handshake()
+channel_ref = await registry.add(session)
+# RunnerChannelSourcePort 适配：
+await registry.read(channel_ref, device_id=registered_device_id)
+actor = await registry.authenticated_principal(channel_ref, device_id=registered_device_id)
+# ReadOnlyRunner(channel=registry, channel_ref=channel_ref, ...)；actor 传可信入口。
+await registry.close()
+```
+
+connection content Ref 由双方注册快照和 control/device nonce 的固定排序摘要得到，同连接固定；重连新 nonce/Ref。每次 read/principal/session 重查真实 OS pipe/进程生命周期、独立登记完整主体与期限、当前角色 key/revocation；断连、退出、改 owner/actor、到期或撤销即失效。未知/旧 Ref 拒绝，body 不参与登记。异步登记/密钥 await 也受 10 秒以内限时，协作取消关闭连接，不缓存执行授权。
+
+阶段验证：`python -m pytest tests/unit/runner/test_ipc_frames.py tests/integration/runner/test_windows_ipc.py -q --basetemp tests/.artifacts/D/MS-R2f/tmp-m2 --junitxml tests/.artifacts/D/MS-R2f/m2.xml`，39 passed /13.48秒；Ruff 与 mypy（workspace + local_runner，23源码）通过。回执 ignored tests/.artifacts/D/MS-R2f，随机 OS 凭据逐例清理。M1 两次初始失败保留；M1 修复后30 passed。生产受保护进程/账号/key/pairing登记、native确认、控制端及应用装配仍由 A 提供，fixture 明示来源，不认作真实配对。
+
+M2 改动文件：ipc/sessions.py、ipc/channel_source.py、tests/integration/runner/test_windows_ipc.py。M1 文件详见该提交。无公共文件/新依赖/flags 修改；继续 M3/M4，不自动下一包。
