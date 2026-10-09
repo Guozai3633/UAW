@@ -7,11 +7,13 @@ from uaw.context.contracts import (
     ModelToolSet,
     ModelWindow,
     Reading,
+    RecordReadKey,
     RuleCandidate,
     RulePlan,
     RulesRequest,
 )
-from uaw.shared.contracts import Ref, TrustedExecutionContext
+from uaw.shared.contracts import Principal, Ref, TrustedExecutionContext
+from uaw.shared.stores import Record
 
 
 class Reader(Protocol):
@@ -106,5 +108,19 @@ class RegisteredRuleAssessor(Protocol):
         Only topic/value/critical/supersedes/conflict_refs describe semantics. The
         Context boundary copies inputs, validates output and rechecks live sources.
         Controlled assessors demonstrate protocol behavior, not LLM quality.
+        """
+        ...
+
+
+class ContextRecordBatchPort(Protocol):
+    async def read(
+        self, principal: Principal, keys: tuple[RecordReadKey, ...]
+    ) -> tuple[Record, ...]:
+        """At most 128 keys, ordered including duplicates, complete or raise.
+
+        Every row belongs to this complete Principal. Missing/deleted/foreign rows
+        fail the whole call; pinned revisions must match. No partial success. An
+        adapter's database view is not atomic with external ACLs, tools or blobs;
+        Context performs fresh authority and source checks around its own waits.
         """
         ...

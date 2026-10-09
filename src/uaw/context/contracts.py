@@ -18,6 +18,15 @@ Level = Literal[
 ]
 
 
+@dataclass(frozen=True)
+class RecordReadKey:
+    """Internal named-record lookup; no Ref or authorization grant."""
+
+    namespace: str
+    resource_id: str
+    revision: int | None = None
+
+
 class SourcesRequest(ContractModel):
     schema_name = "InternalContextSourcesRequest"
     source_refs: tuple[Ref, ...]
