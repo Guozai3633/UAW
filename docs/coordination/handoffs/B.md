@@ -606,3 +606,106 @@ $env:UAW_CONTEXT_EVIDENCE_DIR='tests/.artifacts/B/MS-C6'
 A注入真实认证/controller、已发布RegisteredRunContextSources(actual_run_sources)、当前非空工具validator、实际固定用户Model assessor，并处理澄清/不可用；评估输入应消费固定候选数据，不能递归调用同一多规则GenericModelInputs；purpose沿用agent_step。完整候选版本建议需要稳定，语义metadata变化会使旧InstructionSet/snapshot失败，不借旧结果生成。受控assessor只证明协议/来源/拒绝链，不证明真实LLM语义质量；本包不发送模型请求，不改Model配置或私有provider类型。默认flags不变；Workspace/Board/专业压缩/分页等未实现来源仍 unavailable，完整权限登录session与最终Model派发由A接线。
 
 批读取不能让外部文件/ACL变更与SQL成为原子事务，A派发前仍查当前固定Model/来源/权限；公共RecordStore批读port未新增，本包不依赖公共变更。A审阅/合入/处理公共冲突及受影响跨模块链，不把这351组件节点或本包标P1/P4整轮accepted。交接后停止，不自动下一包。
+
+
+## MS-C7 最终交接（四里程碑，2026-10-09）
+
+实际 worktree `E:/UAW/.worktrees/context`，实际分支 `dev/context`。固定基线
+`ms-i2i-start` / `d8023eb07e1460961782f297697da7428f6ad247`；开工 clean、
+fetch origin --tags、merge --ff-only、HEAD==tag^{commit}、uv sync --frozen 全部成功。
+没有 reset/rebase/中途换基线，原 accepted 包、提交及 handoff 保留。
+
+M1 源码 `cd577ab01e59313341d15d30662703adb017b02f`、接口说明提交
+`5c84c336b2893d832c0012d803457e7ab5deb3a3`；M2 源码
+`ff8a4323b73f482a8702f6cbf0ba110af30aa553`、阶段交接
+`b121c9b0e91667d152d918dbf249955835dfa9d6`；最终源码
+`fecd2184e4533f66624cef1a9e5b1ecb3b9df166`、M3 接口复核
+`09a7cc3eb9b775808060eb61c067f61901e03352`。本最终记录另行提交；
+各阶段继续同包，没有等待 A 合入后才开发。
+
+### 改动文件与公开接口
+
+固定基线起共13文件：`src/uaw/context/{contracts,ports,read_batch,registered}.py`；
+`tests/unit/context/{test_read_batch,test_record_groups}.py`；
+`tests/integration/context/{registered_fixture,test_assessment_chain_postgres,test_read_cost_postgres,test_record_batch_postgres}.py`；
+`docs/coordination/requests/B/{MS-C7-stage-interface,MS-C7-final-wiring}.md`；
+`docs/coordination/handoffs/B.md`。全部在 B 允许路径内。没有改 seed/intent、
+shared/schema、Run/Model/API/composition、锁、flags、ops 或其他 worktree。
+
+`RecordReadKey(namespace: str, resource_id: str, revision: int|None=None)` 为冻结键；
+`ContextRecordBatchPort.read(principal: Principal, keys: tuple[RecordReadKey,...]) -> tuple[Record,...]`。
+<=128键，含重复项的有序完整结果；None 查当前非删除记录，正整数查精确版本。
+完整 Principal、键/版本/顺序/重复一致性校验，逐行独立复制 payload；不保存行或授权。
+缺失/删除/跨主体整批失败；已注入 adapter 的异常不回退；required 缺 port 明确
+`capability_unavailable/context.record_batch`。默认声明顺序 get 兼容，未冒称真实 SQL 批处理。
+
+`RegisteredContextInputs(..., record_batch=None, batch_required=False)` 保留旧构造；
+新增 `read_many(pins: tuple[Ref,...], ctx)->tuple[Reading,...]`，<=128来源，42来源/
+<=126键分组，整个操作 deadline、当前入口前后复查。owner/来源/seal 在实际 blob
+等待后重新读取；配方五条当前记录在工具等待前后复查。inspect 两遍独立实际读取
+（包括实际 Run 原文/patch），每遍 Reading 只作本遍正文/hash/分类及实际登记身份校验；
+没有旧 Reading 跨批端口等待。最后一次批读期间原文删除/改变反例均覆盖。
+保留 Reader、规则 assessor 等待前后/异常、snapshot 提交和 ModelInput 最终检查，
+保持实际 Run/固定模型/原文、权限/scope/epoch/规则/工具/窗口/取消。材料仍为数据，
+缺真实多规则语义来源或非空工具验证源仍 unavailable。GenericModelInputs/TokenCounter
+原签名不变；缓存仅纯计算、可选关闭，不缓存权限/读取结果/模型建议或输出。
+
+### 实测、命令与回执
+
+最终不同节点：单元277＋真实SQL128（完整回归121＋成本矩阵4＋原路由3）=405，
+全部通过，失败/错误/跳过0，去重索引 actual_unique_nodes=405、duplicate_nodes=0、
+all_complete=true。final-unit.xml/.log：277通过、11.91秒；final-sql.xml/.log/.exit：
+121通过、3915.53秒、exit0；routing.xml/.log：3通过、30.96秒；m4-final-cost.log：
+4通过、498.07秒。final-ruff*.log、m4-mypy-02.log保存静态成功。没有当前未解决组件
+验证失败；A生产adapter和整链验收仍是接线依赖，不由受控测试宣布通过。
+自身 PowerShell `. ./ops/start-dev-db.ps1 -Session B` 后锁定环境 alembic head 成功，
+独立 PostgreSQL55433 / FS blob；Python3.14.6。Ruff check/format check37文件、
+mypy17个Context文件通过。ignored 回执均在 `tests/.artifacts/B/MS-C7/`，没有复制
+A 凭据、修改其他库或共享 evidence；节点去重由自身 validation.json 记录。
+
+单/双规则、有/无工具、冷/暖缓存各组合使用同一文本/模型/预留，真实 SQL event/get/
+Run/Reader/blob/assessor次数及单调耗时留在 baseline-full-* / final-* / comparison.json。
+固定旧 B registered.py 取自已发布基线 git show，不使用其他session未交接源码；
+兼容、控制端口与原展开策略在同一实存版本下的消息/正文/引用及拒绝等价。
+实际 SQL event 减少4.0–5.6%，实际 Run 读取减少37.7–39.3%；blob、公开 Reader、
+assessor次数相同。冷/暖格式化1→0，完整估算5972/6957/7271/8256不变。
+样本含耗时退步（双规则/有工具暖输入41.770→58.539秒）；不宣称生产延迟、
+Token收益、provider prompt cache或A未实现SQL批适配的收益。实际SQL事件不是TCP包数；
+受控建议/SQL ToolSpec只是协议fixture，Model HTTP=0，未运行Runner，不证明LLM质量。
+
+完整验证命令、接口注入/容量零关闭样例、12行比较表、所有历史回执及A接线要求见
+[最终接线](../requests/B/MS-C7-final-wiring.md)；阶段接口见
+[MS-C7-stage-interface](../requests/B/MS-C7-stage-interface.md)。主要命令：
+
+```powershell
+. ./ops/start-dev-db.ps1 -Session B
+.venv/Scripts/python.exe -m alembic upgrade head
+$env:UAW_CONTEXT_EVIDENCE_DIR='tests/.artifacts/B/MS-C7'
+.venv/Scripts/python.exe -m pytest tests/unit/context -q --junitxml=tests/.artifacts/B/MS-C7/final-unit.xml
+.venv/Scripts/python.exe -m pytest tests/integration/context tests/integration/test_context_wiring.py --ignore=tests/integration/context/test_read_cost_postgres.py --require-postgres -vv --junitxml=tests/.artifacts/B/MS-C7/final-sql.xml
+.venv/Scripts/python.exe -m pytest tests/integration/context/test_read_cost_postgres.py --require-postgres -vv
+.venv/Scripts/python.exe -m pytest tests/integration/test_model_input_routing.py --require-postgres -vv --junitxml=tests/.artifacts/B/MS-C7/routing.xml
+.venv/Scripts/python.exe -m ruff check src/uaw/context tests/unit/context tests/integration/context
+.venv/Scripts/python.exe -m ruff format --check src/uaw/context tests/unit/context tests/integration/context
+.venv/Scripts/python.exe -m mypy src/uaw/context --cache-dir .cache/mypy/B
+.venv/Scripts/python.exe tests/.artifacts/B/MS-C7/index_receipts.py
+```
+
+历史保留：M2测试误计原文slot导致123/69与126/66断言不符；M3新fixture误用v1，
+仅fixture修为真实SQL数字版本1；mypy重复映射及三元记录注解修复。所有失败日志保留。
+一次自动审批额度不足未完成，用户继续后正常批准，无绕过。先前长SQL回归52%中断
+没有最终回执，m4-sql-regression-01.log保留且不计完整通过；有限隐藏自身PowerShell
+重跑完成121通过/exit0，写final-sql.log/.xml/.exit。失败/中断历史与最终完整回执分别记账，
+不把局部组件标为整轮accepted。
+
+### A接线与边界
+
+A提供owner隔离的真实 SQL ContextRecordBatchPort adapter，完整可信当前认证/
+controller/Run/固定Model语义assessor、当前Tool validator/Reader、取消和期限，
+按constructor可选注入；未接时默认顺序get兼容，batch-required严格缺依赖失败。
+A负责composition/输入路由与派发前复查，批SQL不使外部blob/ACL等待变为原子事务。
+纯计算cache默认关闭，显式`PureComputationCache(max_entries=128,max_bytes=2097152)`
+可选，任一容量0关闭；当前权限与来源检查总是保留。
+
+本包由A审阅/合入/处理公共冲突及整链回归；当前受控端口不接生产。不改flags、不决定
+D01/D03/D06，不把组件验证当P1-02/P4-04或整轮accepted，干净交付后停止，不自动下一包。
