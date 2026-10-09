@@ -73,3 +73,50 @@ M2随后提供完整Ref有限路由；M3提供纯参数资源来源与原账本�
   pytest自动参数ID超过Windows环境长度。修正测试上下文写法及短ID；原失败原样保留。
 - ruff check/format和mypy providers：通过。
 - SQL/新进程恢复尚待M3/M4实跑；受控依赖不能证明真实模型选择质量。
+
+## M2 阶段源码与有限路由（继续M3/M4）
+
+M2源码 SHA：5387624a69db68297bed78297bcb414463e25fe0。新增
+providers/multiplex.py、parameter_sources.py、tests/unit/tool/test_office_routing.py。
+
+```python
+ToolExecutorBinding(tool_ref: Ref, provider_ref: Ref,
+                    executor: ToolExecutorPort, prepare: Callable[[JsonObject, JsonObject], None])
+ToolOutputVerifierBinding(tool_ref: Ref, provider_ref: Ref, verifier: ToolOutputVerifierPort)
+ToolExecutorRouter(bindings: tuple[ToolExecutorBinding, ...])
+ToolOutputVerifierRouter(bindings: tuple[ToolOutputVerifierBinding, ...])
+PureParameterResourceReader(registry, access: ToolAccessPort | None, tool_refs: tuple[Ref, ...])
+PureParameterRecoveryAccess(resources, ledger, *, authority: ToolRecoveryAccessPort | None = None)
+```
+
+最多128个路由，重复id/version（含不同hash）拒绝；构造期pins严格Ref合同，
+缺hash、location/access_scope、错误kind拒绝。调用期严格Spec/hash/provider/input/arguments_hash，
+真实adapter自身check再核实原版本/provider及有界计算。真实receipt仍须原attempt/usage.attempt_id。
+路由不赋予权限、选择模型、不动态import；受信代码构造binding，不能从LLM响应生成。
+
+```python
+# 已由A显式注册确切三种Spec，并提供原 SQL/blob source 及当前独立数据权限。
+ex = ArithmeticExecutor(source, provider=local_service)
+bindings = (ToolExecutorBinding(arithmetic_ref, local_provider_ref, ex, ex.check),)
+router = ToolExecutorRouter(bindings)
+source.verifier = ToolOutputVerifierRouter((ToolOutputVerifierBinding(
+    arithmetic_ref, local_provider_ref, ArithmeticVerifier(local_provider_ref)),))
+resources = PureParameterResourceReader(registry, current_tool_access, (arithmetic_ref,))
+source.access = PureParameterRecoveryAccess(resources, ledger, authority=current_data_authority)
+# 原ToolApprovalAuthority(..., resources=resources, policies=实际ExecutionPolicyPort)
+# 原ToolInvocation(..., executor=router, prepare=router.check,
+#                    estimates=arithmetic_estimates(), results=实际ToolResults)
+```
+
+同一source限定一个provider；三工具可绑定同一合法本地provider，路由按完整工具Ref区分。
+多个不同provider的路由也逐binding精确核对，但本包没有新增跨provider结果source复合路由；
+A应按原attempt/provider选择对应source/facade，不把错误提供方交同一个source。
+新恢复authority沿用已有ToolRecoveryAccessPort：必须从独立当前Run/owner/session/model/scope/
+角色与provider来源复核数据可见性，允许取消后原尝试会计恢复不等于新执行授权。
+C仅核实实际已登记的纯参数Spec、固定call/attempt和当前authority，不调用新执行snapshot。
+A可适配既有Run数据来源；未注入返回dependency_unavailable，不使用ctx或历史批准自授权。
+资源Reader仅三种实际精确Spec可返回空资源；没有通用空Reader。
+
+M2累计新单元94通过；m2-unit-final.{txt,xml}。初次m2-unit和m2-unit-fixed保留：
+受控单元receipt误写transport_state/缺currency以及构造错误类型已修正，未放宽公共合同。
+当前stage仍待新工具实际SQL恢复验收；原124项SQL已在自身55434启动，本包继续。
