@@ -93,8 +93,8 @@ class _Routes:
 
 class ToolExecutorRouter(_Routes):
     def __init__(self, bindings: tuple[ToolExecutorBinding, ...]) -> None:
-        if type(bindings) is not tuple:
-            raise ValueError("Trusted bindings must be a tuple")
+        if type(bindings) is not tuple or not 1 <= len(bindings) <= MAX_BINDINGS:
+            raise ValueError("Trusted bindings must be a bounded tuple")
         if any(
             not isinstance(binding, ToolExecutorBinding)
             or not callable(binding.prepare)
@@ -133,8 +133,8 @@ class ToolExecutorRouter(_Routes):
 
 class ToolOutputVerifierRouter(_Routes):
     def __init__(self, bindings: tuple[ToolOutputVerifierBinding, ...]) -> None:
-        if type(bindings) is not tuple:
-            raise ValueError("Trusted bindings must be a tuple")
+        if type(bindings) is not tuple or not 1 <= len(bindings) <= MAX_BINDINGS:
+            raise ValueError("Trusted bindings must be a bounded tuple")
         if any(
             not isinstance(binding, ToolOutputVerifierBinding)
             or not callable(getattr(binding.verifier, "verify", None))

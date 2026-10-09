@@ -444,3 +444,71 @@ actual ignored回执`tests/.artifacts/C/MS-T2e/`含unit.xml/txt、sql-original.x
 - A以可信配置提供私有index path/容量/namespace与显式lexical-only或semantic-required，注入ToolFacade optional retriever；旧小目录默认兼容，其他invoke/results参数沿用，不改共享schema/依赖/flags或公开API。缓存可重建、不为Tool注册或权限数据权威；ModelToolSet继续A当前适配器验证。
 - 当前默认产品目录/flags没有开放，受控NumericalEmbedding不注册为产品能力，不执行/安装/写入/exec。原SQL并发超时后无改动复跑通过，但实际环境延迟需要A后续测量，不能宣称生产性能或真实语义任务已验收。
 - 无当前失败节点；真实embedding提供方、整链Agent/公开Runtime/产品用户权限及语义质量未实跑，仍明确待接线/验收。本包停止，完整MS-T2/P1-03、D01/D03/D06不自行接受或设定。
+
+
+## 2026-10-09：MS-T2f 办公纯参数工具、有限适配器路由与原尝试恢复
+
+- 实际worktree：E:/UAW/.worktrees/tool；实际分支：dev/tool。
+- 实际基线：ms-i2i-start / **d8023eb07e1460961782f297697da7428f6ad247**。
+  开工干净，fetch origin --tags、merge --ff-only、HEAD/tag核对、uv sync --frozen已成功；没有reset/rebase。
+- M1源码：63857e4d684ef3d9581778dc443126a5b84f3f03；M1说明：0f4aa7106f4ba051cadfac029d20736cb4cdbf14。
+- M2源码：5387624a69db68297bed78297bcb414463e25fe0；M2说明：bb53f2bbc7bc01ca8bc45280f667cc1e7ebe7a45。
+- 最终源码/测试：**b09fb7d789026be69a26b5493aa3a7da13649be5**。
+  本handoff与C-010在源码之后独立提交，实际handoff SHA由交付报告和verification-index.json记录。
+
+实际文件：新增src/uaw/tool/providers/{local,arithmetic,json_data,multiplex}.py、
+src/uaw/tool/parameter_sources.py；修改src/uaw/tool/results.py的可选依赖ready检查。
+新增tests/unit/tool/test_office_calculations.py、test_office_routing.py；新增
+ tests/integration/tool/office_pipeline_fixture.py、office_recovery_child.py、
+test_office_tools_postgres.py、test_office_recovery_postgres.py。
+说明为C-009-ms-t2f-stage-tools.md、C-010-ms-t2f-final-wiring.md及本段；其他session和公共文件未修改。
+原text及原70/100/124项SQL文件保留；原handoff的63213字节完整保留后追加。
+
+公开接口：arithmetic_spec/arithmetic_estimates/calculate、ArithmeticExecutor/Verifier；
+json_data_spec/json_data_estimates/inspect_json、JsonDataExecutor/Verifier。
+ToolExecutorBinding/ToolOutputVerifierBinding、ToolExecutorRouter(bindings)/ToolOutputVerifierRouter(bindings)
+固定完整ToolRef/hash/provider及实际实现，沿用execute/verify，executor.check作prepare。
+PureParameterResourceReader(registry,access,tool_refs)及PureParameterRecoveryAccess(resources,ledger,authority=)
+提供精确三工具空资源来源及原attempt当前数据权威委托；ready仅检查嵌套来源已接线，不是权限缓存。
+固定参数/Spec/错误/构造和可消费样例详见[C-009](../requests/C/C-009-ms-t2f-stage-tools.md)与
+[C-010](../requests/C/C-010-ms-t2f-final-wiring.md)。没有新增公共DTO/EffectRecord字段/迁移/依赖。
+
+两工具实际有界本地纯计算，不eval、脚本、网络或本机项目文件。34位Decimal/ROUND_HALF_EVEN和
+百分比定义固定；JSON拒绝重复键/非有限数/超深/超大/孤立代理字符，不修复用户原文。
+规范结果使用原账本/审批/BudgetStatePort/一次发送/ProviderReceipt/实际Blob/发布和Lookup/Reader。
+效果和费用分别处理，原attempt与固定计划重启恢复；unknown不换attempt重做、不放弃额度。
+不从HTTP/Runner ok推断工具成功/零费用；已核对/confirmed/applied/ToolResult成功不意味着Task完成。
+取消后原数据权限允许时可恢复，不转为新执行授权；撤销数据权限仍拒绝。
+没有持有Tool会话锁嵌套调用BudgetService，未启用flags或自动登记产品目录/受控Reader。
+
+实际验证（自身55434，dot-source ops/start-dev-db.ps1 -Session C；alembic upgrade head；
+所有SQL明确--require-postgres，独立ignored根tests/.artifacts/C/MS-T2f）：
+
+| 范围 | 实际通过/失败回执 |
+| --- | --- |
+| 全部C单元 | all-unit-final：316通过（原218+新98），0失败/错误/跳过 |
+| 原Tool全部SQL | original-sql：124通过，543.42秒，含原检索/索引24 |
+| 新工具链初次/复验 | office-sql-initial：30通过/6失败；office-sql-fixed：36通过/3测试字段失败 |
+| 最后三节点修复 | mixed-final-sql：3通过/36 deselected；字段为既有tools，非skip |
+| 新恢复SQL | office-recovery-sql：15通过，194.55秒，含真实新进程无executor恢复 |
+| 原text最终复验 | text-final-sql：30通过，340.53秒，不重复计数 |
+| 静态 | Ruff通过，62文件format-check通过，Mypy30源文件通过，diff-check通过 |
+
+新SQL去重54项，全部SQL最后178个不同节点通过，无最终失败/错误/跳过；不伪造一次178全通过。
+verification-index.json仅索引原JUnit和去重的最后回执，保留所有失败和修复txt/xml。
+初次核心/路由单元的Decimal测试traps写法、Windows超长ID、受控receipt字段等也保留并修正，
+未改公共契约。两工具与text覆盖一次发送并发、审批参数变化、当前provider真实SQL撤销、取消、
+数据撤销、响应丢失、原费用计划回复丢失、错误验证器/输出篡改、缺Reader/来源及跨主体/session/attempt。
+受控角色/provider元数据与当前数据权威明确标注；实际计算/Blob/SQL/ApprovalService/BudgetService
+真实实现不能证明真实DeepSeek选择或生产授权已配置。
+
+未通过/接线要求：无未通过的最终组件测试。A仍需合法本地provider/角色/目录/组装与当前完整
+Run/owner/session/model/scope/provider数据权限authority；C默认缺来源仍明确不可用。原RunToolRecoveryAccess
+的PureText类型可由A在自身域内提取/适配，消费C精确Reader.entry，不扩大为通用空Reader。
+同provider可三工具共Source，跨provider由A选择对应Source/facade，不能误接聊天执行器。
+真实固定DeepSeek选择、Task交付/终态及完整MS-T2整链验收归A；不依赖D开发分支、不自动扩包。
+
+交付期间自动审批额度耗尽导致一次提交命令未执行，用户“继续”后按同授权重新审查成功。
+全部测试结束后额外启动数据库探查因DockerEngine管道缺失失败，后续查询脚本未执行，保留
+post-verification-db-start-failure.txt；已通过SQL新进程Database.check确认0003_attempt_identity。
+复跑需先恢复Docker，再用C脚本启动本库，不复制A凭据/配置或使用其他端口/库/共享evidence。

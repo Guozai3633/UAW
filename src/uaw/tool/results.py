@@ -27,6 +27,12 @@ class ToolResults:
                 status=503,
             )
 
+        # Optional owning adapter readiness detects an unwired nested authority before
+        # reserving. It is dependency metadata, not a permission check or grant cache.
+        ready = getattr(self.source.access, "ready", None)
+        if callable(ready):
+            ready()
+
     async def resume(self, call: JsonObject, ctx: TrustedExecutionContext) -> JsonObject:
         fixed = await self.ledger.attempt(ctx)
         if fixed != call:

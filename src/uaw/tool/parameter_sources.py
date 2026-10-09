@@ -98,8 +98,16 @@ class PureParameterResourceReader:
         entry = self.entry(call, spec)
         snapshot = await self.access.snapshot(ctx)
         check_access(snapshot, ctx)
-        require_entry(entry, snapshot)
-        self.entry(call, spec)
+        current_entry = self.entry(call, spec)
+        if current_entry != entry:
+            raise fail(
+                "stale_resource",
+                "Pure tool binding changed during current access read",
+                phase="authority",
+                category="conflict",
+                status=412,
+            )
+        require_entry(current_entry, snapshot)
         return ()
 
 
@@ -112,6 +120,17 @@ class PureParameterRecoveryAccess:
         authority: ToolRecoveryAccessPort | None = None,
     ) -> None:
         self.resources, self.ledger, self.authority = resources, ledger, authority
+
+    def ready(self) -> None:
+        """Dependency readiness only; never a cached current permission grant."""
+        if self.authority is None:
+            raise fail(
+                "dependency_unavailable",
+                "Independent current recovery authority missing",
+                phase="recovery_source",
+                category="dependency",
+                status=503,
+            )
 
     async def check(
         self,
