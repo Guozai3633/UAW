@@ -498,3 +498,21 @@ git diff --check
 - 阶段/最终入口签名一致；A 用真实注册 command_ref/channel_ref、owner mapping/current authority/根来源、当前 key 目录、OS device private handle、实际数据权限 Reader 和独立持久路径构造。源变化不跨请求缓存许可。需要实际通道绑定/用户确认与部署日志策略后才能开放；默认生产 channel/确认仍缺，受控 fixture 不是可信 IPC、实际用户配对或完整产品执行验收。
 - A负责 Runner→Tool 实际结果核验、引用登记和 composition/API/flags 接线；本包没有自动 Tool applied、IPC wire/配对V2/list/安装/写入/exec，没有决定 D01/D03/D06、开放flags或进入其他包。权威源与本机 SQLite 无跨服务事务，晚失败可能保留真实已签名历史记录；恢复必须仍有当前数据访问。
 - 四个里程碑在本包范围完成；完整MS-R2/真实IPC/用户确认/产品任务验收继续等待。本包后停止，等待 A 审阅和后续派发；最终 handoff 提交后工作区应干净。
+
+
+## MS-R2f M1/M2 阶段交付（2026-10-09）
+
+分支 dev/runner，实际 ms-i2i-start 基线 d8023eb07e1460961782f297697da7428f6ad247，已 fetch/ff-only/tag等值/uv sync --frozen。源码 M1 81bc7cabf997447dd550e27de502e7462a1cb5ce；M2 ea16682101cc4c9a3e4d02398c5ccebbda6254a0。固定构造、关闭/错误语义、文件清单、39项阶段回执及 A 接线要求见 requests/D/MS-R2f-stage-ipc.md。真实 Windows 双进程/OS凭据/身份/角色签名与 registry 通过；账号/pairing/确认来源为独立临时 fixture。原始失败保留并已修复，当前阶段零失败。继续同包 M3/M4。
+
+
+## MS-R2f 最终交接（2026-10-09）
+
+- 实际工作区 E:/UAW/.worktrees/runner，分支 dev/runner；干净开工 fetch tags / ff-only ms-i2i-start，HEAD与tag一致 d8023eb07e1460961782f297697da7428f6ad247，uv sync --frozen成功（64包）。没有reset/rebase或覆盖公共文件。
+- 源码：M1 81bc7cabf997447dd550e27de502e7462a1cb5ce；M2 ea16682101cc4c9a3e4d02398c5ccebbda6254a0；最终 d3f60771accca99832673820c8a43c4ec32f4cbd。阶段handoff36cb329保留，最终源码/本交接分开提交；原已接受历史保留。
+- 文件：新增Runner ipc六模块；新增unit frame tests和integration ipc_fixture/ipc_child/test_windows_ipc/test_windows_read_ipc；native_root_source测试helper仅可选复用已provision的OS key。文档为D stage/final wiring和本handoff，workspace四文件无须改变。shared/schema/lock/composition/API/flags/其他session未修改。
+- 公开内部接口：WindowsPipeListener/connect_pipe/PipeConnection、OsIdentity/PeerRegistrationPort/RegisteredPeer/IpcSigner/AuthenticatedPipeSession、ConnectionRegistry适配既有RunnerChannelSourcePort；ReadOnlyRunnerFactoryPort.create(ref,channel_ref=...)和ReadOnlyPipeEndpoint.serve_once()->实际content receipt Ref。命令body仅原固定Ref，Reader从独立登记恢复原签名命令/设备/owner，actor由registry真实连接提供；recover仅已有签名journal，不新准入/不重发未知。
+- **505 passed /160.20秒，0失败/错误/跳过**（基线432＋新增73，非重试累加）。Ruff通过、格式49文件、Mypy24源码、diff通过；命令、详细原始失败/修复、实际输出和构造例子见 [MS-R2f-final-wiring.md](../requests/D/MS-R2f-final-wiring.md)。回执 tests/.artifacts/D/MS-R2f/full.xml/full.log、checks.json、public-hashes.json、ruff/format/mypy.log，专项m4-2.xml 70通过、bounds.xml 4通过。
+- 实际Windows双隐藏进程、内核显式DACL、本机token/PID/创建时间/存活及当前角色key/nonce，帧256KiB/10秒以内、撤销/期限/断帧/重放/并发/协作取消/重连；临时根UTF-8实际read、OS device签名journal传回，双连接读取一次，回复丢失后新连接恢复原Ref/签名，取消后不重新准入。44份随机IPC OS凭据清理回执全cleaned=true，管道/子进程/句柄finally清理；原OS key/文件/跨进程admission与journal回归保留。
+- 测试账号/owner/pairing/native确认和current authority是独立受控来源；没有从body授予批准，实连不是真实配对。当前最终无未通过项；早期fixture角色/输出编码/换行/import和M1回执目录/PID失败全部保留并已修复，没有删验权/签名检查。
+- A提供真实受保护进程→owner/actor/device/key/pairing/期限映射、native确认、真实当前authority/Root/PrincipalMapping、Container.reader数据权限、OS handles及持久路径；控制端/组装/业务Tool核验归A。缺这些来源默认不可用、不挂载生产/用户项目；开发IPC和SQLite不是D01/D03正式部署决策，未公开配对V2/list/写入安装exec/flags，不推断Tool applied或零费用。
+- 只完成本包；完整MS-R2与产品授权继续等待。最终handoff提交后干净交付，停止，等待A接受/下一实际包。

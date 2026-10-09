@@ -70,10 +70,19 @@ async def native_case(tmp_path):
 
 
 async def make_native_case(
-    tmp_path, *, credentials=None, device_handle="device-private", control_handle="control-private"
+    tmp_path,
+    *,
+    credentials=None,
+    device_handle="device-private",
+    control_handle="control-private",
+    existing_keys=None,
 ):
     clock = [NOW]
-    state = LocalState(tmp_path / "control" / "keys-selections.sqlite")
+    state = (
+        existing_keys
+        if existing_keys is not None
+        else LocalState(tmp_path / "control" / "keys-selections.sqlite")
+    )
     local = LocalRoots(tmp_path / "native" / "roots.sqlite")
     grants = PersistentRootGrants(tmp_path / "native" / "grants.sqlite")
     vault = credentials if credentials is not None else CredentialFixture()
@@ -82,8 +91,15 @@ async def make_native_case(
         ("device1", device_handle, "device"),
         ("control1", control_handle, "control"),
     ):
-        public = await protected.provision_private(credential_handle=handle)
-        state.register_key(VerificationKey(key_id, "d1", public, role))
+        if existing_keys is None:
+            public = await protected.provision_private(credential_handle=handle)
+            state.register_key(VerificationKey(key_id, "d1", public, role))
+        else:
+            assert state.lookup(key_id, device_id="d1").role == role
+            if role == "device":
+                await protected.check_private(
+                    device_id="d1", key_id=key_id, credential_handle=handle
+                )
     root = tmp_path / "selected-project"
     root.mkdir()
     workspace = Ref(kind="workspace", id="workspace1", version="1", content_hash="a" * 64)
