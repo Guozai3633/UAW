@@ -66,15 +66,21 @@ class NativeConfirmationFixture:
 
 @pytest.fixture
 async def native_case(tmp_path):
+    return await make_native_case(tmp_path)
+
+
+async def make_native_case(
+    tmp_path, *, credentials=None, device_handle="device-private", control_handle="control-private"
+):
     clock = [NOW]
     state = LocalState(tmp_path / "control" / "keys-selections.sqlite")
     local = LocalRoots(tmp_path / "native" / "roots.sqlite")
     grants = PersistentRootGrants(tmp_path / "native" / "grants.sqlite")
-    vault = CredentialFixture()
+    vault = credentials if credentials is not None else CredentialFixture()
     protected = ProtectedSigner(state, vault)
     for key_id, handle, role in (
-        ("device1", "device-private", "device"),
-        ("control1", "control-private", "control"),
+        ("device1", device_handle, "device"),
+        ("control1", control_handle, "control"),
     ):
         public = await protected.provision_private(credential_handle=handle)
         state.register_key(VerificationKey(key_id, "d1", public, role))
@@ -98,12 +104,12 @@ async def native_case(tmp_path):
     verifier = PairingVerifier(
         state, native=NativeConfirmationFixture(root), clock=lambda: clock[0], roots=local
     )
-    proof = sign(
+    proof = await protected.sign_document(
         issued.ticket.document(),
-        base64.b64decode(vault.values["device-private"].get_secret_value()),
-        "d1",
-        "device1",
-        "pairing-proof",
+        device_id="d1",
+        key_id="device1",
+        domain="pairing-proof",
+        credential_handle=device_handle,
     )
     await verifier.approve(
         issued.ticket.ticket_id,
@@ -113,7 +119,7 @@ async def native_case(tmp_path):
         proof_signature=proof,
     )
     selection = await verifier.root_selection(
-        issued.ticket.ticket_id, signer=protected, credential_handle="device-private"
+        issued.ticket.ticket_id, signer=protected, credential_handle=device_handle
     )
     bindings = RootBindings(grants, PersistentRootSelection(state, local))
     source = NativeRootSource(
@@ -143,6 +149,8 @@ async def native_case(tmp_path):
         )
     )
     return dict(
+        device_handle=device_handle,
+        control_handle=control_handle,
         source=source,
         state=state,
         local=local,

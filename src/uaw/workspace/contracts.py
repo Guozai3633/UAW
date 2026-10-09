@@ -74,3 +74,24 @@ class RegisteredReceiptCommand:
     command: RunnerCommand
     device_id: str
     owner: Principal
+
+
+class RunnerChannelSnapshot(ContractModel):
+    device_id: ID
+    owner: Principal
+    actor: Principal
+    pairing_ref: Ref
+    channel_ref: Ref
+    key_ref: Ref
+    connected: bool
+    expires_at: Timestamp
+
+
+class RunnerRootSnapshot(ContractModel):
+    owner: Principal
+    device_id: ID
+    workspace_ref: Ref
+    root_handle: ID
+    binding_revision: Revision
+    allowed_actions: tuple[ID, ...]
+    expires_at: Timestamp
