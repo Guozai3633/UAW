@@ -2,6 +2,7 @@
 
 import asyncio
 import base64
+import hashlib
 import secrets
 import time
 from dataclasses import dataclass, field
@@ -14,6 +15,7 @@ from uaw.shared.contracts import Principal, Ref
 from uaw.shared.credentials import CredentialStorePort
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_signatures import sign, verify
+from uaw.shared.schema import validate_contract
 from uaw.workspace.ports import CurrentKeyDirectory
 from uaw_runner.ipc.frames import decode, encode, proof_document
 from uaw_runner.ipc.windows_pipe import OsIdentity, PipeConnection
@@ -69,6 +71,12 @@ class IpcSigningBinding:
     key_id: str
     role: Literal["control", "device"]
     credential_handle: str = field(repr=False)
+
+    def __post_init__(self) -> None:
+        for value in (self.device_id, self.key_id, self.credential_handle):
+            validate_contract("ID", value)
+        if self.role not in ("control", "device"):
+            raise ValueError("Invalid IPC signing role")
 
 
 class IpcSigner:
@@ -155,6 +163,7 @@ class AuthenticatedPipeSession:
         self.send_sequence = 0
         self.receive_sequence = 0
         self.busy = asyncio.Lock()
+        self.started = False
 
     async def registered(self, identity: OsIdentity, role: str) -> RegisteredPeer:
         if self.registration is None:
@@ -195,6 +204,7 @@ class AuthenticatedPipeSession:
             or key.role != role
             or key.key_id != result.key_id
             or key.device_id != result.device_id
+            or result.key_ref.content_hash != hashlib.sha256(key.public_bytes).hexdigest()
         ):
             raise reject(
                 "ipc_signature_denied", "Registered current key rejected", 403, "permission"
@@ -410,6 +420,9 @@ class AuthenticatedPipeSession:
                 raise
 
     async def handshake(self) -> None:
+        if self.started:
+            raise reject("ipc_closed", "A session handshakes exactly once", 409)
+        self.started = True
         try:
             async with asyncio.timeout(self.pipe.timeout):
                 await self._handshake()

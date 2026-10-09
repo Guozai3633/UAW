@@ -105,7 +105,7 @@ async def ipc_case(tmp_path):
             },
         )
         yield case
-        report["status"] = "passed"
+        report["status"] = "fixture_completed"
     finally:
         for session in sessions:
             await session.close()
@@ -154,6 +154,7 @@ async def start_peer(case, mode="echo", *, timeout=10):  # noqa: ASYNC109 - OS f
     import os
 
     env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONPATH"] = (
         str(Path(sys.prefix) / "Lib/site-packages")
         + os.pathsep
@@ -205,6 +206,7 @@ async def test_actual_windows_double_process_acl_os_identity_nonce_roles_and_clo
     await session.send("receipt", {"id": "test-reply"})
     result = json.loads(await asyncio.wait_for(asyncio.to_thread(process.stdout.readline), 5))
     assert result["body"] == {"id": "test-reply"}
+    assert result["channel_ref"] == session.channel_ref.wire()
     await asyncio.to_thread(process.wait, timeout=5)
     assert not await asyncio.to_thread(session.pipe.live_sync)
     await session.close()
@@ -277,4 +279,203 @@ async def test_reconnect_new_ref_and_nonce_never_revives_old(ipc_case):
     with pytest.raises(DomainError):
         await registry.read(old_ref, device_id="d1")
     assert (await registry.read(new_ref, device_id="d1"))["connected"]
+    await registry.close()
+
+
+@pytest.mark.parametrize("mode", ["bad-signature", "old-nonce", "replay"])
+async def test_actual_peer_signature_nonce_and_replay_rejected(ipc_case, mode):
+    session, process, path = await start_peer(ipc_case, mode)
+    await session.handshake()
+    if mode == "replay":
+        await session.receive()
+    with pytest.raises(DomainError) as exc:
+        await session.receive()
+    assert exc.value.failure.code == (
+        "ipc_signature_denied" if mode == "bad-signature" else "ipc_replay"
+    )
+    assert session.pipe.closed.is_set()
+
+
+@pytest.mark.parametrize("mode", ["raw-long", "raw-zero", "raw-truncated", "raw-silent"])
+async def test_actual_pipe_invalid_length_truncation_and_timeout(ipc_case, mode):
+    session, process, path = await start_peer(ipc_case, mode)
+    session.pipe.timeout = 0.3
+    with pytest.raises(DomainError) as exc:
+        await session.handshake()
+    if mode in {"raw-long", "raw-zero"}:
+        assert exc.value.failure.code == "ipc_frame_invalid"
+    elif mode == "raw-silent":
+        assert exc.value.failure.code == "ipc_timeout"
+    assert session.pipe.closed.is_set()
+
+
+@pytest.mark.parametrize(
+    "change", ["pid", "creation", "owner", "device", "key_role", "key_hash", "missing"]
+)
+async def test_os_peer_not_authenticated_by_untrusted_identity(ipc_case, change):
+    session, process, path = await start_peer(ipc_case, "idle")
+    value = json.loads(await asyncio.to_thread(path.read_text, encoding="utf-8"))
+    if change == "pid":
+        value["client"]["identity"]["pid"] += 999
+    elif change == "creation":
+        value["client"]["identity"]["created"] += 1
+    elif change == "owner":
+        value["client"]["owner"]["id"] = "another-owner"
+        value["client"]["actor"]["id"] = "another-owner"
+    elif change == "device":
+        value["client"]["device_id"] = "another-device"
+    elif change == "key_role":
+        value["client"]["key_id"] = "device1"
+        value["client"]["key_ref"] = value["server"]["key_ref"]
+    elif change == "key_hash":
+        value["client"]["key_ref"]["content_hash"] = "f" * 64
+    elif change == "missing":
+        session.registration = None
+    await asyncio.to_thread(path.write_text, canonical(value), encoding="utf-8")
+    session.pipe.timeout = 0.6
+    with pytest.raises(DomainError):
+        await session.handshake()
+    assert session.pipe.closed.is_set()
+
+
+async def test_actual_read_cancel_propagates_and_does_not_block_event_loop(ipc_case):
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    operation = asyncio.create_task(session.receive())
+    await asyncio.sleep(0.05)
+    with pytest.raises(DomainError) as exc:
+        await session.receive()
+    assert exc.value.failure.code == "ipc_busy"
+    operation.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await asyncio.wait_for(operation, 1)
+    assert session.pipe.closed.is_set() and session.pipe.handle is None
+    await registry.close()
+
+
+async def test_source_await_timeout_invalidates_actual_pipe(ipc_case):
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    original = session.registration
+
+    class SlowRegistration:
+        async def current(self, identity, *, role):
+            await asyncio.sleep(5)
+            return await original.current(identity, role=role)
+
+    session.registration = SlowRegistration()
+    session.pipe.timeout = 0.1
+    with pytest.raises(DomainError) as exc:
+        await registry.read(ref, device_id="d1")
+    assert exc.value.failure.code == "ipc_timeout" and session.pipe.closed.is_set()
+    await registry.close()
+
+
+async def test_registry_bound_and_handshake_one_use(ipc_case):
+    from uaw_runner.ipc.channel_source import ConnectionRegistry
+
+    first, process, path, registry, ref = await ready_registry(ipc_case)
+    with pytest.raises(DomainError):
+        await first.handshake()
+    bounded = ConnectionRegistry(max_connections=1)
+    await bounded.add(first)
+    second, process2, path2 = await start_peer(ipc_case, "idle")
+    await second.handshake()
+    with pytest.raises(DomainError) as exc:
+        await bounded.add(second)
+    assert exc.value.failure.code == "ipc_busy"
+    await bounded.close()
+    await second.close()
+
+
+async def test_actual_kernel_pipe_dacl_has_only_explicit_logon_ace(ipc_case):
+    import ctypes
+    from ctypes import wintypes as W
+
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    api = session.pipe.api
+    get_security = api.a.GetSecurityInfo
+    get_security.argtypes = [W.HANDLE, ctypes.c_int, W.DWORD] + [ctypes.c_void_p] * 5
+    get_security.restype = W.DWORD
+    convert = api.a.ConvertSecurityDescriptorToStringSecurityDescriptorW
+    convert.argtypes = [ctypes.c_void_p, W.DWORD, W.DWORD, ctypes.c_void_p, ctypes.c_void_p]
+    convert.restype = W.BOOL
+    descriptor, dacl, text = ctypes.c_void_p(), ctypes.c_void_p(), W.LPWSTR()
+    try:
+        assert (
+            get_security(
+                session.pipe.handle,
+                6,
+                4,
+                None,
+                None,
+                ctypes.byref(dacl),
+                None,
+                ctypes.byref(descriptor),
+            )
+            == 0
+        )
+        assert convert(descriptor, 1, 4, ctypes.byref(text), None)
+        actual = text.value
+        assert actual.count("(A;") == 1 and session.local.identity.logon_sid in actual
+        assert "0x12019b" in actual.lower() and ";;;WD)" not in actual and ";;;AN)" not in actual
+    finally:
+        if text:
+            api.k.LocalFree(text)
+        if descriptor:
+            api.k.LocalFree(descriptor)
+        await registry.close()
+
+
+async def test_unconnected_listener_cancel_reaps_overlapped(ipc_case):
+    listener = WindowsPipeListener(
+        name="uaw-D-test-" + uuid.uuid4().hex, logon_sid=WindowsApi().current().logon_sid
+    )
+    ipc_case["listeners"].append(listener)
+    work = asyncio.create_task(listener.accept())
+    await asyncio.sleep(0.05)
+    work.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await asyncio.wait_for(work, 1)
+    assert listener.connection.closed.is_set() and listener.connection.handle is None
+
+
+async def test_actual_expiry_during_current_source_await(ipc_case):
+    import time
+
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    original = session.registration
+
+    class SlowRegistration:
+        async def current(self, identity, *, role):
+            await asyncio.sleep(0.05)
+            return await original.current(identity, role=role)
+
+    session.registration = SlowRegistration()
+    session.monotonic_expiry = time.monotonic() + 0.02
+    with pytest.raises(DomainError) as exc:
+        await registry.read(ref, device_id="d1")
+    assert exc.value.failure.code == "ipc_timeout"
+    await registry.close()
+
+
+async def test_actual_exact_maximum_signed_frame(ipc_case):
+    from uaw_runner.ipc.frames import encode
+    from uaw_runner.ipc.windows_pipe import MAX_FRAME
+
+    session, process, path = await start_peer(ipc_case, "max-frame")
+    await session.handshake()
+    frame = await session.receive()
+    assert len(encode(frame)) == MAX_FRAME and frame["body"]["data"].startswith("xxx")
+    await session.close()
+
+
+async def test_repeated_cancellation_still_reaps_pipe_handles(ipc_case):
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    work = asyncio.create_task(session.receive())
+    await asyncio.sleep(0.05)
+    work.cancel()
+    await asyncio.sleep(0)
+    work.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await asyncio.wait_for(work, 1)
+    assert session.pipe.handle is None and session.pipe.peer_handle is None
     await registry.close()

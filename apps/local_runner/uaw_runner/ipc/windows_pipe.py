@@ -357,14 +357,19 @@ class PipeConnection:
             task = asyncio.create_task(asyncio.to_thread(fn, *args))
             try:
                 return await asyncio.shield(task)
-            except BaseException:
+            except BaseException as exc:
                 self.closed.set()
                 self.api.k.CancelIoEx(self.handle, None)
-                try:
-                    await asyncio.shield(task)
-                except Exception:
-                    pass
+                while not task.done():
+                    try:
+                        await asyncio.shield(task)
+                    except asyncio.CancelledError:
+                        continue
+                    except Exception:
+                        break
                 await self.close()
+                if isinstance(exc, OSError):
+                    raise CapabilityUnavailable("runner.ipc.os_identity") from None
                 raise
 
     async def receive(self, *, deadline: float | None = None) -> bytes:
@@ -384,7 +389,15 @@ class PipeConnection:
                 return False
             if self.api.k.WaitForSingleObject(self.peer_handle, 0) != 258:
                 return False
-            return bool(self.api.k.PeekNamedPipe(self.handle, None, 0, None, None, None))
+            if not self.api.k.PeekNamedPipe(self.handle, None, 0, None, None, None):
+                return False
+            assert self.peer_identity is not None
+            try:
+                handle, actual = self.api.process(self.peer_identity.pid)
+                self.api.k.CloseHandle(handle)
+                return actual == self.peer_identity
+            except OSError:
+                return False
 
     def close_sync(self) -> None:
         self.closed.set()
@@ -406,6 +419,8 @@ class PipeConnection:
 
 class WindowsPipeListener:
     def __init__(self, *, name: str, logon_sid: str, timeout: float = DEFAULT_TIMEOUT) -> None:
+        if not 0 < timeout <= DEFAULT_TIMEOUT:
+            raise ValueError("IPC timeout must be in (0,10]")
         if not re.fullmatch(r"uaw-[A-Za-z0-9_-]{8,96}", name):
             raise ValueError("Invalid local pipe name")
         self.api = WindowsApi()
@@ -462,6 +477,8 @@ async def connect_pipe(  # noqa: ASYNC109 - worker IO uses absolute bounded dead
 ) -> PipeConnection:
     if not re.fullmatch(r"uaw-[A-Za-z0-9_-]{8,96}", name):
         raise ValueError("Invalid local pipe name")
+    if not 0 < timeout <= DEFAULT_TIMEOUT:
+        raise ValueError("IPC timeout must be in (0,10]")
     api = WindowsApi()
     until = (
         min(time.monotonic() + timeout, deadline)
@@ -469,17 +486,34 @@ async def connect_pipe(  # noqa: ASYNC109 - worker IO uses absolute bounded dead
         else time.monotonic() + timeout
     )
     while True:
-        handle = await asyncio.to_thread(
-            api.k.CreateFileW,
-            chr(92) * 2 + "." + chr(92) + "pipe" + chr(92) + name,
-            0x0012019B,
-            0,
-            None,
-            3,
-            0x40000000 | 0x00110000,
-            None,
+        opening = asyncio.create_task(
+            asyncio.to_thread(
+                api.k.CreateFileW,
+                chr(92) * 2 + "." + chr(92) + "pipe" + chr(92) + name,
+                0x0012019B,
+                0,
+                None,
+                3,
+                0x40000000 | 0x00110000,
+                None,
+            )
         )
+        try:
+            handle = await asyncio.shield(opening)
+        except BaseException:
+            while not opening.done():
+                try:
+                    await asyncio.shield(opening)
+                except asyncio.CancelledError:
+                    continue
+            handle = opening.result()
+            if handle != ctypes.c_void_p(-1).value:
+                api.k.CloseHandle(handle)
+            raise
         if handle != ctypes.c_void_p(-1).value:
+            if time.monotonic() >= until:
+                api.k.CloseHandle(handle)
+                raise reject("ipc_timeout", "Pipe connect deadline exceeded", 410, "timeout")
             return PipeConnection(api, handle, server=False, logon_sid=logon_sid, timeout=timeout)
         if time.monotonic() >= until:
             raise reject("ipc_timeout", "Pipe connect deadline exceeded", 410, "timeout")
