@@ -21,6 +21,7 @@ from uaw.context.contracts import (
     ModelToolSet,
     PreservationSpec,
     Reading,
+    RecordReadKey,
     RulesRequest,
     Trust,
     digest,
@@ -28,7 +29,8 @@ from uaw.context.contracts import (
     matches_pin,
 )
 from uaw.context.model_input import serialize
-from uaw.context.ports import RegisteredRunSource, RegisteredToolValidator
+from uaw.context.ports import ContextRecordBatchPort, RegisteredRunSource, RegisteredToolValidator
+from uaw.context.read_batch import MAX_RECORD_KEYS, ContextRecordReads
 from uaw.context.sources import Guard
 from uaw.infrastructure.db.models import utcnow
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore
@@ -123,6 +125,8 @@ class RegisteredContextInputs:
         transactions: TransactionalStore,
         runs: RegisteredRunSource | None,
         tool_validator: RegisteredToolValidator | None = None,
+        record_batch: ContextRecordBatchPort | None = None,
+        batch_required: bool = False,
     ) -> None:
         validate_contract("Principal", controller.wire())
         if controller.kind != "service":
@@ -130,6 +134,7 @@ class RegisteredContextInputs:
         self.controller, self.records, self.blobs = controller, records, blobs
         self.transactions, self.runs, self.tool_validator = transactions, runs, tool_validator
         self.guard = Guard(runs)
+        self.record_reads = ContextRecordReads(records, batch=record_batch, required=batch_required)
 
     async def _access(self, ctx: TrustedExecutionContext) -> tuple[Record, Record]:
         await self.guard.check(ctx)
@@ -138,14 +143,19 @@ class RegisteredContextInputs:
         await self.runs.authorize(ctx)
         if not ctx.run_id or not ctx.scope.conversation_id or ctx.model_policy_ref is None:
             raise CapabilityUnavailable("context.registered_admitted_run")
-        binding = await self.records.get(ctx.principal, "run.bindings", ctx.run_id)
+        binding, state = await self.record_reads.read(
+            ctx.principal,
+            (
+                RecordReadKey("run.bindings", ctx.run_id),
+                RecordReadKey("run.input_sets", ctx.run_id),
+            ),
+        )
         validate_contract("RunAdmissionBinding", binding.payload)
         if (
             binding.schema_name != "RunAdmissionBinding"
             or binding.payload["model_policy_ref"] != ctx.model_policy_ref.wire()
         ):
             raise reject("model_policy_conflict", "Fixed Run model binding changed", 409)
-        state = await self.records.get(ctx.principal, "run.input_sets", ctx.run_id)
         validate_contract("RunInputState", state.payload)
         if (
             state.schema_name != "RunInputState"
@@ -165,6 +175,11 @@ class RegisteredContextInputs:
         return pins
 
     async def _current(self, ctx: TrustedExecutionContext, state: Record) -> tuple[Ref, ...]:
+        return tuple(r.ref for r in await self._current_readings(ctx, state))
+
+    async def _current_readings(
+        self, ctx: TrustedExecutionContext, state: Record
+    ) -> tuple[Reading, ...]:
         assert self.runs is not None
         if len(state.payload["patch_refs"]) >= MAX_ENTRIES:
             raise reject(
@@ -183,7 +198,7 @@ class RegisteredContextInputs:
                 != hashlib.sha256(reading.text.encode("utf-8")).hexdigest()
             ):
                 raise reject("source_changed", "Run source lost its original identity", 410)
-            pins.append(reading.ref)
+            pins.append(reading)
         return tuple(pins)
 
     async def _service(self, actor: Principal, ctx: TrustedExecutionContext) -> tuple[Ref, ...]:
@@ -211,6 +226,10 @@ class RegisteredContextInputs:
         self, identifier: str, ctx: TrustedExecutionContext
     ) -> TrustedExecutionContext:
         row = await self.records.get(ctx.principal, BINDINGS, identifier)
+        return self._owner_value(row, ctx)
+
+    @staticmethod
+    def _owner_value(row: Record, ctx: TrustedExecutionContext) -> TrustedExecutionContext:
         if row.schema_name != "TrustedExecutionContext":
             raise reject("source_changed", "Registration owner metadata changed", 410)
         owner = from_wire(TrustedExecutionContext, row.payload)
@@ -228,6 +247,16 @@ class RegisteredContextInputs:
         ctx: TrustedExecutionContext,
     ) -> None:
         row = await self.records.get(ctx.principal, SEALS, identifier)
+        self._seal_value(row, identifier, revision, entries, ctx)
+
+    @staticmethod
+    def _seal_value(
+        row: Record,
+        identifier: str,
+        revision: int,
+        entries: tuple[tuple[str, str, dict[str, Any]], ...],
+        ctx: TrustedExecutionContext,
+    ) -> None:
         expected = Ref(
             kind="content",
             id=identifier,
@@ -601,11 +630,19 @@ class RegisteredContextInputs:
 
     async def _recipe(self, ctx: TrustedExecutionContext) -> RegisteredRecipe:
         identifier = recipe_id(ctx)
-        owner = await self._owner(identifier, ctx)
-        row = await self.records.get(ctx.principal, RECIPES, identifier)
+        keys = tuple(
+            RecordReadKey(namespace, identifier)
+            for namespace in (
+                BINDINGS,
+                RECIPES,
+                RECIPE_RULES,
+                TOOLS,
+                SEALS,
+            )
+        )
+        owner_row, row, rules, tools, seal = await self.record_reads.read(ctx.principal, keys)
+        owner = self._owner_value(owner_row, ctx)
         request = from_wire(ContextRequest, row.payload)
-        rules = await self.records.get(ctx.principal, RECIPE_RULES, identifier)
-        tools = await self.records.get(ctx.principal, TOOLS, identifier)
         if (
             row.schema_name != "ContextRequest"
             or rules.schema_name != "InternalContextRulesRequest"
@@ -616,7 +653,8 @@ class RegisteredContextInputs:
             or request.purpose != "agent_step"
         ):
             raise reject("source_changed", "Recipe revision/schema changed", 410)
-        await self._seal(
+        self._seal_value(
+            seal,
             identifier,
             row.revision,
             (
@@ -642,11 +680,13 @@ class RegisteredContextInputs:
             ),
         )
         await self.check_tools(actual_tools, ctx)
-        if (
-            await self.records.get(ctx.principal, RECIPES, identifier) != row
-            or await self.records.get(ctx.principal, RECIPE_RULES, identifier) != rules
-            or await self.records.get(ctx.principal, TOOLS, identifier) != tools
-            or await self._owner(identifier, ctx) != owner
+        # Re-fetch the complete group after the Tool validator/other external I/O.
+        if await self.record_reads.read(ctx.principal, keys) != (
+            owner_row,
+            row,
+            rules,
+            tools,
+            seal,
         ):
             raise reject("source_changed", "Recipe changed during read", 410)
         return RegisteredRecipe(pin, request, selected, actual_tools, owner)
@@ -659,7 +699,12 @@ class RegisteredContextInputs:
             raise reject("source_changed", "Run binding changed during source read", 410)
         return result
 
-    async def _read(self, pin: Ref, ctx: TrustedExecutionContext) -> Reading:
+    async def _read(
+        self,
+        pin: Ref,
+        ctx: TrustedExecutionContext,
+        source_rows: tuple[Record, Record, Record] | None = None,
+    ) -> Reading:
         numeric(pin)
         if pin.access_scope is not None:
             raise reject("permission_denied", "Ref access_scope does not grant access", 403)
@@ -670,13 +715,18 @@ class RegisteredContextInputs:
             namespace, schema = (
                 (MATERIALS, "ContextBlock") if pin.kind == "content" else (RULES, "InstructionRule")
             )
-            owner = await self._owner(pin.id, ctx)
-            row = await self.records.get(ctx.principal, namespace, pin.id)
+            keys = tuple(RecordReadKey(n, pin.id) for n in (BINDINGS, namespace, SEALS))
+            owner_row, row, seal = (
+                source_rows
+                if source_rows is not None
+                else await self.record_reads.read(ctx.principal, keys)
+            )
+            self._owner_value(owner_row, ctx)
             validate_contract(schema, row.payload)
             if row.schema_name != schema or row.revision != numeric(pin):
                 raise reject("source_changed", "Registered source revision changed", 410)
-            await self._seal(
-                pin.id, row.revision, ((namespace, row.schema_name, row.payload),), ctx
+            self._seal_value(
+                seal, pin.id, row.revision, ((namespace, row.schema_name, row.payload),), ctx
             )
             kind: BlockKind
             trust: Trust
@@ -742,10 +792,7 @@ class RegisteredContextInputs:
                 )
             if not matches_pin(pin, actual):
                 raise reject("source_changed", "Registered source pin/hash changed", 410)
-            if (
-                await self.records.get(ctx.principal, namespace, pin.id) != row
-                or await self._owner(pin.id, ctx) != owner
-            ):
+            if await self.record_reads.read(ctx.principal, keys) != (owner_row, row, seal):
                 raise reject("source_changed", "Source changed during blob read", 410)
             result = Reading(actual, text, kind=kind, trust=trust, required=required)
         elif pin.kind == "configuration" and pin.id == recipe_id(ctx):
@@ -764,20 +811,72 @@ class RegisteredContextInputs:
             raise CapabilityUnavailable(f"context.registered_reader.{pin.kind}")
         return result
 
+    async def _read_many(
+        self,
+        pins: tuple[Ref, ...],
+        ctx: TrustedExecutionContext,
+        originals: tuple[Reading, ...] = (),
+    ) -> tuple[Reading, ...]:
+        """Only one pass owns these rows; discard them before a tool/model wait.
+
+        Group at most 42 registered sources (three keys each), then re-fetch each
+        source group after its blob await. No cross-pass or component data cache.
+        Original readings can be supplied only by the immediately preceding actual
+        Run read in inspect's same pass, with exact Ref identity and classification.
+        """
+        if len(pins) > MAX_ENTRIES * 2:
+            raise reject("context_registration_too_large", "Source batch exceeds bounds", 413)
+        result = []
+        width = MAX_RECORD_KEYS // 3
+        for offset in range(0, len(pins), width):
+            chunk = pins[offset : offset + width]
+            registered = tuple(
+                p for p in chunk if p.kind in ("content", "rule") and not p.id.startswith("recipe-")
+            )
+            keys = tuple(
+                RecordReadKey(n, pin.id)
+                for pin in registered
+                for n in (
+                    BINDINGS,
+                    MATERIALS if pin.kind == "content" else RULES,
+                    SEALS,
+                )
+            )
+            rows = await self.record_reads.read(ctx.principal, keys)
+            grouped = {digest(p.wire()): rows[i * 3 : i * 3 + 3] for i, p in enumerate(registered)}
+            for pin in chunk:
+                original = next((r for r in originals if pin == r.ref), None)
+                if original is not None:
+                    result.append(original)
+                else:
+                    result.append(await self._read(pin, ctx, grouped.get(digest(pin.wire()))))
+        return tuple(result)
+
+    @bounded
+    async def read_many(
+        self, pins: tuple[Ref, ...], ctx: TrustedExecutionContext
+    ) -> tuple[Reading, ...]:
+        """Current public entry; fresh Run authority on both sides of the whole group."""
+        before = await self._access(ctx)
+        result = await self._read_many(pins, ctx)
+        if await self._access(ctx) != before:
+            raise reject("source_changed", "Run binding changed during source batch", 410)
+        return result
+
     @bounded
     async def inspect(
         self, ctx: TrustedExecutionContext
     ) -> tuple[RegisteredRecipe, tuple[Ref, ...]]:
-        """One bounded source batch, with fresh authority before and after, never cached.
+        """Fresh independent passes around recipe/tool waits, never cached grants.
 
-        Internal helpers only belong to this batch/public gated methods. Read each
-        source twice around current recipe/tools awaits, including real blob hashes.
-        Actual Run readers still authorize their own reads. No Reading/permission is
-        retained on the instance, across operations, or across owner/Run boundaries.
+        Each pass reads the actual Run originals once; their freshly checked Reading
+        also satisfies the same exact recipe source in that pass. Registered rows
+        are bounded per operation and re-fetched after every actual blob await.
         """
         before = await self._access(ctx)
         recipe = await self._recipe(ctx)
-        original = await self._current(ctx, before[1])
+        originals = await self._current_readings(ctx, before[1])
+        original = tuple(r.ref for r in originals)
         if any(
             not any(matches_pin(pin, saved) for saved in recipe.request.source_refs)
             for pin in original
@@ -786,19 +885,21 @@ class RegisteredContextInputs:
         pins = tuple(
             dict.fromkeys((*recipe.request.source_refs, *recipe.rules.user_instruction_refs))
         )
-        if len(pins) > MAX_ENTRIES * 2:
-            raise reject("context_registration_too_large", "Source batch exceeds bounds", 413)
-        readings = tuple([await self._read(pin, ctx) for pin in pins])
+        readings = await self._read_many(pins, ctx, originals)
         if await self._recipe(ctx) != recipe:
             raise reject(
                 "context_dependency_changed", "Recipe/tools changed during source batch", 410
             )
-        state = await self.records.get(ctx.principal, "run.input_sets", ctx.run_id or "")
-        if await self._current(ctx, state) != original:
+        (state,) = await self.record_reads.read(
+            ctx.principal, (RecordReadKey("run.input_sets", ctx.run_id or ""),)
+        )
+        current = await self._current_readings(ctx, state)
+        if tuple(r.ref for r in current) != original:
             raise reject(
                 "context_dependency_changed", "Run originals changed during source batch", 410
             )
-        if tuple([await self._read(pin, ctx) for pin in pins]) != readings:
+        # No earlier phase data substitutes for the second actual source pass.
+        if await self._read_many(pins, ctx, current) != readings:
             raise reject("source_changed", "Actual content changed during source batch", 410)
         if await self._recipe(ctx) != recipe:
             raise reject(
