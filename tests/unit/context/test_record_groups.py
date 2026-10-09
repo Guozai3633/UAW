@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 from collections import Counter
+from dataclasses import replace
 
 import pytest
 
@@ -26,6 +27,18 @@ from uaw.shared.stores import Record, StoreMissing
 
 def sources(count=1):
     s = setup()
+    # Registration uses numeric SQL revisions; generic component fixtures use v1.
+    s.runs.original = replace(
+        s.runs.original, ref=s.runs.original.ref.model_copy(update={"version": "1"})
+    )
+    for key, field in (
+        (("run.bindings", "run"), "input_ref"),
+        (("run.input_sets", "run"), "original_input_ref"),
+    ):
+        row = s.records.rows[key]
+        s.records.rows[key] = replace(
+            row, payload={**row.payload, field: s.runs.original.ref.wire()}
+        )
     s.counts = Counter()
     original_read = s.runs.read
 
@@ -175,3 +188,27 @@ async def test_required_port_unavailable_at_public_entry():
     with pytest.raises(DomainError) as caught:
         await s.inputs.recipe(s.ctx)
     assert caught.value.failure.code == "capability_unavailable"
+
+
+async def test_final_batch_wait_never_uses_an_earlier_original_reading():
+    s = sources()
+    port = ControlledBatch(s.records)
+    actual = port.read
+    groups = 0
+
+    async def changed(principal, keys):
+        nonlocal groups
+        rows = await actual(principal, keys)
+        if any(k.namespace == MATERIALS for k in keys):
+            groups += 1
+            if groups == 3:  # Metadata fetch in the second actual source pass.
+                s.runs.original = replace(
+                    s.runs.original, ref=s.runs.original.ref.model_copy(update={"id": "foreign"})
+                )
+        return rows
+
+    port.read = changed
+    s.inputs.record_reads = ContextRecordReads(s.records, batch=port)
+    with pytest.raises(DomainError) as caught:
+        await s.inputs.inspect(s.ctx)
+    assert caught.value.failure.code == "context_dependency_changed"

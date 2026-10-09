@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import time
 from collections import Counter
 from datetime import UTC, datetime, timedelta
@@ -121,7 +122,10 @@ class Meter:
             )
         )
         await asyncio.to_thread(
-            Path("tests/.artifacts/B/MS-C6/read-cost-progress.json").write_text,
+            (
+                Path(os.getenv("UAW_CONTEXT_EVIDENCE_DIR", "tests/.artifacts/B/MS-C6"))
+                / "read-cost-progress.json"
+            ).write_text,
             json.dumps(self.phases, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
@@ -279,7 +283,10 @@ async def test_sql_actual_current_chain_cost_and_cache_comparison(registration):
         phases=meter.phases,
     )
     await asyncio.to_thread(
-        Path("tests/.artifacts/B/MS-C6/read-cost.json").write_text,
+        (
+            Path(os.getenv("UAW_CONTEXT_EVIDENCE_DIR", "tests/.artifacts/B/MS-C6"))
+            / "read-cost.json"
+        ).write_text,
         json.dumps(report, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
