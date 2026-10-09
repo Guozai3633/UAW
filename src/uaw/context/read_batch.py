@@ -85,7 +85,7 @@ class ContextRecordReads:
             ):
                 raise reject("context_record_batch_invalid", "Record identity differs", 410)
         # Duplicate lookups in one adapter view cannot name different records.
-        seen = {}
+        seen: dict[RecordReadKey, Record] = {}
         for key, row in zip(keys, rows, strict=True):
             if key in seen and seen[key] != row:
                 raise reject(

@@ -30,6 +30,8 @@ def assemble(
     assessor=None,
     current_runs=False,
     inputs_type=RegisteredContextInputs,
+    record_batch=None,
+    batch_required=False,
 ):
     runs = RunContextSources(records)
     if current_runs:
@@ -47,6 +49,8 @@ def assemble(
         transactions=TransactionalStore(records.database),
         runs=runs,
         tool_validator=tool_validator,
+        record_batch=record_batch,
+        batch_required=batch_required,
     )
     reader = RegisteredContextReader(inputs)
     components = ContextComponents(
@@ -59,6 +63,24 @@ def assemble(
         cache=cache,
     )
     return inputs, components, GenericModelInputs(components.composer, cache=cache)
+
+
+class ControlledGetBatch:
+    """Test consumer using real sequential SQL get; NOT A's SQL batch adapter."""
+
+    def __init__(self, records):
+        self.records, self.calls = records, []
+
+    async def read(self, principal, keys):
+        self.calls.append((principal, keys))
+        return tuple(
+            [
+                await self.records.get(
+                    principal, key.namespace, key.resource_id, revision=key.revision
+                )
+                for key in keys
+            ]
+        )
 
 
 def restart_assessor(payload):
@@ -92,6 +114,10 @@ async def restart(payload):
             cache=PureComputationCache(max_entries=128, max_bytes=2097152),
             current_runs=payload.get("current_runs", False),
             assessor=restart_assessor(payload),
+            record_batch=ControlledGetBatch(records)
+            if payload.get("controlled_record_batch")
+            else None,
+            batch_required=payload.get("controlled_record_batch", False),
         )
         if payload.get("register_material"):
             from uaw.shared.contracts import RequestMeta

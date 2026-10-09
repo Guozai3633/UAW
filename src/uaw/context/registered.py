@@ -815,17 +815,21 @@ class RegisteredContextInputs:
         self,
         pins: tuple[Ref, ...],
         ctx: TrustedExecutionContext,
-        originals: tuple[Reading, ...] = (),
     ) -> tuple[Reading, ...]:
         """Only one pass owns these rows; discard them before a tool/model wait.
 
         Group at most 42 registered sources (three keys each), then re-fetch each
         source group after its blob await. No cross-pass or component data cache.
-        Original readings can be supplied only by the immediately preceding actual
-        Run read in inspect's same pass, with exact Ref identity and classification.
+        Actual Run inputs are read in this pass after the group fetch; no prior
+        Reading is carried over a batch-port await.
         """
-        if len(pins) > MAX_ENTRIES * 2:
+        if type(pins) is not tuple or len(pins) > MAX_ENTRIES * 2:
             raise reject("context_registration_too_large", "Source batch exceeds bounds", 413)
+        for pin in pins:
+            validate_contract("Ref", pin.wire())
+            numeric(pin)
+            if pin.access_scope is not None:
+                raise reject("permission_denied", "Ref access_scope does not grant access", 403)
         result = []
         width = MAX_RECORD_KEYS // 3
         for offset in range(0, len(pins), width):
@@ -843,13 +847,12 @@ class RegisteredContextInputs:
                 )
             )
             rows = await self.record_reads.read(ctx.principal, keys)
-            grouped = {digest(p.wire()): rows[i * 3 : i * 3 + 3] for i, p in enumerate(registered)}
+            grouped = {
+                digest(p.wire()): (rows[i * 3], rows[i * 3 + 1], rows[i * 3 + 2])
+                for i, p in enumerate(registered)
+            }
             for pin in chunk:
-                original = next((r for r in originals if pin == r.ref), None)
-                if original is not None:
-                    result.append(original)
-                else:
-                    result.append(await self._read(pin, ctx, grouped.get(digest(pin.wire()))))
+                result.append(await self._read(pin, ctx, grouped.get(digest(pin.wire()))))
         return tuple(result)
 
     @bounded
@@ -863,29 +866,46 @@ class RegisteredContextInputs:
             raise reject("source_changed", "Run binding changed during source batch", 410)
         return result
 
+    @staticmethod
+    def _protected_originals(state: Record, readings: tuple[Reading, ...]) -> tuple[Ref, ...]:
+        if len(state.payload["patch_refs"]) >= MAX_ENTRIES:
+            raise reject(
+                "context_registration_too_large", "Run exceeds protected source bounds", 413
+            )
+        originals = []
+        for data in (state.payload["original_input_ref"], *state.payload["patch_refs"]):
+            requested = from_wire(Ref, data)
+            reading = next((r for r in readings if matches_pin(requested, r.ref)), None)
+            if reading is None:
+                raise reject("context_dependency_changed", "Actual Run source set changed", 410)
+            if (
+                reading.kind != "user_input"
+                or reading.trust != "user"
+                or not reading.required
+                or reading.ref.content_hash
+                != hashlib.sha256(reading.text.encode("utf-8")).hexdigest()
+            ):
+                raise reject("source_changed", "Run source lost its original identity", 410)
+            originals.append(reading.ref)
+        return tuple(originals)
+
     @bounded
     async def inspect(
         self, ctx: TrustedExecutionContext
     ) -> tuple[RegisteredRecipe, tuple[Ref, ...]]:
         """Fresh independent passes around recipe/tool waits, never cached grants.
 
-        Each pass reads the actual Run originals once; their freshly checked Reading
-        also satisfies the same exact recipe source in that pass. Registered rows
-        are bounded per operation and re-fetched after every actual blob await.
+        Each actual source pass reads Run originals once and validates their full
+        identity against current admitted state. No earlier Reading crosses the
+        batch await. Registered rows are re-fetched after every actual blob await.
         """
         before = await self._access(ctx)
         recipe = await self._recipe(ctx)
-        originals = await self._current_readings(ctx, before[1])
-        original = tuple(r.ref for r in originals)
-        if any(
-            not any(matches_pin(pin, saved) for saved in recipe.request.source_refs)
-            for pin in original
-        ):
-            raise reject("context_dependency_changed", "Actual Run source set changed", 410)
         pins = tuple(
             dict.fromkeys((*recipe.request.source_refs, *recipe.rules.user_instruction_refs))
         )
-        readings = await self._read_many(pins, ctx, originals)
+        readings = await self._read_many(pins, ctx)
+        original = self._protected_originals(before[1], readings)
         if await self._recipe(ctx) != recipe:
             raise reject(
                 "context_dependency_changed", "Recipe/tools changed during source batch", 410
@@ -893,13 +913,13 @@ class RegisteredContextInputs:
         (state,) = await self.record_reads.read(
             ctx.principal, (RecordReadKey("run.input_sets", ctx.run_id or ""),)
         )
-        current = await self._current_readings(ctx, state)
-        if tuple(r.ref for r in current) != original:
+        # Actual inputs and blobs are both read again; only pure validation is reused.
+        current = await self._read_many(pins, ctx)
+        if self._protected_originals(state, current) != original:
             raise reject(
                 "context_dependency_changed", "Run originals changed during source batch", 410
             )
-        # No earlier phase data substitutes for the second actual source pass.
-        if await self._read_many(pins, ctx, current) != readings:
+        if current != readings:
             raise reject("source_changed", "Actual content changed during source batch", 410)
         if await self._recipe(ctx) != recipe:
             raise reject(

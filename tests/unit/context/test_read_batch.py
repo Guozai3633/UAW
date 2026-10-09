@@ -116,3 +116,31 @@ async def test_fresh_error_and_maximum(principal):
             principal, (RecordReadKey("named", "entry"), RecordReadKey("named", "missing"))
         )
     # Rows fetched before the error never escape as partial success.
+
+
+async def test_principal_mutation_is_rejected_without_mutating_caller(principal):
+    store = Records()
+    original = principal.model_copy(deep=True)
+
+    class MutatingBatch:
+        async def read(self, offered, keys):
+            offered.__dict__["id"] = "foreign"
+            return (store.row,)
+
+    with pytest.raises(DomainError) as caught:
+        await ContextRecordReads(store, batch=MutatingBatch()).read(
+            principal, (RecordReadKey("named", "entry"),)
+        )
+    assert caught.value.status_code == 403 and principal == original
+
+
+async def test_duplicate_records_must_agree_and_payloads_are_independent(principal):
+    store = Records()
+    keys = (RecordReadKey("named", "entry"),) * 2
+    batch = Batch((store.row, store.row))
+    rows = await ContextRecordReads(store, batch=batch).read(principal, keys)
+    rows[0].payload["nested"].append("consumer")
+    assert rows[1].payload == store.row.payload == {"nested": ["body"]}
+    batch.rows = (store.row, Record("named", "entry", 2, "Ref", {}))
+    with pytest.raises(DomainError):
+        await ContextRecordReads(store, batch=batch).read(principal, keys)

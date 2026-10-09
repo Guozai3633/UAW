@@ -21,7 +21,7 @@ RecordReadKey is a frozen dataclass `(namespace: str, resource_id: str,
 revision: int | None = None)`. None means current non-deleted revision; an integer
 is an exact positive revision. **Ordered tuple including duplicates**, <=128 keys;
 empty tuple returns empty. Missing/deleted/foreign rows fail the whole call. A must
-filter by the complete Principal (kind/id/tenant), never return partial rows or
+bind the supplied complete Principal (id/kind/auth_session_id/delegated_by), never return partial rows or
 permit a historical revision of a deleted resource. Record identity fields are
 namespace/resource_id/revision/schema_name/payload, **not `Record.id`**.
 
@@ -84,3 +84,25 @@ Failure `m2-unit-02.log` and successful `m2-unit-03.log` are retained under igno
 single/no-tool build: get9134 / SQL9168 /26.725s; cold+warm ModelInput each get/SQL7753,
 23.577s/25.018s. Controlled semantic advice/tool checks never imply production
 semantic quality or ToolAccess. M3/M4 continue without waiting for A's adapter.
+
+## M3 refined wait boundary and source
+
+Source `fecd2184e4533f66624cef1a9e5b1ecb3b9df166`. Protocol/dataclass/constructor
+signatures unchanged. M3 replaces the initial M2 original-reading reuse with
+validation of each pass's actual source Reading against admitted originals/patches.
+No prior original Reading crosses a batch-port await. Each of the two passes
+still reads the actual Run original once, validates user identity/trust/required/
+hash, and independently reads all current registered sources. Added final-batch
+original-deletion and controlled original-change counterexamples. Owner/metadata/
+seal rows are re-read after blobs; public gates, assessor waits, commit and final
+ModelInput checks remain. Principal copies and per-row detached duplicate payloads
+are validated; no adapter errors fall back.
+
+Current unit277, routing3, Ruff37 files and mypy17 source files pass. Instrumented
+fixed-baseline and final real PostgreSQL55433 matrices each4 passed. Actual Run
+reads decrease37.7–39.3%; SQL executions decrease4.0–5.6%; blob/public Reader/assessor
+counts identical. Cold/warm input estimates identical, pure format1→0. Raw timing
+includes a warm-input regression, so no production latency claim. Controlled get
+port consumes actual SQL but is not A's production SQL batch adapter.
+Full121 SQL regression is running; interrupted earlier run retained at52% and not
+counted as a complete pass. Final receipt and handoff will follow; no accepted label.
