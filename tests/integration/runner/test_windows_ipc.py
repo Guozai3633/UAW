@@ -210,3 +210,71 @@ async def test_actual_windows_double_process_acl_os_identity_nonce_roles_and_clo
     await session.close()
     await session.close()
     assert session.pipe.closed.is_set()
+
+
+async def ready_registry(case):
+    from uaw_runner.ipc.channel_source import ConnectionRegistry
+
+    session, process, path = await start_peer(case, "idle")
+    await session.handshake()
+    registry = ConnectionRegistry()
+    ref = await registry.add(session)
+    return session, process, path, registry, ref
+
+
+async def test_real_channel_snapshot_independent_registration(ipc_case):
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    value = await registry.read(ref, device_id="d1")
+    assert value["owner"] == session.local.owner.wire()
+    assert value["actor"] == session.peer.actor.wire()
+    assert value["key_ref"] == session.local.key_ref.wire()
+    assert value["pairing_ref"] == session.local.pairing_ref.wire()
+    assert value["channel_ref"] == ref.wire() and value["connected"]
+    with pytest.raises(DomainError):
+        await registry.read(ref, device_id="other-device")
+    process.stdin.write("close\n")
+    process.stdin.flush()
+    await asyncio.to_thread(process.wait, timeout=5)
+    with pytest.raises(DomainError):
+        await registry.read(ref, device_id="d1")
+    await registry.close()
+
+
+@pytest.mark.parametrize(
+    "change", ["owner", "actor", "key", "expiry", "revoked", "disconnect", "process_exit"]
+)
+async def test_live_source_invalidated_for_current_changes(ipc_case, change):
+    session, process, path, registry, ref = await ready_registry(ipc_case)
+    value = json.loads(await asyncio.to_thread(path.read_text, encoding="utf-8"))
+    if change == "owner":
+        value["client"]["owner"]["auth_session_id"] = "other-session"
+    elif change == "actor":
+        value["client"]["actor"]["id"] = "other-account"
+    elif change == "expiry":
+        session.expires_at = datetime.now(UTC) - timedelta(seconds=1)
+    elif change == "revoked":
+        value["revoked"] = True
+    elif change == "key":
+        ipc_case["keys"].revoke_key("control1", expected_revision=0)
+    elif change == "disconnect":
+        await session.close()
+    elif change == "process_exit":
+        process.terminate()
+        await asyncio.to_thread(process.wait, timeout=5)
+    await asyncio.to_thread(path.write_text, canonical(value), encoding="utf-8")
+    with pytest.raises(DomainError):
+        await registry.read(ref, device_id="d1")
+    assert session.pipe.closed.is_set()
+
+
+async def test_reconnect_new_ref_and_nonce_never_revives_old(ipc_case):
+    first, process, path, registry, old_ref = await ready_registry(ipc_case)
+    await first.close()
+    second, new_process, new_path = await start_peer(ipc_case, "idle")
+    await second.handshake()
+    new_ref = await registry.add(second)
+    assert new_ref.wire() != old_ref.wire() and second.nonce != first.nonce
+    with pytest.raises(DomainError):
+        await registry.read(old_ref, device_id="d1")
+    assert (await registry.read(new_ref, device_id="d1"))["connected"]
+    await registry.close()

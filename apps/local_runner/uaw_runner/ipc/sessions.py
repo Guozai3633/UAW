@@ -201,7 +201,7 @@ class AuthenticatedPipeSession:
             )
         return result
 
-    async def check(self) -> None:
+    async def _check(self) -> None:
         if self.peer is None or self.local is None or self.channel_ref is None:
             raise CapabilityUnavailable("runner.ipc.handshake")
         if datetime.now(UTC) >= self.expires_at or time.monotonic() >= self.monotonic_expiry:
@@ -258,7 +258,7 @@ class AuthenticatedPipeSession:
         ):
             raise reject("ipc_signature_denied", "IPC role signature rejected", 403, "permission")
 
-    async def handshake(self) -> None:
+    async def _handshake(self) -> None:
         until = time.monotonic() + self.pipe.timeout
         try:
             local_identity = await asyncio.to_thread(self.pipe.api.current)
@@ -345,12 +345,16 @@ class AuthenticatedPipeSession:
             self.monotonic_expiry = (
                 time.monotonic() + (self.expires_at - datetime.now(UTC)).total_seconds()
             )
+            control = self.local if self.local.role == "control" else self.peer
+            device = self.local if self.local.role == "device" else self.peer
+            control_nonce = self.nonce if self.local.role == "control" else self.peer_nonce
+            device_nonce = self.nonce if self.local.role == "device" else self.peer_nonce
             projection = {
                 "connection": self.connection,
-                "local": self.local.wire(),
-                "peer": self.peer.wire(),
-                "nonce": self.nonce,
-                "peer_nonce": self.peer_nonce,
+                "control": control.wire(),
+                "device": device.wire(),
+                "control_nonce": control_nonce,
+                "device_nonce": device_nonce,
             }
             self.channel_ref = Ref(
                 kind="content", id=self.connection, version="1", content_hash=digest(projection)
@@ -360,7 +364,9 @@ class AuthenticatedPipeSession:
             await self.close()
             raise
 
-    async def send(self, kind: str, body: dict[str, Any], *, deadline: float | None = None) -> None:
+    async def _send(
+        self, kind: str, body: dict[str, Any], *, deadline: float | None = None
+    ) -> None:
         if kind not in ("command", "receipt", "recover", "error"):
             raise ValueError("Unsupported application frame")
         if self.busy.locked():
@@ -376,7 +382,7 @@ class AuthenticatedPipeSession:
                 await self.close()
                 raise
 
-    async def receive(self, *, deadline: float | None = None) -> dict[str, Any]:
+    async def _receive(self, *, deadline: float | None = None) -> dict[str, Any]:
         if self.busy.locked():
             raise reject("ipc_busy", "One in-flight session operation allowed", 409)
         async with self.busy:
@@ -402,6 +408,42 @@ class AuthenticatedPipeSession:
             except BaseException:
                 await self.close()
                 raise
+
+    async def handshake(self) -> None:
+        try:
+            async with asyncio.timeout(self.pipe.timeout):
+                await self._handshake()
+        except TimeoutError:
+            await self.close()
+            raise reject("ipc_timeout", "Handshake deadline exceeded", 410, "timeout") from None
+
+    async def check(self) -> None:
+        try:
+            async with asyncio.timeout(self.pipe.timeout):
+                await self._check()
+        except TimeoutError:
+            await self.close()
+            raise reject(
+                "ipc_timeout", "Current IPC source deadline exceeded", 410, "timeout"
+            ) from None
+
+    async def send(self, kind: str, body: dict[str, Any], *, deadline: float | None = None) -> None:
+        until = min(self.pipe.deadline(deadline), self.monotonic_expiry)
+        try:
+            async with asyncio.timeout_at(until):
+                await self._send(kind, body, deadline=until)
+        except TimeoutError:
+            await self.close()
+            raise reject("ipc_timeout", "IPC send deadline exceeded", 410, "timeout") from None
+
+    async def receive(self, *, deadline: float | None = None) -> dict[str, Any]:
+        until = min(self.pipe.deadline(deadline), self.monotonic_expiry)
+        try:
+            async with asyncio.timeout_at(until):
+                return await self._receive(deadline=until)
+        except TimeoutError:
+            await self.close()
+            raise reject("ipc_timeout", "IPC receive deadline exceeded", 410, "timeout") from None
 
     async def close(self) -> None:
         await self.pipe.close()
