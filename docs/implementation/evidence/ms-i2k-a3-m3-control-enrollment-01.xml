@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="3.272" timestamp="2026-10-10T17:39:11.910710+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_native_enrollment_invalid_control_signature_never_opens_ui" time="1.013" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_control_enrollment_actual_os_protected_key_and_current_rechecks" time="0.710"><failure message="uaw.shared.schema.ContractViolation: RunnerCommand: invalid fields at /, /, /, /, /, /, /, /">tests\integration\agent\test_enrollment_postgres.py:560: in test_control_enrollment_actual_os_protected_key_and_current_rechecks
+    await ProtectedSigner(state, credentials).sign_document(
+apps\local_runner\uaw_runner\keys.py:126: in sign_document
+    validate_contract("RunnerCommand" if domain == "command" else "RunnerReceipt", document)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: RunnerCommand: invalid fields at /, /, /, /, /, /, /, /</failure></testcase></testsuite></testsuites>

@@ -1,5 +1,12 @@
 # 当前安排：MS-I2k（2026-10-10）
 
+## A3阶段集成（真人接受待用户操作）
+
+- 固定阶段源码 **e0323603e08264ad585f7d320b20dda5cd3a6210**（含B第三修复），拟发布 `ms-i2k-a3-source` / `ms-i2k-a3`，实际远程核对后生效；共同开工标签不移动，不派新包。
+- A首次候选/control证明/native gate：23不同受影响节点与188源码类型检查通过；native Yes/下游factory受控，真实保护交付和本人目录授权仍待接线。[准确范围、原失败及不同运行来源](../implementation/evidence/ms-i2k-a3.json)。
+- B三项实际页面修复精确合入；最终54单元、2实际wire受控回放、22受控Chromium。A核对已交付构建后运行真实页面，无安装或worker环境执行。办公3次真实DeepSeek、Markdown完整正文与逐项核验可读；费用仍pending。自动审批拒绝代理代点击接受，原Run/version5及学术草稿保留，等待用户操作后核对独立完成Controller。[页面与账本摘要](../implementation/evidence/ms-i2k-a3-live-summary.json)。
+- 未通过的真人/学术/审批取消/文件整链与本轮全量继续留在本包，上次1691不当新全量；不开放默认flags。
+
 ## A2阶段集成（整轮验收继续）
 
 - 运行源码 **4c3f159a13dfa84ff3ca019caf7643a07abd3887**，拟发布固定源码标签 `ms-i2k-a2-source` 和证据标签 `ms-i2k-a2`；实际发布以远程核对回执为准。B/MS-U2、C/MS-T2h、D/MS-R2h最终源码/独立交接均逐包审阅并合入，未操作worker分支。[接受范围与剩余接线](requests/A/MS-I2k-current-integration.md)。

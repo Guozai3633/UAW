@@ -1,0 +1,273 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2k-A3",
+  "runtime_source_commit": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+  "core_source_commit": "d0483cf2839890b43a87e33bf7e60139d938faff",
+  "publication_ref": "ms-i2k-a3",
+  "different_nodes": 23,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2k-a3-tests.xml",
+    "sha256": "bc148532d73dfb913e1d94da998debaec8715392178008ccd5b1f3459ec25c0c"
+  },
+  "history": [
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-enrollment-final.xml",
+      "sha256": "9c4fae1bd1a089aeafd13fafc699ec3a82cd33750bdfb59e0f7069735bfbc874",
+      "counts": {
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-candidate-assembly.xml",
+      "sha256": "fa9f41bb94b5e23c3318ee7a7ac3086f78c28f9d8591d5bc6edceedab309b140",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-first-device.xml",
+      "sha256": "20e8e5cf721518dad1a647809f43b81239ba47a165cae0f59f28d84567eaedd5",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-first-device-controlled.xml",
+      "sha256": "f40dac7f16a90dae468d8afed3451de96fc6d5e56b7357e4fda4254b2705ef80",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-candidate-01.xml",
+      "sha256": "e87a81153efb67ec4446ca6bbd784d8eba140793b0c051b36271ddd2b64a17a5",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-control-enrollment-01.xml",
+      "sha256": "6828c6b044c9bf4f13836d045df2993e013caae2214cae4f2a61a624a6bcd391",
+      "counts": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a3-m3-control-enrollment-02.xml",
+      "sha256": "beff4fb9cafbadf906d9ee8bdb7fe6461dc15f5c4e3b5eb417b055875c6ac2ce",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "per_node_latest": [
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_pending_has_no_pairing_and_replay_keeps_original_nonce",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_both_proofs_native_binding_and_same_request_replay",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[owner]",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[device_identity]",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[proof_document_hash]",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[control_proof]",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[device_proof]",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_current_logout_and_new_session_cannot_inherit_pairing",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_current_native_and_key_revocation_close_active_read",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_cancel_or_complete_cas_never_reopens_revoked",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_missing_sources_expiry_and_cli_identity_deny",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrolled_peer_registry_uses_actual_windows_instances_and_current_roles",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_http_current_cookie_and_exact_revision",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_http_rejects_self_authorization_and_missing_sources",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_capacity_rolls_back_new_record_and_replay_remains_original",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_native_enrollment_reader_uses_fixed_journal_without_ui_recursion",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_native_enrollment_wrong_os_instance_never_opens_confirmation",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_native_enrollment_invalid_control_signature_never_opens_ui",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_control_enrollment_actual_os_protected_key_and_current_rechecks",
+      "receipt": "m3-enrollment-final.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_owned_prepared_helper_candidate_current_sql_os_and_revocation",
+      "receipt": "m3-candidate-assembly.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_first_device_factory_missing_source_never_opens_ui",
+      "receipt": "m3-first-device.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_first_device_factory_wrong_proof_never_calls_paired_factory",
+      "receipt": "m3-first-device.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_first_device_gate_controlled_yes_original_activation_and_cleanup",
+      "receipt": "m3-first-device-controlled.xml"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-first-device-mypy-final.log",
+      "sha256": "54cfc6b2cc36c938f69e4fbb56d8c525372fee7b5718ba36f035092b34b66bd1"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-first-device-ruff-final.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    }
+  ],
+  "core_mypy_files": 188,
+  "execution_lineage": [
+    "20 enrollment nodes executed on 0d8e633; one same candidate node replaced by assembly rerun on 1f10bf6, not counted twice.",
+    "Three first-device nodes executed on core source d0483cf; native Yes and downstream factory are controlled.",
+    "Actual Windows identities, role signatures, OS credential storage and SQL are real where each receipt states; no human native approval.",
+    "Live API remains the original 4c3f159 process; newly committed first-device classes are not activated in that server."
+  ],
+  "web_repairs": [
+    {
+      "source": "3799b92b2d89ec0281e82594b1ba04f3bcfb8352",
+      "merge": "3f67e546dfd4d9ba4b88ab1a96707a5c6dac93b5"
+    },
+    {
+      "source": "106fecdbddba3656503866a45f815f1237a67ae7",
+      "merge": "517e64765c2dbb3394a7d823d7c1e336d2bfb580"
+    },
+    {
+      "source": "c0cd90a84cb2a64b93c5828e95a312707b51559b",
+      "handoff": "9173d654814b0561bdb968a5029b9630cbb19fdb",
+      "merge": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+      "unit": 54,
+      "actual_wire_controlled_replay": 2,
+      "controlled_browser": 22,
+      "verified_build_and_logs": {
+        "path": "tests/.artifacts/A/MS-I2k/m4-web-delivery-artifact.json",
+        "sha256": "8eb3b727c6e4cb9370d914a8b8609a03eb076fad08667eb7319f3d51cc4ba034"
+      }
+    }
+  ],
+  "live_summary": {
+    "path": "docs/implementation/evidence/ms-i2k-a3-live-summary.json",
+    "sha256": "d49febee60845606396ac4651fa61314366beec858275009a19d3403bf49ed90"
+  },
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2k-a2.json",
+    "sha256": "0e78ec57a5f05426ad93529dda4ed987a859e2d81b9e714aa83a8ad9045f8bd6"
+  },
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "original_failures": [
+    "Ordinary signer test originally expected DomainError instead of ContractViolation; strict actual expectation corrected.",
+    "Three-file mypy lacked local Runner typing source; full core/Runner check passed.",
+    "Broad old ops Ruff scan found 12 pre-existing format issues; only changed ops/core/test scope reported passed.",
+    "Import sorting failed initially and was corrected; all raw receipts retained.",
+    "A3 evidence script first indexed optional absent acceptance; changed to optional lookup before publication; no runtime or acceptance change."
+  ],
+  "global_flags_opened": false,
+  "remaining": [
+    "Human office acceptance and independent completion/refresh.",
+    "Academic and real approval/decline/cancel browser scenarios.",
+    "Protected first-proof transport and concrete installed paired factory binding.",
+    "Real human directory selection, original file to fixed Model/Artifact and current channel.",
+    "One full milestone regression after actual consumers converge."
+  ]
+}

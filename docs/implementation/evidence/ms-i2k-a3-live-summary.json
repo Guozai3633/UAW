@@ -1,0 +1,47 @@
+{
+  "scope": "Actual authenticated in-app browser, original office submission and full delivery read; human acceptance pending",
+  "api_runtime_source": "4c3f159a13dfa84ff3ca019caf7643a07abd3887",
+  "run_id": "run-eb7af1282636488f99e6559898e0623f",
+  "status": "running",
+  "job": {
+    "run_id": "run-eb7af1282636488f99e6559898e0623f",
+    "state": "waiting",
+    "stage": "delivery",
+    "step": 1
+  },
+  "requires_acceptance": true,
+  "acceptance_record_present": false,
+  "usage_totals": {
+    "input_tokens": 6871,
+    "output_tokens": 1044,
+    "model_calls": 3,
+    "wall_time_ms": 7423
+  },
+  "actual_money": null,
+  "pending_money": "0.75",
+  "attempt_states": [
+    "received",
+    "received",
+    "received"
+  ],
+  "full_wire": {
+    "path": "tests/.artifacts/A/MS-I2k/m4-live-run-eb7af1282636488f99e6559898e0623f.json",
+    "sha256": "4e7d5c361212d5f27f099225700d6db60f0b2cfbfd28951c31de8d453e627a76",
+    "private_ignored": true
+  },
+  "screenshot": {
+    "path": "tests/.artifacts/A/MS-I2k/m4-office-human-acceptance-required.jpg",
+    "sha256": "0339df2f89d36ccb9eb3947f497d8391b4aa1d0dc1682f40d937f9bb2847572f",
+    "private_ignored": true
+  },
+  "academic_submitted": false,
+  "human_directory_authorization": false,
+  "failures": [
+    "A proxy initially omitted Referer; repaired forwarding without relaxing backend guards.",
+    "B generator removed business description property; exact repair reviewed and merged.",
+    "B rejected valid text/markdown UTF-8 parameter; strict repair reviewed and merged.",
+    "B disabled valid running/version5 delivery acceptance; exact repair reviewed and merged.",
+    "Global Recovery blocked academic submission; original request navigation added and draft retained.",
+    "Automatic approval rejected agent clicking accept; no POST or indirect bypass, human action requested."
+  ]
+}

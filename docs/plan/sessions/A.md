@@ -10,6 +10,8 @@ A2阶段：运行源码4c3f159，B/MS-U2、C/MS-T2h、D/MS-R2h已逐包审阅合
 
 ## 工作位置和顺序
 
+A3阶段：可信自有helper候选、原控制签名证明与首次设备native gate已实现，23不同登记节点及188源码类型检查通过；受控Yes不是真人授权。B三项实际页面修复已精确合入，真实办公3次DeepSeek与完整成果/核验可读；自动审批拒绝代点击成果接受，等待用户实际接受后核对后台完成。学术/实际目录授权/文件整链及汇合全量继续，未发新包。详见[阶段来源和门槛](../../implementation/MS-I2k-A3.md)。
+
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
 - 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2j、MS-I2k、MS-I2f、MS-I2、MS-I3。
