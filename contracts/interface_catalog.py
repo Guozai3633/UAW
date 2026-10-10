@@ -1765,6 +1765,49 @@ PRIVATE_FIELD_NOTES.update({
 })
 
 def finalize(graph,strategies):
+    obj("BackgroundRunJob", "run", "内部有界持久单Agent任务；claim栅栏不替代执行权限，恢复原attempt。", {
+        "run_id": field("ID", "原Run"), "principal": field("Principal", "原认证用户会话"),
+        "revision": field("Revision", "持久CAS"), "fence": field("Revision", "单调worker栅栏"),
+        "state": field({"type":"string", "enum":["queued","working","waiting","blocked","finished"]}, "调度状态"),
+        "stage": field({"type":"string", "enum":["admitted","prepared","understood","started","step","delivery","finished"]}, "原执行阶段"),
+        "step": field({"type":"integer", "minimum":0, "maximum":64}, "原步骤序号"),
+        "ready_at": field("Timestamp", "下次检查时间"),
+        "worker_id": field("ID", "当前进程holder", True), "lease_expires": field("Timestamp", "holder期限", True),
+        "context": field("TrustedExecutionContext", "实际Run/模型/政策绑定", True),
+        "frame_ref": field("Ref", "实际理解版本", True), "role_ref": field("Ref", "实际根角色", True),
+        "instance_ref": field("Ref", "原根实例", True),
+        "step_context": field("TrustedExecutionContext", "原步骤attempt/operation，不以新调用替代", True),
+        "proposal_ref": field("Ref", "实际完成提案", True),
+        "failure": field("Failure", "保留失败或未知效果", True),
+    })
+    scalar("ArtifactPreviewText", "workspace", "完整UTF-8文本预览；服务再检查最大65536字节和SHA256，不截断。", type="string", maxLength=65536)
+    obj("ArtifactContentView", "workspace", "实际文本或Markdown成果正文。", {
+        "artifact": field("ArtifactRecord", "不可变成果元数据"),
+        "content": field("ArtifactPreviewText", "完整正文"),
+    })
+    obj("RunDeliveryView", "run", "真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。", {
+        "run_id": field("ID", "所属Run"), "bundle_ref": field("Ref", "固定Bundle"),
+        "artifact_ref": field("Ref", "固定成果"), "artifact": field("ArtifactRecord", "成果记录"),
+        "content": field("ArtifactPreviewText", "实际正文"),
+        "contract_ref": field("Ref", "固定合同"), "contract": field("Contract", "原要求合同"),
+        "report_ref": field("Ref", "固定报告"), "report": field("VerificationReport", "逐项报告"),
+        "proposal_ref": field("Ref", "固定提案"), "proposal": field("DeliveryProposal", "候选提案"),
+        "requires_acceptance": field("Bool", "合同要求用户接受"), "stale": field("Bool", "相对于当前任务版本过时"),
+        "acceptance": field("CompletionAcceptance", "实际用户决定", True),
+    })
+    endpoint("runs.delivery", "GET", "/v1/runs/{run_id}/delivery", "run", "ui run.history workspace.artifacts", "读取本人Run的最新真实固定交付；无交付返回missing。", "run_id|ID|运行", "RunDeliveryView")
+    endpoint("artifacts.content", "GET", "/v1/artifacts/{artifact_id}/content", "workspace", "ui workspace.artifacts", "读取完整文本/Markdown；固定版本与hash必需。", "artifact_id|ID|成果\nversion|Version|精确版本\ncontent_hash|Hash|预期SHA256", "ArtifactContentView")
+    endpoint("runs.delivery.accept", "POST", "/v1/runs/{run_id}/delivery/acceptance", "run", "ui run.state workspace.artifacts", "实际用户决定整份合同交付；不直接设置completed。", "run_id|ID|运行\nbundle_ref|Ref|精确Bundle\nartifact_ref|Ref|精确成果\ndecision|DeliveryDecision|accept或reject", "CompletionAcceptance", "internal_write", ["当前认证身份必须与原执行用户会话一致；只接受要求用户接受的合同；版本/取消复核。"])
+    TYPES["RunsDeliveryAcceptRequest"]["properties"]["decision"] = {"type":"string", "enum":["accept","reject"], "description":"现有DeliveryDecision的整份接受/拒绝子集。"}
+    obj("ConversationListVersion", "run", "同用户会话列表固定版本，不是授权凭据。", {
+        "id": field("ID", "会话"), "revision": field("Revision", "读取时固定版本"),
+    })
+    obj("ConversationListSnapshot", "run", "内部持久分页快照；一小时失效，最多4096会话，超容量明确不可用。", {
+        "id": field("ID", "分页身份"),
+        "expires": field({"type":"integer", "minimum":0}, "Unix秒期限"),
+        "versions": field(arr("ConversationListVersion",4096), "创建顺序的固定版本"),
+    })
+    endpoint("turns.lookup", "GET", "/v1/conversations/{conversation_id}/turn-requests/{request_id}", "run", "ui ingress run.history", "按原提交request_id查询当前Run；没有记录返回missing，不发送新任务。", "conversation_id|ID|原会话\nrequest_id|ID|原RequestMeta.request_id", "RunRecord", rules=["仅认证拥有者；不返回其他动作的请求回执；当前Run变化不改变原提交身份。"])
     obj("WebLaunch", "run", "CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。", {
         "launch_url": field("URL", "精确localhost Web origin与一次code fragment"),
         "expires_at": field("Timestamp", "两分钟内截止"),

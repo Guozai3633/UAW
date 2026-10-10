@@ -2,6 +2,27 @@
 
 日期：2026-10-10。M1浏览器身份已实现并通过真实SQL/HTTP验证；旧MS-I2i固定来源完整1691项已先行封存。后台实际执行、成果HTTP和本机授权仍在后续里程碑接入。
 
+## M2 新增实际接口（固定阶段 ms-i2j-a2）
+
+以下是 A 实际 handler；B 消费此兼容版本，自行生成客户端和提交适配，A 不编辑 apps/web。
+
+| 操作 | HTTP | 输入→输出 |
+| --- | --- | --- |
+| conversations.list | GET /v1/conversations | limit/cursor → ConversationPage |
+| turns.lookup | GET /v1/conversations/{conversation_id}/turn-requests/{request_id} | 原 request_id → 当前原 RunRecord；未受理 404，无重发 |
+| runs.delivery | GET /v1/runs/{run_id}/delivery | RunDeliveryView；暂无成果 404 |
+| artifacts.get | GET /v1/artifacts/{artifact_id} | 可选 version → ArtifactRecord |
+| artifacts.content | GET /v1/artifacts/{artifact_id}/content | 必填 version/content_hash → ArtifactContentView |
+| runs.delivery.accept | POST /v1/runs/{run_id}/delivery/acceptance | meta + bundle_ref/artifact_ref/decision → CompletionAcceptance |
+
+准确 DTO 以此阶段的公共 schema/OpenAPI 为准。RunDeliveryView 含 artifact/content、contract/report/proposal、对应固定 refs、requires_acceptance、stale，以及已存在的 acceptance。ReviewPort 可由此直接装配；不得解析模型文字推测核验通过。正文按 UTF-8 字节/hash 校验。
+
+接受 decision 仅 accept/reject；meta 不要求 expected_revision/If-Match，因为 Bundle/Artifact refs 固定目标，服务端在会话锁中再次核对。原主体 auth_session_id 必须匹配：新登录可读取本人历史，不能借历史来源替旧会话接受。stale/取消/旧 hash 为 412 或明确拒绝。未要求接受为 409。未知接受响应先 GET delivery 检查 acceptance，不自动 POST；无 acceptance 时不能判断未执行，也不能换 request_id 重发。
+
+分页会话 cursor 签名绑定用户和查询用途，固定第一次列表水位，最多 4096 会话、64 活动分页快照；过期/失效明确重新取第一页。普通单页不创建快照记录。现有 Item/Event 续接方式不变。
+
+后台执行为显式 agent_execution_enabled=true 配置，并要求实际管理员已登记 builtin-office-v1 及有效固定模型。原网页会话协议兼容。发布该契约不代表全局开关已打开或页面/本机授权已验收。B 下一步只补真实列表/原请求 RecoveryPort/ReviewPort、生成客户端和联调；缺文件授权的页面继续明确不可用。
+
 ## 1. B的客户端先消费什么
 
 | 操作 | 方法/路径 | 已有输入→输出契约 | 目前实际状态 |

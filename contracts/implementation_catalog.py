@@ -25,6 +25,15 @@ for operation in ("web.launch", "web.session.exchange", "web.session.get", "web.
         "entrypoint": "src/uaw/api/routes.py",
         "evidence": ["docs/implementation/MS-I2j-M1.md", "docs/implementation/evidence/ms-i2j-m1.json"],
     }
+for operation in (
+    "conversations.list", "turns.lookup", "runs.delivery", "runs.delivery.accept",
+    "artifacts.get", "artifacts.content",
+):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2j-M2.md", "docs/implementation/evidence/ms-i2j-m2.json"],
+    }
 IMPLEMENTATIONS["ModelRuntime.generate"] = {
     "scope": "development_model_protocol", "entrypoint": "src/uaw/model/facade.py",
     "evidence": ["docs/implementation/P0-05.md", "docs/implementation/evidence/p0-tests.xml"],

@@ -9,6 +9,7 @@
 - [http · turns.submit](../interfaces/http--turns-submit.md)
 - [http · events.read](../interfaces/http--events-read.md)
 - [http · events.stream](../interfaces/http--events-stream.md)
+- [http · turns.lookup](../interfaces/http--turns-lookup.md)
 - [http · web.launch](../interfaces/http--web-launch.md)
 - [http · web.session.exchange](../interfaces/http--web-session-exchange.md)
 - [http · web.session.get](../interfaces/http--web-session-get.md)

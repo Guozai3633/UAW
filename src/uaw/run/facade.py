@@ -1,6 +1,7 @@
 """Run entry point. Admission is durable; it does not pretend the Agent has executed."""
 
 import json
+from collections.abc import Awaitable, Callable
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from typing import Any
@@ -180,6 +181,7 @@ class RunFacade:
         *,
         execution_deadline: str | None = None,
         original_input: Payload | None = None,
+        on_admitted: Callable[[RecordTransaction, Payload], Awaitable[None]] | None = None,
     ) -> Payload:
         validate_contract("TurnsSubmitRequest", request)
         if request["attachment_refs"]:
@@ -302,6 +304,8 @@ class RunFacade:
                 },
             )
             await tx.emit(conversation_id, "run.updated", run)
+            if on_admitted is not None:
+                await on_admitted(tx, run)
             return run
 
         return await self.transactions.execute(

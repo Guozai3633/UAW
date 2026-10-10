@@ -1,50 +1,45 @@
-# artifacts.get
+# runs.delivery.accept
 
-状态：已实现本机开发控制层；Agent执行尚未接入。类别：用户与管理端 HTTP API。所属：工作区与交付。
+状态：已实现本机开发控制层；Agent执行尚未接入。类别：用户与管理端 HTTP API。所属：运行与会话。
 
-成果版本。
+实际用户决定整份合同交付；不直接设置completed。
 
 [分类索引](../HTTP.md) · [统一规则](../CONVENTIONS.md) · [实际范围](../../implementation/README.md)
 
 ## 调用入口
 
-`GET /v1/artifacts/{artifact_id}`；认证：`user`。
+`POST /v1/runs/{run_id}/delivery/acceptance`；认证：`user`。
 
-参数通过路径/查询传入；meta使用X-Request-Id、X-UAW-Schema-Version，DELETE还使用If-Match。不能发送模型上下文或主体字段。
+请求体是 `{meta, payload}`；路径ID从path取得，不重复写入payload。OpenAPI记录实际线上字段位置；下方输入对象是服务合成的业务请求。
 
 ## 输入
 
-[ArtifactsGetRequest](../objects/ArtifactsGetRequest.md)；每个字段的类型、必填性、默认注解、限制和分支见对象页。
+[RunsDeliveryAcceptRequest](../objects/RunsDeliveryAcceptRequest.md)；每个字段的类型、必填性、默认注解、限制和分支见对象页。
 
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `artifact_id` | [ID](../objects/ID.md) | 是 | 成果 |
-| `version` | [Version](../objects/Version.md) | 否 | 不指定返回当前版本 |
+| `run_id` | [ID](../objects/ID.md) | 是 | 运行 |
+| `bundle_ref` | [Ref](../objects/Ref.md) | 是 | 精确Bundle |
+| `artifact_ref` | [Ref](../objects/Ref.md) | 是 | 精确成果 |
+| `decision` | enum: `accept` / `reject` | 是 | 现有DeliveryDecision的整份接受/拒绝子集。 |
 
 ## 输出
 
-[HttpArtifactsGetResult](../objects/HttpArtifactsGetResult.md) 为完整返回结构。`kind=ok` 的payload是 [ArtifactRecord](../objects/ArtifactRecord.md)。`waiting`带wait_ref，其他非成功状态带Failure，不能用空对象假装成功。
+[HttpRunsDeliveryAcceptResult](../objects/HttpRunsDeliveryAcceptResult.md) 为完整返回结构。`kind=ok` 的payload是 [CompletionAcceptance](../objects/CompletionAcceptance.md)。`waiting`带wait_ref，其他非成功状态带Failure，不能用空对象假装成功。
 
 | payload字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `id` | [ID](../objects/ID.md) | 是 | 成果 |
-| `version` | [Version](../objects/Version.md) | 是 | 内容版本 |
-| `title` | [NonEmptyText](../objects/NonEmptyText.md) | 是 | 展示名 |
-| `format_kind` | [NonEmptyText](../objects/NonEmptyText.md) | 是 | 例如markdown/csv/source_code |
-| `media_type` | [NonEmptyText](../objects/NonEmptyText.md) | 是 | MIME |
-| `content_ref` | [Ref](../objects/Ref.md) | 是 | 实际内容 |
-| `size_bytes` | [Count](../objects/Count.md) | 是 | 字节数 |
-| `content_hash` | [Hash](../objects/Hash.md) | 是 | 摘要 |
-| `provenance_refs` | 数组&lt;[Ref](../objects/Ref.md)&gt; | 是 | 生成/数据来源 |
-| `verification_refs` | 数组&lt;[Ref](../objects/Ref.md)&gt; | 是 | 该版本证据 |
-| `created_at` | [Timestamp](../objects/Timestamp.md) | 是 | 登记时间 |
+| `bundle_ref` | [Ref](../objects/Ref.md) | 是 | 确切不可变交付Bundle |
+| `principal` | [Principal](../objects/Principal.md) | 是 | 真实认证用户 |
+| `decision` | [DeliveryDecision](../objects/DeliveryDecision.md) | 是 | 用户决定 |
+| `created_at` | [Timestamp](../objects/Timestamp.md) | 是 | 实际登记时间 |
 
 ## 约束与提交
 
-- 效果分类：`read`。
+- 效果分类：`internal_write`。
 - 认证/上下文：`user`；范围及权限由服务端或Runner取得。
 - 请求/动作ID去重与CAS按[统一规则](../CONVENTIONS.md)执行，重复ID不同参数必须冲突。
-
+- 当前认证身份必须与原执行用户会话一致；只接受要求用户接受的合同；版本/取消复核。
 
 ## 错误、等待、取消
 
@@ -58,7 +53,24 @@
 
 ```json
 {
-  "artifact_id": "example_001"
+  "meta": {
+    "request_id": "request_001",
+    "schema_version": "0.1",
+    "expected_revision": 0
+  },
+  "payload": {
+    "bundle_ref": {
+      "kind": "web",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "artifact_ref": {
+      "kind": "web",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "decision": "accept"
+  }
 }
 ```
 
@@ -68,20 +80,17 @@
 {
   "kind": "ok",
   "payload": {
-    "id": "example_001",
-    "version": "example_001",
-    "title": "example_001",
-    "format_kind": "example_001",
-    "media_type": "example_001",
-    "content_ref": {
+    "bundle_ref": {
       "kind": "web",
       "id": "example_001",
       "version": "example_001"
     },
-    "size_bytes": 0,
-    "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "provenance_refs": [],
-    "verification_refs": [],
+    "principal": {
+      "id": "example_001",
+      "kind": "user",
+      "auth_session_id": "example_001"
+    },
+    "decision": "accept",
     "created_at": "2026-10-07T02:00:00Z"
   },
   "output_refs": []
@@ -110,6 +119,7 @@
 | 节点 | 详细策略 | 计划代码位置 |
 | --- | --- | --- |
 | `ui` | [开发设计](../../../docs/design/components/ui.md) | `apps/web/src/features/workspace/` |
+| `run.state` | [开发设计](../../../docs/design/components/run-state.md) | `src/uaw/run/state.py` |
 | `workspace.artifacts` | [开发设计](../../../docs/design/components/workspace-artifacts.md) | `src/uaw/workspace/artifacts.py` |
 
 [接口机器目录](../../../contracts/interfaces.json) · [统一对象schema](../../../contracts/uaw.schema.json)

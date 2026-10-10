@@ -10,13 +10,44 @@ from fastapi.routing import APIRoute
 from uaw.api.authentication import authenticate
 from uaw.api.browser import COOKIE, authenticated
 from uaw.composition import Container
-from uaw.shared.contracts import RequestMeta
+from uaw.infrastructure.db.transactions import RecordTransaction
+from uaw.run.deliveries import DeliveryReader
+from uaw.run.queries import RunQueries
+from uaw.shared.contracts import Ref, RequestMeta
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 from uaw.shared.observability import report_request_failure
 from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 
 # id, method, route, request schema, response schema. All unlisted contracts remain unavailable.
 ROUTES = (
+    (
+        "runs.delivery",
+        "GET",
+        "/v1/runs/{run_id}/delivery",
+        "RunsDeliveryRequest",
+        "RunDeliveryView",
+    ),
+    (
+        "runs.delivery.accept",
+        "POST",
+        "/v1/runs/{run_id}/delivery/acceptance",
+        "RunsDeliveryAcceptRequest",
+        "CompletionAcceptance",
+    ),
+    (
+        "artifacts.get",
+        "GET",
+        "/v1/artifacts/{artifact_id}",
+        "ArtifactsGetRequest",
+        "ArtifactRecord",
+    ),
+    (
+        "artifacts.content",
+        "GET",
+        "/v1/artifacts/{artifact_id}/content",
+        "ArtifactsContentRequest",
+        "ArtifactContentView",
+    ),
     ("web.launch", "POST", "/v1/web/launch", "WebLaunchRequest", "WebLaunch"),
     ("web.session.exchange", "POST", "/v1/web/session", "WebSessionExchangeRequest", "WebSession"),
     ("web.session.get", "GET", "/v1/web/session", "WebSessionGetRequest", "WebSession"),
@@ -33,6 +64,20 @@ ROUTES = (
         "/v1/conversations",
         "ConversationsCreateRequest",
         "Conversation",
+    ),
+    (
+        "conversations.list",
+        "GET",
+        "/v1/conversations",
+        "ConversationsListRequest",
+        "ConversationPage",
+    ),
+    (
+        "turns.lookup",
+        "GET",
+        "/v1/conversations/{conversation_id}/turn-requests/{request_id}",
+        "TurnsLookupRequest",
+        "RunRecord",
     ),
     (
         "conversations.get",
@@ -291,6 +336,65 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 result = (
                     await records.get(actor, "conversations", payload["conversation_id"])
                 ).payload
+            elif operation == "conversations.list":
+                result = await RunQueries(records, run.events).conversations(
+                    actor, limit=payload.get("limit", 20), cursor=payload.get("cursor")
+                )
+            elif operation == "turns.lookup":
+                result = await RunQueries(records, run.events).original_submission(
+                    actor, payload["conversation_id"], payload["request_id"]
+                )
+            elif operation in (
+                "runs.delivery",
+                "runs.delivery.accept",
+                "artifacts.get",
+                "artifacts.content",
+            ):
+                if container.blobs is None:
+                    raise CapabilityUnavailable("artifact.blob_storage")
+                reader = DeliveryReader(records, container.blobs)
+                if operation == "runs.delivery":
+                    result, _ = await reader.read(actor, payload["run_id"])
+                elif operation == "runs.delivery.accept":
+                    assert meta is not None
+                    view, original = await reader.read(actor, payload["run_id"])
+                    if (
+                        view["stale"]
+                        or view["bundle_ref"] != payload["bundle_ref"]
+                        or view["artifact_ref"] != payload["artifact_ref"]
+                    ):
+                        raise reject("delivery_acceptance_stale", "Delivery version changed", 412)
+                    if not view["requires_acceptance"]:
+                        raise reject(
+                            "delivery_acceptance_unrequired",
+                            "Contract does not require user acceptance",
+                            409,
+                        )
+                    if container.completion_controller is None:
+                        raise CapabilityUnavailable("completion.controller")
+                    acceptance = await container.completion_controller.accept(
+                        actor,
+                        Ref.model_validate(payload["bundle_ref"]),
+                        Ref.model_validate(payload["artifact_ref"]),
+                        payload["decision"],
+                        original,
+                        meta,
+                    )
+                    result = (
+                        await records.get(actor, "run.completion.acceptance", acceptance.id)
+                    ).payload
+                else:
+                    artifact, content = await reader.artifact(
+                        actor, payload["artifact_id"], payload.get("version")
+                    )
+                    if operation == "artifacts.content":
+                        if artifact["content_hash"] != payload["content_hash"]:
+                            raise reject(
+                                "artifact_content_stale", "Expected content hash differs", 412
+                            )
+                        result = {"artifact": artifact, "content": content}
+                    else:
+                        result = artifact
             elif operation == "runs.get":
                 result = await run.get_run(actor, payload["run_id"])
             elif operation == "approvals.get":
@@ -322,7 +426,17 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 if operation == "conversations.create":
                     result = await run.create_conversation(actor, payload, meta)
                 elif operation == "turns.submit":
-                    result = await run.submit(actor, payload, meta)
+                    jobs = container.background_jobs
+                    if container.settings.agent_execution_enabled and jobs is None:
+                        raise CapabilityUnavailable("background.actual_runtime")
+                    if jobs is None:
+                        result = await run.submit(actor, payload, meta)
+                    else:
+
+                        async def enqueue(tx: RecordTransaction, admitted: dict[str, Any]) -> None:
+                            await jobs.enqueue(tx, admitted, actor)
+
+                        result = await run.submit(actor, payload, meta, on_admitted=enqueue)
                 elif operation == "runs.control":
                     result = await run.control(actor, payload, meta)
                 elif operation == "approvals.decide":

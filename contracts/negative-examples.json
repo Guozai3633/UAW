@@ -971,6 +971,26 @@
       "rejected": true
     },
     {
+      "case": "http:web.launch cannot succeed without payload",
+      "schema": "HttpWebLaunchResult",
+      "rejected": true
+    },
+    {
+      "case": "http:web.session.exchange cannot succeed without payload",
+      "schema": "HttpWebSessionExchangeResult",
+      "rejected": true
+    },
+    {
+      "case": "http:web.session.get cannot succeed without payload",
+      "schema": "HttpWebSessionGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:web.session.logout cannot succeed without payload",
+      "schema": "HttpWebSessionLogoutResult",
+      "rejected": true
+    },
+    {
       "case": "http:tasks.attach_conversation cannot succeed without payload",
       "schema": "HttpTasksAttachConversationResult",
       "rejected": true

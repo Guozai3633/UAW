@@ -9,4 +9,7 @@
 - [http · artifacts.preview](../interfaces/http--artifacts-preview.md)
 - [http · artifacts.export](../interfaces/http--artifacts-export.md)
 - [tool · artifacts.publish](../interfaces/tool--artifacts-publish.md)
+- [http · runs.delivery](../interfaces/http--runs-delivery.md)
+- [http · artifacts.content](../interfaces/http--artifacts-content.md)
+- [http · runs.delivery.accept](../interfaces/http--runs-delivery-accept.md)
 - [component · workspace.artifacts](../interfaces/component--workspace-artifacts.md)

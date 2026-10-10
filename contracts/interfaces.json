@@ -54,7 +54,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
       "result": "HttpConversationsListResult",
       "envelope": "HttpConversationsListEnvelope"
     },
@@ -1201,7 +1209,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
       "result": "HttpArtifactsGetResult",
       "envelope": "HttpArtifactsGetEnvelope"
     },
@@ -3662,6 +3678,129 @@
       "feature": null,
       "implemented": false,
       "result": "RunnerWorkspaceReleaseResult"
+    },
+    {
+      "id": "runs.delivery",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.history",
+        "workspace.artifacts"
+      ],
+      "request": "RunsDeliveryRequest",
+      "response": "RunDeliveryView",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/delivery",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
+      "result": "HttpRunsDeliveryResult",
+      "envelope": "HttpRunsDeliveryEnvelope"
+    },
+    {
+      "id": "artifacts.content",
+      "channel": "http",
+      "owner": "workspace",
+      "nodes": [
+        "ui",
+        "workspace.artifacts"
+      ],
+      "request": "ArtifactsContentRequest",
+      "response": "ArtifactContentView",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/artifacts/{artifact_id}/content",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
+      "result": "HttpArtifactsContentResult",
+      "envelope": "HttpArtifactsContentEnvelope"
+    },
+    {
+      "id": "runs.delivery.accept",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "run.state",
+        "workspace.artifacts"
+      ],
+      "request": "RunsDeliveryAcceptRequest",
+      "response": "CompletionAcceptance",
+      "effect": "internal_write",
+      "rules": [
+        "当前认证身份必须与原执行用户会话一致；只接受要求用户接受的合同；版本/取消复核。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/delivery/acceptance",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
+      "result": "HttpRunsDeliveryAcceptResult",
+      "envelope": "HttpRunsDeliveryAcceptEnvelope"
+    },
+    {
+      "id": "turns.lookup",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history"
+      ],
+      "request": "TurnsLookupRequest",
+      "response": "RunRecord",
+      "effect": "read",
+      "rules": [
+        "仅认证拥有者；不返回其他动作的请求回执；当前Run变化不改变原提交身份。"
+      ],
+      "method": "GET",
+      "path": "/v1/conversations/{conversation_id}/turn-requests/{request_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_delivery_and_request_recovery",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M2.md",
+          "docs/implementation/evidence/ms-i2j-m2.json"
+        ]
+      },
+      "result": "HttpTurnsLookupResult",
+      "envelope": "HttpTurnsLookupEnvelope"
     },
     {
       "id": "web.launch",

@@ -84,6 +84,10 @@
 | [admin.evaluations.get](interfaces/http--admin-evaluations-get.md) | [AdminEvaluationsGetRequest](objects/AdminEvaluationsGetRequest.md) | [EvaluationResult](objects/EvaluationResult.md) | `read` |
 | [triggers.create](interfaces/http--triggers-create.md) | [TriggersCreateRequest](objects/TriggersCreateRequest.md) | [TriggerSpec](objects/TriggerSpec.md) | `internal_write` |
 | [triggers.disable](interfaces/http--triggers-disable.md) | [TriggersDisableRequest](objects/TriggersDisableRequest.md) | [Acknowledgement](objects/Acknowledgement.md) | `internal_write` |
+| [runs.delivery](interfaces/http--runs-delivery.md) | [RunsDeliveryRequest](objects/RunsDeliveryRequest.md) | [RunDeliveryView](objects/RunDeliveryView.md) | `read` |
+| [artifacts.content](interfaces/http--artifacts-content.md) | [ArtifactsContentRequest](objects/ArtifactsContentRequest.md) | [ArtifactContentView](objects/ArtifactContentView.md) | `read` |
+| [runs.delivery.accept](interfaces/http--runs-delivery-accept.md) | [RunsDeliveryAcceptRequest](objects/RunsDeliveryAcceptRequest.md) | [CompletionAcceptance](objects/CompletionAcceptance.md) | `internal_write` |
+| [turns.lookup](interfaces/http--turns-lookup.md) | [TurnsLookupRequest](objects/TurnsLookupRequest.md) | [RunRecord](objects/RunRecord.md) | `read` |
 | [web.launch](interfaces/http--web-launch.md) | [WebLaunchRequest](objects/WebLaunchRequest.md) | [WebLaunch](objects/WebLaunch.md) | `internal_write` |
 | [web.session.exchange](interfaces/http--web-session-exchange.md) | [WebSessionExchangeRequest](objects/WebSessionExchangeRequest.md) | [WebSession](objects/WebSession.md) | `internal_write` |
 | [web.session.get](interfaces/http--web-session-get.md) | [WebSessionGetRequest](objects/WebSessionGetRequest.md) | [WebSession](objects/WebSession.md) | `read` |

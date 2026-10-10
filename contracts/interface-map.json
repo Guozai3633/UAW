@@ -174,6 +174,26 @@
           "doc": "docs/api/interfaces/http--models-list.md"
         },
         {
+          "id": "runs.delivery",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery.md"
+        },
+        {
+          "id": "artifacts.content",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-content.md"
+        },
+        {
+          "id": "runs.delivery.accept",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery-accept.md"
+        },
+        {
+          "id": "turns.lookup",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-lookup.md"
+        },
+        {
           "id": "web.launch",
           "channel": "http",
           "doc": "docs/api/interfaces/http--web-launch.md"
@@ -229,6 +249,11 @@
           "id": "events.stream",
           "channel": "http",
           "doc": "docs/api/interfaces/http--events-stream.md"
+        },
+        {
+          "id": "turns.lookup",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-lookup.md"
         },
         {
           "id": "web.launch",
@@ -1844,6 +1869,21 @@
           "doc": "docs/api/interfaces/tool--artifacts-publish.md"
         },
         {
+          "id": "runs.delivery",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery.md"
+        },
+        {
+          "id": "artifacts.content",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--artifacts-content.md"
+        },
+        {
+          "id": "runs.delivery.accept",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery-accept.md"
+        },
+        {
           "id": "workspace.artifacts",
           "channel": "component",
           "doc": "docs/api/interfaces/component--workspace-artifacts.md"
@@ -2057,6 +2097,16 @@
           "doc": "docs/api/interfaces/runtime--RunRuntime-create.md"
         },
         {
+          "id": "runs.delivery",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery.md"
+        },
+        {
+          "id": "turns.lookup",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--turns-lookup.md"
+        },
+        {
           "id": "web.launch",
           "channel": "http",
           "doc": "docs/api/interfaces/http--web-launch.md"
@@ -2107,6 +2157,11 @@
           "id": "RunRuntime.create",
           "channel": "runtime",
           "doc": "docs/api/interfaces/runtime--RunRuntime-create.md"
+        },
+        {
+          "id": "runs.delivery.accept",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-delivery-accept.md"
         },
         {
           "id": "tasks.attach_conversation",

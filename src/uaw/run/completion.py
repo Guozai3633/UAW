@@ -55,6 +55,9 @@ class RunCompletionController:
         validate_contract("CompletionAcceptance", value)
 
         async def write(tx: RecordTransaction) -> Payload:
+            # Serialize with cancel/Run revisions; checks made before taking this lock
+            # are insufficient when the user decides during an in-flight cancellation.
+            await self.completion.verify_bundle(bundle, ctx)
             await tx.write(
                 "run.completion.acceptance", bundle_ref.id, "CompletionAcceptance", value
             )
@@ -62,7 +65,7 @@ class RunCompletionController:
 
         result = await self.transactions.execute(
             actor,
-            "completion-acceptance:" + bundle_ref.id,
+            "conversation:" + (ctx.conversation_id or ""),
             meta,
             {
                 "bundle_ref": bundle_ref.wire(),

@@ -30,12 +30,14 @@ from uaw.model.input_router import ContextModelInputs
 from uaw.model.policy import PolicyResolver
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
+from uaw.run.completion import RunCompletionController
 from uaw.run.context import RunContextSources
 from uaw.run.context_sources import RegisteredRunContextSources, RegisteredToolSetValidator
 from uaw.run.events import EventReader
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
 from uaw.run.inputs import RunInputReader
+from uaw.run.jobs import RunJobs
 from uaw.run.leases import ExecutionLeaseService
 from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.run.runner_authority import RegisteredRunnerAuthority
@@ -134,6 +136,8 @@ class Container:
     runner_receipt_commands: RegisteredReceiptCommandReader | None = None
     runner_principals: RegisteredRunnerPrincipalMapping | None = None
     browser_sessions: BrowserSessions | None = None
+    completion_controller: RunCompletionController | None = None
+    background_jobs: RunJobs | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -145,10 +149,21 @@ class Container:
                 raise ConfigurationError(
                     "Database is unavailable or migrations are missing; run the deployment check"
                 ) from None
+        if self.settings.agent_execution_enabled:
+            from uaw.run.background import BackgroundAgent
+
+            try:
+                self.background_jobs = await BackgroundAgent(self).prepare()
+                self.background_jobs.start()
+            except Exception:
+                await self.close()
+                raise
         self.started = True
 
     async def close(self) -> None:
         self.started = False
+        if self.background_jobs:
+            await self.background_jobs.close()
         if self.model_service:
             await self.model_service.close()
         if self.database:
@@ -243,7 +258,7 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
         if records and policies and contexts and model
         else None
     )
-    return Container(
+    container = Container(
         settings=settings,
         bindings=RuntimeBindings(run=run, model=model, intent=intent),
         database=database,
@@ -275,6 +290,15 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
         if records and settings.browser_origin
         else None,
     )
+    if container.browser_sessions and permissions:
+        browser = container.browser_sessions
+
+        async def current_authentication(actor: Principal) -> None:
+            if actor.auth_session_id.startswith("web-session-"):
+                await browser.principal(actor)
+
+        permissions.authentication_check = current_authentication
+    return container
 
 
 @dataclass(frozen=True)

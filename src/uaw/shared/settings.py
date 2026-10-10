@@ -29,6 +29,11 @@ class Settings(BaseModel):
     browser_origin: str | None = None
     browser_session_signing_key: SecretStr | None = None
     browser_session_seconds: int = Field(default=3600, ge=300, le=28800)
+    agent_execution_enabled: bool = False
+    agent_worker_count: int = Field(default=1, ge=1, le=4)
+    agent_queue_capacity: int = Field(default=16, ge=1, le=64)
+    agent_max_output_tokens: int = Field(default=2048, ge=128, le=8192)
+    agent_acceptance_required: bool = False
     database_url: SecretStr | None = None
     blob_directory: Path = Path(".data/blobs")
     max_request_bytes: int = Field(default=1_048_576, ge=1024, le=1_048_576)

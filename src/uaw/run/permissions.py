@@ -1,10 +1,11 @@
 """Current owned policy chains; no permission cache, registration or inferred grants."""
 
+from collections.abc import Awaitable, Callable
 from datetime import UTC, datetime
 from typing import Any
 
 from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
-from uaw.shared.contracts import TrustedExecutionContext
+from uaw.shared.contracts import Principal, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.ports import ExecutionPolicyPort
 from uaw.shared.schema import validate_contract
@@ -47,6 +48,7 @@ def require_snapshot(snapshot: Payload, ctx: TrustedExecutionContext) -> Payload
 class ExecutionPolicyResolver(ExecutionPolicyPort):
     def __init__(self, store: PostgresRecordStore) -> None:
         self.store = store
+        self.authentication_check: Callable[[Principal], Awaitable[None]] | None = None
 
     async def _run(self, ctx: TrustedExecutionContext) -> None:
         if not ctx.run_id:
@@ -83,6 +85,8 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
 
     async def resolve(self, ctx: TrustedExecutionContext) -> Payload:
         validate_contract("TrustedExecutionContext", ctx.wire())
+        if self.authentication_check is not None:
+            await self.authentication_check(ctx.principal)
         await self._run(ctx)
         pin = ctx.capability_policy_ref.wire()
         policies: list[Payload] = []

@@ -7,5 +7,6 @@
 - [http · turns.submit](../interfaces/http--turns-submit.md)
 - [http · runs.get](../interfaces/http--runs-get.md)
 - [runtime · RunRuntime.create](../interfaces/runtime--RunRuntime-create.md)
+- [http · runs.delivery.accept](../interfaces/http--runs-delivery-accept.md)
 - [http · tasks.attach_conversation](../interfaces/http--tasks-attach-conversation.md)
 - [component · run.state](../interfaces/component--run-state.md)

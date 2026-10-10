@@ -23,9 +23,11 @@ from uaw.infrastructure.db.transactions import reference
 from uaw.run.budget import BudgetService
 from uaw.run.events import EventReader
 from uaw.run.facade import DEFAULT_LIMITS, RunFacade
+from uaw.run.jobs import JOBS, RunJobs
+from uaw.run.queries import RunQueries
 from uaw.shared.configuration import DEFAULT_DISABLED, ConfigurationService
 from uaw.shared.contracts import Principal, RequestMeta, Scope, TrustedExecutionContext
-from uaw.shared.errors import DomainError
+from uaw.shared.errors import DomainError, reject
 from uaw.shared.schema import ContractViolation, validate_contract
 from uaw.shared.settings import Settings
 
@@ -746,6 +748,19 @@ async def test_web_user_conversation_admission_and_logout_blocks_mutation(domain
             f"/v1/conversations/{conv['id']}/turns", headers=headers, json=turn
         )
         assert replay.json()["payload"] == response.json()["payload"]
+        listed = await client.get("/v1/conversations", headers=headers)
+        assert listed.status_code == 200, listed.json()
+        assert listed.json()["payload"]["items"] == [conv]
+        lookup = await client.get(
+            f"/v1/conversations/{conv['id']}/turn-requests/submit", headers=headers
+        )
+        assert lookup.status_code == 200, lookup.json()
+        assert lookup.json()["payload"] == response.json()["payload"]
+        missing = await client.get(
+            f"/v1/conversations/{conv['id']}/turn-requests/not-sent", headers=headers
+        )
+        assert missing.status_code == 404
+        current_identity = Principal.model_validate(logged_in.json()["payload"]["principal"])
         cookie = client.cookies.get("uaw_web_session")
         assert (
             await client.request(
@@ -755,6 +770,10 @@ async def test_web_user_conversation_admission_and_logout_blocks_mutation(domain
                 json={"meta": meta("logout").wire(), "payload": {}},
             )
         ).status_code == 200
+        # Background permission checks cannot retain a pre-logout identity.
+        with pytest.raises(DomainError) as revoked:
+            await sessions.principal(current_identity)
+        assert revoked.value.status_code == 401
         # A copied pre-logout cookie/CSRF does not regain mutation authority.
         client.cookies.set("uaw_web_session", cookie, path="/v1")
         assert (
@@ -975,3 +994,274 @@ async def test_protected_admin_publish_wire_protocol_and_openapi(domain, princip
             "content"
         ]["application/json"]["schema"]
         assert "conversation_id" not in wire["properties"]["payload"]["properties"]
+
+
+async def extra_conversation(run, actor, index):
+    return await run.create_conversation(
+        actor,
+        {
+            "title": f"Conversation {index}",
+            "model_choice": {"mode": "explicit", "model_id": "fixture-model"},
+            "memory_policy": {
+                "revision": 0,
+                "read_enabled": False,
+                "contribute_enabled": False,
+                "scope": {"resource_refs": []},
+            },
+        },
+        meta(f"conversation-{index}"),
+    )
+
+
+async def test_conversation_pages_pin_snapshot_across_insert_and_restart(domain, principal):
+    configuration, run, admin = domain
+    await seed(configuration, admin)
+    original = [await extra_conversation(run, principal, n) for n in range(3)]
+    queries = RunQueries(run.store, run.events)
+    first = await queries.conversations(principal, limit=1)
+    added = await extra_conversation(run, principal, 4)
+    second = await RunQueries(run.store, run.events).conversations(
+        principal, limit=2, cursor=first["next_cursor"]
+    )
+    assert first["snapshot_revision"] == second["snapshot_revision"] == 3
+    assert "next_cursor" not in second
+    assert {v["id"] for v in first["items"] + second["items"]} == {v["id"] for v in original}
+    fresh = await queries.conversations(principal, limit=10)
+    assert fresh["snapshot_revision"] == 4 and fresh["items"][0] == added
+
+
+async def test_conversation_cursor_owner_purpose_tamper_and_expiry(domain, principal):
+    configuration, run, admin = domain
+    await seed(configuration, admin)
+    for index in range(2):
+        await extra_conversation(run, principal, index)
+    query = RunQueries(run.store, run.events)
+    first = await query.conversations(principal, limit=1)
+    cursor = first["next_cursor"]
+    other = Principal(id="other-user", kind="user", auth_session_id="other-session")
+    with pytest.raises(DomainError):
+        await query.conversations(other, cursor=cursor)
+    with pytest.raises(DomainError):
+        await query.conversations(
+            principal, cursor=cursor[:-1] + ("0" if cursor[-1] != "0" else "1")
+        )
+    with pytest.raises(DomainError):
+        await run.events.read(principal, first["items"][0]["id"], cursor=cursor)
+    token = run.events._decode(cursor, principal, "conversation-list", "conversations")
+    with pytest.raises(DomainError):
+        await query.conversations(principal, cursor=run.events._encode({**token, "expires": 0}))
+
+
+async def test_original_request_lookup_is_current_owned_and_never_sends(domain, principal):
+    original = await admitted(domain, principal)
+    run = domain[1]
+    query = RunQueries(run.store, run.events)
+    conv = original["conversation_id"]
+    assert await query.original_submission(principal, conv, "submit") == original
+    await run.control(
+        principal,
+        {
+            "run_id": original["id"],
+            "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
+        },
+        meta("cancel-original", original["revision"]),
+    )
+    current = await query.original_submission(principal, conv, "submit")
+    assert current["id"] == original["id"] and current["status"] == "cancelled"
+    with pytest.raises(DomainError):
+        await query.original_submission(principal, conv, "cancel-original")
+    with pytest.raises(DomainError):
+        await query.original_submission(principal, conv, "missing")
+    with pytest.raises(DomainError):
+        await query.original_submission(
+            Principal(id="other", kind="user", auth_session_id="other"), conv, "submit"
+        )
+    async with run.store.database.sessions() as session:
+        rows = list(
+            await session.scalars(
+                select(RecordRow).where(
+                    RecordRow.principal_id == principal.id, RecordRow.namespace == "runs"
+                )
+            )
+        )
+        assert len(rows) == 1
+
+
+async def test_conversation_snapshot_bound_is_explicit(domain, principal, monkeypatch):
+    configuration, run, admin = domain
+    await seed(configuration, admin)
+    for index in range(2):
+        await extra_conversation(run, principal, index)
+    monkeypatch.setattr("uaw.run.queries.MAX_CONVERSATIONS", 1)
+    with pytest.raises(DomainError) as rejected:
+        await RunQueries(run.store, run.events).conversations(principal)
+    assert rejected.value.failure.code == "capability_unavailable"
+
+
+async def queued_job(domain, actor, queue, conversation_id, request_id):
+    async def enqueue(tx, admitted):
+        await queue.enqueue(tx, admitted, actor)
+
+    return await domain[1].submit(
+        actor,
+        {"conversation_id": conversation_id, "text": "Task", "attachment_refs": []},
+        meta(request_id),
+        on_admitted=enqueue,
+    )
+
+
+async def test_queue_admission_is_atomic_bounded_and_deduplicated(domain, principal):
+    conv = await conversation(domain, principal)
+    q = RunJobs(domain[1].store, principal, capacity=1)
+    original = await queued_job(domain, principal, q, conv["id"], "queued-1")
+    assert await queued_job(domain, principal, q, conv["id"], "queued-1") == original
+    with pytest.raises(DomainError) as full:
+        await queued_job(domain, principal, q, conv["id"], "queued-2")
+    assert full.value.failure.code == "run_queue_full"
+    async with domain[1].store.database.sessions() as session:
+        runs = list(
+            await session.scalars(
+                select(RecordRow).where(
+                    RecordRow.principal_id == principal.id, RecordRow.namespace == "runs"
+                )
+            )
+        )
+        receipt = await session.get(
+            RequestRow, (principal.id, "domain.requests", "conversation:" + conv["id"], "queued-2")
+        )
+    assert len(runs) == 1 and receipt is None
+    job = (await domain[1].store.get(principal, JOBS, original["id"])).payload
+    assert job["principal"] == principal.wire() and job["state"] == "queued"
+
+
+async def test_queue_cross_process_claim_and_expired_fence_cannot_save(domain, principal):
+    conv = await conversation(domain, principal)
+    q = RunJobs(domain[1].store, principal)
+    original = await queued_job(domain, principal, q, conv["id"], "claim-one")
+    other = RunJobs(domain[1].store, principal)
+    claims = await asyncio.gather(q.claim(), other.claim())
+    assert sum(bool(v) for v in claims) == 1
+    old = next(v for v in claims if v)
+    winner = q if old["worker_id"] == q.worker_id else other
+    row = await domain[1].store.get(principal, JOBS, original["id"])
+    await domain[1].store.put(
+        principal,
+        JOBS,
+        row.resource_id,
+        row.schema_name,
+        {
+            **row.payload,
+            "revision": row.revision + 1,
+            "lease_expires": (datetime.now(UTC) - timedelta(seconds=1)).isoformat(),
+        },
+        expected_revision=row.revision,
+        request_id="expire-claim",
+    )
+    restarted = RunJobs(domain[1].store, principal)
+    fresh = await restarted.claim()
+    assert fresh["fence"] > old["fence"] and fresh["run_id"] == original["id"]
+    with pytest.raises(DomainError):
+        await winner.save(old, {**old, "state": "finished"})
+    await restarted.save(fresh, {**fresh, "state": "finished"})
+
+
+async def test_queue_shutdown_restores_original_stage_and_attempt_without_new_job(
+    domain, principal
+):
+    conv = await conversation(domain, principal)
+    started = asyncio.Event()
+
+    async def interrupted(job):
+        started.set()
+        await asyncio.Event().wait()
+
+    q = RunJobs(domain[1].store, principal, advance=interrupted)
+    original = await queued_job(domain, principal, q, conv["id"], "interrupted-job")
+    q.start()
+    await asyncio.wait_for(started.wait(), timeout=10)
+    await q.close()
+    row = await domain[1].store.get(principal, JOBS, original["id"])
+    assert row.payload["state"] == "queued" and row.payload["stage"] == "admitted"
+    assert row.payload["principal"] == principal.wire()
+    restarted = RunJobs(domain[1].store, principal)
+    claim = await restarted.claim()
+    assert claim["run_id"] == original["id"] and claim["fence"] > row.payload["fence"]
+
+
+async def test_queue_renewal_preserves_fence_and_original_progress(domain, principal):
+    conv = await conversation(domain, principal)
+    q = RunJobs(domain[1].store, principal)
+    original = await queued_job(domain, principal, q, conv["id"], "renew-job")
+    claim = await q.claim()
+    await q.renew(claim)
+    row = await domain[1].store.get(principal, JOBS, original["id"])
+    assert row.revision > claim["revision"] and row.payload["fence"] == claim["fence"]
+    saved = await q.save(claim, {**claim, "state": "finished"})
+    assert saved["revision"] > row.revision and saved["fence"] == claim["fence"]
+
+
+async def test_stopped_queue_restart_finalizes_cancel_only_without_unknown_effect(
+    domain, principal
+):
+    from uaw.run.termination import RunTerminationController
+
+    conv = await conversation(domain, principal)
+    run = domain[1]
+    q = RunJobs(run.store, principal)
+    original = await queued_job(domain, principal, q, conv["id"], "stop-job")
+    await run.advance(principal, original["id"], "preparing", meta("stop-prepare", 1))
+    await run.control(
+        principal,
+        {
+            "run_id": original["id"],
+            "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
+        },
+        meta("stop-now", 2),
+    )
+    claim = await q.claim()
+    await q.save(
+        claim,
+        {
+            **claim,
+            "state": "blocked",
+            "failure": reject("execution_cancelled", "Stopped", 409, "cancelled").failure.wire(),
+        },
+    )
+    ledger = await run.store.get(principal, "budget.ledgers", original["id"])
+    await run.store.put(
+        principal,
+        ledger.namespace,
+        ledger.resource_id,
+        ledger.schema_name,
+        {
+            **ledger.payload,
+            "revision": ledger.revision + 1,
+            "held": {**ledger.payload["held"], "model_calls": 1},
+        },
+        expected_revision=ledger.revision,
+        request_id="pending-stop-budget",
+    )
+    await RunTerminationController(run.store).settle(principal, original["id"])
+    assert (await run.get_run(principal, original["id"]))["status"] == "preparing"
+    held = await run.store.get(principal, "budget.ledgers", original["id"])
+    await run.store.put(
+        principal,
+        held.namespace,
+        held.resource_id,
+        held.schema_name,
+        {
+            **held.payload,
+            "revision": held.revision + 1,
+            "held": {**held.payload["held"], "model_calls": 0},
+        },
+        expected_revision=held.revision,
+        request_id="known-stop-budget",
+    )
+
+    async def finalize(job):
+        await RunTerminationController(run.store).settle(principal, job["run_id"])
+
+    restarted = RunJobs(run.store, principal, finalize=finalize)
+    await restarted.reconcile_stopped()
+    assert (await run.get_run(principal, original["id"]))["status"] == "cancelled"
+    assert (await run.store.get(principal, JOBS, original["id"])).payload["state"] == "finished"

@@ -13880,6 +13880,350 @@
       ],
       "additionalProperties": false
     },
+    "BackgroundRunJob": {
+      "type": "object",
+      "description": "内部有界持久单Agent任务；claim栅栏不替代执行权限，恢复原attempt。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "principal": {
+          "$ref": "#/$defs/Principal",
+          "description": "原认证用户会话"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "持久CAS"
+        },
+        "fence": {
+          "$ref": "#/$defs/Revision",
+          "description": "单调worker栅栏"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "working",
+            "waiting",
+            "blocked",
+            "finished"
+          ],
+          "description": "调度状态"
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "admitted",
+            "prepared",
+            "understood",
+            "started",
+            "step",
+            "delivery",
+            "finished"
+          ],
+          "description": "原执行阶段"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "description": "原步骤序号"
+        },
+        "ready_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "下次检查时间"
+        },
+        "worker_id": {
+          "$ref": "#/$defs/ID",
+          "description": "当前进程holder"
+        },
+        "lease_expires": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "holder期限"
+        },
+        "context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "实际Run/模型/政策绑定"
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际理解版本"
+        },
+        "role_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际根角色"
+        },
+        "instance_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原根实例"
+        },
+        "step_context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "原步骤attempt/operation，不以新调用替代"
+        },
+        "proposal_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际完成提案"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "保留失败或未知效果"
+        }
+      },
+      "required": [
+        "run_id",
+        "principal",
+        "revision",
+        "fence",
+        "state",
+        "stage",
+        "step",
+        "ready_at"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactPreviewText": {
+      "description": "完整UTF-8文本预览；服务再检查最大65536字节和SHA256，不截断。",
+      "type": "string",
+      "maxLength": 65536
+    },
+    "ArtifactContentView": {
+      "type": "object",
+      "description": "实际文本或Markdown成果正文。",
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "不可变成果元数据"
+        },
+        "content": {
+          "$ref": "#/$defs/ArtifactPreviewText",
+          "description": "完整正文"
+        }
+      },
+      "required": [
+        "artifact",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "RunDeliveryView": {
+      "type": "object",
+      "description": "真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "所属Run"
+        },
+        "bundle_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定Bundle"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定成果"
+        },
+        "artifact": {
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "成果记录"
+        },
+        "content": {
+          "$ref": "#/$defs/ArtifactPreviewText",
+          "description": "实际正文"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定合同"
+        },
+        "contract": {
+          "$ref": "#/$defs/Contract",
+          "description": "原要求合同"
+        },
+        "report_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定报告"
+        },
+        "report": {
+          "$ref": "#/$defs/VerificationReport",
+          "description": "逐项报告"
+        },
+        "proposal_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定提案"
+        },
+        "proposal": {
+          "$ref": "#/$defs/DeliveryProposal",
+          "description": "候选提案"
+        },
+        "requires_acceptance": {
+          "$ref": "#/$defs/Bool",
+          "description": "合同要求用户接受"
+        },
+        "stale": {
+          "$ref": "#/$defs/Bool",
+          "description": "相对于当前任务版本过时"
+        },
+        "acceptance": {
+          "$ref": "#/$defs/CompletionAcceptance",
+          "description": "实际用户决定"
+        }
+      },
+      "required": [
+        "run_id",
+        "bundle_ref",
+        "artifact_ref",
+        "artifact",
+        "content",
+        "contract_ref",
+        "contract",
+        "report_ref",
+        "report",
+        "proposal_ref",
+        "proposal",
+        "requires_acceptance",
+        "stale"
+      ],
+      "additionalProperties": false
+    },
+    "RunsDeliveryRequest": {
+      "type": "object",
+      "description": "读取本人Run的最新真实固定交付；无交付返回missing。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "运行"
+        }
+      },
+      "required": [
+        "run_id"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactsContentRequest": {
+      "type": "object",
+      "description": "读取完整文本/Markdown；固定版本与hash必需。",
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/ID",
+          "description": "成果"
+        },
+        "version": {
+          "$ref": "#/$defs/Version",
+          "description": "精确版本"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/Hash",
+          "description": "预期SHA256"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "content_hash"
+      ],
+      "additionalProperties": false
+    },
+    "RunsDeliveryAcceptRequest": {
+      "type": "object",
+      "description": "实际用户决定整份合同交付；不直接设置completed。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "运行"
+        },
+        "bundle_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "精确Bundle"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "精确成果"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "reject"
+          ],
+          "description": "现有DeliveryDecision的整份接受/拒绝子集。"
+        }
+      },
+      "required": [
+        "run_id",
+        "bundle_ref",
+        "artifact_ref",
+        "decision"
+      ],
+      "additionalProperties": false
+    },
+    "ConversationListVersion": {
+      "type": "object",
+      "description": "同用户会话列表固定版本，不是授权凭据。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "会话"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "读取时固定版本"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "ConversationListSnapshot": {
+      "type": "object",
+      "description": "内部持久分页快照；一小时失效，最多4096会话，超容量明确不可用。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "分页身份"
+        },
+        "expires": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Unix秒期限"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConversationListVersion"
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "description": "创建顺序的固定版本"
+        }
+      },
+      "required": [
+        "id",
+        "expires",
+        "versions"
+      ],
+      "additionalProperties": false
+    },
+    "TurnsLookupRequest": {
+      "type": "object",
+      "description": "按原提交request_id查询当前Run；没有记录返回missing，不发送新任务。",
+      "properties": {
+        "conversation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原会话"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原RequestMeta.request_id"
+        }
+      },
+      "required": [
+        "conversation_id",
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
     "WebLaunch": {
       "type": "object",
       "description": "CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。",
@@ -47492,6 +47836,598 @@
           }
         }
       ]
+    },
+    "HttpRunsDeliveryResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunDeliveryView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunsDeliveryEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunsDeliveryRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpArtifactsContentResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/ArtifactContentView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpArtifactsContentEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/ArtifactsContentRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunsDeliveryAcceptResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/CompletionAcceptance",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunsDeliveryAcceptEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunsDeliveryAcceptRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpTurnsLookupResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunRecord",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpTurnsLookupEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/TurnsLookupRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
     },
     "HttpWebLaunchResult": {
       "type": "object",

@@ -637,9 +637,12 @@
 | 对象 | 用途 |
 | --- | --- |
 | [AdminEnvironmentsRegisterRequest](objects/AdminEnvironmentsRegisterRequest.md) | 登记初始化模板。 |
+| [ArtifactContentView](objects/ArtifactContentView.md) | 实际文本或Markdown成果正文。 |
 | [ArtifactPage](objects/ArtifactPage.md) | 稳定筛选条件的分页结果。 |
+| [ArtifactPreviewText](objects/ArtifactPreviewText.md) | 完整UTF-8文本预览；服务再检查最大65536字节和SHA256，不截断。 |
 | [ArtifactRecord](objects/ArtifactRecord.md) | 用户可编辑、预览、导出的版本化成果。 |
 | [ArtifactSourceBinding](objects/ArtifactSourceBinding.md) | 实际文本成果的原模型输出及工具观察归属。 |
+| [ArtifactsContentRequest](objects/ArtifactsContentRequest.md) | 读取完整文本/Markdown；固定版本与hash必需。 |
 | [ArtifactsExportRequest](objects/ArtifactsExportRequest.md) | 导出固定版本。 |
 | [ArtifactsGetRequest](objects/ArtifactsGetRequest.md) | 成果版本。 |
 | [ArtifactsListRequest](objects/ArtifactsListRequest.md) | 成果列表。 |
@@ -672,6 +675,8 @@
 | [FilePage](objects/FilePage.md) | 稳定筛选条件的分页结果。 |
 | [HttpAdminEnvironmentsRegisterEnvelope](objects/HttpAdminEnvironmentsRegisterEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpAdminEnvironmentsRegisterResult](objects/HttpAdminEnvironmentsRegisterResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpArtifactsContentEnvelope](objects/HttpArtifactsContentEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpArtifactsContentResult](objects/HttpArtifactsContentResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpArtifactsExportEnvelope](objects/HttpArtifactsExportEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpArtifactsExportResult](objects/HttpArtifactsExportResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpArtifactsGetEnvelope](objects/HttpArtifactsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -955,6 +960,7 @@
 | [ApprovalStatus](objects/ApprovalStatus.md) | 取值含义见字段及协议约束。 |
 | [ApprovalsDecideRequest](objects/ApprovalsDecideRequest.md) | 用户审批。 |
 | [ApprovalsGetRequest](objects/ApprovalsGetRequest.md) | 审批详情。 |
+| [BackgroundRunJob](objects/BackgroundRunJob.md) | 内部有界持久单Agent任务；claim栅栏不替代执行权限，恢复原attempt。 |
 | [Budget](objects/Budget.md) | 运行总预算/子预算请求。 |
 | [BudgetAttemptState](objects/BudgetAttemptState.md) | 预算owning-domain当前实际意图/期限，查询不授权发送。 |
 | [BudgetExecutionSnapshot](objects/BudgetExecutionSnapshot.md) | 单次MVCC读取的预算执行状态，保留未知费用语义。 |
@@ -986,6 +992,8 @@
 | [ComponentRunTriggerResult](objects/ComponentRunTriggerResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentUiResult](objects/ComponentUiResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [Conversation](objects/Conversation.md) | 会话不等于Task；首期单用户仍有独立主体。 |
+| [ConversationListSnapshot](objects/ConversationListSnapshot.md) | 内部持久分页快照；一小时失效，最多4096会话，超容量明确不可用。 |
+| [ConversationListVersion](objects/ConversationListVersion.md) | 同用户会话列表固定版本，不是授权凭据。 |
 | [ConversationPage](objects/ConversationPage.md) | 稳定筛选条件的分页结果。 |
 | [ConversationPatch](objects/ConversationPatch.md) | 至少一个字段，删除项目用显式detach。 |
 | [ConversationsConfigureRequest](objects/ConversationsConfigureRequest.md) | 修改会话设置。 |
@@ -1057,6 +1065,10 @@
 | [HttpRunsCheckpointResult](objects/HttpRunsCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsControlEnvelope](objects/HttpRunsControlEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsControlResult](objects/HttpRunsControlResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsDeliveryAcceptEnvelope](objects/HttpRunsDeliveryAcceptEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsDeliveryAcceptResult](objects/HttpRunsDeliveryAcceptResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsDeliveryEnvelope](objects/HttpRunsDeliveryEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsDeliveryResult](objects/HttpRunsDeliveryResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsGetEnvelope](objects/HttpRunsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsGetResult](objects/HttpRunsGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsResumeEnvelope](objects/HttpRunsResumeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1069,6 +1081,8 @@
 | [HttpTriggersCreateResult](objects/HttpTriggersCreateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpTriggersDisableEnvelope](objects/HttpTriggersDisableEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpTriggersDisableResult](objects/HttpTriggersDisableResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpTurnsLookupEnvelope](objects/HttpTurnsLookupEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpTurnsLookupResult](objects/HttpTurnsLookupResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpTurnsSubmitEnvelope](objects/HttpTurnsSubmitEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpTurnsSubmitResult](objects/HttpTurnsSubmitResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpWebLaunchEnvelope](objects/HttpWebLaunchEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1153,6 +1167,7 @@
 | [RunAdmissionBinding](objects/RunAdmissionBinding.md) | 受理时固定实际来源、用户模型政策和配置。 |
 | [RunControlRequest](objects/RunControlRequest.md) | 内部控制入口。 |
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
+| [RunDeliveryView](objects/RunDeliveryView.md) | 真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |
 | [RunToolAccessBinding](objects/RunToolAccessBinding.md) | 可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。 |
@@ -1169,6 +1184,8 @@
 | [RunnerRootSnapshot](objects/RunnerRootSnapshot.md) | 真实授权根来源的当前opaque元数据，不包含本机路径。 |
 | [RunsCheckpointRequest](objects/RunsCheckpointRequest.md) | 创建可恢复检查点。 |
 | [RunsControlRequest](objects/RunsControlRequest.md) | 用户干预。 |
+| [RunsDeliveryAcceptRequest](objects/RunsDeliveryAcceptRequest.md) | 实际用户决定整份合同交付；不直接设置completed。 |
+| [RunsDeliveryRequest](objects/RunsDeliveryRequest.md) | 读取本人Run的最新真实固定交付；无交付返回missing。 |
 | [RunsGetRequest](objects/RunsGetRequest.md) | 运行状态。 |
 | [RunsResumeRequest](objects/RunsResumeRequest.md) | 从检查点恢复。 |
 | [RuntimeRunruntimeCheckpointResult](objects/RuntimeRunruntimeCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -1184,6 +1201,7 @@
 | [TriggerSpec](objects/TriggerSpec.md) | 触发Run与调度图节点分开，首版旗标可关闭。 |
 | [TriggersCreateRequest](objects/TriggersCreateRequest.md) | 定时触发，默认旗标可关闭。 |
 | [TriggersDisableRequest](objects/TriggersDisableRequest.md) | 关闭触发器。 |
+| [TurnsLookupRequest](objects/TurnsLookupRequest.md) | 按原提交request_id查询当前Run；没有记录返回missing，不发送新任务。 |
 | [TurnsSubmitRequest](objects/TurnsSubmitRequest.md) | 提交原文并受理Run。 |
 | [UserControl](objects/UserControl.md) | 补充、排队、替换、取消、先交现有成果语义明确。 |
 | [WebLaunch](objects/WebLaunch.md) | CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。 |
