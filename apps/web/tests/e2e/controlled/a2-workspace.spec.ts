@@ -2,7 +2,7 @@
 import {test,expect,type Page} from '@playwright/test';
 import {deliveryView} from '../../a2-fixtures';
 import {conversation,models,makeRun,makeItem,frame,now,ref,ok} from '../../fixtures';
-async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-hash'|'cancel-race'|'missing'|'pagination'|'identity'='normal'){
+async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-hash'|'cancel-race'|'missing'|'pagination'|'identity'|'media-unsupported'='normal'){
  const state={turns:0,accepts:0,controls:0,hasRun:mode!=='lost-submit',receipt:false,cancelled:false,old:mode==='old-hash',session:'session-one',denied:false,original:'已有原文',cursorExpired:mode==='pagination',listReads:0};
  const failure=(code:string,message:string,kind='stale',category='conflict')=>({kind,failure:{code,category,message,retryable:false,failed_phase:'read'},output_refs:[]});
  await page.route('**/v1/**',async route=>{const req=route.request(),url=new URL(req.url()),path=url.pathname;const run=()=>makeRun(state.cancelled?'cancelled':state.receipt?'completed':'waiting_for_user',state.receipt||state.cancelled?2:1);
@@ -17,7 +17,7 @@ async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-
  if(path.endsWith('/payload'))return route.fulfill({json:ok({action:'run.updated',parameters:run()})});
  if(path==='/v1/runs/run-one')return route.fulfill({json:ok(run())});
  if(path.endsWith('/frame'))return route.fulfill({json:ok(frame)});
- if(path.endsWith('/delivery')){if(mode==='missing')return route.fulfill({status:404,json:failure('record_missing','当前没有成果','missing','arguments')});const v=deliveryView(state.receipt);if(state.receipt)v.acceptance!.principal.auth_session_id=state.session;return route.fulfill({json:ok(v)});}
+ if(path.endsWith('/delivery')){if(mode==='missing')return route.fulfill({status:404,json:failure('record_missing','当前没有成果','missing','arguments')});const v=deliveryView(state.receipt);if(mode==='media-unsupported')v.artifact.media_type='text/html; charset=utf-8';if(state.receipt)v.acceptance!.principal.auth_session_id=state.session;return route.fulfill({json:ok(v)});}
  if(path.endsWith('/acceptance')){state.accepts++;expect(req.headers()['x-uaw-csrf']).toBe('c'.repeat(64));const body=req.postDataJSON();expect(body.payload).toEqual({bundle_ref:ref('content','bundle-one'),artifact_ref:ref('artifact','artifact-one'),decision:'accept'});expect(body.meta.expected_revision).toBeUndefined();
   if(mode==='cancel-race'){state.cancelled=true;return route.fulfill({status:412,json:failure('run_cancelled','运行取消，接受已拒绝')});}
   if(state.session!=='session-one')return route.fulfill({status:403,json:failure('delivery_session_denied','历史成果不能借新登录接受','denied','authorization')});
@@ -36,3 +36,12 @@ test('A2 default: missing delivery is no result and never creates a task',async(
 test('A2 default: cancellation winning acceptance race is not reported as completed or retried',async({page})=>{const s=await backend(page,'cancel-race');await open(page);await expect(page.getByRole('button',{name:'接受整份成果'})).toBeEnabled();await page.getByRole('button',{name:'接受整份成果'}).click();await expect(page.getByText('实际阶段 · cancelled')).toBeVisible();await page.reload();await expect(page.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(s.accepts).toBe(1);expect(s.turns).toBe(0);});
 test('A2 default: expired server cursor restarts and later page history is visible',async({page})=>{const s=await backend(page,'pagination');await open(page);await expect(page.getByLabel('会话侧栏').getByRole('button',{name:'第二页历史'})).toBeVisible();expect(s.listReads).toBe(4);expect(s.turns).toBe(0);});
 test('A2 default: later login reads history but server refuses old-session acceptance; no automatic action',async({page})=>{const s=await backend(page,'identity');await open(page);await expect(page.getByRole('button',{name:'接受整份成果'})).toBeEnabled();s.session='session-two';await page.reload();await expect(page.getByRole('button',{name:'接受整份成果'})).toBeEnabled();expect(s.accepts).toBe(0);await page.getByRole('button',{name:'接受整份成果'}).click();await expect(page.getByRole('status').filter({hasText:'历史成果不能借新登录接受'})).toBeVisible();expect(s.accepts).toBe(1);});
+
+
+test('A2 default: unsupported artifact media type rejects full content and acceptance',async({page})=>{
+ const state=await backend(page,'media-unsupported');await page.goto('/?conversation=conv-one');
+ await expect(page.getByLabel('成果侧栏').getByRole('alert')).toContainText('成果与合同版本不匹配');
+ await expect(page.getByRole('heading',{name:'完整正文报告'})).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'接受整份成果'})).toBeDisabled();
+ expect(state.accepts).toBe(0);expect(state.turns).toBe(0);
+});
