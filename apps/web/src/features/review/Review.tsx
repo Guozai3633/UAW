@@ -5,7 +5,7 @@ import {Markdown} from '../../components/Markdown';
 import type {DisplayItem,Ref,Run} from '../../lib/api/types';
 import {ApiFailure,requestMeta} from '../../lib/api/client';
 import {validate} from '../../lib/api/validation';
-import {type ReviewPort,checkReview,sameReview} from './port';
+import {type ReviewPort,type ReviewSnapshot,checkReview,sameReview} from './port';
 export function Review({items,run,port,identity,connected,decisionAllowed=true,onAccepted}:{items:DisplayItem[];run?:Run;port?:ReviewPort;identity:string;connected:boolean;decisionAllowed?:boolean;onAccepted:()=>void}){
  const artifacts=items.filter(i=>i.type==='artifact');const [selected,setSelected]=useState('');
  const item=artifacts.find(i=>i.id===selected)??artifacts.at(-1);const ref=item?.resource_refs.find(r=>r.kind==='artifact');
@@ -15,12 +15,12 @@ export function Review({items,run,port,identity,connected,decisionAllowed=true,o
  useEffect(()=>{setDecisionPending(false);setNotice('');},[identity,ref?.id,ref?.version,ref?.content_hash]);
  const query=useQuery({queryKey:['review',identity,run?.id,ref?.id,ref?.version,ref?.content_hash],enabled:!!port&&!!run&&connected,
   staleTime:0,gcTime:0,retry:false,refetchInterval:3000,queryFn:async({signal})=>{try{const v=await port!.read(ref,run!.id,signal);await checkReview(v,ref??v.delivery?.artifact_ref??{kind:'artifact',id:v.artifact.id,version:v.artifact.version});return v;}catch(e){if(e instanceof ApiFailure&&e.result.kind==='missing')return null;throw e;}}});
- async function accept(){if(!port||!run||!query.data||busy||decisionPending||query.data.decisionUncertain||query.data.delivery?.acceptance||query.data.delivery?.stale||!connected||!decisionAllowed||run.status!=='waiting_for_user')return;
+ async function accept(){if(!port||!run||!query.data||busy||decisionPending||query.data.decisionUncertain||query.data.delivery?.acceptance||query.data.delivery?.stale||!connected||!decisionAllowed||!canAcceptDelivery(run,query.data))return;
   setBusy(true);setNotice('');const abort=new AbortController();actions.current.add(abort);let dispatched=false;try{
    const current=await port.read(ref,run.id,abort.signal);await checkReview(current,ref??current.delivery?.artifact_ref??{kind:'artifact',id:current.artifact.id,version:current.artifact.version});
    if(!await sameReview(query.data,current))throw new Error('成果或合同版本已变化，请刷新后重新审阅。');
    abort.signal.throwIfAborted();if(current.delivery?.stale||current.delivery?.acceptance||current.decisionUncertain)throw new Error('成果过时、已有决定或接受尚待对账');
-   if(!current.requiresAcceptance)throw new Error('此合同不要求用户接受。');
+   if(!canAcceptDelivery(run,current))throw new Error('原运行或交付视图已变化，请重新读取。');
    dispatched=true;const result=await port.accept(current,requestMeta(),abort.signal);abort.signal.throwIfAborted();
    if(result.kind!=='ok')throw new Error(result.failure?.message??'接受尚未确认');
    validate('CompletionAcceptance',result.payload);
@@ -40,7 +40,7 @@ export function Review({items,run,port,identity,connected,decisionAllowed=true,o
  <details><summary>来源与版本 <ExternalLink size={12}/></summary><ul>{(query.data?.artifact.provenance_refs??item?.resource_refs??[]).map((r,i)=><li key={i}>{r.kind} / {r.id} / {r.version}</li>)}</ul></details>
  {query.error&&<p role="alert" className="error-text">{query.error.message}</p>}
  {query.data?.delivery?.stale&&<p role="alert">此成果相对当前任务已过时，仅供查阅。</p>}{query.data?.delivery?.acceptance&&<p role="status">实际合同决定：{query.data.delivery.acceptance.decision} · {query.data.delivery.acceptance.created_at}</p>}{query.data?.decisionUncertain&&<p role="status">接受结果未知；只查询实际 acceptance，无回执不重发。</p>}
- <button className="primary accept" disabled={!query.data?.requiresAcceptance||run?.status!=='waiting_for_user'||!connected||!decisionAllowed||busy||decisionPending||query.data?.decisionUncertain||!!query.data?.delivery?.acceptance||query.data?.delivery?.stale||query.isError} onClick={()=>void accept()}>{busy?'正在核对版本…':'接受整份成果'}</button>
+ <button className="primary accept" disabled={!query.data?.requiresAcceptance||!canAcceptDelivery(run,query.data)||!connected||!decisionAllowed||busy||decisionPending||query.data?.decisionUncertain||!!query.data?.delivery?.acceptance||query.data?.delivery?.stale||query.isError} onClick={()=>void accept()}>{busy?'正在核对版本…':'接受整份成果'}</button>
  {!port&&<p className="muted">合同接受入口尚未接入。</p>}{notice&&<p role="status">{notice}</p>}
  </div></>}
  {port&&run&&<button className="review-refresh" disabled={!connected||busy} onClick={()=>void query.refetch()}>读取当前成果与接受回执</button>}{query.error&&(!item&&!query.data)&&<p role="alert" className="error-text">{query.error.message}</p>}
@@ -49,3 +49,11 @@ export function Review({items,run,port,identity,connected,decisionAllowed=true,o
 const samePin=(a:Ref,b:Ref)=>a.kind===b.kind&&a.id===b.id&&a.version===b.version&&a.content_hash===b.content_hash;
 
 const checkLabel=(state:string)=>({passed:'已通过',failed:'未通过',blocked:'受阻',not_run:'未运行'}[state]??state);
+
+function canAcceptDelivery(run:Run|undefined,snapshot:ReviewSnapshot|null|undefined):boolean{
+ const delivery=snapshot?.delivery;
+ return !!run && !!delivery && (run.status==='running'||run.status==='waiting_for_user') &&
+  delivery.run_id===run.id && delivery.proposal.run_ref.kind==='run' && delivery.proposal.run_ref.id===run.id &&
+  delivery.proposal.run_ref.version===String(run.revision) && !!snapshot?.requiresAcceptance && delivery.requires_acceptance &&
+  !delivery.stale && !delivery.acceptance && !snapshot.decisionUncertain;
+}

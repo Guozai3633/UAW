@@ -5,10 +5,11 @@ import {createHash} from 'node:crypto';
 import {Review} from '../../src/features/review/Review';
 import {checkReview,type ReviewSnapshot,type ReviewPort} from '../../src/features/review/port';
 import {makeItem,makeRun,ref,now} from '../fixtures';
+import {deliveryView} from '../a2-fixtures';
 const pin=ref('artifact','artifact-one');
 const content='# 正文报告\n\n实际内容与来源。';
-function snapshot():ReviewSnapshot{return{artifact:{id:pin.id,version:'1',title:'报告',format_kind:'markdown',media_type:'text/markdown',content_ref:ref('content','body-one'),size_bytes:Buffer.byteLength(content),content_hash:createHash('sha256').update(content).digest('hex'),provenance_refs:[ref('input','input-one')],verification_refs:[ref('verification','report-one')],created_at:now},content,
- report:{id:'report-one',contract_ref:ref('content','contract-one'),target_refs:[pin],checks:[],verdicts:[],outcome:'succeeded',limitations:['受控组件测试不证明LLM质量'],created_at:now},bundleRef:ref('content','bundle-one'),contractRef:ref('content','contract-one'),requiresAcceptance:true};}
+function snapshot():ReviewSnapshot{const v:ReviewSnapshot={artifact:{id:pin.id,version:'1',title:'报告',format_kind:'markdown',media_type:'text/markdown',content_ref:ref('content','body-one'),size_bytes:Buffer.byteLength(content),content_hash:createHash('sha256').update(content).digest('hex'),provenance_refs:[ref('input','input-one')],verification_refs:[ref('verification','report-one')],created_at:now},content,
+ report:{id:'report-one',contract_ref:ref('content','contract-one'),target_refs:[pin],checks:[],verdicts:[],outcome:'succeeded',limitations:['受控组件测试不证明LLM质量'],created_at:now},bundleRef:ref('content','bundle-one'),contractRef:ref('content','contract-one'),requiresAcceptance:true};v.delivery={...deliveryView(),artifact:v.artifact,content:v.content,report:v.report};return v;}
 function show(port?:ReviewPort){const item=makeItem('artifact-item','artifact','摘要');item.resource_refs=[pin];const accepted=vi.fn();render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false,gcTime:0}}})}><Review items={[item]} run={makeRun('waiting_for_user')} port={port} identity="user-one" connected onAccepted={accepted}/></QueryClientProvider>);return accepted;}
 afterEach(cleanup);
 it('missing production review port leaves content and acceptance explicitly unavailable',()=>{show();expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(screen.getByText('合同接受入口尚未接入。')).toBeInTheDocument();});
@@ -21,6 +22,25 @@ it('changed verification before acceptance blocks dispatch',async()=>{let reads=
 
 it('unknown dispatched acceptance blocks repeated decisions in the current view',async()=>{const accept=vi.fn(async()=>{throw new Error('接受结果未知，先查询原请求');});show({read:async()=>snapshot(),accept});await screen.findByRole('heading',{name:'正文报告'});fireEvent.click(screen.getByRole('button',{name:'接受整份成果'}));await screen.findByText('接受结果未知，先查询原请求');expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).toHaveBeenCalledOnce();});
 
-it('honors optional fixed Ref hash and shows failed requirements with their actual reason and limits',async()=>{const v=snapshot();await expect(checkReview(v,{...pin,content_hash:'f'.repeat(64)})).rejects.toThrow('版本');v.report.outcome='failed';v.report.verdicts=[{requirement_id:'requirement-one',state:'failed',evidence_refs:[],reason:'资料缺少核验依据',limitations:['仍须人工复核']}];show({read:async()=>v,accept:vi.fn()});await screen.findByText('要求 requirement-one · 未通过');expect(screen.getByText('资料缺少核验依据')).toBeInTheDocument();expect(screen.getByText('仍须人工复核')).toBeInTheDocument();});
+it('honors optional fixed Ref hash and shows failed requirements with their actual reason and limits',async()=>{const v=snapshot();await expect(checkReview(v,{...pin,content_hash:'f'.repeat(64)})).rejects.toThrow('版本');v.report.outcome='failed';v.report.verdicts=[{requirement_id:'requirement-one',state:'failed',evidence_refs:[],reason:'资料缺少核验依据',limitations:['仍须人工复核']}];show({read:async()=>v,accept:vi.fn()});await screen.findByText('要求 完整成果可核验 · 未通过');expect(screen.getByText('资料缺少核验依据')).toBeInTheDocument();expect(screen.getByText('仍须人工复核')).toBeInTheDocument();});
 
 it('cancellation or another current mutation disables acceptance even while Run still waits',async()=>{const v=snapshot(),item=makeItem('artifact-item','artifact','summary');item.resource_refs=[pin];const accept=vi.fn();render(<QueryClientProvider client={new QueryClient()}><Review items={[item]} run={makeRun('waiting_for_user')} port={{read:async()=>v,accept}} identity="user-one" connected decisionAllowed={false} onAccepted={()=>{}}/></QueryClientProvider>);await screen.findByRole('heading',{name:'正文报告'});expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).not.toHaveBeenCalled();});
+
+it('running fixed delivery permits acceptance receipt without setting completed',async()=>{
+ const v=snapshot(),accept=vi.fn(async()=>({kind:'ok' as const,payload:{bundle_ref:v.bundleRef,principal:{id:'user-one',kind:'user' as const,auth_session_id:'session-one'},decision:'accept' as const,created_at:now},output_refs:[]})),accepted=vi.fn();
+ const read=vi.fn(async()=>structuredClone(v));
+ render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false,gcTime:0}}})}><Review items={[]} run={makeRun('running')} port={{read,accept}} identity="user-one" connected onAccepted={accepted}/></QueryClientProvider>);
+ await screen.findByRole('heading',{name:'正文报告'});await waitFor(()=>expect(screen.getByRole('button',{name:'接受整份成果'})).toBeEnabled());
+ fireEvent.click(screen.getByRole('button',{name:'接受整份成果'}));await waitFor(()=>expect(accepted).toHaveBeenCalledOnce());
+ expect(read).toHaveBeenCalledTimes(2);expect(accept).toHaveBeenCalledOnce();expect(screen.getByRole('status')).toHaveTextContent('正在读取运行状态');expect(screen.queryByText('已完成')).not.toBeInTheDocument();
+});
+it('terminal, non-delivery phases, missing or mismatched current sources and uncertain decisions stay disabled',async()=>{
+ for(const status of ['queued','preparing','verifying','waiting_for_merge','completed','failed','cancelled'] as const){
+  const v=snapshot(),accept=vi.fn();const result=render(<QueryClientProvider client={new QueryClient()}><Review items={[]} run={makeRun(status)} port={{read:async()=>v,accept}} identity="user-one" connected onAccepted={()=>{}}/></QueryClientProvider>);
+  await screen.findByRole('heading',{name:'正文报告'});expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).not.toHaveBeenCalled();result.unmount();
+ }
+ for(const mutate of [(v:ReviewSnapshot)=>{delete v.delivery;},(v:ReviewSnapshot)=>{v.delivery!.run_id='other-run';},(v:ReviewSnapshot)=>{v.delivery!.proposal.run_ref.version='2';},(v:ReviewSnapshot)=>{v.delivery!.stale=true;},(v:ReviewSnapshot)=>{v.decisionUncertain=true;}]){
+  const v=snapshot();mutate(v);const accept=vi.fn(),result=render(<QueryClientProvider client={new QueryClient()}><Review items={[]} run={makeRun('running')} port={{read:async()=>v,accept}} identity="user-one" connected onAccepted={()=>{}}/></QueryClientProvider>);
+  await screen.findByRole('heading',{name:'正文报告'});expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).not.toHaveBeenCalled();result.unmount();
+ }
+});
