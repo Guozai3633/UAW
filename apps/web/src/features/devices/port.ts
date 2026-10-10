@@ -13,13 +13,16 @@ export interface EnrollmentPort {
 // Lookup metadata only, never an enrollment, proof, status, permission or token.
 type Pending={requestId:string;enrollmentId?:string;candidateId?:string;revision?:number};
 const key='uaw.web.enrollment-lookup.v1';
+const id=(v:unknown):v is string=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(v);
+export function clearEnrollmentLookup(){try{localStorage.removeItem(key);}catch{/* local view remains unavailable */}}
 export class HttpEnrollmentPort implements EnrollmentPort {
  private pending:Pending|undefined;private identity:string|undefined;
  constructor(private client:UawClient,private source?:EnrollmentSourcePort,private storage:Storage=localStorage){}
  private bind(){const current=this.client.currentSession()?.identityKey;if(!current)throw Error('当前用户会话不可用');
   if(current!==this.identity){let saved:unknown;try{saved=JSON.parse(this.storage.getItem(key)??'null');}catch{/* ignored */}
    const s=saved as {identity?:string;lookup?:Pending}|null;
-   this.pending=this.identity===undefined&&s?.identity===current&&typeof s.lookup?.requestId==='string'?s.lookup:undefined;this.identity=current;this.save();
+   const value=this.identity===undefined&&s?.identity===current?s.lookup:undefined;
+   this.pending=value&&id(value.requestId)&&(id(value.enrollmentId)||id(value.candidateId))&&(value.revision===undefined||Number.isSafeInteger(value.revision)&&value.revision>0)?{requestId:value.requestId,...(id(value.enrollmentId)?{enrollmentId:value.enrollmentId,revision:value.revision}:{}),...(id(value.candidateId)?{candidateId:value.candidateId}:{})}:undefined;this.identity=current;this.save();
   }return current;
  }
  private save(){try{if(this.pending)this.storage.setItem(key,JSON.stringify({identity:this.identity,lookup:this.pending}));else this.storage.removeItem(key);}catch{throw Error('无法保存原登记查找ID，设备写入不可用。');}}
@@ -28,8 +31,8 @@ export class HttpEnrollmentPort implements EnrollmentPort {
   if(v.proof_document.enrollment_id!==v.id||id&&v.id!==id||owner&&canonical(v.proof_document.owner)!==canonical(owner))throw Error('登记与当前原身份不匹配');
  }
  uncertain(){this.bind();return !!this.pending;}
- async locate(signal:AbortSignal){const identity=this.bind();if(!this.source)throw Error('可信本机候选来源尚未接入；首次登记不可用。');const value=await this.source.current(signal);this.guard(identity,signal);return value;}
- async read(id:string,signal:AbortSignal){const identity=this.bind();const value=await this.client.enrollment(id,signal);this.guard(identity,signal);this.check(value,id);
+ async locate(signal:AbortSignal){const identity=this.bind();if(!this.source&&this.pending?.enrollmentId)return{enrollmentId:this.pending.enrollmentId};if(!this.source)throw Error('可信本机候选来源尚未接入；首次登记不可用。');const value=await this.source.current(signal);this.guard(identity,signal);return value;}
+ async read(id:string,signal:AbortSignal){const identity=this.bind();if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(id))throw Error('原登记ID格式不匹配');const value=await this.client.enrollment(id,signal);this.guard(identity,signal);this.check(value,id);
   if(this.pending&&(this.pending.enrollmentId===id&&value.revision>(this.pending.revision??0)||!this.pending.enrollmentId&&this.pending.candidateId===value.proof_document.candidate_ref.id)){this.pending=undefined;this.save();}return value;
  }
  async begin(signal:AbortSignal){const identity=this.bind();if(this.pending)throw Error('原登记请求结果未知；先查询原登记，不会换请求ID。');

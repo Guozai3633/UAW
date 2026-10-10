@@ -41,3 +41,20 @@ it('UI identity change cancels old read so its response cannot show another logi
  fireEvent.change(screen.getByLabelText('原设备登记ID'),{target:{value:'enrollment-one'}});fireEvent.click(screen.getByRole('button',{name:'读取原设备登记'}));
  v.rerender(<Devices port={port} identity="other" connected={false}/>);release(new Response(JSON.stringify(ok(enrollment('active')))));await waitFor(()=>expect(screen.queryByText('设备登记有效')).toBeNull());
 });
+
+it('lost begin retains original candidate/request lookup across reload, never silently dispatches a new ID',async()=>{
+ let posts=0;const fetcher=vi.fn(async(_input:RequestInfo|URL,options?:RequestInit)=>{if(options?.method==='POST'){posts++;throw new TypeError('lost');}return new Response(JSON.stringify(ok(enrollment())));});
+ const source={current:async()=>({candidateId:'candidate-one'})},signal=new AbortController().signal;
+ let port=new HttpEnrollmentPort(new UawClient(session,fetcher),source);await expect(port.begin(signal)).rejects.toThrow('未知');
+ const lookup=localStorage.getItem('uaw.web.enrollment-lookup.v1');port=new HttpEnrollmentPort(new UawClient(session,fetcher),source);await expect(port.begin(signal)).rejects.toThrow('不会换请求ID');expect(posts).toBe(1);expect(localStorage.getItem('uaw.web.enrollment-lookup.v1')).toBe(lookup);
+ await port.read('enrollment-one',signal);expect(port.uncertain()).toBe(false);expect(posts).toBe(1);
+});
+it('blocked lookup persistence refuses dispatch, and late identity or cancellation never returns a record',async()=>{
+ const signal=new AbortController().signal,fetcher=vi.fn(async()=>new Response(JSON.stringify(ok(enrollment()))));
+ const storage={getItem:()=>null,removeItem:()=>{},setItem:()=>{throw Error('blocked');}} as unknown as Storage;
+ const port=new HttpEnrollmentPort(new UawClient(session,fetcher),{current:async()=>({candidateId:'candidate-one'})},storage);
+ await expect(port.begin(signal)).rejects.toThrow('无法保存');expect(fetcher).not.toHaveBeenCalled();
+ let identity=session(),release!:(r:Response)=>void;const later=new HttpEnrollmentPort(new UawClient(()=>identity,vi.fn(()=>new Promise<Response>(r=>{release=r;}))));
+ const reading=later.read('enrollment-one',signal);identity={...session(),identityKey:'other'};release(new Response(JSON.stringify(ok(enrollment()))));await expect(reading).rejects.toThrow('身份');
+ const cancelled=new AbortController();cancelled.abort();await expect(new HttpEnrollmentPort(new UawClient(session,fetcher)).read('enrollment-one',cancelled.signal)).rejects.toThrow();
+});

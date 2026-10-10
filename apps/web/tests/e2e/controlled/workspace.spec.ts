@@ -47,7 +47,7 @@ test('controlled: create uses actual model catalog and remains usable after open
  const state=await controlledBackend(page);await page.goto('/');await expect(page.getByText('已连接 · 分页轮询')).toBeVisible();
  await page.getByRole('button',{name:'新建会话',exact:true}).click();await expect(page.getByLabel('模型')).toContainText('受控测试模型（非LLM）');
  await page.getByRole('button',{name:'创建会话',exact:true}).click();await expect(page.getByLabel('会话侧栏').getByRole('button',{name:'研究材料整理'})).toBeVisible();
- await page.getByRole('textbox',{name:'任务原文'}).fill('创建后发送');await expect(page.getByRole('button',{name:'发送原文'})).toBeEnabled();await page.getByRole('button',{name:'发送原文'}).click();await expect.poll(()=>state.turnPosts).toBe(1);
+ await page.getByRole('textbox',{name:'任务原文'}).fill('创建后发送');await expect(page.getByRole('textbox',{name:'任务原文'})).toHaveValue('创建后发送');await expect(page.getByRole('button',{name:'发送原文'})).toBeEnabled();await page.getByRole('button',{name:'发送原文'}).click();await expect.poll(()=>state.turnPosts).toBe(1);
 });
 test('controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again',async({page})=>{
  const state=await controlledBackend(page,'running');await send(page);await expect(page.getByText('实际阶段 · running')).toBeVisible();

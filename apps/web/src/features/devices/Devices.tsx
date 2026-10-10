@@ -5,7 +5,7 @@ const labels={pending:'等待本人在本机确认',active:'设备登记有效',
 export function Devices({port,identity,connected}:{port?:EnrollmentPort;identity:string;connected:boolean}){
  const [id,setId]=useState(''),[record,setRecord]=useState<Schema['RunnerEnrollmentRecord']>(),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[located,setLocated]=useState(false);
  const current=useRef<AbortController|undefined>(undefined);
- useEffect(()=>{setRecord(undefined);setId('');setMessage('');setLocated(false);current.current?.abort();if(!connected||!port)return;
+ useEffect(()=>{setRecord(undefined);setId('');setMessage('');setLocated(false);setBusy(false);current.current?.abort();if(!connected||!port)return;
   const abort=new AbortController();current.current=abort;void port.locate(abort.signal).then(v=>{if(!abort.signal.aborted){setLocated(!!v.candidateId);if(v.enrollmentId)setId(v.enrollmentId);}}).catch(e=>{if(!abort.signal.aborted)setMessage(e.message);});
   return()=>{abort.abort();current.current?.abort();};},[identity,connected,port]);
  async function perform(action:'read'|'begin'|'confirmation'|'revocation'){
