@@ -557,3 +557,9 @@ git diff --check
 - 构造、成功/拒绝/重复、全部命令回执和A接线见 [MS-R2h-final-wiring.md](../requests/D/MS-R2h-final-wiring.md)。A提供真实当前full session/独立device/双方current role proof/OS实例/受保护原Ticket-code-proof/短期channel/退出撤销服务、factory及HTTP/控制端/composition/C业务核验；缺源unavailable，最小输入MS-R2h-bootstrap-inputs.md。SID/PID、网页approved/path、公钥上传不授权，绝对目录仅本机。
 - 最终文档首次写入/提交因自动审批服务额度失败未执行；用户继续后按原授权正常审批重试，无绕过。源码和验证回执此前已完成；该服务错误不计作测试通过或失败。
 - 不改flags或开放写入安装exec，不代选D01/D03/D06；Default桌面/开发IPC/组件SQLite不代表正式部署或产品验收。组件M1-M4交付，生产bootstrap和本人汇合pending；本包后停止、干净交付，等待A审阅/派发。
+
+## MS-R2i M1 阶段交接（2026-10-10）
+
+- E:/UAW/.worktrees/runner / dev/runner，远端正式 DISPATCH 核对 ms-i2l-start /8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0 后 ff-only/HEAD 等值，uv sync --frozen成功，旧历史和全部失败/清理保留。
+- M1源码 f400a928614805ab752ef648a4ac59d5b0090ee7；文件 helper_process/helper_host/新增 helper_stdio，新增 unit first_start，旧 helper_runtime 错误 code 断言更新。公开 start(first_start=None,on_progress=None)、HelperBootstrapProgress.waiting(policy)，具体构造/失败/限额见 requests/D/MS-R2i-stage-interface.md。
+- 41不同节点通过/56.96s；最新22单元/0.41s；Ruff、Mypy34源码、diff通过。原失败回执保留 tests/.artifacts/D/MS-R2i。真实Windows进程/OS凭据/IPC与临时根 journal，账号/肯定 UI 是受控 fixture，不是本人确认。M2初始化 stop 尚待实现，继续同包；A installed配置/真实来源缺则503，无自建公共协议/flags。
