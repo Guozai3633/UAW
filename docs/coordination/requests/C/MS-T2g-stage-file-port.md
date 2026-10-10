@@ -43,3 +43,5 @@ M2 源码 SHA：6abd666262df449a7e6d3c374613a7326944250b。FileReceiptStore(ledg
 使用原 ToolExecutorRouter 的 ToolExecutorBinding(完整注册 ToolRef, provider_ref, executor, executor.check)，verifier 路由使用 ToolOutputVerifierBinding(相同完整 ToolRef, provider_ref, source.verifier)。ToolResults(source, 原 ToolReconciler(..., receipts=source, evidence=source))；ToolFacade(..., lookup=source, reconciler=...)。FileResourceReader(provider_ref, bridge) 注入原 ApprovalAuthority 资源 Reader；恢复 access 是当前数据权限，不能复用新执行 gate 或审批作为读取授权。
 
 ToolInvocation 使用原 ledger/ApprovalService/BudgetService、完整 estimates 和 prepare=router.check。bridge.ready/signatures 缺失发送前 503。命名 RunnerCommand/RunnerReceipt/Principal/Ref/Location/FileContent、原完整快照及实际片段 Blob 持久化；不扩 EffectRecord。35 项文件单元通过，Tool mypy/ruff 通过。M2 首次 8 个 fixture Principal 缺 auth_session_id 的失败已保留并修复；继续 M3/M4 真实 SQL，不声称生产接线完成。
+
+最终契约复核：FileContent.location 核对实际登记页/行 selection，原call.location仍固定请求范围；未分页 whole/text_span 兼容。file_estimates(currency="USD", money_ceiling=actual_bound) 最终要求显式货币预留上限，省略返回dependency_unavailable，不允许未知Runner费用取得默认零金额预算。A已有实际估算向量可直接注入ToolInvocation，受控SQL数值不当产品费率。固定Spec字段/哈希未改变。最终源码以final-wiring和handoff记录为准。

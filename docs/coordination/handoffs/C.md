@@ -512,3 +512,111 @@ Run/owner/session/model/scope/provider数据权限authority；C默认缺来源�
 全部测试结束后额外启动数据库探查因DockerEngine管道缺失失败，后续查询脚本未执行，保留
 post-verification-db-start-failure.txt；已通过SQL新进程Database.check确认0003_attempt_identity。
 复跑需先恢复Docker，再用C脚本启动本库，不复制A凭据/配置或使用其他端口/库/共享evidence。
+
+
+## MS-T2g：file.read、实际文件证据与独立原费用恢复（2026-10-10）
+
+Session C / MS-T2g / P1-03组件交付；完整MS-T2及生产整链仍待A接受。
+实际目录 E:/UAW/.worktrees/tool，实际分支 dev/tool。开工工作区干净，fetch origin --tags后
+merge --ff-only ms-i2j-start；HEAD/tag当时均为 abb4590f2bfe53c601e0f6a4a3b65447ba4ec502。
+uv sync --frozen --extra agent-engine --link-mode copy，自己的.cache/uv/.venv，无锁改动。
+公共契约0.1；contracts/uaw.schema.json SHA256 019b15c29d05c987ad1242c10ef17e2f825a216df0398ecbf4f70fd80a12232f；
+uv.lock SHA256 a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f。
+公共schema/shared/锁/composition/API/其他worker均未改。
+
+源码提交：M1 c8b5676d4cb65a65a38391b304095600b0ffed54；阶段说明9195a2e。
+M2 6abd666262df449a7e6d3c374613a7326944250b；接线阶段f9b661c。
+M3/M4 a9847f9abc0e1780739228b66f9ded7d2874968d；最后源码修正
+5b7749d0e80f7576362dd5736e0d89ac779e01a5（实际页范围和显式未知金额上限）。
+本次handoff/最终接线说明独立于上述源码提交。
+
+改动文件（相对固定基线）：
+- docs/coordination/requests/C/MS-T2g-stage-file-port.md
+- src/uaw/tool/ledger.py
+- src/uaw/tool/providers/file_read.py
+- src/uaw/tool/providers/file_store.py
+- src/uaw/tool/receipt_store.py
+- src/uaw/tool/results.py
+- src/uaw/tool/schema.py
+- tests/integration/tool/file_pipeline_fixture.py
+- tests/integration/tool/file_recovery_child.py
+- tests/integration/tool/test_file_pipeline_postgres.py
+- tests/integration/tool/test_file_recovery_postgres.py
+- tests/unit/tool/file_evidence_fixture.py
+- tests/unit/tool/test_file_evidence.py
+- tests/unit/tool/test_file_ports.py
+- docs/coordination/requests/C/MS-T2g-final-wiring.md
+- docs/coordination/handoffs/C.md（仅追加；原69076字节原样保留）
+
+公开接口/接线：file_read_spec(provider_ref)固定file.read@1、categories=file、workspace.process、
+file_access、read与完整ToolRef hash，无自动重试；ToolFileReadBridgePort.ready/resolve/execute/recover
+消费完整原call/spec/ctx；FileReadEvidence固定command_ref/receipt_ref、RegisteredReceiptCommand、
+实际RunnerReceipt、原immutable完整snapshot、实际selection和独立登记next_cursor。
+file_estimates(currency, money_ceiling=actual_bound)要求显式真实货币预留上限，缺失503；
+不默认为零、不从Runner ok推收费。A已有实际估算向量可直接注入原ToolInvocation。
+FileResourceReader(provider_ref, bridge)接ApprovalAuthority；FileReceiptStore(ledger,blobs,
+provider_ref=,provider=,access=current_data_authority,bridge=,signatures=)接原Lookup/Reader/evidence；
+source.verifier=FileReadVerifier(source)，FileReadExecutor(source,provider=)及executor.check接原精确路由。
+原ToolResults/Reconciler/Facade继续使用；缺真实桥/签名/数据权限/执行器/验证器发送前明确不可用。
+read_observation(action_id,ctx)返回经当前数据权限和实际原来源核对的内部证据；read_raw也再验原来源。
+内部完整snapshot不可直接暴露模型/HTTP；正文使用实际FileContent片段。
+recover_file_accounting(ledger,budgets,ctx)->原UsageSettlement仅重放已接受原费用观察/已有固定计划，
+消费当前BudgetStatePort/BudgetPort账务权限，不读正文/root/journal、不新建观察/attempt或发送。
+
+成功例子：真实审批记录approved后invoke返回既有ToolResult，data为实际UTF-8 FileContent；
+FileContent.location是实际页/行selection、content_hash是原整个文件hash；usage_ref仍可pending。
+拒绝例子：缺port/金额来源503；当前root/device/key/data撤销、跨主体/project/provider/attempt、
+旧摘要/坏签名/范围不符不能返回正文或成功。非空project_id保持原Run/Tool边界拒绝。
+重复例子：原call/ctx恢复相同ToolResult/原receipt/Usage，不再执行/open；变参数/版本/hash拒绝；
+unknown无原journal保留held，新attempt拒绝。核对confirmed/ok/applied不等于Task完成。
+
+持久状态由Tool独占原tool.*账本，新增tool.file.command.refs/commands/owners/receipt.refs/
+runner.receipts/snapshot.refs/selections/fragment.refs/contents/observation.refs，分别使用既有
+Ref/RunnerCommand/Principal/RunnerReceipt/Location/FileContent；无私有通用Object或新公共DTO。
+原全文件与实际返回片段Blob分开；整体hash与fragment Ref摘要语义不同；原观察Ref绑定完整
+command/receipt/owner/device/snapshot/selection。固定CAS/原费用计划重启去重；Tool事务内不调用
+Bridge/Reader/签名/Blob/BudgetService。await前复制严格嵌套wire，防止端口修改原Usage/正文。
+普通输入64KiB边界不扩大；仅具名FileContent/ToolResult输出信封有界512KiB，支持转义后的64KiB原文。
+原结果恢复查独立登记/journal/原快照；文件改变/删除不能新读替代，unknown不重发。
+取消/过期后的原读取与新执行准入区分；费用plan可在当前账务权限下独立恢复，root/key撤销仍不准
+读正文。原pending Usage省略未知维度；明确预留的money/tool_calls保留held，不伪造零费。
+
+实际验证：自己的. ./ops/start-dev-db.ps1 -Session C（loopback55434）；锁定.venv运行
+python -m alembic upgrade head。SQL明确--require-postgres，独立basetemp和随机主体清理；
+不复制A配置/凭据、不写共享evidence。所有txt/xml在ignored tests/.artifacts/C/MS-T2g。
+
+| 范围 | 实际回执 |
+| --- | --- |
+| 全Tool单元 | final-unit-ceiling.xml：358通过，21.71秒，0失败/错误/跳过 |
+| 原全部Tool SQL | original-sql.xml：178通过，1368.03秒，0失败/错误/跳过；保留原70/检索/索引/text/办公模块 |
+| 新文件SQL首次完整 | m4-sql-resumed.xml：36通过/2分页fixture幂等冲突失败，658.38秒 |
+| 分页修复与最后实际范围 | page-fixed.xml：2通过114.88秒；page-range-final.xml：2通过105.61秒 |
+| await嵌套证据/Usage变更 | mutation-sql.xml：1通过30.55秒 |
+| 撤销后独立费用恢复 | accounting-sql.xml首轮1通过/1取消ledger字段断言失败；accounting-sql-fixed.xml：2通过16.61秒 |
+| 最后非零未知金额/范围 | final-ceiling-sql.xml：6通过197.91秒，0失败/错误/跳过 |
+| 静态 | Ruff通过；71文件format-check；Mypy32源码通过；git diff --check通过 |
+
+新SQL去重41个不同节点，连原178共219个不同真实SQL最终全通过；verification-index.json仅索引
+实际JUnit/每节点最后回执，不虚构一次219全通过。358单元包含原316+新增42；重复复验不累加。
+单元命令python -m pytest tests/unit/tool -q -p no:cacheprovider；原SQL命令python -m pytest
+ tests/integration/tool -v -p no:cacheprovider --ignore=tests/integration/tool/test_file_pipeline_postgres.py
+ --ignore=tests/integration/tool/test_file_recovery_postgres.py --require-postgres；新SQL两模块同上述
+ --require-postgres，修复选择-k仅受影响节点。首轮M1严格JSON fixture/Windows长ID、M2 Principal缺
+ auth_session_id、SQL runner包导入路径错误、中断无XML、分页重复审批request_id和取消ledger断言
+全部保留原回执并修复。最后无未通过组件节点；中断记录不计通过。
+
+实际WindowsReadHandle读取临时测试根、真实Ed25519签名核验、SQL/Blob/ApprovalService/BudgetService；
+当前角色/provider元数据/root/控制端/分页/key目录为明确受控测试组件。没有生产Runner dispatch/IPC、
+真实人机确认、真实LLM或产品能力的本包验收；受控Reader未登记产品，flags/用户固定模型未改。
+
+A接线缺口/要求详见[MS-T2g-stage-file-port](../requests/C/MS-T2g-stage-file-port.md)和
+[MS-T2g-final-wiring](../requests/C/MS-T2g-final-wiring.md)。真实控制端、当前owner/session/project/root/
+device/key权威、原命令登记/journal/immutable snapshot和cursor registry由A注入；D负责真人本机确认。
+基线Runner只支持whole/text_span，生产lines/cursor尚待实际桥；C不读D开发分支。非空project_id须A
+发布统一Run/Tool项目准入及恢复权限；C没有单方面解除。新确认费用Reader/pending增量/orphan仍归A。
+file.read用专用FileReceiptStore/ToolResults；即使同provider也不能拿它充当text/算术/JSON共用Source；
+A按完整原ToolRef/hash/provider选择对应invocation/results/source/reconciler bundle，恢复查原attempt。
+旧三个工具原Source和接口兼容，原178SQL已回归。没有新迁移或依赖要求。
+
+最终源码与本handoff分开提交；保留原所有提交和handoff；不reset/rebase、不开放flags/目录/网络/
+本机写入exec、不自动扩下一包。整条A↔D用户确认/Agent/Artifact/Task完成链和公共冲突合入由A验收。
