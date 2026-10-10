@@ -78,6 +78,7 @@ async def make_native_case(
     existing_keys=None,
     defer_confirmation=False,
     clock_start=None,
+    ticket_expires_at=None,
 ):
     clock = [clock_start if clock_start is not None else NOW]
     state = (
@@ -114,7 +115,9 @@ async def make_native_case(
         device_id="d1",
         key_id="device1",
         public_bytes=state.lookup("device1", device_id="d1").public_bytes,
-        expires_at=clock[0] + timedelta(minutes=10),
+        expires_at=(
+            ticket_expires_at if ticket_expires_at is not None else clock[0] + timedelta(minutes=10)
+        ),
         now=clock[0],
         root_handle="native-root1",
         display_name="temporary test root",
