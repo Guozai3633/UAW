@@ -200,6 +200,13 @@ class WindowsEnrollmentConfirmation:
                     request_id="native-decision",
                 )
                 return evidence
+        except TimeoutError:
+            raise reject(
+                "enrollment_native_timeout",
+                "Original native enrollment confirmation expired",
+                410,
+                "timeout",
+            ) from None
         finally:
             stopped.set()
             stop_watch.set()
