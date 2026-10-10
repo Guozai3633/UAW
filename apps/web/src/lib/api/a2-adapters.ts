@@ -1,3 +1,4 @@
+import {recordHash} from './canonical';
 import {AcceptanceLookups} from '../cache/acceptance-lookups';
 import {ApiFailure,UawClient} from './client';
 import type {RecoveryPort} from '../../features/workspace/controller';
@@ -38,6 +39,7 @@ export class HttpReviewPort implements ReviewPort {
  }
 }
 export async function checkDelivery(v:Schema['RunDeliveryView']){
+ for(const [pin,value] of [[v.artifact_ref,v.artifact],[v.contract_ref,v.contract],[v.report_ref,v.report],[v.proposal_ref,v.proposal]] as const){if(pin.content_hash&&pin.content_hash!==await recordHash(value))throw new Error('成果固定来源摘要不匹配');}
  const a=v.artifact_ref;
  if(a.kind!=='artifact'||a.id!==v.artifact.id||a.version!==v.artifact.version||v.bundle_ref.kind!=='content'||v.contract_ref.kind!=='content'||v.report_ref.kind!=='verification'||v.report_ref.id!==v.report.id||v.proposal_ref.kind!=='content'||
   !matchesPin(v.report.contract_ref,v.contract_ref)||!v.report.target_refs.some(p=>matchesPin(p,a))||!matchesPin(v.proposal.contract_ref,v.contract_ref)||!matchesPin(v.proposal.report_ref,v.report_ref)||v.proposal.artifact_refs.length!==1||!matchesPin(v.proposal.artifact_refs[0],a)||v.proposal.run_ref.kind!=='run'||v.proposal.run_ref.id!==v.run_id||v.requires_acceptance!==(v.contract.acceptance_required??false)||v.acceptance&&!matchesPin(v.acceptance.bundle_ref,v.bundle_ref))throw new Error('成果、合同、核验与提案固定关联不匹配');

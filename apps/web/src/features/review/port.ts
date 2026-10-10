@@ -1,3 +1,4 @@
+import {canonical} from '../../lib/api/canonical';
 import type {Schema,Ref,Result} from '../../lib/api/types';
 import {validate} from '../../lib/api/validation';
 // Optional internal adapter proposed to A. No invented HTTP endpoint.
@@ -19,7 +20,7 @@ export async function checkReview(value:ReviewSnapshot,requested:Ref){
  if(bytes.length!==value.artifact.size_bytes||hash!==value.artifact.content_hash)throw new Error('成果正文摘要或长度不匹配');
 }
 export async function sameReview(a:ReviewSnapshot,b:ReviewSnapshot){
- const {decisionUncertain:ignoredA,...left}=a;const {decisionUncertain:ignoredB,...right}=b;void ignoredA;void ignoredB;return JSON.stringify(left)===JSON.stringify(right);
+ const {decisionUncertain:ignoredA,...left}=a;const {decisionUncertain:ignoredB,...right}=b;void ignoredA;void ignoredB;return canonical(left)===canonical(right);
 }
 
-export const matchesPin=(actual:Ref,requested:Ref)=>actual.kind===requested.kind&&actual.id===requested.id&&actual.version===requested.version&&(!requested.content_hash||actual.content_hash===requested.content_hash);
+export const matchesPin=(actual:Ref,requested:Ref)=>actual.kind===requested.kind&&actual.id===requested.id&&actual.version===requested.version&&(!requested.content_hash||actual.content_hash===requested.content_hash)&&(!requested.location||canonical(actual.location)===canonical(requested.location))&&(!requested.access_scope||canonical(actual.access_scope)===canonical(requested.access_scope));

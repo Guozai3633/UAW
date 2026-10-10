@@ -60,8 +60,8 @@ export class WorkspaceController {
  private schedule(g:number){if(this.stopped||g!==this.generation)return;clearTimeout(this.timer);
   this.timer=setTimeout(async()=>{try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}finally{this.schedule(g);}},this.pollMs);}
  private async pages<T extends {items:unknown[];next_cursor?:string;snapshot_revision:number}>(load:(cursor?:string)=>Promise<T>){
-  let cursor:string|undefined,revision:number|undefined;const cursors=new Set<string>();const items:T['items']=[];
-  for(let n=0;n<64;n++){const page=await load(cursor);if(revision!==undefined&&revision!==page.snapshot_revision)throw new SnapshotRequired('分页快照版本变化');
+  const generation=this.generation;let cursor:string|undefined,revision:number|undefined;const cursors=new Set<string>();const items:T['items']=[];
+  for(let n=0;n<64;n++){const page=await load(cursor);this.guard(generation);if(revision!==undefined&&revision!==page.snapshot_revision)throw new SnapshotRequired('分页快照版本变化');
    revision=page.snapshot_revision;items.push(...page.items);if(!page.next_cursor)return{items,revision};
    if(cursors.has(page.next_cursor))throw new SnapshotRequired('分页游标循环');cursors.add(page.next_cursor);cursor=page.next_cursor;}
   throw new Error('历史分页超过本次读取上限，请缩小会话范围。');
@@ -74,12 +74,6 @@ export class WorkspaceController {
  private async readFresh(g:number){const active=this.value.active;if(!active)return;const signal=this.abort.signal;
   const load=async()=>{
    const current=await this.client.conversation(active.id,signal);this.guard(g);
-   const page=await this.pages(c=>this.client.items(active.id,c,signal));this.guard(g);
-   if(page.items.some(i=>(i as DisplayItem).conversation_id!==active.id))throw new SnapshotRequired('条目会话不一致');
-   this.projection.replaceItems(page.items as DisplayItem[],page.revision!);
-   const history=await this.pages(c=>this.client.events(active.id,c,signal));this.guard(g);
-   for(const event of history.items as Schema['EventEnvelope'][]){if(event.stream_id!==active.id)throw new SnapshotRequired('事件会话不一致');if(event.seq<=this.projection.lastSeq){const previous=this.projection.events.get(event.seq);if(previous&&previous!==event.event_id)throw new SnapshotRequired('相同seq出现不同事件');continue;}
-    const payload=await this.client.payload(event.event_id,signal);this.guard(g);this.projection.apply(event,payload);}
    let rec=this.drafts.read().recovery;
    if(rec && rec.conversationId===active.id){
     if(rec.runId)this.projection.run=await this.client.run(rec.runId,signal);
@@ -87,6 +81,12 @@ export class WorkspaceController {
       if(run){if(run.conversation_id!==rec.conversationId)throw new Error('原请求Run归属不匹配');rec={...rec,runId:run.id};this.drafts.recovery(rec);this.projection.run=run;}}
    }
    this.guard(g);
+   const page=await this.pages(c=>this.client.items(active.id,c,signal));this.guard(g);
+   if(page.items.some(i=>(i as DisplayItem).conversation_id!==active.id))throw new SnapshotRequired('条目会话不一致');
+   this.projection.replaceItems(page.items as DisplayItem[],page.revision!);
+   const history=await this.pages(c=>this.client.events(active.id,c,signal));this.guard(g);
+   for(const event of history.items as Schema['EventEnvelope'][]){if(event.stream_id!==active.id)throw new SnapshotRequired('事件会话不一致');if(event.seq<=this.projection.lastSeq){const previous=this.projection.events.get(event.seq);if(previous&&previous!==event.event_id)throw new SnapshotRequired('相同seq出现不同事件');continue;}
+    const payload=await this.client.payload(event.event_id,signal);this.guard(g);this.projection.apply(event,payload);}
    if(this.projection.run){const run=await this.client.run(this.projection.run.id,signal);this.guard(g);if(run.conversation_id!==active.id)throw new SnapshotRequired('Run会话不一致');this.projection.run=run;
     try{this.projection.frame=await this.client.frame(run.task_id,signal);}catch(e){if(!(e instanceof ApiFailure&&['missing','waiting'].includes(e.result.kind)))throw e;}
     this.guard(g);if(this.projection.frame&&this.projection.frame.task_id!==run.task_id)throw new SnapshotRequired('任务理解归属不一致');

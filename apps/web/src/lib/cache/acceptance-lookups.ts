@@ -7,7 +7,7 @@ export class AcceptanceLookups {
  constructor(private storage:Storage=localStorage){}
  bind(identity:string){if(identity===this.identity)return;this.entries=[];
   try{const raw=this.storage.getItem(key);const saved=raw?JSON.parse(raw):null;
-   if(!this.identity&&saved?.identity===identity&&Array.isArray(saved.entries))this.entries=saved.entries.filter((v:DecisionLookup)=>v&&id(v.runId)&&id(v.requestId)&&id(v.bundleId)&&id(v.artifactId)).slice(0,32);
+   if(!this.identity&&saved?.version===1&&saved.identity===identity&&Array.isArray(saved.entries))this.entries=saved.entries.filter((v:DecisionLookup)=>v&&id(v.runId)&&id(v.requestId)&&id(v.bundleId)&&id(v.artifactId)).slice(0,32);
    this.identity=identity;this.write();
   }catch{this.identity=identity;throw new Error('无法安全保存接受查找ID，合同决定暂不可用。');}
  }

@@ -1,3 +1,4 @@
+import {recordHash} from '../../src/lib/api/canonical';
 import {beforeEach} from 'vitest';
 beforeEach(()=>localStorage.clear());
 import {it,expect,vi} from 'vitest';
@@ -21,3 +22,7 @@ it('ref/hash/source mismatch and stale current delivery cannot dispatch acceptan
  v.proposal.report_ref=ref('verification','other-report');await expect(port.read(undefined,v.run_id,signal)).rejects.toThrow('关联');
 });
 it('malformed RunDeliveryView is rejected rather than guessed from successful HTTP',async()=>{const f=vi.fn(async()=>new Response(JSON.stringify(ok({content:'looks done'}))));await expect(new UawClient(()=>({identityKey:'user-one'}),f).delivery('run-one')).rejects.toBeInstanceOf(TransportError);});
+
+it('content-hashed actual source records match the fixed digest while altered report is rejected',async()=>{const v=deliveryView();v.report_ref.content_hash=await recordHash(v.report);v.proposal.report_ref={...v.report_ref};const f=vi.fn(async()=>new Response(JSON.stringify(ok(v))));const port=new HttpReviewPort(new UawClient(()=>({identityKey:'user-one'}),f));const signal=new AbortController().signal;await port.read(undefined,'run-one',signal);v.report.limitations.push('altered');await expect(port.read(undefined,'run-one',signal)).rejects.toThrow('来源摘要');});
+
+it('fixed digest matches Python sorted UTF-8 JSON with Unicode and integer metadata',async()=>{expect(await recordHash({"text": "原文\n😀", "counts": [0, 2], "refs": {"version": "1", "id": "pin"}})).toBe('8ba8cd9a19c5e1a6ad70fafc9e42301bc18e27395c41591e81385cfbd203d6d2');});

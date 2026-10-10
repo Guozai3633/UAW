@@ -15,6 +15,7 @@
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "test:e2e": "pnpm build && playwright test --project=chromium",
+    "test:backend": "pnpm build && node scripts/backend.mjs",
     "test:live": "node scripts/live.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 5173"
   },
