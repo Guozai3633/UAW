@@ -3,6 +3,7 @@
 import asyncio
 import json
 from datetime import UTC, datetime, timedelta
+from threading import Event
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -158,6 +159,33 @@ async def test_root_native_denial_preserves_original_error_and_never_binds(root_
         "error_type": "DomainError",
         "failure_code": "native_cancelled",
     }
+    c.auth.bind.assert_not_awaited()
+
+
+@pytest.mark.parametrize("cancelled", [False, True])
+async def test_cancel_during_failed_diagnostic_write_keeps_original_stop(root_case, cancelled):
+    c = root_case
+    started, released = Event(), Event()
+
+    def failing_write(*args, **kwargs):
+        started.set()
+        assert released.wait(3)
+        raise OSError("Private storage failure")
+
+    c.selector.diagnostic_path = SimpleNamespace(write_text=failing_write)
+    original = asyncio.CancelledError() if cancelled else reject("native_cancelled", "Denied", 409)
+    c.auth.select.side_effect = original
+    selecting = asyncio.create_task(c.selector(c.helper))
+    try:
+        assert await asyncio.to_thread(started.wait, 3)
+        selecting.cancel()
+        await asyncio.sleep(0)
+    finally:
+        released.set()
+    with pytest.raises(type(original)) as failed:
+        await selecting
+    if not cancelled:
+        assert failed.value is original
     c.auth.bind.assert_not_awaited()
 
 

@@ -51,12 +51,14 @@ class InstalledRootSelection:
                         self.diagnostic_path.write_text, json.dumps(value), encoding="utf-8"
                     )
                 )
-                try:
-                    await asyncio.shield(writing)
-                except asyncio.CancelledError:
-                    await writing
-                except OSError:
-                    pass  # Diagnostic storage never changes the original denial.
+                while True:
+                    try:
+                        await asyncio.shield(writing)
+                        break
+                    except asyncio.CancelledError:
+                        continue  # Drain owned diagnostics before propagating the original stop.
+                    except OSError:
+                        break  # Diagnostic storage never changes the original denial.
             raise
 
     async def select(self, helper: ReadOnlyHelper) -> None:
