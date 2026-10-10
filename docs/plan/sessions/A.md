@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2i开发中：三包最终组件及A实际消费者接受；原全量中断未计，持久1691项完整回归运行中。以DISPATCH的固定版本与派发为准。
+状态：MS-I2j已发布待开工：旧MS-I2i固定回归先收尾，随后浏览器身份/API/文件桥接与集成；默认权限不扩大。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2j、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -73,6 +73,7 @@
 - `docs/coordination/HANDOFF_TEMPLATE.md`
 - `docs/coordination/REQUEST_TEMPLATE.md`
 - `docs/coordination/NEXT_WAVE.md`
+- `docs/coordination/MS-I2j-messages.md`
 - `docs/coordination/handoffs/A.md`
 - `docs/coordination/requests/A/`
 
@@ -83,7 +84,7 @@
 - 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。
 - 独立组件的业务错误交回对应负责人修复，A负责跨模块接线与冲突裁决。
 - 逐包审阅、合并、回归；保持集成分支可启动，不同时接收多份公共改动。
-- MS-C6/MS-T2e/MS-R2e组件已接受，当前MS-I2i负责模型评估/成果完成控制和公共适配；B/C/D以ms-i2i-start独立开发，阶段接口到即接线。
+- MS-C7/MS-T2f/MS-R2f组件已接受；本轮MS-I2j负责浏览器身份/API/文件桥接与逐包集成，旧固定来源回归先收尾；B/C/D固定ms-i2j-start。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -291,6 +292,23 @@
 - 运行输入为ms-i2h-a3，四包固定ms-i2i-start；纯数据成果链不等待D，worker自己实跑模块SQL。
 - 普通worker不能直接completed；公开API/flags依真实门槛，未完成来源明确不可用，不默认子Agent/DAG。
 
+### MS-I2j：真实网页API/用户控制/文件桥接与逐包集成
+
+对应原轮：[P1-04](../rounds/P1-04.md)、[P1-07](../rounds/P1-07.md)、[P1-08](../rounds/P1-08.md)、[P1-09](../rounds/P1-09.md)、[P1-10](../rounds/P1-10.md)。
+开发前置：MS-C7、MS-T2f、MS-R2f。
+
+任务：
+
+1. M1收尾旧固定来源回归；明确最小端点及本机浏览器会话/Origin/CSRF，交API清单。
+2. M2网页到实际理解/根循环/成果核验/用户接受，稳定请求与有界后台恢复。
+3. M3C原文件调用到D实际注册命令/IPC/root来源，身份签名取消权限复核，逐阶段接线。
+4. M4真实页面与固定DeepSeek办公/学术/文件引用、审批取消重连及最终集成回归。
+
+交付检查：
+
+- ms-i2j-start为组件已接受的开发输入，旧MS-I2i全量未冒充通过；默认权限不扩大。
+- B独占前端，C独占工具，D独占本机授权；普通Agent或页面不直接置completed。
+
 ### MS-I2f：实际设备归属、登记命令与当前权威
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-09](../rounds/P1-09.md)。
@@ -348,7 +366,7 @@
 你负责UAW并行开发中的Session A：集成与任务理解。
 当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
 当前在integration执行集成任务，不替worker同步或重写分支。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

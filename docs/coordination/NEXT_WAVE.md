@@ -1,3 +1,10 @@
+# 当前可转发开工消息：MS-I2j（2026-10-10）
+
+**只转发[MS-I2j四份提示词](MS-I2j-messages.md)。**统一固定ms-i2j-start；B本轮转apps/web前端，C做file.read工具，D做native目录授权，A做用户入口/API与集成。
+[完整输入输出、目录与四个里程碑](requests/A/MS-I2j-parallel-packages.md)。开发基线不冒称MS-I2i完整回归已通过；旧回归由A先收尾。用户转发开工，A未替其他worker同步或发送聊天消息。
+
+## 以下为历史派发原文，不作为本轮任务
+
 # 下一轮可直接转发：MS-I2i（2026-10-09）
 
 固定开工标签 **ms-i2i-start**；实际SHA与远程发布结果见[DISPATCH](DISPATCH.md)。来源为已验收的ms-i2h-a3；本次只准备安排，不把新包记成已开发或已接受。原B/C/D worktree已只读核对且干净，由各session自行在包边界同步，A没有替它们改分支或发消息。

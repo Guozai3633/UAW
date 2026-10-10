@@ -1,3 +1,8 @@
+# MS-I2j本轮开发目录调整
+
+新增 `apps/web/` 由Session B独占（含前端依赖锁、客户端和测试），原worktree仍为context/dev/context。A维护后台API/认证/公共契约及文件桥接；C维护Tool文件provider；D维护本机native确认/只读Runner。
+[完整边界](coordination/requests/A/MS-I2j-parallel-packages.md)。这是开发目录安排，不代表前端或真实用户授权已经实现；后续旧实现位置保持原记录。
+
 # 项目功能模块与目录设计
 
 目标目录：v0.10；实际实现位置更新：2026-10-09。Python Runtime职责目录不变；技术主选见[技术栈](../TECHNOLOGY_STACK.md)。P0工程、开发存储、管理配置和Run受理/资源账本已有实际代码，见[实施记录](implementation/README.md)；以下是完整目标目录，未实施部分仍是计划。

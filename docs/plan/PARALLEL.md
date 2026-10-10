@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.14 · 2026-10-09 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.15 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -20,7 +20,7 @@ v0.14 · 2026-10-09 · 方案：**3个开发session＋1个集成session，共4�
 | Session | 做什么 | 首个包 | 实际分工 |
 | --- | --- | --- | --- |
 | [A：集成与任务理解](sessions/A.md) | 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。 | MS-00 | 推荐4个方案 |
-| [B：上下文组件](sessions/B.md) | seed.py和intent.py包含已验证的理解专用实现，归A；B用新文件实现通用Context组件。 | MS-C1 | 推荐4个方案 |
+| [B：前端工作区（原Context负责人）](sessions/B.md) | 本轮MS-U1独占apps/web做真实页面，暂停新Context优化；原Context归属保留。 | MS-C1 | 推荐4个方案 |
 | [C：工具组件](sessions/C.md) | 先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。 | MS-T1 | 推荐4个方案 |
 | [D：Runner协议与授权组件](sessions/D.md) | 先落实可信命令信封、期限/主体/签名校验port、授权根和撤销状态。 | MS-R1 | 推荐4个方案 |
 | [E：可选样本与评测](sessions/E.md) | 第5个session可选，负责办公/开发/学术样本、验收表和来源/权限反例。 | MS-Q1 | 第5个可选 |
@@ -29,17 +29,17 @@ v0.14 · 2026-10-09 · 方案：**3个开发session＋1个集成session，共4�
 
 | Session | 包 | 实际状态 |
 | --- | --- | --- |
-| A | MS-I2i | MS-I2i开发中：三包最终组件及A实际消费者接受；原全量中断未计，持久1691项完整回归运行中。 |
-| B | MS-C7 | MS-C7 M3已审阅合入：来源复查/类型修复/批读等价。B最终fecd218/8611384，277 unit＋128不同SQL通过；组件接受，完整P1/P4未接受。 |
-| C | MS-T2f | MS-T2f组件接受：b09fb7d/efb997c，316 unit+178实际SQL。A办公审批/执行/费用/恢复接线通过；完整MS-T2仍按产品门槛。 |
-| D | MS-R2f | MS-R2f组件接受：d3f6077/cd6b33c，505通过。A实际控制客户端/签名读取通过；UAW配对/native确认仍非生产来源。 |
+| A | MS-I2j | MS-I2j已发布待开工：旧MS-I2i固定回归先收尾，随后浏览器身份/API/文件桥接与集成；默认权限不扩大。 |
+| B | MS-U1 | MS-U1已发布待开工：本轮临时负责apps/web真实前端；MS-C7已接受，暂停新Context优化。 |
+| C | MS-T2g | MS-T2g已发布待开工：file.read工具与真实结果恢复；MS-T2f组件接受，不重做原包。 |
+| D | MS-R2g | MS-R2g已发布待开工：Windows本机确认/目录选择/只读授权；MS-R2f组件接受。 |
 | E | MS-Q1 | 可选工作区未创建、任务未派发。 |
 
 A负责评估/完成控制与公共接线；B/C/D实现并验证各自组件。阶段接口与源码到即审阅，组件业务错误由原worker修复。
 
 ## 3. 本轮为何可以并行
 
-[当前完整包：输入输出、策略、四里程碑与目录](../coordination/requests/A/MS-I2i-parallel-packages.md)
+[当前完整包：输入输出、策略、四里程碑与目录](../coordination/requests/A/MS-I2j-parallel-packages.md)
 
 各worker从同一固定基线和已接受组件开工，不读其他开发分支；可选A适配到达后接线，独立兼容路径与模块验证继续。A纯数据交付不等待本机通道，最终组件逐包接受后再做一次集成里程碑全量。
 
@@ -159,6 +159,10 @@ flowchart TD
 | MS-T2f | C | 办公计算/JSON检查/多适配器持久恢复 | MS-T2e | [P1-03](rounds/P1-03.md) |
 | MS-R2f | D | Windows可信IPC/活连接来源/只读双进程链 | MS-R2e | [P1-04](rounds/P1-04.md) |
 | MS-I2i | A | 固定模型评估/成果核验/完成提交与逐包集成 | MS-C6、MS-T2e、MS-R2e | [P1-02](rounds/P1-02.md)、[P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md) |
+| MS-U1 | B | 真实Web工作区/协议客户端/事件恢复 | MS-C7、MS-T2f、MS-R2f | [P1-10](rounds/P1-10.md) |
+| MS-T2g | C | 真实file.read工具/签名语义核验/原结果恢复 | MS-T2f、MS-R2f | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-08](rounds/P1-08.md) |
+| MS-R2g | D | Windows本机确认/目录选择/只读授权生命周期 | MS-R2f | [P1-04](rounds/P1-04.md) |
+| MS-I2j | A | 真实网页API/用户控制/文件桥接与逐包集成 | MS-C7、MS-T2f、MS-R2f | [P1-04](rounds/P1-04.md)、[P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md)、[P1-10](rounds/P1-10.md) |
 | MS-I2f | A | 实际设备归属、登记命令与当前权威 | MS-I2f2 | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md)、[P1-09](rounds/P1-09.md) |
 | MS-I2 | A | 合入Tool与Runner并完成真实权威接线 | MS-I2f、MS-T2c、MS-R2c | [P1-03](rounds/P1-03.md)、[P1-04](rounds/P1-04.md) |
 | MS-T2 | C | 工具真实dispatch及结算接线 | MS-I2、MS-T2a | [P1-03](rounds/P1-03.md)、[P1-09](rounds/P1-09.md) |

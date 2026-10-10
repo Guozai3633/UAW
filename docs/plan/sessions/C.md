@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2f组件接受：b09fb7d/efb997c，316 unit+178实际SQL。A办公审批/执行/费用/恢复接线通过；完整MS-T2仍按产品门槛。以DISPATCH的固定版本与派发为准。
+状态：MS-T2g已发布待开工：file.read工具与真实结果恢复；MS-T2f组件接受，不重做原包。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2e、MS-T2f、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2e、MS-T2f、MS-T2g、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -26,7 +26,7 @@
 
 - 先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。
 - 审批、预算、配置、Runner通过公开port；未提供真实执行器时不得dispatch。
-- 不放开禁用flag，不把测试适配器登记为产品工具；本轮MS-T2f实现办公纯数据工具与严格多适配器路由，MCP仍属后续轮。
+- 本轮MS-T2g实现已有file.read的工具执行/核验/恢复；A注入控制端，缺真实来源不可用，不自行开启flags或写入安装exec。
 
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
@@ -151,6 +151,23 @@
 - 不eval、脚本、网络、本机文件或exec；A配置合法本地provider/角色/目录并跑真实模型选择。
 - M1/M2阶段交付后继续完整包；不依赖D开发分支，不把工具成功当任务完成。
 
+### MS-T2g：真实file.read工具/签名语义核验/原结果恢复
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-04](../rounds/P1-04.md)、[P1-08](../rounds/P1-08.md)。
+开发前置：MS-T2f、MS-R2f。
+
+任务：
+
+1. M1消费既有file.read/FileContent，固定完整Spec与C到A桥接/恢复签名。
+2. M2沿审批预算一次发送精确路由，核对原command/attempt/签名/路径/范围/UTF8/hash/游标。
+3. M3持久实际文件观察与费用，原journal恢复，unknown不重发，数据权限与新准入分开。
+4. M4自身真实SQL和临时测试根覆盖分页/变化/篡改/跨项目主体/撤销取消/并发重启。
+
+交付检查：
+
+- 仅C Tool与自身测试；A注入实际控制端，不依赖D开发分支或伪造用户根授权。
+- 签名或Runner ok不能替代数据核验，片段hash不冒称完整hash，不开写入安装exec。
+
 ### MS-T2：工具真实dispatch及结算接线
 
 对应原轮：[P1-03](../rounds/P1-03.md)、[P1-09](../rounds/P1-09.md)。
@@ -174,8 +191,8 @@
 你负责UAW并行开发中的Session C：工具组件。
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-T2f。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2i-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-T2g。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -1,14 +1,14 @@
-# Session B：上下文组件
+# Session B：前端工作区（原Context负责人）
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-C7 M3已审阅合入：来源复查/类型修复/批读等价。B最终fecd218/8611384，277 unit＋128不同SQL通过；组件接受，完整P1/P4未接受。以DISPATCH的固定版本与派发为准。
+状态：MS-U1已发布待开工：本轮临时负责apps/web真实前端；MS-C7已接受，暂停新Context优化。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6、MS-C7。
+- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6、MS-C7、MS-U1。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -32,6 +32,7 @@
 - `src/uaw/context/read_metrics.py`
 - `tests/unit/context/`
 - `tests/integration/context/`
+- `apps/web/`
 - `docs/coordination/handoffs/B.md`
 - `docs/coordination/requests/B/`
 
@@ -39,6 +40,7 @@
 
 ## 具体边界
 
+- 本轮MS-U1独占apps/web做真实页面，暂停新Context优化；原Context归属保留。
 - seed.py和intent.py包含已验证的理解专用实现，归A；B用新文件实现通用Context组件。
 - 通过Reader port处理已有获准来源；Workspace/Board/记忆未接入时明确不可用。
 - 不写原文、Model配置或执行权限，不把外部资料升级为系统指令。
@@ -165,16 +167,33 @@
 - 完整输入输出/目录/策略以MS-I2i-parallel-packages.md为准；M1阶段说明、M2源码交付后继续M3/M4。
 - 优化不删权限/取消/来源门槛，不承诺虚构比例；真实SQL与受控评估分别记账，完整P1/P4未自动接受。
 
+### MS-U1：真实Web工作区/协议客户端/事件恢复
+
+对应原轮：[P1-10](../rounds/P1-10.md)。
+开发前置：MS-C7、MS-T2f、MS-R2f。
+
+任务：
+
+1. M1在apps/web锁定React/TypeScript/Vite/pnpm，消费现有契约与实际端点，交客户端阶段接口。
+2. M2真实聊天/浅色任务理解/状态/审批取消/文本Markdown成果与合同接受页面。
+3. M3Item/seq/revision去重、刷新断线原请求恢复、SSE或明确分页轮询、安全草稿投影。
+4. M4类型构建/必要组件测试及Playwright，A端点到达即联调，mock与真实回执分开。
+
+交付检查：
+
+- apps/web与其锁由B独占；暂停新Context优化，后端/公共契约/认证由A维护。
+- 不泄漏供应商key/管理员token，不解析模型文字猜执行状态，真实联调缺依赖标pending。
+
 ## 当前session开工说明
 
 沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。
 
 ```text
-你负责UAW并行开发中的Session B：上下文组件。
+你负责UAW并行开发中的Session B：前端工作区（原Context负责人）。
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-C7。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2i-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-U1。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

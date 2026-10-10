@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2f组件接受：d3f6077/cd6b33c，505通过。A实际控制客户端/签名读取通过；UAW配对/native确认仍非生产来源。以DISPATCH的固定版本与派发为准。
+状态：MS-R2g已发布待开工：Windows本机确认/目录选择/只读授权；MS-R2f组件接受。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2f、MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2f、MS-R2g、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -156,6 +156,23 @@
 - 实际IPC与受控临时授权来源分别证明；通信不自证用户确认或配对，D03正式部署未代选。
 - 仅D临时根，flags/写入安装exec不开放；M1/M2交付后继续完整包，A负责控制端/实际组装。
 
+### MS-R2g：Windows本机确认/目录选择/只读授权生命周期
+
+对应原轮：[P1-04](../rounds/P1-04.md)。
+开发前置：MS-R2f。
+
+任务：
+
+1. M1真实NativeConfirmation/RootSelection适配与取消超时，新依赖提案A。
+2. M2PairingVerifier/LocalRoots/一次Ticket绑定独立账号设备挑战、签名hash和期限。
+3. M3实际根与IPC当前身份/权限/撤销/重连和只读journal恢复，不重发未知command。
+4. M4真实Windows部件/双进程临时根验证与清理；真人确认单独记录未点击pending。
+
+交付检查：
+
+- 绝对路径仅本机，网页字符串或模型布尔值不授权；A提供控制面认证与注册权威。
+- 只读，不代选D01/D03或扩大flags；自动化替身不证明真人确认。
+
 ### MS-R2：真实IPC配对和获准执行接线
 
 对应原轮：[P1-04](../rounds/P1-04.md)、[P1-05](../rounds/P1-05.md)。
@@ -179,8 +196,8 @@
 你负责UAW并行开发中的Session D：Runner协议与授权组件。
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2i-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-R2f。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2i-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-R2g。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

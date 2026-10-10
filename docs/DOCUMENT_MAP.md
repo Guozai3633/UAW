@@ -1,3 +1,11 @@
+# 当前开发开工入口：MS-I2j
+
+- [四会话提示词](coordination/MS-I2j-messages.md)：分别转发给原A/B/C/D聊天。
+- [完整分包设计](coordination/requests/A/MS-I2j-parallel-packages.md)：最小API/前端/文件工具/native授权的接口责任、目录、依赖和验收。
+- [当前分工](plan/PARALLEL.md)：B本轮新增apps/web独占；旧Context归属保留，暂停新增优化。
+
+下方为既有架构与已实施内容。MS-I2j安排不算实现，旧MS-I2i完整回归仍待收尾。
+
 # 全局文档作用与位置
 
 当前开发阶段：[MS-I2i-A1实际范围](implementation/MS-I2i-A1.md)；[A评估/交付/完成控制接线](coordination/requests/A/MS-I2i-completion-wiring.md)；[当前组件接受](coordination/DISPATCH.md)。完整本轮回归运行中。

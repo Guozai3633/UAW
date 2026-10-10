@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-10",
+  "scope": "dispatch_documentation_only",
+  "status": "passed",
+  "dispatch_ref": "ms-i2j-start",
+  "source_before_preparation": "00e59becd78118911b49e607809f14e0e2721b71",
+  "unchanged_runtime_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+  "changed_runtime_source_files": [],
+  "worker_ancestry": {
+    "dev/context": true,
+    "dev/tool": true,
+    "dev/runner": true
+  },
+  "worker_worktrees_modified": false,
+  "messages_sent_to_other_threads": false,
+  "parallel_check_sha256": "107e0bc2d59a79c4f9b571e4d56b98b5dfab95d9cdabe15ce4516bb48830ddfd",
+  "packages": 43,
+  "session_templates": 5,
+  "ownership_paths_disjoint": true,
+  "package_dependencies_acyclic": true,
+  "generator_document_links": 328,
+  "additional_document_links": 9,
+  "runtime_tests": "not_run_by_preparation",
+  "ms_i2i_full_regression": "pending",
+  "source_documents": {
+    "docs/coordination/MS-I2j-messages.md": "309d1b1767d49b91b525ecd9919f2c22a4824d5a9a256f708c0ac8eae3f6968e",
+    "docs/coordination/requests/A/MS-I2j-parallel-packages.md": "64f757e5504d55cc2cab69ad586c1c31418ceef41ad63da64e8744fad273bfbf",
+    "docs/implementation/MS-I2j-preparation.md": "7c21af28aaae93ea348c5adda2c76ccdcbbc23718f8232803a81144c9835f418"
+  },
+  "errors": []
+}
