@@ -1011,6 +1011,26 @@
       "rejected": true
     },
     {
+      "case": "http:runner.enrollments.begin cannot succeed without payload",
+      "schema": "HttpRunnerEnrollmentsBeginResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runner.enrollments.get cannot succeed without payload",
+      "schema": "HttpRunnerEnrollmentsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runner.enrollments.complete cannot succeed without payload",
+      "schema": "HttpRunnerEnrollmentsCompleteResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runner.enrollments.revoke cannot succeed without payload",
+      "schema": "HttpRunnerEnrollmentsRevokeResult",
+      "rejected": true
+    },
+    {
       "case": "http:tasks.attach_conversation cannot succeed without payload",
       "schema": "HttpTasksAttachConversationResult",
       "rejected": true

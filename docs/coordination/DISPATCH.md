@@ -1,5 +1,11 @@
 # 当前安排：MS-I2k（2026-10-10）
 
+## A1阶段接口（共同开工标签不移动）
+
+- 源码 **4109b5f4a9ed5fac97598b1c5139ff7074d12bda**，源码标签 `ms-i2k-a1-source`，接口/证据阶段标签 `ms-i2k-a1`。四个设备登记实际HTTP、当前OS角色适配及普通Python安装Runner入口已提供；[接口与首次配对边界](requests/A/MS-I2k-enrollment-v1.md)。worker按本包约定自行消费阶段，A不修改worker分支。
+- 15不同SQL/Web/密码学/实际Windows进程节点最终通过，178源码类型检查通过，1347schema/284接口一致。candidate/native当前来源仍须实际装配，缺失503；没有真人确认通过、文件授权或本轮全量声明。[原失败及准确来源](../implementation/evidence/ms-i2k-a1.json)。
+- B MS-U2、C MS-T2h、D MS-R2h阶段/最终交付已到达，A逐包审阅接线。原120准备/1691完整和6真实模型调用保留旧来源；MS-I2j未验页面/真人/文件链仍继续，不将组件当整轮accepted。
+
 ## 四包正式派发
 
 **准确开工 SHA：`b7b79b150470a80f37b28fd52a2177f6de5b3124`，标签 `ms-i2k-start`。** 此提交包含下列四包、固定输入和全部源码/组件合并；后续 publication 元数据提交不改变此标签。worker 用 `git rev-parse 'ms-i2k-start^{commit}'` 与此 SHA 精确比较，快进后自己的 HEAD 必须等于它。

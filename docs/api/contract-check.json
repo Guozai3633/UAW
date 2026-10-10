@@ -12,68 +12,7 @@
   "nodes_total": 115,
   "openapi_checks": "structural_refs_parameters_wire_examples_only_not_full_OpenAPI_meta_validation",
   "local_links_checked": 17584,
-  "errors": [
-    {
-      "kind": "positive_example",
-      "name": "RunnerEnrollmentProofDocument",
-      "errors": [
-        {
-          "path": "/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "RunnerEnrollmentRecord",
-      "errors": [
-        {
-          "path": "/proof_document/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "HttpRunnerEnrollmentsBeginResult",
-      "errors": [
-        {
-          "path": "/payload/proof_document/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "HttpRunnerEnrollmentsGetResult",
-      "errors": [
-        {
-          "path": "/payload/proof_document/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "HttpRunnerEnrollmentsCompleteResult",
-      "errors": [
-        {
-          "path": "/payload/proof_document/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "HttpRunnerEnrollmentsRevokeResult",
-      "errors": [
-        {
-          "path": "/payload/proof_document/nonce",
-          "reason": "'example_001' is too short"
-        }
-      ]
-    }
-  ],
+  "errors": [],
   "runtime_integration_tests": "not_executed_by_contract_checker_see_implementation_evidence",
   "semantic_authorization_version_effect_checks": "not_executed_by_contract_checker",
   "reviewed_implementation_evidence": {

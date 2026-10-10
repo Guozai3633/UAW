@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2k-A1",
+  "runtime_source_commit": "4109b5f4a9ed5fac97598b1c5139ff7074d12bda",
+  "publication_ref": "ms-i2k-a1",
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "different_nodes": 15,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2k-a1-tests.xml",
+    "sha256": "d320d34b6e7e585eefbeab505e1cca4d97698832a2bb1d6ff06c15ddf95a3744"
+  },
+  "history": [
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-01.xml",
+      "sha256": "1485f02fe6e25b7d29410685ff13ef51297708b125b5c700b6771c1842e9d9c4",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-02.xml",
+      "sha256": "4ba3e8b088975e92c489e7301151640831b16457a7ed044dc76f3813359894d2",
+      "counts": {
+        "tests": 12,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-03.xml",
+      "sha256": "6cfd36c3d3ebbeb8126a7d1ee82b326b10e5b95b0690531476429325f8bfa09f",
+      "counts": {
+        "tests": 14,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-04.xml",
+      "sha256": "f3770429d0ab1afc48d9de275c94df0b2a2e79cb8860bcc05e9d164ea359bf9d",
+      "counts": {
+        "tests": 14,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-capacity-08.xml",
+      "sha256": "61ddc7037ecb9dd922651aac872953f0758e47d67e55c289ec6e06e099f91a58",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-challenge-09.xml",
+      "sha256": "c06e12c4fed312e64eb4a8a81df70b88d869240df9a08d00215d73942ecf20aa",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-http-06.xml",
+      "sha256": "1101d50f89f5fcf8ac67d1709c1e63a666cebd8e3868266f2be8049ac49f3963",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-http-07.xml",
+      "sha256": "8cb0b19a497269b72b21b1000b8d427d83cc68078a470dae0e88daa1c9561190",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a1-m1-enrollment-os-05.xml",
+      "sha256": "75a1f38062b03327ce4f2a73cd2bdb176e62b55c4721adc14081ea6611154eb6",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "per_node_latest": [
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_pending_has_no_pairing_and_replay_keeps_original_nonce",
+      "receipt": "m1-enrollment-challenge-09.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_both_proofs_native_binding_and_same_request_replay",
+      "receipt": "m1-enrollment-capacity-08.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[owner]",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[device_identity]",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[proof_document_hash]",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[control_proof]",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_native_mismatch_never_activates[device_proof]",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_current_logout_and_new_session_cannot_inherit_pairing",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_current_native_and_key_revocation_close_active_read",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_cancel_or_complete_cas_never_reopens_revoked",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_missing_sources_expiry_and_cli_identity_deny",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrolled_peer_registry_uses_actual_windows_instances_and_current_roles",
+      "receipt": "m1-enrollment-os-05.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_http_current_cookie_and_exact_revision",
+      "receipt": "m1-enrollment-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_http_rejects_self_authorization_and_missing_sources",
+      "receipt": "m1-enrollment-http-07.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_enrollment_capacity_rolls_back_new_record_and_replay_remains_original",
+      "receipt": "m1-enrollment-capacity-08.xml"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m1-ruff-final.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m1-mypy-final.log",
+      "sha256": "19d6d1de8c36d572bc5e367e2e092a4ebafe91d90f042fc522175c160ea922e0"
+    }
+  ],
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "previous_preparation": {
+    "path": "docs/implementation/evidence/ms-i2k-preparation.json",
+    "sha256": "810b5fdf6969d8a76b52e55a90c0b054ff807633052e640c7696c85f2d090515"
+  },
+  "prior_model_live": {
+    "path": "docs/implementation/evidence/ms-i2j-m2-live.json",
+    "sha256": "4b96e2d068d0edaf89754602f869fbc81e9977d288b84c0e7dd213af401b2d75"
+  },
+  "actual_model_calls_in_stage": 0,
+  "flags_opened": false,
+  "original_failures": [
+    "Ordinary installed Runner import unavailable; package includes Runner instead of relying on tests sys.path.",
+    "Exited Windows process leaked OSError; actual current identity now explicitly rejects.",
+    "Tests expected incorrect HTTP400/error label; actual forged body rejects422 request_invalid, protocol unchanged.",
+    "Schema generator node binding initially nonexistent; corrected to existing workspace.binding.",
+    "Initial positive examples violated FILETIME decimal/public-key patterns; generator examples corrected, runtime schema unchanged."
+  ],
+  "execution_lineage": "Runtime nodes executed on 6640b8f bytes; 97288cf/4109b5f change only illustrative contract generator/examples. Runtime and tests unchanged.",
+  "contract_first_failure": {
+    "path": "tests/.artifacts/A/MS-I2k/m1-contract-failed.json",
+    "sha256": "f438743438257755488484fc82586a76be4d6f433b9e3b46438285d8459a5928"
+  },
+  "contract_nonce_failure": {
+    "path": "tests/.artifacts/A/MS-I2k/m1-contract-failed-02.json",
+    "sha256": "f8d7009ac6e914fc7d04752798099ed7d4cf92f623bbb1548b48f1cae37f25a4"
+  },
+  "limitations": [
+    "Candidate/native confirmation ports controlled in tests; production missing sources explicitly503.",
+    "Actual Windows process observation/signatures/SQL are verified, no native human click accepted.",
+    "Current original challenge has no recursive native outcome read; it still checks original account/candidate/deadline.",
+    "B actual authenticated page, C materials to Context/Artifact and first native pairing remain current milestones."
+  ]
+}

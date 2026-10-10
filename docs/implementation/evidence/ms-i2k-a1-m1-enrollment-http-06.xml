@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.141" timestamp="2026-10-10T16:15:16.172930+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_http_rejects_self_authorization_and_missing_sources" time="0.337"><failure message="AssertionError: assert (422 == 422 and 'request_invalid' == 'schema_invalid'&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&#10;  &#10;  - schema_invalid&#10;  + request_invalid)">tests\integration\agent\test_enrollment_postgres.py:367: in test_enrollment_http_rejects_self_authorization_and_missing_sources
+    assert forged.status_code == 422 and forged.json()["failure"]["code"] == "schema_invalid"
+E   AssertionError: assert (422 == 422 and 'request_invalid' == 'schema_invalid'
+E    +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+E     
+E     - schema_invalid
+E     + request_invalid)</failure></testcase></testsuite></testsuites>

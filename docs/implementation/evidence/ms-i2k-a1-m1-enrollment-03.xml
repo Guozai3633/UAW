@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="14" time="6.014" timestamp="2026-10-10T16:12:59.802529+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_pending_has_no_pairing_and_replay_keeps_original_nonce" time="0.755" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_both_proofs_native_binding_and_same_request_replay" time="0.410" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_native_mismatch_never_activates[owner]" time="0.265" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_native_mismatch_never_activates[device_identity]" time="0.262" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_native_mismatch_never_activates[proof_document_hash]" time="0.219" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_native_mismatch_never_activates[control_proof]" time="0.232" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_native_mismatch_never_activates[device_proof]" time="0.272" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_current_logout_and_new_session_cannot_inherit_pairing" time="0.371" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_current_native_and_key_revocation_close_active_read" time="0.312" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_cancel_or_complete_cas_never_reopens_revoked" time="0.290" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_missing_sources_expiry_and_cli_identity_deny" time="0.319" /><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrolled_peer_registry_uses_actual_windows_instances_and_current_roles" time="0.564"><failure message="OSError: Windows IPC identity/operation unavailable">tests\integration\agent\test_enrollment_postgres.py:318: in test_enrolled_peer_registry_uses_actual_windows_instances_and_current_roles
+    await peers.current(device, role="device")
+src\uaw\infrastructure\enrollment_peers.py:68: in current
+    if registered != identity or await self.observe(identity.pid) != registered:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\enrollment_peers.py:29: in observe_windows_process
+    return await asyncio.to_thread(read)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\asyncio\threads.py:26: in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\concurrent\futures\thread.py:86: in run
+    result = ctx.run(self.task)
+             ^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\concurrent\futures\thread.py:73: in run
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\enrollment_peers.py:23: in read
+    handle, identity = api.process(pid)
+                       ^^^^^^^^^^^^^^^^
+apps\local_runner\uaw_runner\ipc\windows_pipe.py:182: in process
+    self.fail()
+apps\local_runner\uaw_runner\ipc\windows_pipe.py:128: in fail
+    raise OSError("Windows IPC identity/operation unavailable")
+E   OSError: Windows IPC identity/operation unavailable</failure></testcase><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_http_current_cookie_and_exact_revision" time="0.183"><failure message="NameError: name 'ORIGIN' is not defined">tests\integration\agent\test_enrollment_postgres.py:328: in test_enrollment_http_current_cookie_and_exact_revision
+    headers = {"Origin": ORIGIN, "X-UAW-CSRF": p.session["csrf_token"]}
+                         ^^^^^^
+E   NameError: name 'ORIGIN' is not defined</failure></testcase><testcase classname="tests.integration.agent.test_enrollment_postgres" name="test_enrollment_http_rejects_self_authorization_and_missing_sources" time="0.173"><failure message="NameError: name 'ORIGIN' is not defined">tests\integration\agent\test_enrollment_postgres.py:361: in test_enrollment_http_rejects_self_authorization_and_missing_sources
+    headers = {"Origin": ORIGIN, "X-UAW-CSRF": p.session["csrf_token"]}
+                         ^^^^^^
+E   NameError: name 'ORIGIN' is not defined</failure></testcase></testsuite></testsuites>
