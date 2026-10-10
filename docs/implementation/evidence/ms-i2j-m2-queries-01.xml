@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="4" time="3.325" timestamp="2026-10-10T13:03:24.564584+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.test_control_plane" name="test_conversation_pages_pin_snapshot_across_insert_and_restart" time="0.494" /><testcase classname="tests.integration.test_control_plane" name="test_conversation_cursor_owner_purpose_tamper_and_expiry" time="0.334" /><testcase classname="tests.integration.test_control_plane" name="test_original_request_lookup_is_current_owned_and_never_sends" time="0.446"><failure message="uaw.shared.schema.ContractViolation: RunsControlRequest: invalid fields at /control, /control">tests\integration\test_control_plane.py:1043: in test_original_request_lookup_is_current_owned_and_never_sends
+    await run.control(
+src\uaw\run\facade.py:487: in control
+    validate_contract("RunsControlRequest", request)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: RunsControlRequest: invalid fields at /control, /control</failure></testcase><testcase classname="tests.integration.test_control_plane" name="test_conversation_snapshot_bound_is_explicit" time="0.317" /></testsuite></testsuites>

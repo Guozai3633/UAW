@@ -1,0 +1,922 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2j-M2 live",
+  "execution_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+  "actual_model_calls": 6,
+  "failed_attempts": 0,
+  "finished_samples": 2,
+  "all_attempts_included": true,
+  "scope": "Actual Web cookie/Origin/CSRF ASGI HTTP + PostgreSQL durable Agent + real fixed DeepSeek; not browser UI or native human approval",
+  "cases": [
+    {
+      "scenario": "office",
+      "run_id": "run-72749e6cd8164ac89d5949d5614f18cf",
+      "conversation_id": "conversation-040d72747fc54eff9ca32bad17e4090c",
+      "execution_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+      "source_note": "Live execution began from the working-tree runtime bytes subsequently committed at this source; no runtime edits during this probe.",
+      "scope": "actual ASGI Web session and durable Agent pipeline with fixed real DeepSeek; not browser UI/native approval",
+      "started_at": 1791610903.8490136,
+      "finished_at": 1791611077.4558861,
+      "original_prompt": "请依据以下原始会议纪要，整理简洁的中文行动清单和仍未确定的事项，用Markdown交付。只使用材料，不联网，不需要任何外部动作。材料：周一产品会决定由小李在周五前提供原型；小王负责周三前整理访谈资料；上线时间尚未确定，需要收到原型后再讨论。不得把待定事项写成已确定承诺。",
+      "http": [
+        {
+          "method": "POST",
+          "path": "/v1/web/launch",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/web/session",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/conversations",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/conversations/conversation-040d72747fc54eff9ca32bad17e4090c/turns",
+          "status": 202,
+          "failure": null
+        },
+        {
+          "method": "GET",
+          "path": "/v1/runs/run-72749e6cd8164ac89d5949d5614f18cf/delivery",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "DELETE",
+          "path": "/v1/web/session",
+          "status": 200,
+          "failure": null
+        }
+      ],
+      "run_status": "completed",
+      "artifact": {
+        "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+        "title": "Task result",
+        "version": "1",
+        "created_at": "2026-10-10T05:44:27.804741+00:00",
+        "media_type": "text/markdown; charset=utf-8",
+        "size_bytes": 362,
+        "content_ref": {
+          "id": "f6b088ca4f41b228dac34fc5e64fde623e8af9d0cbce07426f548642152daaad",
+          "kind": "blob",
+          "version": "1",
+          "content_hash": "f6b088ca4f41b228dac34fc5e64fde623e8af9d0cbce07426f548642152daaad"
+        },
+        "format_kind": "markdown",
+        "content_hash": "f6b088ca4f41b228dac34fc5e64fde623e8af9d0cbce07426f548642152daaad",
+        "provenance_refs": [
+          {
+            "id": "web-step-model-1-run-72749e6cd8164ac89d5949d5614f18cf",
+            "kind": "content",
+            "version": "1"
+          }
+        ],
+        "verification_refs": []
+      },
+      "content": "# 会议行动清单与待定事项\n\n## 行动清单\n\n| 事项 | 负责人 | 截止时间 |\n| --- | --- | --- |\n| 提供原型 | 小李 | 周五前 |\n| 整理访谈资料 | 小王 | 周三前 |\n\n## 仍未确定的事项\n\n- 上线时间：尚未确定，需收到原型后再讨论。\n\n> 说明：上线时间目前仅为待定事项，尚未形成确定承诺。",
+      "bundle_ref": {
+        "kind": "content",
+        "id": "completion-37e4cd6d011455857176e0254df8c509b428cda64e999e72be7c64c87d6fca7c",
+        "version": "1",
+        "content_hash": "6978973705068e2f8319194203fb9c6c607205de70f9fc5c6c80a82f3a1e3458"
+      },
+      "report": {
+        "id": "completion-37e4cd6d011455857176e0254df8c509b428cda64e999e72be7c64c87d6fca7c",
+        "checks": [
+          {
+            "id": "artifact-bytes",
+            "kind": "structure",
+            "state": "passed",
+            "summary": "Actual UTF-8 blob, hash, size and provenance checked",
+            "target_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              }
+            ],
+            "requirement_ids": []
+          },
+          {
+            "id": "fixed-sources",
+            "kind": "reference",
+            "state": "passed",
+            "summary": "Actual owned source versions read",
+            "target_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              }
+            ],
+            "requirement_ids": []
+          }
+        ],
+        "outcome": "succeeded",
+        "verdicts": [
+          {
+            "state": "passed",
+            "reason": "Markdown 产物包含简洁的中文行动清单和“仍未确定的事项”部分，且严格依据给定会议纪要（小李周五前提供原型、小王周三前整理访谈资料、上线时间待定需收到原型后再讨论），并以“仅为待定事项，尚未形成确定承诺”明确避免承诺化。",
+            "limitations": [
+              "对“简洁”的判断为语义评估，存在主观性。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              },
+              {
+                "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "original-request"
+          },
+          {
+            "state": "passed",
+            "reason": "产物为 Markdown 格式，含中文的“行动清单”表格与“仍未确定的事项”列表，内容与原始会议纪要一致。",
+            "limitations": [
+              "未执行 Markdown 语法校验工具，仅依据文本结构判断。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              },
+              {
+                "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-7ad42d2002d4a188ec8fbf41292d7ff122ea3519873da14becf8ed39f8faa214"
+          },
+          {
+            "state": "passed",
+            "reason": "产物内容完全来自材料中的四条信息，未引入外部事实；工具活动记录显示无任何工具动作，未发生联网或外部动作。",
+            "limitations": [
+              "工具活动清单仅覆盖本次运行中记录的工具动作，不构成对全局操作系统或模型提供方内部行为的断言；模型提供方 HTTP 用于生成回答，不属于业务联网操作。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              },
+              {
+                "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-dde87c61a152a96ad5617959e6943be6cc8ec6b1469558eecc942fe6c3f36495"
+          },
+          {
+            "state": "passed",
+            "reason": "上线时间被明确列于“仍未确定的事项”，并附说明“上线时间目前仅为待定事项，尚未形成确定承诺”，未被写成已确定承诺。",
+            "limitations": [
+              "语义判断基于文本表面，无额外审核记录。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              },
+              {
+                "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-50984b361f43aebda2ecff673d1d487dd483e0577a1616ce111c4cf9f57307ff"
+          },
+          {
+            "state": "passed",
+            "reason": "交付的文件为 text/markdown 格式，包含中文行动清单与仍未确定事项，符合所要求的输出类型与内容。",
+            "limitations": [
+              "未进行渲染测试，仅确认文件格式为 Markdown。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+              },
+              {
+                "id": "input-3ef9b619f8fc4d54b6ab35fa9e327f98",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "bfe89961f1673f379914aed89064a053a007985abca35fa844030e69ceecfaae"
+              },
+              {
+                "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "output-output-d72e59c7191b8e28814d28427ed73f3d2f522917b571c11b369b04f44e1a63d5"
+          }
+        ],
+        "created_at": "2026-10-10T05:44:35.002002+00:00",
+        "limitations": [
+          "评估仅基于提供的 artifact 与 input-0，以及本次运行记录的工具活动清单。",
+          "工具活动范围说明不覆盖全局操作系统或模型提供方内部活动。",
+          "“简洁”等语义判断具有主观性，未使用形式化度量。",
+          "未获得用户验收证据，也未执行外部联网验证。"
+        ],
+        "target_refs": [
+          {
+            "id": "artifact-0593070352fa0e7a014afa81a01ac9fed6243e42a6de7e88eb85b670f818cf5d",
+            "kind": "artifact",
+            "version": "1",
+            "content_hash": "a1e04f5ab2f1ce4daa403a5ffb5fb08325bfa715fbd2c2c4a65f4d2e0ff4960b"
+          }
+        ],
+        "contract_ref": {
+          "id": "contract-1836a86e43f357934e735fa1894eb8b9656d2a99e35b842783f8ac5042def907",
+          "kind": "content",
+          "version": "1",
+          "content_hash": "862881e37f81ceb6b6d19905f9002100e7bd65818da9d36ef371d0fa210a71c6"
+        },
+        "reviewer_model_config_ref": {
+          "id": "deepseek-flash",
+          "kind": "configuration",
+          "version": "2"
+        }
+      },
+      "model_attempts": [
+        {
+          "id": "web-intent-model-run-72749e6cd8164ac89d5949d5614f18cf",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-32a0d25fa36d4d309e8d1f0c2edf3952",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 4096,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 1093,
+              "wall_time_ms": 1672,
+              "output_tokens": 186
+            },
+            "attempt_id": "web-intent-model-run-72749e6cd8164ac89d5949d5614f18cf",
+            "billing_state": "pending",
+            "cached_input_tokens": 128,
+            "provider_receipt_id": "8cbb38f1-4fef-4939-890b-d8b67262a919"
+          }
+        },
+        {
+          "id": "web-step-model-1-run-72749e6cd8164ac89d5949d5614f18cf",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-32a0d25fa36d4d309e8d1f0c2edf3952",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 2072,
+              "wall_time_ms": 1035,
+              "output_tokens": 125
+            },
+            "attempt_id": "web-step-model-1-run-72749e6cd8164ac89d5949d5614f18cf",
+            "billing_state": "pending",
+            "cached_input_tokens": 128,
+            "provider_receipt_id": "c287adfe-a905-495b-bd9c-8ce9cf96d9e3"
+          }
+        },
+        {
+          "id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-32a0d25fa36d4d309e8d1f0c2edf3952",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 3060,
+              "wall_time_ms": 4242,
+              "output_tokens": 660
+            },
+            "attempt_id": "evaluation-2585e05721abb55f7b64aafbe3646150781837d6bda9d0586e97157bd9e83611",
+            "billing_state": "pending",
+            "cached_input_tokens": 128,
+            "provider_receipt_id": "0919c6a2-4806-4114-a1e5-227cefebd137"
+          }
+        }
+      ],
+      "usage_totals": {
+        "input_tokens": 6225,
+        "output_tokens": 971,
+        "model_calls": 3,
+        "wall_time_ms": 6949
+      },
+      "cached_input_tokens": 384,
+      "pending_money": "0.75",
+      "actual_money": null,
+      "raw_receipt": {
+        "path": "tests/.artifacts/A/MS-I2j/live-web-1364186a39994a7891eea31c0ff7fb8e.json",
+        "sha256": "65946d456896ba25ce13e4e0b44f0b8fe74550989a308cc110b2685e8db219a8"
+      },
+      "automatic_human_decisions": 0,
+      "global_flags_opened": false
+    },
+    {
+      "scenario": "academic",
+      "run_id": "run-a17c42c3d381491ca6b4d29c89be8e94",
+      "conversation_id": "conversation-8f59f3426d1a421f879ac319c8a3a8b8",
+      "execution_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+      "source_note": "Live execution began from the working-tree runtime bytes subsequently committed at this source; no runtime edits during this probe.",
+      "scope": "actual ASGI Web session and durable Agent pipeline with fixed real DeepSeek; not browser UI/native approval",
+      "started_at": 1791611369.2737591,
+      "finished_at": 1791611524.6619184,
+      "original_prompt": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。仅依据材料，不联网，不编造论文或引用。材料：观察性研究中，志愿参加学习辅导的20名学生平均成绩提高10分，未参加的20名学生平均提高3分。没有随机分组，也没有记录两组基线水平、额外学习时长或其他辅导。请明确区分相关与因果，指出选择偏差，不能把差异直接认定为辅导造成。",
+      "http": [
+        {
+          "method": "POST",
+          "path": "/v1/web/launch",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/web/session",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/conversations",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "POST",
+          "path": "/v1/conversations/conversation-8f59f3426d1a421f879ac319c8a3a8b8/turns",
+          "status": 202,
+          "failure": null
+        },
+        {
+          "method": "GET",
+          "path": "/v1/runs/run-a17c42c3d381491ca6b4d29c89be8e94/delivery",
+          "status": 200,
+          "failure": null
+        },
+        {
+          "method": "DELETE",
+          "path": "/v1/web/session",
+          "status": 200,
+          "failure": null
+        }
+      ],
+      "run_status": "completed",
+      "artifact": {
+        "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+        "title": "Task result",
+        "version": "1",
+        "created_at": "2026-10-10T05:51:51.626684+00:00",
+        "media_type": "text/markdown; charset=utf-8",
+        "size_bytes": 3667,
+        "content_ref": {
+          "id": "e1cef3a185bd9952ef298153d83811d69a1b005d105dc0f83cff1490201c3d9b",
+          "kind": "blob",
+          "version": "1",
+          "content_hash": "e1cef3a185bd9952ef298153d83811d69a1b005d105dc0f83cff1490201c3d9b"
+        },
+        "format_kind": "markdown",
+        "content_hash": "e1cef3a185bd9952ef298153d83811d69a1b005d105dc0f83cff1490201c3d9b",
+        "provenance_refs": [
+          {
+            "id": "web-step-model-1-run-a17c42c3d381491ca6b4d29c89be8e94",
+            "kind": "content",
+            "version": "1"
+          }
+        ],
+        "verification_refs": []
+      },
+      "content": "# 对观察性研究结果的讨论\n\n## 一、材料事实回顾\n\n- 观察性研究，**非随机分组**。\n- 志愿参加学习辅导组：20 人，平均成绩提高 **10 分**。\n- 未参加组：20 人，平均提高 **3 分**。\n- 未记录：两组**基线水平**、**额外学习时长**、**其他辅导**。\n\n两组平均提高相差 7 分，但这一差异本身不能说明差异由辅导造成。\n\n## 二、能支持的结论（相关层面）\n\n1. **存在组间差异的观察结果**：在本样本中，志愿参加辅导的学生平均成绩提高幅度（10 分）高于未参加者（3 分），差值为 7 分。\n2. **存在关联/相关**：在本次观察范围内，“参加辅导”与“成绩提高更多”呈正相关。\n3. **不能排除选择偏差等替代解释**：由于非随机分组、且缺少基线等关键变量记录，无法把该差异归因于辅导。\n4. **只能作为假设生成**：结果可作为提出“辅导可能与成绩提高有关”这一假设的线索，供后续研究检验。\n\n## 三、不能支持的结论（因果层面）\n\n1. **不能声称“辅导导致成绩提高 10 分”或“辅导的因果效应为 7 分”**。\n2. **不能声称“辅导有效/无效”** 的一般性结论。\n3. **不能外推到其他学生群体或情境**，样本为志愿参加者，非随机抽样。\n4. **不能排除以下替代解释**：\n   - **选择偏差（自选择偏差）**：志愿参加者可能本身更有学习动机、更愿意投入时间，成绩提高可能源于这些既有特征，而非辅导本身。\n   - **基线水平差异**：材料未记录两组基线成绩；若两组起点不同，提高幅度不可直接比较（如低起点者更易出现较大提高，或高起点者天花板效应）。\n   - **额外学习时长差异**：未记录，两组课外投入可能不同。\n   - **其他辅导/干扰因素**：未记录，可能存在混杂。\n5. **不能确认测量与实施的等价性**（如考试难度、评分标准是否一致，材料未涉及）。\n\n综上：这是**相关**证据，**不是因果**证据；组间 7 分差异不能直接认定为辅导造成。\n\n## 四、两个后续验证方案\n\n### 方案一：随机对照试验（RCT）\n\n- 将符合条件的学生**随机分配**到“接受辅导组”与“不接受辅导（或等待名单）组”，消除自选择。\n- 辅导前后测量成绩，**记录基线成绩**，并统一考试与评分标准。\n- 同时记录**额外学习时长、其他辅导**等变量，以便控制或分析混杂。\n- 比较两组**成绩变化**，估计辅导的因果效应；必要时做意向性分析（ITT）。\n\n> 要点：随机化是对抗选择偏差、支持因果结论的关键设计。\n\n### 方案二：对既有观察数据做更严格的准实验分析（如倾向得分匹配/回归调整）\n\n- 在无法随机化时，尽量**补充收集基线成绩、学习动机、额外学习时长、其他辅导**等协变量。\n- 用**倾向得分匹配**或**多元回归调整**，使两组在这些已测协变量上可比，再比较成绩变化。\n- 做**敏感性分析**，检验结果对未测混杂的稳健性。\n\n> 要点：只能减少（而非消除）已测混杂带来的偏差；若关键混杂未被测量，仍不能作强因果结论。\n\n## 五、结论一句话\n\n材料支持“参加辅导与成绩提高更多存在正相关”的描述性观察，但**不支持“辅导导致成绩提高”的因果结论**；主要威胁是选择偏差及未测量的基线与投入差异。要检验因果，需要随机化设计，或在观察数据中尽量控制混杂并做敏感性分析。",
+      "bundle_ref": {
+        "kind": "content",
+        "id": "completion-84516e93d7ac80fedfd4ae100495ec28ed4dfb4b010a138e8a47e9dd09462179",
+        "version": "1",
+        "content_hash": "7f84012debdac4121cd0a40d6143419de94b57e47ba65a5521d0eadd7eb5d22c"
+      },
+      "report": {
+        "id": "completion-84516e93d7ac80fedfd4ae100495ec28ed4dfb4b010a138e8a47e9dd09462179",
+        "checks": [
+          {
+            "id": "artifact-bytes",
+            "kind": "structure",
+            "state": "passed",
+            "summary": "Actual UTF-8 blob, hash, size and provenance checked",
+            "target_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              }
+            ],
+            "requirement_ids": []
+          },
+          {
+            "id": "fixed-sources",
+            "kind": "reference",
+            "state": "passed",
+            "summary": "Actual owned source versions read",
+            "target_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              }
+            ],
+            "requirement_ids": []
+          }
+        ],
+        "outcome": "succeeded",
+        "verdicts": [
+          {
+            "state": "passed",
+            "reason": "工件为Markdown格式，按材料讨论了能支持与不能支持的结论，区分了相关与因果，指出选择偏差，并提出RCT与倾向得分匹配/回归调整两个后续验证方案；未联网或编造引用。",
+            "limitations": [
+              "仅依据工件静态内容评估，未执行联网核验（工具活动记录为空，但无法据此证明不存在任何外部活动）。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "original-request"
+          },
+          {
+            "state": "passed",
+            "reason": "工件使用Markdown标题与列表组织，包含能支持结论部分、不能支持结论部分，并在第四部分提出两个后续验证方案。",
+            "limitations": [
+              "对Markdown使用是否满足形式的判断基于文本标识（#、-），未进行渲染验证。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-52a07eb4686782d8d522ffcaedd1d61baf31d907b9317a51f1ff98522d7ec887"
+          },
+          {
+            "state": "passed",
+            "reason": "工件仅引用材料中的数字与缺失变量，未给出外部论文、引用或来源；工具活动记录显示无业务网络检索动作。",
+            "limitations": [
+              "工具活动记录为空不能证明全局OS或提供商内部无网络活动，评估仅覆盖声明范围内的记录。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-62d9fc3e5c8f9267d3ea3eb43882b602bb97cc3acc98e24b675779ec5dcb47ad"
+          },
+          {
+            "state": "passed",
+            "reason": "工件明确区分相关层面（正相关、仅假设生成）与因果层面（不能声称辅导导致成绩提高），指出选择偏差/自选择偏差，并写明7分差异不能直接认定为辅导造成。",
+            "limitations": [
+              "评估基于语义判断，未使用外部统计或因果推断工具验证。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "requirement-90763faa1b554b67a6775583072fa005846ec9b2acbb3052e7603965e7439146"
+          },
+          {
+            "state": "passed",
+            "reason": "工件第二部分列出来源材料可支持的结论：存在组间差异、存在关联、不能排除替代解释、仅可作假设生成。",
+            "limitations": [
+              "未验证支持结论是否在统计意义上充分，仅评估是否与材料一致。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "output-output-fbe8bc57c218628fa19b51dfff0b70440dac5c6aa844c327ddaec05bc6a74d54"
+          },
+          {
+            "state": "passed",
+            "reason": "工件第三部分列出不能支持的因果性结论（如辅导导致提高、辅导有效性、外推、替代解释、测量等价性）并给出总结。",
+            "limitations": [
+              "未验证所列替代解释是否穷尽，仅评估是否覆盖材料要求的区分。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "output-output-39c0b22eca179742ce131957d6a45fd5cbb4424c07ddc33179ed2c876456c3f5"
+          },
+          {
+            "state": "passed",
+            "reason": "工件第四部分给出两个后续验证方案：方案一随机对照试验（RCT），方案二对既有观察数据做倾向得分匹配/回归调整等准实验分析。",
+            "limitations": [
+              "未评估方案的可实施性、样本量或伦理审批等外部条件。"
+            ],
+            "evidence_refs": [
+              {
+                "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+                "kind": "artifact",
+                "version": "1",
+                "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+              },
+              {
+                "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+                "kind": "input",
+                "version": "1",
+                "content_hash": "162718742048f9a3a71f37cb39abdd2782469d54c62521c4cdb09602bc84368e"
+              },
+              {
+                "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+                "kind": "content",
+                "version": "1"
+              }
+            ],
+            "requirement_id": "output-output-766f45294a97ec3cdf44621055d31898b03ac314e5c685605a67fbac18f9d0a0"
+          }
+        ],
+        "created_at": "2026-10-10T05:52:00.796025+00:00",
+        "limitations": [
+          "所有判定仅基于提供的文本/Markdown工件与输入材料，未执行任何实际统计、实验或外部检索。",
+          "工具活动记录为空，不能据此证明不存在任何提供商内部或全局网络活动；评估限定在声明范围内。",
+          "未获得用户验收或领域专家复核。"
+        ],
+        "target_refs": [
+          {
+            "id": "artifact-82aa47c038247f75bd59e68fef4534f428ef2232738413273519ceaa493ec0bc",
+            "kind": "artifact",
+            "version": "1",
+            "content_hash": "f43f9b4c4642e3d052b9e781281d84069119ab7475a6d7e98a46863cef64dfd5"
+          }
+        ],
+        "contract_ref": {
+          "id": "contract-2878391f586a54c0eaea675da6ea1a335a3f70979034652236e4d0f8c4c25be8",
+          "kind": "content",
+          "version": "1",
+          "content_hash": "d6d72868092a980ceb7939fc07f5898c1fb69d4279cc8cad97d21a06c47575ae"
+        },
+        "reviewer_model_config_ref": {
+          "id": "deepseek-flash",
+          "kind": "configuration",
+          "version": "2"
+        }
+      },
+      "model_attempts": [
+        {
+          "id": "web-intent-model-run-a17c42c3d381491ca6b4d29c89be8e94",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-4fdd6933f39f4f6999544a4bf51d922b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 4096,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 1116,
+              "wall_time_ms": 1821,
+              "output_tokens": 284
+            },
+            "attempt_id": "web-intent-model-run-a17c42c3d381491ca6b4d29c89be8e94",
+            "billing_state": "pending",
+            "cached_input_tokens": 128,
+            "provider_receipt_id": "08d85570-806b-4ed5-aaf7-e21660c934a0"
+          }
+        },
+        {
+          "id": "web-step-model-1-run-a17c42c3d381491ca6b4d29c89be8e94",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-4fdd6933f39f4f6999544a4bf51d922b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 2290,
+              "wall_time_ms": 5331,
+              "output_tokens": 944
+            },
+            "attempt_id": "web-step-model-1-run-a17c42c3d381491ca6b4d29c89be8e94",
+            "billing_state": "pending",
+            "cached_input_tokens": 128,
+            "provider_receipt_id": "a10a13c7-d0e5-4063-8496-28df51eaa3f6"
+          }
+        },
+        {
+          "id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+          "state": "received",
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-4fdd6933f39f4f6999544a4bf51d922b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          },
+          "usage": {
+            "resources": {
+              "currency": "USD",
+              "tool_calls": 0,
+              "model_calls": 1,
+              "child_agents": 0,
+              "input_tokens": 4668,
+              "wall_time_ms": 5446,
+              "output_tokens": 1017
+            },
+            "attempt_id": "evaluation-d2b8051a5de08117f35a1eaffe48cfdb9f6531b312db3910feec858ab4149da1",
+            "billing_state": "pending",
+            "cached_input_tokens": 256,
+            "provider_receipt_id": "f7e4e67f-75e0-4d2f-ba44-1af1c0273e18"
+          }
+        }
+      ],
+      "usage_totals": {
+        "input_tokens": 8074,
+        "output_tokens": 2245,
+        "model_calls": 3,
+        "wall_time_ms": 12598
+      },
+      "cached_input_tokens": 512,
+      "pending_money": "0.75",
+      "actual_money": null,
+      "raw_receipt": {
+        "path": "tests/.artifacts/A/MS-I2j/live-web-56f3d77898c5493da7ac9ce7cf47954d.json",
+        "sha256": "7515131eed573bf6dd7c27d9bc8516d9cb76af5c649a70724e2aead3d71b8123"
+      },
+      "automatic_human_decisions": 0,
+      "global_flags_opened": false
+    }
+  ],
+  "actual_money": null,
+  "billing_state": "pending",
+  "previous46_not_recounted": true
+}

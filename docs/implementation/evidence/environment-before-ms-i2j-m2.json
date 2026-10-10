@@ -2,7 +2,7 @@
   "date": "2026-10-10",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2j M2 scoped23 distinct PostgreSQL/HTTP/controlled-model pipeline nodes. Latest-per-node receipts, not one full command. Actual UI/native/LLM acceptance separate.",
+  "scope": "MS-I2j M1 scoped36 real PostgreSQL/HTTP/browser session/config checks, no new live model/UI/native confirmation. Previous full1691 is pinned separately to MS-I2i.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 23,
+    "tests": 36,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "46a4584c94a590d041f519de424633aca3a3ec0d88de3c5ac70a1c20b9e3f342",
-  "runtime_implementation": "development durable single Agent and owned Web delivery; explicit opt-in; native file bridge pending",
+  "test_evidence_sha256": "c1d6da1bf536480b41c1bf1a1e385866ade4e0d0fa094be83c35a9efb7042dfb",
+  "runtime_implementation": "development_loopback_browser_identity_and_run_admission; background execution M2 pending",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -194,9 +194,9 @@
     "apps/local_runner/uaw_runner/state.py": "cae8c6deeda58b966b85694ab18be08241de3c554742d0d9216e79689b64b185",
     "contracts/build_interfaces.py": "7123c7f23c1fa5ee8fa773a7ef914fe321c251f77ce490585c32c94d70de714b",
     "contracts/check_interfaces.py": "4b17f0a7c00a7bb78d15f8fcbfdca4a27070855ff9e6de44551002d632562132",
-    "contracts/implementation_catalog.py": "9e7e43afad118fa9f4ff6c0e509fcb57aee6ef44fe1e039cc7c132803004b2dc",
-    "contracts/interface_catalog.py": "1618ec8d1a96ae26564da4fe8d76825721177381c75b4be602438694a39eabfc",
-    "contracts/uaw.schema.json": "2072a628ac2dce0542ba61f6c62c20739701f4c9f5c0014943bd19a1686dffe5",
+    "contracts/implementation_catalog.py": "00e5a1873504b4f2b980db4ea359945ad00a2ec02e5417b2d2145bc4da9a25ce",
+    "contracts/interface_catalog.py": "4b9ef9a0e7f9c2a976ebc3697cc77e7f4be8b5b41f8c337ff537c1b31d8285bb",
+    "contracts/uaw.schema.json": "d44cbf71e70d31d48d233b290006767387003e2fb29c43adab772f7832c654ca",
     "ops/admin_cli.py": "5471c471e3a10d1c27c44902141cef86cccbdae4cf2fdcb447dcb6622f3bc971",
     "ops/agent_probe.py": "8159e34059bae742d75ddee8a0776db02d11d0d20e5416ccbab1b8c776111032",
     "ops/browser-development.toml": "4946aaf2adff3b05c3038fa461336307e63e292a3d2398ba7f6f6a0c1bd70b19",
@@ -245,9 +245,9 @@
     "src/uaw/api/authentication.py": "afd9c04e2314bb2bdacc37a70a02542f7dab442874fa049932e82962cafde70e",
     "src/uaw/api/browser.py": "3727e3682b85622f363bfc7c78cf6fdf6295bbd57e92a4a4936ba6b21f816b36",
     "src/uaw/api/documentation.py": "c3406df539922585d16e9599bbc42a6b2a40bb91e3a0f251335ae8fc1bc278c9",
-    "src/uaw/api/routes.py": "5abf421d9c975caba30a4670060620a73108d411a4d6eb9a9c1716bd0fc380e0",
+    "src/uaw/api/routes.py": "8c0dcd9f2100fdf80d8161a2cc9925465d00e64e32b1dc4b6287578b4c7fc0ea",
     "src/uaw/application.py": "636c7a74d98e3d4c040c7db9639b0401ed3378c7c1add6155f9f2c24bfedc457",
-    "src/uaw/composition.py": "7475877e72b61a7dcbebde405a2d4bb33c4f0145ee29fa6df7a5da023971fcb7",
+    "src/uaw/composition.py": "96c03536b892b5e8ce285c11c83c874828543648661d3db5cfc21c632ebc2ca8",
     "src/uaw/context/authority.py": "07de2318b7491db5ccf8d5264e0fb76a0303c1bbca353edbb8598e57d1c72b1e",
     "src/uaw/context/cache.py": "77ec70f85d83d22a494723a7eb3c86d5013ad5f7bb4d9471ca763731de18f6b6",
     "src/uaw/context/composer.py": "bc8a706f13d800cc95b29db837dbff257aa67d176f415c26dd39a151282482cd",
@@ -299,28 +299,23 @@
     "src/uaw/resources/prompts/intent-understand-v1.txt": "a61a99f44b40e05c9452d9cdccf0d54ee7421d8cdc4d1b976e95335095d2e01a",
     "src/uaw/run/__init__.py": "a422b2894ffd8197f6426969e000187361fe9c79df7a0eaad7e381f6636b8b7e",
     "src/uaw/run/approval.py": "13bc732c310d8982a50abdf406b91e0155d8979915fc0a58957d5f062fe4f9fb",
-    "src/uaw/run/background.py": "2aa7f1e69135d158148a2bec680c21a81741b183caca24fcc1db19885fcd1feb",
     "src/uaw/run/budget.py": "ef1e6782be5810c1c5453908158f80a777b38562df4e56d01b71a97e478c9e7f",
-    "src/uaw/run/completion.py": "61a19a64b841b6791bc0970ad3a2e7bf61c5eeebedebfd3732f11dd9a5c46047",
+    "src/uaw/run/completion.py": "1eae6c06431db5a51762109dca9b2ec79ac2487ce9fc7a40c175a33063a8b9f5",
     "src/uaw/run/context.py": "398849d0f56499b06dedbc582fb7c19729f7a48b73d121d0a401700d8d9e9913",
     "src/uaw/run/context_sources.py": "fdbff10587e4d1ebcc753007eaa8a33a612c1af4ce291899351be91880947479",
-    "src/uaw/run/deliveries.py": "8e38dc7ef7a7768a7a0fef2b3c51ff80da553d77a55603812ae6825d92a24ba9",
     "src/uaw/run/events.py": "886d61d7e25d3739cb854310c68d43795c0b2bb3dd075ffcadc1fff30be791b8",
     "src/uaw/run/execution_sources.py": "67d83b899a34b1606a08efafcc06d4f348b62cadfcd99175baf8cc675fecc66b",
-    "src/uaw/run/facade.py": "9a074e1ac2271f6fd33c1f1a573e8162374cb9dea36fdde149764a2b1b553fbc",
+    "src/uaw/run/facade.py": "62aca07b23676ab612683164057b450054713b56b47abe03ea515d28e4888cff",
     "src/uaw/run/history.py": "716f04acf442da7ebd0040b2e314da4d1c93a25ac3233a4fbecb131e442f5cae",
     "src/uaw/run/inputs.py": "e1b3cbdfd70c120593cde9eb345e497926adf3216c922903b6dbb3251ae88ccb",
-    "src/uaw/run/jobs.py": "e2135c69b0f125b0902f2a1eb8a664d578e0fc10c67442cdee1883384d3770b4",
     "src/uaw/run/leases.py": "2662f761d98c26af6e03c5ad8a2ce26c6a18383666eeaedcfc6d678eae50ccfe",
-    "src/uaw/run/permissions.py": "7012035b94d99e79f5d787396eaafc51e94006be49b75341bc0eb59f866a7c4f",
-    "src/uaw/run/queries.py": "45c2d8e1be5418ca38b76a72dff2e8c84b3df0c5b6fae449efa6d3cfde0dc174",
+    "src/uaw/run/permissions.py": "48c6b69a9a0dfbf53dec140aa7b975059ff24965e0100f45267a09d6ee46fb69",
     "src/uaw/run/runner_authority.py": "7d1916d27d1001206861d671451fd33a0febe4e85b4bfcedbcd973fa2774de59",
     "src/uaw/run/runner_commands.py": "cb072e7f267eab252daba0f861b7de3eb8ced5eba62da51f3f20a6c5ead84f1d",
     "src/uaw/run/runner_devices.py": "70bb40170f070d80fd6c2c4c977d0d13bd2163d71a3f843918a61fece9e6b31c",
     "src/uaw/run/runner_mapping.py": "e2739893586e0842f415761cd230f256fdcd7eac64c5be2e9fc906716b3664f4",
     "src/uaw/run/runner_receipts.py": "1a4cb57abf5a649402c13be16d67838a9fcfc94d38347eb9c118c875e127af95",
     "src/uaw/run/state.py": "fe32289e58b2b171da6522d3a814db33aad411ae5cf7722aa8723e6df764f23a",
-    "src/uaw/run/termination.py": "e0cc24e61cd7a3789a4fcceb2589556901ee94823d1ca753ba28e1047d218504",
     "src/uaw/run/tool_sources.py": "f093d3ad6355d764320f190d27f806d802c0e2eb27944f285195f439224a6030",
     "src/uaw/shared/__init__.py": "1283eb8e79ae3de55f83e2275103dfa565386ff251fcb66099764778684b0d18",
     "src/uaw/shared/builtin_tools.py": "7f7b687082cb67e5b49b5c55d208fbbe15fa1e6d755af731423cf02a5c93e510",
@@ -332,7 +327,7 @@
     "src/uaw/shared/ports.py": "fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104",
     "src/uaw/shared/runner_signatures.py": "9b49569a8ca055bd80538b8706344c8e6cbe699cabfe07c9a893133ae343ed17",
     "src/uaw/shared/schema.py": "d9ff3b9e2cdc0c94ab0e75ba2b1e95a332e50bff0fc2c28bae03dcec3994e97a",
-    "src/uaw/shared/settings.py": "a2cd729e50553435104a0ba081c66bb16a23838e1576913c4dc0a99f64ceb7f3",
+    "src/uaw/shared/settings.py": "fd7e3d7bc206cc8cb0f3938abca9de35a36a286b55acee9dd6fc0e8dcd6d60d9",
     "src/uaw/shared/stores.py": "47e0f6b70a843bebf9fd1477e3a8c507b75cad8d8b01f03a2ea1b0b5f26fd300",
     "src/uaw/tool/__init__.py": "4dee1e11c9ba1f07e9fc9c5fd8a6cfaaeba06e4b78668f7399627ff9799d6cb0",
     "src/uaw/tool/approval.py": "128e62fdaf0995a10809123b89aa1564fc377b915b13d68e675167c82cc6fc02",
@@ -373,8 +368,7 @@
     "tests/conftest.py": "077b4b8e8db58f6532514d0d50504aca255e7fa6636fa551681bd27165e9dd4c",
     "tests/integration/agent/conftest.py": "71da2af8764acbf341aa27dab6f9be0d8e0801de088fd3584ccf49bf27397ecc",
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
-    "tests/integration/agent/test_background_postgres.py": "8c44d095ea74ac0d5e978eee58f950fe129d16e231602dc5a6dd1a3b06684ad3",
-    "tests/integration/agent/test_completion_postgres.py": "b9519a9a95b0249e63b5ca48ddf5ff5f99af05467771157137a017ff05c79947",
+    "tests/integration/agent/test_completion_postgres.py": "40fe984ca0ce361b9b48b43ed225b62aa3b8fd92ca61a5c72056c76081387754",
     "tests/integration/agent/test_components_postgres.py": "315b7c3b1f9dfb1c542389cd99863e9beba700e7015679d1108212fcbe6dc643",
     "tests/integration/agent/test_context_batch_postgres.py": "b9f7e19681aa1fefa020d3ecb022eb0c94191226d7a98775a4d3051339bdfcd7",
     "tests/integration/agent/test_context_epoch_postgres.py": "37cca6fc238e91a1c7bde882eb08456dffcf7761b8975a20bcd3b050927f5881",
@@ -421,7 +415,7 @@
     "tests/integration/test_bootstrap.py": "c3fddf33be3507e924f6dc20c8760cf15bf3c89a6030c77aa3d4adc005f0fdc9",
     "tests/integration/test_browser_sessions.py": "4f5095f970ddcf0f7b0fb1eb4b5226e2bd2109392b2b9adc4310e5fbd58238e5",
     "tests/integration/test_context_wiring.py": "1f32cd834cefe67a470d2ed68f085650d49c5c73ea8961dac734478945cd30f0",
-    "tests/integration/test_control_plane.py": "bf107b2b72731c1ef3a1cd6bddb4367d651b8fcf16a76eaaf8a44a25d12b0807",
+    "tests/integration/test_control_plane.py": "a0940b291f2fc2187d4281c7a6b760f9318102d4b9de869404649a4babacc3a9",
     "tests/integration/test_execution_leases.py": "10d321e73d0dae09d6717053f277bc9e9eb5cc23159e890ecbca944164d072f1",
     "tests/integration/test_execution_permissions.py": "bbc3009da8a610de38565bbab5d6c711b95259522e4474bb459c6d9c121103be",
     "tests/integration/test_model_input_routing.py": "a9b59879057abc1fa498776e7db27c51fbef6645a43ddbef8e02b45ede2efc7f",
@@ -488,7 +482,8 @@
     "tests/unit/tool/test_retrieval.py": "03766e53ce1715d3692c32f5696a41e7cce2221da4abbc53d66cee646246386a",
     "tests/unit/tool/test_text_inspect.py": "245a9948113b02121928c7fc8ccf700363b322eedd0d7fe85db3f7d1975691c2",
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
-    "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+    "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+    "src/uaw/resources/uaw.schema.json": "d44cbf71e70d31d48d233b290006767387003e2fb29c43adab772f7832c654ca"
   },
   "verification_lineage": {
     "full_runtime_receipt_ref": "ms-i2i",
@@ -496,19 +491,19 @@
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
     "previous_environment": {
-      "path": "docs/implementation/evidence/environment-before-ms-i2j-m2.json",
-      "sha256": "11800205807bdf8571407d6f1451799dc915393b9c0e31a18c6e53acd3d5039b"
+      "path": "docs/implementation/evidence/environment-before-ms-i2j.json",
+      "sha256": "0859ec607cc0a5d3f964794f9b8d38342322215b754b0a5eea4541b0b604b2c0"
     },
     "previous_full_receipt": {
       "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
       "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
     },
     "current_stage": {
-      "path": "docs/implementation/evidence/ms-i2j-m2.json",
-      "sha256": "d76a67e62126f29ea2efab2d83f42ab7984de5c2b1827e94595fc86ffa364ce0"
+      "path": "docs/implementation/evidence/ms-i2j-m1.json",
+      "sha256": "ed7688d6e531ae8c2eccc782f9abc912cbad1d0f62f56ab6c439f8c01ec09a16"
     },
-    "current_stage_source": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
-    "current_stage_different_nodes": 23,
+    "current_stage_source": "c1045fde04a960d0345dc0881d86dba062de7f28",
+    "current_stage_different_nodes": 36,
     "current_stage_is_full_regression": false
   }
 }

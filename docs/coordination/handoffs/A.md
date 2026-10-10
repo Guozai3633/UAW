@@ -184,3 +184,10 @@
 
 旧MS-I2i固定1691已独立封存，未覆写ms-i2j-start/B前端归属或worker分支。B按[阶段接口](../requests/A/MS-I2j-stage-api.md)接线，C/D正式阶段port已审阅待实际控制来源；真人确认仍pending，默认flags未开。阶段证据见[MS-I2j-M1](../../implementation/MS-I2j-M1.md)。
 
+
+## MS-I2j M2 实际交付
+
+源码 cae6b8c，固定阶段 ms-i2j-a2；23 不同真实 SQL/HTTP 节点最终通过，150 核心源码类型检查通过。6 个实际查询/成果接口与持久单 Agent 已接通，原尝试/fence/会话撤销/取消复核保留。原失败、旧 M1 与1691完整回执分别保存。
+
+真实固定 DeepSeek 办公及学术材料从 Web 会话→原文→实际 Agent→Markdown→逐项核验→completed，共6调用/2样例，费用 pending。此为 ASGI/数据库/真实模型，浏览器页面与真人目录授权仍未验。B/C/D最终组件已到，继续审查接线；原固定开工标签和 worker 目录不改。
+

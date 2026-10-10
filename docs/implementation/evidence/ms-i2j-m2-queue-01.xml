@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="3.600" timestamp="2026-10-10T13:17:43.147548+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.test_control_plane" name="test_queue_admission_is_atomic_bounded_and_deduplicated" time="0.584"><failure message="uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /">tests\integration\test_control_plane.py:1099: in test_queue_admission_is_atomic_bounded_and_deduplicated
+    original = await queued_job(domain, principal, q, conv["id"], "queued-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_control_plane.py:1088: in queued_job
+    return await domain[1].submit(
+src\uaw\run\facade.py:311: in submit
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:168: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:204: in _execute
+    result = await action(RecordTransaction(session, owner.id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\facade.py:308: in write
+    await on_admitted(tx, run)
+tests\integration\test_control_plane.py:1086: in enqueue
+    await queue.enqueue(tx, admitted, actor)
+src\uaw\run\jobs.py:74: in enqueue
+    await tx.write(JOBS, run["id"], "BackgroundRunJob", value)
+src\uaw\infrastructure\db\transactions.py:50: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /</failure></testcase><testcase classname="tests.integration.test_control_plane" name="test_queue_cross_process_claim_and_expired_fence_cannot_save" time="0.602"><failure message="uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /">tests\integration\test_control_plane.py:1123: in test_queue_cross_process_claim_and_expired_fence_cannot_save
+    original = await queued_job(domain, principal, q, conv["id"], "claim-one")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_control_plane.py:1088: in queued_job
+    return await domain[1].submit(
+src\uaw\run\facade.py:311: in submit
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:168: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:204: in _execute
+    result = await action(RecordTransaction(session, owner.id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\facade.py:308: in write
+    await on_admitted(tx, run)
+tests\integration\test_control_plane.py:1086: in enqueue
+    await queue.enqueue(tx, admitted, actor)
+src\uaw\run\jobs.py:74: in enqueue
+    await tx.write(JOBS, run["id"], "BackgroundRunJob", value)
+src\uaw\infrastructure\db\transactions.py:50: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /</failure></testcase><testcase classname="tests.integration.test_control_plane" name="test_queue_shutdown_restores_original_stage_and_attempt_without_new_job" time="0.573"><failure message="uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /">tests\integration\test_control_plane.py:1162: in test_queue_shutdown_restores_original_stage_and_attempt_without_new_job
+    original = await queued_job(domain, principal, q, conv["id"], "interrupted-job")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_control_plane.py:1088: in queued_job
+    return await domain[1].submit(
+src\uaw\run\facade.py:311: in submit
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:168: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:204: in _execute
+    result = await action(RecordTransaction(session, owner.id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\facade.py:308: in write
+    await on_admitted(tx, run)
+tests\integration\test_control_plane.py:1086: in enqueue
+    await queue.enqueue(tx, admitted, actor)
+src\uaw\run\jobs.py:74: in enqueue
+    await tx.write(JOBS, run["id"], "BackgroundRunJob", value)
+src\uaw\infrastructure\db\transactions.py:50: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: BackgroundRunJob: invalid fields at /, /, /, /, /, /, /, /, /</failure></testcase></testsuite></testsuites>

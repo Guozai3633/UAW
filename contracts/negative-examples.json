@@ -971,6 +971,26 @@
       "rejected": true
     },
     {
+      "case": "http:runs.delivery cannot succeed without payload",
+      "schema": "HttpRunsDeliveryResult",
+      "rejected": true
+    },
+    {
+      "case": "http:artifacts.content cannot succeed without payload",
+      "schema": "HttpArtifactsContentResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.delivery.accept cannot succeed without payload",
+      "schema": "HttpRunsDeliveryAcceptResult",
+      "rejected": true
+    },
+    {
+      "case": "http:turns.lookup cannot succeed without payload",
+      "schema": "HttpTurnsLookupResult",
+      "rejected": true
+    },
+    {
       "case": "http:web.launch cannot succeed without payload",
       "schema": "HttpWebLaunchResult",
       "rejected": true

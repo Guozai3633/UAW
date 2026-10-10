@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="198.971" timestamp="2026-10-10T13:25:22.132586+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_background_postgres" name="test_real_queue_pipeline_recovers_original_step_and_delivers[False-case0]" time="197.662"><failure message="AssertionError: {'step': 1, 'fence': 5, 'stage': 'step', 'state': 'blocked', ...}&#10;assert ('step' == 'delivery'&#10;  &#10;  - delivery&#10;  + step)">tests\integration\agent\test_background_postgres.py:102: in test_real_queue_pipeline_recovers_original_step_and_delivers
+    assert job["stage"] == "delivery" and "failure" not in job, job
+E   AssertionError: {'step': 1, 'fence': 5, 'stage': 'step', 'state': 'blocked', ...}
+E   assert ('step' == 'delivery'
+E     
+E     - delivery
+E     + step)</failure></testcase></testsuite></testsuites>

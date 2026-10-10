@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="371.701" timestamp="2026-10-10T13:21:50.566637+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_background_postgres" name="test_real_queue_pipeline_recovers_original_step_and_delivers[False-case0]" time="171.482" /><testcase classname="tests.integration.agent.test_background_postgres" name="test_real_queue_pipeline_recovers_original_step_and_delivers[True-case0]" time="199.039"><failure message="uaw.shared.errors.DomainError: Actual owned source differs from its fixed pin">tests\integration\agent\test_background_postgres.py:113: in test_real_queue_pipeline_recovers_original_step_and_delivers
+    delivery, _ = await DeliveryReader(runs.store, control.blobs).read(actor, original["id"])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\deliveries.py:99: in read
+    check_pin(pin, "content", row.resource_id, row.revision, row.payload)
+src\uaw\agent\sources.py:25: in check_pin
+    raise reject("agent_source_stale", "Actual owned source differs from its fixed pin", 412)
+E   uaw.shared.errors.DomainError: Actual owned source differs from its fixed pin</failure></testcase></testsuite></testsuites>

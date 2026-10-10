@@ -1,5 +1,12 @@
 # 当前安排：MS-I2j（2026-10-10）
 
+## A M2 阶段接线
+
+- A 源码 `cae6b8ca04dae0db19e1fe8992f8a20235fa0006`，阶段标签 `ms-i2j-a2`。实际持久后台单 Agent、6 个本人查询/成果接口已实现。23 个不同 SQL/HTTP 节点最终通过；150 个核心源码类型检查通过；1328 schema/280 接口一致性通过。原失败与旧完整1691回执独立保留。
+- 真实固定 DeepSeek 办公任务已从一次 Web 登录和原文提交跑到 completed、Markdown成果及逐项核验；3 次调用的费用仍 pending。它是实际 ASGI/数据库/外部模型链，尚不是浏览器页面或真人目录授权验收。学术样例另行记录。
+- B 的 A1 页面组件已交付，待消费 [新增 M2 接口](requests/A/MS-I2j-stage-api.md) 的列表/RecoveryPort/ReviewPort。C/D 最终组件到达待审阅与接线，不开放本机 flags。共同 `ms-i2j-start` 标签及 worker 目录不变。
+- [A M2 范围和证据](../implementation/MS-I2j-M2.md)。本阶段不是本轮全量/P1 accepted，下一轮分包须以实际未完成门槛安排。
+
 ## A M1实际阶段
 
 - 旧MS-I2i已发布 `ms-i2i / 6f1db65dc414b16def20d1b11278f204f9bfeaab`，原固定源码1691个不同节点完整通过，失败/中断/复跑记录保留。下方“仍运行中”段落是历史时点。

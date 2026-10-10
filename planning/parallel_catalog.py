@@ -1,6 +1,6 @@
 """Authored development-session assignments. Product Runtime delegation is a separate feature."""
 
-VERSION = "0.15"
+VERSION = "0.16"
 DATE = "2026-10-10"
 BASELINE = {
     "git_repository": True,
@@ -8,20 +8,20 @@ BASELINE = {
     "integration_branch": "integration",
     "commit": "00e59becd78118911b49e607809f14e0e2721b71",
     "commit_kind": "development_dispatch_source_with_full_regression_pending",
-    "runtime_baseline_ref": "ms-i2j-m1-source",
-    "runtime_baseline_commit": "c1045fde04a960d0345dc0881d86dba062de7f28",
-    "runtime_source_commit": "c1045fde04a960d0345dc0881d86dba062de7f28",
+    "runtime_baseline_ref": "ms-i2j-m2-source",
+    "runtime_baseline_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+    "runtime_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
     "remote_baseline_verified": True,
     "dispatch_ready": True,
     "workspaces_ready": True,
     "dispatch_ref": "ms-i2j-start",
-    "integration_ref": "ms-i2j-a1",
+    "integration_ref": "ms-i2j-a2",
     "last_full_runtime_ref": "ms-i2i",
-    "phase_different_passing_nodes": 36,
-    "phase_nodes_relation": "MS-I2j M1 scoped36 configuration/real SQL/HTTP identity and Run admission checks; not a full regression. Previous full1691 is separately pinned to MS-I2i",
-    "live_model_ref": "ms-i2i-a1",
-    "live_model_calls": 46,
-    "live_model_final_samples": 5,
+    "phase_different_passing_nodes": 23,
+    "phase_nodes_relation": "MS-I2j M2 scoped23 SQL/HTTP/controlled model pipeline latest-per-node checks; not a full regression. M1 scoped36 and previous full1691 independently retained.",
+    "live_model_ref": "ms-i2j-a2",
+    "live_model_calls": 6,
+    "live_model_final_samples": 2,
     "phase_is_full_milestone": False,
     "first_dispatch_ref": "parallel-wave-1",
     "chat_sessions_created": True,

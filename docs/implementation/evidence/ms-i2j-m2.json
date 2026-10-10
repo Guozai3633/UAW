@@ -1,0 +1,356 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2j-M2",
+  "execution_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+  "publication_ref": "ms-i2j-a2",
+  "acceptance": "scoped durable Agent pipeline and owned Web delivery protocol with controlled model HTTP",
+  "full_regression": false,
+  "different_nodes": 23,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2j-m2-tests.xml",
+    "sha256": "46a4584c94a590d041f519de424633aca3a3ec0d88de3c5ac70a1c20b9e3f342"
+  },
+  "per_node_latest": [
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_conversation_pages_pin_snapshot_across_insert_and_restart",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_conversation_cursor_owner_purpose_tamper_and_expiry",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_original_request_lookup_is_current_owned_and_never_sends",
+      "receipt": "m2-queries-02.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_conversation_snapshot_bound_is_explicit",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_web_user_conversation_admission_and_logout_blocks_mutation",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_queue_admission_is_atomic_bounded_and_deduplicated",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_queue_cross_process_claim_and_expired_fence_cannot_save",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_queue_shutdown_restores_original_stage_and_attempt_without_new_job",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_queue_renewal_preserves_fence_and_original_progress",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.test_control_plane",
+      "name": "test_stopped_queue_restart_finalizes_cancel_only_without_unknown_effect",
+      "receipt": "m2-control-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_delivery_read_after_completion_and_new_login_keeps_original_sources",
+      "receipt": "m2-chain-02.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_delivery_http_returns_real_content_and_rejects_hash_or_acceptance",
+      "receipt": "m2-delivery-http-03.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_real_artifact_report_terminal_cas_event_and_restart_replay",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_user_acceptance_is_independent_and_binds_artifact_version",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_incomplete_semantic_result_cannot_submit_terminal_state[failed]",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_incomplete_semantic_result_cannot_submit_terminal_state[not_run]",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_incomplete_semantic_result_cannot_submit_terminal_state[blocked]",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_unverified_web_citation_blocks_even_a_passing_model",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_cancel_after_review_does_not_complete",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_invented_semantic_evidence_fails_before_bundle",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_completion_postgres",
+      "name": "test_unknown_model_receipt_and_user_revision_prevent_terminal_commit",
+      "receipt": "m2-delivery-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[False-case0]",
+      "receipt": "m2-chain-02.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[True-case0]",
+      "receipt": "m2-chain-02.xml"
+    }
+  ],
+  "history": [
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-background-01.xml",
+      "sha256": "e9b2c580e3fd93d7d244676cedb60371edfc00e1a3763391732d980c0d3031fa",
+      "counts": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-background-diagnostic.xml",
+      "sha256": "e21ef73c8c7d832e69a0fae9eb53de4ad3ff42c62d5fd1eab5ae871bc4f7b27e",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-chain-02.xml",
+      "sha256": "81ffddec033cebbdb48c1698ed0d07d5a871f36e37bd54e5a62cfdf58b71b3e5",
+      "counts": {
+        "tests": 4,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-control-04.xml",
+      "sha256": "c64aba1a974838a32f0f547ffa4b95e017e4fe905a06ff9bd6b8b0c48d88aafc",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-delivery-01.xml",
+      "sha256": "f15d54fa57af80c7f108eadb1b757b6e1fe11f6fa147f6f7b4d9702516055511",
+      "counts": {
+        "tests": 11,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-delivery-http-03.xml",
+      "sha256": "fdd0743962bb7bd2f810da3de7a7073971889d3ed11a56a6c171e939dc8de56f",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-queries-01.xml",
+      "sha256": "ff21750ea84d5158df58f2b269ce4230c6b930fc34f9649a872c9c2319cb05b6",
+      "counts": {
+        "tests": 4,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-queries-02.xml",
+      "sha256": "341b52fecc78d8723193736215868f6ab1477fb4a90de1687c8333ff625ce769",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-queue-01.xml",
+      "sha256": "a26b9b4a3abd7156c76131f06ecce24b3e327df86e007bfab78294f617feac34",
+      "counts": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-queue-02.xml",
+      "sha256": "7a1ac68983e2e6aa58d9db3294b69256eb9e668aaac41c14ad0cfeb1840cb93f",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m2-queue-03.xml",
+      "sha256": "371925283151fe5da029d5c092e531c38df24d88ea4c48e19e94bba1d123ffb0",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "raw_logs": [
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-background-01.log",
+      "sha256": "5b34e665a72e5fb707e88b7c6702ff490e6249c370ccf34e1ebe8cb9931f8977"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-background-diagnostic.log",
+      "sha256": "3a10951e3e31142cf17703c47cb8e6fb61daea7754e15de5d8d1625097f478ed"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-background-style-01.log",
+      "sha256": "2af10307d373f5e6beba0a3543a023057f5d1317967337adcab489b782a420c3"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-chain-02.log",
+      "sha256": "e2d53970c34913856b19ea975dadc98713f597e958f8088e812d1cc9eecb582e"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-control-04.log",
+      "sha256": "b8c32f238ce5eeca850f8c70a9647cf22b8f5f4a91cbe6d0aaf0a47d8d2e1985"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-mypy.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queries-01.log",
+      "sha256": "e4b99274ae19a671eaedbed3dc33ad82494178a653cada4dc67d9a3ecc37fbe2"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queries-02.log",
+      "sha256": "d8410b90a1eae2792a13c029f129116a72cf8032dda44414fbb564c4b3050c04"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-query-style-03.log",
+      "sha256": "deb6bcc7fad70cc00917b8da2e21076ebe6b119abef1e6794bc5b72f37b1247c"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queue-01.log",
+      "sha256": "297102604f5283b0a76f4c2bcab2b26c2adc94275935b78748afdd535af7d40c"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queue-02.log",
+      "sha256": "be382e01ccab715d4145ee3dc4fa57f5b7a2027605557ffdb4d75f39ff2d07c8"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queue-03.log",
+      "sha256": "542da3a74965330497785c604bc24d82cc963a4f87d1abaa8ad43547a40b2dad"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-queue-style-06.log",
+      "sha256": "755851e14481b4c58dfa8a1dfc8deec39d03290555fe0fd960784b03f8b89cd1"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-worker-style-02.log",
+      "sha256": "4b9315462a6ef4a2fe64e4dc2aec1252bf2299ac92f4976c0e81c84799cff44a"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-worker-style-04.log",
+      "sha256": "31f56f26a56fb6bfe4e67ef2639e9ec8a5d6a3284ab5bbf95ac544ffb1a8c8bf"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-worker-style-05.log",
+      "sha256": "bbd0f74dd4c724d767920f0da9952c13754b7ef070a57b412a3cc2e9287f3fd7"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-worker-style-initial.log",
+      "sha256": "3e86db2fd8e9ec912ebdc0f6e30546ab7414bca69852981bd914887df8e0dca2"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m2-mypy.log",
+      "sha256": "066ec88f3228d93b674fd2f3cb0033ed1ee9558cf96b1e52b5f104e3d33f8132"
+    }
+  ],
+  "original_failures": [
+    "Missing ignored output directory before pytest; no accepted nodes.",
+    "Optional BackgroundRunJob fields mistakenly required by generator; corrected schema, original failures retained.",
+    "VerificationReport Ref was checked as content rather than verification; original failures retained.",
+    "HTTP fixture omitted actual Run service; added original service, unchanged positive assertions."
+  ],
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "flags_opened": false,
+  "actual_external_model_quality_accepted": "Two bounded office/academic material samples only; not general professional quality or actual browser acceptance",
+  "limitations": [
+    "Six real fixed DeepSeek attempts across two completed material samples are separate from controlled 23 nodes.",
+    "B actual page adapters and browser integration pending.",
+    "C/D native user approval and file bridge M3 pending.",
+    "No current full regression; old1691 remains tied to original MS-I2i."
+  ],
+  "live": {
+    "path": "docs/implementation/evidence/ms-i2j-m2-live.json",
+    "sha256": "4b96e2d068d0edaf89754602f869fbc81e9977d288b84c0e7dd213af401b2d75",
+    "calls": 6,
+    "samples": 2,
+    "failures": 0,
+    "scope": "Actual Web cookie/Origin/CSRF ASGI HTTP + PostgreSQL durable Agent + real fixed DeepSeek; not browser UI or native human approval"
+  }
+}
