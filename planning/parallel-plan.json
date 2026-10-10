@@ -1,24 +1,24 @@
 {
-  "plan_version": "0.16",
+  "plan_version": "0.17",
   "date": "2026-10-10",
-  "status": "ms_i2j_parallel_capability_packages",
+  "status": "ms_i2k; ms_i2j product gates carried forward explicitly_parallel_capability_packages",
   "baseline": {
     "git_repository": true,
     "remote": "https://github.com/Guozai3633/UAW.git",
     "integration_branch": "integration",
-    "commit": "00e59becd78118911b49e607809f14e0e2721b71",
-    "commit_kind": "development_dispatch_source_with_full_regression_pending",
-    "runtime_baseline_ref": "ms-i2j-m2-source",
-    "runtime_baseline_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
-    "runtime_source_commit": "cae6b8ca04dae0db19e1fe8992f8a20235fa0006",
+    "commit": "d52ed515f9def6b2d0144e779a5793a7022bf676",
+    "commit_kind": "reviewed_components_and_scoped_bridge_development_dispatch",
+    "runtime_baseline_ref": "ms-i2j-bridge-source",
+    "runtime_baseline_commit": "d52ed515f9def6b2d0144e779a5793a7022bf676",
+    "runtime_source_commit": "d52ed515f9def6b2d0144e779a5793a7022bf676",
     "remote_baseline_verified": true,
     "dispatch_ready": true,
     "workspaces_ready": true,
-    "dispatch_ref": "ms-i2j-start",
-    "integration_ref": "ms-i2j-a2",
+    "dispatch_ref": "ms-i2k-start",
+    "integration_ref": "ms-i2k-start",
     "last_full_runtime_ref": "ms-i2i",
-    "phase_different_passing_nodes": 23,
-    "phase_nodes_relation": "MS-I2j M2 scoped23 SQL/HTTP/controlled model pipeline latest-per-node checks; not a full regression. M1 scoped36 and previous full1691 independently retained.",
+    "phase_different_passing_nodes": 120,
+    "phase_nodes_relation": "Scoped120 bridge/Runner SQL/C-D boundary and actual Windows IPC checks; not a full regression. M1 36/M2 23 and previous full1691 independently retained.",
     "live_model_ref": "ms-i2j-a2",
     "live_model_calls": 6,
     "live_model_final_samples": 2,
@@ -28,7 +28,7 @@
     "code_baseline_verified": true,
     "last_verified_tests": 1691,
     "last_verified_scope": "MS-I2i fixed-source complete1691 development campaign with real SQL/Windows IPC/temp read and separate46 actual DeepSeek attempts; frontend/native user confirmation/production account still pending",
-    "current_unverified_round": "MS-I2j",
+    "current_unverified_round": "MS-I2k; MS-I2j product gates carried forward explicitly",
     "pending_semantic_acceptance_round": "P1-01",
     "pending_gates": [
       "D01 final storage authority",
@@ -36,32 +36,32 @@
       "D03 Runner execution mode"
     ],
     "next_wave_dispatch_channel": "published_documents_for_user_to_forward",
-    "package_strategy_document": "docs/coordination/requests/A/MS-I2j-parallel-packages.md"
+    "package_strategy_document": "docs/coordination/requests/A/MS-I2k-parallel-packages.md"
   },
   "session_progress": {
     "A": {
-      "state": "MS-I2j已开工：旧MS-I2i全量1691最终覆盖通过；当前M1浏览器会话/API准备与文件桥接，默认权限不扩大。",
-      "package": "MS-I2j",
+      "state": "MS-I2k已派发：可信来源/旧轮未完成真人与页面链/逐包集成；120聚焦通过，旧1691非新全量。",
+      "package": "MS-I2k",
       "ready": true,
-      "base_ref": "ms-i2j-start"
+      "base_ref": "ms-i2k-start"
     },
     "B": {
-      "state": "MS-U1已发布待开工：本轮临时负责apps/web真实前端；MS-C7已接受，暂停新Context优化。",
-      "package": "MS-U1",
+      "state": "MS-U2已派发：MS-U1组件接受，消费固定A2列表/原请求/成果及真实页面；暂停Context优化。",
+      "package": "MS-U2",
       "ready": true,
-      "base_ref": "ms-i2j-start"
+      "base_ref": "ms-i2k-start"
     },
     "C": {
-      "state": "MS-T2g已发布待开工：file.read工具与真实结果恢复；MS-T2f组件接受，不重做原包。",
-      "package": "MS-T2g",
+      "state": "MS-T2h已派发：MS-T2g组件接受，原文件资料owning Reader/证据与账务恢复。",
+      "package": "MS-T2h",
       "ready": true,
-      "base_ref": "ms-i2j-start"
+      "base_ref": "ms-i2k-start"
     },
     "D": {
-      "state": "MS-R2g已发布待开工：Windows本机确认/目录选择/只读授权；MS-R2f组件接受。",
-      "package": "MS-R2g",
+      "state": "MS-R2h已派发：MS-R2g组件接受，实际helper装配与bootstrap consumer；真人确认仍pending。",
+      "package": "MS-R2h",
       "ready": true,
-      "base_ref": "ms-i2j-start"
+      "base_ref": "ms-i2k-start"
     },
     "E": {
       "state": "可选工作区未创建、任务未派发。",
@@ -105,9 +105,13 @@
     "MS-T2f": "accepted_component",
     "MS-R2f": "accepted_component",
     "MS-I2j": "in_progress",
-    "MS-U1": "dispatch_ready",
-    "MS-T2g": "dispatch_ready",
-    "MS-R2g": "dispatch_ready",
+    "MS-U1": "accepted_component",
+    "MS-T2g": "accepted_component",
+    "MS-R2g": "accepted_component",
+    "MS-I2k": "dispatch_ready",
+    "MS-U2": "dispatch_ready",
+    "MS-T2h": "dispatch_ready",
+    "MS-R2h": "dispatch_ready",
     "MS-I2": "in_progress",
     "MS-T2": "waiting_not_dispatched",
     "MS-R2": "waiting_not_dispatched"
@@ -200,6 +204,7 @@
         "docs/coordination/REQUEST_TEMPLATE.md",
         "docs/coordination/NEXT_WAVE.md",
         "docs/coordination/MS-I2j-messages.md",
+        "docs/coordination/MS-I2k-messages.md",
         "docs/coordination/handoffs/A.md",
         "docs/coordination/requests/A/"
       ],
@@ -219,6 +224,7 @@
         "MS-I2h",
         "MS-I2i",
         "MS-I2j",
+        "MS-I2k",
         "MS-I2f",
         "MS-I2",
         "MS-I3"
@@ -269,12 +275,13 @@
         "MS-C5",
         "MS-C6",
         "MS-C7",
-        "MS-U1"
+        "MS-U1",
+        "MS-U2"
       ],
       "report": "docs/coordination/handoffs/B.md",
       "request_dir": "docs/coordination/requests/B/",
       "rules": [
-        "本轮MS-U1独占apps/web做真实页面，暂停新Context优化；原Context归属保留。",
+        "本轮MS-U2独占apps/web消费A2真实列表/恢复/成果，暂停新Context优化；原Context归属保留。",
         "seed.py和intent.py包含已验证的理解专用实现，归A；B用新文件实现通用Context组件。",
         "通过Reader port处理已有获准来源；Workspace/Board/记忆未接入时明确不可用。",
         "不写原文、Model配置或执行权限，不把外部资料升级为系统指令。"
@@ -302,6 +309,7 @@
         "MS-T2e",
         "MS-T2f",
         "MS-T2g",
+        "MS-T2h",
         "MS-T2"
       ],
       "report": "docs/coordination/handoffs/C.md",
@@ -338,6 +346,7 @@
         "MS-R2e",
         "MS-R2f",
         "MS-R2g",
+        "MS-R2h",
         "MS-R2"
       ],
       "report": "docs/coordination/handoffs/D.md",
@@ -374,6 +383,101 @@
     }
   },
   "packages": [
+    {
+      "id": "MS-I2k",
+      "session": "A",
+      "rounds": [
+        "P1-04",
+        "P1-07",
+        "P1-08",
+        "P1-09",
+        "P1-10"
+      ],
+      "title": "真实账号设备来源/文件与页面整链",
+      "deps": [
+        "MS-U1",
+        "MS-T2g",
+        "MS-R2g"
+      ],
+      "scope": "integration",
+      "tasks": [
+        "M1发布固定来源接口，验证原Tool/预算/Runner桥接和账号设备挑战。",
+        "M2实际localhost后端与受保护设备登记，服务B的A2接口。",
+        "M3当前根/签名/IPC文件观察进入Context和成果，撤销/取消/unknown复查。",
+        "M4真实页面/固定模型/本人目录授权及完成控制；逐包接受后一次全量。"
+      ],
+      "acceptance": [
+        "MS-I2j未完成产品门槛显式带入，不把组件/120聚焦当整轮或新全量。",
+        "只改A保留路径，用户固定模型和权限边界保持。"
+      ]
+    },
+    {
+      "id": "MS-U2",
+      "session": "B",
+      "rounds": [
+        "P1-10"
+      ],
+      "title": "A2真实列表/原请求恢复/完整成果页面",
+      "deps": [
+        "MS-U1"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "M1固定生成A2客户端、服务器列表/RecoveryPort/ReviewPort。",
+        "M2原文/理解/正文/逐项核验/合同接受实际默认页面。",
+        "M3未知回应/旧hash/身份变化/取消竞争，刷新不重发。",
+        "M4类型构建/必要组件与真实页面验证，受控/真实分开。"
+      ],
+      "acceptance": [
+        "只改apps/web/B文档；无需等待文件授权才能做办公页面链。",
+        "不读取A密钥，页面不置completed或造文件授权。"
+      ]
+    },
+    {
+      "id": "MS-T2h",
+      "session": "C",
+      "rounds": [
+        "P1-03",
+        "P1-08"
+      ],
+      "title": "文件资料owning Reader/引用与账务恢复",
+      "deps": [
+        "MS-T2g"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "M1固定当前资料Reader和A消费接口/真实能力边界。",
+        "M2有界原FileContent/观察Ref资料适配，来源不可变。",
+        "M3撤销/取消/账务独立恢复/丢回应重启无新打开。",
+        "M4独立55434真实SQL和A桥样例，按影响复跑。"
+      ],
+      "acceptance": [
+        "不改Context/Agent/公共DTO，新增契约提案A。",
+        "分页或完整原快照缺真实源时不可用，flags不改。"
+      ]
+    },
+    {
+      "id": "MS-R2h",
+      "session": "D",
+      "rounds": [
+        "P1-04"
+      ],
+      "title": "本机helper装配/可信bootstrap消费与真人流程",
+      "deps": [
+        "MS-R2g"
+      ],
+      "scope": "dependent_component",
+      "tasks": [
+        "M1固定既有PeerRegistration/NativeChallenge ports组合和缺来源错误。",
+        "M2可启动关闭的隐藏只读helper，统一keys/registry/native/read端点。",
+        "M3一次根绑定/撤销/断线重连与原journal恢复。",
+        "M4真实Windows/双进程/清理和本人手动验收；缺A源标pending。"
+      ],
+      "acceptance": [
+        "不以SID/PID或HTTP approved推账号，首次控制源A实现。",
+        "不自动批准，不开放写入安装exec；组件与真人回执区分。"
+      ]
+    },
     {
       "id": "MS-00",
       "session": "A",

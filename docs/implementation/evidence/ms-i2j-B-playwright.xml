@@ -1,0 +1,28 @@
+<testsuites id="" name="" tests="11" failures="0" skipped="0" errors="0" time="10.770213">
+<testsuite name="controlled\auth.spec.ts" timestamp="2026-10-10T05:10:52.748Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.923" errors="0">
+<testcase name="controlled: published session exchange removes fragment, logout clears local drafts and uses CSRF" classname="controlled\auth.spec.ts" time="0.619">
+</testcase>
+<testcase name="controlled: lost exchange reconciles GET cookie session without consuming launch code twice" classname="controlled\auth.spec.ts" time="0.304">
+</testcase>
+</testsuite>
+<testsuite name="controlled\workspace.spec.ts" timestamp="2026-10-10T05:10:52.748Z" hostname="chromium" tests="9" failures="0" skipped="0" time="7.481" errors="0">
+<testcase name="controlled: original→understanding→Markdown summary; reload/reconnect never resend" classname="controlled\workspace.spec.ts" time="0.91">
+</testcase>
+<testcase name="controlled: fresh approval 批准 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="0.979">
+</testcase>
+<testcase name="controlled: fresh approval 拒绝 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="1.02">
+</testcase>
+<testcase name="controlled: stale approval prevents POST" classname="controlled\workspace.spec.ts" time="0.639">
+</testcase>
+<testcase name="controlled: actual terminal confirms cancel, no resend on refresh" classname="controlled\workspace.spec.ts" time="1.092">
+</testcase>
+<testcase name="controlled: unknown send retained across refresh without matching text or resubmission" classname="controlled\workspace.spec.ts" time="0.74">
+</testcase>
+<testcase name="controlled: mobile layout, unavailable identity and denied API are readable" classname="controlled\workspace.spec.ts" time="0.528">
+</testcase>
+<testcase name="controlled: create uses actual model catalog and remains usable after opening" classname="controlled\workspace.spec.ts" time="0.617">
+</testcase>
+<testcase name="controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again" classname="controlled\workspace.spec.ts" time="0.956">
+</testcase>
+</testsuite>
+</testsuites>

@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-R2g已发布待开工：Windows本机确认/目录选择/只读授权；MS-R2f组件接受。以DISPATCH的固定版本与派发为准。
+状态：MS-R2h已派发：MS-R2g组件接受，实际helper装配与bootstrap consumer；真人确认仍pending。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/runner`。
 - 实际worktree：`E:/UAW/.worktrees/runner`。
-- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2f、MS-R2g、MS-R2。
+- 首包：MS-R1；后续：MS-R2a、MS-R2b、MS-R2c、MS-R2d、MS-R2e、MS-R2f、MS-R2g、MS-R2h、MS-R2。
 - 交接记录：[docs/coordination/handoffs/D.md](../../coordination/handoffs/D.md)。
 - 公共变更提案目录：`docs/coordination/requests/D/`。
 
@@ -36,6 +36,23 @@
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
 ## 对应工作包
+
+### MS-R2h：本机helper装配/可信bootstrap消费与真人流程
+
+对应原轮：[P1-04](../rounds/P1-04.md)。
+开发前置：MS-R2g。
+
+任务：
+
+1. M1固定既有PeerRegistration/NativeChallenge ports组合和缺来源错误。
+2. M2可启动关闭的隐藏只读helper，统一keys/registry/native/read端点。
+3. M3一次根绑定/撤销/断线重连与原journal恢复。
+4. M4真实Windows/双进程/清理和本人手动验收；缺A源标pending。
+
+交付检查：
+
+- 不以SID/PID或HTTP approved推账号，首次控制源A实现。
+- 不自动批准，不开放写入安装exec；组件与真人回执区分。
 
 ### MS-R1：Runner协议与授权范围校验
 
@@ -196,8 +213,8 @@
 你负责UAW并行开发中的Session D：Runner协议与授权组件。
 当前工作目录必须是E:/UAW/.worktrees/runner，分支必须是dev/runner。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/D.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-R2g。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2k-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-R2h。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2k-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

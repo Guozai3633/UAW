@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-T2g已发布待开工：file.read工具与真实结果恢复；MS-T2f组件接受，不重做原包。以DISPATCH的固定版本与派发为准。
+状态：MS-T2h已派发：MS-T2g组件接受，原文件资料owning Reader/证据与账务恢复。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/tool`。
 - 实际worktree：`E:/UAW/.worktrees/tool`。
-- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2e、MS-T2f、MS-T2g、MS-T2。
+- 首包：MS-T1；后续：MS-T2a、MS-T2b、MS-T2c、MS-T2d、MS-T2e、MS-T2f、MS-T2g、MS-T2h、MS-T2。
 - 交接记录：[docs/coordination/handoffs/C.md](../../coordination/handoffs/C.md)。
 - 公共变更提案目录：`docs/coordination/requests/C/`。
 
@@ -31,6 +31,23 @@
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
 ## 对应工作包
+
+### MS-T2h：文件资料owning Reader/引用与账务恢复
+
+对应原轮：[P1-03](../rounds/P1-03.md)、[P1-08](../rounds/P1-08.md)。
+开发前置：MS-T2g。
+
+任务：
+
+1. M1固定当前资料Reader和A消费接口/真实能力边界。
+2. M2有界原FileContent/观察Ref资料适配，来源不可变。
+3. M3撤销/取消/账务独立恢复/丢回应重启无新打开。
+4. M4独立55434真实SQL和A桥样例，按影响复跑。
+
+交付检查：
+
+- 不改Context/Agent/公共DTO，新增契约提案A。
+- 分页或完整原快照缺真实源时不可用，flags不改。
 
 ### MS-T1：工具注册、过滤与参数校验
 
@@ -191,8 +208,8 @@
 你负责UAW并行开发中的Session C：工具组件。
 当前工作目录必须是E:/UAW/.worktrees/tool，分支必须是dev/tool。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/C.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-T2g。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2k-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-T2h。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2k-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

@@ -1,6 +1,6 @@
 # UAW 多session开发计划
 
-v0.16 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4个**。
+v0.17 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4个**。
 
 先让不同session各做一个不重叠的组件包，再由集成session接起来。接口文档使组件能按同一规则开发；完整任务能运行，还需要具体文件归属、固定代码版本和组合验证。
 
@@ -20,7 +20,7 @@ v0.16 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4�
 | Session | 做什么 | 首个包 | 实际分工 |
 | --- | --- | --- | --- |
 | [A：集成与任务理解](sessions/A.md) | 负责现有P1-01收尾、公共契约、组装根、迁移、依赖锁和合并。 | MS-00 | 推荐4个方案 |
-| [B：前端工作区（原Context负责人）](sessions/B.md) | 本轮MS-U1独占apps/web做真实页面，暂停新Context优化；原Context归属保留。 | MS-C1 | 推荐4个方案 |
+| [B：前端工作区（原Context负责人）](sessions/B.md) | 本轮MS-U2独占apps/web消费A2真实列表/恢复/成果，暂停新Context优化；原Context归属保留。 | MS-C1 | 推荐4个方案 |
 | [C：工具组件](sessions/C.md) | 先做小工具目录、schema规范化、角色/权限/flag过滤和动作身份。 | MS-T1 | 推荐4个方案 |
 | [D：Runner协议与授权组件](sessions/D.md) | 先落实可信命令信封、期限/主体/签名校验port、授权根和撤销状态。 | MS-R1 | 推荐4个方案 |
 | [E：可选样本与评测](sessions/E.md) | 第5个session可选，负责办公/开发/学术样本、验收表和来源/权限反例。 | MS-Q1 | 第5个可选 |
@@ -29,17 +29,17 @@ v0.16 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4�
 
 | Session | 包 | 实际状态 |
 | --- | --- | --- |
-| A | MS-I2j | MS-I2j已开工：旧MS-I2i全量1691最终覆盖通过；当前M1浏览器会话/API准备与文件桥接，默认权限不扩大。 |
-| B | MS-U1 | MS-U1已发布待开工：本轮临时负责apps/web真实前端；MS-C7已接受，暂停新Context优化。 |
-| C | MS-T2g | MS-T2g已发布待开工：file.read工具与真实结果恢复；MS-T2f组件接受，不重做原包。 |
-| D | MS-R2g | MS-R2g已发布待开工：Windows本机确认/目录选择/只读授权；MS-R2f组件接受。 |
+| A | MS-I2k | MS-I2k已派发：可信来源/旧轮未完成真人与页面链/逐包集成；120聚焦通过，旧1691非新全量。 |
+| B | MS-U2 | MS-U2已派发：MS-U1组件接受，消费固定A2列表/原请求/成果及真实页面；暂停Context优化。 |
+| C | MS-T2h | MS-T2h已派发：MS-T2g组件接受，原文件资料owning Reader/证据与账务恢复。 |
+| D | MS-R2h | MS-R2h已派发：MS-R2g组件接受，实际helper装配与bootstrap consumer；真人确认仍pending。 |
 | E | MS-Q1 | 可选工作区未创建、任务未派发。 |
 
 A负责评估/完成控制与公共接线；B/C/D实现并验证各自组件。阶段接口与源码到即审阅，组件业务错误由原worker修复。
 
 ## 3. 本轮为何可以并行
 
-[当前完整包：输入输出、策略、四里程碑与目录](../coordination/requests/A/MS-I2j-parallel-packages.md)
+[当前完整包：输入输出、策略、四里程碑与目录](../coordination/requests/A/MS-I2k-parallel-packages.md)
 
 各worker从同一固定基线和已接受组件开工，不读其他开发分支；可选A适配到达后接线，独立兼容路径与模块验证继续。A纯数据交付不等待本机通道，最终组件逐包接受后再做一次集成里程碑全量。
 
@@ -125,6 +125,10 @@ flowchart TD
 
 | 包 | 负责 | 标题 | 组件开发前置 | 原轮 |
 | --- | --- | --- | --- | --- |
+| MS-I2k | A | 真实账号设备来源/文件与页面整链 | MS-U1、MS-T2g、MS-R2g | [P1-04](rounds/P1-04.md)、[P1-07](rounds/P1-07.md)、[P1-08](rounds/P1-08.md)、[P1-09](rounds/P1-09.md)、[P1-10](rounds/P1-10.md) |
+| MS-U2 | B | A2真实列表/原请求恢复/完整成果页面 | MS-U1 | [P1-10](rounds/P1-10.md) |
+| MS-T2h | C | 文件资料owning Reader/引用与账务恢复 | MS-T2g | [P1-03](rounds/P1-03.md)、[P1-08](rounds/P1-08.md) |
+| MS-R2h | D | 本机helper装配/可信bootstrap消费与真人流程 | MS-R2g | [P1-04](rounds/P1-04.md) |
 | MS-00 | A | 收尾并建立共同基线 | 现有进度收尾 | [P0-05](rounds/P0-05.md)、[P1-01](rounds/P1-01.md) |
 | MS-C1 | B | 规则、来源与窗口分配 | MS-00 | [P1-02](rounds/P1-02.md) |
 | MS-T1 | C | 工具注册、过滤与参数校验 | MS-00 | [P1-03](rounds/P1-03.md) |

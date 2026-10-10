@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.415" timestamp="2026-10-10T13:59:46.761457+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.test_runner_control" name="test_registered_tool_request_keeps_call_pin_and_original_budget_context" time="0.819"><failure message="uaw.shared.schema.ContractViolation: TrustedExecutionContext: invalid fields at /budget_reservation_ref">tests\integration\test_runner_control.py:97: in test_registered_tool_request_keeps_call_pin_and_original_budget_context
+    ctx, call, spec, ledger = await original_tool(case)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_runner_control.py:92: in original_tool
+    await ledger.bind(call, spec, ctx)
+src\uaw\tool\ledger.py:208: in bind
+    (await self.transactions.inspect(ctx.principal, "tool-identities", write))["key"]
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:155: in inspect
+    return await action(RecordTransaction(session, owner.id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\tool\ledger.py:186: in write
+    await tx.write("tool.contexts", key, "TrustedExecutionContext", ctx.wire())
+src\uaw\infrastructure\db\transactions.py:50: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: TrustedExecutionContext: invalid fields at /budget_reservation_ref</failure></testcase><testcase classname="tests.integration.test_runner_control" name="test_tool_runner_registration_rejects_unregistered_call_or_mutated_context" time="0.538"><failure message="uaw.shared.schema.ContractViolation: TrustedExecutionContext: invalid fields at /budget_reservation_ref">tests\integration\test_runner_control.py:133: in test_tool_runner_registration_rejects_unregistered_call_or_mutated_context
+    ctx, call, spec, _ = await original_tool(case)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_runner_control.py:92: in original_tool
+    await ledger.bind(call, spec, ctx)
+src\uaw\tool\ledger.py:208: in bind
+    (await self.transactions.inspect(ctx.principal, "tool-identities", write))["key"]
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:155: in inspect
+    return await action(RecordTransaction(session, owner.id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\tool\ledger.py:186: in write
+    await tx.write("tool.contexts", key, "TrustedExecutionContext", ctx.wire())
+src\uaw\infrastructure\db\transactions.py:50: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: TrustedExecutionContext: invalid fields at /budget_reservation_ref</failure></testcase></testsuite></testsuites>

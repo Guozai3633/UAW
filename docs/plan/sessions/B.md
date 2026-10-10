@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-U1已发布待开工：本轮临时负责apps/web真实前端；MS-C7已接受，暂停新Context优化。以DISPATCH的固定版本与派发为准。
+状态：MS-U2已派发：MS-U1组件接受，消费固定A2列表/原请求/成果及真实页面；暂停Context优化。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`dev/context`。
 - 实际worktree：`E:/UAW/.worktrees/context`。
-- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6、MS-C7、MS-U1。
+- 首包：MS-C1；后续：MS-C2、MS-C3、MS-C4、MS-C5、MS-C6、MS-C7、MS-U1、MS-U2。
 - 交接记录：[docs/coordination/handoffs/B.md](../../coordination/handoffs/B.md)。
 - 公共变更提案目录：`docs/coordination/requests/B/`。
 
@@ -40,7 +40,7 @@
 
 ## 具体边界
 
-- 本轮MS-U1独占apps/web做真实页面，暂停新Context优化；原Context归属保留。
+- 本轮MS-U2独占apps/web消费A2真实列表/恢复/成果，暂停新Context优化；原Context归属保留。
 - seed.py和intent.py包含已验证的理解专用实现，归A；B用新文件实现通用Context组件。
 - 通过Reader port处理已有获准来源；Workspace/Board/记忆未接入时明确不可用。
 - 不写原文、Model配置或执行权限，不把外部资料升级为系统指令。
@@ -48,6 +48,23 @@
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
 ## 对应工作包
+
+### MS-U2：A2真实列表/原请求恢复/完整成果页面
+
+对应原轮：[P1-10](../rounds/P1-10.md)。
+开发前置：MS-U1。
+
+任务：
+
+1. M1固定生成A2客户端、服务器列表/RecoveryPort/ReviewPort。
+2. M2原文/理解/正文/逐项核验/合同接受实际默认页面。
+3. M3未知回应/旧hash/身份变化/取消竞争，刷新不重发。
+4. M4类型构建/必要组件与真实页面验证，受控/真实分开。
+
+交付检查：
+
+- 只改apps/web/B文档；无需等待文件授权才能做办公页面链。
+- 不读取A密钥，页面不置completed或造文件授权。
 
 ### MS-C1：规则、来源与窗口分配
 
@@ -192,8 +209,8 @@
 你负责UAW并行开发中的Session B：前端工作区（原Context负责人）。
 当前工作目录必须是E:/UAW/.worktrees/context，分支必须是dev/context。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/B.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
-当前执行MS-U1。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2j-start同步本工作分支；失败先报告，不reset，保留已有历史。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2k-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+当前执行MS-U2。工作区干净后fetch origin --tags，使用git merge --ff-only ms-i2k-start同步本工作分支；失败先报告，不reset，保留已有历史。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。
 保持原文、固定用户模型、权限/flag、取消、幂等及版本边界。未经确认的D01/D03/D06不自行设定。

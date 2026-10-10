@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="33" failures="0" errors="0" time="1.0158957">
+    <testsuite name="tests/unit/browser-session.test.ts" timestamp="2026-10-10T05:10:46.238Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.0611487">
+        <testcase classname="tests/unit/browser-session.test.ts" name="exchanges exact published launch code once after removing fragment; CSRF stays in memory" time="0.0468827">
+        </testcase>
+        <testcase classname="tests/unit/browser-session.test.ts" name="lost exchange queries current cookie session without replay; logout uses exact DELETE/CSRF/JSON" time="0.0112201">
+        </testcase>
+        <testcase classname="tests/unit/browser-session.test.ts" name="denied or revoked current session never becomes an anonymous identity" time="0.0015989">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/client.test.ts" timestamp="2026-10-10T05:10:46.240Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0610364">
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; preserves original text and path fields outside JSON; HTTP202 waiting remains waiting" time="0.0224537">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; never retries an uncertain send" time="0.0005043">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; refuses malformed successful payload" time="0.0027275">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; propagates permission denial" time="0.0086065">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="future Item types stay readable but revisions remain strictly validated" time="0.0243172">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="host cannot inject administrator authorization instead of the published CSRF protocol" time="0.0011299">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-10T05:10:46.243Z" hostname="LAPTOP-JE6KH8OE" tests="7" failures="0" errors="0" skipped="0" time="0.1963242">
+        <testcase classname="tests/unit/controller.test.ts" name="sends exact original once, refreshes known Run and does not treat cancellation acknowledgement as terminal" time="0.1582776">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="uncertain dispatch persists lookup only and refresh never resubmits" time="0.0025879">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="decision binds fresh hash/refs/revision, rejects changed approval" time="0.0105721">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="creating a conversation releases busy state and records an opened URL in the sidebar" time="0.0130322">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="new controller restores original Run by GET without dispatching a turn" time="0.0050857">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="aborted identity read cannot restore old data or a connected state" time="0.0011298">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="cursor-invalid responses resnapshot without sending and cursor loops fail explicitly" time="0.0041984">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/drafts.test.ts" timestamp="2026-10-10T05:10:46.245Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.0045651">
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; restores same identity IDs and draft, no authoritative state" time="0.0022457">
+        </testcase>
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; clears on logout/identity or epoch change, never merges foreign data" time="0.0007196">
+        </testcase>
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; ignores malformed persisted metadata and returns copies" time="0.000302">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/markdown.test.tsx" timestamp="2026-10-10T05:10:46.246Z" hostname="LAPTOP-JE6KH8OE" tests="2" failures="0" errors="0" skipped="0" time="0.1761965">
+        <testcase classname="tests/unit/markdown.test.tsx" name="renders Markdown but no raw HTML, unsafe URLs or remote image requests" time="0.1740442">
+        </testcase>
+        <testcase classname="tests/unit/markdown.test.tsx" name="preserves valid URL digits and removes control characters before scheme checking" time="0.0002867">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/projection.test.ts" timestamp="2026-10-10T05:10:46.247Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0130351">
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; deduplicates exact seq and Item revisions without text guesses" time="0.0019248">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; requires snapshot on sequence gap or conflicting identity" time="0.0003645">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; applies delta once with exact base/result and accepts latest snapshot over old delta" time="0.0002921">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; honors replacement and ignores older fixed watermark" time="0.0001501">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="new Run and task identities start their own revision boundary and keep server order on equal timestamps" time="0.0088585">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="duplicate IDs in snapshot pages retain the highest revision regardless of page order" time="0.0002872">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/review.test.tsx" timestamp="2026-10-10T05:10:46.250Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.5035897">
+        <testcase classname="tests/unit/review.test.tsx" name="missing production review port leaves content and acceptance explicitly unavailable" time="0.1815242">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="rejects altered content and stale artifact versions" time="0.0389797">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="accepts exact current bundle receipt then queries Run; does not mark it completed" time="0.1099771">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="changed verification before acceptance blocks dispatch" time="0.0695583">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="unknown dispatched acceptance blocks repeated decisions in the current view" time="0.0659094">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="honors optional fixed Ref hash and shows failed requirements with their actual reason and limits" time="0.0360577">
+        </testcase>
+    </testsuite>
+</testsuites>

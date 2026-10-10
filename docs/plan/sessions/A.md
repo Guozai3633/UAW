@@ -2,13 +2,13 @@
 
 [并行开发总入口](../PARALLEL.md)
 
-状态：MS-I2j已开工：旧MS-I2i全量1691最终覆盖通过；当前M1浏览器会话/API准备与文件桥接，默认权限不扩大。以DISPATCH的固定版本与派发为准。
+状态：MS-I2k已派发：可信来源/旧轮未完成真人与页面链/逐包集成；120聚焦通过，旧1691非新全量。以DISPATCH的固定版本与派发为准。
 
 ## 工作位置和顺序
 
 - 实际分支：`integration`。
 - 实际worktree：`E:/UAW`。
-- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2j、MS-I2f、MS-I2、MS-I3。
+- 首包：MS-00；后续：MS-I1、MS-I2a、MS-I2b、MS-I2c、MS-I2d、MS-I2e、MS-I2f1、MS-I2f2、MS-I2g、MS-I2h、MS-I2i、MS-I2j、MS-I2k、MS-I2f、MS-I2、MS-I3。
 - 交接记录：[docs/coordination/handoffs/A.md](../../coordination/handoffs/A.md)。
 - 公共变更提案目录：`docs/coordination/requests/A/`。
 
@@ -75,6 +75,7 @@
 - `docs/coordination/REQUEST_TEMPLATE.md`
 - `docs/coordination/NEXT_WAVE.md`
 - `docs/coordination/MS-I2j-messages.md`
+- `docs/coordination/MS-I2k-messages.md`
 - `docs/coordination/handoffs/A.md`
 - `docs/coordination/requests/A/`
 
@@ -90,6 +91,23 @@
 公共schema/port/依赖有缺口时，提交有字段、示例、错误语义和受影响调用方的提案，A合入并发布新基线后再使用；不在私有DTO中偷偷加不兼容字段。
 
 ## 对应工作包
+
+### MS-I2k：真实账号设备来源/文件与页面整链
+
+对应原轮：[P1-04](../rounds/P1-04.md)、[P1-07](../rounds/P1-07.md)、[P1-08](../rounds/P1-08.md)、[P1-09](../rounds/P1-09.md)、[P1-10](../rounds/P1-10.md)。
+开发前置：MS-U1、MS-T2g、MS-R2g。
+
+任务：
+
+1. M1发布固定来源接口，验证原Tool/预算/Runner桥接和账号设备挑战。
+2. M2实际localhost后端与受保护设备登记，服务B的A2接口。
+3. M3当前根/签名/IPC文件观察进入Context和成果，撤销/取消/unknown复查。
+4. M4真实页面/固定模型/本人目录授权及完成控制；逐包接受后一次全量。
+
+交付检查：
+
+- MS-I2j未完成产品门槛显式带入，不把组件/120聚焦当整轮或新全量。
+- 只改A保留路径，用户固定模型和权限边界保持。
 
 ### MS-00：收尾并建立共同基线
 
@@ -367,7 +385,7 @@
 你负责UAW并行开发中的Session A：集成与任务理解。
 当前工作目录必须是E:/UAW，分支必须是integration。
 先阅读README.md、docs/plan/PARALLEL.md、docs/plan/PARALLEL_WORKFLOW.md和docs/plan/sessions/A.md。
-读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2j-start解析出的commit相同；后续在包边界按A发布的新基线同步。
+读取docs/coordination/DISPATCH.md。本轮核对HEAD与ms-i2k-start解析出的commit相同；后续在包边界按A发布的新基线同步。
 当前在integration执行集成任务，不替worker同步或重写分支。
 只修改session页的允许目录。涉及公共文件，写入本session requests目录，说明最小变更与消费方影响。
 按照工作包完成代码和必要验证，未实现依赖明确返回不可用；测试替身不冒充真实LLM/Runner。

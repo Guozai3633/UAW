@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2k preparation",
+  "runtime_source_commit": "d52ed515f9def6b2d0144e779a5793a7022bf676",
+  "publication_ref": "ms-i2k-start",
+  "product_milestone_accepted": false,
+  "full_regression": false,
+  "different_nodes": 120,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2k-preparation-tests.xml",
+    "sha256": "33135766f4a2bab8d612096452d0868940dfacbc42fc3ab9543e264c4190e282"
+  },
+  "original_receipts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2k-m3-runner-control-04.xml",
+      "sha256": "ef8e7a425e5c17fcc67452a80c77c0d373113c168220a8a6af737f0fa2754827",
+      "counts": {
+        "tests": 49,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-m3-cross-components-01.xml",
+      "sha256": "2d73eabcd06962c40fa80d55aff869d279922142ba01d9e046889583f8571a03",
+      "counts": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-m3-file-bridge-02.xml",
+      "sha256": "78d818f8bad81445d3044e4db23f35c3ef56405f46e1d249da2d0514b2cdb306",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "socket": {
+    "path": "docs/implementation/evidence/ms-i2k-socket.json",
+    "sha256": "5185c50b8649a02555fb905d75b91b977018f5e4a5b75a16d72701987296dfaf"
+  },
+  "worker_review": {
+    "path": "docs/implementation/evidence/ms-i2j-worker-review.json",
+    "sha256": "bd905d48cb3ac594b9b619a5b023054dd9f1fa289bb9c36aba8906a278efeb72"
+  },
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m3-ruff-02.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m3-mypy-02.log",
+      "sha256": "c89928ff34570c3fa0ea53be8fe56ee39e54cccd4a9f717a918cc37623d1e967"
+    }
+  ],
+  "original_failures": [
+    "Tool fixture schema was not closed; original two failures retained.",
+    "Fixture optional budget_ref set to null; reconstructed exact absent field; original failures retained.",
+    "Bridge strict typing initially39 errors then3 JsonValue errors; corrected actual validated object handling.",
+    "Original auto approval review could not execute due usage capacity; resumed only through normal review."
+  ],
+  "execution_lineage": "Runner49 originally executed before worker merges on b23dde9-equivalent runtime; Runner module unchanged after merges. Cross66 and bridge5 executed after merges. Final committed bytes match verified runtime.",
+  "last_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "actual_model_calls_in_preparation": 0,
+  "prior_M2_live": {
+    "path": "docs/implementation/evidence/ms-i2j-m2-live.json",
+    "sha256": "4b96e2d068d0edaf89754602f869fbc81e9977d288b84c0e7dd213af401b2d75"
+  },
+  "global_flags_opened": false,
+  "limitations": [
+    "Real browser A2 adapters and user controls pending B/A.",
+    "Production account/device/bootstrap/root/data-source assembly and native human click pending A/D.",
+    "File bridge SQL tests use controlled transport/account/root sources; actual Windows IPC compatibility has separate controlled account fixtures.",
+    "MS-I2j product gates remain incomplete; new dispatch is a development baseline, not acceptance."
+  ]
+}

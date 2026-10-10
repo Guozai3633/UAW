@@ -1,4 +1,15 @@
-# 当前安排：MS-I2j（2026-10-10）
+# 当前安排：MS-I2k（2026-10-10）
+
+## 四包正式派发
+
+- 共同开工标签 **ms-i2k-start**；准确标签 SHA 在下方发布回执。运行源码固定 **d52ed515f9def6b2d0144e779a5793a7022bf676**（ms-i2j-bridge-source），包含已审阅 B/MS-U1、C/MS-T2g、D/MS-R2g 最终源码/独立 handoff 和 A 原文件桥接装配。
+- A/MS-I2k：实际账号设备挑战/当前来源、页面与文件整链、逐包集成；B/MS-U2：A2默认列表/原请求恢复/完整成果/真实页面；C/MS-T2h：原文件资料owning Reader/证据及账务恢复；D/MS-R2h：真实本机helper装配/bootstrap消费和本人流程。
+- [每包四里程碑、任务、目标、目录](requests/A/MS-I2k-parallel-packages.md)、[固定输入与现有接口](requests/A/MS-I2k-input-contracts.md)、[四份可转发提示词](MS-I2k-messages.md)。各方保持原worktree/分支，自行fetch→干净检查→快进固定标签→核对SHA→锁依赖；A未操作worker工作区。
+- 本基线120个不同聚焦节点最终通过，176核心/Runner类型检查通过；localhost8000真实TCP后台启动/登录/读取/退出失效已验证。旧MS-I2i1691仍是上次全量；[新准备证据](../implementation/MS-I2k-preparation.md)保留原失败和准确范围。
+- MS-I2j **未标整轮accepted**：实际B默认A2页面适配、生产首次配对/current root及真人确认、文件→Agent→成果与汇合全量显式带入MS-I2k。四方可开发本模块，不把这些待实现的汇合结果当作全部worker开工前提。默认子Agent/DAG/本机写入安装exec及文件flags不开放。
+- 旧ms-i2j-start/a1/a2和worker历史提交保留。阶段接口/SHA到即审阅，模块SQL由worker独立实跑，A做受影响及跨模块，汇合后一次全量。缺生产来源明确unavailable，真人未点选pending。
+
+## 以下为 MS-I2j 阶段历史
 
 ## A M2 阶段接线
 

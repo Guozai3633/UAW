@@ -1,0 +1,333 @@
+{
+  "B": {
+    "source_commit": "d2ece8d1682a4ae1de2ed811fc24e304e3584569",
+    "handoff_commit": "1649a35a6ad5269e1c6390549fbbe6765b3dccf4",
+    "clean_checked": true,
+    "allowed_paths_checked": true,
+    "source_bytes_checked": [
+      {
+        "path": "apps/web/.gitignore",
+        "sha256": "cedb821c6574d129772f4ac910383cc418787ef97b8b94678a73a96c09e3bcfd"
+      },
+      {
+        "path": "apps/web/.npmrc",
+        "sha256": "5c005d2e309facb3ce7749babfc75cf4afb88f57dc0f8944f7ea22b0753914a7"
+      },
+      {
+        "path": "apps/web/README.md",
+        "sha256": "a0e28b407ad4073215861d3de3305273e9b1962798387454a3e7760d7a2fea48"
+      },
+      {
+        "path": "apps/web/index.html",
+        "sha256": "3b11387d055a7c1f0989b3e71e7da75c49363ef362ff0502144d6d20d2e9ad0a"
+      },
+      {
+        "path": "apps/web/package.json",
+        "sha256": "3f5b7d21ef2b16a7a7bf6608a4cfff635f0b03bf9849afa1700f3b1664c33620"
+      },
+      {
+        "path": "apps/web/playwright.config.ts",
+        "sha256": "f67107090ef08b63f4f7bb3aabb8375ba4a03881f780b1f0965bf4f74ad99caf"
+      },
+      {
+        "path": "apps/web/pnpm-lock.yaml",
+        "sha256": "9fc63f2b9be1785444614b52180534713d5eb18ce0305754b513ab74b75129fe"
+      },
+      {
+        "path": "apps/web/scripts/generate.mjs",
+        "sha256": "f9587913c9db359d538405276cc29ce633b05fa0bb10560bf43744bf4b054dd9"
+      },
+      {
+        "path": "apps/web/scripts/live.mjs",
+        "sha256": "1eade059a3a4cc902de6e338f1de082143d99b0e19c3498d9d623844b33ccdd6"
+      },
+      {
+        "path": "apps/web/src/components/Markdown.tsx",
+        "sha256": "b92ddb5846161f2f0e8123f9ca685a699f461b69ad3a4431dcb5e772c7246081"
+      },
+      {
+        "path": "apps/web/src/features/review/Review.tsx",
+        "sha256": "51f95afc683da3c76b9bcc7e0faf439953403d39e3e3f35ebe95f4a67d63529e"
+      },
+      {
+        "path": "apps/web/src/features/review/port.ts",
+        "sha256": "a962e30be861bf300ae60151848767ff9785b7b1d8591b3a34b07dd1920e3c15"
+      },
+      {
+        "path": "apps/web/src/features/workspace/Workspace.tsx",
+        "sha256": "66c09d42eae77279d693907d2a9b387412142b0b02db439982b6d8394fff1d78"
+      },
+      {
+        "path": "apps/web/src/features/workspace/controller.ts",
+        "sha256": "9809c071434066835f4359498267afa4a45e983573692f917f1b9ab0fdf4887f"
+      },
+      {
+        "path": "apps/web/src/lib/api/browser-session.ts",
+        "sha256": "610b129ef6e32cfa8e897bd93d1b5dce193fcafebe3956cfffb881ca783dc287"
+      },
+      {
+        "path": "apps/web/src/lib/api/client.ts",
+        "sha256": "6b6dd0b07d2dba6dd7c339c136398dbcb4b663c2fbb602696d894e9a7ed4321a"
+      },
+      {
+        "path": "apps/web/src/lib/api/generated/openapi.d.ts",
+        "sha256": "7053d5f09413a35f49aa6c63b60c474733e06b67b318874c3f011ee882e41743"
+      },
+      {
+        "path": "apps/web/src/lib/api/generated/schema.json",
+        "sha256": "5fb7c47bdb7bfe344caed756cdd99c959520fe5448e4e4b10c62bf7385fc586d"
+      },
+      {
+        "path": "apps/web/src/lib/api/generated/source.json",
+        "sha256": "171870bfa24165d3372708af8a5be8d430b99c59c01f6779b72c4d507a7afb3d"
+      },
+      {
+        "path": "apps/web/src/lib/api/types.ts",
+        "sha256": "fd70dabe4f83699e7911fd1cb4f76c099dfc48d64c523350ae7e0ab1f5b6da1d"
+      },
+      {
+        "path": "apps/web/src/lib/api/validation.ts",
+        "sha256": "bb47c3eae89ef95cc72400f714961c9f24f40daace492b3b75cedfd04299aecc"
+      },
+      {
+        "path": "apps/web/src/lib/cache/drafts.ts",
+        "sha256": "b26baf85edbd8a3b9db8460150b0c3e65b88a51f6df767faa80a589a55265dcf"
+      },
+      {
+        "path": "apps/web/src/lib/events/projection.ts",
+        "sha256": "292cc4aa06537de2d2ebe62b0e54bfaab3d03ff811b46f1c5291064af0999e01"
+      },
+      {
+        "path": "apps/web/src/main.tsx",
+        "sha256": "a52ba3d67c7fec9037daad99869d9b9904a80c12fd20732000cda8931099f93b"
+      },
+      {
+        "path": "apps/web/src/styles.css",
+        "sha256": "6c84cd407abcbc7bb1f15b0cfc97df3fba3442f803f2110788153c26f42fec0c"
+      },
+      {
+        "path": "apps/web/tests/e2e/controlled/auth.spec.ts",
+        "sha256": "d412e1f41795e15068f375adecebd9ced84b36db2abf8d31e2fb40d32a4d71f2"
+      },
+      {
+        "path": "apps/web/tests/e2e/controlled/backend.ts",
+        "sha256": "ec07cb256b3318cbc84c6b057dce36c672e5f9b2545cc04088f967442cacaf79"
+      },
+      {
+        "path": "apps/web/tests/e2e/controlled/workspace.spec.ts",
+        "sha256": "f0cbc73d01a377a8e168b68c8d70adcd7b489032a620d3cff936279e1beda13b"
+      },
+      {
+        "path": "apps/web/tests/e2e/live/workspace.spec.ts",
+        "sha256": "5a3bb49e557777ad64598a773685529dd4a79b5de0b8a2761bd34057d89f9f53"
+      },
+      {
+        "path": "apps/web/tests/fixtures.ts",
+        "sha256": "98c11d609468600ec42b0efcb79e26440eb518efe2d0f0ec2fb0079d3724b619"
+      },
+      {
+        "path": "apps/web/tests/setup.ts",
+        "sha256": "7af5d132798af8ac95911d208c3926b41f83a9ffa22f88a72bf30ee647f24154"
+      },
+      {
+        "path": "apps/web/tests/unit/browser-session.test.ts",
+        "sha256": "89df965d812bb1ab85d4cde7811d56a3844dddab0723a96a80be9487855b0b42"
+      },
+      {
+        "path": "apps/web/tests/unit/client.test.ts",
+        "sha256": "f6ee1b6e5f58be4eedcdc10e5a3457380c9c325ba575dbb1881b8e16d9cd485a"
+      },
+      {
+        "path": "apps/web/tests/unit/controller.test.ts",
+        "sha256": "b0bc2cfc0ca2af0c6cf950de003465e9a3b765a98b722616b3ba67336412618a"
+      },
+      {
+        "path": "apps/web/tests/unit/drafts.test.ts",
+        "sha256": "4a35ae3bf15a73e4de9d9c76843a955cb8b709d06e68a5d8f91deb4137fc3e28"
+      },
+      {
+        "path": "apps/web/tests/unit/markdown.test.tsx",
+        "sha256": "7ffd34b43094f84a8027ea74ff93f041acff0e1526413ea2fb74f84bc606abe6"
+      },
+      {
+        "path": "apps/web/tests/unit/projection.test.ts",
+        "sha256": "59e64959a8c9e9819757692669e37c8b86a3b8350b019aebdf637ce44a75d011"
+      },
+      {
+        "path": "apps/web/tests/unit/review.test.tsx",
+        "sha256": "6b929d4b7eea724962f89d98d3e3aab721396b6a552d6b0f0c947a62023ed863"
+      },
+      {
+        "path": "apps/web/tsconfig.json",
+        "sha256": "4bbedc9dca3dac02688fb0fa486c731ca9f361a42220882f6a8372d8ab406a29"
+      },
+      {
+        "path": "apps/web/vite.config.ts",
+        "sha256": "f570a83010e90450cff946dbed47df345124ad22854a1396f7146e6a4d679aa5"
+      }
+    ],
+    "status": "component_reviewed; product gates pending",
+    "unit.xml": {
+      "path": "docs/implementation/evidence/ms-i2j-B-unit.xml",
+      "sha256": "2360047fd799936083ea741cb37a9e84cf9e77ac3d16e5519cb4a7b5f7ce004e",
+      "counts": {
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "playwright.xml": {
+      "path": "docs/implementation/evidence/ms-i2j-B-playwright.xml",
+      "sha256": "a7d8ea8b149870b5508ac6354ab6e0af2c972fd052b1dd2b710fac527fe048a4",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "C": {
+    "source_commit": "5b7749d0e80f7576362dd5736e0d89ac779e01a5",
+    "handoff_commit": "780d3c47b62338ce90642f9cc47bb8f3bbe258c1",
+    "clean_checked": true,
+    "allowed_paths_checked": true,
+    "source_bytes_checked": [
+      {
+        "path": "src/uaw/tool/ledger.py",
+        "sha256": "8548abcd1129c7a9d6ef668ae0b0a8f5074b17d3cbb5f238dc61d58525ef432c"
+      },
+      {
+        "path": "src/uaw/tool/providers/file_read.py",
+        "sha256": "6445e48691a4b5a456d862df1d85e90742c5d26c1040defd5603759d18862ecf"
+      },
+      {
+        "path": "src/uaw/tool/providers/file_store.py",
+        "sha256": "0b54a3f9747c8424f4293b43af5a4672e95f493495b3bba05f9727112fb4c075"
+      },
+      {
+        "path": "src/uaw/tool/receipt_store.py",
+        "sha256": "6f74a3d061c120673c25ab4496b7a5ce2db931ce2c804b16f545729ce29bfb08"
+      },
+      {
+        "path": "src/uaw/tool/results.py",
+        "sha256": "f262cd0b8bf8d0776f2fd3e1850f9eb0aa753080eb6802005a2e611b58419459"
+      },
+      {
+        "path": "src/uaw/tool/schema.py",
+        "sha256": "1653a6978fd4d442497fccfdc0d88f3ae5f51a01f7ce43e21453995ad173b5c8"
+      },
+      {
+        "path": "tests/integration/tool/file_pipeline_fixture.py",
+        "sha256": "b48f36b94506e9b9af6925bad7b82cd05ed31c74744806150e8d0706f1dcfc54"
+      },
+      {
+        "path": "tests/integration/tool/file_recovery_child.py",
+        "sha256": "bd5efaa6d472fb8862971a652ea9ef2fe339545d11f23134fd646f819c68c898"
+      },
+      {
+        "path": "tests/integration/tool/test_file_pipeline_postgres.py",
+        "sha256": "abd7f7961fba0d9c317b140ac09bb0984b74f6d326e33f9ef8c05b771b18b4b2"
+      },
+      {
+        "path": "tests/integration/tool/test_file_recovery_postgres.py",
+        "sha256": "a5eae66474b2a5e2feed2565a1e9cff84929d4faade46e988ef9fa138c77b6dd"
+      },
+      {
+        "path": "tests/unit/tool/file_evidence_fixture.py",
+        "sha256": "eabea50c5e39d62ea33518ba7588fea246434d34a47dc492c1f2c79a0f81af72"
+      },
+      {
+        "path": "tests/unit/tool/test_file_evidence.py",
+        "sha256": "26dfa0e0a05ad249a74b541596548835847b4c1f2daa4b87856cfaec3c694ecc"
+      },
+      {
+        "path": "tests/unit/tool/test_file_ports.py",
+        "sha256": "89172e35b5eead41cf2b38079408f3a724e63a98dae0c19af0e95db41c978326"
+      }
+    ],
+    "status": "component_reviewed; product gates pending",
+    "unit": 358,
+    "sql_distinct": 219,
+    "new_sql_distinct": 41,
+    "original_sql_distinct": 178,
+    "final_failures": 0,
+    "index": {
+      "path": ".worktrees/tool/tests/.artifacts/C/MS-T2g/verification-index.json",
+      "sha256": "2748dc507e5ee0fa129afb02a8ddadf32217493db83fae9801063c25e844e8b0"
+    }
+  },
+  "D": {
+    "source_commit": "d0ea31b7a05885806e9a72b9afff283ddc703122",
+    "handoff_commit": "cc75c36df7f02ff08913aee47ea140cd09b3764e",
+    "clean_checked": true,
+    "allowed_paths_checked": true,
+    "source_bytes_checked": [
+      {
+        "path": "apps/local_runner/uaw_runner/native_authorization.py",
+        "sha256": "e96ca8ec61b8f0ba51c030b9d03915384608b06ecb12ad082d4de4b77610f394"
+      },
+      {
+        "path": "apps/local_runner/uaw_runner/native_confirmation.py",
+        "sha256": "8a85c5c1c88d925cdc9b7fc40852eed197cfefefae899ff8b3cde386f9f6dadf"
+      },
+      {
+        "path": "apps/local_runner/uaw_runner/native_dialog.py",
+        "sha256": "4e6e292a7d54787c7db70992e71011b0a2a14dcd24d675839258507334b59915"
+      },
+      {
+        "path": "apps/local_runner/uaw_runner/pairing.py",
+        "sha256": "889d95d8f61e8e66d82e4a92c1454bbeb938944a456cef59f0b9452071178517"
+      },
+      {
+        "path": "apps/local_runner/uaw_runner/state.py",
+        "sha256": "a6c2bb6fca3e23ae150f6dabcdd5634e5ea75289eccb573a003fd868066a91aa"
+      },
+      {
+        "path": "tests/integration/runner/native_manual.py",
+        "sha256": "0c866333b0c44f22d8fde63377d91eb552e8fa10f530e50a9b6b3967eb3d6fda"
+      },
+      {
+        "path": "tests/integration/runner/test_native_authorization.py",
+        "sha256": "2bebe1ae190340c178cf6c0999e736a9211147c9bca053e81ec7cc9e3d1bc65b"
+      },
+      {
+        "path": "tests/integration/runner/test_native_dialog_windows.py",
+        "sha256": "24cf94291d5dae63ad208846bad63199ab48340b3b07e76903c6056aacae0ccb"
+      },
+      {
+        "path": "tests/integration/runner/test_native_root_source.py",
+        "sha256": "e5bdf3951656c77f93b576450b4d00b2196e1a516ffc9416ebfb790946ca9ab7"
+      },
+      {
+        "path": "tests/integration/runner/test_read_executor.py",
+        "sha256": "40103e27eabfbb0bf06f8a1055674744e7378380627898dec12aa4a0f86ffc71"
+      },
+      {
+        "path": "tests/unit/runner/test_native_confirmation.py",
+        "sha256": "c70fb5c5274e764a8731feaa4f13ecd41d8b533cf50b7f19f348a6d6a8835bd2"
+      }
+    ],
+    "status": "component_reviewed; product gates pending",
+    "tests": 550,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2j-D-full.xml",
+      "sha256": "81cf13cedc87228d583b83ce54e956f74db2d89fa30a805447d1e73a570b2d95",
+      "counts": {
+        "tests": 550,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "human_confirmation": "pending",
+    "cleanup_reports": 64
+  },
+  "integration_findings": [
+    "C validates original Tool request_ref as tool_call with ValidatedCall hash; existing A RunnerCommands registers request as check with RunnerRequestRecord hash. Need A owning Tool-to-Runner binding; no blind Ref-kind rewrite.",
+    "C preserves original Tool context; Tool budget reservation lives in independent ledger, whereas existing A RunnerCommands requires inline budget_reservation_ref. Need original ledger lookup without mutating Tool context.",
+    "D root-native lifecycle needs independent actual account/device/challenge bootstrap; no production source exists yet. Positive human click remains pending.",
+    "B A1 component lacks A2 server list/recovery/review HTTP adapters; controlled Chromium is not actual product acceptance."
+  ]
+}
