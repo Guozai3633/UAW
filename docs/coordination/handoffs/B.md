@@ -776,3 +776,92 @@ logout/recovery/review；无注入默认A1会话adapter，缺恢复/成果仍不
 查询、会话列表、Artifact全文/报告/Bundle/合同接受及接受请求对账；真实5场景由A当前
 后端联调。A处理公共冲突、合入和整链回归；不启用未实现SSE/本机授权/exec或flags。
 本组件交接后停止，不自动下一包；保持原已接受Context组件及历史handoff。
+
+
+## MS-U2：固定A2默认客户端/完整成果/未知对账最终交接（2026-10-10）
+
+### 实际分支、来源、阶段与最终源码
+
+E:/UAW/.worktrees/context，dev/context。DISPATCH正式发布ms-i2k-start后自行clean/
+fetch tags/ff-only/HEAD等于标签/uv sync --frozen；准确开工SHA
+b7b79b150470a80f37b28fd52a2177f6de5b3124。MS-U1全部源码/handoff保留，无reset/rebase/
+stash，无其他worktree改动，不跟随浮动integration。
+
+M1源码fe68599a46bdb7df8d896a073776c6f64cd5c081、独立说明2c3ac0e152011c7db557e1c42581c7f869fa7566；
+M2源码98976199fbde10cf96816751a43cfd4b7aea9cd4、独立说明75952a2aec4a47ba94966d673ebf8b46daa3d747；
+M3/M4最终源码 **ab14fe3063d4a1e781196aeab8a81e452cd5f207**。
+阶段到即交A并继续同包。此handoff/final-wiring独立提交，准确提交SHA由最终git log提供。
+
+### 接口、修改路径和样例
+
+只改apps/web全部工程/独立锁消费/生成物/测试/README和B requests/handoff。
+Context优化暂停，原Context源码/测试无改动；后端/shared/schema/根锁/Model/Run/
+composition/flags无改动。全部文件在[MS-U2-final-wiring](../requests/B/MS-U2-final-wiring.md)；
+M1/M2接口样例见[MS-U2-stage-client](../requests/B/MS-U2-stage-client.md)。旧handoff原字节前缀保留。
+
+生成器固定正式ms-i2k-start的schema/OpenAPI，18实际path/21方法/169定义，完整Runtime
+schema条件保留。UawClient.conversations/lookup/delivery/artifact/content/acceptDelivery
+消费A2实际接口。POST只{meta,payload}、固定bundle_ref/artifact_ref/decision，无
+expected_revision/If-Match；15秒超时，无自动POST/DELETE重试。原模型目录/固定用户模型/
+原文基准/实际TaskFrame状态保留，不用文字猜completed、不假造未发送AI理解。
+
+默认BrowserSessionHost后接HttpRecoveryPort和HttpReviewPort，不需fixture host。
+服务器list固定cursor、页水位、过期重读/循环拒绝、同ID高revision；3秒分页轮询、
+Item/revision/Event seq去重、Run/task身份独立版本边界；A2无SSE不造流。
+刷新先查原request_id/已知Run，再读历史；missing lookup不等于可重发。完整
+RunDeliveryView携带真实artifact/content/contract/report/proposal/固定Refs/stale/actual
+acceptance，校验UTF-8正文hash/长度及源Ref可选sorted UTF-8 parameter_hash、位置/scope。
+旧hash/错关联/stale拒绝接受；正文与逐项要求/理由/限制/引用默认显示，不只看摘要。
+404表示尚无结果，UI有明确当前读取按钮，不能变为completed或创建新turn。
+
+未知接受dispatch前持久仅runId/requestId/bundleId/artifactId查找（≤32），不存
+状态/正文/hash/审批/预算/许可/token。无actual acceptance时包括刷新始终阻止换ID重发，
+新bundle不自动替代原未知决定；只有匹配实际GET receipt清查找。取消/其他当前操作
+禁接受，等待时身份/Run变化Abort，服务端最后再次锁复查。已确认后只查Run，不设completed。
+
+示例：new HttpRecoveryPort(client).find(originalConversationId,originalRequestId,signal)；
+new HttpReviewPort(client).read(artifactRefOrUndefined,originalRunId,signal)；
+review.accept(snapshot,requestMeta(),signal)（UI先重新GET比较完整快照）。默认实际构造在main；
+可选可信window.uawWebHost仍可替换正式适配，不生产挂测试fixture。
+
+### 必要验证与真实回执
+
+44单元/19受控Chromium/1真实后端匿名拒绝分别通过，0失败/错误/跳过；类型/build与
+冻结离线安装通过。仅最后节点计数，不累加37/42/43重复跑或11→19浏览器扩展。
+
+```powershell
+pnpm --dir apps/web generate
+pnpm --dir apps/web install --frozen-lockfile --offline --store-dir apps/web/.store
+pnpm --dir apps/web test
+pnpm --dir apps/web test:e2e # 内含tsc/build与controlled Chromium
+pnpm --dir apps/web test:backend # 实际8000/5173匿名401，不注入身份/不截响应/零修改
+pnpm --dir apps/web test:live # 当前exit2/pending，未运行5个登录后场景
+```
+
+自身ignored apps/web/.test-results/u2-unit-final.log/.xml、u2-browser-final.log/.xml、
+u2-backend-browser-final.log/u2-backend-browser.xml、u2-install-final.log、u2-live-01.log/
+u2-live-pending.json、u2-final-receipts.json（准确来源/计数/原loghash）及截图。
+受控u2-full-delivery.png和真实u2-real-anonymous.png已目视核对，各自来源不混用。
+Node脚本24.21.0/宿主22.13 engine warning保留；最终主JS745.04KB/gzip215.46KB、
+CSS17.23KB/gzip4.92KB，>500KB warning未隐藏，未宣称生产性能验收。
+
+M1原type错误：Contract/DeliveryProposal没有id，按真实DTO删错误假设；测试fetch
+无参tuple索引参数，修正确签名。原u2-typecheck-m1.log/u2-typecheck-m1-repair.log保留，
+不删断言/不放宽schema。MS-U1历史失败和提交不改写。本包最终无单元/受控/匿名失败。
+
+### A接线、未通过项与停止边界
+
+localhost8000实际GET返回401，真实浏览器通过显式5173→8000代理显示当前Failure、
+刷新仍禁执行/零POST；B未启动停止A后端或改库。此1节点仅证明匿名拒绝，不是认证/
+模型/任务/Runner验收。后台实际配置及凭据归A，未读取A私有配置/model key/admin token。
+
+登录后5场景需要A短期launch和真实审批/拒绝/取消/接受会话ID（已请求转发，未提供），
+真实suite用actual TaskFrame/Delivery/acceptance回执比较，trace关闭、cookie仅内存、
+不输出/存盘launch，不mock。当前exit2/pending，不计pass或skip。真人文件目录授权/
+首次设备配对、文件→成果整链、真实固定模型费用质量仍pending。B页面不以path授予权限。
+
+开发UAW_WEB_API_TARGET=http://127.0.0.1:8000显式代理，changeOrigin修Host、保留Origin/
+禁xfwd，A保持精确5173 Origin/HttpOnly cookie/当前CSRF/独立用户身份和真实运行装配。
+A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包未把P1/MS-I2k或旧1691全量
+标accepted，未开放flags/DAG/exec/安装/写入。本包clean交付后停止，不自动下一包；
+真实launch到达时可按用户/A明确派发继续本包真实联调。

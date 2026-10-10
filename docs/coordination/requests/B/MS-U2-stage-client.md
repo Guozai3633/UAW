@@ -59,3 +59,12 @@ M2类型/build成功，37单元与11受控Chromium通过，0失败/错误/跳过
 无认证localhost8000 GET session探测实际HTTP401：后端可达，但未提供一次launch和
 真实场景会话ID，真实suite pending。已请求转发，不读A私有配置或key。M3继续未知/
 取消竞争/刷新/分页/身份场景，最终单独handoff。
+
+## M3/M4最终交付指向
+
+最终源码ab14fe3063d4a1e781196aeab8a81e452cd5f207，44单元/19受控Chromium/1实际
+TCP匿名拒绝分别通过，类型/build/冻结离线安装通过；来源不累加重试。实际后端401仅
+证明匿名边界，不证明登录后任务5场景；缺短期launch与真实场景ID，test:live exit2/pending。
+未知接受同身份刷新只GET actual acceptance，没有回执不换ID重发；lookup只存查找ID，
+身份/取消与外部等待复查仍保留。完整原SHA/文件/原失败/接口/接线见
+[MS-U2-final-wiring](MS-U2-final-wiring.md)。本包停止，不自动下一包，P1/MS-I2k未标全量accepted。
