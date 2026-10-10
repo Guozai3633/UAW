@@ -166,9 +166,11 @@ async def test_lost_set_reply_replay_and_concurrent_reads_do_not_settle_or_open(
 async def test_data_denied_original_fee_cleanup_does_not_gain_collection(material_pair):
     p = material_pair
     materials = await exported_pair(p)
-    before = await p.pipelines[0].case.budget.get_ledger(p.ctx)
     p.pipelines[0].bridge.data_authority.allowed = False
     await cancel(p.pipelines[0].case)
+    # Cancellation legitimately changes revision/cancel_requested; fee replay must
+    # preserve the actual post-cancel financial state, not a pre-cancel snapshot.
+    before = await p.pipelines[0].case.budget.get_ledger(p.ctx)
     reader, recovered = registered_reader(p, materials, restart=True)
     with pytest.raises(DomainError):
         await FileMaterialSetAdapter(reader).read(tuple(m.material_ref for m in materials), p.ctx)
