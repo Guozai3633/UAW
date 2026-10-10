@@ -82,6 +82,26 @@ async def main():
             signatures=signatures,
         )
         source.verifier = FileReadVerifier(source)
+        if "material_ref" in data:
+            from uaw.tool.providers.file_material import FileMaterialAdapter
+
+            material = await FileMaterialAdapter(source).read(
+                Ref.model_validate(data["material_ref"]), ctx
+            )
+            print(
+                json.dumps(
+                    {
+                        "kind": "material",
+                        "content": material.content,
+                        "material_ref": material.material_ref.wire(),
+                        "observation_ref": material.observation_ref.wire(),
+                        "usage": material.usage,
+                        "sends": bridge.calls,
+                        "opens": bridge.opens,
+                    }
+                )
+            )
+            return
         service = BudgetService(ledger.store)
         budget = ToolBudgetAdapter(ledger, service, state=service)
         reconciler = ToolReconciler(ledger, budget, receipts=source, evidence=source)

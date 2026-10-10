@@ -85,7 +85,7 @@ async def test_current_data_revoke_blocks_material_ref_even_with_cached_bytes(
     assert p.bridge.calls == 1 and fresh.bridge.calls == fresh.bridge.opens == 0
 
 
-@pytest.mark.parametrize("change", ["session", "project", "attempt", "hash", "location"])
+@pytest.mark.parametrize("change", ["session", "user", "project", "attempt", "hash", "location"])
 async def test_material_exact_owner_context_and_ref_no_cross_scope(file_pipeline, change):
     p = file_pipeline
     material = await exported(p)
@@ -93,6 +93,10 @@ async def test_material_exact_owner_context_and_ref_no_cross_scope(file_pipeline
     if change == "session":
         ctx = ctx.model_copy(
             update={"principal": ctx.principal.model_copy(update={"auth_session_id": "foreign"})}
+        )
+    elif change == "user":
+        ctx = ctx.model_copy(
+            update={"principal": ctx.principal.model_copy(update={"id": "foreign-user"})}
         )
     elif change == "project":
         ctx = ctx.model_copy(
@@ -211,3 +215,17 @@ async def test_unknown_original_receipt_cannot_make_material_or_new_attempt(file
     )
     assert (await p.case.budget.get_ledger(p.case.ctx))["held"]["money"] == "0.05"
     assert p.bridge.calls == 1 and p.bridge.opens == 0
+
+
+async def test_smaller_utf8_consumer_bound_never_slices_unicode_or_persists_material(file_pipeline):
+    p = await approve_file(file_pipeline)
+    assert (await p.facade.invoke(p.raw, p.case.ctx))["kind"] == "ok"
+    reader = FileMaterialAdapter(p.source, limits=FileMaterialLimits(max_utf8_bytes=16))
+    with pytest.raises(DomainError) as bounded:
+        await reader.export(p.case.call["action_id"], p.case.ctx)
+    assert bounded.value.status_code == 413
+    assert (
+        await p.case.ledger.get("tool.file.material.refs", p.case.ctx.attempt_id, p.case.ctx)
+        is None
+    )
+    assert p.bridge.calls == p.bridge.opens == 1
