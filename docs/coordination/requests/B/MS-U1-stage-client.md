@@ -75,3 +75,27 @@ inline请求/条件anyOf产unknown→修类型生成但不删运行时校验；�
 等待A：浏览器认证/精确Origin/CSRF/退出；原request→Run查询；成果内容/报告/合同接受
 的真实契约与HTTP；服务器会话列表；真实执行调度。B将依据已发布兼容基线接线，不使用
 其他session未交接源码、不修改其他worktree、不承认产品P1整轮验收。
+
+
+## M2 页面与控制阶段
+
+源码2093d647cb1357dd8ca4518a9afba671fb6ba2a2；本说明另行提交，继续M3/M4。
+会话侧栏/创建时实际目录模型选择/原文聊天/浅色自适应理解框/实际Run状态/审批
+approve_once与decline/取消等待/Markdown成果摘要与可选正文接受已实现。输入框编辑
+显示“发送后根据原文理解”，不假装已有预发送AI；TaskFrame.summary来自服务器。
+当前scope/model/原文不由UI升级。unknown发送不重发，已知Run恢复GET；默认无
+认证host，页面显示不可用，不放token输入。ReviewPort默认缺失，只展示Item摘要。
+审批等待点击前重新读当前版本/hash/refs/expiry，再CAS；不缓存授权。控制接受ACK
+不当作cancelled；Run终态由GET/Event确认。安全Markdown禁HTML、危险URL和远程图片。
+
+M2 typecheck/build通过；15单元通过（客户端4/投影4/草稿3/controller3/Markdown1）。
+ignored unit-m2-repair.log/build-m2.log。历史类型首次拒绝新fixture错误的model_policy/
+event_payload Ref及UserInputRef泛型；按后端实际policy/event和kind泛型修测试，未
+放宽schema。页面首次拒绝动作错误reject，按实际decline修复。所有原失败日志保留。
+真实认证/API/模型/成果接受/执行联调pending；未把15受控组件或截图标产品验收。
+
+A可注入 `window.uawWebHost`（B内部host adapter），`session()`返回可信identityKey
+与已发布CSRF header；subscribe通知退出/换身份，logout完成服务端失效；
+recovery.find(conversationId,requestId,signal)查原Run或明确undefined；review实现
+B ReviewPort.read/accept，必须由A真实HTTP契约适配，不能生产挂fixture。身份Key需含
+issuer/subject/workspace/epoch的可信分区标识，非密码；body/model不提供此权威。
