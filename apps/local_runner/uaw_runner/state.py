@@ -5,7 +5,7 @@ import hmac
 import json
 import secrets
 import sqlite3
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -310,10 +310,15 @@ class LocalState:
         confirmation_hash: str,
         confirmation_expires_at: datetime,
         now: datetime,
+        check: Callable[[], datetime] | None = None,
     ) -> Ticket:
         # Private storage primitive: caller must have just verified both IPC and crypto proof.
+        if check is not None:
+            now = aware(check())
         self.get(ticket_id, now=now)  # Commit expiry tombstone independently of a later rejection.
         with self.transaction() as db:
+            if check is not None:
+                now = aware(check())
             ticket = self.load_current(db, ticket_id, now=now)
             row = db.execute(
                 "SELECT salt,code_hash FROM tickets WHERE ticket_id=?", (ticket_id,)
@@ -346,6 +351,11 @@ class LocalState:
                     expected_revision,
                 ),
             )
+            if check is not None:
+                if aware(check()) >= min(ticket.expires_at, confirmation_expires_at):
+                    raise reject(
+                        "native_timeout", "Confirmation expired during CAS", 410, "timeout"
+                    )
             return self.load_current(db, ticket_id, now=now)
 
     def consume(self, ticket_id: str, *, expected_revision: int, now: datetime) -> Ticket:

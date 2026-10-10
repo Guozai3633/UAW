@@ -76,6 +76,7 @@ async def make_native_case(
     device_handle="device-private",
     control_handle="control-private",
     existing_keys=None,
+    defer_confirmation=False,
 ):
     clock = [NOW]
     state = (
@@ -127,16 +128,18 @@ async def make_native_case(
         domain="pairing-proof",
         credential_handle=device_handle,
     )
-    await verifier.approve(
-        issued.ticket.ticket_id,
-        expected_revision=0,
-        principal_id="u1",
-        code=issued.verification_code,
-        proof_signature=proof,
-    )
-    selection = await verifier.root_selection(
-        issued.ticket.ticket_id, signer=protected, credential_handle=device_handle
-    )
+    selection = None
+    if not defer_confirmation:
+        await verifier.approve(
+            issued.ticket.ticket_id,
+            expected_revision=0,
+            principal_id="u1",
+            code=issued.verification_code,
+            proof_signature=proof,
+        )
+        selection = await verifier.root_selection(
+            issued.ticket.ticket_id, signer=protected, credential_handle=device_handle
+        )
     bindings = RootBindings(grants, PersistentRootSelection(state, local))
     source = NativeRootSource(
         bindings,
@@ -165,6 +168,9 @@ async def make_native_case(
         )
     )
     return dict(
+        issued=issued,
+        verifier=verifier,
+        proof=proof,
         device_handle=device_handle,
         control_handle=control_handle,
         source=source,
