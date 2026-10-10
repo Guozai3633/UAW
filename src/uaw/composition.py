@@ -19,6 +19,8 @@ from uaw.infrastructure.credentials import WindowsCredentialStore
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.session import Database
 from uaw.infrastructure.db.transactions import TransactionalStore
+from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
+from uaw.infrastructure.enrollment_native import RegisteredNativeEnrollmentEvidence
 from uaw.intent.facade import IntentFacade
 from uaw.intent.frame import FrameRepository
 from uaw.intent.original import OriginalReader
@@ -96,7 +98,7 @@ from uaw.tool.reconciliation import ToolReconciler
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.results import ToolResults
 from uaw.tool.retrieval import ToolRetriever
-from uaw.workspace.ports import SignaturePort
+from uaw.workspace.ports import CurrentKeyDirectory, SignaturePort
 
 
 @dataclass(frozen=True)
@@ -318,6 +320,29 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
 
         permissions.authentication_check = current_authentication
     return container
+
+
+def assemble_enrollment_sources(
+    container: Container, *, directory: CurrentKeyDirectory | None
+) -> OwnedEnrollmentCandidates:
+    """Explicit trusted local bootstrap only; no flags, native UI or pairing activation.
+
+    Production callers must still prepare the actual owned helper, capture its
+    current Web owner, and deliver the purpose-bound proof to its native process.
+    This assembly supplies no approved boolean, root, fake peer or key fallback.
+    """
+    service = container.runner_enrollments
+    if (
+        service is None
+        or container.browser_sessions is None
+        or directory is None
+        or service.authentication != container.browser_sessions.principal
+    ):
+        raise CapabilityUnavailable("enrollment.current_local_sources")
+    candidates = OwnedEnrollmentCandidates(service, directory)
+    service.candidates = candidates
+    service.native = RegisteredNativeEnrollmentEvidence(service)
+    return candidates
 
 
 @dataclass(frozen=True)

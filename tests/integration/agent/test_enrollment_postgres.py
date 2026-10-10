@@ -593,6 +593,7 @@ async def test_owned_prepared_helper_candidate_current_sql_os_and_revocation(
     from uaw_runner.helper_process import HelperProcess
     from uaw_runner.state import LocalState
 
+    from uaw.composition import assemble_enrollment_sources
     from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
     from uaw.shared.runner_signatures import VerificationKey
 
@@ -619,7 +620,8 @@ async def test_owned_prepared_helper_candidate_current_sql_os_and_revocation(
         assembly_module="uaw.infrastructure.enrollment_native",
         environment=environment,
     )
-    source = OwnedEnrollmentCandidates(p.service, state)
+    p.control.runner_enrollments = p.service
+    source = assemble_enrollment_sources(p.control, directory=state)
     try:
         candidate = await source.capture(
             p.owner,
@@ -638,6 +640,9 @@ async def test_owned_prepared_helper_candidate_current_sql_os_and_revocation(
         pending = await p.service.begin(p.owner, candidate["id"], meta("actual-launch-begin"))
         assert pending["state"] == "pending" and "pairing_ref" not in pending
         assert await p.service.challenge(p.owner, pending["id"]) == pending["proof_document"]
+        with pytest.raises(DomainError) as no_human:
+            await p.service.complete(p.owner, pending["id"], meta("no-native", 1))
+        assert no_human.value.failure.code == "enrollment_native_confirmation_pending"
         other = p.owner.model_copy(update={"auth_session_id": "another-web-session"})
         with pytest.raises(DomainError):
             await restarted.current(candidate["id"], owner=other)
