@@ -159,18 +159,29 @@ def file_read_spec(provider_ref: Ref) -> JsonObject:
     }
 
 
-def file_estimates(currency: str = "USD") -> JsonObject:
-    # This is an admission ceiling, NOT a tariff or actual charge claim.
-    return {
+def file_estimates(currency: str = "USD", *, money_ceiling: str | None = None) -> JsonObject:
+    # A owns the actual bounded admission estimate. Unknown Runner fees cannot
+    # silently acquire a zero monetary reservation through this convenience helper.
+    if money_ceiling is None:
+        raise fail(
+            "dependency_unavailable",
+            "Actual file monetary reservation ceiling is not wired",
+            phase="file_estimate",
+            category="dependency",
+            status=503,
+        )
+    value: JsonObject = {
         "input_tokens": 0,
         "output_tokens": 0,
         "model_calls": 0,
         "tool_calls": 1,
         "child_agents": 0,
         "wall_time_ms": 10000,
-        "money": "0.00",
+        "money": money_ceiling,
         "currency": currency,
     }
+    validate_dependency("ResourceVector", value, "file_estimate")
+    return value
 
 
 def file_arguments(call: JsonObject, spec: JsonObject, provider_ref: Ref) -> JsonObject:
@@ -336,7 +347,7 @@ def verify_file_evidence(
     if (
         data["workspace_ref"] != args["workspace_ref"]
         or data["path"] != args["path"]
-        or data["location"] != location
+        or data["location"] != evidence.selection
         or data["encoding"] != "utf-8"
         or data["text"] != selected
         or len(selected.encode("utf-8")) > MAX_RETURN_BYTES

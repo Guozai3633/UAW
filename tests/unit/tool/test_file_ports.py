@@ -141,3 +141,12 @@ def test_freeze_original_evidence_protects_nested_usage_and_file_content(ctx):
     assert frozen.receipt.payload["result"]["text"] != e.receipt.payload["result"]["text"]
     assert frozen.receipt.usage["resources"]["wall_time_ms"] == 1
     assert frozen.selection == {"kind": "whole"}
+
+
+def test_unknown_file_fee_has_no_implicit_zero_reservation_ceiling():
+    from uaw.tool.providers.file_read import file_estimates
+
+    with pytest.raises(DomainError) as error:
+        file_estimates()
+    assert error.value.failure.code == "dependency_unavailable"
+    assert file_estimates(money_ceiling="0.05")["money"] == "0.05"

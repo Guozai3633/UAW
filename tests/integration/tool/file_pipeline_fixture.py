@@ -282,7 +282,11 @@ class ControlledFileBridge:
                     ],
                     ctx,
                 )
-        data = {**evidence.receipt.payload["result"], "text": select_text(text, selection)}
+        data = {
+            **evidence.receipt.payload["result"],
+            "text": select_text(text, selection),
+            "location": selection,
+        }
         if next_cursor is not None:
             data["next_cursor"] = next_cursor
         evidence = replace(
@@ -449,7 +453,7 @@ async def file_pipeline(tool_case, tmp_path):
         approvals,
         access=role,
         executor=router,
-        estimates=file_estimates(),
+        estimates=file_estimates(money_ceiling="0.05"),
         prepare=router.check,
         results=results,
     )

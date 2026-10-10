@@ -136,7 +136,12 @@ def test_only_canonical_relative_file_paths(ctx, path):
 def test_original_cursor_registry_and_actual_snapshot_needed(ctx):
     args = {"workspace_ref": WORKSPACE.wire(), "path": "file.txt", "cursor": "original-page-2"}
     _, call, spec, e, signatures = make_evidence(ctx, arguments=args, text="abcdef")
-    data = {**e.receipt.payload["result"], "text": "cde", "next_cursor": "original-page-3"}
+    data = {
+        **e.receipt.payload["result"],
+        "text": "cde",
+        "next_cursor": "original-page-3",
+        "location": {"kind": "text_span", "start": 2, "end": 5},
+    }
     e = resign_evidence(e, data, signatures)
     e = replace(
         e, selection={"kind": "text_span", "start": 2, "end": 5}, next_cursor="original-page-3"

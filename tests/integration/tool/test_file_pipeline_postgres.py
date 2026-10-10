@@ -34,6 +34,7 @@ async def test_actual_file_read_preserves_original_and_pending_fee_restart(file_
     assert "money" not in actual["usage"]["resources"]
     budget = await recovered.budget.get_ledger(p.case.ctx)
     assert budget["billing_pending"] and budget["held"]["tool_calls"] == 1
+    assert budget["held"]["money"] == "0.05"
 
 
 @pytest.mark.parametrize(
@@ -77,6 +78,7 @@ async def test_registered_actual_pages_and_stale_snapshot_never_silently_reread(
     first = await p.facade.invoke(p.raw, p.case.ctx)
     assert first["kind"] == "ok", first
     data = first["payload"]["data"]
+    assert data["location"] == {"kind": "text_span", "start": 0, "end": 16}
     next_page(p, data["next_cursor"])
     await approve_file(p)
     if changed:
