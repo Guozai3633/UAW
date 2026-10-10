@@ -10,7 +10,13 @@ import pytest
 from uaw_runner.helper_process import HelperProcess
 from uaw_runner.receipts import canonical
 
-from tests.integration.runner.test_helper_runtime import helper_environment, prepare_helper
+from tests.integration.runner.test_helper_runtime import (
+    connect_helper,
+    helper_environment,
+    prepare_helper,
+    read_reply,
+    wait_consumed,
+)
 from tests.integration.runner.test_windows_ipc import ipc_case as _ipc_fixture
 from uaw.shared.errors import DomainError
 from uaw.shared.runner_bootstrap import FirstStartPolicy
@@ -175,4 +181,111 @@ async def test_installed_hidden_selector_reads_actual_session_d_postgres(ipc_cas
         await wait_marker(ipc_case, "actual-postgres-checked")
     finally:
         await process.close()
+    cleaned(process)
+
+
+async def test_first_wait_original_read_lost_reply_restart_only_recovers(ipc_case):
+    case = ipc_case
+    native, process, path, policy = await prepare_start(case, delay=0.1, seconds=8)
+    original_body = None
+    try:
+        session = await connect_helper(case, process, path, await process.start(first_start=policy))
+        await wait_consumed(native)
+        source = await native["reader"].resolve(
+            native["command_ref"], authenticated_principal=native["owners"].value
+        )
+        await session.send("command", {"command_ref": native["command_ref"].wire()})
+        async with asyncio.timeout(8):
+            while True:
+                attempt = await asyncio.to_thread(
+                    native["executions"].get, source, native["command_ref"]
+                )
+                if attempt is not None and attempt.receipt_ref is not None:
+                    break
+                await asyncio.sleep(0.02)
+        # Intentionally discard reply: original persisted receipt is the only recovery input.
+        original_receipt = await native["journal"].read(
+            attempt.receipt_ref, authenticated_principal=native["owners"].value
+        )
+        original_body = dict(
+            command_ref=native["command_ref"].wire(),
+            receipt_ref=attempt.receipt_ref.wire(),
+            receipt=original_receipt.wire(),
+        )
+        await session.close()
+        old_channel = session.channel_ref
+        await process.close()
+        native["target"].unlink()
+        native, second, reg, next_policy = await prepare_start(case, native=native, seconds=8)
+        data = json.loads(reg.read_text(encoding="utf-8"))
+        data["authority"]["cancelled"] = True
+        reg.write_text(canonical(data), encoding="utf-8")
+        connected = await connect_helper(
+            case, second, reg, await second.start(first_start=next_policy)
+        )
+        assert connected.channel_ref != old_channel
+        restored = await read_reply(case, second, connected, native, "recover")
+        assert restored == original_body and not native["target"].exists()
+        with native["executions"].transaction() as db:
+            assert db.execute("SELECT count(*) FROM file_read_attempts").fetchone()[0] == 1
+        case["report"]["first_start_journal"] = "actual_OS_signed_original_receipt_no_resend"
+        case["report"]["human_confirmation"] = "pending_typed_root_UI_double"
+    finally:
+        for owned in case["helper_processes"]:
+            await owned.close()
+            cleaned(owned)
+
+
+async def test_first_wait_unknown_recovery_does_not_execute(ipc_case):
+    case = ipc_case
+    native, process, path, policy = await prepare_start(case, seconds=8)
+    try:
+        session = await connect_helper(case, process, path, await process.start(first_start=policy))
+        await wait_consumed(native)
+        await session.send("recover", {"command_ref": native["command_ref"].wire()})
+        event = await process.event()
+        assert event == dict(event="failure", code="capability_unavailable")
+        with native["executions"].transaction() as db:
+            assert db.execute("SELECT count(*) FROM file_read_attempts").fetchone()[0] == 0
+        assert native["target"].exists()
+    finally:
+        await process.close()
+    cleaned(process)
+
+
+@pytest.mark.parametrize("change", ["owner", "device-key"])
+async def test_current_source_changed_during_first_wait_is_not_cached(ipc_case, change):
+    case = ipc_case
+    native, process, path, policy = await prepare_start(case, delay=0.8, seconds=8)
+
+    class Observer:
+        async def waiting(self, original):
+            assert original == policy
+            if change == "owner":
+                data = json.loads(path.read_text(encoding="utf-8"))
+                data["server"]["owner"]["auth_session_id"] = "other-session"
+                path.write_text(canonical(data), encoding="utf-8")
+            else:
+                native["state"].revoke_key("device1", expected_revision=0)
+
+    try:
+        with pytest.raises(DomainError) as denied:
+            await process.start(first_start=policy, on_progress=Observer())
+        assert denied.value.failure.code == "permission_denied"
+        assert native["state"].get(native["ticket_id"], now=datetime.now(UTC)).state != "consumed"
+    finally:
+        await process.close()
+    cleaned(process)
+
+
+async def test_real_observer_wait_is_in_the_same_absolute_deadline(ipc_case):
+    native, process, path, policy = await prepare_start(ipc_case, delay=0.5, seconds=3)
+
+    class Observer:
+        async def waiting(self, original):
+            assert original == policy
+            await asyncio.sleep(5)
+
+    with pytest.raises(DomainError):
+        await process.start(first_start=policy, on_progress=Observer())
     cleaned(process)
