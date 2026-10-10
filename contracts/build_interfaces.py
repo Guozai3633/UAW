@@ -104,6 +104,7 @@ def example(schema,depth=0):
         if s.get("pattern","").startswith("^(?!"):return "src/main.py"
         value="example_001"
         if s.get("writeOnly"):value="EXAMPLE_ONLY_SECRET"
+        value=value.ljust(s.get("minLength",0),"x")
         return value[:s.get("maxLength",len(value))]
     if kind=="array":
         return [example(s["items"],depth+1) for _ in range(s.get("minItems",0))]

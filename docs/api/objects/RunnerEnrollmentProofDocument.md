@@ -83,7 +83,7 @@
     },
     "public_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
   },
-  "nonce": "example_001",
+  "nonce": "example_001xxxxxxxxxxxxxxxxxxxxx",
   "expires_at": "2026-10-07T02:00:00Z"
 }
 ```

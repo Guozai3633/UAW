@@ -15,65 +15,11 @@
   "errors": [
     {
       "kind": "positive_example",
-      "name": "RunnerProcessIdentity",
-      "errors": [
-        {
-          "path": "/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "RunnerEnrollmentPeer",
-      "errors": [
-        {
-          "path": "/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/public_key",
-          "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "RunnerEnrollmentCandidate",
-      "errors": [
-        {
-          "path": "/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/control/public_key",
-          "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
       "name": "RunnerEnrollmentProofDocument",
       "errors": [
         {
-          "path": "/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/control/public_key",
+          "path": "/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
         }
       ]
     },
@@ -82,26 +28,8 @@
       "name": "RunnerEnrollmentRecord",
       "errors": [
         {
-          "path": "/proof_document/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/proof_document/control/public_key",
+          "path": "/proof_document/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/proof_document/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
-        }
-      ]
-    },
-    {
-      "kind": "positive_example",
-      "name": "RunnerNativePairingEvidence",
-      "errors": [
-        {
-          "path": "/device_identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
         }
       ]
     },
@@ -110,16 +38,8 @@
       "name": "HttpRunnerEnrollmentsBeginResult",
       "errors": [
         {
-          "path": "/payload/proof_document/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
+          "path": "/payload/proof_document/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
         }
       ]
     },
@@ -128,16 +48,8 @@
       "name": "HttpRunnerEnrollmentsGetResult",
       "errors": [
         {
-          "path": "/payload/proof_document/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
+          "path": "/payload/proof_document/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
         }
       ]
     },
@@ -146,16 +58,8 @@
       "name": "HttpRunnerEnrollmentsCompleteResult",
       "errors": [
         {
-          "path": "/payload/proof_document/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
+          "path": "/payload/proof_document/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
         }
       ]
     },
@@ -164,16 +68,8 @@
       "name": "HttpRunnerEnrollmentsRevokeResult",
       "errors": [
         {
-          "path": "/payload/proof_document/control/identity/created",
-          "reason": "'example_001' does not match '^[1-9][0-9]{0,19}$'"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
+          "path": "/payload/proof_document/nonce",
           "reason": "'example_001' is too short"
-        },
-        {
-          "path": "/payload/proof_document/control/public_key",
-          "reason": "'example_001' does not match '^[A-Za-z0-9+/]{43}=$'"
         }
       ]
     }
