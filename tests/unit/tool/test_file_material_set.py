@@ -186,3 +186,14 @@ async def test_second_await_task_cancel_returns_no_collection(ctx):
 def test_collection_requires_immutable_tuple(values):
     with pytest.raises(ValueError):
         FileMaterialSet(values)
+
+
+async def test_eight_sources_exact_total_bound_preserves_separate_bodies(ctx):
+    values = tuple(material(ctx, str(i), "中😀") for i in range(8))
+    reader = ControlledReader({m.material_ref.id: m for m in values})
+    limits = FileMaterialSetLimits(max_characters=16, max_utf8_bytes=56)
+    result = await FileMaterialSetAdapter(reader, limits=limits).read(
+        tuple(m.material_ref for m in values), ctx
+    )
+    assert result.materials == values and result.characters == 16 and result.utf8_bytes == 56
+    assert len(reader.calls) == 16
