@@ -1,6 +1,13 @@
+# A/MS-I2l A1已固定，继续本包M2–M4
+
+源码 `9f2d41085728df5488a4850cc9c7433ede28512b` / `ms-i2l-a1-source`；消费/证据 `ms-i2l-a1`，远端核对后生效。19聚焦通过，193源码类型检查；真实本人配对/目录/文件/页面和汇合全量仍待完成。
+
+先消费D实际等待/初始化stop与installed配置，再接根及控制端来源；C/B阶段到即审阅，不等待最终包。只改A允许路径，不操作worker源码/分支。
+
+
 # 本轮入口：Session A / MS-I2l
 
-状态：MS-I2l准备待正式发布，准确SHA见DISPATCH页首；未发布仅检查。真实installed当前源、消费D首次等待/stop、文件→Context→固定模型→成果与逐包集成。
+状态：MS-I2l正式发布，固定ms-i2l-start / `8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`；按对应提示词核对后自行开工。真实installed当前源、消费D首次等待/stop、文件→Context→固定模型→成果与逐包集成。
 
 先读[分包第1/2/3/7节](../../coordination/requests/A/MS-I2l-parallel-packages.md)和[A/D固定契约](../../coordination/requests/A/MS-I2l-AD-contract.md)，按四个连续里程碑推进，M1/M2阶段提交后继续本包。原worktree/分支不换；A不替worker同步。旧轮未标产品整轮accepted。
 

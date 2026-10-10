@@ -2,7 +2,7 @@
   "date": "2026-10-10",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A1 only: 19 scoped actual installed source/denial/cleanup and original compatibility checks. Human pairing/root/file chain pending; not full.",
+  "scope": "MS-I2l preparation only: scoped10 first-start timing and original first-factory SQL compatibility; new D wait/cancel and native/file production chain pending. Not full.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 19,
+    "tests": 10,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "8d0dac8f98efab021c94da3094ac824aa6543061126bf77a31e6da5c16386d9c",
-  "runtime_implementation": "development_protected_installed_launch_and_concrete_paired_helper_sources",
+  "test_evidence_sha256": "2e265ec9be91be89cc212f7ece4dc0ef125d45b3e8a6beae3a5e3f451ad85278",
+  "runtime_implementation": "development_first_start_shared_policy_and_optional_A_progress_hook",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -179,9 +179,8 @@
     "apps/local_runner/uaw_runner/bootstrap.py": "874b98177aa66b7e9aff3dd8a1e2875cb3f13b95923231c1a6dfe06388b6aa50",
     "apps/local_runner/uaw_runner/control_signing.py": "a8615c92dd84610b16444237481f40b72f120e528dc6677eb338a37f9e4bcd3f",
     "apps/local_runner/uaw_runner/handle_read.py": "e889c79738cc5b4837028d5b3cc9b4183bb607615c669fdc36c5229ff42b3d28",
-    "apps/local_runner/uaw_runner/helper_host.py": "9e17e8211c5af20e043e1c93de701c59813bdcc770255a2d32ceed2670379e97",
-    "apps/local_runner/uaw_runner/helper_process.py": "8ef22c940aa20c5c5f97dbef0178096bec278e808098a9764bbc4060a81af5fa",
-    "apps/local_runner/uaw_runner/helper_stdio.py": "a8d4d9708ab3cff3c52edef128df53f12fa01e704e7e595ac9ee786e3af66f86",
+    "apps/local_runner/uaw_runner/helper_host.py": "98910b64171180d39eab535faa8cc188b698908f6b8d34a49772f69f4488737b",
+    "apps/local_runner/uaw_runner/helper_process.py": "56aae6c3876b62a5304a653dc00f268595ce40b038de2253751dbf8df7bd69a4",
     "apps/local_runner/uaw_runner/ipc/__init__.py": "69e9fe62782d844331cdc16cd0e2465f2f524930513a7da21c46a54251a6981c",
     "apps/local_runner/uaw_runner/ipc/channel_source.py": "81632a6ea6b6f20c58066679aab22dfa0c628ef371d2facef876394ccf883912",
     "apps/local_runner/uaw_runner/ipc/frames.py": "bb53a6a4209ab30a60384ad77bcac9d7849ce89d592bbc4057cd18280dc00e31",
@@ -287,12 +286,10 @@
     "src/uaw/infrastructure/enrollment_bootstrap.py": "0d8b39b75094980289653d2f2bc03192e9e89e4d72dfa69f66e0a19be414b42c",
     "src/uaw/infrastructure/enrollment_candidates.py": "387ae80d8ffe71c836021e531f609baff411fa6cf2c443327d26292eb9c66e25",
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
-    "src/uaw/infrastructure/enrollment_launch.py": "51f99e06f8164214d9ad26cff711a42481eaf0034401528140420c3ad29dc909",
     "src/uaw/infrastructure/enrollment_native.py": "2d41116c22bd0512055ee27f8f77fa07af172aef8d72d962e675462bb3d59dec",
     "src/uaw/infrastructure/enrollment_peers.py": "4db202564f0eb1e2bb35f722c31112d0dfd772af13e6e4a22698b1de1d0b8c99",
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
-    "src/uaw/infrastructure/installed_helper.py": "e3c52d15169a4809cf195d59dc06927d3241ec624176e9e511474df3af79fbd7",
     "src/uaw/infrastructure/runner_pipe.py": "834a2fa12a8d806791ec46bb9bb7fce23a277ecd2d21bf7bb8370d3d245b4108",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
@@ -322,7 +319,7 @@
     "src/uaw/run/context.py": "398849d0f56499b06dedbc582fb7c19729f7a48b73d121d0a401700d8d9e9913",
     "src/uaw/run/context_sources.py": "fdbff10587e4d1ebcc753007eaa8a33a612c1af4ce291899351be91880947479",
     "src/uaw/run/deliveries.py": "8e38dc7ef7a7768a7a0fef2b3c51ff80da553d77a55603812ae6825d92a24ba9",
-    "src/uaw/run/enrollment.py": "a9460fcab4940ea7686abd1f46c1f7df7b11b608e5306cc9bcec970648d80118",
+    "src/uaw/run/enrollment.py": "87ae233e03b23a4187c32900f3c9c2af7f4780b1594fe7b141b0b8ed33d19324",
     "src/uaw/run/events.py": "886d61d7e25d3739cb854310c68d43795c0b2bb3dd075ffcadc1fff30be791b8",
     "src/uaw/run/execution_sources.py": "67d83b899a34b1606a08efafcc06d4f348b62cadfcd99175baf8cc675fecc66b",
     "src/uaw/run/facade.py": "9a074e1ac2271f6fd33c1f1a573e8162374cb9dea36fdde149764a2b1b553fbc",
@@ -406,7 +403,6 @@
     "tests/integration/agent/test_enrollment_postgres.py": "0f8db11822847d42b35c5b5e1779c3f25c07558075047d07afc9386a4cb52d21",
     "tests/integration/agent/test_evaluation_postgres.py": "d9c599777426d54627731864d105372fd58d0ba8960a503221bcfbbbc088c8dc",
     "tests/integration/agent/test_file_bridge_postgres.py": "263cbeb4f709fddd6aa32d7362c036aa30640e00875fd9f25b750b5396a037f4",
-    "tests/integration/agent/test_installed_launch.py": "6607877aa91c1b8b3a28abb9b689201a3988b6b8bc92789963f69f9348a7e5bb",
     "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
     "tests/integration/agent/test_loop_postgres.py": "770d59fdb09d03741df0437fa9bd29c07196cd2a3425a55e9684d85fdafddb46",
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
@@ -433,7 +429,6 @@
     "tests/integration/runner/conftest.py": "8ef41fdf7e3a3971df161f2ec334cba9e6e31b97b3f82b82e20b891ca2e768cc",
     "tests/integration/runner/helper_fixture.py": "9165698bd3dacd9a80b55edc9f6b5bb06466dde5d6fb14c20b00ec83c70c517a",
     "tests/integration/runner/helper_manual.py": "97c1f7b81b9795cae95838a71ed012eb0e5559196db4151b91719e566173aaec",
-    "tests/integration/runner/helper_start_fixture.py": "b8022d53df60384efe85f52c5523b7f4cf08e06948cd3c3e2d1a6ff17d73d4b2",
     "tests/integration/runner/ipc_child.py": "5d1132660a9d0f827374042a8daae3bf578ca623aee08b07a353bffa0b87c49e",
     "tests/integration/runner/ipc_fixture.py": "0e7a5cab0294fa08a37746d3e168e0259548cc9b4115f8597ab33a00e5495bf9",
     "tests/integration/runner/native_manual.py": "0c866333b0c44f22d8fde63377d91eb552e8fa10f530e50a9b6b3967eb3d6fda",
@@ -441,8 +436,7 @@
     "tests/integration/runner/receipt_child.py": "8a7a21848801fe0c207d125abb4fae971f08b3cf75c87e1c0431a9537cd68461",
     "tests/integration/runner/root_source_child.py": "a77b43c94f1ae61ffb5585012df8373af64c90f038dc9e488a354435cc2e79d4",
     "tests/integration/runner/test_bootstrap.py": "cc82b31cdc6d50aa1a3ad0aa102f15df4da46c0c9bb23c9c922989f21c8930c5",
-    "tests/integration/runner/test_helper_first_start.py": "2593411974f5735885e2211bed412b6f1a0728f7d82bed565df24fabfab208d4",
-    "tests/integration/runner/test_helper_runtime.py": "5db9923f455736c646e77ebe8795a76d8cbd284234d4c19643e66ff0377a2083",
+    "tests/integration/runner/test_helper_runtime.py": "921187b3ff8319d08e470112f3921974184c1b228460d63d2468117f86d44b68",
     "tests/integration/runner/test_local_paths.py": "391be8d02b7b0c3c219606912a7695eeade0c39eaeceb54c3ed9991d4a4d8dbc",
     "tests/integration/runner/test_native_authorization.py": "2bebe1ae190340c178cf6c0999e736a9211147c9bca053e81ec7cc9e3d1bc65b",
     "tests/integration/runner/test_native_dialog_windows.py": "24cf94291d5dae63ad208846bad63199ab48340b3b07e76903c6056aacae0ccb",
@@ -495,7 +489,6 @@
     "tests/unit/agent/test_decisions.py": "c25d29cfe72b125ef53c5bb3c3654b24de84f841c252e1bcc9ea987093843e13",
     "tests/unit/agent/test_file_context.py": "c164f212dd27e7b4ba2905aca8f9c1c8f3b36b7ad6ce7ee008a6193e53202671",
     "tests/unit/agent/test_first_start_policy.py": "417e68a8cb67429ea6e414f757f039765ebb28d104fa5b33907e5bdf0369df33",
-    "tests/unit/agent/test_installed_launch_contract.py": "241af726e96fae11a8f1101f39aa95058ee916794df7ea0aff0d5b712e5cd95b",
     "tests/unit/agent/test_semantic_evidence.py": "9f7f7188d19c1e17c4e0559a60fbf2a6c50c9b19bd08a06d63842474e2b8dba8",
     "tests/unit/context/test_assessment.py": "3bf5fde48a66e4aafb95bf9183458e3333dfdc1658eb32dc05034c89cac412c3",
     "tests/unit/context/test_cache.py": "748354cac1d0784803d050a2530b2e9fb2d37f41d444e4fae772ba07cd1cce4c",
@@ -512,7 +505,6 @@
     "tests/unit/runner/test_binding.py": "9155fe160114eb5aeb4edbf102f884a7e4e0ad7ffb6540ca541ed1330d5ddad6",
     "tests/unit/runner/test_control_signing.py": "11a56876ed24ccf0f7308b9414978527caba2f426e53d7a5df12a6cc1df61f67",
     "tests/unit/runner/test_handle_read.py": "2d5fdbdeb87d7cced20f2038f3bfc8a0d0fe4f997e3d8f676d589f790e6131d0",
-    "tests/unit/runner/test_helper_first_start.py": "58fc60fc83fa4536e45f59847b5f0e699c2cb0747bf6f71716e5ba8c8aeb50b5",
     "tests/unit/runner/test_ipc_frames.py": "0569612b0200c0f2721cf7af75c02ab528bbff91e584bff8d0cb274b58122546",
     "tests/unit/runner/test_native_confirmation.py": "c70fb5c5274e764a8731feaa4f13ecd41d8b533cf50b7f19f348a6d6a8835bd2",
     "tests/unit/runner/test_protocol.py": "bdbae93ef4c1c73369c5944a80ff3eb0fbff09480a1630ba466901ee35ab7996",
@@ -550,19 +542,19 @@
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
     "previous_environment": {
-      "path": "docs/implementation/evidence/environment-before-ms-i2l-a1.json",
-      "sha256": "ba9c4da60b5db69b046ea538eaf95e0df99c07c5440e9cb880b807adf087d170"
+      "path": "docs/implementation/evidence/environment-before-ms-i2l-preparation.json",
+      "sha256": "474901f4994eb805de52c40abaef75de2d319668a96d65014568513e01bf9d55"
     },
     "previous_full_receipt": {
       "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
       "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
     },
     "current_stage": {
-      "path": "docs/implementation/evidence/ms-i2l-a1.json",
-      "sha256": "5fc48ebe2b4c0bd3e5583b0f593094288bbd2b9cf313b3b352140e2fdbf33161"
+      "path": "docs/implementation/evidence/ms-i2l-preparation.json",
+      "sha256": "7ab245cc113a9736cd5d23ac28c8e20d28ddd75b5d3fe9677a344655d77b5aa5"
     },
-    "current_stage_source": "9f2d41085728df5488a4850cc9c7433ede28512b",
-    "current_stage_different_nodes": 19,
+    "current_stage_source": "6277fd12c238629c1d5d998b7c83aeaeeb539ed6",
+    "current_stage_different_nodes": 10,
     "current_stage_is_full_regression": false
   }
 }

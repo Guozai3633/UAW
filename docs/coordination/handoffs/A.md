@@ -1,3 +1,8 @@
+# A/MS-I2l A1阶段交付
+
+运行源码 `9f2d41085728df5488a4850cc9c7433ede28512b`，固定 `ms-i2l-a1-source`；证据/消费 `ms-i2l-a1`。19不同节点/193源码类型检查通过，全部失败历史见[准确证据](../../implementation/evidence/ms-i2l-a1.json)。[实际接口](../requests/A/MS-I2l-installed-sources.md)供D生产消费。原start标签不移动、不开始新包，M2–M4及真人/根/文件整链继续；未标整轮accepted。
+
+
 # Session A 集成交接
 
 ## MS-I2h-A2（2026-10-09）

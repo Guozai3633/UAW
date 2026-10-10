@@ -1,0 +1,179 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2l-A1",
+  "runtime_source_commit": "9f2d41085728df5488a4850cc9c7433ede28512b",
+  "publication_ref": "ms-i2l-a1",
+  "source_ref": "ms-i2l-a1-source",
+  "different_nodes": 19,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "global_flags_opened": false,
+  "human_native_confirmed": false,
+  "new_model_calls": 0,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2l-a1-tests.xml",
+    "sha256": "8d0dac8f98efab021c94da3094ac824aa6543061126bf77a31e6da5c16386d9c"
+  },
+  "nodes": [
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[approval]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[naive]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[relative]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[boolean_pid]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[currency]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[owner]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_launch_rejects_untrusted_or_changed_shape[hash]",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_original_shape_retains_exact_instance_and_expiry",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_missing_locator_does_not_allocate_or_retry",
+      "class": "tests.unit.agent.test_installed_launch_contract"
+    },
+    {
+      "name": "test_installed_prepare_real_sources_no_permission_and_idempotent_cleanup",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_actual_child_denies_changed_source_before_native[logout]",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_actual_child_denies_changed_source_before_native[wrong_identity]",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_actual_child_denies_changed_source_before_native[wrong_challenge]",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_actual_child_denies_changed_source_before_native[missing_delivery]",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_logout_rejects_before_allocating_private_sources",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_installed_cancel_late_os_credential_write_is_drained_and_deleted",
+      "class": "tests.integration.agent.test_installed_launch"
+    },
+    {
+      "name": "test_first_device_gate_controlled_yes_original_activation_and_cleanup",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    },
+    {
+      "name": "test_first_device_factory_missing_source_never_opens_ui",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    },
+    {
+      "name": "test_first_device_factory_wrong_proof_never_calls_paired_factory",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-ruff-final.log",
+      "sha256": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-format-final.log",
+      "sha256": "b5a7e9c75fa3cfb3e45ac6eb1aa46e72c69448c57d2bbf75ecde0929f1c9bcba"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-mypy-final-2.log",
+      "sha256": "0e7377886a3e6f4cb1f9cc08925acec05146d8dfe574253bae4c8869aed38c03"
+    }
+  ],
+  "mypy_source_files": 193,
+  "failed_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-installed-first.xml",
+      "sha256": "c5b5bba987a8d231406bf1ca9e4d14ea73c345eb47488e26c2ee9a1e0082c580",
+      "counts": {
+        "tests": 7,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-installed-fixed.xml",
+      "sha256": "331786fb79834fa661403714794ffdb5554a9d30d4ffba259b59e3514ea20202",
+      "counts": {
+        "tests": 7,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m1-installed-d-consumer.xml",
+      "sha256": "df4846d9507353f4a00a1cfe234f55b092b8ce899f0ff4dafc7e77c4739ac5a5",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 0
+      }
+    }
+  ],
+  "history": [
+    "First SQL attempt: 5 failures/2 passes. A fixture assertions expected an obsolete code and a cleared wrapper pointer; corrected to specific current code and actual closed handle.",
+    "Second SQL attempt: 2 failures/5 passes exposed actual locked psycopg incompatibility with child Proactor loop. D repaired helper_host using the existing control_plane_loop; exact source 67154f807a9c7aa69139a34af190a1ec058819b0.",
+    "Combined collection then failed once because two A test modules had the same basename. Unit module renamed before the final 19-node receipt.",
+    "Earlier sandbox unit invocation hung without a valid receipt; only its two verified owned PIDs were stopped. Host unit run passed 9 nodes; it is a subset and not added to the final count.",
+    "Core-only mypy command omitted the Runner source search path and reported 34 import/type errors. Correct combined src/uaw and apps/local_runner/uaw_runner check passed 193 files without suppressions.",
+    "All initial failures/interruption logs remain in tests/.artifacts/A/MS-I2l. Static sandbox Python real-location warning retained; commands exited zero."
+  ],
+  "accepted_worker_stage": {
+    "D_M1_handoff": "01c674dd5ea30d26ed269f89c821e98a995bf125",
+    "D_M2_and_SQL_repair_handoff": "ba003ebd0f5727caf34b7cbe4a645f7f78fe7eec",
+    "scope": "Reviewed exact D lifecycle/SQL loop source and consumed it in actual A hidden-helper denial/cleanup tests. Positive original native Yes/downstream factory in 3 compatibility tests remain controlled."
+  },
+  "execution_lineage": [
+    "9 strict installed descriptor/locator unit nodes, 7 actual A PostgreSQL/Windows protected per-launch source/denial/cleanup nodes and 3 original first-factory compatibility SQL nodes.",
+    "Runtime/test bytes were identical to committed source except the later filename-only unit rename required for collection.",
+    "Installed module is fixed and minimal configuration is delivered through protected randomized credentials. Actual OS identity/current Web/original challenge checks are production implementations.",
+    "No actual human native Yes/root selection, user directory read, file command or new external model call executed."
+  ],
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2l-preparation.json",
+    "sha256": "7ab245cc113a9736cd5d23ac28c8e20d28ddd75b5d3fe9677a344655d77b5aa5"
+  },
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "remaining": [
+    "Root ticket issuance/protected delivery and on_connected actual user directory selection.",
+    "Current control-side connected peer/root/file-route/Tool authority and trusted localhost launch consumer.",
+    "Single/multi-material owning origin reader and actual Context/model/Artifact references.",
+    "Actual academic user acceptance and browser decline/cancel/refresh; final once-only converged full regression."
+  ]
+}

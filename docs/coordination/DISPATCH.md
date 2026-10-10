@@ -1,6 +1,16 @@
-# 当前安排：MS-I2l（2026-10-10，准备待正式发布）
+# MS-I2l A1阶段：真实installed来源与D等待/取消接线
 
-共同固定开工标签 **ms-i2l-start**；准确SHA将在发布回执固定。远端标签/正式DISPATCH尚未核对前只检查准备状态，不开始新包。A/D必需公共对象与A回调已固定，D新等待/取消是本轮任务，不宣称已完成。
+阶段源码 **9f2d41085728df5488a4850cc9c7433ede28512b**，固定源码标签 `ms-i2l-a1-source`；证据/消费标签 `ms-i2l-a1`。本轮继续M2–M4，不派新包、不移动共同 `ms-i2l-start`。
+
+- [实际构造/消费/清理](requests/A/MS-I2l-installed-sources.md)：每次protected locator、当前Web/实际OS角色keys、原challenge/proof、具体paired factory。D可自行保留阶段提交后消费准确标签，A不操作worker工作区。
+- D M1/M2与实际子端SQL loop修复精确审阅合入；19不同A受影响节点最终通过、193源码类型检查。初始测试断言、真实SQL loop及组合收集失败均保留。[准确阶段证据](../implementation/evidence/ms-i2l-a1.json)。不是真人通过或新全量。
+- root Ticket/本人选择/on_connected、父端current root/file authority及localhost生产消费仍待M2；C多材料owning router与B真实页面继续逐包集成。办公原completed保持、学术本人接受未新核对；默认flags关闭，缺源503。
+
+以下为本轮正式开工记录及历史。
+
+# 当前安排：MS-I2l（2026-10-10，正式发布）
+
+**准确开工 SHA：`8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`，固定标签 `ms-i2l-start`。** 本基线包含固定A/D输入、四个包及准备证据；后续仅发布文档元数据的integration提交不移动此标签。worker自行fetch后精确比较标签与HEAD，远端未匹配时不得开工。A/D必需公共对象与A回调已固定，D新等待/取消是本轮任务，不宣称已完成。
 
 - A/MS-I2l：真实installed来源/等待取消装配/文件与用户整链；B/MS-U3：当前会话刷新恢复/真实设备成果状态；C/MS-T2i：已存在资料的有界多材料消费/原恢复；D/MS-R2i：首次90秒原deadline/进度/初始化stop与真实helper。
 - [固定A/D接口](requests/A/MS-I2l-AD-contract.md)、[模块/阶段/任务/目标/目录](requests/A/MS-I2l-parallel-packages.md)、[四份完整提示词](MS-I2l-messages.md)。原worktree/分支保留，worker自己同步准确标签；A未改worker工作区或直接给三个聊天发任务。
