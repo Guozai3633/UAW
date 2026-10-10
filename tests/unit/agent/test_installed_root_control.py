@@ -188,27 +188,27 @@ async def test_control_close_revokes_only_its_bound_source_and_is_idempotent(own
     assert c.registry.close.await_count == c.session.close.await_count == 1
 
 
-async def test_launch_close_during_connect_drains_owned_operation_without_deadlock():
+async def test_launch_close_during_connect_drains_owned_operation_without_deadlock(monkeypatch):
     container = SimpleNamespace(runner_enrollments=None)
     launch = PreparedEnrollmentLaunch(container, SimpleNamespace(), SimpleNamespace())
     connection = SimpleNamespace(close=AsyncMock())
-    launch.connection = connection
+    launch.owner = Principal(id="user-one", kind="user", auth_session_id="web-session-one")
+    launch.control_key = "protected-control-binding"
+    launch.enrollment_id = "enrollment-one"
+    launch.helper = SimpleNamespace(close=AsyncMock())
+    launch.ready = {"event": "ready"}
     entered = asyncio.Event()
 
-    async def connecting():
-        launch.connecting = asyncio.current_task()
-        try:
-            entered.set()
-            await asyncio.Event().wait()
-        except BaseException:
-            if launch.closing is None:
-                launch.connecting = None
-                await launch.close()
-            raise
-        finally:
-            launch.connecting = None
+    async def connecting(*args):
+        entered.set()
+        await asyncio.Event().wait()
 
-    task = asyncio.create_task(connecting())
+    connection.connect = connecting
+    monkeypatch.setattr(
+        "uaw.infrastructure.enrollment_launch.InstalledControlConnection",
+        lambda **kwargs: connection,
+    )
+    task = asyncio.create_task(launch.connect())
     await entered.wait()
     async with asyncio.timeout(2):
         await launch.close()
