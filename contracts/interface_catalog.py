@@ -1837,6 +1837,45 @@ def finalize(graph,strategies):
     record("RunnerRequestRegisterRequest","run","内部控制服务登记不可变实际业务参数。","id|ID|稳定请求\nparameters|RunnerParameters|实际业务参数")
     record("RunnerRequestRecord","run","版本1的原请求/原尝试，不是执行权限。","id|ID|稳定请求\ncontext|TrustedExecutionContext|服务取得的原上下文\nparameters|RunnerParameters|原业务参数")
     record("RunnerToolRequestRecord","run","控制服务登记的原 Tool 调用；不修改原上下文或授予发送权限。","id|ID|原Tool动作身份\ncontext|TrustedExecutionContext|完整原Tool上下文\nparameters|RunnerParameters|原文件读取参数\ncall|ValidatedCall|独立Tool账本的原规范化调用\nspec|ToolSpec|独立Tool账本的原工具版本")
+    obj("RunnerProcessIdentity", "run", "独立OS观察的进程实例；不是UAW账号。", {
+        "pid": field({"type":"integer","minimum":1,"maximum":4294967295}, "实际进程ID"),
+        "created": field({"type":"string","pattern":"^[1-9][0-9]{0,19}$","maxLength":20}, "Windows FILETIME十进制字符串，避免签名JSON数值精度丢失"),
+        "user_sid": field("ID", "实际用户SID"), "logon_sid": field("ID", "实际本机登录SID"),
+    })
+    obj("RunnerEnrollmentPeer", "run", "独立控制源捕获的候选进程与角色key。", {
+        "identity": field("RunnerProcessIdentity", "独立OS观察"),
+        "actor": field("Principal", "精确角色主体"),
+        "role": field({"type":"string","enum":["control","device"]}, "签名角色"),
+        "key_id": field("ID", "原key身份"), "key_ref": field("Ref", "原key版本与摘要"),
+        "public_key": field({"type":"string","minLength":44,"maxLength":44,"pattern":"^[A-Za-z0-9+/]{43}=$"}, "32字节Ed25519公钥标准base64；不是私钥"),
+    })
+    record("RunnerEnrollmentCandidate","run","独立来源候选；不授予配对或文件权限。",
+        "id|ID|候选身份\nowner|Principal|实际当前Web用户完整身份\ndevice_id|ID|独立设备身份\ncontrol|RunnerEnrollmentPeer|控制进程\ndevice|RunnerEnrollmentPeer|设备进程\nexpires_at|Timestamp|候选期限")
+    obj("RunnerEnrollmentProofDocument", "run", "双方持有证明签署的同一原账号设备挑战。", {
+        "protocol": field({"type":"string","const":"uaw-enrollment-v1"}, "内部协议"),
+        "enrollment_id": field("ID", "本次操作"), "candidate_ref": field("Ref", "准确候选快照"),
+        "owner": field("Principal", "实际原Web会话"), "device_id": field("ID", "原设备"),
+        "control": field("RunnerEnrollmentPeer", "控制实例/key"),
+        "device": field("RunnerEnrollmentPeer", "设备实例/key"),
+        "nonce": field({"type":"string","minLength":32,"maxLength":128}, "原随机nonce"),
+        "expires_at": field("Timestamp", "不超过Web会话及候选期限"),
+    })
+    obj("RunnerEnrollmentRecord", "run", "平台持久的首次设备登记状态；active仍不含目录授权。", {
+        "id": field("ID", "原操作"), "revision": field("Revision", "CAS版本"),
+        "state": field({"type":"string","enum":["pending","active","revoked","expired"]}, "登记状态"),
+        "proof_document": field("RunnerEnrollmentProofDocument", "固定原挑战"),
+        "created_at": field("Timestamp", "登记时间"),
+        "confirmation_ref": field("Ref", "独立本机决定记录", True),
+        "pairing_ref": field("Ref", "正式完整登记的固定摘要", True),
+        "device_proof": field({"type":"string","minLength":1,"maxLength":240}, "原设备持有签名", True),
+        "control_proof": field({"type":"string","minLength":1,"maxLength":240}, "原控制持有签名", True),
+    })
+    record("RunnerNativePairingEvidence", "run", "独立本机owning Reader返回的确认；不可从HTTP approved生成。",
+        "enrollment_id|ID|原登记\nowner|Principal|原完整用户会话\ndevice_id|ID|原设备\ndevice_identity|RunnerProcessIdentity|原OS实例\nproof_document_hash|Hash|双方签署原挑战摘要\nconfirmation_ref|Ref|准确本机决定来源\nexpires_at|Timestamp|实际本机确认期限\ndevice_proof|NonEmptyText|原设备签名\ncontrol_proof|NonEmptyText|原控制签名")
+    endpoint("runner.enrollments.begin", "POST", "/v1/runner/enrollments", "run", "ui ingress workspace.binding", "当前Web用户请求独立候选的首次登记；不授予目录权限。", "candidate_id|ID|已有受保护候选", "RunnerEnrollmentRecord", "internal_write", ["当前Web会话/CSRF；不接受owner、公钥、PID、approved或路径。缺启动源503。"])
+    endpoint("runner.enrollments.get", "GET", "/v1/runner/enrollments/{enrollment_id}", "run", "ui workspace.binding", "当前原Web会话读取准确当前登记；不授予执行。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord")
+    endpoint("runner.enrollments.complete", "POST", "/v1/runner/enrollments/{enrollment_id}/confirmation", "run", "ui workspace.binding", "读取独立本机本人确认和双方签名证明后CAS登记。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord", "internal_write", ["meta.expected_revision必需；无approved/code/key/proof body；缺当前本机来源503，不由网页代替真人确认。"])
+    endpoint("runner.enrollments.revoke", "POST", "/v1/runner/enrollments/{enrollment_id}/revocation", "run", "ui workspace.binding", "原当前Web用户撤销登记。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord", "internal_write", ["meta.expected_revision必需；当前原会话，不能恢复旧配对。"])
     record("RunnerRootSnapshot","run","真实授权根来源的当前opaque元数据，不包含本机路径。","owner|Principal|原用户\ndevice_id|ID|设备\nworkspace_ref|Ref|实际工作区\nroot_handle|ID|授权根\nbinding_revision|Revision|根版本\nallowed_actions|[](ID)|当前获准读动作\nexpires_at|Timestamp|根期限")
     record("RunnerCommandDraft","run","控制服务从独立登记源构建的签字正文。","command_id|ID|命令\noperation_id|ID|原操作\nrequest_ref|Ref|原请求\ntrusted_context|TrustedExecutionContext|原上下文\nfencing_token|Revision|当前栅栏\nexpires_at|Timestamp|有界期限\nparameters|RunnerParameters|原业务参数")
     record("RunnerCommandRegisterRequest","run","仅内部控制服务可创建签字记录，不发送命令。","command_id|ID|稳定命令\nrequest_ref|Ref|已登记实际请求\ndevice_ref|Ref|当前设备绑定\nlease_ref|Ref|当前根租约\nfencing_token|Revision|栅栏\nexpires_at|Timestamp|期限")

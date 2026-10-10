@@ -14595,6 +14595,351 @@
       ],
       "additionalProperties": false
     },
+    "RunnerProcessIdentity": {
+      "type": "object",
+      "description": "独立OS观察的进程实例；不是UAW账号。",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "description": "实际进程ID"
+        },
+        "created": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "maxLength": 20,
+          "description": "Windows FILETIME十进制字符串，避免签名JSON数值精度丢失"
+        },
+        "user_sid": {
+          "$ref": "#/$defs/ID",
+          "description": "实际用户SID"
+        },
+        "logon_sid": {
+          "$ref": "#/$defs/ID",
+          "description": "实际本机登录SID"
+        }
+      },
+      "required": [
+        "pid",
+        "created",
+        "user_sid",
+        "logon_sid"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentPeer": {
+      "type": "object",
+      "description": "独立控制源捕获的候选进程与角色key。",
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/RunnerProcessIdentity",
+          "description": "独立OS观察"
+        },
+        "actor": {
+          "$ref": "#/$defs/Principal",
+          "description": "精确角色主体"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "control",
+            "device"
+          ],
+          "description": "签名角色"
+        },
+        "key_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原key身份"
+        },
+        "key_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原key版本与摘要"
+        },
+        "public_key": {
+          "type": "string",
+          "minLength": 44,
+          "maxLength": 44,
+          "pattern": "^[A-Za-z0-9+/]{43}=$",
+          "description": "32字节Ed25519公钥标准base64；不是私钥"
+        }
+      },
+      "required": [
+        "identity",
+        "actor",
+        "role",
+        "key_id",
+        "key_ref",
+        "public_key"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentCandidate": {
+      "type": "object",
+      "description": "独立来源候选；不授予配对或文件权限。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "候选身份"
+        },
+        "owner": {
+          "$ref": "#/$defs/Principal",
+          "description": "实际当前Web用户完整身份"
+        },
+        "device_id": {
+          "$ref": "#/$defs/ID",
+          "description": "独立设备身份"
+        },
+        "control": {
+          "$ref": "#/$defs/RunnerEnrollmentPeer",
+          "description": "控制进程"
+        },
+        "device": {
+          "$ref": "#/$defs/RunnerEnrollmentPeer",
+          "description": "设备进程"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "候选期限"
+        }
+      },
+      "required": [
+        "id",
+        "owner",
+        "device_id",
+        "control",
+        "device",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentProofDocument": {
+      "type": "object",
+      "description": "双方持有证明签署的同一原账号设备挑战。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "uaw-enrollment-v1",
+          "description": "内部协议"
+        },
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "本次操作"
+        },
+        "candidate_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "准确候选快照"
+        },
+        "owner": {
+          "$ref": "#/$defs/Principal",
+          "description": "实际原Web会话"
+        },
+        "device_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原设备"
+        },
+        "control": {
+          "$ref": "#/$defs/RunnerEnrollmentPeer",
+          "description": "控制实例/key"
+        },
+        "device": {
+          "$ref": "#/$defs/RunnerEnrollmentPeer",
+          "description": "设备实例/key"
+        },
+        "nonce": {
+          "type": "string",
+          "minLength": 32,
+          "maxLength": 128,
+          "description": "原随机nonce"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "不超过Web会话及候选期限"
+        }
+      },
+      "required": [
+        "protocol",
+        "enrollment_id",
+        "candidate_ref",
+        "owner",
+        "device_id",
+        "control",
+        "device",
+        "nonce",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentRecord": {
+      "type": "object",
+      "description": "平台持久的首次设备登记状态；active仍不含目录授权。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原操作"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "CAS版本"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "active",
+            "revoked",
+            "expired"
+          ],
+          "description": "登记状态"
+        },
+        "proof_document": {
+          "$ref": "#/$defs/RunnerEnrollmentProofDocument",
+          "description": "固定原挑战"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "登记时间"
+        },
+        "confirmation_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "独立本机决定记录"
+        },
+        "pairing_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "正式完整登记的固定摘要"
+        },
+        "device_proof": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "原设备持有签名"
+        },
+        "control_proof": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "原控制持有签名"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "state",
+        "proof_document",
+        "created_at"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerNativePairingEvidence": {
+      "type": "object",
+      "description": "独立本机owning Reader返回的确认；不可从HTTP approved生成。",
+      "properties": {
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原登记"
+        },
+        "owner": {
+          "$ref": "#/$defs/Principal",
+          "description": "原完整用户会话"
+        },
+        "device_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原设备"
+        },
+        "device_identity": {
+          "$ref": "#/$defs/RunnerProcessIdentity",
+          "description": "原OS实例"
+        },
+        "proof_document_hash": {
+          "$ref": "#/$defs/Hash",
+          "description": "双方签署原挑战摘要"
+        },
+        "confirmation_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "准确本机决定来源"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "实际本机确认期限"
+        },
+        "device_proof": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "原设备签名"
+        },
+        "control_proof": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "原控制签名"
+        }
+      },
+      "required": [
+        "enrollment_id",
+        "owner",
+        "device_id",
+        "device_identity",
+        "proof_document_hash",
+        "confirmation_ref",
+        "expires_at",
+        "device_proof",
+        "control_proof"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentsBeginRequest": {
+      "type": "object",
+      "description": "当前Web用户请求独立候选的首次登记；不授予目录权限。",
+      "properties": {
+        "candidate_id": {
+          "$ref": "#/$defs/ID",
+          "description": "已有受保护候选"
+        }
+      },
+      "required": [
+        "candidate_id"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentsGetRequest": {
+      "type": "object",
+      "description": "当前原Web会话读取准确当前登记；不授予执行。",
+      "properties": {
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原登记"
+        }
+      },
+      "required": [
+        "enrollment_id"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentsCompleteRequest": {
+      "type": "object",
+      "description": "读取独立本机本人确认和双方签名证明后CAS登记。",
+      "properties": {
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原登记"
+        }
+      },
+      "required": [
+        "enrollment_id"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerEnrollmentsRevokeRequest": {
+      "type": "object",
+      "description": "原当前Web用户撤销登记。",
+      "properties": {
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原登记"
+        }
+      },
+      "required": [
+        "enrollment_id"
+      ],
+      "additionalProperties": false
+    },
     "RunnerRootSnapshot": {
       "type": "object",
       "description": "真实授权根来源的当前opaque元数据，不包含本机路径。",
@@ -49046,6 +49391,598 @@
         },
         "payload": {
           "$ref": "#/$defs/WebSessionLogoutRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerEnrollmentsBeginResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentRecord",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerEnrollmentsBeginEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentsBeginRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerEnrollmentsGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentRecord",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerEnrollmentsGetEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentsGetRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerEnrollmentsCompleteResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentRecord",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerEnrollmentsCompleteEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentsCompleteRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerEnrollmentsRevokeResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentRecord",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerEnrollmentsRevokeEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerEnrollmentsRevokeRequest",
           "description": "业务参数"
         }
       },

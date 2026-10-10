@@ -14,4 +14,5 @@
 - [http · web.session.exchange](../interfaces/http--web-session-exchange.md)
 - [http · web.session.get](../interfaces/http--web-session-get.md)
 - [http · web.session.logout](../interfaces/http--web-session-logout.md)
+- [http · runner.enrollments.begin](../interfaces/http--runner-enrollments-begin.md)
 - [component · ingress](../interfaces/component--ingress.md)

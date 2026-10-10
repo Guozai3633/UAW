@@ -38,6 +38,15 @@ IMPLEMENTATIONS["ModelRuntime.generate"] = {
     "scope": "development_model_protocol", "entrypoint": "src/uaw/model/facade.py",
     "evidence": ["docs/implementation/P0-05.md", "docs/implementation/evidence/p0-tests.xml"],
 }
+for operation in (
+    "runner.enrollments.begin", "runner.enrollments.get",
+    "runner.enrollments.complete", "runner.enrollments.revoke",
+):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_owned_enrollment_current_sources_required",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2k-A1.md", "docs/implementation/evidence/ms-i2k-a1.json"],
+    }
 for operation in ("IntentRuntime.understand", "IntentRuntime.revise", "tasks.frame"):
     IMPLEMENTATIONS[operation] = {
         "scope": "development_intent_protocol",

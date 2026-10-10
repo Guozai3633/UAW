@@ -4345,6 +4345,245 @@
         }
       }
     },
+    "RunnerProcessIdentity": {
+      "pid": 1,
+      "created": "example_001",
+      "user_sid": "example_001",
+      "logon_sid": "example_001"
+    },
+    "RunnerEnrollmentPeer": {
+      "identity": {
+        "pid": 1,
+        "created": "example_001",
+        "user_sid": "example_001",
+        "logon_sid": "example_001"
+      },
+      "actor": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "role": "control",
+      "key_id": "example_001",
+      "key_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "public_key": "example_001"
+    },
+    "RunnerEnrollmentCandidate": {
+      "id": "example_001",
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "device_id": "example_001",
+      "control": {
+        "identity": {
+          "pid": 1,
+          "created": "example_001",
+          "user_sid": "example_001",
+          "logon_sid": "example_001"
+        },
+        "actor": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "role": "control",
+        "key_id": "example_001",
+        "key_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "public_key": "example_001"
+      },
+      "device": {
+        "identity": {
+          "pid": 1,
+          "created": "example_001",
+          "user_sid": "example_001",
+          "logon_sid": "example_001"
+        },
+        "actor": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "role": "control",
+        "key_id": "example_001",
+        "key_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "public_key": "example_001"
+      },
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerEnrollmentProofDocument": {
+      "protocol": "uaw-enrollment-v1",
+      "enrollment_id": "example_001",
+      "candidate_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "device_id": "example_001",
+      "control": {
+        "identity": {
+          "pid": 1,
+          "created": "example_001",
+          "user_sid": "example_001",
+          "logon_sid": "example_001"
+        },
+        "actor": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "role": "control",
+        "key_id": "example_001",
+        "key_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "public_key": "example_001"
+      },
+      "device": {
+        "identity": {
+          "pid": 1,
+          "created": "example_001",
+          "user_sid": "example_001",
+          "logon_sid": "example_001"
+        },
+        "actor": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "role": "control",
+        "key_id": "example_001",
+        "key_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "public_key": "example_001"
+      },
+      "nonce": "example_001",
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerEnrollmentRecord": {
+      "id": "example_001",
+      "revision": 0,
+      "state": "pending",
+      "proof_document": {
+        "protocol": "uaw-enrollment-v1",
+        "enrollment_id": "example_001",
+        "candidate_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "owner": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "device_id": "example_001",
+        "control": {
+          "identity": {
+            "pid": 1,
+            "created": "example_001",
+            "user_sid": "example_001",
+            "logon_sid": "example_001"
+          },
+          "actor": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "role": "control",
+          "key_id": "example_001",
+          "key_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "public_key": "example_001"
+        },
+        "device": {
+          "identity": {
+            "pid": 1,
+            "created": "example_001",
+            "user_sid": "example_001",
+            "logon_sid": "example_001"
+          },
+          "actor": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "role": "control",
+          "key_id": "example_001",
+          "key_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "public_key": "example_001"
+        },
+        "nonce": "example_001",
+        "expires_at": "2026-10-07T02:00:00Z"
+      },
+      "created_at": "2026-10-07T02:00:00Z"
+    },
+    "RunnerNativePairingEvidence": {
+      "enrollment_id": "example_001",
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "device_id": "example_001",
+      "device_identity": {
+        "pid": 1,
+        "created": "example_001",
+        "user_sid": "example_001",
+        "logon_sid": "example_001"
+      },
+      "proof_document_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "confirmation_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "expires_at": "2026-10-07T02:00:00Z",
+      "device_proof": "example_001",
+      "control_proof": "example_001"
+    },
+    "RunnerEnrollmentsBeginRequest": {
+      "candidate_id": "example_001"
+    },
+    "RunnerEnrollmentsGetRequest": {
+      "enrollment_id": "example_001"
+    },
+    "RunnerEnrollmentsCompleteRequest": {
+      "enrollment_id": "example_001"
+    },
+    "RunnerEnrollmentsRevokeRequest": {
+      "enrollment_id": "example_001"
+    },
     "RunnerRootSnapshot": {
       "owner": {
         "id": "example_001",
@@ -15513,6 +15752,318 @@
         "schema_version": "0.1"
       },
       "payload": {}
+    },
+    "HttpRunnerEnrollmentsBeginResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "id": "example_001",
+        "revision": 0,
+        "state": "pending",
+        "proof_document": {
+          "protocol": "uaw-enrollment-v1",
+          "enrollment_id": "example_001",
+          "candidate_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "owner": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "device_id": "example_001",
+          "control": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "device": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "nonce": "example_001",
+          "expires_at": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpRunnerEnrollmentsBeginEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "candidate_id": "example_001"
+      }
+    },
+    "HttpRunnerEnrollmentsGetResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "id": "example_001",
+        "revision": 0,
+        "state": "pending",
+        "proof_document": {
+          "protocol": "uaw-enrollment-v1",
+          "enrollment_id": "example_001",
+          "candidate_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "owner": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "device_id": "example_001",
+          "control": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "device": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "nonce": "example_001",
+          "expires_at": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpRunnerEnrollmentsGetEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "enrollment_id": "example_001"
+      }
+    },
+    "HttpRunnerEnrollmentsCompleteResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "id": "example_001",
+        "revision": 0,
+        "state": "pending",
+        "proof_document": {
+          "protocol": "uaw-enrollment-v1",
+          "enrollment_id": "example_001",
+          "candidate_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "owner": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "device_id": "example_001",
+          "control": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "device": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "nonce": "example_001",
+          "expires_at": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpRunnerEnrollmentsCompleteEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "enrollment_id": "example_001"
+      }
+    },
+    "HttpRunnerEnrollmentsRevokeResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "id": "example_001",
+        "revision": 0,
+        "state": "pending",
+        "proof_document": {
+          "protocol": "uaw-enrollment-v1",
+          "enrollment_id": "example_001",
+          "candidate_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "owner": {
+            "id": "example_001",
+            "kind": "user",
+            "auth_session_id": "example_001"
+          },
+          "device_id": "example_001",
+          "control": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "device": {
+            "identity": {
+              "pid": 1,
+              "created": "example_001",
+              "user_sid": "example_001",
+              "logon_sid": "example_001"
+            },
+            "actor": {
+              "id": "example_001",
+              "kind": "user",
+              "auth_session_id": "example_001"
+            },
+            "role": "control",
+            "key_id": "example_001",
+            "key_ref": {
+              "kind": "web",
+              "id": "example_001",
+              "version": "example_001"
+            },
+            "public_key": "example_001"
+          },
+          "nonce": "example_001",
+          "expires_at": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpRunnerEnrollmentsRevokeEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "enrollment_id": "example_001"
+      }
     },
     "HttpTasksAttachConversationResult": {
       "kind": "ok",

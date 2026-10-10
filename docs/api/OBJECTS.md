@@ -1061,6 +1061,14 @@
 | [HttpEventsReadResult](objects/HttpEventsReadResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpEventsStreamEnvelope](objects/HttpEventsStreamEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpEventsStreamResult](objects/HttpEventsStreamResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerEnrollmentsBeginEnvelope](objects/HttpRunnerEnrollmentsBeginEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerEnrollmentsBeginResult](objects/HttpRunnerEnrollmentsBeginResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerEnrollmentsCompleteEnvelope](objects/HttpRunnerEnrollmentsCompleteEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerEnrollmentsCompleteResult](objects/HttpRunnerEnrollmentsCompleteResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerEnrollmentsGetEnvelope](objects/HttpRunnerEnrollmentsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerEnrollmentsGetResult](objects/HttpRunnerEnrollmentsGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerEnrollmentsRevokeEnvelope](objects/HttpRunnerEnrollmentsRevokeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerEnrollmentsRevokeResult](objects/HttpRunnerEnrollmentsRevokeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsCheckpointEnvelope](objects/HttpRunsCheckpointEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsCheckpointResult](objects/HttpRunsCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsControlEnvelope](objects/HttpRunsControlEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1179,6 +1187,16 @@
 | [RunnerCommandState](objects/RunnerCommandState.md) | 取值含义见字段及协议约束。 |
 | [RunnerDeviceBindRequest](objects/RunnerDeviceBindRequest.md) | 内部认证控制服务登记当前真实通道，不接受owner声明。 |
 | [RunnerDeviceBinding](objects/RunnerDeviceBinding.md) | 平台拥有的设备/通道归属，撤销与到期不自动复活。 |
+| [RunnerEnrollmentCandidate](objects/RunnerEnrollmentCandidate.md) | 独立来源候选；不授予配对或文件权限。 |
+| [RunnerEnrollmentPeer](objects/RunnerEnrollmentPeer.md) | 独立控制源捕获的候选进程与角色key。 |
+| [RunnerEnrollmentProofDocument](objects/RunnerEnrollmentProofDocument.md) | 双方持有证明签署的同一原账号设备挑战。 |
+| [RunnerEnrollmentRecord](objects/RunnerEnrollmentRecord.md) | 平台持久的首次设备登记状态；active仍不含目录授权。 |
+| [RunnerEnrollmentsBeginRequest](objects/RunnerEnrollmentsBeginRequest.md) | 当前Web用户请求独立候选的首次登记；不授予目录权限。 |
+| [RunnerEnrollmentsCompleteRequest](objects/RunnerEnrollmentsCompleteRequest.md) | 读取独立本机本人确认和双方签名证明后CAS登记。 |
+| [RunnerEnrollmentsGetRequest](objects/RunnerEnrollmentsGetRequest.md) | 当前原Web会话读取准确当前登记；不授予执行。 |
+| [RunnerEnrollmentsRevokeRequest](objects/RunnerEnrollmentsRevokeRequest.md) | 原当前Web用户撤销登记。 |
+| [RunnerNativePairingEvidence](objects/RunnerNativePairingEvidence.md) | 独立本机owning Reader返回的确认；不可从HTTP approved生成。 |
+| [RunnerProcessIdentity](objects/RunnerProcessIdentity.md) | 独立OS观察的进程实例；不是UAW账号。 |
 | [RunnerRequestRecord](objects/RunnerRequestRecord.md) | 版本1的原请求/原尝试，不是执行权限。 |
 | [RunnerRequestRegisterRequest](objects/RunnerRequestRegisterRequest.md) | 内部控制服务登记不可变实际业务参数。 |
 | [RunnerRootSnapshot](objects/RunnerRootSnapshot.md) | 真实授权根来源的当前opaque元数据，不包含本机路径。 |

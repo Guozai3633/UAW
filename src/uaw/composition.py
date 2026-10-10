@@ -33,6 +33,7 @@ from uaw.run.budget import BudgetService
 from uaw.run.completion import RunCompletionController
 from uaw.run.context import RunContextSources
 from uaw.run.context_sources import RegisteredRunContextSources, RegisteredToolSetValidator
+from uaw.run.enrollment import RunnerEnrollments
 from uaw.run.events import EventReader
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
@@ -145,6 +146,7 @@ class Container:
     runner_receipt_commands: RegisteredReceiptCommandReader | None = None
     runner_principals: RegisteredRunnerPrincipalMapping | None = None
     browser_sessions: BrowserSessions | None = None
+    runner_enrollments: RunnerEnrollments | None = None
     completion_controller: RunCompletionController | None = None
     background_jobs: RunJobs | None = None
     started: bool = False
@@ -301,6 +303,12 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
     )
     if container.browser_sessions and permissions:
         browser = container.browser_sessions
+        assert records and configuration
+        container.runner_enrollments = RunnerEnrollments(
+            records,
+            configuration.platform,
+            authenticate=browser.principal,
+        )
 
         async def current_authentication(actor: Principal) -> None:
             if actor.auth_session_id.startswith("web-session-"):

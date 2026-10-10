@@ -21,6 +21,34 @@ from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 # id, method, route, request schema, response schema. All unlisted contracts remain unavailable.
 ROUTES = (
     (
+        "runner.enrollments.begin",
+        "POST",
+        "/v1/runner/enrollments",
+        "RunnerEnrollmentsBeginRequest",
+        "RunnerEnrollmentRecord",
+    ),
+    (
+        "runner.enrollments.get",
+        "GET",
+        "/v1/runner/enrollments/{enrollment_id}",
+        "RunnerEnrollmentsGetRequest",
+        "RunnerEnrollmentRecord",
+    ),
+    (
+        "runner.enrollments.complete",
+        "POST",
+        "/v1/runner/enrollments/{enrollment_id}/confirmation",
+        "RunnerEnrollmentsCompleteRequest",
+        "RunnerEnrollmentRecord",
+    ),
+    (
+        "runner.enrollments.revoke",
+        "POST",
+        "/v1/runner/enrollments/{enrollment_id}/revocation",
+        "RunnerEnrollmentsRevokeRequest",
+        "RunnerEnrollmentRecord",
+    ),
+    (
         "runs.delivery",
         "GET",
         "/v1/runs/{run_id}/delivery",
@@ -332,6 +360,29 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 raise reject(
                     "authentication_required", "Authenticated user required", 401, "permission"
                 )
+            elif operation.startswith("runner.enrollments."):
+                service = container.runner_enrollments
+                if service is None:
+                    raise CapabilityUnavailable("runner.current_enrollment_sources")
+                if operation == "runner.enrollments.get":
+                    result = await service.get(actor, payload["enrollment_id"])
+                else:
+                    assert meta is not None
+                    if (
+                        operation in ("runner.enrollments.complete", "runner.enrollments.revoke")
+                        and meta.expected_revision is None
+                    ):
+                        raise reject(
+                            "enrollment_revision_required",
+                            "Expected enrollment revision required",
+                            400,
+                        )
+                    if operation == "runner.enrollments.begin":
+                        result = await service.begin(actor, payload["candidate_id"], meta)
+                    elif operation == "runner.enrollments.complete":
+                        result = await service.complete(actor, payload["enrollment_id"], meta)
+                    else:
+                        result = await service.revoke(actor, payload["enrollment_id"], meta)
             elif operation == "conversations.get":
                 result = (
                     await records.get(actor, "conversations", payload["conversation_id"])

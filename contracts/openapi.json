@@ -27138,6 +27138,1205 @@
         "x-uaw-cas-required": false
       }
     },
+    "/v1/runner/enrollments": {
+      "post": {
+        "operationId": "http_runner_enrollments_begin",
+        "summary": "当前Web用户请求独立候选的首次登记；不授予目录权限。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsBeginResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "workspace.binding"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_owned_enrollment_current_sources_required",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "当前Web用户请求独立候选的首次登记；不授予目录权限。",
+                    "properties": {
+                      "candidate_id": {
+                        "$ref": "#/components/schemas/ID",
+                        "description": "已有受保护候选"
+                      }
+                    },
+                    "required": [
+                      "candidate_id"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
+    "/v1/runner/enrollments/{enrollment_id}": {
+      "get": {
+        "operationId": "http_runner_enrollments_get",
+        "summary": "当前原Web会话读取准确当前登记；不授予执行。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "enrollment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "原登记"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "ui",
+          "workspace.binding"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_owned_enrollment_current_sources_required"
+      }
+    },
+    "/v1/runner/enrollments/{enrollment_id}/confirmation": {
+      "post": {
+        "operationId": "http_runner_enrollments_complete",
+        "summary": "读取独立本机本人确认和双方签名证明后CAS登记。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "enrollment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "原登记"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsCompleteResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "ui",
+          "workspace.binding"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_owned_enrollment_current_sources_required",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "读取独立本机本人确认和双方签名证明后CAS登记。",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
+    "/v1/runner/enrollments/{enrollment_id}/revocation": {
+      "post": {
+        "operationId": "http_runner_enrollments_revoke",
+        "summary": "原当前Web用户撤销登记。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "enrollment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "原登记"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunnerEnrollmentsRevokeResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "ui",
+          "workspace.binding"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_owned_enrollment_current_sources_required",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "原当前Web用户撤销登记。",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
     "/v1/tasks/{task_id}/conversations": {
       "post": {
         "operationId": "http_tasks_attach_conversation",
@@ -42652,6 +43851,351 @@
           "parameters",
           "call",
           "spec"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerProcessIdentity": {
+        "type": "object",
+        "description": "独立OS观察的进程实例；不是UAW账号。",
+        "properties": {
+          "pid": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "description": "实际进程ID"
+          },
+          "created": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,19}$",
+            "maxLength": 20,
+            "description": "Windows FILETIME十进制字符串，避免签名JSON数值精度丢失"
+          },
+          "user_sid": {
+            "$ref": "#/components/schemas/ID",
+            "description": "实际用户SID"
+          },
+          "logon_sid": {
+            "$ref": "#/components/schemas/ID",
+            "description": "实际本机登录SID"
+          }
+        },
+        "required": [
+          "pid",
+          "created",
+          "user_sid",
+          "logon_sid"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentPeer": {
+        "type": "object",
+        "description": "独立控制源捕获的候选进程与角色key。",
+        "properties": {
+          "identity": {
+            "$ref": "#/components/schemas/RunnerProcessIdentity",
+            "description": "独立OS观察"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "精确角色主体"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "control",
+              "device"
+            ],
+            "description": "签名角色"
+          },
+          "key_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原key身份"
+          },
+          "key_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原key版本与摘要"
+          },
+          "public_key": {
+            "type": "string",
+            "minLength": 44,
+            "maxLength": 44,
+            "pattern": "^[A-Za-z0-9+/]{43}=$",
+            "description": "32字节Ed25519公钥标准base64；不是私钥"
+          }
+        },
+        "required": [
+          "identity",
+          "actor",
+          "role",
+          "key_id",
+          "key_ref",
+          "public_key"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentCandidate": {
+        "type": "object",
+        "description": "独立来源候选；不授予配对或文件权限。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "候选身份"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "实际当前Web用户完整身份"
+          },
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "独立设备身份"
+          },
+          "control": {
+            "$ref": "#/components/schemas/RunnerEnrollmentPeer",
+            "description": "控制进程"
+          },
+          "device": {
+            "$ref": "#/components/schemas/RunnerEnrollmentPeer",
+            "description": "设备进程"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "候选期限"
+          }
+        },
+        "required": [
+          "id",
+          "owner",
+          "device_id",
+          "control",
+          "device",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentProofDocument": {
+        "type": "object",
+        "description": "双方持有证明签署的同一原账号设备挑战。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "uaw-enrollment-v1",
+            "description": "内部协议"
+          },
+          "enrollment_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "本次操作"
+          },
+          "candidate_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "准确候选快照"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "实际原Web会话"
+          },
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原设备"
+          },
+          "control": {
+            "$ref": "#/components/schemas/RunnerEnrollmentPeer",
+            "description": "控制实例/key"
+          },
+          "device": {
+            "$ref": "#/components/schemas/RunnerEnrollmentPeer",
+            "description": "设备实例/key"
+          },
+          "nonce": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 128,
+            "description": "原随机nonce"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "不超过Web会话及候选期限"
+          }
+        },
+        "required": [
+          "protocol",
+          "enrollment_id",
+          "candidate_ref",
+          "owner",
+          "device_id",
+          "control",
+          "device",
+          "nonce",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentRecord": {
+        "type": "object",
+        "description": "平台持久的首次设备登记状态；active仍不含目录授权。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原操作"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "CAS版本"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "active",
+              "revoked",
+              "expired"
+            ],
+            "description": "登记状态"
+          },
+          "proof_document": {
+            "$ref": "#/components/schemas/RunnerEnrollmentProofDocument",
+            "description": "固定原挑战"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "登记时间"
+          },
+          "confirmation_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "独立本机决定记录"
+          },
+          "pairing_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "正式完整登记的固定摘要"
+          },
+          "device_proof": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "原设备持有签名"
+          },
+          "control_proof": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "原控制持有签名"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "state",
+          "proof_document",
+          "created_at"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerNativePairingEvidence": {
+        "type": "object",
+        "description": "独立本机owning Reader返回的确认；不可从HTTP approved生成。",
+        "properties": {
+          "enrollment_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原登记"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "原完整用户会话"
+          },
+          "device_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原设备"
+          },
+          "device_identity": {
+            "$ref": "#/components/schemas/RunnerProcessIdentity",
+            "description": "原OS实例"
+          },
+          "proof_document_hash": {
+            "$ref": "#/components/schemas/Hash",
+            "description": "双方签署原挑战摘要"
+          },
+          "confirmation_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "准确本机决定来源"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "实际本机确认期限"
+          },
+          "device_proof": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "原设备签名"
+          },
+          "control_proof": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "原控制签名"
+          }
+        },
+        "required": [
+          "enrollment_id",
+          "owner",
+          "device_id",
+          "device_identity",
+          "proof_document_hash",
+          "confirmation_ref",
+          "expires_at",
+          "device_proof",
+          "control_proof"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentsBeginRequest": {
+        "type": "object",
+        "description": "当前Web用户请求独立候选的首次登记；不授予目录权限。",
+        "properties": {
+          "candidate_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "已有受保护候选"
+          }
+        },
+        "required": [
+          "candidate_id"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentsGetRequest": {
+        "type": "object",
+        "description": "当前原Web会话读取准确当前登记；不授予执行。",
+        "properties": {
+          "enrollment_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原登记"
+          }
+        },
+        "required": [
+          "enrollment_id"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentsCompleteRequest": {
+        "type": "object",
+        "description": "读取独立本机本人确认和双方签名证明后CAS登记。",
+        "properties": {
+          "enrollment_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原登记"
+          }
+        },
+        "required": [
+          "enrollment_id"
+        ],
+        "additionalProperties": false
+      },
+      "RunnerEnrollmentsRevokeRequest": {
+        "type": "object",
+        "description": "原当前Web用户撤销登记。",
+        "properties": {
+          "enrollment_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原登记"
+          }
+        },
+        "required": [
+          "enrollment_id"
         ],
         "additionalProperties": false
       },
@@ -77106,6 +78650,598 @@
           },
           "payload": {
             "$ref": "#/components/schemas/WebSessionLogoutRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpRunnerEnrollmentsBeginResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentRecord",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpRunnerEnrollmentsBeginEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentsBeginRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpRunnerEnrollmentsGetResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentRecord",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpRunnerEnrollmentsGetEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentsGetRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpRunnerEnrollmentsCompleteResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentRecord",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpRunnerEnrollmentsCompleteEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentsCompleteRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpRunnerEnrollmentsRevokeResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentRecord",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpRunnerEnrollmentsRevokeEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunnerEnrollmentsRevokeRequest",
             "description": "业务参数"
           }
         },

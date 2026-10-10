@@ -48,6 +48,10 @@
 - [http · web.session.exchange](interfaces/http--web-session-exchange.md)
 - [http · web.session.get](interfaces/http--web-session-get.md)
 - [http · web.session.logout](interfaces/http--web-session-logout.md)
+- [http · runner.enrollments.begin](interfaces/http--runner-enrollments-begin.md)
+- [http · runner.enrollments.get](interfaces/http--runner-enrollments-get.md)
+- [http · runner.enrollments.complete](interfaces/http--runner-enrollments-complete.md)
+- [http · runner.enrollments.revoke](interfaces/http--runner-enrollments-revoke.md)
 - [component · ui](interfaces/component--ui.md)
 
 ## ingress · 产品入口
@@ -64,6 +68,7 @@
 - [http · web.session.exchange](interfaces/http--web-session-exchange.md)
 - [http · web.session.get](interfaces/http--web-session-get.md)
 - [http · web.session.logout](interfaces/http--web-session-logout.md)
+- [http · runner.enrollments.begin](interfaces/http--runner-enrollments-begin.md)
 - [component · ingress](interfaces/component--ingress.md)
 
 ## intent · 任务理解 · Intent
@@ -504,6 +509,10 @@
 - [runner · pair.complete](interfaces/runner--pair-complete.md)
 - [runner · heartbeat](interfaces/runner--heartbeat.md)
 - [runner · root.select](interfaces/runner--root-select.md)
+- [http · runner.enrollments.begin](interfaces/http--runner-enrollments-begin.md)
+- [http · runner.enrollments.get](interfaces/http--runner-enrollments-get.md)
+- [http · runner.enrollments.complete](interfaces/http--runner-enrollments-complete.md)
+- [http · runner.enrollments.revoke](interfaces/http--runner-enrollments-revoke.md)
 - [component · workspace.binding](interfaces/component--workspace-binding.md)
 
 ## workspace.base · 输入基础状态

@@ -3929,6 +3929,129 @@
       "envelope": "HttpWebSessionLogoutEnvelope"
     },
     {
+      "id": "runner.enrollments.begin",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "workspace.binding"
+      ],
+      "request": "RunnerEnrollmentsBeginRequest",
+      "response": "RunnerEnrollmentRecord",
+      "effect": "internal_write",
+      "rules": [
+        "当前Web会话/CSRF；不接受owner、公钥、PID、approved或路径。缺启动源503。"
+      ],
+      "method": "POST",
+      "path": "/v1/runner/enrollments",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_enrollment_current_sources_required",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2k-A1.md",
+          "docs/implementation/evidence/ms-i2k-a1.json"
+        ]
+      },
+      "result": "HttpRunnerEnrollmentsBeginResult",
+      "envelope": "HttpRunnerEnrollmentsBeginEnvelope"
+    },
+    {
+      "id": "runner.enrollments.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "RunnerEnrollmentsGetRequest",
+      "response": "RunnerEnrollmentRecord",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/runner/enrollments/{enrollment_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_enrollment_current_sources_required",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2k-A1.md",
+          "docs/implementation/evidence/ms-i2k-a1.json"
+        ]
+      },
+      "result": "HttpRunnerEnrollmentsGetResult",
+      "envelope": "HttpRunnerEnrollmentsGetEnvelope"
+    },
+    {
+      "id": "runner.enrollments.complete",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "RunnerEnrollmentsCompleteRequest",
+      "response": "RunnerEnrollmentRecord",
+      "effect": "internal_write",
+      "rules": [
+        "meta.expected_revision必需；无approved/code/key/proof body；缺当前本机来源503，不由网页代替真人确认。"
+      ],
+      "method": "POST",
+      "path": "/v1/runner/enrollments/{enrollment_id}/confirmation",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_enrollment_current_sources_required",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2k-A1.md",
+          "docs/implementation/evidence/ms-i2k-a1.json"
+        ]
+      },
+      "result": "HttpRunnerEnrollmentsCompleteResult",
+      "envelope": "HttpRunnerEnrollmentsCompleteEnvelope"
+    },
+    {
+      "id": "runner.enrollments.revoke",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "RunnerEnrollmentsRevokeRequest",
+      "response": "RunnerEnrollmentRecord",
+      "effect": "internal_write",
+      "rules": [
+        "meta.expected_revision必需；当前原会话，不能恢复旧配对。"
+      ],
+      "method": "POST",
+      "path": "/v1/runner/enrollments/{enrollment_id}/revocation",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_owned_enrollment_current_sources_required",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2k-A1.md",
+          "docs/implementation/evidence/ms-i2k-a1.json"
+        ]
+      },
+      "result": "HttpRunnerEnrollmentsRevokeResult",
+      "envelope": "HttpRunnerEnrollmentsRevokeEnvelope"
+    },
+    {
       "id": "tasks.attach_conversation",
       "channel": "http",
       "owner": "run",
