@@ -2,9 +2,10 @@ import {validate} from './validation';
 import type {Schema, Result,DisplayItem} from './types';
 export class TransportError extends Error { constructor(readonly uncertain:boolean) {super(uncertain?'请求结果未知，先查询原运行；不会自动重发。':'连接中断，请重新读取。');} }
 export class ApiFailure extends Error { constructor(readonly result:Exclude<Result<never>,{kind:'ok'}>) {super(result.failure?.message ?? '等待服务端确认');} }
-export type WebSession = {identityKey:string; csrfHeader?:{name:string;value:string}}; // supplied by A's authenticated host, memory only
+export type WebSession = {identityKey:string; principal?:Schema['Principal'];csrfHeader?:{name:string;value:string}}; // supplied by A's authenticated host, memory only
 export class UawClient {
  constructor(private session:()=>WebSession|null, private transport:typeof fetch=(input,init)=>fetch(input,init)) {}
+ currentSession(){return this.session();}
  async call<T>(method:'GET'|'POST'|'DELETE',path:string,schema:string,query:Record<string,string|number|undefined>={},payload?:unknown,meta?:Schema['RequestMeta'],signal?:AbortSignal):Promise<T> {
   const qs=new URLSearchParams();for(const[k,v]of Object.entries(query))if(v!==undefined)qs.set(k,String(v));
   const url=path+(qs.size?'?'+qs:''); const headers:Record<string,string>={Accept:'application/json'};
@@ -22,6 +23,12 @@ export class UawClient {
  webSession(signal?:AbortSignal){return this.call<Schema['WebSession']>('GET','/v1/web/session','HttpWebSessionGetResult',{},undefined,undefined,signal);}
  exchange(launch_code:string,meta:Schema['RequestMeta'],signal?:AbortSignal){const payload={launch_code};validate('WebSessionExchangeRequest',payload);return this.call<Schema['WebSession']>('POST','/v1/web/session','HttpWebSessionExchangeResult',{},payload,meta,signal);}
  logout(meta:Schema['RequestMeta'],signal?:AbortSignal){return this.call<Schema['Acknowledgement']>('DELETE','/v1/web/session','HttpWebSessionLogoutResult',{}, {},meta,signal);}
+ conversations(cursor?:string,signal?:AbortSignal){return this.call<Schema['ConversationPage']>('GET','/v1/conversations','HttpConversationsListResult',{limit:100,cursor},undefined,undefined,signal);}
+ lookup(conversationId:string,requestId:string,signal?:AbortSignal){return this.call<Schema['RunRecord']>('GET',`/v1/conversations/${encodeURIComponent(conversationId)}/turn-requests/${encodeURIComponent(requestId)}`,'HttpTurnsLookupResult',{},undefined,undefined,signal);}
+ delivery(runId:string,signal?:AbortSignal){return this.call<Schema['RunDeliveryView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/delivery`,'HttpRunsDeliveryResult',{},undefined,undefined,signal);}
+ artifact(id:string,version?:string,signal?:AbortSignal){return this.call<Schema['ArtifactRecord']>('GET',`/v1/artifacts/${encodeURIComponent(id)}`,'HttpArtifactsGetResult',{version},undefined,undefined,signal);}
+ content(id:string,version:string,content_hash:string,signal?:AbortSignal){return this.call<Schema['ArtifactContentView']>('GET',`/v1/artifacts/${encodeURIComponent(id)}/content`,'HttpArtifactsContentResult',{version,content_hash},undefined,undefined,signal);}
+ acceptDelivery(runId:string,payload:Omit<Schema['RunsDeliveryAcceptRequest'],'run_id'>,meta:Schema['RequestMeta'],signal?:AbortSignal){validate('RunsDeliveryAcceptRequest',{...payload,run_id:runId});return this.call<Schema['CompletionAcceptance']>('POST',`/v1/runs/${encodeURIComponent(runId)}/delivery/acceptance`,'HttpRunsDeliveryAcceptResult',{},payload,meta,signal);}
  models(signal?:AbortSignal){return this.call<Schema['ModelPage']>('GET','/v1/models','HttpModelsListResult',{},undefined,undefined,signal);}
  conversation(id:string,signal?:AbortSignal){return this.call<Schema['Conversation']>('GET',`/v1/conversations/${encodeURIComponent(id)}`,'HttpConversationsGetResult',{},undefined,undefined,signal);}
  create(payload:Schema['ConversationsCreateRequest'],meta:Schema['RequestMeta'],signal?:AbortSignal){validate('ConversationsCreateRequest',payload);return this.call<Schema['Conversation']>('POST','/v1/conversations','HttpConversationsCreateResult',{},payload,meta,signal);}

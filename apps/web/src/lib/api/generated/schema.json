@@ -326,6 +326,26 @@
       ],
       "additionalProperties": false
     },
+    "ArtifactContentView": {
+      "type": "object",
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/ArtifactRecord"
+        },
+        "content": {
+          "$ref": "#/$defs/ArtifactPreviewText"
+        }
+      },
+      "required": [
+        "artifact",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactPreviewText": {
+      "type": "string",
+      "maxLength": 65536
+    },
     "ArtifactRecord": {
       "type": "object",
       "properties": {
@@ -385,6 +405,41 @@
         "provenance_refs",
         "verification_refs",
         "created_at"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactsContentRequest": {
+      "type": "object",
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "content_hash"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactsGetRequest": {
+      "type": "object",
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        }
+      },
+      "required": [
+        "artifact_id"
       ],
       "additionalProperties": false
     },
@@ -885,6 +940,30 @@
         "auto"
       ]
     },
+    "ConversationPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conversation"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "next_cursor": {
+          "$ref": "#/$defs/Cursor"
+        },
+        "snapshot_revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "items",
+        "snapshot_revision"
+      ],
+      "additionalProperties": false
+    },
     "ConversationsCreateRequest": {
       "type": "object",
       "properties": {
@@ -942,6 +1021,19 @@
       ],
       "additionalProperties": false
     },
+    "ConversationsListRequest": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "$ref": "#/$defs/Cursor"
+        },
+        "limit": {
+          "$ref": "#/$defs/PageLimit"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
     "Count": {
       "type": "integer",
       "minimum": 0,
@@ -997,6 +1089,73 @@
         "reject",
         "revise",
         "partial_accept"
+      ]
+    },
+    "DeliveryProposal": {
+      "type": "object",
+      "properties": {
+        "run_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "outcome": {
+          "$ref": "#/$defs/Outcome"
+        },
+        "artifact_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "report_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "unresolved_effect_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "run_ref",
+        "contract_ref",
+        "outcome",
+        "artifact_refs",
+        "report_ref",
+        "unresolved_effect_refs",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "succeeded"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unresolved_effect_refs": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
       ]
     },
     "DomainCheckpoint": {
@@ -1989,6 +2148,248 @@
         }
       ]
     },
+    "HttpArtifactsContentResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/ArtifactContentView"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpArtifactsGetResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/ArtifactRecord"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
     "HttpConversationsCreateResult": {
       "type": "object",
       "properties": {
@@ -2249,6 +2650,127 @@
         },
         "payload": {
           "$ref": "#/$defs/ItemPage"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpConversationsListResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/ConversationPage"
         },
         "output_refs": {
           "type": "array",
@@ -2836,6 +3358,248 @@
         }
       ]
     },
+    "HttpRunsDeliveryAcceptResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/CompletionAcceptance"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunsDeliveryResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/RunDeliveryView"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
     "HttpRunsGetResult": {
       "type": "object",
       "properties": {
@@ -2975,6 +3739,127 @@
         },
         "payload": {
           "$ref": "#/$defs/TaskFrame"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpTurnsLookupResult": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/RunRecord"
         },
         "output_refs": {
           "type": "array",
@@ -4551,6 +5436,69 @@
       "type": "integer",
       "minimum": 0
     },
+    "RunDeliveryView": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "bundle_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "artifact": {
+          "$ref": "#/$defs/ArtifactRecord"
+        },
+        "content": {
+          "$ref": "#/$defs/ArtifactPreviewText"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "contract": {
+          "$ref": "#/$defs/Contract"
+        },
+        "report_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "report": {
+          "$ref": "#/$defs/VerificationReport"
+        },
+        "proposal_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "proposal": {
+          "$ref": "#/$defs/DeliveryProposal"
+        },
+        "requires_acceptance": {
+          "$ref": "#/$defs/Bool"
+        },
+        "stale": {
+          "$ref": "#/$defs/Bool"
+        },
+        "acceptance": {
+          "$ref": "#/$defs/CompletionAcceptance"
+        }
+      },
+      "required": [
+        "run_id",
+        "bundle_ref",
+        "artifact_ref",
+        "artifact",
+        "content",
+        "contract_ref",
+        "contract",
+        "report_ref",
+        "report",
+        "proposal_ref",
+        "proposal",
+        "requires_acceptance",
+        "stale"
+      ],
+      "additionalProperties": false
+    },
     "RunRecord": {
       "type": "object",
       "properties": {
@@ -4629,6 +5577,46 @@
       "required": [
         "run_id",
         "control"
+      ],
+      "additionalProperties": false
+    },
+    "RunsDeliveryAcceptRequest": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "bundle_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "reject"
+          ]
+        }
+      },
+      "required": [
+        "run_id",
+        "bundle_ref",
+        "artifact_ref",
+        "decision"
+      ],
+      "additionalProperties": false
+    },
+    "RunsDeliveryRequest": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID"
+        }
+      },
+      "required": [
+        "run_id"
       ],
       "additionalProperties": false
     },
@@ -4962,6 +5950,22 @@
         "cancelled",
         "unknown"
       ]
+    },
+    "TurnsLookupRequest": {
+      "type": "object",
+      "properties": {
+        "conversation_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID"
+        }
+      },
+      "required": [
+        "conversation_id",
+        "request_id"
+      ],
+      "additionalProperties": false
     },
     "TurnsSubmitRequest": {
       "type": "object",

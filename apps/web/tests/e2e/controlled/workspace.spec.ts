@@ -8,7 +8,7 @@ test('controlled: original→understanding→Markdown summary; reload/reconnect 
  const errors:string[]=[];page.on('pageerror',e=>{errors.push(e.stack??e.message);console.error('PAGEERROR',e.stack??e.message);});const state=await controlledBackend(page);await send(page);await expect.poll(()=>({posts:state.turnPosts,errors})).toEqual({posts:1,errors:[]});
  await expect(page.locator('.original-text')).toHaveText('  整理材料\n保留原文  ');
  await expect(page.getByLabel('AI理解的任务')).toContainText('整理材料，保留来源并输出Markdown报告。');
- await expect(page.getByLabel('成果侧栏').getByRole('heading',{name:'材料报告'})).toBeVisible();
+ await expect(page.getByLabel('成果侧栏').getByRole('heading',{name:'完整正文报告'})).toBeVisible();
  await expect(page.getByRole('button',{name:'接受整份成果'})).toBeDisabled();
  await expect(page.getByText('实际阶段 · completed')).toBeVisible();await page.reload();
  await expect(page.locator('[data-item-id="user-one"]')).toHaveCount(1);await page.getByRole('button',{name:'重新读取并连接'}).click();

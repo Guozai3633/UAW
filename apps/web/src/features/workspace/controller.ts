@@ -28,11 +28,15 @@ export class WorkspaceController {
   const generation=this.generation;
   try{this.patch({loading:true});const page=await this.client.models(this.abort.signal);this.guard(generation);
    this.patch({models:page.items.filter(m=>m.status==='active'),connected:true,error:''});
-   const saved=this.drafts.read();const conversations=[];
-   for(const id of saved.conversationIds){try{const c=await this.client.conversation(id,this.abort.signal);this.guard(generation);conversations.push(c);}catch(e){if(this.abort.signal.aborted)throw e;}}
-   this.patch({conversations,recovery:saved.recovery});
+   const saved=this.drafts.read();await this.list(generation);this.guard(generation);const conversations=this.value.conversations;
+   this.patch({recovery:saved.recovery});
    if(saved.recovery)await this.open(saved.recovery.conversationId);else if(initialId)await this.open(initialId);else if(conversations[0])await this.open(conversations[0].id);
   }catch(e){if(generation===this.generation)this.fail(e);}finally{if(generation===this.generation)this.patch({loading:false});}
+ }
+ async list(g=this.generation){const load=async()=>{const page=await this.pages(c=>this.client.conversations(c,this.abort.signal));this.guard(g);
+   const newest=new Map<string,Conversation>();for(const c of page.items as Conversation[]){const old=newest.get(c.id);if(!old||c.revision>old.revision)newest.set(c.id,c);}
+   this.patch({conversations:[...newest.values()]});};
+  try{await load();}catch(e){if(e instanceof SnapshotRequired||e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){await load();}else throw e;}
  }
  stop(){this.stopped=true;this.abort.abort();clearTimeout(this.timer);this.generation++;}
  async logout(){this.stop();this.identity=null;this.drafts.clear();this.reset();await this.host.logout?.();}
@@ -56,8 +60,8 @@ export class WorkspaceController {
  private schedule(g:number){if(this.stopped||g!==this.generation)return;clearTimeout(this.timer);
   this.timer=setTimeout(async()=>{try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}finally{this.schedule(g);}},this.pollMs);}
  private async pages<T extends {items:unknown[];next_cursor?:string;snapshot_revision:number}>(load:(cursor?:string)=>Promise<T>){
-  let cursor:string|undefined,revision:number|undefined;const cursors=new Set<string>();const items:T['items']=[];
-  for(let n=0;n<64;n++){const page=await load(cursor);if(revision!==undefined&&revision!==page.snapshot_revision)throw new SnapshotRequired('分页快照版本变化');
+  const generation=this.generation;let cursor:string|undefined,revision:number|undefined;const cursors=new Set<string>();const items:T['items']=[];
+  for(let n=0;n<64;n++){const page=await load(cursor);this.guard(generation);if(revision!==undefined&&revision!==page.snapshot_revision)throw new SnapshotRequired('分页快照版本变化');
    revision=page.snapshot_revision;items.push(...page.items);if(!page.next_cursor)return{items,revision};
    if(cursors.has(page.next_cursor))throw new SnapshotRequired('分页游标循环');cursors.add(page.next_cursor);cursor=page.next_cursor;}
   throw new Error('历史分页超过本次读取上限，请缩小会话范围。');
@@ -70,12 +74,6 @@ export class WorkspaceController {
  private async readFresh(g:number){const active=this.value.active;if(!active)return;const signal=this.abort.signal;
   const load=async()=>{
    const current=await this.client.conversation(active.id,signal);this.guard(g);
-   const page=await this.pages(c=>this.client.items(active.id,c,signal));this.guard(g);
-   if(page.items.some(i=>(i as DisplayItem).conversation_id!==active.id))throw new SnapshotRequired('条目会话不一致');
-   this.projection.replaceItems(page.items as DisplayItem[],page.revision!);
-   const history=await this.pages(c=>this.client.events(active.id,c,signal));this.guard(g);
-   for(const event of history.items as Schema['EventEnvelope'][]){if(event.stream_id!==active.id)throw new SnapshotRequired('事件会话不一致');if(event.seq<=this.projection.lastSeq){const previous=this.projection.events.get(event.seq);if(previous&&previous!==event.event_id)throw new SnapshotRequired('相同seq出现不同事件');continue;}
-    const payload=await this.client.payload(event.event_id,signal);this.guard(g);this.projection.apply(event,payload);}
    let rec=this.drafts.read().recovery;
    if(rec && rec.conversationId===active.id){
     if(rec.runId)this.projection.run=await this.client.run(rec.runId,signal);
@@ -83,6 +81,12 @@ export class WorkspaceController {
       if(run){if(run.conversation_id!==rec.conversationId)throw new Error('原请求Run归属不匹配');rec={...rec,runId:run.id};this.drafts.recovery(rec);this.projection.run=run;}}
    }
    this.guard(g);
+   const page=await this.pages(c=>this.client.items(active.id,c,signal));this.guard(g);
+   if(page.items.some(i=>(i as DisplayItem).conversation_id!==active.id))throw new SnapshotRequired('条目会话不一致');
+   this.projection.replaceItems(page.items as DisplayItem[],page.revision!);
+   const history=await this.pages(c=>this.client.events(active.id,c,signal));this.guard(g);
+   for(const event of history.items as Schema['EventEnvelope'][]){if(event.stream_id!==active.id)throw new SnapshotRequired('事件会话不一致');if(event.seq<=this.projection.lastSeq){const previous=this.projection.events.get(event.seq);if(previous&&previous!==event.event_id)throw new SnapshotRequired('相同seq出现不同事件');continue;}
+    const payload=await this.client.payload(event.event_id,signal);this.guard(g);this.projection.apply(event,payload);}
    if(this.projection.run){const run=await this.client.run(this.projection.run.id,signal);this.guard(g);if(run.conversation_id!==active.id)throw new SnapshotRequired('Run会话不一致');this.projection.run=run;
     try{this.projection.frame=await this.client.frame(run.task_id,signal);}catch(e){if(!(e instanceof ApiFailure&&['missing','waiting'].includes(e.result.kind)))throw e;}
     this.guard(g);if(this.projection.frame&&this.projection.frame.task_id!==run.task_id)throw new SnapshotRequired('任务理解归属不一致');
@@ -90,13 +94,13 @@ export class WorkspaceController {
    }
    const approvalIds=new Set([...this.projection.approvals.keys(),...this.projection.sorted().flatMap(i=>i.type==='approval'?i.resource_refs.filter(r=>r.kind==='approval').map(r=>r.id):[])]);
    for(const id of approvalIds){const approval=await this.client.approval(id,signal);this.guard(g);this.projection.approvals.set(id,approval);}
-   this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：原请求查询接口尚未接入，不会重发。':'',recovery:rec,
+   this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：尚无原请求Run回执，不会重发。':'',recovery:rec,
     items:this.projection.sorted(),run:this.projection.run,frame:this.projection.frame,approvals:[...this.projection.approvals.values()]});
   };
   try{await load();}catch(e){if(e instanceof SnapshotRequired || e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){
     this.projection.clear();await load();}else throw e;}
  }
- async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
+ async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.list(g);await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
  async send(){const active=this.value.active,text=this.value.draft;
   if(!this.sameIdentity()||!active||!text.trim()||!this.value.connected||this.mutation||this.value.recovery)return;
   const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true,error:''});const g=this.generation;

@@ -6,7 +6,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** 查询自己的会话。 */
+        get: operations["http_conversations_list"];
         put?: never;
         /** 创建会话。 */
         post: operations["http_conversations_create"];
@@ -186,6 +187,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/conversations/{conversation_id}/turn-requests/{request_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 按原提交request_id查询当前Run；没有记录返回missing，不发送新任务。 */
+        get: operations["http_turns_lookup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/delivery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 读取本人Run的最新真实固定交付；无交付返回missing。 */
+        get: operations["http_runs_delivery"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/delivery/acceptance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 实际用户决定整份合同交付；不直接设置completed。 */
+        post: operations["http_runs_delivery_accept"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifacts/{artifact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 成果版本。 */
+        get: operations["http_artifacts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/artifacts/{artifact_id}/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 读取完整文本/Markdown；固定版本与hash必需。 */
+        get: operations["http_artifacts_content"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/models": {
         parameters: {
             query?: never;
@@ -295,6 +381,11 @@ export interface components {
         ApprovalsGetRequest: {
             approval_id: components["schemas"]["ID"];
         };
+        ArtifactContentView: {
+            artifact: components["schemas"]["ArtifactRecord"];
+            content: components["schemas"]["ArtifactPreviewText"];
+        };
+        ArtifactPreviewText: string;
         ArtifactRecord: {
             id: components["schemas"]["ID"];
             version: components["schemas"]["Version"];
@@ -307,6 +398,15 @@ export interface components {
             provenance_refs: components["schemas"]["Ref"][];
             verification_refs: components["schemas"]["Ref"][];
             created_at: components["schemas"]["Timestamp"];
+        };
+        ArtifactsContentRequest: {
+            artifact_id: components["schemas"]["ID"];
+            version: components["schemas"]["Version"];
+            content_hash: components["schemas"]["Hash"];
+        };
+        ArtifactsGetRequest: {
+            artifact_id: components["schemas"]["ID"];
+            version?: components["schemas"]["Version"];
         };
         AuthenticationFailure: {
             /** @constant */
@@ -409,6 +509,11 @@ export interface components {
         };
         /** @enum {string} */
         ConversationModelMode: "explicit" | "auto";
+        ConversationPage: {
+            items: components["schemas"]["Conversation"][];
+            next_cursor?: components["schemas"]["Cursor"];
+            snapshot_revision: components["schemas"]["Revision"];
+        };
         ConversationsCreateRequest: {
             title: components["schemas"]["NonEmptyText"];
             model_choice: components["schemas"]["ConversationModelChoice"];
@@ -425,6 +530,10 @@ export interface components {
             cursor?: components["schemas"]["Cursor"];
             limit?: components["schemas"]["PageLimit"];
         };
+        ConversationsListRequest: {
+            cursor?: components["schemas"]["Cursor"];
+            limit?: components["schemas"]["PageLimit"];
+        };
         Count: number;
         Cursor: string;
         Decimal: string;
@@ -436,6 +545,15 @@ export interface components {
         };
         /** @enum {string} */
         DeliveryDecision: "accept" | "reject" | "revise" | "partial_accept";
+        DeliveryProposal: {
+            run_ref: components["schemas"]["Ref"];
+            contract_ref: components["schemas"]["Ref"];
+            outcome: components["schemas"]["Outcome"];
+            artifact_refs: components["schemas"]["Ref"][];
+            report_ref: components["schemas"]["Ref"];
+            unresolved_effect_refs: components["schemas"]["Ref"][];
+            created_at: components["schemas"]["Timestamp"];
+        };
         DomainCheckpoint: {
             domain: components["schemas"]["ID"];
             resource_ref: components["schemas"]["Ref"];
@@ -635,6 +753,26 @@ export interface components {
             wait_ref?: components["schemas"]["Ref"];
             usage_ref?: components["schemas"]["Ref"];
         };
+        HttpArtifactsContentResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["ArtifactContentView"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        HttpArtifactsGetResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["ArtifactRecord"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
         HttpConversationsCreateResult: {
             /** @enum {string} */
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
@@ -659,6 +797,16 @@ export interface components {
             /** @enum {string} */
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
             payload?: components["schemas"]["ItemPage"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        HttpConversationsListResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["ConversationPage"];
             output_refs: components["schemas"]["Ref"][];
             revision?: components["schemas"]["Revision"];
             failure?: components["schemas"]["Failure"];
@@ -705,6 +853,26 @@ export interface components {
             wait_ref?: components["schemas"]["Ref"];
             usage_ref?: components["schemas"]["Ref"];
         };
+        HttpRunsDeliveryAcceptResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["CompletionAcceptance"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        HttpRunsDeliveryResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["RunDeliveryView"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
         HttpRunsGetResult: {
             /** @enum {string} */
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
@@ -719,6 +887,16 @@ export interface components {
             /** @enum {string} */
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
             payload?: components["schemas"]["TaskFrame"];
+            output_refs: components["schemas"]["Ref"][];
+            revision?: components["schemas"]["Revision"];
+            failure?: components["schemas"]["Failure"];
+            wait_ref?: components["schemas"]["Ref"];
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        HttpTurnsLookupResult: {
+            /** @enum {string} */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            payload?: components["schemas"]["RunRecord"];
             output_refs: components["schemas"]["Ref"][];
             revision?: components["schemas"]["Revision"];
             failure?: components["schemas"]["Failure"];
@@ -954,6 +1132,22 @@ export interface components {
             currency: string;
         };
         Revision: number;
+        RunDeliveryView: {
+            run_id: components["schemas"]["ID"];
+            bundle_ref: components["schemas"]["Ref"];
+            artifact_ref: components["schemas"]["Ref"];
+            artifact: components["schemas"]["ArtifactRecord"];
+            content: components["schemas"]["ArtifactPreviewText"];
+            contract_ref: components["schemas"]["Ref"];
+            contract: components["schemas"]["Contract"];
+            report_ref: components["schemas"]["Ref"];
+            report: components["schemas"]["VerificationReport"];
+            proposal_ref: components["schemas"]["Ref"];
+            proposal: components["schemas"]["DeliveryProposal"];
+            requires_acceptance: components["schemas"]["Bool"];
+            stale: components["schemas"]["Bool"];
+            acceptance?: components["schemas"]["CompletionAcceptance"];
+        };
         RunRecord: {
             id: components["schemas"]["ID"];
             task_id: components["schemas"]["ID"];
@@ -973,6 +1167,16 @@ export interface components {
         RunsControlRequest: {
             run_id: components["schemas"]["ID"];
             control: components["schemas"]["UserControl"];
+        };
+        RunsDeliveryAcceptRequest: {
+            run_id: components["schemas"]["ID"];
+            bundle_ref: components["schemas"]["Ref"];
+            artifact_ref: components["schemas"]["Ref"];
+            /** @enum {string} */
+            decision: "accept" | "reject";
+        };
+        RunsDeliveryRequest: {
+            run_id: components["schemas"]["ID"];
         };
         RunsGetRequest: {
             run_id: components["schemas"]["ID"];
@@ -1036,6 +1240,10 @@ export interface components {
         };
         /** @enum {string} */
         ToolStatus: "succeeded" | "failed" | "waiting" | "cancelled" | "unknown";
+        TurnsLookupRequest: {
+            conversation_id: components["schemas"]["ID"];
+            request_id: components["schemas"]["ID"];
+        };
         TurnsSubmitRequest: {
             conversation_id: components["schemas"]["ID"];
             text: components["schemas"]["Text"];
@@ -1103,6 +1311,164 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    http_conversations_list: {
+        parameters: {
+            query?: {
+                cursor?: components["schemas"]["Cursor"];
+                limit?: components["schemas"]["PageLimit"];
+            };
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpConversationsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
     http_conversations_create: {
         parameters: {
             query?: never;
@@ -2886,6 +3252,812 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpEventsPayloadResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_turns_lookup: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                conversation_id: components["schemas"]["ID"];
+                request_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpTurnsLookupResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_delivery: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_delivery_accept: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 实际用户决定整份合同交付；不直接设置completed。 */
+                    payload: {
+                        /** @description 精确Bundle */
+                        bundle_ref: components["schemas"]["Ref"];
+                        /** @description 精确成果 */
+                        artifact_ref: components["schemas"]["Ref"];
+                        /**
+                         * @description 现有DeliveryDecision的整份接受/拒绝子集。
+                         * @enum {string}
+                         */
+                        decision: "accept" | "reject";
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsDeliveryAcceptResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_artifacts_get: {
+        parameters: {
+            query?: {
+                version?: components["schemas"]["Version"];
+            };
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                artifact_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_artifacts_content: {
+        parameters: {
+            query: {
+                version: components["schemas"]["Version"];
+                content_hash: components["schemas"]["Hash"];
+            };
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                artifact_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

@@ -8,7 +8,7 @@ export class BrowserSessionHost implements WorkspaceHost {
  private abort=new AbortController();private generation=0;
  constructor(private transport:typeof fetch=(input,init)=>fetch(input,init)){}
  session=():WebSession|null=>{const v=this.current;if(!v||Date.parse(v.expires_at)<=Date.now())return null;
-  return{identityKey:`web:${location.origin}:${v.principal.id}:${v.principal.auth_session_id}:${v.expires_at}`,csrfHeader:{name:'X-UAW-CSRF',value:v.csrf_token}};};
+  return{principal:v.principal,identityKey:`web:${location.origin}:${v.principal.id}:${v.principal.auth_session_id}:${v.expires_at}`,csrfHeader:{name:'X-UAW-CSRF',value:v.csrf_token}};};
  unavailableReason=()=>this.error;
  subscribe=(f:()=>void)=>{this.listeners.add(f);return()=>{this.listeners.delete(f);};};
  private publish(value:Schema['WebSession']|undefined,error=''){

@@ -1,11 +1,12 @@
 {
-  "baseline": "abb4590f2bfe53c601e0f6a4a3b65447ba4ec502",
-  "contract_ref": "ms-i2j-a1",
-  "contract_commit": "202544f452c485c84eb7fe08675576e31c75cad3",
-  "schema_sha256": "d44cbf71e70d31d48d233b290006767387003e2fb29c43adab772f7832c654ca",
-  "openapi_sha256": "26ac7fcc2c11fd9a61c9ae91dd37dc1216ca384b54f1a6910646149c0a7550ae",
+  "baseline": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
+  "contract_ref": "ms-i2k-start",
+  "contract_commit": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
+  "schema_sha256": "d54bd0218df40fd988f9d68a1635c051fd38031e47130591562f6d1f94b51056",
+  "openapi_sha256": "ce6bc81d2cdfd301d715061d38e13c341381e6ac0f66017d0e04c21417e20c08",
   "paths": {
     "/v1/conversations": [
+      "get",
       "post"
     ],
     "/v1/conversations/{conversation_id}": [
@@ -36,6 +37,21 @@
       "get"
     ],
     "/v1/events/{event_id}/payload": [
+      "get"
+    ],
+    "/v1/conversations/{conversation_id}/turn-requests/{request_id}": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/delivery": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/delivery/acceptance": [
+      "post"
+    ],
+    "/v1/artifacts/{artifact_id}": [
+      "get"
+    ],
+    "/v1/artifacts/{artifact_id}/content": [
       "get"
     ],
     "/v1/models": [

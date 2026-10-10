@@ -1,8 +1,8 @@
-# UAW Web / MS-U1
+# UAW Web / MS-U2
 
-B 原 worktree `E:/UAW/.worktrees/context` / `dev/context`。开工基线 ms-i2j-start；生成物额外只读消费 A 已公开 `ms-i2j-a1 / 202544f452c485c84eb7fe08675576e31c75cad3` 的公共契约，未改共享文件或同步浮动集成分支。13个已实现路径/15个HTTP方法，含 GET/POST/DELETE `/v1/web/session`。默认使用实际会话协议；配置或后端缺失时不可用。完整 Run 执行、原请求查询及成果/核验/接受 HTTP 仍需 A 接线，不能拿 queued 当完成。
+正式开工固定 `ms-i2k-start / b7b79b150470a80f37b28fd52a2177f6de5b3124`。B worktree `E:/UAW/.worktrees/context`，分支dev/context；保留全部MS-U1提交/handoff。本组件默认消费实际A2服务器会话分页、原request_id RecoveryPort、RunDeliveryView全文/逐项核验/合同接受，不需要测试host。生成物固定读取该标签公共契约：18路径/21方法/169定义，完整运行时校验；不改共享schema或Python锁。
 
-从仓库根目录运行，依赖和锁只在本目录：
+从仓库根运行，依赖/锁/构建/浏览器/回执均在本目录：
 
 ```powershell
 pnpm --dir apps/web install --frozen-lockfile --store-dir apps/web/.store
@@ -11,21 +11,27 @@ pnpm --dir apps/web generate
 pnpm --dir apps/web typecheck
 pnpm --dir apps/web test
 pnpm --dir apps/web test:e2e
-# A 已发布的本机代理 opt-in，保留 Origin；不设置时没有代理
+# A已发布loopback入口，显式opt-in；不设置时无代理
 $env:UAW_WEB_API_TARGET='http://127.0.0.1:8000'
 pnpm --dir apps/web dev
 ```
 
-Node24.21.0为本工程锁定私有开发依赖，pnpm10.17.0；不改全局Node。pnpm宿主Node22.13会给engine警告，项目脚本使用本地Node24。首次浏览器安装 `pnpm --dir apps/web exec playwright install chromium`，下载在本目录 `.playwright`。Playwright运行build＋preview静态产物，控制测试端口5177；冷Vite/HMR首次导航曾超时，原失败保存。构建当前主JS727.12KB/gzip212.22KB，保留>500KB警告，尚未宣称生产性能验收。
+本地锁Node24.21.0，pnpm10.17.0，全局Node22.13未更改（pnpm宿主engine警告保留）。脚本使用私有Node24。浏览器安装`pnpm --dir apps/web exec playwright install chromium`仅下载本目录.playwright。Playwright受控project运行build＋preview5177；开发实际入口固定5173，代理只接受127.0.0.1:8000，changeOrigin修API Host、保留Origin、禁xfwd。A负责配置用户级HttpOnly/SameSite会话、精确Origin/当前CSRF、后台固定Model/Agent及管理员已登记工具；本组件不读A私有配置/model key/admin token，不开放flags或授予目录。
 
-开发入口固定 `http://127.0.0.1:5173`；显式代理只接受 A 公布的127.0.0.1:8000，changeOrigin校正API Host，Origin保留、xfwd关闭。A负责 localhost 同源静态/API、本机用户HttpOnly/SameSite会话、精确Origin、CSRF、退出失效和真实运行调度。通过A的CLI一次启动链接登录（本组件不取得用户/管理员Bearer）；code只在fragment，交换前立即history.replaceState移除，丢回应先GET session、不重放；CSRF只在内存。当前会话10秒复查，期限/撤销/身份变化清理读取投影与本地草稿分区。退出DELETE带实际X-UAW-CSRF和{meta,payload:{}}。
+登录使用A提供限时一次fragment启动URL，交换前移除fragment，丢回应先GET session、不重放code；CSRF和cookie会话仅内存/HttpOnly。当前身份10秒复查、退出DELETE撤销；身份换源清理投影和草稿分区。原文为基准，TaskFrame摘要仅提示；未发送无真实理解时明确说明，不改写原文或解析模型文字猜completed。
 
-A可选提供可信 `window.uawWebHost`，消费同一WorkspaceHost：session()返回身份分区与实际CSRF，subscribe()通知撤销/退出/换身份，logout()做服务端失效；recovery.find(conversationId,requestId,signal)查询原任务；review.read/accept消费内部ReviewPort。不可生产挂测试fixture。默认实际BrowserSessionHost不包含尚未发布的恢复/成果适配，不猜路由。
+默认列表来自服务器，固定cursor水位、过期重读、循环拒绝、同ID最高版本；新登录可读本人历史，接受权限由当前服务器复查。分页每操作最多64×100项，3秒只读轮询，Item/revision及Event seq/eventID去重，Run/task独立版本边界。无SSE。读取/修改15秒超时，POST/DELETE不自动重试；未知turn保存原查找ID，刷新先查原request_id/Run，不正文匹配或新发turn。missing lookup仍不确定，不能因为404猜未执行。
 
-审批先GET当前revision/hash/refs/期限再CAS；取消ACK后等待Run终态；接受前再读成果/核验/合同并校验正文UTF-8字节/SHA256，回执后查询实际Run，不直接设置completed。接受派发后未知或已确认时本视图阻止再提交；A还须提供原接受请求对账，刷新没有自动POST。前端不授予目录/执行权限。localStorage只保存草稿及conversation/request/Run查找ID，永不保存令牌、审批、预算、权限或接受状态。
+ReviewPort默认真实HTTP：读取完整RunDeliveryView，校验Run/Ref/version/可选hash/位置/scope、正文UTF-8长度/SHA256、合同/核验/提案关联；404表示尚无结果。接受前再读当前完整快照，stale/已有receipt/取消或其他当前操作均禁发。POST仅准确固定bundle_ref/artifact_ref/accept及RequestMeta，无expected_revision/If-Match。服务端回执后只查实际acceptance和Run，不设completed。
 
-分页轮询3秒，每次最多64页×100项，cursor固定watermark，走完重新取当前快照；seq/event ID、Item ID/revision去重；失效重读，循环明确失败。每次GET/POST/DELETE超时15秒，POST/DELETE无自动重试；已知Run刷新GET，未知发送缺恢复适配就阻止再次发送。未知Item只读降级，Run和审批schema不放宽。安全Markdown无原始HTML、远程图片或危险URL。
+接受发送前仅持久run/request/bundle/artifact查找ID，最多32条，同身份刷新后仍对账；不保存accepted状态/权限/正文/审批/hash/预算/token。未知回应无actual acceptance时阻止换ID重发。只有匹配实际receipt清查找；新Bundle不自动替代未知旧决定。换身份/退出清理查找分区，当前服务器再次核验原auth_session_id。存储不可用时合同决定明确不可用。安全Markdown禁HTML/危险URL/远程图片，未来Item只读降级，执行和审批schema不放宽。
 
-真实联调 `pnpm --dir apps/web test:live` 只连A已配置localhost页面。需环境：UAW_LIVE_WEB_URL、A给出的短期UAW_LIVE_LAUNCH_URL、UAW_LIVE_APPROVAL_CONVERSATION、UAW_LIVE_DECLINE_CONVERSATION、UAW_LIVE_CANCEL_CONVERSATION、UAW_LIVE_ACCEPTANCE_CONVERSATION。启动URL不写日志；仅内存保留测试会话cookie、不输出或存盘。缺环境exit2/pending，不计pass或skip；实际后端缺失同样pending。测试无响应截获/身份注入/LLM替身，覆盖实际发送、审批/拒绝、取消、接受及刷新。控制测试另存 `.test-results/` 和日志，不能冒充真实验收。
+可选`window.uawWebHost`仅为可信正式adapter：session/subscribe/logout，可选recovery/review；不注入时全部默认A2适配。受控测试用响应截获，不能生产挂fixture，不能证明SQL/真实模型或真人授权。
 
-最终接线、准确SHA和回执在 `docs/coordination/requests/B/MS-U1-final-wiring.md`。本包不改Python、共享schema/锁、Model/Run/flags或其他worktree；整链验收由A执行。
+验证分开：
+
+- `test`：必要单元；`test:e2e`：受控Chromium，真实格式fixture。
+- `test:backend`：当前真实TCP后端的匿名401/页面拒绝/刷新零POST，只读，不作为登录后任务通过。
+- `test:live`：A提供localhost页面、短期UAW_LIVE_LAUNCH_URL和真实审批/拒绝/取消/接受会话ID后，才运行真实登录任务5场景。缺环境exit2/pending，不记pass或skip；无response mock/identity注入，cookie只在内存，不落trace/secret日志。模型费用和真人文件授权另归A/用户留回执。
+
+ignored回执`.test-results/u2-*`，最终来源/计数/失败历史和接线见`docs/coordination/requests/B/MS-U2-final-wiring.md`；MS-U1历史见该目录MS-U1-final-wiring.md。主chunk>500KB构建警告保留，不宣称生产性能验收。本包只改apps/web及B文档，A审阅合入并执行整链回归；本包交付后停止。
