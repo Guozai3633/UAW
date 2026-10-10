@@ -885,3 +885,14 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 类型/build通过，51 unit +21 controlled Chromium最终0失败/错误/跳过；原判断2失败/1通过，以及新增测试初始转义错误回执均保留。原首修回执不覆盖。
 - 构建 `apps/web/dist`、ignored回执 `apps/web/.test-results/u2-media-*`，完整日志及新构建SHA256在 `u2-media-receipts.json`。
 - [精确改动、样例/拒绝语义、真实与受控边界、A接线和完整构建hash](../requests/B/MS-U2-utf8-media-repair.md)。完整原真实RunDeliveryView wire未提供；实际media+完整DTO受控回放通过，真实认证页面复验与真人文件授权pending A。不扩包、不标P1接受。
+
+
+## MS-U2 固定交付等待/原请求导航修复（2026-10-10）
+
+- 原worktree `E:/UAW/.worktrees/context` / `dev/context`；固定源 `ms-i2k-start / b7b79b150470a80f37b28fd52a2177f6de5b3124`。原源码/handoff及两次schema/MIME修复全部保留。
+- 本次源码 `c0cd90a84cb2a64b93c5828e95a312707b51559b`；独立交接为随后docs提交，完整SHA见最终回报。仅改Review/Workspace和B回归/replay配置，共7个源码/测试文件。
+- 接受依赖实际完整RunDeliveryView和running/waiting_for_user、同Run/绑定版本、当前Refs/hash/合同；取消/终态/过时/缺源/未知仍禁用，决定前重读保持。Receipt仅触发Run重新读取，不改completed。
+- 新会话明确“返回原请求会话”；不删除原Recovery/ID或原文草稿、不重发；GET导航回归通过。独立并发发送未扩包，发送限制已明示。
+- 类型/build通过，54 unit +2实际完整wire只读内存回放 +22受控Chromium，最终0失败/错误/跳过。原实际wire1失败/1通过和单元原失败均保留。Actual wire不等于新真实backend派发；Run投影/HTTP/receipt受控。
+- 自动审批曾拒绝复制真实正文到可提交fixture，已改用批准的只读内存回放，不持久复制或记录真实正文；输入SHA `8fd084b06031d2db51e329995354828d98596fa53bc463651500aee8fb264c24`。首修/MIME回执保留。
+- 新构建 `apps/web/dist`，ignored回执 `apps/web/.test-results/u2-delivery-*`，完整索引 `u2-delivery-receipts.json`；[精确来源/文件/回执/新构建hash及A接线](../requests/B/MS-U2-delivery-wait-repair.md)。A真实页面接受与完成/费用/未知效果复查、真人授权仍待A；本修复停止，不标P1接受。
