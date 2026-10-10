@@ -54,3 +54,31 @@ def test_material_is_immutable_selected_text_and_fresh_named_copies(ctx):
     assert not hasattr(material, "snapshot")
     with pytest.raises(FrozenInstanceError):
         material._content = b"changed"
+
+
+async def test_missing_owning_reader_refuses_export_and_ref_reuse(ctx):
+    from uaw.shared.errors import DomainError
+    from uaw.tool.providers.file_material import FileMaterialAdapter
+
+    reader = FileMaterialAdapter(None)
+    with pytest.raises(DomainError) as unavailable:
+        await reader.export("file-action", ctx)
+    assert unavailable.value.status_code == 503
+    with pytest.raises(DomainError):
+        await reader.read(Ref(kind="content", id="claimed-material", version="1"), ctx)
+
+
+@pytest.mark.parametrize("missing", ["access", "verifier", "bridge", "signatures"])
+def test_material_source_metadata_is_not_a_reader_grant(ctx, missing):
+    from tests.unit.tool.test_file_ports import ControlledBridge, store
+    from uaw.shared.errors import DomainError
+    from uaw.tool.providers.file_material import FileMaterialAdapter
+
+    source, _, _, _, signatures = store(ctx, bridge=ControlledBridge())
+    source.signatures = signatures
+    source.access = object()
+    source.verifier = object()
+    setattr(source, missing, None)
+    with pytest.raises(DomainError) as unavailable:
+        FileMaterialAdapter(source).ready()
+    assert unavailable.value.status_code == 503
