@@ -2,10 +2,10 @@
 import {test,expect,type Page} from '@playwright/test';
 import {deliveryView} from '../../a2-fixtures';
 import {conversation,models,makeRun,makeItem,frame,now,ref,ok} from '../../fixtures';
-async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-hash'|'cancel-race'|'missing'|'pagination'|'identity'|'media-unsupported'='normal'){
- const state={turns:0,accepts:0,controls:0,hasRun:mode!=='lost-submit',receipt:false,cancelled:false,old:mode==='old-hash',session:'session-one',denied:false,original:'已有原文',cursorExpired:mode==='pagination',listReads:0};
+async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-hash'|'cancel-race'|'missing'|'pagination'|'identity'|'media-unsupported'|'running-delivery'='normal'){
+ const state={completed:false,turns:0,accepts:0,controls:0,hasRun:mode!=='lost-submit',receipt:false,cancelled:false,old:mode==='old-hash',session:'session-one',denied:false,original:'已有原文',cursorExpired:mode==='pagination',listReads:0};
  const failure=(code:string,message:string,kind='stale',category='conflict')=>({kind,failure:{code,category,message,retryable:false,failed_phase:'read'},output_refs:[]});
- await page.route('**/v1/**',async route=>{const req=route.request(),url=new URL(req.url()),path=url.pathname;const run=()=>makeRun(state.cancelled?'cancelled':state.receipt?'completed':'waiting_for_user',state.receipt||state.cancelled?2:1);
+ await page.route('**/v1/**',async route=>{const req=route.request(),url=new URL(req.url()),path=url.pathname;const run=()=>mode==='running-delivery'?makeRun(state.completed?'completed':'running',state.completed?6:5):makeRun(state.cancelled?'cancelled':state.receipt?'completed':'waiting_for_user',state.receipt||state.cancelled?2:1);
  if(path==='/v1/web/session')return route.fulfill(state.denied?{status:403,json:failure('web_session_revoked','会话已撤销','denied','authorization')}:{json:ok({principal:{id:'user-one',kind:'user',auth_session_id:state.session},expires_at:now,csrf_token:'c'.repeat(64)})});
  if(path==='/v1/models')return route.fulfill({json:ok(models)});
  if(path==='/v1/conversations'&&req.method()==='GET'){state.listReads++;if(mode==='pagination'){if(url.searchParams.get('cursor')==='second'){if(state.cursorExpired){state.cursorExpired=false;return route.fulfill({status:412,json:failure('cursor_invalid','游标过期')});}return route.fulfill({json:ok({items:[{...conversation,id:'conv-two',title:'第二页历史'}],snapshot_revision:2})});}return route.fulfill({json:ok({items:[conversation],snapshot_revision:2,next_cursor:'second'})});}return route.fulfill({json:ok({items:[conversation],snapshot_revision:1})});}
@@ -17,7 +17,7 @@ async function backend(page:Page,mode:'normal'|'lost-accept'|'lost-submit'|'old-
  if(path.endsWith('/payload'))return route.fulfill({json:ok({action:'run.updated',parameters:run()})});
  if(path==='/v1/runs/run-one')return route.fulfill({json:ok(run())});
  if(path.endsWith('/frame'))return route.fulfill({json:ok(frame)});
- if(path.endsWith('/delivery')){if(mode==='missing')return route.fulfill({status:404,json:failure('record_missing','当前没有成果','missing','arguments')});const v=deliveryView(state.receipt);if(mode==='media-unsupported')v.artifact.media_type='text/html; charset=utf-8';if(state.receipt)v.acceptance!.principal.auth_session_id=state.session;return route.fulfill({json:ok(v)});}
+ if(path.endsWith('/delivery')){if(mode==='missing')return route.fulfill({status:404,json:failure('record_missing','当前没有成果','missing','arguments')});const v=deliveryView(state.receipt);if(mode==='running-delivery')v.proposal.run_ref.version='5';if(mode==='media-unsupported')v.artifact.media_type='text/html; charset=utf-8';if(state.receipt)v.acceptance!.principal.auth_session_id=state.session;return route.fulfill({json:ok(v)});}
  if(path.endsWith('/acceptance')){state.accepts++;expect(req.headers()['x-uaw-csrf']).toBe('c'.repeat(64));const body=req.postDataJSON();expect(body.payload).toEqual({bundle_ref:ref('content','bundle-one'),artifact_ref:ref('artifact','artifact-one'),decision:'accept'});expect(body.meta.expected_revision).toBeUndefined();
   if(mode==='cancel-race'){state.cancelled=true;return route.fulfill({status:412,json:failure('run_cancelled','运行取消，接受已拒绝')});}
   if(state.session!=='session-one')return route.fulfill({status:403,json:failure('delivery_session_denied','历史成果不能借新登录接受','denied','authorization')});
@@ -44,4 +44,16 @@ test('A2 default: unsupported artifact media type rejects full content and accep
  await expect(page.getByRole('heading',{name:'完整正文报告'})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'接受整份成果'})).toBeDisabled();
  expect(state.accepts).toBe(0);expect(state.turns).toBe(0);
+});
+
+
+test('A2 default: running/version5 fixed delivery accepts but stays running until a separately reread completion',async({page})=>{
+ const state=await backend(page,'running-delivery');await open(page);
+ await expect(page.getByText('实际阶段 · running')).toBeVisible();await expect(page.getByRole('button',{name:'接受整份成果'})).toBeEnabled();
+ await page.getByRole('button',{name:'接受整份成果'}).click();await expect.poll(()=>state.accepts).toBe(1);
+ await expect(page.getByText('实际合同决定：accept',{exact:false})).toBeVisible();
+ await expect(page.getByText('实际阶段 · running')).toBeVisible();await expect(page.getByText('实际阶段 · completed')).toHaveCount(0);
+ await page.reload();await expect(page.getByText('实际阶段 · running')).toBeVisible();await expect(page.getByRole('button',{name:'接受整份成果'})).toBeDisabled();
+ expect(state.accepts).toBe(1);state.completed=true;await page.getByRole('button',{name:'重新读取并连接'}).click();
+ await expect(page.getByText('实际阶段 · completed')).toBeVisible();expect(state.accepts).toBe(1);expect(state.turns).toBe(0);
 });
