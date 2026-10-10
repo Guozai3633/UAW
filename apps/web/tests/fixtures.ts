@@ -1,0 +1,11 @@
+import type {Schema,Item,Run,Frame,Approval} from '../src/lib/api/types';
+export const now='2099-01-01T00:00:00Z';
+export const ref=<K extends Schema['Ref']['kind']>(kind:K,id:string,version='1'):Schema['Ref'] & {kind:K}=>({kind,id,version});
+export const conversation:Schema['Conversation']={id:'conv-one',owner_id:'user-one',title:'研究材料整理',revision:1,model_policy_ref:ref('policy','policy-one'),memory_policy:{revision:1,read_enabled:false,contribute_enabled:false,scope:{resource_refs:[]}},approval_mode:'manual',created_at:now,updated_at:now};
+export const models:Schema['ModelPage']={items:[{id:'model-one',provider_ref:ref('provider','provider-one'),display_name:'受控测试模型（非LLM）',context_limit_tokens:32000,output_limit_tokens:8000,capabilities:[],status:'active',revision:1}],snapshot_revision:1};
+export const makeRun=(status:Run['status']='running',revision=1):Run=>({id:'run-one',task_id:'task-one',conversation_id:conversation.id,revision,status,budget:{limits:{input_tokens:32000,output_tokens:8000,model_calls:10,tool_calls:10,child_agents:0,wall_time_ms:60000,money:'1',currency:'USD'},max_steps:10,max_depth:0,deadline:now},created_at:now});
+export const frame:Frame={task_id:'task-one',revision:1,original_input_ref:ref('input','input-one'),patch_refs:[],goal:'用户原文是执行基准',summary:'整理材料，保留来源并输出Markdown报告。',constraints:[],output_specs:[],assumptions:[],unresolved:[],evidence_refs:[],created_at:now,input_revision:1};
+export const makeItem=(id:string,type:Item['type'],text:string,revision=1):Item=>({id,conversation_id:conversation.id,run_id:'run-one',type,status:'completed',revision,text,resource_refs:[],created_at:now,updated_at:now});
+export const approval:Approval={id:'approval-one',revision:1,action_id:'action-one',arguments_hash:'a'.repeat(64),resource_refs:[ref('workspace','workspace-one')],effect:'read',summary:'读取本次已授权材料',mode:'manual',status:'pending',expires_at:now};
+export const ok=(payload:unknown)=>({kind:'ok',payload,output_refs:[]});
+export const denied=(code='origin_denied',message='浏览器入口未开放')=>({kind:'denied',failure:{code,category:'authorization',message,retryable:false,failed_phase:'authentication'},output_refs:[]});

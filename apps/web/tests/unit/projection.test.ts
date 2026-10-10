@@ -1,0 +1,30 @@
+import {describe,it,expect} from 'vitest';
+import {Projection,SnapshotRequired} from '../../src/lib/events/projection';
+import {makeItem,makeRun,frame,now,ref} from '../fixtures';
+import type {Event,Payload} from '../../src/lib/api/types';
+const e=(seq:number,type:Event['type']='item.updated',extra:Partial<Event>={}):Event=>({event_id:'event-'+seq,stream_id:'conv-one',seq,type,schema_version:'0.1',occurred_at:now,payload_ref:ref('event','payload-'+seq),...extra});
+describe('versioned event projection',()=>{
+ it('deduplicates exact seq and Item revisions without text guesses',()=>{const p=new Projection();const item=makeItem('item-one','agent_message','我已经全部完成',2);
+  p.apply(e(1),{action:'item.updated',parameters:item});p.apply(e(1),{action:'item.updated',parameters:item});
+  p.item({...item,revision:1,text:'old'});expect(p.sorted()).toHaveLength(1);expect(p.sorted()[0].text).toBe(item.text);expect(p.run).toBeUndefined();});
+ it('requires snapshot on sequence gap or conflicting identity',()=>{const p=new Projection();p.apply(e(1),{action:'item.updated',parameters:makeItem('i','agent_message','one')});
+  expect(()=>p.apply(e(3),{action:'item.updated',parameters:makeItem('i','agent_message','three')})).toThrow(SnapshotRequired);
+  expect(()=>p.apply(e(1,'item.updated',{event_id:'different'}),{action:'item.updated',parameters:makeItem('i','agent_message','bad')})).toThrow(SnapshotRequired);});
+ it('applies delta once with exact base/result and accepts latest snapshot over old delta',()=>{const p=new Projection();p.item(makeItem('i','agent_message','A'));
+  const event=e(1,'item.delta',{base_revision:1,result_revision:2});const payload:Payload={action:'item.delta',parameters:{item_id:'i',base_revision:1,text_delta:'B'}};
+  p.apply(event,payload);p.apply(event,payload);expect(p.sorted()[0].text).toBe('AB');
+  const fresh=new Projection();fresh.replaceItems([makeItem('i','agent_message','ABC',3)],10);fresh.apply(event,payload);expect(fresh.sorted()[0].text).toBe('ABC');
+  expect(()=>p.apply(e(2,'item.delta',{base_revision:1,result_revision:4}),payload)).toThrow(SnapshotRequired);});
+ it('honors replacement and ignores older fixed watermark',()=>{const p=new Projection();p.replaceItems([makeItem('i','agent_message','new',4)],8);
+  p.replaceItems([makeItem('i','agent_message','old')],3);expect(p.sorted()[0].text).toBe('new');});
+});
+
+it('new Run and task identities start their own revision boundary and keep server order on equal timestamps',()=>{
+ const p=new Projection();p.apply(e(1,'run.updated'),{action:'run.updated',parameters:makeRun('completed',8)});
+ const next={...makeRun('running',1),id:'run-two',task_id:'task-two'};p.apply(e(2,'run.updated'),{action:'run.updated',parameters:next});expect(p.run).toEqual(next);
+ p.apply(e(3,'task.frame.committed'),{action:'task.frame.committed',parameters:{...frame,revision:5}});
+ p.apply(e(4,'task.frame.committed'),{action:'task.frame.committed',parameters:{...frame,task_id:'task-two',revision:1}});expect(p.frame?.task_id).toBe('task-two');
+ p.replaceItems([makeItem('z-user','user_message','original'),makeItem('a-result','artifact','result')],4);expect(p.sorted().map(i=>i.id)).toEqual(['z-user','a-result']);
+});
+
+it('duplicate IDs in snapshot pages retain the highest revision regardless of page order',()=>{const p=new Projection();p.replaceItems([makeItem('i','agent_message','new',4),makeItem('i','agent_message','old',1)],8);expect(p.sorted()).toHaveLength(1);expect(p.sorted()[0].text).toBe('new');});
