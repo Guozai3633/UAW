@@ -28,3 +28,7 @@ D helper_host.py:79 在 on_connected 的 DomainError 路径已返回原 failure.
 A tests/integration/agent/test_installed_pre_ui.py 使用独立web-platform测试账号与实际InstalledHelperAssembly/SQL/OS/IPC，受控根对话仅返回 diagnostic_reached_native 拒绝，不读文件。m2-root-pre-ui-trace-fixed.xml 1通过/49.821s（pytest49.91s），原120秒session内110秒诊断预算确实到达目录对话；首20秒诊断失败不能作为D UI前业务错误证据，中间fixture冻结字段失败也由A保留。真人仍未看到窗口。
 
 当前 native_dialog.py 的 BFFM_INITIALIZED 回调只处理取消/期限，没有请求前台/显示提醒，MessageBox亦未带前台显示选项。后续限定补自有原生窗口显示与提醒，不替本人选择/确认、不增加期限，不改变来源校验；具体源提交/实际native可见与取消回执另交。Windows前台请求可能被系统拒绝，不能据此保证本人已见/已确认；需实际本人重验。
+
+## D 限定显示修复交付
+
+源码ef609407b0875fb51c53121a31a5a56d37dab93a已补自有BFFM_INITIALIZED窗口显示/置顶、可被系统拒绝的前台请求与闪动提醒，拒绝操作非本工作线程窗口；显示失败关闭并明确不可用。最终确认默认Cancel保持。真实隐藏子进程观察窗口visible/topmost/own_thread及原取消后已销毁，受影响152不同节点最终通过，详细接线/失败/清理见MS-R2i-stage-native-visibility.md。没有证据证明原第三次失败必为后台窗口，也没有本人根确认通过声明；A第四次本人尝试由A记录，D不做自动操作。
