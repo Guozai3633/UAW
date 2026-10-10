@@ -42,3 +42,20 @@ M1不是默认完整页面或真实模型验收。M2继续接默认列表/恢复
 未知接受持久查找ID而非许可、原receipt对账、取消/身份/刷新竞争；无receipt不换ID重发。
 A可立即按正式签名审阅。真实联调需A可达后端/短期launch及场景会话ID，已请求转发，
 不读A私有配置或model/admin key；缺来源记pending。本包完成后停止，不自动下一包。
+
+## M2 默认页面到达
+
+源码 **98976199fbde10cf96816751a43cfd4b7aea9cd4**；本说明单独提交，继续M3/M4。
+默认BrowserSessionHost之后直接装配HttpRecoveryPort/HttpReviewPort，不需测试host；
+真实服务器list/start/reconnect、已知会话GET保留，完整正文/逐项理由/限制/来源/实际合同
+receipt来自RunDeliveryView。成果缺失missing时“当前Run尚无成果”，不是完成或新任务。
+HTTP完整固定Ref/version/hash复核，决定前再读，陈旧/stale/已有receipt拒绝新POST。
+接受发送前持久仅run/request/bundle/artifact查找ID（不是接受状态或权限），未知结果先
+查询实际GET delivery；无receipt不换request_id重发。身份换源/退出清理，CSRF不落盘。
+接受后仅查实际Run，不设completed。明确“读取当前成果与接受回执”按钮，定时只读。
+
+M2类型/build成功，37单元与11受控Chromium通过，0失败/错误/跳过；回执自身ignored
+.test-results/u2-unit-m2.log、u2-browser-m2.log。这些fixture不证明真人认证/真实模型。
+无认证localhost8000 GET session探测实际HTTP401：后端可达，但未提供一次launch和
+真实场景会话ID，真实suite pending。已请求转发，不读A私有配置或key。M3继续未知/
+取消竞争/刷新/分页/身份场景，最终单独handoff。
