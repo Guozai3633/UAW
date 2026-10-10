@@ -134,7 +134,9 @@ async def ipc_case(tmp_path):
                     raise AssertionError("Random OS credential cleanup failed")
             report["cleaned"] = True
         await asyncio.to_thread(
-            (tmp_path.parents[1] / ("windows-ipc-" + tmp_path.name + ".json")).write_text,
+            (
+                tmp_path.parents[1] / ("windows-ipc-" + tmp_path.name + "-" + namespace + ".json")
+            ).write_text,
             json.dumps(report, indent=2),
             encoding="utf-8",
         )
