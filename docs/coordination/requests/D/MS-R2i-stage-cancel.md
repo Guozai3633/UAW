@@ -13,3 +13,9 @@ host 原 HelperAssemblyPort.create(identity)->HelperApplication 签名保留。s
 A native timeout 必须保持契约最多60秒；证明10秒/进度回调5秒均包含首次唯一90秒期限。A创建源在取消后释放自有SQL/OS/native；D排空返回的helper。拒绝 DomainError code 保留；waiting不是授权/ready。fixture native Yes与生产当前来源不可互换。
 
 截至本阶段再次fetch并只读 origin/integration/DISPATCH，仅共同标签和固定契约，无新 installed locator/可信每次启动配置/完整 paired factory 阶段发布。D不合并浮动integration、不修改A/shared/HTTP/锁、不造生产登记。最小缺口是上述现有接口的可信安装交付示例/模块及来源生命周期，而非新增 DTO。A发布具名阶段后D消费；缺源503。继续本包独立M3/M4：首次等待后的原临时根只读、实际签名journal和丢回复恢复；本人操作pending，不读本人未授权目录、不开放flags/写入安装exec。
+
+## A 联调修复：SQL 子端 Selector loop
+
+追加源码 67154f807a9c7aa69139a34af190a1ec058819b0。按 A/MS-I2l-D-selector-loop-repair.md 已交输入，固定 helper_host.__main__ 使用既有 uaw.infrastructure.event_loop.control_plane_loop 作为 asyncio.run loop_factory；不改全局policy/锁/D03，普通15秒/首次90秒/初始化stop原逻辑保留。
+
+5不同隐藏Windows selector/stop/EOF节点通过/16.39s；D自有55435迁移后实际隐藏子端 Database.check（原 alembic 版本SQL）1节点通过/4.23s，未用SQL fixture替代真实连接。父端账号/根/factory仍受控，不称installed业务或真人配对完成。实际SQL失败首轮是D库没有迁移，保留 selector-sql.xml/log；自有端口检查后现有迁移成功，selector-sql-2.xml/log通过。A可在自己库复跑logout/错challenge原来源拒绝，D不改A业务文件。

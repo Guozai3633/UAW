@@ -568,3 +568,7 @@ git diff --check
 
 - M2源码 f37d44589ab874ebb3c8dca0f4806e06bde75a2f，helper_host/helper_process与D helper_start_fixture/test_helper_first_start；host初始化前stop/EOF、晚helper禁止监听并关闭、无blocked readline、实际native取消排空、close幂等。
 - Windows隐藏双进程18不同节点通过/70.67s，原EOF close失败保留后修复；Ruff/Mypy34/diff通过。构造、close、错误和A实际安装输入见 requests/D/MS-R2i-stage-cancel.md。回执 tests/.artifacts/D/MS-R2i/m2-final.xml/log，账号/current source/肯定UI均受控；实际native仅取消，无本人确认。A源码阶段尚未发布，不造生产配置，继续同包M3/M4。
+
+### MS-R2i A installed SQL 事件循环修复阶段
+
+源码67154f807a9c7aa69139a34af190a1ec058819b0；固定host __main__使用已有control_plane_loop，不改全局policy/契约。5实际Windows取消/Selector节点＋1实际D55435迁移后子端SQL检查通过。首轮库未迁移失败保留。构造及命令回执见MS-R2i-stage-cancel.md追加；A installed来源仍待阶段发布，继续本包。
