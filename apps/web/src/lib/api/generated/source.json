@@ -1,0 +1,43 @@
+{
+  "baseline": "abb4590f2bfe53c601e0f6a4a3b65447ba4ec502",
+  "schema_sha256": "019b15c29d05c987ad1242c10ef17e2f825a216df0398ecbf4f70fd80a12232f",
+  "openapi_sha256": "b7c3ccb655a6732c5a24e9c02690fe230122fce6d9e00ee57e8660f76b0dfc8a",
+  "paths": {
+    "/v1/conversations": [
+      "post"
+    ],
+    "/v1/conversations/{conversation_id}": [
+      "get"
+    ],
+    "/v1/conversations/{conversation_id}/items": [
+      "get"
+    ],
+    "/v1/conversations/{conversation_id}/turns": [
+      "post"
+    ],
+    "/v1/runs/{run_id}": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/control": [
+      "post"
+    ],
+    "/v1/tasks/{task_id}/frame": [
+      "get"
+    ],
+    "/v1/approvals/{approval_id}": [
+      "get"
+    ],
+    "/v1/approvals/{approval_id}/decisions": [
+      "post"
+    ],
+    "/v1/conversations/{conversation_id}/events": [
+      "get"
+    ],
+    "/v1/events/{event_id}/payload": [
+      "get"
+    ],
+    "/v1/models": [
+      "get"
+    ]
+  }
+}

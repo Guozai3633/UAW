@@ -1,0 +1,2 @@
+@import "tailwindcss";
+:root{font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:#222c3b;background:#f6f7fa}body{margin:0}.stage{padding:80px;max-width:800px;margin:auto}.stage>p:first-child{color:#6b7792;font-size:12px;letter-spacing:.18em}h1{font-size:38px}
