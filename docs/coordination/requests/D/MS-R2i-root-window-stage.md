@@ -34,3 +34,7 @@ git diff --check
 Ruff、73文件格式、Mypy34源码、diff通过。回执ignored tests/.artifacts/D/MS-R2i-root-window/final-2.xml/log、ruff/format/mypy.log和checks.json/nodes.json。原windows-first.xml/log为5通过/1测试观察抢在grant CAS前读取失败；修正等待原持久绑定而不删断言。selection-error.log保存误写不存在测试文件、0测试执行，不计通过；stage.xml25与最终147不重复计数。测试fixture只增加可信窗口配置/观察元数据、新Ticket创建时可显式短期限；没有修改旧Ticket/grant，生产只有runtime兼容参数。
 
 A按阶段源码e5d27593e9639fbca2a3964f055d73466093192c消费即可，新的明确root实例两端120、普通默认60；原当前登记/原Ticket依旧取更早值。A负责installed/父端消费与本人重验，原两个真人ipc_timeout回执保留，尚无成功本人root/文件/模型通过声明。不改首次账号native60、普通15/first90、flags或D03。最终源码与独立handoff另记精确SHA，本同包修复后停止。
+
+## 后续真人失败与只读审查（2026-10-11）
+
+上文“没有A新真人重验”是147项运行时的阶段状态；其后 A 已消费阶段并进行了第三次本人尝试，仍未看到目录窗口，root_selected=false，无文件/模型成功。最新审查与所需原子端失败码见 MS-R2i-native-root-review.md。不能把本次120参数修复或147通过声明为真人根选择完成。最终测试源码0c7aec747623f42b479c922808c8e018760453e5；原fixture LF恢复提交cd747489a52a902d188997952df972c1a58bc203保留历史；最终handoff另提交。

@@ -589,3 +589,13 @@ git diff --check
 ## MS-R2i 同包 root window 修复阶段（2026-10-10）
 
 A具体验证请求已交，固定A3源码5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e远端核对仅只读；保留原最终提交、不新包。D阶段源码e5d27593e9639fbca2a3964f055d73466093192c，runtime新增可信session_lifetime_seconds/native_timeout_seconds默认60，有限拒bool且0<native<=session<=120，原适配分别消费、不延长原授权/不改启动或首次账号native上限。25不同边界unit通过/0.12s，Ruff/Mypy34/diff通过，阶段构造及A接线MS-R2i-root-window-stage.md；继续实际注入、短源及取消/read/recover，真人A/本人重验。
+
+## MS-R2i 同包 root window 修复最终交接（2026-10-11）
+
+- 实际 E:/UAW/.worktrees/runner / dev/runner；共同开工 ms-i2l-start /8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0，原 A1 固定阶段导入和最终源码1eac90b7c942b0bd9eec6f779f4403cc072a1274/handoff0a386383d04f1158c55c3436bb4a516ae7cf77b7均保留。本修复只读核对固定 A3标签5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e，无浮动合并/reset/rebase/stash/公共覆盖。
+- 阶段源码e5d27593e9639fbca2a3964f055d73466093192c，独立阶段handoff95c2897ba9bd32c1495099e7085204c3b4392d48；最终定向测试/接线源码0c7aec747623f42b479c922808c8e018760453e5；恢复原fixture LF、不重写历史cd747489a52a902d188997952df972c1a58bc203。生产变更仅runtime.py 17行；D unit新增test_helper_root_windows，integration新增同名Windows测试并改helper_fixture/test_helper_runtime/test_native_root_source；D stage/review及本handoff。最终handoff独立提交。
+- 固定ReadOnlyHelper构造新增keyword-only session_lifetime_seconds=60、native_timeout_seconds=60；严格数值拒bool/非有限数，0<native<=session<=120，分别传现有AuthenticatedPipeSession/WindowsNativeConfirmation。只允许可信组装在新明确root实例注入120；原注册/Ticket/grant/confirmation期限取更早值，无旧授权续期、不改普通15/first90/首次账号native60。具体构造例子/命令/错误见 MS-R2i-root-window-stage.md。
+- 147不同节点通过（pytest139.44s，XML139.376s），0失败/错误/跳过；新增31=25构造边界+6实际Windows，原116受影响兼容；不累计阶段重试或原644。Ruff通过/格式73文件/Mypy34源码/diff通过；回执 ignored tests/.artifacts/D/MS-R2i-root-window/final-2.xml/log、ruff/format/mypy.log、checks.json/nodes.json。51个不同 retained random IPC namespace 清理报告全部cleaned=true。
+- 实际隐藏双进程/IPC/OS角色key/签名/临时文件：默认60/新120进入实际session/native；原短登记/Ticket严格限制并阻止过期读取；native自动取消关闭且Ticket未消费；新PID/channel恢复原签名content Ref，删除文件也不新读，原期限不变、attempt1。肯定UI与账号/authority明确fixture，真实native测试只取消/超时，不称本人根选择或真实产品权限。原首次测试5pass/1grant CAS观察竞争失败修正等待原持久绑定；误写不存在测试文件的0执行和所有失败保留。
+- A已消费阶段，第三次真人尝试仍root_selected=false，本人未看到目录选择窗口；账号native_human_confirmed不代表根授权，文件/模型0，父端deadline_exceeded不能定位原子端停止。只读D调用链审查未确认D业务错误，没有继续延长时间或模拟Yes；请求A准确消费者SHA、connected后原failure/closed、私有phase/error_type/failure_code及清理回执。停止点与边界见 MS-R2i-native-root-review.md，真人授权/生产来源仍pending，不声称完整整链通过。
+- A负责installed新root双方参数、实际challenge/current keys/owner/authority、原Ticket交付和父端生命周期事件消费/本人重验；D缺来源503，不自建生产登记。content Ref/journal/unknown不重发/只恢复保持，不改公共DTO/锁/HTTP/factory/flags，不读用户文件，不开放写入安装exec，不决定D01/D03/D06。源码与handoff分开、干净交付；停留本包。
