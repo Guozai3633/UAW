@@ -70,7 +70,15 @@ from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
 from uaw.tool.ledger import ToolLedger
 from uaw.tool.parameter_sources import PureParameterRecoveryAccess, PureParameterResourceReader
+from uaw.tool.ports import ToolRecoveryAccessPort
 from uaw.tool.providers.arithmetic import ArithmeticExecutor, ArithmeticVerifier
+from uaw.tool.providers.file_read import ToolFileReadBridgePort, file_estimates, file_read_spec
+from uaw.tool.providers.file_store import (
+    FileReadExecutor,
+    FileReadVerifier,
+    FileReceiptStore,
+    FileResourceReader,
+)
 from uaw.tool.providers.json_data import JsonDataExecutor, JsonDataVerifier
 from uaw.tool.providers.local import local_estimates
 from uaw.tool.providers.multiplex import (
@@ -85,6 +93,7 @@ from uaw.tool.reconciliation import ToolReconciler
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.results import ToolResults
 from uaw.tool.retrieval import ToolRetriever
+from uaw.workspace.ports import SignaturePort
 
 
 @dataclass(frozen=True)
@@ -457,6 +466,81 @@ class OfficeToolBindings:
     responses: ToolReceiptStore
     executor: ToolExecutorRouter
     results: ToolResults
+
+
+@dataclass(frozen=True)
+class FileToolBindings:
+    facade: ToolFacade
+    ledger: ToolLedger
+    approvals: ApprovalService
+    receipts: FileReceiptStore
+    executor: FileReadExecutor
+
+
+def assemble_file_tool(
+    container: Container,
+    *,
+    registry: ToolRegistry,
+    tool_ref: Ref,
+    provider: Principal,
+    bridge: ToolFileReadBridgePort,
+    recovery_access: ToolRecoveryAccessPort,
+    signatures: SignaturePort,
+    money_ceiling: str,
+    currency: str = "USD",
+) -> FileToolBindings:
+    """Explicit composition only; no registration, grant or product flag opening."""
+    records, config, blobs, access, budgets, policies = (
+        container.records,
+        container.configuration,
+        container.blobs,
+        container.tool_access,
+        container.budgets,
+        container.execution_permissions,
+    )
+    if not records or not config or not blobs or not access or not budgets or not policies:
+        raise ConfigurationError("File Tool requires actual control-plane sources")
+    bridge.ready()
+    spec = registry.get(tool_ref.wire()).spec()
+    provider_ref = Ref.model_validate(spec["provider_ref"])
+    if spec != file_read_spec(provider_ref):
+        raise ConfigurationError("Exact registered file.read specification required")
+    ledger = ToolLedger(records)
+    resources = FileResourceReader(provider_ref, bridge)
+    authority = ToolApprovalAuthority(
+        ledger, registry, config, access, resources, policies=policies
+    )
+    service = ApprovalService(records, config, authority, permissions=policies)
+    gates = ToolApprovalAdapter(ledger, authority, service)
+    budget = ToolBudgetAdapter(ledger, budgets, gates, state=budgets)
+    source = FileReceiptStore(
+        ledger,
+        blobs,
+        provider_ref=provider_ref,
+        provider=provider,
+        access=recovery_access,
+        bridge=bridge,
+        signatures=signatures,
+    )
+    source.verifier = FileReadVerifier(source)
+    executor = FileReadExecutor(source, provider=provider)
+    reconciler = ToolReconciler(ledger, budget, receipts=source, evidence=source)
+    results = ToolResults(source, reconciler)
+    invocation = ToolInvocation(
+        registry,
+        ledger,
+        budget,
+        gates,
+        access=access,
+        executor=executor,
+        estimates=file_estimates(currency, money_ceiling=money_ceiling),
+        prepare=executor.check,
+        results=results,
+    )
+    facade = ToolFacade(
+        registry, access, invocation=invocation, lookup=source, reconciler=reconciler
+    )
+    return FileToolBindings(facade, ledger, service, source, executor)
 
 
 def assemble_office_tools(
