@@ -534,3 +534,12 @@ git diff --check
 - 失败修复保留：M1指针/Principal字段，身份记录unit fixture漏local_roots及LocalRoots导入，实际成功确认监视器取消导致IPC失效竞争。正常成功结束等待在途source检查；失败/取消仍关闭窗口并拒绝。最后550全通过，未删除或放松安全断言。人工和生产来源未过项不计成自动测试失败或虚假通过。
 - 完整签名、构造/成功拒绝重复样例、源来源、所有验证命令/回执及A要求见 [MS-R2g-final-wiring.md](../requests/D/MS-R2g-final-wiring.md)。A需真实受保护账号/设备/key/challenge/pairing/owner/期限登记、首次配对bootstrap、HTTP/控制端/组装和C业务核验；缺源不可用，最小提案见MS-R2g-bootstrap-inputs.md，绝不从模型path或approved布尔造授权。
 - 不改公共DTO/flags、不开放写入安装exec、不决定D01/D03/D06；开发Default桌面与SQLite不是正式安全部署/产品验收。组件范围M1→M4完成，人为验收pending。本包后停止、干净交付，等待A实际审阅/后续派发，不自动下一包。
+
+
+## MS-R2h M1/M2 阶段交接（2026-10-10）
+
+- 原worktree E:/UAW/.worktrees/runner，dev/runner；正式 DISPATCH/远程标签精确 b7b79b150470a80f37b28fd52a2177f6de5b3124，干净fetch/ff-only/HEAD等值/uv sync --frozen 64包。MS-R2g源码/独立handoff/失败及OS清理回执保留，没有 reset/rebase 或公共改写。
+- M1源码97da1f39dac82b95c2c9e9b09d05b557209950ea，测试修正41ab8da894d9d2983008133a4b822e49d00d20bb：22不同节点完整通过/32.09秒。初始源码提交时仍有1项撤销fixture参数失败，明确保留；追加正确expected_revision后复跑全部通过，不改原提交历史。
+- M2源码105dcbf1ca3828cd49988d6a60aabf6daab6f9c1：实际隐藏device helper/OS进程实例/当前vault角色key/管道/只读journal/新进程恢复8节点完整通过/17.16秒。阶段接口 BootstrapConsumer/BootstrapNativeChallenges、ReadOnlyHelper/HelperProcess/HelperAssemblyPort，文件和精确构造见requests/D/MS-R2h-stage-bootstrap.md、MS-R2h-stage-helper.md。当前M3/M4独立扩展19节点/47.41秒通过，完整D回归正在运行，未预报通过。
+- A首次实际Web full session/设备/双方持有证明/受保护Ticket及原code/proof生产来源仍缺；ports基线已发布，消费接口组合完成，产品入口缺源unavailable。最小输入提案MS-R2h-bootstrap-inputs.md；不自造pair.complete/公共DTO/生产登记。OS SID/PID与网页approved/path不授权，肯定UI明确typed double，本人点击pending。
+- 首轮M1两次参数失败，M2 selector subprocess transport、python -m dataclass双模块、Ticket撤销state/LocalRoots方法夹具失败均保留XML和不含变量值的测试堆栈，修复后阶段全通过。仅D允许目录，新增依赖/公共文件/flags无变；继续同包M3/M4，不进入下一包。
