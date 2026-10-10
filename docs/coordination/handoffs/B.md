@@ -709,3 +709,70 @@ A负责composition/输入路由与派发前复查，批SQL不使外部blob/ACL�
 
 本包由A审阅/合入/处理公共冲突及整链回归；当前受控端口不接生产。不改flags、不决定
 D01/D03/D06，不把组件验证当P1-02/P4-04或整轮accepted，干净交付后停止，不自动下一包。
+
+
+## MS-U1：真实最小Web组件最终交接（2026-10-10）
+
+### 实际来源与提交
+
+E:/UAW/.worktrees/context，dev/context。开工clean→fetch tags→ff-only ms-i2j-start→
+HEAD/tag一致→uv sync --frozen成功；基线abb4590f2bfe53c601e0f6a4a3b65447ba4ec502。
+M1源码99c71df3a86b0788459f105e1bbab2e9a684491b，交接bec9e8c2c8fd2dcf567d38cde129c9fc8ab0037c；
+M2源码2093d647cb1357dd8ca4518a9afba671fb6ba2a2，交接41af11505d63fda2ef136234c148f7ab612f2d61；
+M3/M4首版88c6bd8dda2bf198119e92177ffa0a5c2f879e6b，最终源码 d2ece8d1682a4ae1de2ed811fc24e304e3584569。
+本handoff与final-wiring单独提交；最终交接SHA由git log/最终消息提供，不能自引用自身hash。
+
+A兼容会话契约已发布ms-i2j-a1 / 202544f452c485c84eb7fe08675576e31c75cad3，B立即只读
+消费准确公共schema/OpenAPI，生成物source.json固定标签/commit/两个hash。B运行开工
+基线未伪装为A1，没有reset/rebase/覆盖共享文件或跟随浮动integration。A1源代码继续由A运行。
+
+### 交付、接口与文件
+
+只改apps/web全部工程/独立pnpm-lock/类型生成物/测试/README和B requests/handoff；
+原Context源码/测试未改，Python锁/schema/后端/认证实现/Model/Run/组装根/flags未改。
+逐文件清单、源码/样例和接线要求在[MS-U1-final-wiring](../requests/B/MS-U1-final-wiring.md)。
+原handoff历史前缀按原字节保留。
+
+React/TS/Vite页面：侧栏、原文聊天、浅色自适应理解提示、实际Run状态、once审批/拒绝、
+取消等待、安全Markdown成果及逐项核验/固定合同接受。Unknown Item只读降级；
+原文是执行基准，不用模型文字猜完成、不升级本机授权。服务器列表未接时只展示实际GET
+复核的已知会话。默认真实BrowserSessionHost消费A1 exchange/get/logout，code交换前
+移除fragment，丢回应只查cookie session，CSRF内存、10秒复查、退出/换身份清理。
+
+UawClient 13路径/15方法，Result联合kind；超时15秒，无自动POST/DELETE重试。
+WorkspaceController/Projection保留Item ID/revision、seq/event ID、独立Run/task版本边界；
+分页3秒、最多64×100项、固定watermark，旧cursor重读，循环拒绝。已知Run刷新GET，
+unknown保存request lookup而非权限，缺 `RecoveryPort.find(conversationId,requestId,signal)`
+明确待对账不重发。ReviewPort.read/accept消费原ArtifactRecord/VerificationReport/Refs/
+CompletionAcceptance，正文UTF-8字节/SHA256及准确Ref复核，决定前再读；未知/已确认不
+重复提交本视图，回执后仅查询Run。生产恢复/成果适配缺失明确不可用，不猜HTTP。
+
+### 实际回执与未完成项
+
+33单元、11受控Chromium通过，0失败/错误/跳过；tsc/build、冻结离线安装通过。
+命令：pnpm --dir apps/web generate；test；test:e2e（含build/tsc）；install --frozen-lockfile
+--offline --store-dir apps/web/.store；test:live。自身ignored apps/web下unit-final-review.log、
+playwright-final-review.log、install-final.log，.test-results/unit.xml/playwright.xml/
+final-receipts.json（准确SHA/数量及原日志hash）和桌面/移动截图。Node脚本24.21.0，
+pnpm宿主22.13 engine警告保留，主JS727.12KB/gzip212.22KB >500KB warning未隐藏。
+
+真实test:live exit2/pending，5场景未运行、不计pass或skip；实际localhost8000 GET session
+无认证只读3秒探测URLError。A实际后端及一次启动URL、真实审批/拒绝/取消/接受会话ID
+未提供。真实suite无response mock/注入identity/LLM替身，cookie仅内存；当前SQL/Model/
+Runner均未运行。33/11不标完整P1-10/P1 accepted，组件接受由A审阅确定。
+
+全部失败/修复保留：注册表重试/TSpeer/schema类型条件、fixture实际Ref/decision修复；
+浏览器原生fetch丢this、冷Vite导航timeout→build+preview，创建按钮aria-name；
+Review mock tuple/host union类型、git show默认缓冲ENOBUFS修16MiB；busy/身份清理/
+视口/版本去重修复，回执见final-wiring。自动审批额度不足曾使动作未执行，继续后正常
+批准完成，未绕过。此前7fail、1fail、6pass/1fail、8pass/1fail历史与最终11pass分别记账。
+
+### A接线
+
+开发5173，显式UAW_WEB_API_TARGET=http://127.0.0.1:8000才有代理，保留Origin/禁xfwd。
+A提供实际loopback用户级HttpOnly/SameSite会话、精确Origin/当前CSRF/失效退出与后台
+实际固定Model运行，不复制A私有配置。可选可信window.uawWebHost注入session/subscribe/
+logout/recovery/review；无注入默认A1会话adapter，缺恢复/成果仍不可用。A发布原request
+查询、会话列表、Artifact全文/报告/Bundle/合同接受及接受请求对账；真实5场景由A当前
+后端联调。A处理公共冲突、合入和整链回归；不启用未实现SSE/本机授权/exec或flags。
+本组件交接后停止，不自动下一包；保持原已接受Context组件及历史handoff。

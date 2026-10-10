@@ -99,3 +99,18 @@ A可注入 `window.uawWebHost`（B内部host adapter），`session()`返回可�
 recovery.find(conversationId,requestId,signal)查原Run或明确undefined；review实现
 B ReviewPort.read/accept，必须由A真实HTTP契约适配，不能生产挂fixture。身份Key需含
 issuer/subject/workspace/epoch的可信分区标识，非密码；body/model不提供此权威。
+
+
+## M3/M4与A1已发布协议消费
+
+M3/M4首版88c6bd8dda2bf198119e92177ffa0a5c2f879e6b；最终固定Ref/可读核验修订 d2ece8d1682a4ae1de2ed811fc24e304e3584569。
+A的ms-i2j-a1 / 202544f452c485c84eb7fe08675576e31c75cad3 已只读消费公共契约，
+新增实际GET/POST/DELETE /v1/web/session；生成器固定git show该标签，不覆盖共享文件，
+不开另一worktree，不声称B HEAD等于A1。现在13路径/15方法/152定义，原12方法保持。
+原生fetch默认改箭头包装，POST/DELETE JSON和实际X-UAW-CSRF；默认BrowserSessionHost
+交换一次码前移除fragment，丢回应GET对账，内存CSRF/10秒当前复查/退出，无Bearer输入。
+显式UAW_WEB_API_TARGET=127.0.0.1:8000代理保留Origin，开发5173；受控preview测试5177。
+33单元＋11受控Chromium、类型/构建/冻结离线锁通过，原失败回执保留。
+实际8000后端只读探测URLError，真实5场景环境未提供，test:live exit2/pending，
+不计真实通过/skip，不做Model/SQL/Runner验收。原request/成果/完整执行/接受HTTP仍需A。
+准确源码、命令、全部文件、失败历史和注入/缺依赖说明见[最终接线](MS-U1-final-wiring.md)。
