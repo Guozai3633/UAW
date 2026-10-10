@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import sys
+import uuid
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -53,7 +54,7 @@ async def prepare_helper(case, *, native=None, ui="typed-double"):
         native["target"] = native["root"] / "file.txt"
         native["target"].write_bytes("helper 原文中😀\r\n".encode())
         await configure(native)
-    path = case["tmp"] / "helper-input.json"
+    path = case["tmp"] / ("helper-input-" + uuid.uuid4().hex + ".json")
     data = {
         **case["registry"],
         "temp": str(case["tmp"]),
@@ -220,3 +221,190 @@ async def test_helper_stop_pending_accept_and_pipe_can_no_longer_connect(ipc_cas
     with pytest.raises(DomainError):
         await connect_pipe(name=ready["name"], logon_sid=process.identity.logon_sid, timeout=0.1)
     assert process.process.returncode == 0
+
+
+async def wait_consumed(native):
+    async with asyncio.timeout(10):
+        while True:
+            ticket = await asyncio.to_thread(
+                native["state"].get, native["ticket_id"], now=datetime.now(UTC)
+            )
+            if ticket.state == "consumed" and (native["tmp"] / "native-selected.json").exists():
+                return
+            await asyncio.sleep(0.02)
+
+
+@pytest.mark.parametrize("operation", ["revoke", "bind-again", "repeat-select"])
+async def test_helper_revoke_and_original_root_one_use_after_restart(ipc_case, operation):
+    case = ipc_case
+    native, process, path = await prepare_helper(case)
+    try:
+        session = await connect_helper(case, process, path, await process.start())
+        await wait_consumed(native)
+        source = await native["reader"].resolve(
+            native["command_ref"], authenticated_principal=native["owners"].value
+        )
+        assert native["executions"].get(source, native["command_ref"]) is None
+        await session.close()
+        await process.close()
+        native, process, path = await prepare_helper(case, native=native)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["trusted_local_operation"] = operation
+        path.write_text(canonical(data), encoding="utf-8")
+        session = await connect_helper(case, process, path, await process.start())
+        if operation == "revoke":
+            async with asyncio.timeout(10):
+                while not await asyncio.to_thread(  # noqa: ASYNC110 - bounded cross-process CAS polling
+                    lambda: native["grants"].get("native-root1").revoked
+                ):
+                    await asyncio.sleep(0.02)
+            await session.send("command", {"command_ref": native["command_ref"].wire()})
+        event = await process.event()
+        assert event["event"] == "failure"
+        if operation == "revoke":
+            assert event["code"] == "permission_denied"
+        else:
+            assert event["code"] in {"revision_conflict", "permission_denied"}
+        assert native["target"].exists()
+        assert native["executions"].get(source, native["command_ref"]) is None
+        assert native["state"].get(native["ticket_id"], now=datetime.now(UTC)).state == "consumed"
+    finally:
+        for owned in case["helper_processes"]:
+            await owned.close()
+
+
+async def test_helper_unknown_recover_cannot_start_read(ipc_case):
+    native, process, path = await prepare_helper(ipc_case)
+    try:
+        session = await connect_helper(ipc_case, process, path, await process.start())
+        await wait_consumed(native)
+        await session.send("recover", {"command_ref": native["command_ref"].wire()})
+        event = await process.event()
+        assert event["event"] == "failure" and event["code"] == "capability_unavailable"
+        source = await native["reader"].resolve(
+            native["command_ref"], authenticated_principal=native["owners"].value
+        )
+        assert native["executions"].get(source, native["command_ref"]) is None
+        assert native["target"].exists()
+    finally:
+        await process.close()
+
+
+async def test_two_hidden_helpers_concurrent_once_journal_no_new_read_on_recover(ipc_case):
+    case = ipc_case
+    native, process, path = await prepare_helper(case)
+    try:
+        session = await connect_helper(case, process, path, await process.start())
+        await wait_consumed(native)
+        await session.close()
+        await process.close()
+        clients = []
+        for _ in range(2):
+            native, owned, reg = await prepare_helper(case, native=native)
+            session = await connect_helper(case, owned, reg, await owned.start())
+            clients.append((owned, session))
+
+        async def attempt(owned, session):
+            await session.send("command", {"command_ref": native["command_ref"].wire()})
+            try:
+                frame = await session.receive()
+                assert frame["kind"] == "receipt"
+                await owned.event()
+                return frame["body"]
+            except DomainError:
+                assert (await owned.event())["event"] == "failure"
+                return None
+
+        bodies = await asyncio.gather(*(attempt(*client) for client in clients))
+        good = [b for b in bodies if b is not None]
+        assert good
+        assert all(b == good[0] for b in good)
+        source = await native["reader"].resolve(
+            native["command_ref"], authenticated_principal=native["owners"].value
+        )
+        original = native["executions"].get(source, native["command_ref"])
+        assert original.receipt_ref.wire() == good[0]["receipt_ref"]
+        assert (
+            await native["journal"].read(
+                original.receipt_ref, authenticated_principal=native["owners"].value
+            )
+        ).wire() == good[0]["receipt"]
+        for owned, session in clients:
+            await session.close()
+            await owned.close()
+        native["target"].unlink()
+        native, owned, reg = await prepare_helper(case, native=native)
+        session = await connect_helper(case, owned, reg, await owned.start())
+        assert await read_reply(case, owned, session, native, "recover") == good[0]
+    finally:
+        for owned in case["helper_processes"]:
+            await owned.close()
+
+
+async def test_cancel_owner_closes_pending_event_and_actual_process(ipc_case):
+    native, process, path = await prepare_helper(ipc_case)
+    try:
+        await process.start()
+        pending = asyncio.create_task(process.event())
+        await asyncio.sleep(0.05)
+        pending.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await pending
+        assert process.closed and process.process.returncode is not None
+    finally:
+        await process.close()
+
+
+@pytest.mark.parametrize(
+    "change", ["logout", "key-revoked", "workspace-version", "command-signature"]
+)
+async def test_current_sources_and_signature_changed_before_read_are_rejected(ipc_case, change):
+    native, process, path = await prepare_helper(ipc_case)
+    try:
+        session = await connect_helper(ipc_case, process, path, await process.start())
+        await wait_consumed(native)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if change == "logout":
+            data["revoked"] = True
+            path.write_text(canonical(data), encoding="utf-8")
+        elif change == "key-revoked":
+            native["state"].revoke_key("device1", expected_revision=0)
+        else:
+            await session.close()
+            await process.close()
+            native, process, path = await prepare_helper(ipc_case, native=native)
+            data = json.loads(path.read_text(encoding="utf-8"))
+            if change == "workspace-version":
+                data["authority"]["workspace_ref"]["version"] = "2"
+            else:
+                signature = data["command"]["signature"]
+                parts = signature.split(":")
+                parts[-1] = ("A" if parts[-1][0] != "A" else "B") + parts[-1][1:]
+                data["command"]["signature"] = ":".join(parts)
+            path.write_text(canonical(data), encoding="utf-8")
+            session = await connect_helper(ipc_case, process, path, await process.start())
+        try:
+            await session.send("command", {"command_ref": native["command_ref"].wire()})
+        except DomainError:
+            pass
+        event = await process.event()
+        assert event["event"] == "failure"
+
+        # Actual strict fixed Ref/current root/signature checks rejected before journal claim.
+        def count_attempts():
+            with native["executions"].transaction() as db:
+                return db.execute("SELECT count(*) FROM file_read_attempts").fetchone()[0]
+
+        assert await asyncio.to_thread(count_attempts) == 0
+        assert native["target"].exists()
+    finally:
+        for owned in ipc_case["helper_processes"]:
+            await owned.close()
+
+
+async def test_concurrent_close_waits_for_the_same_actual_process_cleanup(ipc_case):
+    native, process, path = await prepare_helper(ipc_case)
+    await process.start()
+    await asyncio.gather(process.close(), process.close(), process.close())
+    assert process.process.returncode == 0
+    assert process.process.stdin.closed and process.process.stdout.closed

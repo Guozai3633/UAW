@@ -21,6 +21,7 @@ class HelperProcess:
         self.closed = False
         self.started = False
         self.read_lock = asyncio.Lock()
+        self.closing: asyncio.Task[None] | None = None
 
     @classmethod
     async def prepare(
@@ -118,7 +119,12 @@ class HelperProcess:
         return event
 
     async def close(self) -> None:
-        if self.closed:
+        if self.closing is not None:
+            try:
+                await asyncio.shield(self.closing)
+            except asyncio.CancelledError:
+                await self.closing
+                raise
             return
         self.closed = True
 
@@ -140,6 +146,7 @@ class HelperProcess:
                     stream.close()
 
         closing = asyncio.create_task(asyncio.to_thread(finish))
+        self.closing = closing
         try:
             await asyncio.shield(closing)
         except asyncio.CancelledError:

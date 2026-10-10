@@ -165,7 +165,21 @@ class Factory:
 
         async def activate_inner(current):
             ticket = await asyncio.to_thread(state.get, data["ticket_id"], now=datetime.now(UTC))
-            if ticket.state == "pending":
+            operation = data.get("trusted_local_operation", "select-if-pending")
+            if operation == "revoke":
+                await (await current.authorization()).revoke("native-root1", expected_revision=0)
+                return
+            if operation == "bind-again":
+                from uaw.workspace.contracts import RootSelection
+
+                selected = RootSelection.model_validate_json(
+                    await asyncio.to_thread(
+                        (tmp / "native-selected.json").read_text, encoding="utf-8"
+                    )
+                )
+                await (await current.authorization()).bind(selected, workspace)
+                return
+            if ticket.state == "pending" or operation == "repeat-select":
                 lifecycle = await current.authorization()
                 if data["ui"] == "typed-double":
                     from uaw_runner import native_confirmation
@@ -192,6 +206,11 @@ class Factory:
                 ):
                     raise reject("permission_denied", "Manual harness root differs", 403)
                 await lifecycle.bind(selection, workspace)
+                await asyncio.to_thread(
+                    (tmp / "native-selected.json").write_text,
+                    canonical(selection.wire()),
+                    encoding="utf-8",
+                )
 
         async def activate(current):
             try:

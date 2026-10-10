@@ -137,6 +137,7 @@ class ReadOnlyHelper:
             self.listener = listener
             try:
                 await self.bootstrap.local(identity)
+                self.available()
                 return HelperAddress(listener.name, identity)
             except BaseException:
                 self.listener = None
