@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2k-A4",
+  "runtime_source_commit": "6ca4b163e7b70924ce1f945dea8f0e1b13d59572",
+  "publication_ref": "ms-i2k-a4",
+  "different_nodes": 9,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2k-a4-tests.xml",
+    "sha256": "49de89129c0b31d2ae010041ba60cc381504cf1266dca8d971ace8677114508c"
+  },
+  "history": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-01.xml",
+      "sha256": "1401c01a11e45692706f19aed1ded388e0a094581c8c9df59d41c7f8faa38db5",
+      "private_ignored": true,
+      "counts": {
+        "tests": 8,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-02.xml",
+      "sha256": "d97dd42698b7eb02d24b294be1a1ad95e3495bb22afa4564872567269363c425",
+      "private_ignored": true,
+      "counts": {
+        "tests": 8,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-03.xml",
+      "sha256": "69180c517baa20a456f0138305364b21c853bc8788389149fd09997691696b51",
+      "private_ignored": true,
+      "counts": {
+        "tests": 8,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-04.xml",
+      "sha256": "6e6110e6345a886fc44df201392a0dfad8cc4b3dfe946b4415e6014c243e48ce",
+      "private_ignored": true,
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-05.xml",
+      "sha256": "e5d9c337fa714bac209163e729f47d9ec0bbed9a74f22c83905d5c679c1b932e",
+      "private_ignored": true,
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-final-02.xml",
+      "sha256": "49de89129c0b31d2ae010041ba60cc381504cf1266dca8d971ace8677114508c",
+      "private_ignored": true,
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-final.xml",
+      "sha256": "75340800070348f5d25f4a1f293517f0b660e8de68a4ea8eaea978404df6e6a4",
+      "private_ignored": true,
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-mypy.log",
+      "sha256": "81a98f969835ac23af3a068a598d068393978ff7d328b2d34f8d03233d52dadd"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-proof-pipe-ruff-final.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    }
+  ],
+  "mypy_source_files": 189,
+  "execution_lineage": [
+    "Final9 run before source commit on identical current runtime bytes; actual two-process pipe/Windows OS credential and SQL.",
+    "Child challenge Reader/account, wrong candidate source and delayed allocation control are fixtures. No native UI or directory grant.",
+    "Actual live API restarted from e032360; office executed on4c3f159. New proof pipe is committed but not activated by default server composition."
+  ],
+  "failures": [
+    "First venv launcher parent PID differed from actual child; fixed base Python test launcher without weakening identity.",
+    "Cleanup attempted deleting not-yet-created test credential; now tracks actual put and preserves failure history.",
+    "Windows test stdin decoded Unicode path under a different codepage; use explicit ASCII JSON locator.",
+    "Parent token impersonation requires a received message; now bounded receive then authenticate before interpreting/signing.",
+    "Final Ruff found two overlong child-script lines; split lines and final9 rerun passed."
+  ],
+  "live_summary": {
+    "path": "docs/implementation/evidence/ms-i2k-a4-live-summary.json",
+    "sha256": "a76ae3fc183ef33ef99a7364fb72575a767bae10f8f62f06c387718f32fe75ce"
+  },
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2k-a3.json",
+    "sha256": "d9143d5302eebad207f22787d0b12dc4bfb99ece56f830b31b39818c3a4971e4"
+  },
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "global_flags_opened": false,
+  "remaining": [
+    "Academic actual user acceptance/controller completion.",
+    "Installed first launcher locator and concrete paired factory/current channel binding.",
+    "First native confirmation wait boundary versus D15sec ready timeout.",
+    "Actual human roots/file to fixed model/artifact chain.",
+    "Browser approve/decline/cancel and once-only milestone full regression."
+  ]
+}

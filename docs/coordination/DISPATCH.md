@@ -1,5 +1,12 @@
 # 当前安排：MS-I2k（2026-10-10）
 
+## A4：真人办公完成，学术成果待接受
+
+- 阶段源码 **6ca4b163e7b70924ce1f945dea8f0e1b13d59572**；拟发布 `ms-i2k-a4-source` / `ms-i2k-a4`，以远程核对为准。共同开工标签与A1/A2/A3保持，不发新包。
+- 用户实际办公accept已持久化，独立Run completed/revision6、job finished；原服务停止后重新启动并复读原记录/实际页面，模型调用仍为3，没有重发。学术首次页面提交的另外3次真实DeepSeek已生成正文和逐项核验，尚需用户接受。当前共6次实际调用，费用仍pending。[页面、原中断与费用范围](../implementation/evidence/ms-i2k-a4-live-summary.json)。
+- A原首次证明保护管道9不同定向节点通过，189源码类型检查通过；实际Windows双进程/SQL/OS密钥，子端账号/挑战仍受控，不是真人配对/目录授权。已修原测试启动器/路径编码和服务端令牌检查顺序，失败回执保留。[实现边界](../implementation/MS-I2k-A4.md)、[接口与当前缺口](requests/A/MS-I2k-first-proof-pipe.md)。
+- 完整installed helper/首次native等待边界、目录与文件整链、网页审批拒绝取消、本轮汇合全量继续。旧1691保持旧全量来源，不开放默认flags。
+
 ## A3阶段集成（真人接受待用户操作）
 
 - 固定阶段源码 **e0323603e08264ad585f7d320b20dda5cd3a6210**（含B第三修复），拟发布 `ms-i2k-a3-source` / `ms-i2k-a3`，实际远程核对后生效；共同开工标签不移动，不派新包。

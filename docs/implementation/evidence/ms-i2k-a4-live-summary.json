@@ -1,0 +1,225 @@
+{
+  "date": "2026-10-10",
+  "scope": "Actual authenticated browser office user acceptance and independent completed/restart recovery; academic generated awaiting human acceptance",
+  "cases": [
+    {
+      "case": "office",
+      "run_id": "run-eb7af1282636488f99e6559898e0623f",
+      "status": "completed",
+      "revision": 6,
+      "job": {
+        "run_id": "run-eb7af1282636488f99e6559898e0623f",
+        "state": "finished",
+        "stage": "finished",
+        "step": 1
+      },
+      "model_id": "deepseek-flash",
+      "api_reader_runtime": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+      "attempts": [
+        {
+          "id": "web-intent-model-run-eb7af1282636488f99e6559898e0623f",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-3aaae79207b8401d9bc2436764af3a8c",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 4096,
+            "provider_model_name": "deepseek-flash"
+          }
+        },
+        {
+          "id": "web-step-model-1-run-eb7af1282636488f99e6559898e0623f",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-3aaae79207b8401d9bc2436764af3a8c",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          }
+        },
+        {
+          "id": "evaluation-769b06399dbed123e1677f3cacc261379673ce203b954271f79b3fcfd0657afe",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-3aaae79207b8401d9bc2436764af3a8c",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          }
+        }
+      ],
+      "usage_totals": {
+        "input_tokens": 6871,
+        "output_tokens": 1044,
+        "model_calls": 3,
+        "wall_time_ms": 7423
+      },
+      "pending_money": "0.75",
+      "actual_money": null,
+      "acceptance_present": true,
+      "decision": "accept",
+      "acceptance_created_at": "2026-10-10T10:24:47.622639+00:00",
+      "stale": false,
+      "private_ignored_wire": {
+        "path": "tests/.artifacts/A/MS-I2k/m4-office-a4-persisted-snapshot.json",
+        "sha256": "9bc5785b695e7f5eb20505c5ee13f4d26049dc97c48b93152246819bc1e46ac4"
+      }
+    },
+    {
+      "case": "academic",
+      "run_id": "run-e0388f0ee30b495eb333aa8e1f260615",
+      "status": "running",
+      "revision": 5,
+      "job": {
+        "run_id": "run-e0388f0ee30b495eb333aa8e1f260615",
+        "state": "waiting",
+        "stage": "delivery",
+        "step": 1
+      },
+      "model_id": "deepseek-flash",
+      "api_reader_runtime": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+      "attempts": [
+        {
+          "id": "web-intent-model-run-e0388f0ee30b495eb333aa8e1f260615",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-a2dc0597964345f8ae7111436620015b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 4096,
+            "provider_model_name": "deepseek-flash"
+          }
+        },
+        {
+          "id": "web-step-model-1-run-e0388f0ee30b495eb333aa8e1f260615",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-a2dc0597964345f8ae7111436620015b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          }
+        },
+        {
+          "id": "evaluation-245d30c0de1a635bfecd8e35547483ec989c460a872e5950b85a0568d18c1922",
+          "state": "received",
+          "failure": null,
+          "actual_config": {
+            "model_id": "deepseek-flash",
+            "policy_ref": {
+              "id": "model-policy-a2dc0597964345f8ae7111436620015b",
+              "kind": "policy",
+              "version": "1"
+            },
+            "provider_ref": {
+              "id": "deepseek-live",
+              "kind": "provider",
+              "version": "2"
+            },
+            "reasoning_level": "none",
+            "catalog_revision": 2,
+            "max_output_tokens": 2048,
+            "provider_model_name": "deepseek-flash"
+          }
+        }
+      ],
+      "usage_totals": {
+        "input_tokens": 6865,
+        "output_tokens": 1439,
+        "model_calls": 3,
+        "wall_time_ms": 8539
+      },
+      "pending_money": "0.75",
+      "actual_money": null,
+      "acceptance_present": false,
+      "decision": null,
+      "acceptance_created_at": null,
+      "stale": false,
+      "private_ignored_wire": {
+        "path": "tests/.artifacts/A/MS-I2k/m4-academic-a4-persisted-snapshot.json",
+        "sha256": "9ac25e353b9491bcfb85163ac51a256a05e3a196ae0aaff93d3c4160d1639bc7"
+      }
+    }
+  ],
+  "total_actual_model_calls_in_current_i2k": 6,
+  "prior_i2j_calls_separate": 6,
+  "native_human_directory_approved": false,
+  "browser_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m4-office-completed-restored.jpg",
+      "sha256": "c560f38a30bc36008521fe51632ff315521e458c6778f6da2704443f916aded5"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m4-academic-awaiting-human.jpg",
+      "sha256": "7157ac9fae2b59440e28f53cedc0af52ee1f75bff6f335e0246e636ef9eed99b"
+    }
+  ],
+  "limitations": [
+    "After browser context loss a new original user login was issued; per-session draft cache did not transfer.",
+    "Refresh defaults to newest conversation; original completed office was explicitly selected and restored.",
+    "Academic is not completed until actual user acceptance and independent controller pass.",
+    "Pending amounts are ledger holds, not provider invoiced costs. No process-global network isolation claim."
+  ],
+  "failure_history": [
+    "Original API absent/WinError10061 before read; direct original SQL confirmed finished, owned listeners restarted without resend.",
+    "First launch issuance shell lacked required DB environment; no launch/mutation executed, original environment supplied on retry."
+  ]
+}

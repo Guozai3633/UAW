@@ -2,7 +2,7 @@
   "date": "2026-10-10",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2k-A4 scoped9 first proof transport checks; actual browser office completed and academic awaiting human acceptance are separate live evidence. Not full.",
+  "scope": "MS-I2k-A3 scoped23 enrollment nodes; controlled native Yes/factory. Actual browser office is separate live summary, human acceptance pending. Not full.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 9,
+    "tests": 23,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "49de89129c0b31d2ae010041ba60cc381504cf1266dca8d971ace8677114508c",
-  "runtime_implementation": "development first proof transport; explicit installed helper and native root binding pending",
+  "test_evidence_sha256": "bc148532d73dfb913e1d94da998debaec8715392178008ccd5b1f3459ec25c0c",
+  "runtime_implementation": "development explicit first device sources; original live API 4c3f159; protected transport and native human sources not enabled",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -288,7 +288,6 @@
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
     "src/uaw/infrastructure/enrollment_native.py": "2d41116c22bd0512055ee27f8f77fa07af172aef8d72d962e675462bb3d59dec",
     "src/uaw/infrastructure/enrollment_peers.py": "4db202564f0eb1e2bb35f722c31112d0dfd772af13e6e4a22698b1de1d0b8c99",
-    "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/infrastructure/runner_pipe.py": "834a2fa12a8d806791ec46bb9bb7fce23a277ecd2d21bf7bb8370d3d245b4108",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
@@ -398,7 +397,6 @@
     "tests/integration/agent/test_components_postgres.py": "315b7c3b1f9dfb1c542389cd99863e9beba700e7015679d1108212fcbe6dc643",
     "tests/integration/agent/test_context_batch_postgres.py": "b9f7e19681aa1fefa020d3ecb022eb0c94191226d7a98775a4d3051339bdfcd7",
     "tests/integration/agent/test_context_epoch_postgres.py": "37cca6fc238e91a1c7bde882eb08456dffcf7761b8975a20bcd3b050927f5881",
-    "tests/integration/agent/test_enrollment_pipe.py": "8563167947a52b9f9bbe94f36f62b74a8c2bc3d9f7c0168521b796ea095e85ae",
     "tests/integration/agent/test_enrollment_postgres.py": "15c7399bfd80d0f1a49011924ac4ad43be1616b065746b9ee5f5be426b22e35b",
     "tests/integration/agent/test_evaluation_postgres.py": "d9c599777426d54627731864d105372fd58d0ba8960a503221bcfbbbc088c8dc",
     "tests/integration/agent/test_file_bridge_postgres.py": "263cbeb4f709fddd6aa32d7362c036aa30640e00875fd9f25b750b5396a037f4",
@@ -540,19 +538,19 @@
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
     "previous_environment": {
-      "path": "docs/implementation/evidence/environment-before-ms-i2k-a4.json",
-      "sha256": "11483c74b15f85347e481a113a739d484f6083304bedb52d881a9855d12d7444"
+      "path": "docs/implementation/evidence/environment-before-ms-i2k-a3.json",
+      "sha256": "d6de250e68ac294e6a3a5154166444f997dfd2e0320807800064b1180e2e46b5"
     },
     "previous_full_receipt": {
       "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
       "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
     },
     "current_stage": {
-      "path": "docs/implementation/evidence/ms-i2k-a4.json",
-      "sha256": "d1aafb4833fcb323e92c2b438060656b25245933ada9eced2c6d7a1b16586c4f"
+      "path": "docs/implementation/evidence/ms-i2k-a3.json",
+      "sha256": "d9143d5302eebad207f22787d0b12dc4bfb99ece56f830b31b39818c3a4971e4"
     },
-    "current_stage_source": "6ca4b163e7b70924ce1f945dea8f0e1b13d59572",
-    "current_stage_different_nodes": 9,
+    "current_stage_source": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+    "current_stage_different_nodes": 23,
     "current_stage_is_full_regression": false
   }
 }
