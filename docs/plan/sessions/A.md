@@ -1,3 +1,13 @@
+# 本轮入口：Session A / MS-I2l
+
+状态：MS-I2l准备待正式发布，准确SHA见DISPATCH页首；未发布仅检查。真实installed当前源、消费D首次等待/stop、文件→Context→固定模型→成果与逐包集成。
+
+先读[分包第1/2/3/7节](../../coordination/requests/A/MS-I2l-parallel-packages.md)和[A/D固定契约](../../coordination/requests/A/MS-I2l-AD-contract.md)，按四个连续里程碑推进，M1/M2阶段提交后继续本包。原worktree/分支不换；A不替worker同步。旧轮未标产品整轮accepted。
+
+本轮允许目录以分包第2节为准，旧列表保留历史：B仅apps/web/B文档；C仅Tool/C测试文档；D仅local_runner/原workspace四文件/D测试文档；A原保留路径另允许docs/coordination/MS-I2l-messages.md。共享契约/锁/flags仍由A处理。
+
+## 下方为既有归属与历史包
+
 # Session A：集成与任务理解
 
 [并行开发总入口](../PARALLEL.md)

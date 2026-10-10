@@ -1,3 +1,12 @@
+# 当前开工入口：MS-I2l
+
+- [准确派发状态/SHA](coordination/DISPATCH.md)、[四份会话提示词](coordination/MS-I2l-messages.md)。
+- [A/D首次启动固定契约](coordination/requests/A/MS-I2l-AD-contract.md)：对象、签名、waiting帧、deadline、取消、双方责任及尚未实现部分。
+- [四包阶段/任务/目标/目录](coordination/requests/A/MS-I2l-parallel-packages.md)：A真实装配，B页面恢复，C有界多材料，D等待取消。
+- [准备验证与剩余门槛](implementation/MS-I2l-preparation.md)：10聚焦节点、190源码类型检查，旧完整来源与真人缺口分别保留。
+
+以下旧标题为历史来源；当前开工一律以DISPATCH页首正式发布为准。
+
 ## 旧里程碑收尾与本轮接口
 
 - [MS-I2i完整开发验收](implementation/MS-I2i.md)：固定来源1691项完整覆盖、原失败及实际模型证据。

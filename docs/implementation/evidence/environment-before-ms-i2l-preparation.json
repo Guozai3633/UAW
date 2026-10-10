@@ -2,7 +2,7 @@
   "date": "2026-10-10",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l preparation only: scoped10 first-start timing and original first-factory SQL compatibility; new D wait/cancel and native/file production chain pending. Not full.",
+  "scope": "MS-I2k-A4 scoped9 first proof transport checks; actual browser office completed and academic awaiting human acceptance are separate live evidence. Not full.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 10,
+    "tests": 9,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "2e265ec9be91be89cc212f7ece4dc0ef125d45b3e8a6beae3a5e3f451ad85278",
-  "runtime_implementation": "development_first_start_shared_policy_and_optional_A_progress_hook",
+  "test_evidence_sha256": "49de89129c0b31d2ae010041ba60cc381504cf1266dca8d971ace8677114508c",
+  "runtime_implementation": "development first proof transport; explicit installed helper and native root binding pending",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -283,7 +283,7 @@
     "src/uaw/infrastructure/db/records.py": "f5c037b85769e84f8129f096200cc57a60d82c0f2cb10fb80d43cbba6fb35ba8",
     "src/uaw/infrastructure/db/session.py": "9caa1a66587b9c24d342d5bca020c7164917153a18bd965eae1864138b2ae9dc",
     "src/uaw/infrastructure/db/transactions.py": "a0020ced142502b438852023d3c83f31e424e47edea264b8d43e036fe65a4108",
-    "src/uaw/infrastructure/enrollment_bootstrap.py": "0d8b39b75094980289653d2f2bc03192e9e89e4d72dfa69f66e0a19be414b42c",
+    "src/uaw/infrastructure/enrollment_bootstrap.py": "f935a345caba36fe024cb59093addb152ff0b7ded6028e9f23de57771b2b3fcf",
     "src/uaw/infrastructure/enrollment_candidates.py": "387ae80d8ffe71c836021e531f609baff411fa6cf2c443327d26292eb9c66e25",
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
     "src/uaw/infrastructure/enrollment_native.py": "2d41116c22bd0512055ee27f8f77fa07af172aef8d72d962e675462bb3d59dec",
@@ -347,7 +347,6 @@
     "src/uaw/shared/errors.py": "a4fdc31da7753ae0859aff6eae0694fc66423bad3eac1ba31f463176ae4de7a3",
     "src/uaw/shared/observability.py": "bc6d59e4dc3064c40e2f60e6baf32522140ddc6d61ab2d07d503d2595acc2e27",
     "src/uaw/shared/ports.py": "fd45911eeb0e72b56459d012c4c6e8130e5d6abfabe77140bf443a8a103ba104",
-    "src/uaw/shared/runner_bootstrap.py": "674a80fe91a2feedd39732d933d3efcfdd17866282680b6f005ba197bd2ea9c5",
     "src/uaw/shared/runner_signatures.py": "9b49569a8ca055bd80538b8706344c8e6cbe699cabfe07c9a893133ae343ed17",
     "src/uaw/shared/schema.py": "d9ff3b9e2cdc0c94ab0e75ba2b1e95a332e50bff0fc2c28bae03dcec3994e97a",
     "src/uaw/shared/settings.py": "a2cd729e50553435104a0ba081c66bb16a23838e1576913c4dc0a99f64ceb7f3",
@@ -400,7 +399,7 @@
     "tests/integration/agent/test_context_batch_postgres.py": "b9f7e19681aa1fefa020d3ecb022eb0c94191226d7a98775a4d3051339bdfcd7",
     "tests/integration/agent/test_context_epoch_postgres.py": "37cca6fc238e91a1c7bde882eb08456dffcf7761b8975a20bcd3b050927f5881",
     "tests/integration/agent/test_enrollment_pipe.py": "8563167947a52b9f9bbe94f36f62b74a8c2bc3d9f7c0168521b796ea095e85ae",
-    "tests/integration/agent/test_enrollment_postgres.py": "0f8db11822847d42b35c5b5e1779c3f25c07558075047d07afc9386a4cb52d21",
+    "tests/integration/agent/test_enrollment_postgres.py": "15c7399bfd80d0f1a49011924ac4ad43be1616b065746b9ee5f5be426b22e35b",
     "tests/integration/agent/test_evaluation_postgres.py": "d9c599777426d54627731864d105372fd58d0ba8960a503221bcfbbbc088c8dc",
     "tests/integration/agent/test_file_bridge_postgres.py": "263cbeb4f709fddd6aa32d7362c036aa30640e00875fd9f25b750b5396a037f4",
     "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
@@ -488,7 +487,6 @@
     "tests/unit/agent/test_completion_contracts.py": "a47e4bb2cb05643bd11eb4dc7cc09d08c917085329fc0c975a749337fe15504e",
     "tests/unit/agent/test_decisions.py": "c25d29cfe72b125ef53c5bb3c3654b24de84f841c252e1bcc9ea987093843e13",
     "tests/unit/agent/test_file_context.py": "c164f212dd27e7b4ba2905aca8f9c1c8f3b36b7ad6ce7ee008a6193e53202671",
-    "tests/unit/agent/test_first_start_policy.py": "417e68a8cb67429ea6e414f757f039765ebb28d104fa5b33907e5bdf0369df33",
     "tests/unit/agent/test_semantic_evidence.py": "9f7f7188d19c1e17c4e0559a60fbf2a6c50c9b19bd08a06d63842474e2b8dba8",
     "tests/unit/context/test_assessment.py": "3bf5fde48a66e4aafb95bf9183458e3333dfdc1658eb32dc05034c89cac412c3",
     "tests/unit/context/test_cache.py": "748354cac1d0784803d050a2530b2e9fb2d37f41d444e4fae772ba07cd1cce4c",
@@ -542,19 +540,19 @@
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
     "previous_environment": {
-      "path": "docs/implementation/evidence/environment-before-ms-i2l-preparation.json",
-      "sha256": "474901f4994eb805de52c40abaef75de2d319668a96d65014568513e01bf9d55"
+      "path": "docs/implementation/evidence/environment-before-ms-i2k-a4.json",
+      "sha256": "11483c74b15f85347e481a113a739d484f6083304bedb52d881a9855d12d7444"
     },
     "previous_full_receipt": {
       "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
       "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
     },
     "current_stage": {
-      "path": "docs/implementation/evidence/ms-i2l-preparation.json",
-      "sha256": "7ab245cc113a9736cd5d23ac28c8e20d28ddd75b5d3fe9677a344655d77b5aa5"
+      "path": "docs/implementation/evidence/ms-i2k-a4.json",
+      "sha256": "d1aafb4833fcb323e92c2b438060656b25245933ada9eced2c6d7a1b16586c4f"
     },
-    "current_stage_source": "6277fd12c238629c1d5d998b7c83aeaeeb539ed6",
-    "current_stage_different_nodes": 10,
+    "current_stage_source": "6ca4b163e7b70924ce1f945dea8f0e1b13d59572",
+    "current_stage_different_nodes": 9,
     "current_stage_is_full_regression": false
   }
 }

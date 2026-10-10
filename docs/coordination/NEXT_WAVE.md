@@ -1,3 +1,9 @@
+# 当前可转发开工消息：MS-I2l
+
+[四份完整提示词](MS-I2l-messages.md)；[分包四里程碑](requests/A/MS-I2l-parallel-packages.md)；[A/D固定必需接口](requests/A/MS-I2l-AD-contract.md)。准确开工SHA见DISPATCH正式发布回执，远端标签未核对前不启动。A/D先固定接口，B/C可先用已实现port独立推进；不需要重建worktree。
+
+## 以下为历史派发，勿转发旧包
+
 # 当前可转发开工消息：MS-I2j（2026-10-10）
 
 **只转发[MS-I2j四份提示词](MS-I2j-messages.md)。**统一固定ms-i2j-start；B本轮转apps/web前端，C做file.read工具，D做native目录授权，A做用户入口/API与集成。

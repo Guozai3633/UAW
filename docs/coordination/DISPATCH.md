@@ -1,3 +1,16 @@
+# 当前安排：MS-I2l（2026-10-10，准备待正式发布）
+
+共同固定开工标签 **ms-i2l-start**；准确SHA将在发布回执固定。远端标签/正式DISPATCH尚未核对前只检查准备状态，不开始新包。A/D必需公共对象与A回调已固定，D新等待/取消是本轮任务，不宣称已完成。
+
+- A/MS-I2l：真实installed来源/等待取消装配/文件与用户整链；B/MS-U3：当前会话刷新恢复/真实设备成果状态；C/MS-T2i：已存在资料的有界多材料消费/原恢复；D/MS-R2i：首次90秒原deadline/进度/初始化stop与真实helper。
+- [固定A/D接口](requests/A/MS-I2l-AD-contract.md)、[模块/阶段/任务/目标/目录](requests/A/MS-I2l-parallel-packages.md)、[四份完整提示词](MS-I2l-messages.md)。原worktree/分支保留，worker自己同步准确标签；A未改worker工作区或直接给三个聊天发任务。
+- 源码 **6277fd12c238629c1d5d998b7c83aeaeeb539ed6**；本次10不同聚焦节点通过，190源码类型检查。旧1691仍属MS-I2i；[准确准备证据](../implementation/MS-I2l-preparation.md)。不是新全量、不是本人授权、不开默认flags。
+- MS-I2j/MS-I2k未整轮accepted。办公真实completed保留；学术最近仍待本人接受。首次installed真人/目录/文件/审批拒绝取消和汇合全量明确带入；它们不阻止worker先完成独立模块。
+- M1接口/M2源码到即审阅和接线，不等三包齐；模块SQLworker实跑，A受影响/跨模块，汇合后一次全量。所有缺源503、unknown原回执对账不重发；旧标签/历史回执不动。
+
+## 以下为旧轮历史，不能用旧“当前安排”段落开新包
+
+
 # 当前安排：MS-I2k（2026-10-10）
 
 ## A4：真人办公完成，学术成果待接受

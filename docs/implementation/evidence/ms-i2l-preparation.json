@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2l-preparation",
+  "runtime_source_commit": "6277fd12c238629c1d5d998b7c83aeaeeb539ed6",
+  "publication_ref": "ms-i2l-start",
+  "different_nodes": 10,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "global_flags_opened": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2l-preparation-tests.xml",
+    "sha256": "2e265ec9be91be89cc212f7ece4dc0ef125d45b3e8a6beae3a5e3f451ad85278"
+  },
+  "nodes": [
+    {
+      "name": "test_first_start_invalid_timing_or_challenge_rejected[changes0]",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_invalid_timing_or_challenge_rejected[changes1]",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_invalid_timing_or_challenge_rejected[changes2]",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_invalid_timing_or_challenge_rejected[changes3]",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_invalid_timing_or_challenge_rejected[changes4]",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_wait_clips_to_original_expiry_and_is_never_extended",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_start_policy_is_frozen_and_long_challenge_still_has_90_second_cap",
+      "class": "tests.unit.agent.test_first_start_policy"
+    },
+    {
+      "name": "test_first_device_gate_controlled_yes_original_activation_and_cleanup",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    },
+    {
+      "name": "test_first_device_factory_missing_source_never_opens_ui",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    },
+    {
+      "name": "test_first_device_factory_wrong_proof_never_calls_paired_factory",
+      "class": "tests.integration.agent.test_enrollment_postgres"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/preparation-ruff.log",
+      "sha256": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/preparation-format.log",
+      "sha256": "cc582f997774eb74a1edb248a8a1dca8a90b9985269c3e6ecd100a39876dff12"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/preparation-mypy.log",
+      "sha256": "2e467a58a1298c3ac4e98eed95e6093ebcbff69954a96287d872b54540a2ebe2"
+    }
+  ],
+  "mypy_source_files": 190,
+  "worker_preparation": [
+    {
+      "session": "B",
+      "directory": "E:\\UAW\\.worktrees\\context",
+      "head": "9173d654814b0561bdb968a5029b9630cbb19fdb",
+      "clean": true,
+      "ancestor_of_new_source": true,
+      "read_only_inspection": true
+    },
+    {
+      "session": "C",
+      "directory": "E:\\UAW\\.worktrees\\tool",
+      "head": "c9853b27db85e25e16f7dadf2b664ae37cca0593",
+      "clean": true,
+      "ancestor_of_new_source": true,
+      "read_only_inspection": true
+    },
+    {
+      "session": "D",
+      "directory": "E:\\UAW\\.worktrees\\runner",
+      "head": "1ff88c557f88b3b6979e2deb26d4ec8b1c84c7b5",
+      "clean": true,
+      "ancestor_of_new_source": true,
+      "read_only_inspection": true
+    }
+  ],
+  "execution_lineage": [
+    "10 distinct nodes executed before source commit on identical runtime/test bytes: 7 pure timing tests and 3 actual A PostgreSQL first-factory compatibility tests.",
+    "Positive native Yes and downstream paired factory are controlled. Windows OS/key validation and randomized credential cleanup in original SQL fixture are real.",
+    "This adds the shared policy/port and optional A hook only. D long-start/event/stop extension is not yet implemented.",
+    "Current scoped source differs from original 1691-node full run; no new full or real model call was executed during preparation."
+  ],
+  "preparation_history": [
+    "Initial Ruff found one import order issue; auto-fixed before final checks/test receipt.",
+    "Final static commands exited zero with a sandbox Python real-location warning; tool output and logs retained. Test command used actual Windows host environment."
+  ],
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2k-a4.json",
+    "sha256": "d1aafb4833fcb323e92c2b438060656b25245933ada9eced2c6d7a1b16586c4f"
+  },
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "remaining": [
+    "Original academic actual human acceptance and independent completion; latest captured view is pending.",
+    "Concrete installed first-launcher config/locator/current roles/paired factory and D start/cancel assembly.",
+    "Actual human directory authorization and file through owning Reader/Context/fixed model/Artifact chain.",
+    "Browser approve/decline/cancel/refresh and final once-only milestone full regression."
+  ]
+}
