@@ -128,3 +128,16 @@ def test_file_envelope_bound_does_not_expand_original_request_limit(ctx):
         canonical(actual)
     with pytest.raises(ValueError):
         source.data_bytes({**actual, "text": "原" * 22000})
+
+
+def test_freeze_original_evidence_protects_nested_usage_and_file_content(ctx):
+    from uaw.tool.providers.file_read import freeze_file_evidence
+
+    _, _, _, e, _ = store(ctx)
+    frozen = freeze_file_evidence(e)
+    e.receipt.payload["result"]["text"] = "mutated by owning adapter"
+    e.receipt.usage["resources"]["wall_time_ms"] = 999
+    e.selection["kind"] = "lines"
+    assert frozen.receipt.payload["result"]["text"] != e.receipt.payload["result"]["text"]
+    assert frozen.receipt.usage["resources"]["wall_time_ms"] == 1
+    assert frozen.selection == {"kind": "whole"}

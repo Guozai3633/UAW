@@ -3,11 +3,13 @@
 import hashlib
 from typing import cast
 
-from uaw.infrastructure.db.transactions import RecordTransaction
+from uaw.infrastructure.db.records import parameter_hash
+from uaw.infrastructure.db.transactions import RecordTransaction, reference
 from uaw.shared.contracts import JsonObject, Location, Principal, Ref, TrustedExecutionContext
 from uaw.shared.stores import BlobStorePort
+from uaw.tool.budget import ToolBudgetAdapter
 from uaw.tool.errors import fail, validate_dependency
-from uaw.tool.ledger import ToolLedger, immutable
+from uaw.tool.ledger import ToolLedger, action_key, immutable
 from uaw.tool.ports import ToolOutputVerifierPort, ToolRecoveryAccessPort
 from uaw.tool.providers.file_read import (
     MAX_FILE_ENVELOPE_BYTES,
@@ -15,6 +17,7 @@ from uaw.tool.providers.file_read import (
     FileReadEvidence,
     ToolFileReadBridgePort,
     file_arguments,
+    freeze_file_evidence,
     verify_file_evidence,
 )
 from uaw.tool.receipt_store import ToolReceiptStore
@@ -76,9 +79,41 @@ class FileReceiptStore(ToolReceiptStore):
         return await super().binding(ctx)
 
     async def record(self, evidence: FileReadEvidence, ctx: TrustedExecutionContext) -> JsonObject:
+        evidence = freeze_file_evidence(evidence)
         call, spec = await self.binding(ctx)
         assert self.signatures is not None
         data = verify_file_evidence(evidence, call, spec, ctx, self.provider_ref, self.signatures)
+        # One immutable pin binds the complete original observation. Every recovery
+        # still rechecks bridge data authority, real signatures and actual bytes;
+        # a matched pin avoids rewriting all named rows/blobs during each Reader call.
+        proof = Ref(
+            kind="content",
+            id="file-observation-" + ctx.attempt_id,
+            version="1",
+            content_hash=hashlib.sha256(
+                canonical(
+                    {
+                        "command_ref": evidence.command_ref.wire(),
+                        "receipt_ref": evidence.receipt_ref.wire(),
+                        "owner": evidence.source.owner.wire(),
+                        "device": evidence.source.device_id,
+                        "snapshot": hashlib.sha256(evidence.snapshot).hexdigest(),
+                        "selection": evidence.selection,
+                    }
+                )
+            ).hexdigest(),
+        )
+        previous = await self.ledger.get("tool.file.observation.refs", ctx.attempt_id, ctx)
+        if previous is not None:
+            if previous != proof.wire():
+                raise fail(
+                    "receipt_binding_conflict",
+                    "Original file observation changed",
+                    phase="file_source",
+                    category="conflict",
+                    status=409,
+                )
+            return data
         snapshot_hash = await self.blobs.put(ctx.principal, evidence.snapshot)
         if snapshot_hash != hashlib.sha256(evidence.snapshot).hexdigest():
             raise ValueError("Original snapshot blob digest mismatch")
@@ -116,6 +151,7 @@ class FileReceiptStore(ToolReceiptStore):
                 ).wire(),
             ),
             ("tool.file.contents", "FileContent", data),
+            ("tool.file.observation.refs", "Ref", proof.wire()),
         )
 
         async def write(tx: RecordTransaction) -> JsonObject:
@@ -132,39 +168,84 @@ class FileReceiptStore(ToolReceiptStore):
         evidence = await self.bridge.recover(call, spec, ctx)
         if evidence is None:
             return None
+        evidence = freeze_file_evidence(evidence)
         await self.record(evidence, ctx)
         return evidence
 
     async def provider_receipt(self, ctx: TrustedExecutionContext) -> JsonObject | None:
         # Even an already saved response must retain its current source permission.
         actual = await super().provider_receipt(ctx)
+        if actual is not None:
+            # This is the fixed transport/accounting observation, not file content
+            # verification. verified/read/check/publish always invoke the owning
+            # verifier, which re-reads the actual bridge journal and signatures.
+            return actual
         evidence = await self.original(ctx)
         if evidence is None:
-            if actual is not None:
-                raise fail(
-                    "dependency_unavailable",
-                    "Original file journal/snapshot is unavailable",
-                    phase="file_source",
-                    category="dependency",
-                    status=503,
-                )
             return None
         assert evidence.receipt.payload is not None
         data = cast(JsonObject, evidence.receipt.payload["result"])  # record verified payload
         saved = await self.save_response(
             data, evidence.receipt.usage, ctx, authenticated_provider=self.provider
         )
-        if actual is not None and actual != saved:
+        return saved
+
+    async def read_observation(
+        self, action_id: str, ctx: TrustedExecutionContext
+    ) -> FileReadEvidence:
+        """Current authorized, original signed source for Artifact/Verification wiring.
+
+        Returns internal evidence, never a new command, snapshot or public DTO.
+        Access to SQL rows/Refs alone is insufficient to consume these file bytes.
+        """
+        call, _ = await self.binding(ctx)
+        if action_id != call["action_id"]:
             raise fail(
                 "receipt_binding_conflict",
-                "Original file observation changed",
+                "Observation action differs from original",
                 phase="file_source",
                 category="conflict",
                 status=409,
             )
-        return saved
+        evidence = await self.original(ctx)
+        if evidence is None:
+            raise fail(
+                "dependency_unavailable",
+                "Original file journal is not available",
+                phase="file_source",
+                category="dependency",
+                status=503,
+            )
+        return evidence
+
+    async def read_raw(self, ref: Ref, ctx: TrustedExecutionContext) -> JsonObject:
+        data = await super().read_raw(ref, ctx)
+        if self.verifier is None:
+            raise fail(
+                "dependency_unavailable",
+                "Actual file verifier is not wired",
+                phase="file_source",
+                category="dependency",
+                status=503,
+            )
+        call, spec = await self.binding(ctx)
+        before = (self.data_bytes(data), canonical(call), canonical(spec))
+        await self.verifier.verify(data, call, spec, ctx)
+        if before != (self.data_bytes(data), canonical(call), canonical(spec)):
+            raise ValueError("File verifier changed fixed raw observation")
+        await self.binding(ctx)
+        return data
 
     async def find(self, action_id: str, ctx: TrustedExecutionContext) -> Ref | None:
+        call, _ = await self.binding(ctx)
+        if action_id != call["action_id"]:
+            raise fail(
+                "receipt_binding_conflict",
+                "Lookup differs from original file action",
+                phase="file_source",
+                category="conflict",
+                status=409,
+            )
         actual = await self.provider_receipt(ctx)
         if actual is not None:
             await self.publish(actual, ctx, authenticated_provider=self.provider)
@@ -216,7 +297,7 @@ class FileReadExecutor:
         if call != fixed_call or spec != fixed_spec:
             raise ValueError("File dispatch differs from original attempt")
         assert self.source.bridge is not None
-        evidence = await self.source.bridge.execute(call, spec, ctx)
+        evidence = freeze_file_evidence(await self.source.bridge.execute(call, spec, ctx))
         data = await self.source.record(evidence, ctx)
         return await self.source.save_response(
             data, evidence.receipt.usage, ctx, authenticated_provider=self.provider
@@ -251,3 +332,85 @@ class FileResourceReader:
                 status=403,
             )
         return refs
+
+
+async def recover_file_accounting(
+    ledger: ToolLedger, budgets: ToolBudgetAdapter, ctx: TrustedExecutionContext
+) -> JsonObject:
+    """Replay ONLY an already accepted file observation's existing accounting plan.
+
+    Current BudgetStatePort/BudgetPort authorize accounting. Does not read file
+    content, old grants, bridge or signatures, and returns only UsageSettlement.
+    No new source observation, bill revision, admission, reserve or send is created.
+    Missing fixed plan is unavailable, not a fabricated zero-cost settlement.
+    """
+    if budgets.ledger is not ledger:
+        raise ValueError("Accounting recovery must share the original Tool ledger")
+    call = await ledger.attempt(ctx)
+    _, spec, _ = await ledger.action(str(call["action_id"]), ctx)
+    file_arguments(call, spec, Ref.model_validate(spec["provider_ref"]))
+    await budgets.get_ledger(ctx)  # Current accounting authority; NOT a data/read/send grant.
+    active = await ledger.get("tool.reconciliation.active", ctx.attempt_id, ctx)
+    if active is None:
+        raise fail(
+            "dependency_unavailable",
+            "No original accepted file accounting observation",
+            phase="file_accounting",
+            category="dependency",
+            status=503,
+        )
+    validate_dependency("ToolReconciliationReceipt", active, "file_accounting")
+    key = ledger.receipt_key(active)
+    accepted = await ledger.get("tool.reconciliation.receipts", key, ctx)
+    effect = await ledger.effect_from_attempt(ctx)
+    intent = await ledger.get("tool.dispatch.intents", action_key(ctx, str(call["action_id"])), ctx)
+    if (
+        accepted != active
+        or active["attempt_id"] != ctx.attempt_id
+        or active["usage"]["attempt_id"] != ctx.attempt_id
+        or active["action_ref"] != reference("tool_call", action_key(ctx, str(call["action_id"])))
+        or active["provider_ref"] != spec["provider_ref"]
+        or effect.get("receipt_ref") != active["receipt_ref"]
+        or effect["attempt_ids"] != [ctx.attempt_id]
+        or intent is None
+        or intent["provider_binding_ref"] != spec["provider_ref"]
+    ):
+        raise fail(
+            "receipt_binding_conflict",
+            "Original file accounting binding changed",
+            phase="file_accounting",
+            category="conflict",
+            status=409,
+        )
+    saved = await ledger.get("tool.reconciliation.settled", key, ctx)
+    if saved is not None:
+        validate_dependency("UsageSettlement", saved, "file_accounting")
+        return saved
+    plans = []
+    for index in range(4):
+        plan_key = "reconcile-plan-" + parameter_hash({"receipt": key, "index": index})
+        plan = await ledger.get("tool.reconciliation.budget.plans", plan_key, ctx)
+        if plan is not None:
+            validate_dependency("BudgetSettleRequest", plan, "file_accounting")
+            if plan["usage"] != active["usage"]:
+                raise fail(
+                    "receipt_binding_conflict",
+                    "Fixed file fee Usage differs",
+                    phase="file_accounting",
+                    category="conflict",
+                    status=409,
+                )
+            plans.append(plan)
+    if not plans:
+        raise fail(
+            "dependency_unavailable",
+            "Original file accounting plan is not persisted",
+            phase="file_accounting",
+            category="dependency",
+            status=503,
+        )
+    # The owning service's existing bounded CAS recovery replays fixed request IDs.
+    # No Tool transaction is held around accounting IO.
+    settlement = await budgets.settle_receipt(active, key, ctx)
+    await ledger.finish_reconciliation(active, settlement, ctx)
+    return settlement

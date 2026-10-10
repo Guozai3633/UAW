@@ -1,17 +1,19 @@
 """Exact file.read and injected registered-command/journal bridge, no local OS access."""
 
 import hashlib
+import json
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Protocol, cast
 
-from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
+from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.schema import validate_contract
 from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.ledger import action_key
 from uaw.tool.providers.local import check_binding
 from uaw.tool.schema import canonical
-from uaw.workspace.contracts import RegisteredReceiptCommand, RunnerReceipt
+from uaw.workspace.contracts import RegisteredReceiptCommand, RunnerCommand, RunnerReceipt
 from uaw.workspace.ports import SignaturePort
 
 MAX_RETURN_BYTES = 65536
@@ -37,6 +39,31 @@ class FileReadEvidence:
     next_cursor: str | None = None
 
 
+def freeze_file_evidence(evidence: FileReadEvidence) -> FileReadEvidence:
+    """Copy actual wire inputs before yielding; owning ports cannot mutate evidence.
+
+    Dataclass/model freezing alone does not protect nested JSON dictionaries.
+    Original bytes stay exact, with no text decoding or normalization here.
+    """
+    if type(evidence.snapshot) is not bytes or len(evidence.snapshot) > MAX_SNAPSHOT_BYTES:
+        raise ValueError("Actual bounded immutable snapshot required")
+    return FileReadEvidence(
+        Ref.model_validate_json(canonical(evidence.command_ref.wire())),
+        Ref.model_validate_json(canonical(evidence.receipt_ref.wire())),
+        RegisteredReceiptCommand(
+            RunnerCommand.model_validate_json(canonical(evidence.source.command.wire())),
+            evidence.source.device_id,
+            Principal.model_validate_json(canonical(evidence.source.owner.wire())),
+        ),
+        RunnerReceipt.model_validate_json(
+            canonical(evidence.receipt.wire(), max_bytes=MAX_FILE_ENVELOPE_BYTES)
+        ),
+        evidence.snapshot,
+        json.loads(canonical(evidence.selection)),
+        evidence.next_cursor,
+    )
+
+
 class ToolFileReadBridgePort(Protocol):
     def ready(self) -> None:
         """Fail if actual command/current authority/transport/journal sources absent."""
@@ -53,7 +80,9 @@ class ToolFileReadBridgePort(Protocol):
     ) -> FileReadEvidence:
         """Register exact command before ONE transport send; persist refs before reply.
 
-        Called only by Tool dispatch CAS owner. No transparent resend/reconnect.
+        Called only by Tool dispatch CAS owner. Recheck current execution approval,
+        cancellation/deadline/workspace/root/device after command registration and
+        immediately before send. No cached grant or transparent resend/reconnect.
         """
         ...
 
@@ -274,6 +303,8 @@ def verify_file_evidence(
     if type(evidence.snapshot) is not bytes or len(evidence.snapshot) > MAX_SNAPSHOT_BYTES:
         raise ValueError("Actual bounded original snapshot required")
     text = evidence.snapshot.decode("utf-8", errors="strict")
+    if any(unicodedata.category(char) == "Cc" and char not in "\t\n\r" for char in text):
+        raise ValueError("Original snapshot contains unsupported binary/control content")
     selected = select_text(text, evidence.selection)
     location = args.get("location", {"kind": "whole"})
     # A trusted cursor registry is still constrained by the fixed original range.

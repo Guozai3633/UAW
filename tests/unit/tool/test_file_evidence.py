@@ -158,3 +158,24 @@ def test_current_key_revocation_and_foreign_project_rejected(ctx):
     )
     with pytest.raises(DomainError):
         checked(foreign, e, call, spec, signatures)
+
+
+@pytest.mark.parametrize("text", ["bad\x00binary", "bad\x1bescape", "bad\x7fcontrol"])
+def test_signed_utf8_control_snapshot_cannot_masquerade_as_plain_file(ctx, text):
+    _, call, spec, e, signatures = make_evidence(ctx, text=text)
+    with pytest.raises(ValueError):
+        checked(ctx, e, call, spec, signatures)
+
+
+@pytest.mark.parametrize(
+    "selection",
+    [
+        {"kind": "text_span", "start": 1, "end": 3},
+        {"kind": "text_span", "start": 0, "end": 100},
+    ],
+)
+def test_independently_registered_page_still_constrained_to_original_range(ctx, selection):
+    _, call, spec, e, signatures = make_evidence(ctx, text="abcdef")
+    e = replace(e, selection=selection, next_cursor="registered-next")
+    with pytest.raises(ValueError):
+        checked(ctx, e, call, spec, signatures)
