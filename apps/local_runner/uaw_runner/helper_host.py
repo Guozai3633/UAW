@@ -10,9 +10,11 @@ import json
 import sys
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Protocol
 
-from uaw.shared.errors import CapabilityUnavailable, DomainError
+from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
+from uaw.shared.runner_bootstrap import FirstStartPolicy, FirstStartProgressPort
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 from uaw_runner.runtime import ReadOnlyHelper
 
@@ -30,6 +32,34 @@ class HelperAssemblyPort(Protocol):
 
 def emit(event: str, **values: object) -> None:
     print(json.dumps({"event": event, **values}, separators=(",", ":")), flush=True)
+
+
+class HelperBootstrapProgress(FirstStartProgressPort):
+    """One original checked challenge progress, never approval or a grant."""
+
+    def __init__(self) -> None:
+        self.sent = False
+
+    async def waiting(self, policy: FirstStartPolicy) -> None:
+        if self.sent or not isinstance(policy, FirstStartPolicy):
+            raise reject("dependency_protocol_invalid", "Repeated first-start progress", 503)
+        if datetime.now(UTC) >= policy.expires_at:
+            raise reject("enrollment_expired", "Original challenge expired", 410)
+        self.sent = True
+        writing = asyncio.create_task(
+            asyncio.to_thread(
+                emit,
+                "bootstrap_waiting",
+                stage="enrollment",
+                expires_at=policy.expires_at.astimezone(UTC).isoformat().replace("+00:00", "Z"),
+                challenge_hash=policy.challenge_hash,
+            )
+        )
+        try:
+            await asyncio.shield(writing)
+        except asyncio.CancelledError:
+            await writing
+            raise
 
 
 async def serve(application: HelperApplication) -> None:

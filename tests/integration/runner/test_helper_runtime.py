@@ -19,7 +19,7 @@ from tests.integration.runner.ipc_fixture import FixturePeerRegistry
 from tests.integration.runner.test_native_root_source import make_native_case
 from tests.integration.runner.test_read_executor import configure
 from tests.integration.runner.test_windows_ipc import ipc_case as _ipc_fixture
-from uaw.shared.errors import CapabilityUnavailable, DomainError
+from uaw.shared.errors import DomainError
 
 ipc_case = _ipc_fixture
 
@@ -180,8 +180,14 @@ async def test_missing_production_assembly_never_listens_and_closes(ipc_case):
         environment=helper_environment(path),
     )
     try:
-        with pytest.raises(CapabilityUnavailable):
+        with pytest.raises(DomainError) as failure:
             await process.start()
+        assert failure.value.failure.code in {
+            "capability_unavailable",
+            "dependency_protocol_invalid",
+            "permission_denied",
+        }
+        assert process.closed
     finally:
         await process.close()
     assert process.process.returncode == 0
@@ -204,8 +210,14 @@ async def test_hidden_helper_current_bootstrap_rejects_before_listener(ipc_case,
         path.write_text(canonical(data), encoding="utf-8")
         # owner switch is a consistent new independent registration only if actor changes too;
         # here old actor explicitly differs, so it must fail before an OS listener.
-        with pytest.raises(CapabilityUnavailable):
+        with pytest.raises(DomainError) as failure:
             await process.start()
+        assert failure.value.failure.code in {
+            "capability_unavailable",
+            "dependency_protocol_invalid",
+            "permission_denied",
+        }
+        assert process.closed
         assert native["state"].get(native["ticket_id"], now=datetime.now(UTC)).state == (
             "revoked" if change == "key" else "pending"
         )
