@@ -2,7 +2,7 @@
   "date": "2026-10-10",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A3 scoped32 installed control and optional native root selector; positive native callback controlled, SQL stops before native; actual parent/root pending; not full",
+  "scope": "MS-I2l A2 scoped37 owning file origins and native timeout cleanup; actual human first device and B refreshed old artifact are separate receipts. Root/file/model production chain pending; not full.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 32,
+    "tests": 37,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "d54a8dd00f70926d824fd6c9676e140fd3b2e2fa1d8faccaa456d6748516948c",
-  "runtime_implementation": "development_owned_installed_control_and_optional_native_root_selector",
+  "test_evidence_sha256": "6bf9129febe164265ecd2350b655e80a08d28d908ff08e39eaf596f48350d806",
+  "runtime_implementation": "development_registered_material_origin_router_and_actual_first_device_consumer",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -210,7 +210,6 @@
     "ops/browser-development.toml": "4946aaf2adff3b05c3038fa461336307e63e292a3d2398ba7f6f6a0c1bd70b19",
     "ops/capture_environment.py": "883f98207a7dda30dd79c50bc6b804170736f9cc3a4d762cbaf4b927f5116fe2",
     "ops/check.ps1": "a364de174696f578c320c9045464d4abafd94c8de1ca01eeff5f602ab1715860",
-    "ops/check_installed_readonly.py": "63b584e4598e10ed720bd8c5ed0a60ec2d8f5f50758e969752ccb53ad9242236",
     "ops/compose.yaml": "c7ad2ad10451d6c8b3a1f2ed14eb3b8ed307dc1bca2b6125e7b098b5c3793c54",
     "ops/database-development.toml": "47adff9a258b9d1cf4ef262f511f984c6b853dfea755365c96f062178f7bb2bc",
     "ops/development.toml": "23f5ce047a5785359653aa50b2bc9f64668a63c969b9d241915565e56f58b968",
@@ -288,14 +287,12 @@
     "src/uaw/infrastructure/enrollment_bootstrap.py": "0d8b39b75094980289653d2f2bc03192e9e89e4d72dfa69f66e0a19be414b42c",
     "src/uaw/infrastructure/enrollment_candidates.py": "387ae80d8ffe71c836021e531f609baff411fa6cf2c443327d26292eb9c66e25",
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
-    "src/uaw/infrastructure/enrollment_launch.py": "4396ea405ef9b1ccc6e59c443178ce60ba296693f47bd75914c3e7d5802b32af",
+    "src/uaw/infrastructure/enrollment_launch.py": "51f99e06f8164214d9ad26cff711a42481eaf0034401528140420c3ad29dc909",
     "src/uaw/infrastructure/enrollment_native.py": "1c3c634f17eaa80995f5097ac071b3889369d31f39c8816836e51bcf21ad2106",
     "src/uaw/infrastructure/enrollment_peers.py": "4db202564f0eb1e2bb35f722c31112d0dfd772af13e6e4a22698b1de1d0b8c99",
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
-    "src/uaw/infrastructure/installed_control.py": "04c41ebb927570adbde8a1e0a73abed2d452460558d61e9efa5ff955ec68224b",
-    "src/uaw/infrastructure/installed_helper.py": "4484a85921fbf56cf39588158fe38c2c85f00de59e6345720738eb5a26e70d76",
-    "src/uaw/infrastructure/installed_roots.py": "029e554e422b348be1778bf6bb566ace2c2eaea8ae51e3042f10b7cfc32eea14",
+    "src/uaw/infrastructure/installed_helper.py": "e3c52d15169a4809cf195d59dc06927d3241ec624176e9e511474df3af79fbd7",
     "src/uaw/infrastructure/runner_pipe.py": "834a2fa12a8d806791ec46bb9bb7fce23a277ecd2d21bf7bb8370d3d245b4108",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
@@ -411,7 +408,7 @@
     "tests/integration/agent/test_evaluation_postgres.py": "d9c599777426d54627731864d105372fd58d0ba8960a503221bcfbbbc088c8dc",
     "tests/integration/agent/test_file_bridge_postgres.py": "263cbeb4f709fddd6aa32d7362c036aa30640e00875fd9f25b750b5396a037f4",
     "tests/integration/agent/test_file_material_origins.py": "c1df018cd83643ba73556ced27379c059e76a6f0dd66710010e647b20accfae9",
-    "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
+    "tests/integration/agent/test_installed_launch.py": "6607877aa91c1b8b3a28abb9b689201a3988b6b8bc92789963f69f9348a7e5bb",
     "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
     "tests/integration/agent/test_loop_postgres.py": "770d59fdb09d03741df0437fa9bd29c07196cd2a3425a55e9684d85fdafddb46",
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
@@ -507,7 +504,6 @@
     "tests/unit/agent/test_file_context.py": "c164f212dd27e7b4ba2905aca8f9c1c8f3b36b7ad6ce7ee008a6193e53202671",
     "tests/unit/agent/test_first_start_policy.py": "417e68a8cb67429ea6e414f757f039765ebb28d104fa5b33907e5bdf0369df33",
     "tests/unit/agent/test_installed_launch_contract.py": "241af726e96fae11a8f1101f39aa95058ee916794df7ea0aff0d5b712e5cd95b",
-    "tests/unit/agent/test_installed_root_control.py": "0f9a09b993bb80e2ca202f44b8462665811364e20bb1f706b0e6f72a7aa086d1",
     "tests/unit/agent/test_semantic_evidence.py": "9f7f7188d19c1e17c4e0559a60fbf2a6c50c9b19bd08a06d63842474e2b8dba8",
     "tests/unit/context/test_assessment.py": "3bf5fde48a66e4aafb95bf9183458e3333dfdc1658eb32dc05034c89cac412c3",
     "tests/unit/context/test_cache.py": "748354cac1d0784803d050a2530b2e9fb2d37f41d444e4fae772ba07cd1cce4c",
@@ -562,10 +558,16 @@
     "full_runtime_tests": 1691,
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
-    "previous_environment": "docs/implementation/evidence/environment-before-ms-i2l-a3.json",
-    "current_stage": "docs/implementation/evidence/ms-i2l-a3.json",
-    "current_stage_source": "5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e",
-    "current_stage_different_nodes": 32,
+    "previous_environment": {
+      "path": "docs/implementation/evidence/environment-before-ms-i2l-a2.json",
+      "sha256": "9b550b2323fb670a5ce5fc13b4b5c933bac2f8ed7b51029faf8dabf8230bb9fa"
+    },
+    "current_stage": {
+      "path": "docs/implementation/evidence/ms-i2l-a2.json",
+      "sha256": "1d2bbb23bcaf23f39bfaf0ac935b00310de84abf808287aec62bb57c59a6b060"
+    },
+    "current_stage_source": "ba1c0d7f8e62563a3fbb34d6256b36be8f3376af",
+    "current_stage_different_nodes": 37,
     "current_stage_is_full_regression": false
   }
 }

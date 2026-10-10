@@ -1,0 +1,78 @@
+{
+  "phase": "MS-I2l A3 scoped installed control and optional native root selector",
+  "source_commit": "5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e",
+  "source_tag": "ms-i2l-a3-source",
+  "metadata_tag": "ms-i2l-a3",
+  "test_counts": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scopes": {
+    "new_control_root_unit": 14,
+    "existing_descriptor_unit": 9,
+    "new_real_sql_windows_pre_native": 2,
+    "existing_installed_real_sql_windows": 7
+  },
+  "test_receipt": "docs/implementation/evidence/ms-i2l-a3-tests.xml",
+  "raw_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m2-root-control-sql.xml",
+      "sha256": "d54a8dd00f70926d824fd6c9676e140fd3b2e2fa1d8faccaa456d6748516948c"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m2-root-control-sql.log",
+      "sha256": "143c9c965c2e779801d46ab4bb9aba2005bbc3b28a11e654295d24e2e8c8076d"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/m2-root-control-unit.xml",
+      "sha256": "80fc92d800fe486fd9f6e08ebc029ddb71b1e4624c14ac249e7aff7470a60bab"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a3-ruff.log",
+      "sha256": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a3-format.log",
+      "sha256": "ea92181b0a32a7737dc724ce6f20c57cd6a43281b77fecf42936a6d9152291f6"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a3-mypy.log",
+      "sha256": "6941a0ff65835b15fefd7326d4fc38c1a2ab0dc8a4519cf6e597777d88af4ec7"
+    }
+  ],
+  "source_files": [
+    "src/uaw/infrastructure/enrollment_launch.py",
+    "src/uaw/infrastructure/installed_helper.py",
+    "src/uaw/infrastructure/installed_control.py",
+    "src/uaw/infrastructure/installed_roots.py",
+    "ops/check_installed_readonly.py",
+    "tests/unit/agent/test_installed_root_control.py",
+    "tests/integration/agent/test_installed_launch.py"
+  ],
+  "mypy_source_files": 196,
+  "native_positive_unit_sources": "controlled; no native UI in the 32 tests",
+  "actual_native_first_previous_stage": "docs/implementation/evidence/ms-i2l-native-first-summary.json",
+  "actual_parent_positive_handshake": "pending new human confirmed current instance",
+  "actual_human_root_selection": "pending",
+  "model_calls_in_stage": 0,
+  "file_content_reads_in_stage": 0,
+  "full_regression": false,
+  "product_round_accepted": false,
+  "flags_opened": false,
+  "failure_history": [
+    "Initial new unit Ruff line lengths fixed by formatter; tests23 passed (subset of final32).",
+    "ops ASYNC240 Path blocking checks fixed with to_thread; final Ruff passed.",
+    "No runtime failure/error/skip in final32; previous A1/A2 failures and real native attempt history retained separately.",
+    "Strengthened cancellation test to invoke actual launch.connect plus concurrent close; final32 rerun passed13.97s. Prior32 receipt preserved; no counts added.",
+    "First checker used missing ops/check_contracts.py; actual contracts/check_interfaces.py rerun passed with zero errors. Wrong-entry log retained separately."
+  ],
+  "remaining": [
+    "Localhost installed lifecycle and current root/file route plus actual Tool permissions/budget/provider",
+    "ConfigurationService currently refuses all enabled flags; implement formal current-source readiness before local_files activation, never direct SQL flag override",
+    "Original academic failed due Web expiry; preserve artifacts and original3 model calls, explicit current-user recovery required",
+    "Actual human root/file/fixed Model/page control and convergence full regression remain"
+  ],
+  "implementation_commit": "2c06b7b0cf58de60f97e76408628bda34364752b"
+}
