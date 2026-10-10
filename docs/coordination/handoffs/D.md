@@ -543,3 +543,17 @@ git diff --check
 - M2源码105dcbf1ca3828cd49988d6a60aabf6daab6f9c1：实际隐藏device helper/OS进程实例/当前vault角色key/管道/只读journal/新进程恢复8节点完整通过/17.16秒。阶段接口 BootstrapConsumer/BootstrapNativeChallenges、ReadOnlyHelper/HelperProcess/HelperAssemblyPort，文件和精确构造见requests/D/MS-R2h-stage-bootstrap.md、MS-R2h-stage-helper.md。当前M3/M4独立扩展19节点/47.41秒通过，完整D回归正在运行，未预报通过。
 - A首次实际Web full session/设备/双方持有证明/受保护Ticket及原code/proof生产来源仍缺；ports基线已发布，消费接口组合完成，产品入口缺源unavailable。最小输入提案MS-R2h-bootstrap-inputs.md；不自造pair.complete/公共DTO/生产登记。OS SID/PID与网页approved/path不授权，肯定UI明确typed double，本人点击pending。
 - 首轮M1两次参数失败，M2 selector subprocess transport、python -m dataclass双模块、Ticket撤销state/LocalRoots方法夹具失败均保留XML和不含变量值的测试堆栈，修复后阶段全通过。仅D允许目录，新增依赖/公共文件/flags无变；继续同包M3/M4，不进入下一包。
+
+
+## MS-R2h 最终交接（2026-10-10）
+
+- 实际 E:/UAW/.worktrees/runner / dev/runner。DISPATCH正式发布后开工，干净fetch/ff-only ms-i2k-start，标签/HEAD准确b7b79b150470a80f37b28fd52a2177f6de5b3124，uv sync --frozen64包。原MS-R2g提交/handoff/失败/清理保留；未reset/rebase或改公共文件。
+- M1源码97da1f39dac82b95c2c9e9b09d05b557209950ea、夹具修正41ab8da894d9d2983008133a4b822e49d00d20bb；M2源码105dcbf1ca3828cd49988d6a60aabf6daab6f9c1；阶段handoff d0d45dc13a5029b87bb448686bc32b33a8465abd；最终源码ba798ad70b1e62f21fe9f33b4d1252bdac2a653a。本最终handoff独立提交。
+- 文件：Runner新增bootstrap/runtime/helper_process/helper_host；D integration新增test_bootstrap/helper_fixture/test_helper_runtime/helper_manual；D requests两阶段签名/输入提案/真人指南/final wiring及本handoff。仅D允许路径；workspace四文件无须改，schema/shared/锁/composition/API/flags未改，7个公共baseline hash一致；无需PG。
+- 接口：BootstrapConsumer/BootstrapNativeChallenges组合原registration/challenge/mapping/current key，完整原Ticket/owner/actor/session/OS instance/current channel交集；ReadOnlyHelper start/accept/async authorization/serve_once/disconnect/close共享key/signer/root/registry/protocol/Reader/journal。HelperProcess固定隐藏helper_host+安装可信factory，OS API复核actual PID/创建时间；HelperAssemblyPort.create(actual_identity)->HelperApplication。无HTTP/native新wire、pair.complete DTO或生产enrollment。
+- **591 passed/280.39秒，0失败/错误/跳过**(原550＋新增41：bootstrap22/helper19，非阶段重试累加)；Ruff/66格式/Mypy33源码/diff通过。tests/.artifacts/D/MS-R2h/full.xml/full.log、checks.json/public-hashes.json、ruff/format/mypy.log、manual-default.log/human-pending.json与原失败XML保留ignored。105份随机IPC OS credential清理全cleaned=true，自有helper/管道/句柄/凭据finally回收。
+- 实际隐藏device helper＋控制端OS/ACL/nonce/current角色签名；root一次select/bind、重放拒绝/revoke、新channel/新进程/双helper竞争同journal、删除文件及取消后恢复原签名content Ref而不新打开；unknown recover不新准入。当前logout/key/主体/OS创建时间/版本/坏签名拒绝，native自动timeout及原自动取消回归，协作取消/并发close/pending accept关闭。肯定UI是typed double，A enrollment/owner/challenge/current authority明确独立受控ports，不称真人或生产配对。
+- 最后只读fetch仍无A生产首次bootstrap adapter；本人实际点击pending，--run-human未执行，默认只输出pending，指南MS-R2h-human-helper-guide.md。自动检查全通过，生产来源/真人/Tool与页面汇合未通过。原参数/mypy路径/selector transport/模块身份/LocalRoots/手动导入静态失败全部保留修正，未删安全断言或重写历史。
+- 构造、成功/拒绝/重复、全部命令回执和A接线见 [MS-R2h-final-wiring.md](../requests/D/MS-R2h-final-wiring.md)。A提供真实当前full session/独立device/双方current role proof/OS实例/受保护原Ticket-code-proof/短期channel/退出撤销服务、factory及HTTP/控制端/composition/C业务核验；缺源unavailable，最小输入MS-R2h-bootstrap-inputs.md。SID/PID、网页approved/path、公钥上传不授权，绝对目录仅本机。
+- 最终文档首次写入/提交因自动审批服务额度失败未执行；用户继续后按原授权正常审批重试，无绕过。源码和验证回执此前已完成；该服务错误不计作测试通过或失败。
+- 不改flags或开放写入安装exec，不代选D01/D03/D06；Default桌面/开发IPC/组件SQLite不代表正式部署或产品验收。组件M1-M4交付，生产bootstrap和本人汇合pending；本包后停止、干净交付，等待A审阅/派发。
