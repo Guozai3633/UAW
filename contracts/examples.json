@@ -4274,6 +4274,77 @@
         }
       }
     },
+    "RunnerToolRequestRecord": {
+      "id": "example_001",
+      "context": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "scope": {
+          "principal_id": "example_001"
+        },
+        "operation_id": "example_001",
+        "trace_id": "example_001",
+        "attempt_id": "example_001",
+        "deadline": "2026-10-07T02:00:00Z",
+        "capability_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      },
+      "parameters": {
+        "action": "workspace.capture",
+        "parameters": {
+          "source_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "base_kind": "commit",
+          "include_rules": {
+            "include_uncommitted": true,
+            "include_untracked": true,
+            "include_paths": [],
+            "exclude_paths": [],
+            "max_total_bytes": 0
+          },
+          "expected_source_revision": "example_001"
+        }
+      },
+      "call": {
+        "tool_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "arguments": {},
+        "arguments_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "action_id": "example_001"
+      },
+      "spec": {
+        "id": "example_001",
+        "version": "example_001",
+        "description": "example_001",
+        "input_schema": {},
+        "output_schema": {},
+        "categories": [],
+        "required_capabilities": [],
+        "effect": "read",
+        "provider_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "retry_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      }
+    },
     "RunnerRootSnapshot": {
       "owner": {
         "id": "example_001",

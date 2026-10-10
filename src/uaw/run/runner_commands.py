@@ -22,9 +22,11 @@ from uaw.shared.ports import (
 )
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreConflict, StoreMissing
+from uaw.tool.ledger import ToolLedger, action_key
 
 Payload = dict[str, Any]
 REQUESTS = "runner.requests"
+TOOL_REQUESTS = "runner.tool.requests"
 COMMANDS = "runner.commands"
 ATTEMPTS = "runner.attempts"
 READ_ACTIONS = {"file.read", "file.list"}
@@ -64,11 +66,109 @@ class RunnerCommands:
         self.transactions = TransactionalStore(store.database)
 
     async def _request(self, ref: Ref) -> Payload:
+        if ref.kind == "tool_call":
+            row = await self.store.get(self.devices.controller, TOOL_REQUESTS, ref.id)
+            validate_contract("RunnerToolRequestRecord", row.payload)
+            record = row.payload
+            ctx = TrustedExecutionContext.model_validate_json(json.dumps(record["context"]))
+            await self._tool_sources(record["call"], record["spec"], ctx)
+            if (
+                row.revision != 1
+                or ref.wire() != pin("tool_call", row.resource_id, record["call"])
+                or record["parameters"]
+                != {"action": "file.read", "parameters": record["call"]["arguments"]}
+            ):
+                raise reject("runner_request_changed", "Original Tool request differs", 412)
+            return {k: record[k] for k in ("id", "context", "parameters")}
         row = await self.store.get(self.devices.controller, REQUESTS, ref.id)
         validate_contract("RunnerRequestRecord", row.payload)
         if row.revision != 1 or ref.wire() != pin("check", row.resource_id, row.payload):
             raise reject("runner_request_changed", "Registered request differs from its pin", 412)
         return row.payload
+
+    async def _tool_sources(
+        self, call: Payload, spec: Payload, ctx: TrustedExecutionContext
+    ) -> str:
+        validate_contract("ValidatedCall", call)
+        validate_contract("ToolSpec", spec)
+        ledger = ToolLedger(self.store)
+        fixed_call, fixed_spec, _ = await ledger.action(call["action_id"], ctx)
+        original_context = await ledger.get("tool.attempt.contexts", ctx.attempt_id, ctx)
+        key = action_key(ctx, call["action_id"])
+        if (
+            fixed_call != call
+            or fixed_spec != spec
+            or await ledger.attempt(ctx) != call
+            or original_context != ctx.wire()
+            or spec["id"] != "file.read"
+            or call["tool_ref"]["id"] != spec["id"]
+            or call["tool_ref"]["version"] != spec["version"]
+            or call["tool_ref"].get("content_hash") != parameter_hash(spec)
+        ):
+            raise reject("runner_original_tool_denied", "Independent original Tool differs", 403)
+        validate_contract("ToolFileReadInput", call["arguments"])
+        return key
+
+    async def register_tool_request(
+        self,
+        call: Payload,
+        spec: Payload,
+        ctx: TrustedExecutionContext,
+        meta: RequestMeta,
+        *,
+        authenticated_service: Principal,
+    ) -> Payload:
+        self.devices.service(authenticated_service)
+        key = await self._tool_sources(call, spec, ctx)
+        record = {
+            "id": key,
+            "context": ctx.wire(),
+            "parameters": {"action": "file.read", "parameters": copy(call["arguments"])},
+            "call": copy(call),
+            "spec": copy(spec),
+        }
+        self.workspace(record)
+        await self._run(ctx)
+
+        async def write(tx: RecordTransaction) -> Payload:
+            await tx.write(TOOL_REQUESTS, key, "RunnerToolRequestRecord", record)
+            return pin("tool_call", key, call)
+
+        result = await self.transactions.execute(
+            self.devices.controller,
+            AGGREGATE,
+            meta,
+            {"action": "tool.request.register", "record": record},
+            write,
+        )
+        await self._run(ctx)
+        await self._request(Ref.model_validate(result))
+        return result
+
+    async def _tool_reservation(self, request: Payload, ref: Payload) -> Ref:
+        if ref["kind"] != "tool_call":
+            raise CapabilityUnavailable("runner.attempt_budget")
+        ctx = TrustedExecutionContext.model_validate_json(json.dumps(request["context"]))
+        ledger = ToolLedger(self.store)
+        intent = await ledger.get("tool.dispatch.intents", ref["id"], ctx)
+        reserved = await ledger.get("tool.budget.reserved", ctx.attempt_id, ctx)
+        dispatched = await ledger.get("tool.budget.dispatched", ctx.attempt_id, ctx)
+        spec = (await self.store.get(ctx.principal, "tool.specs", ref["id"])).payload
+        if (
+            intent is None
+            or reserved is None
+            or dispatched is None
+            or intent["validated_action_ref"] != reference("tool_call", ref["id"])
+            or intent["provider_binding_ref"] != spec["provider_ref"]
+            or intent["reservation_ref"]
+            != reference("reservation", reserved["id"], reserved["revision"])
+            or dispatched["operation_id"] != ctx.operation_id
+            or dispatched["status"] not in ("accepted", "unchanged")
+        ):
+            raise reject(
+                "runner_original_budget_denied", "Original Tool dispatch budget missing", 403
+            )
+        return Ref.model_validate(intent["reservation_ref"])
 
     async def _run(self, ctx: TrustedExecutionContext) -> Payload:
         snapshot = require_snapshot(await self.permissions.resolve(ctx), ctx)
@@ -190,13 +290,14 @@ class RunnerCommands:
             or not set(root["allowed_actions"]) <= READ_ACTIONS
         ):
             raise reject("runner_root_denied", "Actual root does not allow the request", 403)
-        if ctx.budget_reservation_ref is None:
-            raise CapabilityUnavailable("runner.attempt_budget")
-        budget = copy(await self.budgets.execution_state(ctx.budget_reservation_ref.id, ctx))
+        budget_ref = ctx.budget_reservation_ref
+        if budget_ref is None:
+            budget_ref = await self._tool_reservation(request, command["request_ref"])
+        budget = copy(await self.budgets.execution_state(budget_ref.id, ctx))
         validate_contract("BudgetExecutionSnapshot", budget)
         attempt = budget["attempt"]
         if (
-            attempt["reservation_ref"] != ctx.budget_reservation_ref.wire()
+            attempt["reservation_ref"] != budget_ref.wire()
             or any(
                 attempt[key] != getattr(ctx, key)
                 for key in ("run_id", "operation_id", "trace_id", "attempt_id")

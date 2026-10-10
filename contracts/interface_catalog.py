@@ -1836,6 +1836,7 @@ def finalize(graph,strategies):
     record("RunnerDeviceBindRequest","run","内部认证控制服务登记当前真实通道，不接受owner声明。","device_id|ID|设备\nchannel_ref|Ref|独立来源\nexpected_revision|Revision|当前CAS")
     record("RunnerRequestRegisterRequest","run","内部控制服务登记不可变实际业务参数。","id|ID|稳定请求\nparameters|RunnerParameters|实际业务参数")
     record("RunnerRequestRecord","run","版本1的原请求/原尝试，不是执行权限。","id|ID|稳定请求\ncontext|TrustedExecutionContext|服务取得的原上下文\nparameters|RunnerParameters|原业务参数")
+    record("RunnerToolRequestRecord","run","控制服务登记的原 Tool 调用；不修改原上下文或授予发送权限。","id|ID|原Tool动作身份\ncontext|TrustedExecutionContext|完整原Tool上下文\nparameters|RunnerParameters|原文件读取参数\ncall|ValidatedCall|独立Tool账本的原规范化调用\nspec|ToolSpec|独立Tool账本的原工具版本")
     record("RunnerRootSnapshot","run","真实授权根来源的当前opaque元数据，不包含本机路径。","owner|Principal|原用户\ndevice_id|ID|设备\nworkspace_ref|Ref|实际工作区\nroot_handle|ID|授权根\nbinding_revision|Revision|根版本\nallowed_actions|[](ID)|当前获准读动作\nexpires_at|Timestamp|根期限")
     record("RunnerCommandDraft","run","控制服务从独立登记源构建的签字正文。","command_id|ID|命令\noperation_id|ID|原操作\nrequest_ref|Ref|原请求\ntrusted_context|TrustedExecutionContext|原上下文\nfencing_token|Revision|当前栅栏\nexpires_at|Timestamp|有界期限\nparameters|RunnerParameters|原业务参数")
     record("RunnerCommandRegisterRequest","run","仅内部控制服务可创建签字记录，不发送命令。","command_id|ID|稳定命令\nrequest_ref|Ref|已登记实际请求\ndevice_ref|Ref|当前设备绑定\nlease_ref|Ref|当前根租约\nfencing_token|Revision|栅栏\nexpires_at|Timestamp|期限")

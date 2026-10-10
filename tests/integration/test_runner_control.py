@@ -4,6 +4,7 @@ No real pairing, native root selection, IPC, OS signing store or file execution.
 """
 
 import asyncio
+import json
 import os
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
@@ -30,6 +31,9 @@ from uaw.shared.runner_signatures import VerificationKey, sign, verify
 from uaw.shared.schema import ContractViolation, validate_contract
 from uaw.shared.settings import Settings
 from uaw.shared.stores import StoreMissing
+from uaw.tool.invocation.schema import normalize
+from uaw.tool.ledger import ToolLedger, action_key
+from uaw.tool.registry import ToolRegistry
 
 
 class Channel:
@@ -40,6 +44,120 @@ class Channel:
         if channel_ref.wire() != self.value["channel_ref"] or device_id != self.value["device_id"]:
             raise reject("controlled_channel_missing", "Independent source does not match", 403)
         return copy(self.value)
+
+
+async def original_tool(case):
+    """Actual original SQL rows; Tool provider/root/consent stay controlled here."""
+    ctx = TrustedExecutionContext.model_validate_json(
+        json.dumps({k: v for k, v in case.ctx.wire().items() if k != "budget_reservation_ref"})
+    )
+    spec = {
+        "id": "file.read",
+        "version": "1",
+        "description": "Controlled read definition",
+        "categories": ["file"],
+        "required_capabilities": ["file.read"],
+        "effect": "read",
+        "feature_flag": "file_access",
+        "provider_ref": reference("provider", "fixture-provider"),
+        "retry_policy_ref": reference("policy", "no-automatic-retry"),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "workspace_ref": {
+                    "type": "object",
+                    "properties": {
+                        "kind": {"type": "string", "const": "workspace"},
+                        "id": {"type": "string"},
+                        "version": {"type": "string"},
+                    },
+                    "required": ["kind", "id", "version"],
+                    "additionalProperties": False,
+                },
+                "path": {"type": "string"},
+            },
+            "required": ["workspace_ref", "path"],
+            "additionalProperties": False,
+        },
+        "output_schema": {"type": "object", "properties": {}, "additionalProperties": False},
+    }
+    registry = ToolRegistry()
+    registry.register(spec, expected_revision=0)
+    call = normalize(
+        {
+            "tool_ref": registry.reference(registry.snapshot()[1][0]),
+            "arguments": case.request["parameters"]["parameters"],
+            "action_id": "actual-tool-read",
+        },
+        registry,
+    )
+    ledger = ToolLedger(case.commands.store)
+    await ledger.bind(call, spec, ctx)
+    return ctx, call, spec, ledger
+
+
+async def test_registered_tool_request_keeps_call_pin_and_original_budget_context(case):
+    ctx, call, spec, ledger = await original_tool(case)
+    ref = await case.commands.register_tool_request(
+        call, spec, ctx, meta("tool-original-register"), authenticated_service=case.controller
+    )
+    key = action_key(ctx, call["action_id"])
+    assert ref == pin("tool_call", key, call)
+    reservation = await case.budgets.get_reservation(case.ctx.budget_reservation_ref.id, ctx)
+    await ledger.save("tool.budget.reserved", ctx.attempt_id, "BudgetReservation", reservation, ctx)
+    budget = await case.budgets.get_ledger(ctx)
+    intent = {
+        "validated_action_ref": reference("tool_call", key),
+        "reservation_ref": reference("reservation", reservation["id"], reservation["revision"]),
+        "provider_binding_ref": spec["provider_ref"],
+    }
+    assert await ledger.claim(intent, ctx, budget=budget, reservation=reservation)
+    ack = await case.budgets.dispatch(
+        ctx.principal, intent["reservation_ref"], meta("tool-dispatched"), ctx
+    )
+    await ledger.acknowledge(ack, ctx)
+    registered = await case.commands.register(
+        {**case.registered, "request_ref": ref},
+        meta("tool-command-register"),
+        authenticated_service=case.controller,
+    )
+    command = registered["command"]
+    assert command["trusted_context"] == ctx.wire()
+    assert (
+        "budget_reservation_ref" not in command["trusted_context"]
+        or command["trusted_context"]["budget_reservation_ref"] is None
+    )
+    assert command["request_ref"] == ref
+    actual = await case.authority().current(command, authenticated_principal=case.actor)
+    assert actual["context"] == ctx.wire() and actual["request_ref"] == ref
+
+
+async def test_tool_runner_registration_rejects_unregistered_call_or_mutated_context(case):
+    ctx, call, spec, _ = await original_tool(case)
+    changed = copy(call)
+    changed["arguments"]["path"] = "different.txt"
+    with pytest.raises(DomainError):
+        await case.commands.register_tool_request(
+            changed, spec, ctx, meta("forged-tool"), authenticated_service=case.controller
+        )
+    with pytest.raises(DomainError):
+        await case.commands.register_tool_request(
+            call,
+            spec,
+            case.ctx,
+            meta("changed-original-ctx"),
+            authenticated_service=case.controller,
+        )
+    ref = await case.commands.register_tool_request(
+        call, spec, ctx, meta("undispatched-tool"), authenticated_service=case.controller
+    )
+    with pytest.raises(DomainError) as missing:
+        await case.commands.register(
+            {**case.registered, "request_ref": ref},
+            meta("not-tool-dispatched"),
+            authenticated_service=case.controller,
+        )
+    assert missing.value.failure.code == "runner_original_budget_denied"
 
 
 class Root:

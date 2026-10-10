@@ -1182,6 +1182,7 @@
 | [RunnerRequestRecord](objects/RunnerRequestRecord.md) | 版本1的原请求/原尝试，不是执行权限。 |
 | [RunnerRequestRegisterRequest](objects/RunnerRequestRegisterRequest.md) | 内部控制服务登记不可变实际业务参数。 |
 | [RunnerRootSnapshot](objects/RunnerRootSnapshot.md) | 真实授权根来源的当前opaque元数据，不包含本机路径。 |
+| [RunnerToolRequestRecord](objects/RunnerToolRequestRecord.md) | 控制服务登记的原 Tool 调用；不修改原上下文或授予发送权限。 |
 | [RunsCheckpointRequest](objects/RunsCheckpointRequest.md) | 创建可恢复检查点。 |
 | [RunsControlRequest](objects/RunsControlRequest.md) | 用户干预。 |
 | [RunsDeliveryAcceptRequest](objects/RunsDeliveryAcceptRequest.md) | 实际用户决定整份合同交付；不直接设置completed。 |

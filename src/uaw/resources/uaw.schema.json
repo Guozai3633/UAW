@@ -14561,6 +14561,40 @@
       ],
       "additionalProperties": false
     },
+    "RunnerToolRequestRecord": {
+      "type": "object",
+      "description": "控制服务登记的原 Tool 调用；不修改原上下文或授予发送权限。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Tool动作身份"
+        },
+        "context": {
+          "$ref": "#/$defs/TrustedExecutionContext",
+          "description": "完整原Tool上下文"
+        },
+        "parameters": {
+          "$ref": "#/$defs/RunnerParameters",
+          "description": "原文件读取参数"
+        },
+        "call": {
+          "$ref": "#/$defs/ValidatedCall",
+          "description": "独立Tool账本的原规范化调用"
+        },
+        "spec": {
+          "$ref": "#/$defs/ToolSpec",
+          "description": "独立Tool账本的原工具版本"
+        }
+      },
+      "required": [
+        "id",
+        "context",
+        "parameters",
+        "call",
+        "spec"
+      ],
+      "additionalProperties": false
+    },
     "RunnerRootSnapshot": {
       "type": "object",
       "description": "真实授权根来源的当前opaque元数据，不包含本机路径。",
