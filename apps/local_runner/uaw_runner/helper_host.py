@@ -15,6 +15,7 @@ from typing import Protocol
 
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 from uaw.shared.runner_bootstrap import FirstStartPolicy, FirstStartProgressPort
+from uaw_runner.helper_stdio import PipeLineReader
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 from uaw_runner.runtime import ReadOnlyHelper
 
@@ -83,43 +84,58 @@ async def serve(application: HelperApplication) -> None:
         await helper.close()
 
 
-async def main() -> None:
+async def initialize(
+    factory: HelperAssemblyPort, identity: OsIdentity, stopping: asyncio.Event
+) -> None:
     application = None
-    work = None
-    stopped = None
     try:
-        identity = await asyncio.to_thread(WindowsApi().current)
-        emit("identity", identity=identity.__dict__)
-        if await asyncio.to_thread(sys.stdin.readline) != "start\n":
-            return
-        if len(sys.argv) != 2:
-            raise CapabilityUnavailable("runner.helper.bootstrap_assembly")
-        # This is trusted installation configuration, never a request/body-derived import.
-        module = importlib.import_module(sys.argv[1])
-        factory: HelperAssemblyPort = module.assembly
         application = await factory.create(identity)
         if not isinstance(application, HelperApplication):
             raise CapabilityUnavailable("runner.helper.bootstrap_assembly")
-        work = asyncio.create_task(serve(application))
-        stopped = asyncio.create_task(asyncio.to_thread(sys.stdin.readline))
+        # A factory may finish in a cancellation cleanup/late worker. Never start
+        # its listener after stop; own and close the returned helper instead.
+        if not stopping.is_set():
+            await serve(application)
+    finally:
+        if isinstance(application, HelperApplication):
+            await application.helper.close()
+
+
+async def main() -> None:
+    work: asyncio.Task[None] | None = None
+    stopped: asyncio.Task[bytes] | None = None
+    stopping = asyncio.Event()
+    try:
+        identity = await asyncio.to_thread(WindowsApi().current)
+        emit("identity", identity=identity.__dict__)
+        reader = PipeLineReader(sys.stdin.buffer)
+        if await reader.readline(32) != b"start\n":
+            return
+        # Subscribe BEFORE invoking the installed factory, including native UI wait.
+        stopped = asyncio.create_task(reader.readline(32))
+        if len(sys.argv) != 2:
+            raise CapabilityUnavailable("runner.helper.bootstrap_assembly")
+        module = importlib.import_module(sys.argv[1])
+        factory: HelperAssemblyPort = module.assembly
+        work = asyncio.create_task(initialize(factory, identity, stopping))
         done, _ = await asyncio.wait((work, stopped), return_when=asyncio.FIRST_COMPLETED)
-        if work in done:
+        if stopped in done:
+            await stopped  # EOF and stop both cancel; malformed/truncated input fails closed.
+            stopping.set()
+        elif work in done:
             await work
     except DomainError as exc:
         emit("failure", code=exc.failure.code)
     except Exception:
         emit("failure", code="dependency_protocol_invalid")
     finally:
+        stopping.set()
         if work is not None:
             work.cancel()
-            try:
-                await work
-            except BaseException:
-                pass
-        if application is not None:
-            await application.helper.close()
+            await asyncio.gather(work, return_exceptions=True)
         if stopped is not None:
             stopped.cancel()
+            await asyncio.gather(stopped, return_exceptions=True)
         emit("closed")
 
 
