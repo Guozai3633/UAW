@@ -13880,6 +13880,181 @@
       ],
       "additionalProperties": false
     },
+    "WebLaunch": {
+      "type": "object",
+      "description": "CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。",
+      "properties": {
+        "launch_url": {
+          "$ref": "#/$defs/URL",
+          "description": "精确localhost Web origin与一次code fragment"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "两分钟内截止"
+        }
+      },
+      "required": [
+        "launch_url",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "WebSession": {
+      "type": "object",
+      "description": "浏览器用户身份和CSRF；会话凭据只在HttpOnly cookie中。",
+      "properties": {
+        "principal": {
+          "$ref": "#/$defs/Principal",
+          "description": "服务器签发的用户和Web session"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "固定会话截止"
+        },
+        "csrf_token": {
+          "$ref": "#/$defs/Hash",
+          "description": "内存保留，修改请求X-UAW-CSRF"
+        }
+      },
+      "required": [
+        "principal",
+        "expires_at",
+        "csrf_token"
+      ],
+      "additionalProperties": false
+    },
+    "WebLaunchTicket": {
+      "type": "object",
+      "description": "内部持久身份记录，不含原bearer、启动code、cookie或CSRF。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "随机记录身份"
+        },
+        "principal": {
+          "$ref": "#/$defs/Principal",
+          "description": "独立认证用户"
+        },
+        "origin": {
+          "$ref": "#/$defs/URL",
+          "description": "精确Web origin"
+        },
+        "credential_epoch": {
+          "$ref": "#/$defs/Hash",
+          "description": "当前账号凭据纪元"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "有界期限"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "issued",
+            "consumed"
+          ],
+          "description": "当前状态"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "持久CAS版本"
+        }
+      },
+      "required": [
+        "id",
+        "principal",
+        "origin",
+        "credential_epoch",
+        "expires_at",
+        "state",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "WebSessionRecord": {
+      "type": "object",
+      "description": "内部持久身份记录，不含原bearer、启动code、cookie或CSRF。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "随机记录身份"
+        },
+        "principal": {
+          "$ref": "#/$defs/Principal",
+          "description": "独立认证用户"
+        },
+        "origin": {
+          "$ref": "#/$defs/URL",
+          "description": "精确Web origin"
+        },
+        "credential_epoch": {
+          "$ref": "#/$defs/Hash",
+          "description": "当前账号凭据纪元"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "有界期限"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "active",
+            "revoked"
+          ],
+          "description": "当前状态"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "持久CAS版本"
+        }
+      },
+      "required": [
+        "id",
+        "principal",
+        "origin",
+        "credential_epoch",
+        "expires_at",
+        "state",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "WebLaunchRequest": {
+      "type": "object",
+      "description": "CLI用户取得启动链接。",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "WebSessionExchangeRequest": {
+      "type": "object",
+      "description": "精确Origin消费一次启动code。",
+      "properties": {
+        "launch_code": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "原启动fragment凭据",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "launch_code"
+      ],
+      "additionalProperties": false
+    },
+    "WebSessionGetRequest": {
+      "type": "object",
+      "description": "读取当前浏览器用户会话。",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "WebSessionLogoutRequest": {
+      "type": "object",
+      "description": "撤销当前浏览器会话并清cookie。",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
     "RunnerBindingState": {
       "description": "取值含义见字段及协议约束。",
       "type": "string",
@@ -47317,6 +47492,598 @@
           }
         }
       ]
+    },
+    "HttpWebLaunchResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebLaunch",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpWebLaunchEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebLaunchRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpWebSessionExchangeResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebSession",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpWebSessionExchangeEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebSessionExchangeRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpWebSessionGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebSession",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpWebSessionGetEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebSessionGetRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpWebSessionLogoutResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/Acknowledgement",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpWebSessionLogoutEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/WebSessionLogoutRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
     },
     "HttpTasksAttachConversationResult": {
       "type": "object",

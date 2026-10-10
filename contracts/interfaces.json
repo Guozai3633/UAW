@@ -3664,6 +3664,132 @@
       "result": "RunnerWorkspaceReleaseResult"
     },
     {
+      "id": "web.launch",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history"
+      ],
+      "request": "WebLaunchRequest",
+      "response": "WebLaunch",
+      "effect": "internal_write",
+      "rules": [
+        "无Origin的用户Bearer；管理员拒绝；两分钟一次凭据。"
+      ],
+      "method": "POST",
+      "path": "/v1/web/launch",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_loopback_browser_identity",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M1.md",
+          "docs/implementation/evidence/ms-i2j-m1.json"
+        ]
+      },
+      "result": "HttpWebLaunchResult",
+      "envelope": "HttpWebLaunchEnvelope"
+    },
+    {
+      "id": "web.session.exchange",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history"
+      ],
+      "request": "WebSessionExchangeRequest",
+      "response": "WebSession",
+      "effect": "internal_write",
+      "rules": [
+        "无Bearer/旧cookie；串行一次消费，任何重放拒绝；HttpOnly SameSite Strict host-only cookie。"
+      ],
+      "method": "POST",
+      "path": "/v1/web/session",
+      "auth": "public",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_loopback_browser_identity",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M1.md",
+          "docs/implementation/evidence/ms-i2j-m1.json"
+        ]
+      },
+      "result": "HttpWebSessionExchangeResult",
+      "envelope": "HttpWebSessionExchangeEnvelope"
+    },
+    {
+      "id": "web.session.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history"
+      ],
+      "request": "WebSessionGetRequest",
+      "response": "WebSession",
+      "effect": "read",
+      "rules": [],
+      "method": "GET",
+      "path": "/v1/web/session",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_loopback_browser_identity",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M1.md",
+          "docs/implementation/evidence/ms-i2j-m1.json"
+        ]
+      },
+      "result": "HttpWebSessionGetResult",
+      "envelope": "HttpWebSessionGetEnvelope"
+    },
+    {
+      "id": "web.session.logout",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history"
+      ],
+      "request": "WebSessionLogoutRequest",
+      "response": "Acknowledgement",
+      "effect": "internal_write",
+      "rules": [
+        "{meta,payload}正文；精确Origin/HttpOnly cookie/X-UAW-CSRF；无If-Match参数。"
+      ],
+      "method": "DELETE",
+      "path": "/v1/web/session",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_loopback_browser_identity",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2j-M1.md",
+          "docs/implementation/evidence/ms-i2j-m1.json"
+        ]
+      },
+      "result": "HttpWebSessionLogoutResult",
+      "envelope": "HttpWebSessionLogoutEnvelope"
+    },
+    {
       "id": "tasks.attach_conversation",
       "channel": "http",
       "owner": "run",

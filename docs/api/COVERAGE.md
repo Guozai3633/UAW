@@ -40,6 +40,10 @@
 - [http · reviews.decide](interfaces/http--reviews-decide.md)
 - [http · verification.get](interfaces/http--verification-get.md)
 - [http · models.list](interfaces/http--models-list.md)
+- [http · web.launch](interfaces/http--web-launch.md)
+- [http · web.session.exchange](interfaces/http--web-session-exchange.md)
+- [http · web.session.get](interfaces/http--web-session-get.md)
+- [http · web.session.logout](interfaces/http--web-session-logout.md)
 - [component · ui](interfaces/component--ui.md)
 
 ## ingress · 产品入口
@@ -51,6 +55,10 @@
 - [http · turns.submit](interfaces/http--turns-submit.md)
 - [http · events.read](interfaces/http--events-read.md)
 - [http · events.stream](interfaces/http--events-stream.md)
+- [http · web.launch](interfaces/http--web-launch.md)
+- [http · web.session.exchange](interfaces/http--web-session-exchange.md)
+- [http · web.session.get](interfaces/http--web-session-get.md)
+- [http · web.session.logout](interfaces/http--web-session-logout.md)
 - [component · ingress](interfaces/component--ingress.md)
 
 ## intent · 任务理解 · Intent
@@ -646,6 +654,10 @@
 - [http · turns.submit](interfaces/http--turns-submit.md)
 - [http · tasks.get](interfaces/http--tasks-get.md)
 - [runtime · RunRuntime.create](interfaces/runtime--RunRuntime-create.md)
+- [http · web.launch](interfaces/http--web-launch.md)
+- [http · web.session.exchange](interfaces/http--web-session-exchange.md)
+- [http · web.session.get](interfaces/http--web-session-get.md)
+- [http · web.session.logout](interfaces/http--web-session-logout.md)
 - [http · tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md)
 - [component · run.history](interfaces/component--run-history.md)
 

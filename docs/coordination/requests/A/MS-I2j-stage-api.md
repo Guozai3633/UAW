@@ -1,6 +1,6 @@
 # MS-I2j M1：浏览器与文件桥接接入清单
 
-日期：2026-10-10。初始状态：接口实现前的接入设计；旧MS-I2i固定来源回归未结束前不改运行代码/契约。实际实现后按阶段提交逐项更新本页，不把设计路径称为已开放接口。
+日期：2026-10-10。M1浏览器身份已实现并通过真实SQL/HTTP验证；旧MS-I2i固定来源完整1691项已先行封存。后台实际执行、成果HTTP和本机授权仍在后续里程碑接入。
 
 ## 1. B的客户端先消费什么
 
@@ -22,7 +22,7 @@ POST仍使用 `{meta,payload}`，RequestMeta中的request_id稳定且同请求�
 
 分页cursor固定本次watermark：走完本批页面以后重新取当前快照检查新增，不把最后一个cursor当无限追尾订阅。Item按id/revision更新，事件按seq去重；刷新查原请求/Run，不能再发一个turn。
 
-## 2. 浏览器会话协议（本轮待实现）
+## 2. 浏览器会话协议（M1已实现）
 
 仅显式配置的localhost Web origin，禁止通配Origin、管理员浏览器登录和供应商key进入前端。原无Origin的CLI Bearer路径保持兼容。
 
@@ -33,11 +33,11 @@ POST仍使用 `{meta,payload}`，RequestMeta中的request_id稳定且同请求�
 | web.session.get | GET /v1/web/session | credentials:include，返回当前user Principal、期限和CSRF token，Cache-Control:no-store |
 | web.session.logout | DELETE /v1/web/session | credentials:include及X-UAW-CSRF，服务端撤销会话并删除cookie |
 
-以上新对象/操作尚待写入公共契约并联测，B不应先造私有服务端DTO。A阶段实现后发布实际schema和示例。
+以上对象/操作已写入源契约及生成物，M1共36项聚焦验证通过。B按阶段标签的实际schema生成客户端，不自行修改服务端DTO。
 
 cookie及一次code由独立浏览器签名密钥和随机ID生成，持久记录只保存身份、期限、版本、消费/撤销状态和令牌验证信息，不保存用户/管理员Bearer或供应商secret。短期code绑定独立认证的用户、配置Origin和账户凭据纪元，一次CAS消费；请求重放、换Origin/用户、过期或撤销拒绝。
 
-M1字段约定如下（仍待实际schema发布）：
+实际M1字段如下（准确对象见公共schema，以下临时值只说明字段）：
 
 ```json
 // POST /v1/web/launch；原无Origin用户Bearer，payload为空

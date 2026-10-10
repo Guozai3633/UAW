@@ -19,6 +19,12 @@ IMPLEMENTATIONS["RunRuntime.create"] = {
     "scope": "development_run_admission", "entrypoint": "src/uaw/run/facade.py",
     "evidence": ["docs/implementation/P0-04.md", "docs/implementation/evidence/p0-tests.xml"],
 }
+for operation in ("web.launch", "web.session.exchange", "web.session.get", "web.session.logout"):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_loopback_browser_identity",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2j-M1.md", "docs/implementation/evidence/ms-i2j-m1.json"],
+    }
 IMPLEMENTATIONS["ModelRuntime.generate"] = {
     "scope": "development_model_protocol", "entrypoint": "src/uaw/model/facade.py",
     "evidence": ["docs/implementation/P0-05.md", "docs/implementation/evidence/p0-tests.xml"],

@@ -169,6 +169,7 @@
         "tests/conftest.py",
         "tests/integration/test_control_plane.py",
         "tests/integration/test_bootstrap.py",
+        "tests/integration/test_browser_sessions.py",
         "tests/integration/model/",
         "tests/integration/intent/",
         "README.md",

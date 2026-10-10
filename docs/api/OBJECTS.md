@@ -1071,6 +1071,14 @@
 | [HttpTriggersDisableResult](objects/HttpTriggersDisableResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpTurnsSubmitEnvelope](objects/HttpTurnsSubmitEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpTurnsSubmitResult](objects/HttpTurnsSubmitResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpWebLaunchEnvelope](objects/HttpWebLaunchEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpWebLaunchResult](objects/HttpWebLaunchResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpWebSessionExchangeEnvelope](objects/HttpWebSessionExchangeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpWebSessionExchangeResult](objects/HttpWebSessionExchangeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpWebSessionGetEnvelope](objects/HttpWebSessionGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpWebSessionGetResult](objects/HttpWebSessionGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpWebSessionLogoutEnvelope](objects/HttpWebSessionLogoutEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpWebSessionLogoutResult](objects/HttpWebSessionLogoutResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [InputRecord](objects/InputRecord.md) | 原文追加保存，不覆盖已有输入。 |
 | [InteractionItem](objects/InteractionItem.md) | 稳定前端交互对象，不依赖猜模型文本。 |
 | [InternalIngressOutput](objects/InternalIngressOutput.md) | 互斥分支；所有字段须匹配所选action。 |
@@ -1178,6 +1186,14 @@
 | [TriggersDisableRequest](objects/TriggersDisableRequest.md) | 关闭触发器。 |
 | [TurnsSubmitRequest](objects/TurnsSubmitRequest.md) | 提交原文并受理Run。 |
 | [UserControl](objects/UserControl.md) | 补充、排队、替换、取消、先交现有成果语义明确。 |
+| [WebLaunch](objects/WebLaunch.md) | CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。 |
+| [WebLaunchRequest](objects/WebLaunchRequest.md) | CLI用户取得启动链接。 |
+| [WebLaunchTicket](objects/WebLaunchTicket.md) | 内部持久身份记录，不含原bearer、启动code、cookie或CSRF。 |
+| [WebSession](objects/WebSession.md) | 浏览器用户身份和CSRF；会话凭据只在HttpOnly cookie中。 |
+| [WebSessionExchangeRequest](objects/WebSessionExchangeRequest.md) | 精确Origin消费一次启动code。 |
+| [WebSessionGetRequest](objects/WebSessionGetRequest.md) | 读取当前浏览器用户会话。 |
+| [WebSessionLogoutRequest](objects/WebSessionLogoutRequest.md) | 撤销当前浏览器会话并清cookie。 |
+| [WebSessionRecord](objects/WebSessionRecord.md) | 内部持久身份记录，不含原bearer、启动code、cookie或CSRF。 |
 ## 配置与共享基础设施
 
 | 对象 | 用途 |

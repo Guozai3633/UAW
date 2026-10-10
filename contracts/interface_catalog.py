@@ -1765,6 +1765,27 @@ PRIVATE_FIELD_NOTES.update({
 })
 
 def finalize(graph,strategies):
+    obj("WebLaunch", "run", "CLI用户取得短期一次Web启动链接；fragment凭据不能进入日志或持久缓存。", {
+        "launch_url": field("URL", "精确localhost Web origin与一次code fragment"),
+        "expires_at": field("Timestamp", "两分钟内截止"),
+    })
+    obj("WebSession", "run", "浏览器用户身份和CSRF；会话凭据只在HttpOnly cookie中。", {
+        "principal": field("Principal", "服务器签发的用户和Web session"),
+        "expires_at": field("Timestamp", "固定会话截止"),
+        "csrf_token": field("Hash", "内存保留，修改请求X-UAW-CSRF"),
+    })
+    for name, states in (("WebLaunchTicket", ["issued", "consumed"]), ("WebSessionRecord", ["active", "revoked"])):
+        obj(name, "run", "内部持久身份记录，不含原bearer、启动code、cookie或CSRF。", {
+            "id": field("ID", "随机记录身份"), "principal": field("Principal", "独立认证用户"),
+            "origin": field("URL", "精确Web origin"), "credential_epoch": field("Hash", "当前账号凭据纪元"),
+            "expires_at": field("Timestamp", "有界期限"), "state": field({"type":"string", "enum": states}, "当前状态"),
+            "revision": field("Revision", "持久CAS版本"),
+        })
+    endpoint("web.launch", "POST", "/v1/web/launch", "run", "ui ingress run.history", "CLI用户取得启动链接。", "", "WebLaunch", "internal_write", ["无Origin的用户Bearer；管理员拒绝；两分钟一次凭据。"])
+    endpoint("web.session.exchange", "POST", "/v1/web/session", "run", "ui ingress run.history", "精确Origin消费一次启动code。", "launch_code|NonEmptyText|原启动fragment凭据", "WebSession", "internal_write", ["无Bearer/旧cookie；串行一次消费，任何重放拒绝；HttpOnly SameSite Strict host-only cookie。"], auth="public")
+    TYPES["WebSessionExchangeRequest"]["properties"]["launch_code"].update(maxLength=256)
+    endpoint("web.session.get", "GET", "/v1/web/session", "run", "ui ingress run.history", "读取当前浏览器用户会话。", "", "WebSession")
+    endpoint("web.session.logout", "DELETE", "/v1/web/session", "run", "ui ingress run.history", "撤销当前浏览器会话并清cookie。", "", "Acknowledgement", "internal_write", ["{meta,payload}正文；精确Origin/HttpOnly cookie/X-UAW-CSRF；无If-Match参数。"])
     enum("RunnerBindingState","active|revoked|expired","run")
     enum("RunnerCommandState","active|revoked","run")
     record("RunnerChannelSnapshot","run","独立可信通道源读取的当前设备拥有者及认证身份，不接受网络/模型自报。","device_id|ID|设备\nowner|Principal|原用户\nactor|Principal|当前认证Runner\npairing_ref|Ref|实际配对版本\nchannel_ref|Ref|实际通道版本\nkey_ref|Ref|设备公钥版本\nconnected|Bool|实际在线\nexpires_at|Timestamp|当前通道期限")

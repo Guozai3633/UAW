@@ -3,6 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from uaw.api.browser import BrowserSessions
 from uaw.context.authority import RegisteredCompositionAuthority
 from uaw.context.cache import PureComputationCache
 from uaw.context.facade import ContextComponents
@@ -132,6 +133,7 @@ class Container:
     runner_authority: RegisteredRunnerAuthority | None = None
     runner_receipt_commands: RegisteredReceiptCommandReader | None = None
     runner_principals: RegisteredRunnerPrincipalMapping | None = None
+    browser_sessions: BrowserSessions | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -269,6 +271,9 @@ def compose(settings: Settings, *, context_cache: PureComputationCache | None = 
         runner_authority=RegisteredRunnerAuthority(commands) if commands else None,
         runner_receipt_commands=RegisteredReceiptCommandReader(commands) if commands else None,
         runner_principals=RegisteredRunnerPrincipalMapping(devices) if devices else None,
+        browser_sessions=BrowserSessions(records, settings)
+        if records and settings.browser_origin
+        else None,
     )
 
 

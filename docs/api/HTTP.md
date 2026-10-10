@@ -84,6 +84,10 @@
 | [admin.evaluations.get](interfaces/http--admin-evaluations-get.md) | [AdminEvaluationsGetRequest](objects/AdminEvaluationsGetRequest.md) | [EvaluationResult](objects/EvaluationResult.md) | `read` |
 | [triggers.create](interfaces/http--triggers-create.md) | [TriggersCreateRequest](objects/TriggersCreateRequest.md) | [TriggerSpec](objects/TriggerSpec.md) | `internal_write` |
 | [triggers.disable](interfaces/http--triggers-disable.md) | [TriggersDisableRequest](objects/TriggersDisableRequest.md) | [Acknowledgement](objects/Acknowledgement.md) | `internal_write` |
+| [web.launch](interfaces/http--web-launch.md) | [WebLaunchRequest](objects/WebLaunchRequest.md) | [WebLaunch](objects/WebLaunch.md) | `internal_write` |
+| [web.session.exchange](interfaces/http--web-session-exchange.md) | [WebSessionExchangeRequest](objects/WebSessionExchangeRequest.md) | [WebSession](objects/WebSession.md) | `internal_write` |
+| [web.session.get](interfaces/http--web-session-get.md) | [WebSessionGetRequest](objects/WebSessionGetRequest.md) | [WebSession](objects/WebSession.md) | `read` |
+| [web.session.logout](interfaces/http--web-session-logout.md) | [WebSessionLogoutRequest](objects/WebSessionLogoutRequest.md) | [Acknowledgement](objects/Acknowledgement.md) | `internal_write` |
 | [tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md) | [TasksAttach_conversationRequest](objects/TasksAttach_conversationRequest.md) | [TaskRecord](objects/TaskRecord.md) | `internal_write` |
 | [admin.providers.revoke](interfaces/http--admin-providers-revoke.md) | [AdminProvidersRevokeRequest](objects/AdminProvidersRevokeRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [events.payload](interfaces/http--events-payload.md) | [EventsPayloadRequest](objects/EventsPayloadRequest.md) | [EventPayload](objects/EventPayload.md) | `read` |

@@ -4,6 +4,7 @@ import os
 import tomllib
 from pathlib import Path
 from typing import Literal, Self
+from urllib.parse import urlsplit
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 
@@ -25,6 +26,9 @@ class Settings(BaseModel):
     development_user_token: SecretStr | None = None
     development_admin_token: SecretStr | None = None
     cursor_signing_key: SecretStr | None = None
+    browser_origin: str | None = None
+    browser_session_signing_key: SecretStr | None = None
+    browser_session_seconds: int = Field(default=3600, ge=300, le=28800)
     database_url: SecretStr | None = None
     blob_directory: Path = Path(".data/blobs")
     max_request_bytes: int = Field(default=1_048_576, ge=1024, le=1_048_576)
@@ -39,6 +43,7 @@ class Settings(BaseModel):
             self.development_user_token,
             self.development_admin_token,
             self.cursor_signing_key,
+            self.browser_session_signing_key,
         ]
         if any(value and len(value.get_secret_value()) < 32 for value in secrets):
             raise ValueError(
@@ -52,6 +57,30 @@ class Settings(BaseModel):
         supplied = [value.get_secret_value() for value in secrets if value]
         if len(set(supplied)) != len(supplied):
             raise ValueError("Authentication tokens and cursor signing key must be independent")
+        if bool(self.browser_origin) != bool(self.browser_session_signing_key):
+            raise ValueError("Browser access requires both an exact origin and an independent key")
+        if self.browser_origin:
+            origin = urlsplit(self.browser_origin)
+            try:
+                port = origin.port
+            except ValueError:
+                raise ValueError("Browser origin has an invalid port") from None
+            if (
+                origin.scheme != "http"
+                or origin.hostname != self.host
+                or port is None
+                or not 1024 <= port <= 65535
+                or origin.username is not None
+                or origin.password is not None
+                or origin.path
+                or origin.query
+                or origin.fragment
+                or self.browser_origin != f"http://{origin.netloc}"
+                or not self.development_user_token
+            ):
+                raise ValueError(
+                    "Browser origin must be an exact loopback HTTP origin for this host"
+                )
         if self.development_principal_id in (self.development_admin_id, self.platform_id):
             raise ValueError("User, administrator and platform identities must be separate")
         if self.development_admin_id == self.platform_id:
@@ -70,6 +99,7 @@ class Settings(BaseModel):
             "development_user_token",
             "development_admin_token",
             "cursor_signing_key",
+            "browser_session_signing_key",
         ):
             if field in config:
                 raise ConfigurationError(f"Use {field}_env instead of a plaintext secret")

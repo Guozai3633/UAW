@@ -4,6 +4,7 @@ from typing import Any
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from starlette.middleware.cors import CORSMiddleware
 
 from uaw import __version__
 from uaw.api.documentation import install_openapi
@@ -23,12 +24,22 @@ def create_app(container: Container) -> FastAPI:
             await container.close()
 
     app = FastAPI(title="UAW Runtime", version=__version__, lifespan=lifespan)
+    if container.settings.browser_origin:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=[container.settings.browser_origin],
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "DELETE"],
+            allow_headers=["Content-Type", "X-UAW-CSRF"],
+            max_age=120,
+        )
 
     @app.exception_handler(DomainError)
     async def domain_error(request: Request, exc: DomainError) -> JSONResponse:
         return JSONResponse(
             status_code=exc.status_code,
             content=error_result(exc),
+            headers={"Cache-Control": "no-store"},
         )
 
     @app.get("/health/live", include_in_schema=False)

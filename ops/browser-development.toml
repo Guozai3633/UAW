@@ -1,0 +1,13 @@
+# Explicit localhost browser opt-in; keys stay in Windows Credential Manager.
+profile = "development"
+host = "127.0.0.1"
+port = 8000
+development_principal_id = "development-user"
+blob_directory = ".data/blobs"
+database_url_env = "UAW_DATABASE_URL"
+development_user_token_keyring_handle = "development-user-token"
+development_admin_token_keyring_handle = "development-admin-token"
+cursor_signing_key_keyring_handle = "cursor-signing-key"
+browser_origin = "http://127.0.0.1:5173"
+browser_session_signing_key_keyring_handle = "browser-session-signing-key"
+browser_session_seconds = 3600

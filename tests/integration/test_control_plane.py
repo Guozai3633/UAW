@@ -663,6 +663,105 @@ def test_confirmed_usage_requires_known_money_and_tokens():
         validate_contract("Usage", {**value, "billing_state": "confirmed"})
 
 
+async def test_web_user_conversation_admission_and_logout_blocks_mutation(domain, principal):
+    from urllib.parse import parse_qs, urlsplit
+
+    from uaw.api.browser import BrowserSessions
+
+    configuration, run, admin = domain
+    await seed(configuration, admin)
+    settings = Settings(
+        profile="development",
+        development_principal_id=principal.id,
+        development_admin_id=admin.id,
+        platform_id=configuration.platform.id,
+        development_user_token=SecretStr("u" * 40),
+        development_admin_token=SecretStr("a" * 40),
+        cursor_signing_key=SecretStr("c" * 40),
+        browser_session_signing_key=SecretStr("w" * 40),
+        browser_origin="http://127.0.0.1:5173",
+    )
+    sessions = BrowserSessions(run.store, settings)
+    container = Container(
+        settings=settings,
+        bindings=RuntimeBindings(),
+        records=run.store,
+        configuration=configuration,
+        run_service=run,
+        browser_sessions=sessions,
+    )
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=create_app(container)), base_url="http://127.0.0.1:8000"
+    ) as client:
+        launched = await client.post(
+            "/v1/web/launch",
+            headers={"Authorization": "Bearer " + "u" * 40},
+            json={"meta": meta("launch").wire(), "payload": {}},
+        )
+        code = parse_qs(urlsplit(launched.json()["payload"]["launch_url"]).fragment)["uaw_launch"][
+            0
+        ]
+        logged_in = await client.post(
+            "/v1/web/session",
+            headers={"Origin": settings.browser_origin},
+            json={"meta": meta("login").wire(), "payload": {"launch_code": code}},
+        )
+        headers = {
+            "Origin": settings.browser_origin,
+            "X-UAW-CSRF": logged_in.json()["payload"]["csrf_token"],
+        }
+        payload = {
+            "title": "真实网页会话",
+            "model_choice": {"mode": "explicit", "model_id": "fixture-model"},
+            "memory_policy": {
+                "revision": 0,
+                "read_enabled": False,
+                "contribute_enabled": False,
+                "scope": {"resource_refs": []},
+            },
+        }
+        assert (
+            await client.post(
+                "/v1/conversations",
+                headers={"Origin": settings.browser_origin},
+                json={"meta": meta("create").wire(), "payload": payload},
+            )
+        ).status_code == 403
+        created = await client.post(
+            "/v1/conversations",
+            headers=headers,
+            json={"meta": meta("create").wire(), "payload": payload},
+        )
+        assert created.status_code == 200, created.json()
+        conv = created.json()["payload"]
+        turn = {
+            "meta": meta("submit").wire(),
+            "payload": {"text": "完整原文不改变", "attachment_refs": []},
+        }
+        response = await client.post(
+            f"/v1/conversations/{conv['id']}/turns", headers=headers, json=turn
+        )
+        assert response.status_code == 202 and response.json()["payload"]["status"] == "queued"
+        replay = await client.post(
+            f"/v1/conversations/{conv['id']}/turns", headers=headers, json=turn
+        )
+        assert replay.json()["payload"] == response.json()["payload"]
+        cookie = client.cookies.get("uaw_web_session")
+        assert (
+            await client.request(
+                "DELETE",
+                "/v1/web/session",
+                headers=headers,
+                json={"meta": meta("logout").wire(), "payload": {}},
+            )
+        ).status_code == 200
+        # A copied pre-logout cookie/CSRF does not regain mutation authority.
+        client.cookies.set("uaw_web_session", cookie, path="/v1")
+        assert (
+            await client.post(f"/v1/conversations/{conv['id']}/turns", headers=headers, json=turn)
+        ).status_code == 401
+
+
 async def test_item_updates_keep_identity_and_page_watermark(domain, principal):
     record = await admitted(domain, principal)
     run = domain[1]

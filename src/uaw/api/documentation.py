@@ -31,6 +31,32 @@ def install_openapi(app: FastAPI) -> None:
                 ],
                 "responses": {},
             }
+            if operation.startswith("web.session."):
+                entry["security"] = [] if operation.endswith("exchange") else [{"webCookie": []}]
+                entry["x-required-role"] = (
+                    "public-launch-exchange" if operation.endswith("exchange") else "user"
+                )
+            elif not operation.startswith("admin.") and operation != "web.launch":
+                entry["security"] = [{"developmentBearer": []}, {"webCookie": []}]
+            if operation.startswith("web.session."):
+                entry["parameters"].append(
+                    {
+                        "name": "Origin",
+                        "in": "header",
+                        "required": method != "GET",
+                        "schema": {"type": "string"},
+                    }
+                )
+            if method != "GET" and operation != "web.launch":
+                entry["parameters"].append(
+                    {
+                        "name": "X-UAW-CSRF",
+                        "in": "header",
+                        "required": operation == "web.session.logout",
+                        "schema": {"$ref": "#/$defs/Hash"},
+                        "description": "Required for authenticated cookie writes.",
+                    }
+                )
             for key in path_fields:
                 request["properties"].pop(key, None)
                 if key in request["required"]:
@@ -79,7 +105,10 @@ def install_openapi(app: FastAPI) -> None:
             "paths": paths,
             "components": {
                 "schemas": definitions,
-                "securitySchemes": {"developmentBearer": {"type": "http", "scheme": "bearer"}},
+                "securitySchemes": {
+                    "developmentBearer": {"type": "http", "scheme": "bearer"},
+                    "webCookie": {"type": "apiKey", "in": "cookie", "name": "uaw_web_session"},
+                },
             },
         }
         app.openapi_schema = json.loads(

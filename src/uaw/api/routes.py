@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.routing import APIRoute
 
 from uaw.api.authentication import authenticate
+from uaw.api.browser import COOKIE, authenticated
 from uaw.composition import Container
 from uaw.shared.contracts import RequestMeta
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
@@ -16,6 +17,16 @@ from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 
 # id, method, route, request schema, response schema. All unlisted contracts remain unavailable.
 ROUTES = (
+    ("web.launch", "POST", "/v1/web/launch", "WebLaunchRequest", "WebLaunch"),
+    ("web.session.exchange", "POST", "/v1/web/session", "WebSessionExchangeRequest", "WebSession"),
+    ("web.session.get", "GET", "/v1/web/session", "WebSessionGetRequest", "WebSession"),
+    (
+        "web.session.logout",
+        "DELETE",
+        "/v1/web/session",
+        "WebSessionLogoutRequest",
+        "Acknowledgement",
+    ),
     (
         "conversations.create",
         "POST",
@@ -200,7 +211,33 @@ def install_routes(app: FastAPI, container: Container) -> None:
         operation: str, method: str, schema: str, response_schema: str
     ) -> Callable[[Request], Awaitable[JSONResponse]]:
         async def endpoint(request: Request) -> JSONResponse:
-            actor = authenticate(request, container.settings, admin=operation.startswith("admin."))
+            browser = container.browser_sessions
+            if operation == "web.launch":
+                actor = authenticate(request, container.settings)
+                if request.headers.get("cookie"):
+                    raise reject("web_launch_denied", "CLI user bearer required", 403, "permission")
+            elif operation == "web.session.exchange":
+                if browser is None:
+                    raise CapabilityUnavailable("web.browser_session")
+                browser.guard(request)
+                if request.headers.get("authorization") or COOKIE in request.cookies:
+                    raise reject(
+                        "web_exchange_denied",
+                        "Unauthenticated launch exchange required",
+                        403,
+                        "permission",
+                    )
+                actor = None
+            else:
+                actor = await authenticated(
+                    request, container, admin=operation.startswith("admin.")
+                )
+            if operation in ("web.session.get", "web.session.logout") and (
+                actor is None or not actor.auth_session_id.startswith("web-session-")
+            ):
+                raise reject(
+                    "authentication_required", "Browser session required", 401, "permission"
+                )
             configuration, run, records = (
                 container.configuration,
                 container.run_service,
@@ -230,7 +267,27 @@ def install_routes(app: FastAPI, container: Container) -> None:
             else:
                 meta, payload = await body(request, schema, container.settings.max_request_bytes)
             result: dict[str, Any]
-            if operation == "conversations.get":
+            cookie: str | None = None
+            if operation.startswith("web."):
+                if browser is None:
+                    raise CapabilityUnavailable("web.browser_session")
+                if operation == "web.session.exchange":
+                    result, cookie = await browser.exchange(payload["launch_code"])
+                else:
+                    assert actor is not None
+                    if operation == "web.launch":
+                        assert meta is not None
+                        result = await browser.launch(actor, meta)
+                    elif operation == "web.session.get":
+                        result = browser.public(await browser.principal(actor))
+                    else:
+                        assert meta is not None
+                        result = await browser.logout(actor, meta)
+            elif actor is None:
+                raise reject(
+                    "authentication_required", "Authenticated user required", 401, "permission"
+                )
+            elif operation == "conversations.get":
                 result = (
                     await records.get(actor, "conversations", payload["conversation_id"])
                 ).payload
@@ -297,10 +354,24 @@ def install_routes(app: FastAPI, container: Container) -> None:
             if "revision" in result:
                 wire["revision"] = result["revision"]
             validate_contract(result_schema(operation), wire)
-            return JSONResponse(
+            response = JSONResponse(
                 status_code=202 if operation in ("turns.submit", "runs.control") else 200,
                 content=wire,
+                headers={"Cache-Control": "no-store", "Referrer-Policy": "no-referrer"},
             )
+            if cookie is not None:
+                response.set_cookie(
+                    COOKIE,
+                    cookie,
+                    max_age=container.settings.browser_session_seconds,
+                    httponly=True,
+                    samesite="strict",
+                    secure=False,
+                    path="/v1",
+                )
+            if operation == "web.session.logout":
+                response.delete_cookie(COOKIE, path="/v1", httponly=True, samesite="strict")
+            return response
 
         return endpoint
 

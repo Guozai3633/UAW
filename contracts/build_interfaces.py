@@ -147,6 +147,12 @@ def body_schema(op):
 def http_parameters(op):
     s=TYPES[op["request"]];pathkeys=re.findall(r"{([^}]+)}",op["path"])
     parameters=[{"name":k,"in":"path","required":True,"schema":rewrite_refs(s["properties"][k],"#/components/schemas/")} for k in pathkeys]
+    if op["id"].startswith("web."):
+        if op["id"] != "web.launch":
+            parameters.append({"name":"Origin","in":"header","required":op["method"]!="GET","schema":{"type":"string"},"description":"Configured exact localhost origin; GET may use exact Referer."})
+        if op["id"] == "web.session.logout":
+            parameters.append({"name":"X-UAW-CSRF","in":"header","required":True,"schema":{"$ref":"#/components/schemas/Hash"}})
+        return parameters
     if op["method"] in ["GET","DELETE"]:
         for k,value in s["properties"].items():
             if k in pathkeys:continue
@@ -178,7 +184,10 @@ for op in OPERATIONS:
     resultref={"$ref":"#/components/schemas/"+op["result"]}
     result_ok={"allOf":[resultref,{"properties":{"kind":{"const":"ok"}}}]}
     wire={"operationId":operation_name(op),"summary":TYPES[op["request"]]["description"],"tags":[op["owner"]],"parameters":http_parameters(op),"responses":{"200":{"description":"本接口成功；Run/作业可能仍在执行。","content":{"application/json":{"schema":result_ok}}}},"security":[{"adminAuth" if op["auth"]=="admin" else "sessionAuth":[]}],"x-uaw-effect":op["effect"],"x-uaw-node-ids":op["nodes"],"x-uaw-implemented":op["implemented"],"x-uaw-implementation-scope":op.get("implementation",{}).get("scope","planned")}
-    if op["method"] not in ["GET","DELETE"]:
+    if op["id"].startswith("web.session."):
+        wire["security"]=[] if op["id"]=="web.session.exchange" else [{"webCookie":[]}]
+        openapi["components"]["securitySchemes"]["webCookie"]={"type":"apiKey","in":"cookie","name":"uaw_web_session","description":"Localhost HttpOnly host-only user session; writes also require exact Origin and X-UAW-CSRF."}
+    if op["method"] not in ["GET","DELETE"] or op["id"]=="web.session.logout":
         cas=op["method"]=="PATCH" or op["id"] in ["runs.control","runs.checkpoint","runs.resume","approvals.decide","definitions.revert","workspaces.merge","workspaces.revert","reviews.decide","admin.configuration.activate","admin.extensions.activate","admin.extensions.rollback","tasks.attach_conversation"]
         meta={"allOf":[{"$ref":"#/components/schemas/RequestMeta"},{"required":["expected_revision"],"properties":{"expected_revision":{"type":"integer","minimum":1}}}]} if cas else {"$ref":"#/components/schemas/RequestMeta"}
         wire["requestBody"]={"required":True,"content":{"application/json":{"schema":{"type":"object","additionalProperties":False,"required":["meta","payload"],"properties":{"meta":meta,"payload":rewrite_refs(body_schema(op),"#/components/schemas/")}}}}}
@@ -221,12 +230,14 @@ for node,info in node_map.items():
         info["interfaces"]=[i for child,value in node_map.items() if child.startswith(node+".") for i in value["interfaces"]]
 for op in OPERATIONS:
     scopes={"development_model_protocol":"模型网关/协议已实现；真实LLM提供方验收待配置",
+            "development_loopback_browser_identity":"本机浏览器身份已实现；后台执行与真实页面整链另验收",
             "development_intent_protocol":"有来源的理解协议已实现；真实模型语义质量待验收"}
     status=scopes.get(op.get("implementation",{}).get("scope"),"已实现本机开发控制层；Agent执行尚未接入") if op["implemented"] else "契约0.1，待实现"
     inp=TYPES[op["request"]]; text=f"# {op['id']}\n\n状态：{status}。类别：{CHANNELS[op['channel']]}。所属：{OWNERNAMES[op['owner']]}。\n\n{inp.get('description','')}\n\n[分类索引](../{op['channel'].upper()}.md) · [统一规则](../CONVENTIONS.md) · [实际范围](../../implementation/README.md)\n\n## 调用入口\n\n"
     if op["channel"]=="http":
         text+=f"`{op['method']} {op['path']}`；认证：`{op['auth']}`。\n\n"
-        if op["method"] in ["GET","DELETE"]:text+="参数通过路径/查询传入；meta使用X-Request-Id、X-UAW-Schema-Version，DELETE还使用If-Match。不能发送模型上下文或主体字段。\n"
+        if op["id"]=="web.session.logout":text+="正文使用{meta,payload}；精确Origin、HttpOnly cookie和X-UAW-CSRF。无If-Match查询参数。\n"
+        elif op["method"] in ["GET","DELETE"]:text+="参数通过路径/查询传入；meta使用X-Request-Id、X-UAW-Schema-Version，DELETE还使用If-Match。不能发送模型上下文或主体字段。\n"
         else:text+="请求体是 `{meta, payload}`；路径ID从path取得，不重复写入payload。OpenAPI记录实际线上字段位置；下方输入对象是服务合成的业务请求。\n"
     elif op["channel"]=="tool":text+=f"LLM提出 `{op['id']}(arguments)` → ToolRuntime校验/权限/必要审批 → `{op['owner']}`负责人。ToolRuntime注入可信上下文，业务参数只使用下方输入结构。\n"
     elif op["channel"]=="runner":text+="配对/本地选择是专用可信交互；执行类消息走 `RunnerCommand` 信封，其中request_ref解析为下方输入。服务签名和本机范围/权限均有效才执行，响应回传ComponentResult，不能把进程启动当成完成。\n"

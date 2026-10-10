@@ -3931,6 +3931,51 @@
       "arguments": {},
       "action_id": "example_001"
     },
+    "WebLaunch": {
+      "launch_url": "https://example.org/resource",
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
+    "WebSession": {
+      "principal": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "expires_at": "2026-10-07T02:00:00Z",
+      "csrf_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "WebLaunchTicket": {
+      "id": "example_001",
+      "principal": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "origin": "https://example.org/resource",
+      "credential_epoch": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expires_at": "2026-10-07T02:00:00Z",
+      "state": "issued",
+      "revision": 0
+    },
+    "WebSessionRecord": {
+      "id": "example_001",
+      "principal": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "origin": "https://example.org/resource",
+      "credential_epoch": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expires_at": "2026-10-07T02:00:00Z",
+      "state": "active",
+      "revision": 0
+    },
+    "WebLaunchRequest": {},
+    "WebSessionExchangeRequest": {
+      "launch_code": "example_001"
+    },
+    "WebSessionGetRequest": {},
+    "WebSessionLogoutRequest": {},
     "RunnerBindingState": "active",
     "RunnerCommandState": "active",
     "RunnerChannelSnapshot": {
@@ -14954,6 +14999,78 @@
         "operation_id": "example_001",
         "status": "accepted"
       }
+    },
+    "HttpWebLaunchResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "launch_url": "https://example.org/resource",
+        "expires_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpWebLaunchEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {}
+    },
+    "HttpWebSessionExchangeResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "expires_at": "2026-10-07T02:00:00Z",
+        "csrf_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    "HttpWebSessionExchangeEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "launch_code": "example_001"
+      }
+    },
+    "HttpWebSessionGetResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "principal": {
+          "id": "example_001",
+          "kind": "user",
+          "auth_session_id": "example_001"
+        },
+        "expires_at": "2026-10-07T02:00:00Z",
+        "csrf_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    "HttpWebSessionGetEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {}
+    },
+    "HttpWebSessionLogoutResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "operation_id": "example_001",
+        "status": "accepted"
+      }
+    },
+    "HttpWebSessionLogoutEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {}
     },
     "HttpTasksAttachConversationResult": {
       "kind": "ok",
