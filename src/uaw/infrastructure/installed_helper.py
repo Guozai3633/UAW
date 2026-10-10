@@ -35,11 +35,12 @@ from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
 from uaw.infrastructure.enrollment_native import WindowsEnrollmentConfirmation
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
 from uaw.infrastructure.enrollment_pipe import EnrollmentProofClient, decode
+from uaw.infrastructure.installed_roots import InstalledRootSelection, workspace_pin
 from uaw.run.runner_authority import RegisteredRunnerAuthority
 from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
-from uaw.shared.contracts import Principal
+from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_bootstrap import FirstStartProgressPort
 from uaw.shared.schema import validate_contract
@@ -68,6 +69,7 @@ class InstalledLaunch:
     identity: OsIdentity
     expires_at: datetime
     currency: str
+    root_workspace: Ref | None = None
 
     @classmethod
     def from_bytes(cls, raw: bytes) -> InstalledLaunch:
@@ -86,7 +88,7 @@ class InstalledLaunch:
             "expires_at",
             "currency",
         }
-        if set(value) != expected:
+        if set(value) not in (expected, expected | {"root_workspace"}):
             raise ValueError("Exact installed launch fields required")
         for name in (
             "enrollment_id",
@@ -145,6 +147,9 @@ class InstalledLaunch:
             OsIdentity(**instance),
             expiry,
             currency,
+            workspace_pin(Ref.model_validate(value["root_workspace"]))
+            if "root_workspace" in value
+            else None,
         )
 
 
@@ -297,7 +302,12 @@ class PairedInstalledFactory:
         except BaseException:
             await helper.close()
             raise
-        return HelperApplication(helper)
+        return HelperApplication(
+            helper,
+            on_connected=InstalledRootSelection(launch.root_workspace, peers)
+            if launch.root_workspace is not None
+            else None,
+        )
 
 
 class InstalledHelperAssembly:

@@ -17,6 +17,7 @@ from uuid import uuid4
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from pydantic import SecretStr
 from uaw_runner.helper_process import HelperProcess
+from uaw_runner.ipc.sessions import IpcSigningBinding
 from uaw_runner.state import LocalState
 
 from uaw.composition import Container, assemble_enrollment_sources
@@ -25,8 +26,10 @@ from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
 from uaw.infrastructure.enrollment_control import WindowsEnrollmentControlProof
 from uaw.infrastructure.enrollment_pipe import EnrollmentProofServer
+from uaw.infrastructure.installed_control import InstalledControlConnection
 from uaw.infrastructure.installed_helper import HANDLE_ENV, MODULE, NAMESPACE_ENV, InstalledLaunch
-from uaw.shared.contracts import Principal, RequestMeta
+from uaw.infrastructure.installed_roots import workspace_pin
+from uaw.shared.contracts import Principal, Ref, RequestMeta
 from uaw.shared.errors import CapabilityUnavailable
 from uaw.shared.runner_bootstrap import FirstStartPolicy, FirstStartProgressPort
 from uaw.shared.runner_signatures import VerificationKey
@@ -57,6 +60,11 @@ class PreparedEnrollmentLaunch:
         self.closed = False
         self.closing: asyncio.Task[None] | None = None
         self.candidates: OwnedEnrollmentCandidates | None = None
+        self.owner: Principal | None = None
+        self.control_key: IpcSigningBinding | None = None
+        self.ready: dict[str, Any] | None = None
+        self.connection: InstalledControlConnection | None = None
+        self.connecting: asyncio.Task[Any] | None = None
         self.previous_native = (
             container.runner_enrollments.native if container.runner_enrollments else None
         )
@@ -71,6 +79,7 @@ class PreparedEnrollmentLaunch:
         state_directory: Path,
         currency: str,
         environment: Mapping[str, str],
+        root_workspace: Ref | None = None,
     ) -> PreparedEnrollmentLaunch:
         service = container.runner_enrollments
         if service is None:
@@ -85,6 +94,7 @@ class PreparedEnrollmentLaunch:
                 state_directory=state_directory,
                 currency=currency,
                 environment=environment,
+                root_workspace=root_workspace,
             )
 
     @classmethod
@@ -97,12 +107,14 @@ class PreparedEnrollmentLaunch:
         state_directory: Path,
         currency: str,
         environment: Mapping[str, str],
+        root_workspace: Ref | None,
     ) -> PreparedEnrollmentLaunch:
         service = container.runner_enrollments
         if service is None or container.settings.database_url is None:
             raise CapabilityUnavailable("enrollment.installed.current_server_sources")
         # No OS allocation or credential provisioning before actual current Web auth.
         await service.actor(owner)
+        workspace = workspace_pin(root_workspace) if root_workspace is not None else None
         validate_contract("ID", container.settings.platform_id)
         if (
             not isinstance(currency, str)
@@ -177,6 +189,10 @@ class PreparedEnrollmentLaunch:
                 device_key_id=bindings["device"][0],
             )
             launch.candidate_id = candidate["id"]
+            launch.owner = Principal.model_validate(owner.wire())
+            launch.control_key = IpcSigningBinding(
+                device_id, bindings["control"][0], "control", bindings["control"][1]
+            )
             record = await service.begin(
                 owner,
                 candidate["id"],
@@ -230,6 +246,8 @@ class PreparedEnrollmentLaunch:
                 "expires_at": document["expires_at"],
                 "currency": currency,
             }
+            if workspace is not None:
+                delivery["root_workspace"] = workspace.wire()
             InstalledLaunch.from_bytes(json.dumps(delivery).encode())
             for handle, value in ((settings_handle, private_settings), (selector, delivery)):
                 raw = json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
@@ -264,6 +282,7 @@ class PreparedEnrollmentLaunch:
                 first_start=policy, on_progress=on_progress
             )
             await work
+            self.ready = json.loads(json.dumps(value, allow_nan=False))
             return value
         except BaseException:
             await self.close()
@@ -272,6 +291,37 @@ class PreparedEnrollmentLaunch:
             if not work.done():
                 work.cancel()
             await asyncio.gather(work, return_exceptions=True)
+
+    async def connect(self) -> Ref:
+        if (
+            self.closed
+            or self.ready is None
+            or self.owner is None
+            or self.control_key is None
+            or self.enrollment_id is None
+            or self.helper is None
+            or self.connection is not None
+        ):
+            raise CapabilityUnavailable("enrollment.installed.original_ready_connection")
+        # Set ownership before awaited connection allocation; no address/body argument.
+        self.connection = InstalledControlConnection(
+            container=self.container,
+            owner=self.owner,
+            enrollment_id=self.enrollment_id,
+            directory=self.state,
+            credentials=self.vault,
+            control_key=self.control_key,
+        )
+        self.connecting = asyncio.current_task()
+        try:
+            return await self.connection.connect(self.helper, self.ready)
+        except BaseException:
+            if self.closing is None:
+                self.connecting = None
+                await self.close()
+            raise
+        finally:
+            self.connecting = None
 
     async def close(self) -> None:
         if self.closing is None:
@@ -285,6 +335,15 @@ class PreparedEnrollmentLaunch:
 
     async def _close(self) -> None:
         failures = []
+        task = self.connecting
+        if task is not None and task is not asyncio.current_task() and not task.done():
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+        if self.connection is not None:
+            try:
+                await self.connection.close()
+            except Exception as exc:
+                failures.append(exc)
         for resource in (self.helper, self.proof):
             if resource is not None:
                 try:

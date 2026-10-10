@@ -14,7 +14,7 @@ from tests.integration.test_control_plane import meta
 from uaw.infrastructure.credentials import WindowsCredentialStore
 from uaw.infrastructure.enrollment_launch import PreparedEnrollmentLaunch
 from uaw.infrastructure.installed_helper import InstalledLaunch
-from uaw.shared.contracts import Principal
+from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, DomainError
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -90,6 +90,50 @@ async def test_installed_prepare_real_sources_no_permission_and_idempotent_clean
     finally:
         await cleaned(launch)
     assert c.runner_enrollments.candidates is None
+
+
+async def test_installed_protected_workspace_selector_is_not_root_permission(web, tmp_path):
+    c, client = web
+    owner = Principal.model_validate((await login(client))["principal"])
+    workspace = Ref(kind="workspace", id="native-read-workspace", version="1")
+    launch = await PreparedEnrollmentLaunch.prepare(
+        c,
+        owner=owner,
+        python=Path(sys._base_executable),
+        state_directory=tmp_path.resolve(),
+        currency="USD",
+        environment=installed_environment(),
+        root_workspace=workspace,
+    )
+    try:
+        descriptor = (await launch.vault.resolve(launch.handles[-1])).get_secret_value()
+        parsed = InstalledLaunch.from_bytes(descriptor.encode())
+        assert parsed.root_workspace == workspace
+        assert launch.connection is None and launch.ready is None
+        assert not (parsed.state_directory / "grants.sqlite").exists()
+        with pytest.raises(CapabilityUnavailable):
+            await launch.connect()
+        value = await c.runner_enrollments.get(owner, launch.enrollment_id)
+        assert value["state"] == "pending" and "pairing_ref" not in value
+    finally:
+        await cleaned(launch)
+
+
+async def test_installed_invalid_workspace_rejected_before_os_allocation(web, tmp_path):
+    c, client = web
+    owner = Principal.model_validate((await login(client))["principal"])
+    with pytest.raises(ValueError):
+        await PreparedEnrollmentLaunch.prepare(
+            c,
+            owner=owner,
+            python=Path(sys._base_executable),
+            state_directory=tmp_path.resolve(),
+            currency="USD",
+            environment=installed_environment(),
+            root_workspace=Ref(kind="artifact", id="not-workspace", version="1"),
+        )
+    assert c.runner_enrollments.candidates is None
+    assert not tuple(tmp_path.glob("launch-*"))
 
 
 @pytest.mark.parametrize(
