@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2l-A2",
+  "runtime_source_commit": "ba1c0d7f8e62563a3fbb34d6256b36be8f3376af",
+  "publication_ref": "ms-i2l-a2",
+  "source_ref": "ms-i2l-a2-source",
+  "different_nodes": 37,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "global_flags_opened": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2l-a2-tests.xml",
+    "sha256": "6bf9129febe164265ecd2350b655e80a08d28d908ff08e39eaf596f48350d806"
+  },
+  "execution_scopes": [
+    {
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/m3-origin-final-2.xml",
+        "sha256": "5aa0431d71a807f4d2b60d8c6a8c172c90f1f161c7a84caf06f70e03d47994e0"
+      },
+      "nodes": 35,
+      "scope": "7 new owning-origin SQL, 1 original bridge SQL, 27 C set unit; exact file_context bytes committed in b90a72c, before final C/D test-only merge and native timeout change."
+    },
+    {
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/m2-native-deadline.xml",
+        "sha256": "a28fda560d6a2010dfdfb75eb7574892265f0a133c4edbecef7382f43556f17c"
+      },
+      "nodes": 2,
+      "scope": "Controlled dialog deadline/cancel thread cleanup after exact timeout fix; not actual human Yes."
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a2-ruff.log",
+      "sha256": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a2-format.log",
+      "sha256": "cc582f997774eb74a1edb248a8a1dca8a90b9985269c3e6ecd100a39876dff12"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a2-mypy.log",
+      "sha256": "3a999d026c2626a9f0cdd5f81a15a20575a6eb3c636403d510d49944b5a9f3e0"
+    }
+  ],
+  "mypy_source_files": 194,
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2l-a1.json",
+    "sha256": "5fc48ebe2b4c0bd3e5583b0f593094288bbd2b9cf313b3b352140e2fdbf33161"
+  },
+  "human_native": {
+    "path": "docs/implementation/evidence/ms-i2l-native-first-summary.json",
+    "sha256": "7eaa5c8e15d407dd57eeee0f6e5a485f7c65a0f2990ec3b5871c8460d063e9dd"
+  },
+  "actual_ui_and_old_runs": {
+    "path": "docs/implementation/evidence/ms-i2l-a2-live-summary.json",
+    "sha256": "b7e6bf9b051ff7f709afb0e4600654df5d2f60a37d63a0835e6fe5faa1342dd7"
+  },
+  "worker_component_review": [
+    {
+      "session": "B",
+      "source": "3c182ccc4c54dbfc6f429e8e9e2e2d0fbeb3301b",
+      "handoff": "8a590123c1aa166688e7ed830e8c9c5d2d76e89b",
+      "reported_distinct": {
+        "unit": 66,
+        "controlled_chromium": 29,
+        "anonymous_actual_tcp": 1
+      },
+      "accepted_scope": "Component/source and exact built artifact reviewed; actual authenticated refresh A verified separately, native/root/full product pending."
+    },
+    {
+      "session": "C",
+      "source": "44122503ecb60a4036a990eeb20e7340b9618394",
+      "handoff": "c8c54563793ebb4c33e846163a0928179c87ee44",
+      "reported_distinct": {
+        "unit": 397,
+        "sql": 46
+      },
+      "accepted_scope": "Bounded owning set and original recovery components; A owning origin integration separately 35. Not real human root or model file chain."
+    },
+    {
+      "session": "D",
+      "source": "1eac90b7c942b0bd9eec6f779f4403cc072a1274",
+      "handoff": "0a386383d04f1158c55c3436bb4a516ae7cf77b7",
+      "reported_distinct": 644,
+      "accepted_scope": "Lifecycle/Selector/installed denial and controlled read recovery. Actual human account/device first decision separately A journal; root/file production pending."
+    }
+  ],
+  "failed_history": [
+    "Interrupted first combined material run retained partial F markers but no final XML; not passing. Diagnostic 1 node completed and exposed raw model_dump_json null fields invalid under strict wire Ref/ctx. Fixed A serialization to exact wire.",
+    "Next 35-node attempt: 6 failed/29 passed. Tests incorrectly required zero recover calls and used unsupported model_policy Ref kind. Corrected to exact no-new-command/one-open plus pre-read transport baseline on denial; valid model Ref retained exact scope rejection. Final35 passed/208.12s.",
+    "Initial Ruff formatting findings and patch context mismatch retained in tool history; no weakening of authority/budget/deadline gates.",
+    "Native attempt1 rejected .venv forwarding Python PID and helper cleaned; temporary logout script omitted meta and did not claim session closure. Switched trusted installed executable to actual base executable; did not bypass PID verification.",
+    "Native attempt2 waited60s without user seeing it; original source typed it as generic bootstrap dependency. Own window/process/keys cleaned and temporary session closed. A subsequently preserves enrollment_native_timeout with controlled cancellation tests.",
+    "At explicit user request a new original challenge was launched; actual user confirmation wrote native journal, active/revision2 and actual helper ready before finally cleanup. It is not a persistent root grant.",
+    "UI replacement first exact process check refused fractional timestamp mismatch without stopping anything; matched precise timestamp and command before stopping only owned PID45344. Built artifact hashes verified, no B environment execution/install.",
+    "Local launch helper first lacked required UAW_DATABASE_URL and did not issue a launch. Actual deployment source then supplied; protected one-use localhost login opened without logging code; B final refresh kept original conversation/Markdown/failed Run."
+  ],
+  "remaining": [
+    "Root ticket and on_connected actual directory choice; current control channel/root/file-route/Tool authority and localhost installed launch consumer.",
+    "Actual human single/multi-file Context to fixed model/Artifact/accurate references and approval decline/cancel/accept.",
+    "Original academic failed due old Web expiry: preserve failure/artifacts/3 calls and define explicit current-user recovery; cannot accept stale failed Run or silently rerun.",
+    "One full regression only after actual consumer convergence; previous1691 remains old ms-i2i source."
+  ]
+}

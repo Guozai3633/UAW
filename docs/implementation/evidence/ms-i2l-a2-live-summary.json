@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-10",
+  "ui_source": "3c182ccc4c54dbfc6f429e8e9e2e2d0fbeb3301b",
+  "api_runtime_source": "e0323603e08264ad585f7d320b20dda5cd3a6210",
+  "page_refresh_original_conversation_verified": true,
+  "new_model_calls": 0,
+  "current_stage_api_not_deployed": true,
+  "runs": [
+    {
+      "run_id": "run-eb7af1282636488f99e6559898e0623f",
+      "status": "completed",
+      "revision": 6,
+      "job": {
+        "run_id": "run-eb7af1282636488f99e6559898e0623f",
+        "state": "finished",
+        "stage": "finished",
+        "step": 1
+      },
+      "original_model_attempts": 3,
+      "usage_totals": {
+        "input_tokens": 6871,
+        "output_tokens": 1044,
+        "model_calls": 3,
+        "wall_time_ms": 7423
+      },
+      "pending_money": "0.75",
+      "actual_money": null
+    },
+    {
+      "run_id": "run-e0388f0ee30b495eb333aa8e1f260615",
+      "status": "failed",
+      "revision": 6,
+      "job": {
+        "run_id": "run-e0388f0ee30b495eb333aa8e1f260615",
+        "state": "finished",
+        "stage": "finished",
+        "step": 1,
+        "failure": {
+          "code": "web_session_expired",
+          "message": "Browser credential expired",
+          "category": "authorization",
+          "retryable": false,
+          "failed_phase": "admission"
+        }
+      },
+      "original_model_attempts": 3,
+      "usage_totals": {
+        "input_tokens": 6865,
+        "output_tokens": 1439,
+        "model_calls": 3,
+        "wall_time_ms": 8539
+      },
+      "pending_money": "0.75",
+      "actual_money": null
+    }
+  ]
+}
