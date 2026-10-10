@@ -896,3 +896,17 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 类型/build通过，54 unit +2实际完整wire只读内存回放 +22受控Chromium，最终0失败/错误/跳过。原实际wire1失败/1通过和单元原失败均保留。Actual wire不等于新真实backend派发；Run投影/HTTP/receipt受控。
 - 自动审批曾拒绝复制真实正文到可提交fixture，已改用批准的只读内存回放，不持久复制或记录真实正文；输入SHA `8fd084b06031d2db51e329995354828d98596fa53bc463651500aee8fb264c24`。首修/MIME回执保留。
 - 新构建 `apps/web/dist`，ignored回执 `apps/web/.test-results/u2-delivery-*`，完整索引 `u2-delivery-receipts.json`；[精确来源/文件/回执/新构建hash及A接线](../requests/B/MS-U2-delivery-wait-repair.md)。A真实页面接受与完成/费用/未知效果复查、真人授权仍待A；本修复停止，不标P1接受。
+
+
+## MS-U3 当前会话恢复与设备/成果真实状态（2026-10-10）
+
+- 实际worktree `E:/UAW/.worktrees/context` / 分支 `dev/context`。干净fetch后只读origin/integration正式DISPATCH/远端tag，快进 `ms-i2l-start / 8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`，开工HEAD相等，uv frozen与pnpm冻结离线安装成功；原U1/U2所有提交/交接保留，不合浮动integration、不reset/rebase/stash。
+- M1源码 `8dcaeecca269c1e2a1fe434d3506745cf3eb8762` / 阶段文档 `da39707c20030a1d096ccaed97eb159f2a9f5f5c`；M2源码 `d35725b0899c17b8df67581a18ac8e9b3dead0a0` / 阶段文档 `c03b453317e91131b7805b7e9dea76b31fbef36d`。最终源码 `3c182ccc4c54dbfc6f429e8e9e2e2d0fbeb3301b`；本handoff与final-wiring为随后独立docs提交，完整SHA见最终回报。
+- 相对固定基线22个前端文件，详单/接口/样例/构建摘要在[MS-U3-final-wiring](../requests/B/MS-U3-final-wiring.md)。只改apps/web/B文档；不改Context/shared/schema/锁/backend/composition/Model/worker/flags。
+- start(initialId)/open/reconnect保持，URL→同身份可见保存选择→列表首项；实际id/owner/当前可见来源复查，不可见/撤销/身份变化清旧正文草稿显示。读取中禁用输入避免创建竞争丢原文。原全局Recovery独立保留，提供返回原请求，不扩多Run；刷新GET，unknown沿原request_id查，不重发。
+- client只消费四个既有enrollments HTTP；HttpEnrollmentPort(client,source?,storage?)及EnrollmentSourcePort.current(signal)可选可信注入。原owner/proof/expiry/CAS、等待后identity/Abort检查；只有lookup IDs+基准revision允许持久保存，没有proof/key/state/权限。省source初次登记unavailable；active不是root授权，没有root HTTP不猜。完整Review原UTF8/hash/Ref/合同/逐项核验与接受对账链保留；完成只读服务端Run，不代写completed。
+- 最终66单元＋29受控Chromium＋1真实匿名TCP浏览器分别通过，各0失败/错误/跳过；生成完整字段、类型/build、冻结安装、diff-check通过。命令 pnpm --dir apps/web generate/typecheck/test/test:e2e；真实只读 pnpm --dir apps/web exec node scripts/u3-readonly.mjs。自身ignored u3-final-unit.log/.xml、u3-final-browser.log/.xml、u3-anonymous.log/.xml、u3-final-receipts.json保存准确节点/日志hash/构建hash。不累加阶段/重复运行，不把受控动作当真人/模型验收。
+- 原失败保留：安装store无TTY；设备Dialog遮罩2失败；恢复fixture初始化竞争1失败；创建期间原文竞争1失败。分别正确store、复用dialog、启动前单次fixture、读取时输入保护修复，断言/超时未删减；全部trace/log/XML在自身ignored目录。辅助脚本GBK读UTF8失败未写入，显式UTF8修复。
+- A只读复制本worktree `apps/web/.test-results/u3-final-dist/`，source与每文件SHA见final-wiring/manifest，不执行B环境。截图仅受控设备页面且目视已核对。匿名实际8000/5178为401/denied、刷新零POST；未读取A私有配置/key、未启动停止A服务。
+- `scripts/u3-readonly.mjs --authenticated`当前exit2/pending，缺受保护环境限时同源launch/Web URL及实际conversation/enrollment IDs；不算通过/skip。认证恢复/真实登记源、本人native/目录授权、文件整链、真人合同接受/审批取消仍pending A与本人，没有新HTTP DTO或root来源。没有代点native或成果接受；未运行原会触发真人决定的U2 live suite。
+- A负责原来源/locator/具体Reader及部署准确构建；新增HTTP先发固定阶段DTO。默认模型/flags保持，P1/MS-I2整轮不标accepted。最终源码与handoff分别提交后clean停止，不自动扩包。

@@ -30,17 +30,24 @@ export class WorkspaceController {
    this.patch({models:page.items.filter(m=>m.status==='active'),connected:true,error:''});
    const saved=this.drafts.read();await this.list(generation);this.guard(generation);const conversations=this.value.conversations;
    this.patch({recovery:saved.recovery});
-   if(saved.recovery)await this.open(saved.recovery.conversationId);else if(initialId)await this.open(initialId);else if(conversations[0])await this.open(conversations[0].id);
+   // URL is explicit intent; invisible/missing URLs never fall back to newer data.
+   const selected=initialId??(conversations.some(c=>c.id===saved.activeConversationId)?saved.activeConversationId:undefined)??conversations[0]?.id;
+   if(selected)await this.open(selected);
   }catch(e){if(generation===this.generation)this.fail(e);}finally{if(generation===this.generation)this.patch({loading:false});}
  }
  async list(g=this.generation){const load=async()=>{const page=await this.pages(c=>this.client.conversations(c,this.abort.signal));this.guard(g);
    const newest=new Map<string,Conversation>();for(const c of page.items as Conversation[]){const old=newest.get(c.id);if(!old||c.revision>old.revision)newest.set(c.id,c);}
+   const principal=this.host.session()?.principal;
+   if(principal&&[...newest.values()].some(c=>c.owner_id!==principal.id)){this.clearCurrent();throw new Error('会话列表与当前身份不一致');}
    this.patch({conversations:[...newest.values()]});};
   try{await load();}catch(e){if(e instanceof SnapshotRequired||e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){await load();}else throw e;}
  }
  stop(){this.stopped=true;this.abort.abort();clearTimeout(this.timer);this.generation++;}
  async logout(){this.stop();this.identity=null;this.drafts.clear();this.reset();await this.host.logout?.();}
+ private clearCurrent(){this.projection.clear();this.patch({active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:''});}
  private fail(e:unknown){if(e instanceof DOMException&&e.name==='AbortError')return;
+  const denied=e instanceof ApiFailure&&['denied','missing'].includes(e.result.kind);
+  if(denied)this.clearCurrent();
   this.patch({connected:false,error:e instanceof Error?e.message:'读取失败，请重新连接。'});}
  edit(text:string){this.patch({draft:text,draftRevision:this.value.draftRevision+1});if(this.value.active)this.drafts.draft(this.value.active.id,text);}
  async create(title:string,modelId:string){if(!this.sameIdentity()||!this.value.connected||this.mutation)return;
@@ -52,8 +59,12 @@ export class WorkspaceController {
  }
  async open(id:string){
   this.mutation=undefined;this.abort.abort();this.abort=new AbortController();clearTimeout(this.timer);const g=++this.generation;
-  this.projection.clear();this.patch({loading:true,busy:false,active:undefined,items:[],run:undefined,frame:undefined,approvals:[],error:'',stopping:false});
-  try{const active=await this.client.conversation(id,this.abort.signal);this.guard(g);this.drafts.remember(id);
+  this.projection.clear();this.patch({loading:true,busy:false,active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:'',error:'',stopping:false});
+  try{if(!this.sameIdentity())return;
+   if(!this.value.conversations.some(c=>c.id===id))throw new Error('URL会话不在当前身份的可见列表中，请重新读取会话列表。');
+   const active=await this.client.conversation(id,this.abort.signal);this.guard(g);
+   if(active.id!==id||this.host.session()?.principal&&active.owner_id!==this.host.session()!.principal!.id)throw new Error('会话与当前身份或URL不一致');
+   this.drafts.remember(id);this.drafts.select(id);
    this.patch({active,conversations:[active,...this.value.conversations.filter(c=>c.id!==id)],draft:this.drafts.read().drafts[id]??'',draftRevision:1,connected:true});await this.refresh(g);
   }catch(e){if(g===this.generation)this.fail(e);}finally{if(g===this.generation){this.patch({loading:false});this.schedule(g);}}
  }
@@ -71,9 +82,11 @@ export class WorkspaceController {
   this.guard(g);const current=this.readFresh(g);this.reads=current;
   try{await current;}finally{if(this.reads===current)this.reads=undefined;}
  }
- private async readFresh(g:number){const active=this.value.active;if(!active)return;const signal=this.abort.signal;
+ private async readFresh(g:number){const active=this.value.active;if(!active)return;
+  if(!this.value.conversations.some(c=>c.id===active.id)){this.projection.clear();this.patch({active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:''});throw new Error('当前会话已不在服务端可见列表中，请选择当前可见会话。');}const signal=this.abort.signal;
   const load=async()=>{
    const current=await this.client.conversation(active.id,signal);this.guard(g);
+   if(current.id!==active.id||this.host.session()?.principal&&current.owner_id!==this.host.session()!.principal!.id){this.clearCurrent();throw new Error('会话与当前身份或URL不一致');}
    let rec=this.drafts.read().recovery;
    if(rec && rec.conversationId===active.id){
     if(rec.runId)this.projection.run=await this.client.run(rec.runId,signal);

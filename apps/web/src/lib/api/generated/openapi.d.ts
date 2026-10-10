@@ -272,6 +272,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/runner/enrollments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 当前Web用户请求独立候选的首次登记；不授予目录权限。 */
+        post: operations["http_runner_enrollments_begin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runner/enrollments/{enrollment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 当前原Web会话读取准确当前登记；不授予执行。 */
+        get: operations["http_runner_enrollments_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runner/enrollments/{enrollment_id}/confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 读取独立本机本人确认和双方签名证明后CAS登记。 */
+        post: operations["http_runner_enrollments_complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runner/enrollments/{enrollment_id}/revocation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 原当前Web用户撤销登记。 */
+        post: operations["http_runner_enrollments_revoke"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/models": {
         parameters: {
             query?: never;
@@ -1353,6 +1421,86 @@ export interface components {
             usage_ref?: components["schemas"]["Ref"];
         };
         /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerEnrollmentsBeginResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunnerEnrollmentRecord"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerEnrollmentsCompleteResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunnerEnrollmentRecord"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerEnrollmentsGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunnerEnrollmentRecord"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerEnrollmentsRevokeResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunnerEnrollmentRecord"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
         HttpRunsControlResult: {
             /**
              * @description 接口状态
@@ -1978,6 +2126,103 @@ export interface components {
          * @enum {string}
          */
         RunStatus: "queued" | "preparing" | "running" | "verifying" | "waiting_for_user" | "waiting_for_merge" | "completed" | "failed" | "cancelled";
+        /** @description 独立控制源捕获的候选进程与角色key。 */
+        RunnerEnrollmentPeer: {
+            /** @description 独立OS观察 */
+            identity: components["schemas"]["RunnerProcessIdentity"];
+            /** @description 精确角色主体 */
+            actor: components["schemas"]["Principal"];
+            /**
+             * @description 签名角色
+             * @enum {string}
+             */
+            role: "control" | "device";
+            /** @description 原key身份 */
+            key_id: components["schemas"]["ID"];
+            /** @description 原key版本与摘要 */
+            key_ref: components["schemas"]["Ref"];
+            /** @description 32字节Ed25519公钥标准base64；不是私钥 */
+            public_key: string;
+        };
+        /** @description 双方持有证明签署的同一原账号设备挑战。 */
+        RunnerEnrollmentProofDocument: {
+            /**
+             * @description 内部协议
+             * @constant
+             */
+            protocol: "uaw-enrollment-v1";
+            /** @description 本次操作 */
+            enrollment_id: components["schemas"]["ID"];
+            /** @description 准确候选快照 */
+            candidate_ref: components["schemas"]["Ref"];
+            /** @description 实际原Web会话 */
+            owner: components["schemas"]["Principal"];
+            /** @description 原设备 */
+            device_id: components["schemas"]["ID"];
+            /** @description 控制实例/key */
+            control: components["schemas"]["RunnerEnrollmentPeer"];
+            /** @description 设备实例/key */
+            device: components["schemas"]["RunnerEnrollmentPeer"];
+            /** @description 原随机nonce */
+            nonce: string;
+            /** @description 不超过Web会话及候选期限 */
+            expires_at: components["schemas"]["Timestamp"];
+        };
+        /** @description 平台持久的首次设备登记状态；active仍不含目录授权。 */
+        RunnerEnrollmentRecord: {
+            /** @description 原操作 */
+            id: components["schemas"]["ID"];
+            /** @description CAS版本 */
+            revision: components["schemas"]["Revision"];
+            /**
+             * @description 登记状态
+             * @enum {string}
+             */
+            state: "pending" | "active" | "revoked" | "expired";
+            /** @description 固定原挑战 */
+            proof_document: components["schemas"]["RunnerEnrollmentProofDocument"];
+            /** @description 登记时间 */
+            created_at: components["schemas"]["Timestamp"];
+            /** @description 独立本机决定记录 */
+            confirmation_ref?: components["schemas"]["Ref"];
+            /** @description 正式完整登记的固定摘要 */
+            pairing_ref?: components["schemas"]["Ref"];
+            /** @description 原设备持有签名 */
+            device_proof?: string;
+            /** @description 原控制持有签名 */
+            control_proof?: string;
+        };
+        /** @description 当前Web用户请求独立候选的首次登记；不授予目录权限。 */
+        RunnerEnrollmentsBeginRequest: {
+            /** @description 已有受保护候选 */
+            candidate_id: components["schemas"]["ID"];
+        };
+        /** @description 读取独立本机本人确认和双方签名证明后CAS登记。 */
+        RunnerEnrollmentsCompleteRequest: {
+            /** @description 原登记 */
+            enrollment_id: components["schemas"]["ID"];
+        };
+        /** @description 当前原Web会话读取准确当前登记；不授予执行。 */
+        RunnerEnrollmentsGetRequest: {
+            /** @description 原登记 */
+            enrollment_id: components["schemas"]["ID"];
+        };
+        /** @description 原当前Web用户撤销登记。 */
+        RunnerEnrollmentsRevokeRequest: {
+            /** @description 原登记 */
+            enrollment_id: components["schemas"]["ID"];
+        };
+        /** @description 独立OS观察的进程实例；不是UAW账号。 */
+        RunnerProcessIdentity: {
+            /** @description 实际进程ID */
+            pid: number;
+            /** @description Windows FILETIME十进制字符串，避免签名JSON数值精度丢失 */
+            created: string;
+            /** @description 实际用户SID */
+            user_sid: components["schemas"]["ID"];
+            /** @description 实际本机登录SID */
+            logon_sid: components["schemas"]["ID"];
+        };
         /** @description 用户干预。 */
         RunsControlRequest: {
             /** @description 运行 */
@@ -4995,6 +5240,650 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpArtifactsContentResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_enrollments_begin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 当前Web用户请求独立候选的首次登记；不授予目录权限。 */
+                    payload: {
+                        /** @description 已有受保护候选 */
+                        candidate_id: components["schemas"]["ID"];
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_enrollments_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                enrollment_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_enrollments_complete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 读取独立本机本人确认和双方签名证明后CAS登记。 */
+                    payload: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsCompleteResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_enrollments_revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 原当前Web用户撤销登记。 */
+                    payload: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

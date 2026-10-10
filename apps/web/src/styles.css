@@ -6,3 +6,5 @@
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
 .review-refresh{font-size:11px;color:var(--accent);margin:12px 24px;padding:8px 10px;border:1px solid var(--line);border-radius:6px}.review-body [role="status"]{font-size:11px;color:#82764a;line-height:1.8}
+
+.device-panel{max-height:65vh;overflow:auto}.device-panel input{width:100%;padding:8px;border:1px solid #e4e7e9;border-radius:8px}.device-panel p{overflow-wrap:anywhere;font-size:13px;color:#66716c}.review-body code{overflow-wrap:anywhere;font-size:11px}

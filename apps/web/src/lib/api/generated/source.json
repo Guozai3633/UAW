@@ -1,9 +1,9 @@
 {
-  "baseline": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
-  "contract_ref": "ms-i2k-start",
-  "contract_commit": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
-  "schema_sha256": "d54bd0218df40fd988f9d68a1635c051fd38031e47130591562f6d1f94b51056",
-  "openapi_sha256": "ce6bc81d2cdfd301d715061d38e13c341381e6ac0f66017d0e04c21417e20c08",
+  "baseline": "8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0",
+  "contract_ref": "ms-i2l-start",
+  "contract_commit": "8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0",
+  "schema_sha256": "dd1daee24015771cd5e320027a4f45a2ac31bae61f0f1a84bf6ef240c4f9611c",
+  "openapi_sha256": "570a103452c65d1dba5a9a86ef9525a8c202e56a447300d8539f2cb138cf366e",
   "paths": {
     "/v1/conversations": [
       "get",
@@ -53,6 +53,18 @@
     ],
     "/v1/artifacts/{artifact_id}/content": [
       "get"
+    ],
+    "/v1/runner/enrollments": [
+      "post"
+    ],
+    "/v1/runner/enrollments/{enrollment_id}": [
+      "get"
+    ],
+    "/v1/runner/enrollments/{enrollment_id}/confirmation": [
+      "post"
+    ],
+    "/v1/runner/enrollments/{enrollment_id}/revocation": [
+      "post"
     ],
     "/v1/models": [
       "get"
