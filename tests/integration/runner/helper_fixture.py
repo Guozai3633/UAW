@@ -70,7 +70,7 @@ class FixtureChallenge:
         ).current(ticket_id)
 
 
-def build_helper(case, registration, challenges, registry):
+def build_helper(case, registration, challenges, registry, **trusted_windows):
     bootstrap = BootstrapConsumer(
         registration=registration,
         challenges=challenges,
@@ -88,6 +88,7 @@ def build_helper(case, registration, challenges, registry):
         roots=case["source"],
         registry=registry,
         currency="CNY",
+        **trusted_windows,
     )
     challenges.helper = helper
     return helper
@@ -161,7 +162,13 @@ class Factory:
             executions=ReadExecutionJournal(tmp / "reads.sqlite"),
         )
         challenges = FixtureChallenge(case)
-        helper = build_helper(case, FixturePeerRegistry(path), challenges, ConnectionRegistry())
+        helper = build_helper(
+            case,
+            FixturePeerRegistry(path),
+            challenges,
+            ConnectionRegistry(),
+            **data.get("helper_windows", {}),
+        )
 
         async def activate_inner(current):
             ticket = await asyncio.to_thread(state.get, data["ticket_id"], now=datetime.now(UTC))
@@ -181,11 +188,31 @@ class Factory:
                 return
             if ticket.state == "pending" or operation == "repeat-select":
                 lifecycle = await current.authorization()
+                window_record = None
+                if data.get("observe_helper_windows"):
+                    original = await lifecycle.challenges.current(data["ticket_id"])
+                    window_record = dict(
+                        session_lifetime=current.session.lifetime,
+                        session_expires_at=current.session.expires_at.isoformat(),
+                        native_timeout=lifecycle.native.timeout,
+                        challenge_expires_at=original.expires_at.isoformat(),
+                    )
+                    await asyncio.to_thread(
+                        (tmp / "helper-windows.json").write_text,
+                        canonical(window_record),
+                        encoding="utf-8",
+                    )
                 if data["ui"] == "typed-double":
                     from uaw_runner import native_confirmation
 
                     class ExplicitUiDouble:
                         def show(self, prompt, stopped, deadline):
+                            if window_record is not None:
+                                window_record["prompt_expires_at"] = prompt.expires
+                                window_record["ui_origin"] = "typed_double"
+                                (tmp / "helper-windows.json").write_text(
+                                    canonical(window_record), encoding="utf-8"
+                                )
                             root = tmp / "selected-project"
                             stat = root.stat()
                             return NativeDirectoryDecision(root, (stat.st_dev, stat.st_ino))

@@ -39,7 +39,7 @@ def helper_environment(path):
     return env
 
 
-async def prepare_helper(case, *, native=None, ui="typed-double"):
+async def prepare_helper(case, *, native=None, ui="typed-double", ticket_expires_at=None):
     if native is None:
         native = await make_native_case(
             case["tmp"],
@@ -49,6 +49,7 @@ async def prepare_helper(case, *, native=None, ui="typed-double"):
             existing_keys=case["keys"],
             defer_confirmation=True,
             clock_start=datetime.now(UTC),
+            ticket_expires_at=ticket_expires_at,
         )
         native["tmp"] = case["tmp"]
         native["target"] = native["root"] / "file.txt"
@@ -83,12 +84,13 @@ async def prepare_helper(case, *, native=None, ui="typed-double"):
     return native, process, path
 
 
-async def connect_helper(case, process, path, ready):
+async def connect_helper(case, process, path, ready, *, lifetime_seconds=60):
     identity = WindowsApi().current()
     pipe = await connect_pipe(name=ready["name"], logon_sid=identity.logon_sid)
     session = AuthenticatedPipeSession(
         pipe=pipe,
         registration=FixturePeerRegistry(path),
+        lifetime_seconds=lifetime_seconds,
         directory=case["keys"],
         signer=IpcSigner(
             binding=IpcSigningBinding("d1", "control1", "control", case["handles"][1]),

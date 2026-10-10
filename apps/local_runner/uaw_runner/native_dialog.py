@@ -37,6 +37,16 @@ class NativePrompt:
         )
 
 
+class FlashInfo(ctypes.Structure):
+    _fields_ = [
+        ("size", W.UINT),
+        ("window", W.HWND),
+        ("flags", W.DWORD),
+        ("count", W.UINT),
+        ("timeout", W.DWORD),
+    ]
+
+
 class WindowsNativeDialog:
     def __init__(self) -> None:
         if os.name != "nt":
@@ -60,6 +70,15 @@ class WindowsNativeDialog:
             (self.u, "EnumThreadWindows", [W.DWORD, self.enum_callback, W.LPARAM], W.BOOL),
             (self.u, "PostMessageW", [W.HWND, W.UINT, W.WPARAM, W.LPARAM], W.BOOL),
             (self.u, "MessageBoxW", [W.HWND, W.LPCWSTR, W.LPCWSTR, W.UINT], ctypes.c_int),
+            (self.u, "GetWindowThreadProcessId", [W.HWND, ctypes.c_void_p], W.DWORD),
+            (
+                self.u,
+                "SetWindowPos",
+                [W.HWND, W.HWND, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, W.UINT],
+                W.BOOL,
+            ),
+            (self.u, "SetForegroundWindow", [W.HWND], W.BOOL),
+            (self.u, "FlashWindowEx", [ctypes.POINTER(FlashInfo)], W.BOOL),
             (self.k, "GetCurrentThreadId", [], W.DWORD),
             (self.s, "SHBrowseForFolderW", [ctypes.c_void_p], ctypes.c_void_p),
             (
@@ -74,6 +93,20 @@ class WindowsNativeDialog:
         ]:
             fn = getattr(dll, name)
             fn.argtypes, fn.restype = args, result
+
+    def request_attention(self, hwnd: Any) -> bool:
+        # Only the native callback's own worker window. No input/selection messages.
+        if self.u.GetWindowThreadProcessId(hwnd, None) != self.k.GetCurrentThreadId():
+            return False
+        self.desktop()
+        # Visible above ordinary windows without requiring a foreground focus grant.
+        # The bounded dialog alone is topmost; helper/parent windows are untouched.
+        if not self.u.SetWindowPos(hwnd, W.HWND(-1), 0, 0, 0, 0, 0x1 | 0x2 | 0x10 | 0x40):
+            return False
+        if not self.u.SetForegroundWindow(hwnd):
+            info = FlashInfo(ctypes.sizeof(FlashInfo), hwnd, 3, 3, 0)
+            self.u.FlashWindowEx(ctypes.byref(info))
+        return True
 
     def desktop(self) -> str:
         desktop = self.u.OpenInputDesktop(0, False, 1)
@@ -114,6 +147,7 @@ class WindowsNativeDialog:
         done = Event()
         thread_id = self.k.GetCurrentThreadId()
         failed_desktop = Event()
+        failed_display = Event()
 
         @self.enum_callback  # type: ignore[untyped-decorator]
         def close_window(hwnd: Any, _: int) -> bool:
@@ -154,6 +188,14 @@ class WindowsNativeDialog:
                     # Selection alone is NOT approval; a separate default-Cancel dialog follows.
                     if stopped.is_set() or time.monotonic() >= deadline:
                         self.u.PostMessageW(hwnd, 0x10, 0, 0)
+                    elif msg == 1:  # BFFM_INITIALIZED; no default path or approval.
+                        try:
+                            displayed = self.request_attention(hwnd)
+                        except Exception:
+                            displayed = False
+                        if not displayed:
+                            failed_display.set()
+                            self.u.PostMessageW(hwnd, 0x10, 0, 0)
                     return 0
 
                 display = ctypes.create_unicode_buffer(32768)
@@ -170,6 +212,8 @@ class WindowsNativeDialog:
                 pidl = self.s.SHBrowseForFolderW(ctypes.byref(info))
                 try:
                     self.guard(stopped, deadline)
+                    if failed_display.is_set():
+                        raise CapabilityUnavailable("runner.native_window_display")
                     if not pidl:
                         raise reject(
                             "native_cancelled", "Folder selection cancelled", 409, "cancelled"
@@ -193,7 +237,9 @@ class WindowsNativeDialog:
                 + (f"\n本机目录：{selected}" if selected else "")
                 + "\n\n确定：仅批准上述只读授权；取消：不批准。"
             )
-            result = self.u.MessageBoxW(None, text, "UAW：请本人确认只读授权", 1 | 0x30 | 0x100)
+            result = self.u.MessageBoxW(
+                None, text, "UAW：请本人确认只读授权", 1 | 0x30 | 0x100 | 0x10000 | 0x40000
+            )
             if failed_desktop.is_set():
                 raise CapabilityUnavailable("runner.interactive_desktop")
             self.guard(stopped, deadline)
