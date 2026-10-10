@@ -16,7 +16,7 @@ $env:UAW_WEB_API_TARGET='http://127.0.0.1:8000'
 pnpm --dir apps/web dev
 ```
 
-Node24.21.0为本工程锁定私有开发依赖，pnpm10.17.0；不改全局Node。pnpm宿主Node22.13会给engine警告，项目脚本使用本地Node24。首次浏览器安装 `pnpm --dir apps/web exec playwright install chromium`，下载在本目录 `.playwright`。Playwright运行build＋preview静态产物，控制测试端口5177；冷Vite/HMR首次导航曾超时，原失败保存。构建当前主JS约726KB/gzip212KB，保留>500KB警告，尚未宣称生产性能验收。
+Node24.21.0为本工程锁定私有开发依赖，pnpm10.17.0；不改全局Node。pnpm宿主Node22.13会给engine警告，项目脚本使用本地Node24。首次浏览器安装 `pnpm --dir apps/web exec playwright install chromium`，下载在本目录 `.playwright`。Playwright运行build＋preview静态产物，控制测试端口5177；冷Vite/HMR首次导航曾超时，原失败保存。构建当前主JS727.12KB/gzip212.22KB，保留>500KB警告，尚未宣称生产性能验收。
 
 开发入口固定 `http://127.0.0.1:5173`；显式代理只接受 A 公布的127.0.0.1:8000，changeOrigin校正API Host，Origin保留、xfwd关闭。A负责 localhost 同源静态/API、本机用户HttpOnly/SameSite会话、精确Origin、CSRF、退出失效和真实运行调度。通过A的CLI一次启动链接登录（本组件不取得用户/管理员Bearer）；code只在fragment，交换前立即history.replaceState移除，丢回应先GET session、不重放；CSRF只在内存。当前会话10秒复查，期限/撤销/身份变化清理读取投影与本地草稿分区。退出DELETE带实际X-UAW-CSRF和{meta,payload:{}}。
 

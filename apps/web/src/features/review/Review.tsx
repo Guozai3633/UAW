@@ -34,7 +34,7 @@ export function Review({items,run,port,identity,connected,onAccepted}:{items:Dis
  <div className="review-body"><span className="eyebrow">{query.data?.artifact.media_type??'成果摘要'} · v{ref?.version??item.revision}</span><h3>{query.data?.artifact.title??'本次成果'}</h3>
  <Markdown text={query.data?.content??item.text}/>
  <div className="verification"><ShieldCheck size={16}/><strong>逐项核验</strong></div>
- {query.data?<><p>{query.data.report.outcome}</p>{query.data.report.verdicts.map((v,i)=><pre className="verdict" key={i}>{JSON.stringify(v,null,2)}</pre>)}{query.data.report.limitations.map((v,i)=><p key={i}>{v}</p>)}</>:<p className="muted">成果正文与核验读取尚未接入，当前仅展示服务端条目摘要。</p>}
+ {query.data?<><p>{query.data.report.outcome}</p>{query.data.report.verdicts.map(v=><section className="verdict" key={v.requirement_id}><strong>要求 {v.requirement_id} · {checkLabel(v.state)}</strong><p>{v.reason}</p>{v.limitations.map((line,i)=><p key={i}>{line}</p>)}<details><summary>核验依据与版本 · {v.evidence_refs.length}</summary>{v.evidence_refs.map((r,i)=><p key={i}>{r.kind}/{r.id}@{r.version}</p>)}</details></section>)}{query.data.report.checks.map(c=><section className="verdict" key={c.id}><strong>{c.kind} · {checkLabel(c.state)}</strong><p>{c.summary}</p></section>)}{query.data.report.limitations.map((v,i)=><p key={i}>{v}</p>)}</>:<p className="muted">成果正文与核验读取尚未接入，当前仅展示服务端条目摘要。</p>}
  <details><summary>来源与版本 <ExternalLink size={12}/></summary><ul>{(query.data?.artifact.provenance_refs??item.resource_refs).map((r,i)=><li key={i}>{r.kind} / {r.id} / {r.version}</li>)}</ul></details>
  {query.error&&<p role="alert" className="error-text">{query.error.message}</p>}
  <button className="primary accept" disabled={!query.data?.requiresAcceptance||run?.status!=='waiting_for_user'||!connected||busy||decisionPending} onClick={()=>void accept()}>{busy?'正在核对版本…':'接受整份成果'}</button>
@@ -43,3 +43,5 @@ export function Review({items,run,port,identity,connected,onAccepted}:{items:Dis
  </aside>;
 }
 const samePin=(a:Ref,b:Ref)=>a.kind===b.kind&&a.id===b.id&&a.version===b.version&&a.content_hash===b.content_hash;
+
+const checkLabel=(state:string)=>({passed:'已通过',failed:'未通过',blocked:'受阻',not_run:'未运行'}[state]??state);
