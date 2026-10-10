@@ -76,6 +76,8 @@ class RunnerEnrollments:
         self.authentication, self.candidates, self.native = authenticate, candidates, native
         self.clock = clock or (lambda: datetime.now(UTC))
         self.transactions = TransactionalStore(records.database)
+        # Serializes trusted local launch provisioning; never held by SQL transactions.
+        self.local_launch_lock = asyncio.Lock()
 
     def now(self) -> datetime:
         value = self.clock()
