@@ -35,3 +35,11 @@ Usage 消费原 RunnerReceipt（可能 pending 且未知维度缺省），不推
 
 27 项 file evidence 单元通过（真实 Ed25519 验签；受控 keys/回执来源，不声明真实 Runner dispatch）。ruff format/check 与 mypy file_read/schema 通过。独立 C 数据库 55434 已 dot-source ops/start-dev-db.ps1 -Session C 并 alembic upgrade head。
 首轮失败（严格嵌套 JSON fixture 导入及 Windows 超长参数测试 ID）及修复后回执保存在 ignored tests/.artifacts/C/MS-T2g/m1-unit*；M2–M4 和真实 SQL 尚待完成。阶段交付后继续本包，不等最终集成。
+
+## M2 已交源码与构造样例
+
+M2 源码 SHA：6abd666262df449a7e6d3c374613a7326944250b。FileReceiptStore(ledger, blobs, provider_ref=..., provider=..., access=actual_current_data_access, bridge=actual_bridge, signatures=actual_signatures)；source.verifier = FileReadVerifier(source)；executor = FileReadExecutor(source, provider=...)。
+
+使用原 ToolExecutorRouter 的 ToolExecutorBinding(完整注册 ToolRef, provider_ref, executor, executor.check)，verifier 路由使用 ToolOutputVerifierBinding(相同完整 ToolRef, provider_ref, source.verifier)。ToolResults(source, 原 ToolReconciler(..., receipts=source, evidence=source))；ToolFacade(..., lookup=source, reconciler=...)。FileResourceReader(provider_ref, bridge) 注入原 ApprovalAuthority 资源 Reader；恢复 access 是当前数据权限，不能复用新执行 gate 或审批作为读取授权。
+
+ToolInvocation 使用原 ledger/ApprovalService/BudgetService、完整 estimates 和 prepare=router.check。bridge.ready/signatures 缺失发送前 503。命名 RunnerCommand/RunnerReceipt/Principal/Ref/Location/FileContent、原完整快照及实际片段 Blob 持久化；不扩 EffectRecord。35 项文件单元通过，Tool mypy/ruff 通过。M2 首次 8 个 fixture Principal 缺 auth_session_id 的失败已保留并修复；继续 M3/M4 真实 SQL，不声称生产接线完成。
