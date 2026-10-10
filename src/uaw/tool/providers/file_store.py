@@ -78,15 +78,10 @@ class FileReceiptStore(ToolReceiptStore):
         self.ready()
         return await super().binding(ctx)
 
-    async def record(self, evidence: FileReadEvidence, ctx: TrustedExecutionContext) -> JsonObject:
-        evidence = freeze_file_evidence(evidence)
-        call, spec = await self.binding(ctx)
-        assert self.signatures is not None
-        data = verify_file_evidence(evidence, call, spec, ctx, self.provider_ref, self.signatures)
-        # One immutable pin binds the complete original observation. Every recovery
-        # still rechecks bridge data authority, real signatures and actual bytes;
-        # a matched pin avoids rewriting all named rows/blobs during each Reader call.
-        proof = Ref(
+    @staticmethod
+    def observation_ref(evidence: FileReadEvidence, ctx: TrustedExecutionContext) -> Ref:
+        """Pin the original observation; this hash helper never grants data access."""
+        return Ref(
             kind="content",
             id="file-observation-" + ctx.attempt_id,
             version="1",
@@ -103,6 +98,16 @@ class FileReceiptStore(ToolReceiptStore):
                 )
             ).hexdigest(),
         )
+
+    async def record(self, evidence: FileReadEvidence, ctx: TrustedExecutionContext) -> JsonObject:
+        evidence = freeze_file_evidence(evidence)
+        call, spec = await self.binding(ctx)
+        assert self.signatures is not None
+        data = verify_file_evidence(evidence, call, spec, ctx, self.provider_ref, self.signatures)
+        # One immutable pin binds the complete original observation. Every recovery
+        # still rechecks bridge data authority, real signatures and actual bytes;
+        # a matched pin avoids rewriting all named rows/blobs during each Reader call.
+        proof = self.observation_ref(evidence, ctx)
         previous = await self.ledger.get("tool.file.observation.refs", ctx.attempt_id, ctx)
         if previous is not None:
             if previous != proof.wire():
@@ -170,6 +175,7 @@ class FileReceiptStore(ToolReceiptStore):
             return None
         evidence = freeze_file_evidence(evidence)
         await self.record(evidence, ctx)
+        await self.binding(ctx)
         return evidence
 
     async def provider_receipt(self, ctx: TrustedExecutionContext) -> JsonObject | None:

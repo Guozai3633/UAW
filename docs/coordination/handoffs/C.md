@@ -620,3 +620,104 @@ A按完整原ToolRef/hash/provider选择对应invocation/results/source/reconcil
 
 最终源码与本handoff分开提交；保留原所有提交和handoff；不reset/rebase、不开放flags/目录/网络/
 本机写入exec、不自动扩下一包。整条A↔D用户确认/Agent/Artifact/Task完成链和公共冲突合入由A验收。
+
+
+## MS-T2h：原文件资料 owning Reader、不可变引用与账务独立恢复（2026-10-10）
+
+Session C / MS-T2h / P1-03、P1-08组件；真实产品Context/Artifact/Task及MS-T2整链由A验收。
+实际目录E:/UAW/.worktrees/tool，分支dev/tool。前次查询ms-i2k未正式发布时仅只读，没有代码改动；
+本次DISPATCH正式准确SHA及远端tag一致后，干净fetch origin --tags，merge --ff-only ms-i2k-start，
+核对当时HEAD/tag准确为b7b79b150470a80f37b28fd52a2177f6de5b3124。uv sync --frozen
+ --extra agent-engine --link-mode copy，自己的.cache/uv/.venv，91包锁定；未改锁。
+MS-T2g源码5b7749d/交接780d3c4为当前历史祖先；原358单元/219SQL及原失败回执不覆盖。
+公共契约0.1；schema SHA256 d54bd0218df40fd988f9d68a1635c051fd38031e47130591562f6d1f94b51056；
+uv.lock SHA256 a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f。
+
+提交：M1 5c8854c713c6a9aa1f265016f5d6e875688f10e2 / 阶段说明815544c；
+M2 54d474e2f6492bd5877df0cfb4ba358ab3cf867d / 阶段接线f2b55e3；
+最终源码3ed6ef3434c024d00e6e7794e5bace28914fe426（含M2运行实现与全部最终测试）。
+本次handoff/最终说明独立提交；不reset/rebase/stash，保留所有旧提交/回执。
+
+修改文件（从正式固定基线）：
+- docs/coordination/requests/C/MS-T2h-stage-material-reader.md
+- src/uaw/tool/providers/file_material.py
+- src/uaw/tool/providers/file_store.py
+- tests/integration/tool/file_recovery_child.py
+- tests/integration/tool/test_file_material_bridge_postgres.py
+- tests/integration/tool/test_file_material_postgres.py
+- tests/integration/tool/test_file_material_recovery_postgres.py
+- tests/unit/tool/test_file_material.py
+- docs/coordination/requests/C/MS-T2h-final-wiring.md
+- docs/coordination/handoffs/C.md（只追加；原77898字节保持原样）
+
+固定接口：FileMaterialReaderPort.export(action_id,ctx)->FileMaterial / read(material_ref,ctx)->FileMaterial；
+FileMaterialAdapter(source:FileReceiptStore|None,limits=FileMaterialLimits())实现当前owning数据Reader，
+与A assemble_file_tool(...).receipts对接。M1/M2签名见
+[stage-material-reader](../requests/C/MS-T2h-stage-material-reader.md)，具体成功/拒绝/重复样例见
+[final-wiring](../requests/C/MS-T2h-final-wiring.md)。默认16384字符/64KiB UTF-8；更小界限拒绝413，
+不截断/拼页/Unicode或换行规范化。实际A RegisteredFileBridge只whole≤16384字符，
+lines/text_span/cursor保持503；C没有扩大生产能力或从新打开补全原snapshot。
+
+FileMaterial内部不可变canonical bytes，只包既有FileContent/Usage/Principal/Ref；content/text/file_hash、
+usage/owner及material_ref/observation_ref/fragment_ref/command_ref/runner_receipt_ref/raw_result_ref/
+provider_ref/call_ref。返回dict/model为副本，没有snapshot/绝对路径/新授权字段；不是公共wire DTO。
+后续资料消费必须重新read(ref,original_ctx)，缓存/SQL/Ref不是权限。A把正文置于低信任Context资料
+分区，规则不从正文升级，引用/Artifact/Task完成归A；C不修改Context/Agent或调用真实模型。
+
+来源核对：source.read_observation/read_raw核对完整原call/spec/ctx/attempt/provider、独立原command/
+签名receipt/journal及原完整snapshot、实际selection；导出复核正文/Usage一致，精确观察Ref和片段Ref。
+新增source.observation_ref为原相同hash算法的纯pin helper，无授予数据权；original在record await后
+再次binding复查当前数据权限。FileContent.content_hash是原整个文件SHA256；fragment_ref是实际
+返回UTF-8字节SHA256；material_ref是FileContent canonical字节SHA256，三者不能混用。
+原snapshot始终来自同一次原执行，不向模型/HTTP暴露。原文件变化/删除后只查原journal，不再open。
+
+持久状态：Tool独占tool.file.material.refs/observations/fragments/commands/receipts/providers/calls/
+owners/usages，使用既有Ref/Principal/Usage；正文沿原FileContent blob，无私有Object/新DTO/迁移。
+原attempt短SQL CAS固定Refs/owner/Usage，篡改/冲突拒绝、不覆盖“修复”。发布和读取在CAS之后再核对
+真实来源/当前数据权限；所有Reader/Bridge/Blob/BudgetService IO均在Tool会话事务锁外。
+资料导出不调用executor/reserve/dispatch/retry/结算，不声明ToolResult/Task成功。
+
+取消/跨用户/session/project/attempt/root/device/key/版本或数据撤销后的资料读取按当前数据权限；
+旧approval和Refs不授予新执行。缺source/access/bridge/signatures/verifier明确503，无原观察不可用，
+unknown不新attempt重发/不伪造not_applied或零费用。旧recover_file_accounting只重放已接受原Usage/
+已有固定计划，当前BudgetState/Budget授权独立于正文；数据/root/key撤销后可清原费用回执，
+不读正文/root/journal、不增观察。pending money仍held；material导出不扩大预算或用户固定模型。
+
+实际验证（C独立loopback55434）：. ./ops/start-dev-db.ps1 -Session C；锁定.venv alembic upgrade head；
+所有SQL --require-postgres，独立basetemp/XML、随机主体清理；不复制A私有配置/凭据/其他库，不写共享
+ docs/implementation/evidence。回执在ignored tests/.artifacts/C/MS-T2h。
+
+| 范围 | 实际结果/回执 |
+| --- | --- |
+| M1接口单元 | m1-unit.xml：6通过，0.18秒 |
+| 全Tool单元 | m2-unit.xml：369通过，20.84秒（原358+新11），0失败/错误/跳过 |
+| 资料SQL首次 | material-first.xml：1失败，fixture修改既有frozen Location而被拒绝；原失败保留 |
+| 修复后资料SQL | material-fixed.xml：15通过，503.35秒，改为修改wire副本 |
+| 已发布A桥样例 | a-bridge.xml：11通过，59.69秒，真实A RunnerCommands/RunnerPipeClient/C Reader接线 |
+| 新process/费用/篡改 | material-recovery.xml：6通过，212.88秒；无executor且文件删除后原资料恢复 |
+| 最后额外权限范围 | material-extra.xml：4通过，97.75秒；用户ID/UTF8/device版本/key撤销 |
+| 原影响回归 | original-affected.xml：45通过，984.98秒，41原文件+4text/办公兼容 |
+| 静态 | Ruff通过；Mypy33源码；76文件format-check；git diff --check通过 |
+
+本轮去重81个不同真实SQL最终全通过（新36+原45），没有最终失败/错误/跳过；verification-index.json
+索引原JUnit/最后节点，不叠加复验。原219基线回执保留；其余174原账本/检索/索引未改，不声称本轮
+全部219重跑。新单元/SQL模块名不同，无同名收集冲突。原child默认输出兼容，只新增显式material_ref
+模式；该真实子进程仅消费测试PUBLIC keys，未复制私钥/生产凭据，0发送/0新打开。
+
+命令：python -m pytest tests/unit/tool -q -p no:cacheprovider；新三个
+ test_file_material*_postgres.py -v -p no:cacheprovider --require-postgres（按初轮/额外节点分组）；
+原影响python -m pytest tests/integration/tool/test_file_pipeline_postgres.py
+ tests/integration/tool/test_file_recovery_postgres.py
+ tests/integration/tool/test_text_results_postgres.py::test_actual_text_complete_chain_restart_lookup_outcome_and_result
+ tests/integration/tool/test_office_tools_postgres.py::test_office_approved_actual_result_fixed_receipt_fresh_objects
+ -v -p no:cacheprovider --require-postgres，详细txt/xml均保留。
+
+测试范围：真实SQL/Blob、实际Windows临时根读取、真实Ed25519、A已发布控制登记/预算原ctx/pipe-client
+到C owning Reader；transport/role/root/device/provider元数据/key目录为明确受控组件。
+没有真人确认、生产bootstrap/账号root来源或真实LLM/Context成果验收；受控来源未注册产品、flags不改。
+最终无未通过组件节点；A真实生产当前用户/session/role/model/provider及设备/root/key/channel来源仍缺。
+A负责FileDeviceRoutePort/current recovery authority、Context recipe/低信任正文/Artifact/Verification/
+Task结论；D负责本机真人确认和helper来源。生产lines/cursor和项目准入仍unavailable，若需公共资料
+DTO须A统一设计生成/发布；本包无需新依赖/迁移/共享契约。只在C允许目录交付，不依赖D开发分支。
+
+A合入、公共冲突和整条链路回归由A处理。本包源码和handoff分开提交，干净后停止，不自动进入下一包。
