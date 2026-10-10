@@ -462,6 +462,116 @@ async def test_native_enrollment_wrong_os_instance_never_opens_confirmation(
     assert (await p.service.get(p.owner, started["id"]))["state"] == "pending"
 
 
+async def test_first_device_gate_controlled_yes_original_activation_and_cleanup(
+    enrollment_case, tmp_path, monkeypatch
+):
+    from uuid import uuid4
+
+    from pydantic import SecretStr
+    from uaw_runner.helper_host import HelperApplication
+    from uaw_runner.ipc.windows_pipe import WindowsApi
+    from uaw_runner.keys import ProtectedSigner
+    from uaw_runner.state import LocalState
+
+    from uaw.infrastructure import enrollment_native
+    from uaw.infrastructure.credentials import WindowsCredentialStore
+    from uaw.infrastructure.enrollment_bootstrap import FirstEnrollmentDeviceFactory
+    from uaw.shared.runner_signatures import VerificationKey
+
+    p = enrollment_case
+    actual = WindowsApi().current()
+    p.candidate["device"]["identity"] = {
+        "pid": actual.pid,
+        "created": str(actual.created),
+        "user_sid": actual.user_sid,
+        "logon_sid": actual.logon_sid,
+    }
+    for k in ("user_sid", "logon_sid"):
+        p.candidate["control"]["identity"][k] = getattr(actual, k)
+    started = await p.service.begin(p.owner, p.candidate["id"], meta("controlled-first-begin"))
+    state = LocalState(tmp_path / "first-device-keys.sqlite")
+    for role in ("control", "device"):
+        state.register_key(
+            VerificationKey(
+                role + "-key",
+                p.candidate["device_id"],
+                p.keys[role].public_key().public_bytes_raw(),
+                role,
+            )
+        )
+    credentials = WindowsCredentialStore("first-device-test-" + uuid4().hex)
+    handle = "device-" + uuid4().hex
+    await credentials.put(
+        handle, SecretStr(base64.b64encode(p.keys["device"].private_bytes_raw()).decode())
+    )
+    shown = []
+
+    class ControlledDialog:
+        def show(self, prompt, stopped, deadline):
+            # Explicitly controlled native Yes. It is never a human acceptance receipt.
+            shown.append(prompt.text())
+            assert "不授予目录" in shown[-1]
+            return None
+
+    class Proofs:
+        async def current(self, key, *, owner):
+            assert key == started["id"] and owner == p.owner
+            return sign(
+                started["proof_document"],
+                p.keys["control"].private_bytes_raw(),
+                p.candidate["device_id"],
+                "control-key",
+                "command",
+            )
+
+    class OwnedHelper:
+        closed = 0
+
+        async def close(self):
+            self.closed += 1
+
+    owned = OwnedHelper()
+
+    class Paired:
+        changed = False
+
+        async def create(self, identity):
+            assert identity == actual
+            assert (await p.service.get(p.owner, started["id"]))["state"] == "active"
+            if self.changed:
+                p.candidates.allowed = False
+            return HelperApplication(owned)
+
+    paired = Paired()
+    monkeypatch.setattr(enrollment_native, "WindowsNativeDialog", ControlledDialog)
+    p.service.native = enrollment_native.RegisteredNativeEnrollmentEvidence(p.service)
+    native = enrollment_native.WindowsEnrollmentConfirmation(
+        p.service, state, ProtectedSigner(state, credentials), device_credential_handle=handle
+    )
+    factory = FirstEnrollmentDeviceFactory(
+        p.service,
+        owner=p.owner,
+        enrollment_id=started["id"],
+        native=native,
+        proofs=Proofs(),
+        paired_factory=paired,
+    )
+    try:
+        assert (await factory.create(actual)).helper is owned
+        assert len(shown) == 1 and not owned.closed
+        assert (await factory.create(actual)).helper is owned
+        assert len(shown) == 1
+        paired.changed = True
+        with pytest.raises(DomainError):
+            await factory.create(actual)
+        assert owned.closed == 1 and len(shown) == 1
+    finally:
+        await credentials.delete(handle)
+    with pytest.raises(DomainError) as cleaned:
+        await credentials.resolve(handle)
+    assert cleaned.value.status_code == 404
+
+
 async def test_native_enrollment_invalid_control_signature_never_opens_ui(
     enrollment_case, monkeypatch
 ):
@@ -655,3 +765,84 @@ async def test_owned_prepared_helper_candidate_current_sql_os_and_revocation(
     assert helper.process.poll() is not None
     with pytest.raises(DomainError):
         await source.current(candidate["id"], owner=p.owner)
+
+
+async def test_first_device_factory_missing_source_never_opens_ui(enrollment_case, monkeypatch):
+    from uaw.infrastructure import enrollment_native
+    from uaw.infrastructure.enrollment_bootstrap import FirstEnrollmentDeviceFactory
+
+    def unexpected_ui():
+        raise AssertionError("Missing first bootstrap cannot open UI")
+
+    monkeypatch.setattr(enrollment_native, "WindowsNativeDialog", unexpected_ui)
+    factory = FirstEnrollmentDeviceFactory(
+        enrollment_case.service,
+        owner=enrollment_case.owner,
+        enrollment_id="not-captured",
+        native=None,
+        proofs=None,
+        paired_factory=None,
+    )
+    with pytest.raises(DomainError) as missing:
+        await factory.create(None)
+    assert missing.value.status_code == 503
+
+
+async def test_first_device_factory_wrong_proof_never_calls_paired_factory(
+    enrollment_case, monkeypatch
+):
+    from uaw_runner.ipc.windows_pipe import WindowsApi
+    from uaw_runner.keys import ProtectedSigner
+
+    from uaw.infrastructure import enrollment_native
+    from uaw.infrastructure.enrollment_bootstrap import FirstEnrollmentDeviceFactory
+    from uaw.shared.runner_signatures import VerificationKey
+
+    p = enrollment_case
+    actual = WindowsApi().current()
+    p.candidate["device"]["identity"] = {
+        "pid": actual.pid,
+        "created": str(actual.created),
+        "user_sid": actual.user_sid,
+        "logon_sid": actual.logon_sid,
+    }
+    p.candidate["control"]["identity"]["user_sid"] = actual.user_sid
+    p.candidate["control"]["identity"]["logon_sid"] = actual.logon_sid
+    started = await p.service.begin(p.owner, p.candidate["id"], meta("first-device-begin"))
+
+    class Directory:
+        def lookup(self, key_id, *, device_id):
+            role = "control" if key_id == "control-key" else "device"
+            return VerificationKey(
+                key_id, device_id, p.keys[role].public_key().public_bytes_raw(), role
+            )
+
+    class Proofs:
+        async def current(self, enrollment_id, *, owner):
+            assert owner == p.owner and enrollment_id == started["id"]
+            return "invalid-proof"
+
+    class Paired:
+        async def create(self, identity):
+            raise AssertionError("Pending or invalid proof must never become a paired helper")
+
+    def unexpected_ui():
+        raise AssertionError("Invalid first proof cannot open UI")
+
+    monkeypatch.setattr(enrollment_native, "WindowsNativeDialog", unexpected_ui)
+    directory = Directory()
+    native = enrollment_native.WindowsEnrollmentConfirmation(
+        p.service, directory, ProtectedSigner(directory, None), device_credential_handle="not-used"
+    )
+    factory = FirstEnrollmentDeviceFactory(
+        p.service,
+        owner=p.owner,
+        enrollment_id=started["id"],
+        native=native,
+        proofs=Proofs(),
+        paired_factory=Paired(),
+    )
+    with pytest.raises(DomainError) as denied:
+        await factory.create(actual)
+    assert denied.value.failure.code == "enrollment_control_proof_denied"
+    assert (await p.service.get(p.owner, started["id"]))["state"] == "pending"
