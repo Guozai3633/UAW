@@ -4,6 +4,7 @@ Lifecycle methods are internal trusted local calls. IPC remains command/recover 
 """
 
 import asyncio
+import math
 import secrets
 from dataclasses import dataclass
 
@@ -65,7 +66,19 @@ class ReadOnlyHelper:
         roots: NativeRootSource,
         registry: ConnectionRegistry,
         currency: str,
+        session_lifetime_seconds: float = 60,
+        native_timeout_seconds: float = 60,
     ) -> None:
+        if (
+            any(
+                type(value) not in (int, float) or not 0 < value <= 120 or not math.isfinite(value)
+                for value in (session_lifetime_seconds, native_timeout_seconds)
+            )
+            or native_timeout_seconds > session_lifetime_seconds
+        ):
+            raise ValueError(
+                "Finite native/session seconds must satisfy 0 < native <= session <= 120"
+            )
         if (
             journal.protocol is not protocol
             or journal.reader is not commands
@@ -90,6 +103,8 @@ class ReadOnlyHelper:
             registry,
             currency,
         )
+        self.session_lifetime_seconds = session_lifetime_seconds
+        self.native_timeout_seconds = native_timeout_seconds
         self.listener: WindowsPipeListener | None = None
         self.session: AuthenticatedPipeSession | None = None
         self.endpoint: ReadOnlyPipeEndpoint | None = None
@@ -157,6 +172,7 @@ class ReadOnlyHelper:
             session = AuthenticatedPipeSession(
                 pipe=pipe,
                 registration=bootstrap.registration,
+                lifetime_seconds=self.session_lifetime_seconds,
                 directory=bootstrap.directory,
                 signer=IpcSigner(
                     binding=IpcSigningBinding(
@@ -207,6 +223,7 @@ class ReadOnlyHelper:
             directory=self.bootstrap.directory,
             clock=self.protocol.clock,
             local_roots=roots.native_roots,
+            timeout_seconds=self.native_timeout_seconds,
         )
         verifier = PairingVerifier(
             roots.selections, native=native, roots=roots.native_roots, clock=self.protocol.clock
