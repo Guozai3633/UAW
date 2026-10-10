@@ -1,0 +1,458 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2i",
+  "acceptance": "development_integration",
+  "execution_source_commit": "30566c62f7440b363d188910cdc14a8d69b940be",
+  "published_source_ref": "ms-i2i",
+  "runtime_and_test_sources_identical_to_execution_commit": true,
+  "complete_full_campaign_after_all_worker_final_merges": true,
+  "single_pytest_invocation": false,
+  "full_campaign": {
+    "path": "docs/implementation/evidence/ms-i2i-campaign.json",
+    "sha256": "d68a00b1bb0977f0430ea9d3f45daa8000596b622e955118315a40721a174b75"
+  },
+  "original_incomplete_execution": {
+    "path": "docs/implementation/evidence/ms-i2i-full-interruption.json",
+    "sha256": "2809c7e4947076db7415b5f19ace7f86d7415fe4434bb3ed7dbcea27dea78d4e"
+  },
+  "second_incomplete_execution": {
+    "path": "docs/implementation/evidence/ms-i2i-second-interruption.json",
+    "sha256": "fb25b87f69ac53ee0f0e5c156c6991d675c39ae7a95e59a1eab7ccbc6ecf0d1d"
+  },
+  "original_incomplete_execution_accepted_nodes": 0,
+  "execution_strategy": "Checkpoint each complete original pytest group; original interrupted commands are not used for coverage.",
+  "full_receipt": {
+    "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+    "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0",
+    "counts": {
+      "tests": 1691,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "different_nodes": 1691,
+    "seconds": 6870.419,
+    "started_at": "2026-10-10T10:34:43.417735+08:00"
+  },
+  "raw_logs": [
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-000/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-001/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-002/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-003/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-004/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-005/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-006/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-009/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-010/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-011/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-012/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-013/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-014/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-015/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-016/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-017/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-018/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-020/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-021/attempt-02.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-022/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-023/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-024/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-025/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-026/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-027/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-028/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-029/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-030/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-031/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-032/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-033/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-034/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-035/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-036/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-037/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-038/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-039/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-040/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-041/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-042/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-043/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-044/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-045/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-046/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-047/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-048/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-049/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-050/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-051/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-052/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-053/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-054/attempt-01.log",
+    "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-055/attempt-01.log"
+  ],
+  "previous_receipt": {
+    "path": "docs/implementation/evidence/p0-tests-before-ms-i2i.xml",
+    "sha256": "bd5b8e36389a69ad3483187748bcea28846adf8191b158489d9e451d1cdba8c2",
+    "counts": {
+      "tests": 1077,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "phase": "MS-I2g"
+  },
+  "previous_current_node_intersection": 1077,
+  "new_node_ids": 614,
+  "previous_node_ids_not_in_current_suite": [],
+  "worker_receipts": {
+    "path": "docs/implementation/evidence/ms-i2i-worker-receipts.json",
+    "sha256": "2a6366244119d01d5ff9310c2b80b961f5de918928b8b38e089675623ac27e91"
+  },
+  "worker_ownership": {
+    "path": "docs/implementation/evidence/ms-i2i-worker-ownership.json",
+    "sha256": "b807a918edde8b6b84609755e0e115de8b92d74bc40e24c8a388f4c2f7d61a22"
+  },
+  "focused_a_receipts": {
+    "path": "docs/implementation/evidence/ms-i2i-a1.json",
+    "sha256": "1795229f49a2b3bd5ae61f59bcf45b153c9c85147b9965a6f9bf37a6e0ed16e0"
+  },
+  "real_provider_receipts": {
+    "path": "docs/implementation/evidence/ms-i2i-live-probes.json",
+    "sha256": "5b20ef073405c340124b6621a075b8297724ba16478acda897152cbcf2664754"
+  },
+  "live_attempts_including_failures": 46,
+  "final_completed_live_task_types": [
+    "ms-i2i-json-delivery-01",
+    "ms-i2i-academic-delivery-01",
+    "ms-i2i-office-delivery-02",
+    "ms-i2i-rules-delivery-02",
+    "ms-i2i-calculation-delivery-04"
+  ],
+  "confirmed_monetary_cost": null,
+  "money_state": "pending provider invoice; original money holds retained",
+  "windows_cleanup_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_exact_maximum_sign0.json",
+      "sha256": "c6346b230de2814051d53c04e1414a45ad76dff121eb6f7f9e3d55e93c40fdcf",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:12.166274"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_expiry_during_curr0.json",
+      "sha256": "97b441fceedf26c1a22284066fdb7bd0340e174aa98b5640b75c1543d9185a02",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:11.127665"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_kernel_pipe_dacl_h0.json",
+      "sha256": "cba0de7a90f7c1a8693c755b1c0a856e47d5998e8c924ec139fb07eb0a23be31",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:09.846677"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_peer_signature_non0.json",
+      "sha256": "b909c929e1fa26229242bde94f93d3da467ea2ed0b09f9eab497b287c0e8910c",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:51.675695"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_peer_signature_non1.json",
+      "sha256": "ac26eaf5158e80329a0b4122e9dddc9e9f28b19954f3bd777d9a306bfb3f5aa1",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:52.656190"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_peer_signature_non2.json",
+      "sha256": "41de953e17fb92aaa464fc38f2606aaed12b7d27cf1f85ffa5ac9d733766a8ca",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:53.625664"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_pipe_invalid_lengt0.json",
+      "sha256": "61c711605014a56289ae450cb956a5ee71dbe476d56609ff0d2eb6fb673dcf49",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:54.462701"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_pipe_invalid_lengt1.json",
+      "sha256": "a5e747c49b7d71dda20e8dba029618b14ab4a0bc556b08bd63a476925e88704a",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:55.338051"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_pipe_invalid_lengt2.json",
+      "sha256": "70aee712fce9c874c1ee98103995d5b6f9b004b9b709c346de782c4fe8b8409f",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:56.295951"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_pipe_invalid_lengt3.json",
+      "sha256": "67831dc8a9921d360017e339b030f3e0d2836f64f002697faea8825e65317e74",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:57.622122"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_read_cancel_propag0.json",
+      "sha256": "9e1b49d0b4d00ada158ee07a55520d93db5e1aec85d93397b558438b04ca31c9",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:05.846484"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_actual_windows_double_pro0.json",
+      "sha256": "5ec46b073e90129deffbd6eb43bcc6bfc1f57d5339e18a36a65cbf573e1c9f38",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:40.876744"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f0.json",
+      "sha256": "fd5d4f4256a2748b5ad2bb57cb901bea56264f2a060d44680a1f490e5dc3ac13",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:42.869266"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f1.json",
+      "sha256": "02e33a9dba8dc23b2dca9834ca779b20f8ed4871a2ecc183515c6393e71a7708",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:43.906653"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f2.json",
+      "sha256": "c27a32430362e4b31af572bf8aee28f24cba13c322e80d6c63367089d9a2b14a",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:44.893044"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f3.json",
+      "sha256": "d88d887300ea48ca0e7502ee01b527fa5c3bd0168ee140e97fd564aaf4fba1a2",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:45.965374"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f4.json",
+      "sha256": "12f6ef41817caf2254cb37269ac176bee6d2bd2b75a9c8842b088af3149ed1a3",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:46.934230"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f5.json",
+      "sha256": "b9ffb8e4b90a785a8f0f4e624af07340ae8929275d5395680305679c67e33e02",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:47.897605"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_live_source_invalidated_f6.json",
+      "sha256": "831cd60b120639fee7fef03ee354c9aa3b8c6ed88e96dfbe8a8ceaf4cd1db241",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:48.806914"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated0.json",
+      "sha256": "31f06da19a6907a42312430beb4ea250662fc36579b7397aae8a5151df94a1ac",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:58.629757"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated1.json",
+      "sha256": "d38df5edb58af6aa5536e4363186802f7ad706705c51cdd8a5b7aa4ab32d407f",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:59.676508"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated2.json",
+      "sha256": "a86207cf21d8330517b86b55c24218669c85392c81174bd6e9e45e5c537477fc",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:00.742329"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated3.json",
+      "sha256": "910f4ec1f098e33e512ed593fc7bdf0ba9c7693efe91ac9f4aaa0eecb132d6b3",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:01.841786"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated4.json",
+      "sha256": "7314d9c4fd8e19b076ad8d72cbe5ebc15a374e8d8e5c93909d41223558b01503",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:02.833400"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated5.json",
+      "sha256": "48de5136f7ec6dcbce660a39c9cf0ee6d1b031f502df9b2de018e9d2ec367c4e",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:03.751488"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_os_peer_not_authenticated6.json",
+      "sha256": "2879021a68f52482787556536f510d423c6ac6276e7644f8cb59b195f809bf8a",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:04.686501"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_real_channel_snapshot_ind0.json",
+      "sha256": "4015da4c49fc401f6475a4273b0558dc6cee364d776d6317971422d4356b35eb",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:41.973760"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_reconnect_new_ref_and_non0.json",
+      "sha256": "c72dc88542742c6184086af0eec19436769344edcaa72b3835ca93b78b2e6d67",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:36:50.584088"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_registry_bound_and_handsh0.json",
+      "sha256": "f2ef6787ccbb74f2d7c4f2f663423af281a6ba46e1474cacc563ece6c200df5f",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:08.832637"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_repeated_cancellation_sti0.json",
+      "sha256": "acf684ebc7154482edd1f45a39c375070e1dc2fa662d6718817e7dec146ab527",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:13.191203"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_source_await_timeout_inva0.json",
+      "sha256": "63ba00ee7c36c6ba82671be7510fb2de9580927497e38ca27c9fe58ec2d319f8",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:06.974256"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/windows-ipc-test_unconnected_listener_canc0.json",
+      "sha256": "1ab5db9f7817eafea076b1a93f4c082880ec144e5505316334bae2bfd185daf5",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:09.985261"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_actual_signed_read_receip0.json",
+      "sha256": "e91a03d4ee86d58e3d92ec05539021180e4e8dd8f68b6adcb0d1ba355be0aafe",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:17.588223"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_body_cannot_self_authoriz0.json",
+      "sha256": "26639af1b6066a4fed9213a25b363a9c035b745286c532892cec8ddbafad543d",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:25.490051"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_current_changes_during_ru0.json",
+      "sha256": "04b74fc411b8c02888781e2d70e9eb2aebfb56626ba8a886c823e8a24d334d7a",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:26.951608"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_current_changes_during_ru1.json",
+      "sha256": "7b1f4a5685af10690793b3dddfed2d55121330372fa9bbf6b531720d49abf58e",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:28.490676"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_current_changes_during_ru2.json",
+      "sha256": "9a5c43bfb4e423c0e8a44d03097dd6a4240de4197afddbdbf2f293e585ef5ef1",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:29.937690"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_current_changes_during_ru3.json",
+      "sha256": "ebc511888b7ae50b49f8eb1cb26cf8ee37152b62c15c7d69f0aa0f3cd9e7aa8d",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:31.485219"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_current_changes_during_ru4.json",
+      "sha256": "ffaff8121c567682d1e8f033ea17d3a2899263b06b925c7c0c2dcb7fb69c203c",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:33.756192"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_lost_reply_reconnect_expl0.json",
+      "sha256": "6e9e52394e69477d44b84a4b1bf1b7b2399df40313dcda46e8ec84216dde02ff",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:21.345194"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_missing_production_assemb0.json",
+      "sha256": "64c24290a5e92a5ca2f9c3a1731f53d004ab0c508b6392f7882c8d17f99047d4",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:24.048616"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_read_assembly_timeout_can0.json",
+      "sha256": "9a054cf8ea309a8994c3b2f7ec864b76560c5219ae262affc1bf33e0c6b93c97",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:38.871558"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_two_live_connections_shar0.json",
+      "sha256": "f3d2a87dea61f826c28286581b00109e832b1c8adeac29d3ceecc7832f594e1a",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:37.453921"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/windows-ipc-test_unknown_explicit_recovery0.json",
+      "sha256": "bde3ed8891b63285bd5fd7102a4eca26ecdd53db09fc1a607e09457c4be718d0",
+      "cleaned": true,
+      "modified_at": "2026-10-10T10:37:22.622478"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/windows-ipc-test_a_verifies_actual_two_pro0.json",
+      "sha256": "c81dbe68a8103f22c7aebbe36d396c345719271ede1d93a20770c97a90a88e02",
+      "cleaned": true,
+      "modified_at": "2026-10-10T11:11:17.414114"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/windows-ipc-test_actual_a_control_client_t0.json",
+      "sha256": "1b35e794a29d01b022af401d3d3c81aae22d85af3c54763445c22e9c3473e2f2",
+      "cleaned": true,
+      "modified_at": "2026-10-10T11:11:19.048863"
+    }
+  ],
+  "windows_cleanup_scope": "Actual per-test-name cleanup reports within the current full campaign; not a full-test count",
+  "static": {
+    "ruff": "passed",
+    "format_files": 281,
+    "mypy_sources": 164
+  },
+  "flags_opened": false,
+  "public_runtime_bindings_opened": false,
+  "limitations": [
+    "Regression Model HTTP fixtures do not prove live provider quality or uptime.",
+    "Live small-task results are sample acceptance, not general office/academic quality guarantees.",
+    "OS IPC fixtures use independent registered UAW identities/roots, not production user pairing.",
+    "No user project write/install/exec, subagent/DAG, frontend, web validation or professional-file editing opened.",
+    "Known actual token usage is not a confirmed monetary bill.",
+    "Tool inventory proves recorded Run actions, not whole OS/provider internal behavior."
+  ],
+  "failed_campaign_attempts": [
+    {
+      "group": "group-021",
+      "selector": "tests/integration/context/test_assessment_chain_postgres.py",
+      "exit_code": 1,
+      "state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-021/attempt-01.state.json",
+      "state_sha256": "892abd6446f0410ed0b7776ea6c3007c645af69563c3ae23237e0255e17b2b52",
+      "original_failed_xml": "docs/implementation/evidence/ms-i2i-original-group-021-attempt-01.xml",
+      "xml_sha256": "867e04a80d7350800c17c439f7da6b24c3eb89c8ee2f6756d44d8ad89dc17392",
+      "counts": {
+        "tests": 7,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "accepted_for_current_coverage": false
+    }
+  ],
+  "contracts": {
+    "path": "docs/api/contract-check.json",
+    "sha256": "f8fbddc45c0780b537ce6cd805a62deae24b8ad6a09a838bdd7d5d34a65971e2",
+    "execution_date": "2026-10-10",
+    "named_schemas": 1294,
+    "positive_examples": 1294,
+    "negative_rejections": 304,
+    "interfaces": 272,
+    "errors": [],
+    "runtime_tests_executed_by_contract_checker": false
+  }
+}

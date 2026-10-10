@@ -1,3 +1,8 @@
+## 旧里程碑收尾与本轮接口
+
+- [MS-I2i完整开发验收](implementation/MS-I2i.md)：固定来源1691项完整覆盖、原失败及实际模型证据。
+- [MS-I2j A接口阶段设计](coordination/requests/A/MS-I2j-stage-api.md)：浏览器认证与页面/文件消费接口，当前实现状态逐项列出。
+
 # 当前开发开工入口：MS-I2j
 
 - [四会话提示词](coordination/MS-I2j-messages.md)：分别转发给原A/B/C/D聊天。

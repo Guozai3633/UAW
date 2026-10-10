@@ -170,3 +170,11 @@
 - A跨阶段192不同聚焦节点通过，Ruff/281格式/Mypy164通过。46个真实DeepSeek尝试含全部失败，五类最终任务通过；取消/修订/同级冲突均不能越过完成门槛。
 - [实际范围与失败](../../implementation/MS-I2i-A1.md)、[详细接口和目录](../requests/A/MS-I2i-completion-wiring.md)、[A证据](../../implementation/evidence/ms-i2i-a1.json)。本轮唯一一次全量运行中；旧1077属于MS-I2g。
 - 生产认证/本机用户确认/网页验证/专业文件/前端仍未开放；flags/公开绑定不变，D01/D03/D06未决定。四方最终源码汇合后已启动本轮唯一一次全量，等待实际回执。
+
+## MS-I2i旧完整验收收尾（2026-10-10）
+
+- 固定源码30566c6，最终1691项不重叠覆盖通过；56组原JUnit，不是单次pytest。
+- 两次命令中断及Context回执目录原失败保留；原7项只补环境后复跑，不改代码断言。
+- 46实际模型尝试/五类最终完成，费用pending。
+- 新MS-I2j已派发，B前端归属与ms-i2j-start标签保留，worker分支未改。
+- [完整回执](../../implementation/MS-I2i.md)。

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="206.972" timestamp="2026-10-10T11:11:33.097531+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_actual_current_chain_cost_and_cache_comparison" time="12.932"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'tests\\.artifacts\\B\\MS-C6\\read-cost-progress.json'">tests\integration\context\test_assessment_chain_postgres.py:176: in test_sql_actual_current_chain_cost_and_cache_comparison
+    mat, pins, saved, _, _, _ = await meter.run("batch", "registration", setup(s), reader, assessor)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\context\test_assessment_chain_postgres.py:124: in run
+    await asyncio.to_thread(
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\asyncio\threads.py:26: in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\concurrent\futures\thread.py:86: in run
+    result = ctx.run(self.task)
+             ^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\concurrent\futures\thread.py:73: in run
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:809: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'tests\\.artifacts\\B\\MS-C6\\read-cost-progress.json'</failure></testcase><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_multirule_new_process_and_concurrent_snapshot" time="164.017" /><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_actual_current_model_wait_revocation[cancel]" time="5.646" /><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_actual_current_model_wait_revocation[model]" time="5.495" /><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_actual_current_model_wait_revocation[scope]" time="7.720" /><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_batch_detects_actual_corruption_between_passes" time="4.449" /><testcase classname="tests.integration.context.test_assessment_chain_postgres" name="test_sql_concurrent_revision_invalidates_assessed_sources" time="5.712" /></testsuite></testsuites>

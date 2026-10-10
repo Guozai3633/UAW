@@ -1,0 +1,1034 @@
+{
+  "date": "2026-10-10",
+  "campaign": "MS-I2i full current suite",
+  "node_count": 1691,
+  "different_passing_nodes": 1691,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+  "single_pytest_invocation": false,
+  "execution": "Disjoint original completed group JUnits from one fixed-source full campaign; aggregate copies original suites without inferring test outcomes.",
+  "expected_collection": {
+    "path": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/expected.json",
+    "sha256": "6a9cd8db8c2239c16a14a2b641802bbde3365320ccddec370c61e754080ff243"
+  },
+  "full_aggregate": {
+    "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+    "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+  },
+  "groups": [
+    {
+      "group": "group-000",
+      "selector": "tests/unit",
+      "counts": {
+        "tests": 945,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-000/attempt-01.xml",
+      "xml_sha256": "8154f2b7e9abe983a66eb906e6f19b5396abb35967c3637913ecc1ace2f91d3f",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-000/attempt-01.log",
+      "log_sha256": "41b00184c726cde00b57332dcf93696781b9a49d290dc6450ae38900324d08e7",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-000/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-000.xml",
+      "preserved_xml_sha256": "8154f2b7e9abe983a66eb906e6f19b5396abb35967c3637913ecc1ace2f91d3f"
+    },
+    {
+      "group": "group-001",
+      "selector": "tests/integration/runner/test_local_paths.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-001/attempt-01.xml",
+      "xml_sha256": "098b1545a2836c2ca43fdb6f9a4a85c011f129b891d5a3df261d0c810d76c4c1",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-001/attempt-01.log",
+      "log_sha256": "5b90e9a89510b1504c808c658b30738dc3b6ff93b7ca0f83d989c48808e990f2",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-001/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-001.xml",
+      "preserved_xml_sha256": "098b1545a2836c2ca43fdb6f9a4a85c011f129b891d5a3df261d0c810d76c4c1"
+    },
+    {
+      "group": "group-002",
+      "selector": "tests/integration/runner/test_native_root_source.py",
+      "counts": {
+        "tests": 52,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-002/attempt-01.xml",
+      "xml_sha256": "1fc8d6bae2d0dcad22a3f761b1d1946b6854c3948e24f3431553131d9821d521",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-002/attempt-01.log",
+      "log_sha256": "8b45bdd658decb6f2ba0aef07e30f5b11da087a3e106d7f3ad2fa7ba5175ad11",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-002/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-002.xml",
+      "preserved_xml_sha256": "1fc8d6bae2d0dcad22a3f761b1d1946b6854c3948e24f3431553131d9821d521"
+    },
+    {
+      "group": "group-003",
+      "selector": "tests/integration/runner/test_persistent_pairing.py",
+      "counts": {
+        "tests": 21,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-003/attempt-01.xml",
+      "xml_sha256": "1dbbbbf09d9bd3c718c48d872609464ff77e04a866aa277d2c4fb75c6e672152",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-003/attempt-01.log",
+      "log_sha256": "541255d25ac32d432f6471fa4ca41cf085ede2f96c0521ee546619defed8a04b",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-003/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-003.xml",
+      "preserved_xml_sha256": "1dbbbbf09d9bd3c718c48d872609464ff77e04a866aa277d2c4fb75c6e672152"
+    },
+    {
+      "group": "group-004",
+      "selector": "tests/integration/runner/test_read_executor.py",
+      "counts": {
+        "tests": 80,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-004/attempt-01.xml",
+      "xml_sha256": "a5c17b75bedafd0442f2706d81b9fec262b38eb1f5ed4aeee0e4ac92fb85f128",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-004/attempt-01.log",
+      "log_sha256": "bdbb3b6403172816e768c78de5969f16ff6025857b1b40172128bc42df9e0409",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-004/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-004.xml",
+      "preserved_xml_sha256": "a5c17b75bedafd0442f2706d81b9fec262b38eb1f5ed4aeee0e4ac92fb85f128"
+    },
+    {
+      "group": "group-005",
+      "selector": "tests/integration/runner/test_receipt_journal_processes.py",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-005/attempt-01.xml",
+      "xml_sha256": "ceaf96b32a691c666f03dc369b1b48af5f0371bc31966ba402c6e0f39140009a",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-005/attempt-01.log",
+      "log_sha256": "b0bc87086baba0f9cab4f462f97398ce7ff4d5c823b83884e44e0519f02e70f0",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-005/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-005.xml",
+      "preserved_xml_sha256": "ceaf96b32a691c666f03dc369b1b48af5f0371bc31966ba402c6e0f39140009a"
+    },
+    {
+      "group": "group-006",
+      "selector": "tests/integration/runner/test_windows_control_keys.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-006/attempt-01.xml",
+      "xml_sha256": "5dcc0a0eddc087521cd9473f28f397c3d653da9a86bbfade633cb639ee94282b",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-006/attempt-01.log",
+      "log_sha256": "6c56ca79ed755d83e0638fdf92a69a2faeac3db8b59c59a35bad5ecd5812714b",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-006/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-006.xml",
+      "preserved_xml_sha256": "5dcc0a0eddc087521cd9473f28f397c3d653da9a86bbfade633cb639ee94282b"
+    },
+    {
+      "group": "group-007",
+      "selector": "tests/integration/runner/test_windows_ipc.py",
+      "counts": {
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/attempt-01.xml",
+      "xml_sha256": "9509096fa837a6e2b3c501359962f720f69edca3f8672da7b008183f5da58cda",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/attempt-01.log",
+      "log_sha256": "474bb9513c682e84ad00589bc35bdb94d9bae5ffb8ee36ae0979c2338aa51ae6",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-007/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-007.xml",
+      "preserved_xml_sha256": "9509096fa837a6e2b3c501359962f720f69edca3f8672da7b008183f5da58cda"
+    },
+    {
+      "group": "group-008",
+      "selector": "tests/integration/runner/test_windows_read_ipc.py",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/attempt-01.xml",
+      "xml_sha256": "c121b2d39f57afd13d0a306f4aa484c179fbe00d3d6cfa3e26139fb9b56c7503",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/attempt-01.log",
+      "log_sha256": "ed706dcd354dbd0a9533d0ed3f3e5d0ebf12dc57ea7bdf3e44e1e48614de4eb7",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-008/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-008.xml",
+      "preserved_xml_sha256": "c121b2d39f57afd13d0a306f4aa484c179fbe00d3d6cfa3e26139fb9b56c7503"
+    },
+    {
+      "group": "group-009",
+      "selector": "tests/integration/runner/test_windows_read_signing.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-009/attempt-01.xml",
+      "xml_sha256": "5a950108989aca15b0e8669274061a593effc208ee13ea498fa7bfd80ee54694",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-009/attempt-01.log",
+      "log_sha256": "f697aa3f11eac0a34fa3ded772453af5b567d713c59fd4f9e16f8ac2e687f7fd",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-009/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-009.xml",
+      "preserved_xml_sha256": "5a950108989aca15b0e8669274061a593effc208ee13ea498fa7bfd80ee54694"
+    },
+    {
+      "group": "group-010",
+      "selector": "tests/integration/agent/test_completion_postgres.py",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-010/attempt-01.xml",
+      "xml_sha256": "42004a0cb4a23f9216f30754c1fd6adc5c522cc4049342a7f4b72d1e775ddcf7",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-010/attempt-01.log",
+      "log_sha256": "40f6aea45a0550768c9f5df244d2e7cafa4bec36051b37a2a07d1d4a90cb90db",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-010/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-010.xml",
+      "preserved_xml_sha256": "42004a0cb4a23f9216f30754c1fd6adc5c522cc4049342a7f4b72d1e775ddcf7"
+    },
+    {
+      "group": "group-011",
+      "selector": "tests/integration/agent/test_components_postgres.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-011/attempt-01.xml",
+      "xml_sha256": "89684ae0865f4bb151774b070573af861560f3adedd73eb17776b104550f07c8",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-011/attempt-01.log",
+      "log_sha256": "1f28f7abfc5e28bdb9338275804c95f9eb7d2cb9964b5b6aa5fd3cd08c228ace",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-011/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-011.xml",
+      "preserved_xml_sha256": "89684ae0865f4bb151774b070573af861560f3adedd73eb17776b104550f07c8"
+    },
+    {
+      "group": "group-012",
+      "selector": "tests/integration/agent/test_context_batch_postgres.py",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-012/attempt-01.xml",
+      "xml_sha256": "00f0677bfff5a0b3da75db29622fc1f9fc0fb9b2eaa196cec0b9a9f0f4f192b4",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-012/attempt-01.log",
+      "log_sha256": "a246e37cccc0954ac26f8506d49e705c7752357bd4695fc004b420415ddbe8b4",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-012/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-012.xml",
+      "preserved_xml_sha256": "00f0677bfff5a0b3da75db29622fc1f9fc0fb9b2eaa196cec0b9a9f0f4f192b4"
+    },
+    {
+      "group": "group-013",
+      "selector": "tests/integration/agent/test_context_epoch_postgres.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-013/attempt-01.xml",
+      "xml_sha256": "7a2f7f596f88085cea19e6de5f20f2dac3d678cbc5ca0a2560cca4687e0cfc8a",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-013/attempt-01.log",
+      "log_sha256": "78bf2d68b0d5b4cc7dad07b277d48757ac56c417f4321398baa201aa7f8ff04f",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-013/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-013.xml",
+      "preserved_xml_sha256": "7a2f7f596f88085cea19e6de5f20f2dac3d678cbc5ca0a2560cca4687e0cfc8a"
+    },
+    {
+      "group": "group-014",
+      "selector": "tests/integration/agent/test_evaluation_postgres.py",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-014/attempt-01.xml",
+      "xml_sha256": "ba48aec0d38bd272fdcf7d7b75922ea831a4ab579280f36937a649429a820b3b",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-014/attempt-01.log",
+      "log_sha256": "2dbeb87daa4ced8fee0476309e5967484e29cf433ed0fe44c83323471300dee8",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-014/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-014.xml",
+      "preserved_xml_sha256": "ba48aec0d38bd272fdcf7d7b75922ea831a4ab579280f36937a649429a820b3b"
+    },
+    {
+      "group": "group-015",
+      "selector": "tests/integration/agent/test_limits_postgres.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-015/attempt-01.xml",
+      "xml_sha256": "41cd72c6067cfca227a2e74a971de90754da857ac30796b2359cd9cc340d5aee",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-015/attempt-01.log",
+      "log_sha256": "e84fc67c9851c72595d34e8181c676fa98af096016efb299104dbc19e624deb0",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-015/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-015.xml",
+      "preserved_xml_sha256": "41cd72c6067cfca227a2e74a971de90754da857ac30796b2359cd9cc340d5aee"
+    },
+    {
+      "group": "group-016",
+      "selector": "tests/integration/agent/test_loop_postgres.py",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-016/attempt-01.xml",
+      "xml_sha256": "a54a447fd48c0f10fed579109fdb6d382a0975b8a7c3343ddc9a0e41f5ff4e35",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-016/attempt-01.log",
+      "log_sha256": "f7e641ce81e6497e31dc8c09a59042271f47ed6ec11ed3ffd2235c7a79994e79",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-016/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-016.xml",
+      "preserved_xml_sha256": "a54a447fd48c0f10fed579109fdb6d382a0975b8a7c3343ddc9a0e41f5ff4e35"
+    },
+    {
+      "group": "group-017",
+      "selector": "tests/integration/agent/test_office_assembly_postgres.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-017/attempt-01.xml",
+      "xml_sha256": "82f5ade7a7f6c15820f75ebc927b49df8124a2e1a955537eb94500e1fa72bf93",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-017/attempt-01.log",
+      "log_sha256": "c1fe5266648d5f63928cdf90dc431d58da90e788b1ada7588acb5a321aaf971d",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-017/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-017.xml",
+      "preserved_xml_sha256": "82f5ade7a7f6c15820f75ebc927b49df8124a2e1a955537eb94500e1fa72bf93"
+    },
+    {
+      "group": "group-018",
+      "selector": "tests/integration/agent/test_root_postgres.py",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-018/attempt-01.xml",
+      "xml_sha256": "f40516c76f86886b946731f8664eba551360adb8cd2607f58425fb5f0d7402df",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-018/attempt-01.log",
+      "log_sha256": "d9aefb388ba6f8f7bb39731f711fcf152cebd9db876485b6c05dc89841a0844c",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-018/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-018.xml",
+      "preserved_xml_sha256": "f40516c76f86886b946731f8664eba551360adb8cd2607f58425fb5f0d7402df"
+    },
+    {
+      "group": "group-019",
+      "selector": "tests/integration/agent/test_runner_pipe_wiring.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/attempt-01.xml",
+      "xml_sha256": "cbb25f66b17580035c4aaecb3a56653337cb353b2976e71a3d8c2378387cb265",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/attempt-01.log",
+      "log_sha256": "c1840f5fe7fa1cfb4d6a3114dfc79bacf96727f8809af0eae48a687acf926f5a",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-019/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-019.xml",
+      "preserved_xml_sha256": "cbb25f66b17580035c4aaecb3a56653337cb353b2976e71a3d8c2378387cb265"
+    },
+    {
+      "group": "group-020",
+      "selector": "tests/integration/agent/test_steer_postgres.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-020/attempt-01.xml",
+      "xml_sha256": "d2d0cd598ce087e6b8a6d8f81534d98677ca5aa274ae9db87250bc8674436aa0",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-020/attempt-01.log",
+      "log_sha256": "9410cd1db38bbf95583c738f8b9c874adcdeccce39fde490837f2fa92e0f4e47",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-020/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-020.xml",
+      "preserved_xml_sha256": "d2d0cd598ce087e6b8a6d8f81534d98677ca5aa274ae9db87250bc8674436aa0"
+    },
+    {
+      "group": "group-021",
+      "selector": "tests/integration/context/test_assessment_chain_postgres.py",
+      "counts": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-021/attempt-02.xml",
+      "xml_sha256": "de32122f4847388c57a1df304a430242f7835aa6fe291b5eee41f1a8aed9d4a7",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-021/attempt-02.log",
+      "log_sha256": "60a24ee2d2712e6ba0e1eb0dacc7e1cb94508f3b317c6169af4539a949533d23",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-021/attempt-02.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-021.xml",
+      "preserved_xml_sha256": "de32122f4847388c57a1df304a430242f7835aa6fe291b5eee41f1a8aed9d4a7"
+    },
+    {
+      "group": "group-022",
+      "selector": "tests/integration/context/test_assessment_postgres.py",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-022/attempt-01.xml",
+      "xml_sha256": "ad23e1428080bc6bbe707d565ab80abdf75b40903ee50d7242d0954ac012550a",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-022/attempt-01.log",
+      "log_sha256": "8ba0da5a3b4a71235fcce464e6e18e086ae169db414dede625ea4ec86361b283",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-022/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-022.xml",
+      "preserved_xml_sha256": "ad23e1428080bc6bbe707d565ab80abdf75b40903ee50d7242d0954ac012550a"
+    },
+    {
+      "group": "group-023",
+      "selector": "tests/integration/context/test_cache_postgres.py",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-023/attempt-01.xml",
+      "xml_sha256": "36df34df759545cea5db238b19901899c7e95e6f2a6d08fe3ee740ecfd9dd88b",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-023/attempt-01.log",
+      "log_sha256": "787ba518c68a1ebcf5add41691bb1b9f52d6871e0d38a2622af085d68491983d",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-023/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-023.xml",
+      "preserved_xml_sha256": "36df34df759545cea5db238b19901899c7e95e6f2a6d08fe3ee740ecfd9dd88b"
+    },
+    {
+      "group": "group-024",
+      "selector": "tests/integration/context/test_model_input_postgres.py",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-024/attempt-01.xml",
+      "xml_sha256": "ea281545f2cc1883da08bf44799a45d7b79d709fd5a55842487d22920fc80538",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-024/attempt-01.log",
+      "log_sha256": "bf56c1473a2bb26db1f587f15367373b52df2c82dd8cb89a2cff8199c849f7dd",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-024/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-024.xml",
+      "preserved_xml_sha256": "ea281545f2cc1883da08bf44799a45d7b79d709fd5a55842487d22920fc80538"
+    },
+    {
+      "group": "group-025",
+      "selector": "tests/integration/context/test_read_batches_postgres.py",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-025/attempt-01.xml",
+      "xml_sha256": "82affd7109d4a6777d9dcdef12928e15f9469b7130d1da7bc6f17aa5d606bb76",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-025/attempt-01.log",
+      "log_sha256": "84756c639a022caea8d51998f0a45694efc41196b4356c3f6b2b29058cf04ff6",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-025/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-025.xml",
+      "preserved_xml_sha256": "82affd7109d4a6777d9dcdef12928e15f9469b7130d1da7bc6f17aa5d606bb76"
+    },
+    {
+      "group": "group-026",
+      "selector": "tests/integration/context/test_read_cost_postgres.py",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-026/attempt-01.xml",
+      "xml_sha256": "1fc25d26573d6a7f46eb02438e07b3231e73829a37575696fcf496b5d449510b",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-026/attempt-01.log",
+      "log_sha256": "c93b9612bdf89c05c67c6adabae1989c9e6743081a226dca49b35230d88363ad",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-026/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-026.xml",
+      "preserved_xml_sha256": "1fc25d26573d6a7f46eb02438e07b3231e73829a37575696fcf496b5d449510b"
+    },
+    {
+      "group": "group-027",
+      "selector": "tests/integration/context/test_record_batch_postgres.py",
+      "counts": {
+        "tests": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-027/attempt-01.xml",
+      "xml_sha256": "73f6a872350203129934d100cbbecad40814800cd25810e9a0924bc98cad4b39",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-027/attempt-01.log",
+      "log_sha256": "3c6589c533ff1acb51fec4880b1b1bc6d224cffa6d14887fcba7a17faded2c16",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-027/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-027.xml",
+      "preserved_xml_sha256": "73f6a872350203129934d100cbbecad40814800cd25810e9a0924bc98cad4b39"
+    },
+    {
+      "group": "group-028",
+      "selector": "tests/integration/context/test_registered_chain_postgres.py",
+      "counts": {
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-028/attempt-01.xml",
+      "xml_sha256": "d19ef10194c059e31b3b527470b62d189ee6fb688a68ea99d8b9a5d031e6873c",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-028/attempt-01.log",
+      "log_sha256": "9bf2fe3ee853c61d409c1bfbd3d0dcf15d39d3a9a223e1bf9e776b1ff85cf021",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-028/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-028.xml",
+      "preserved_xml_sha256": "d19ef10194c059e31b3b527470b62d189ee6fb688a68ea99d8b9a5d031e6873c"
+    },
+    {
+      "group": "group-029",
+      "selector": "tests/integration/context/test_registered_postgres.py",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-029/attempt-01.xml",
+      "xml_sha256": "b4e69793d469ff257ac204ef56e4c0d4ad5e85f4e6351c12d03ad5912c3de125",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-029/attempt-01.log",
+      "log_sha256": "62a4b500f8e979aa9c3b42f88d1386342324cecb9c5d98793992e788bb5b7e21",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-029/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-029.xml",
+      "preserved_xml_sha256": "b4e69793d469ff257ac204ef56e4c0d4ad5e85f4e6351c12d03ad5912c3de125"
+    },
+    {
+      "group": "group-030",
+      "selector": "tests/integration/context/test_snapshots_postgres.py",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-030/attempt-01.xml",
+      "xml_sha256": "183128abbbda197fd2d7e8094b1db17a3b2cd0253771806fde83c048e826a6bc",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-030/attempt-01.log",
+      "log_sha256": "18b5323b5acd0817045542e60c1af6999ed6c6b3e814035f7503389ca18c73e9",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-030/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-030.xml",
+      "preserved_xml_sha256": "183128abbbda197fd2d7e8094b1db17a3b2cd0253771806fde83c048e826a6bc"
+    },
+    {
+      "group": "group-031",
+      "selector": "tests/integration/intent/test_understanding.py",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-031/attempt-01.xml",
+      "xml_sha256": "42e0a7bbfd088b76ccc46cc3312ba13fab48f779203cd82b64ef8682f3cd30b6",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-031/attempt-01.log",
+      "log_sha256": "52b8f34fad1d6663210da4da044f73ad9a706e1989bd8878b2d2cf3b9821f676",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-031/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-031.xml",
+      "preserved_xml_sha256": "42e0a7bbfd088b76ccc46cc3312ba13fab48f779203cd82b64ef8682f3cd30b6"
+    },
+    {
+      "group": "group-032",
+      "selector": "tests/integration/model/test_connection_postgres.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-032/attempt-01.xml",
+      "xml_sha256": "1fa149e74f70de59f5dee3e8cf8ac9388b1b20a5ea613122451a5f50ed299315",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-032/attempt-01.log",
+      "log_sha256": "2d9dac3539f3a34204f0aa3c297de6f07fbdc99ebe34200b1ad6b235e3cec777",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-032/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-032.xml",
+      "preserved_xml_sha256": "1fa149e74f70de59f5dee3e8cf8ac9388b1b20a5ea613122451a5f50ed299315"
+    },
+    {
+      "group": "group-033",
+      "selector": "tests/integration/model/test_gateway.py",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-033/attempt-01.xml",
+      "xml_sha256": "03fcee7e25a8c00bcc16956ef88b88c4a8c4b1bfc3a8e24f1344ba5f07b719b5",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-033/attempt-01.log",
+      "log_sha256": "c9ff084df6f8bbe01cd4933ac49170cc60444f480c36059505465d4d4d2a3e8f",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-033/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-033.xml",
+      "preserved_xml_sha256": "03fcee7e25a8c00bcc16956ef88b88c4a8c4b1bfc3a8e24f1344ba5f07b719b5"
+    },
+    {
+      "group": "group-034",
+      "selector": "tests/integration/persistence/test_blob.py",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-034/attempt-01.xml",
+      "xml_sha256": "6eb70cc5e3cca9266713d98a87823d865c8635545f4a3f12eb25b516294e4e1c",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-034/attempt-01.log",
+      "log_sha256": "2f210918b7f09b021722e60d6dedc3c943d48d2a2afe67de1727f33f80374dc4",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-034/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-034.xml",
+      "preserved_xml_sha256": "6eb70cc5e3cca9266713d98a87823d865c8635545f4a3f12eb25b516294e4e1c"
+    },
+    {
+      "group": "group-035",
+      "selector": "tests/integration/persistence/test_postgres.py",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-035/attempt-01.xml",
+      "xml_sha256": "ba42d40465ac22bbe14da355df7c03025416d1b0e85781af0b484f1fe08466c4",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-035/attempt-01.log",
+      "log_sha256": "4cff353c6aa6735f7da1b029dbf73d078c0da071e75c5f0069d9fde3c260453e",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-035/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-035.xml",
+      "preserved_xml_sha256": "ba42d40465ac22bbe14da355df7c03025416d1b0e85781af0b484f1fe08466c4"
+    },
+    {
+      "group": "group-036",
+      "selector": "tests/integration/test_approvals.py",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-036/attempt-01.xml",
+      "xml_sha256": "f05fd6f20b5d5c2011a35d952b013bacd74dac42e2fc834d54d2bb244605e403",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-036/attempt-01.log",
+      "log_sha256": "8069f48586de541e604ece5b33599b6ebe9368c4cfe81ca5ac3c31efcc505e25",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-036/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-036.xml",
+      "preserved_xml_sha256": "f05fd6f20b5d5c2011a35d952b013bacd74dac42e2fc834d54d2bb244605e403"
+    },
+    {
+      "group": "group-037",
+      "selector": "tests/integration/test_bootstrap.py",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-037/attempt-01.xml",
+      "xml_sha256": "0926e9f6ae7e9ee47ec30bba773e91c945e1126b8a4999334319bdbde300f30e",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-037/attempt-01.log",
+      "log_sha256": "c0ed9c4b4ff464ba3db2168848493ae0225b835c614ef88a41fc8d686084cfdd",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-037/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-037.xml",
+      "preserved_xml_sha256": "0926e9f6ae7e9ee47ec30bba773e91c945e1126b8a4999334319bdbde300f30e"
+    },
+    {
+      "group": "group-038",
+      "selector": "tests/integration/test_context_wiring.py",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-038/attempt-01.xml",
+      "xml_sha256": "ed9edea3add662a9cebdcb81cc8e60efefb2188fe057ef1321cf8bcd6d32ef25",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-038/attempt-01.log",
+      "log_sha256": "41e0d424c4716dfc2e21de93823646c96a4f2dee877195950a4da0a66f0497fd",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-038/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-038.xml",
+      "preserved_xml_sha256": "ed9edea3add662a9cebdcb81cc8e60efefb2188fe057ef1321cf8bcd6d32ef25"
+    },
+    {
+      "group": "group-039",
+      "selector": "tests/integration/test_control_plane.py",
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-039/attempt-01.xml",
+      "xml_sha256": "6021ef652dfcd38159ad85465deedc41c7d4e491eb338db82b21735b8784b2ec",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-039/attempt-01.log",
+      "log_sha256": "cebaa23b9428a4dcc4378be8ce482892780b9d24b6052a407b4676678d697162",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-039/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-039.xml",
+      "preserved_xml_sha256": "6021ef652dfcd38159ad85465deedc41c7d4e491eb338db82b21735b8784b2ec"
+    },
+    {
+      "group": "group-040",
+      "selector": "tests/integration/test_execution_leases.py",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-040/attempt-01.xml",
+      "xml_sha256": "50e7b4af2b5afa829aa1ad6941f5e77278f57b4cb8c561f2f55ed1128ed6cce8",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-040/attempt-01.log",
+      "log_sha256": "c070f6f75a02c5c8ac730c14b5fe089e1d79c98368a5c39805a6697cca3829f6",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-040/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-040.xml",
+      "preserved_xml_sha256": "50e7b4af2b5afa829aa1ad6941f5e77278f57b4cb8c561f2f55ed1128ed6cce8"
+    },
+    {
+      "group": "group-041",
+      "selector": "tests/integration/test_execution_permissions.py",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-041/attempt-01.xml",
+      "xml_sha256": "c3aeed43e49958040a33d4fda7f2a8a7f8704c2c2c331e8e18316e1b02e9f150",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-041/attempt-01.log",
+      "log_sha256": "4a61909fd2c27fbff472a14f766fc4498f88a574a225ea122cdba4e616cb600a",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-041/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-041.xml",
+      "preserved_xml_sha256": "c3aeed43e49958040a33d4fda7f2a8a7f8704c2c2c331e8e18316e1b02e9f150"
+    },
+    {
+      "group": "group-042",
+      "selector": "tests/integration/test_model_input_routing.py",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-042/attempt-01.xml",
+      "xml_sha256": "484d83c34794d9724db38caa6c23f24213e36987b0db0edf7364c52f6331a804",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-042/attempt-01.log",
+      "log_sha256": "1439514b39013c7c3129dd826fb366f4e1c2953fe54300978d4f63aeb16f6ec7",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-042/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-042.xml",
+      "preserved_xml_sha256": "484d83c34794d9724db38caa6c23f24213e36987b0db0edf7364c52f6331a804"
+    },
+    {
+      "group": "group-043",
+      "selector": "tests/integration/test_runner_control.py",
+      "counts": {
+        "tests": 47,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-043/attempt-01.xml",
+      "xml_sha256": "108d0abdadedf8b460b1a08eea216fbc45ed9143a0019ec1ad82895196db0a00",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-043/attempt-01.log",
+      "log_sha256": "de4e8554d0cc6b8c7b55e28ec24ab6f6889627640daae8334f3092ef15f71f43",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-043/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-043.xml",
+      "preserved_xml_sha256": "108d0abdadedf8b460b1a08eea216fbc45ed9143a0019ec1ad82895196db0a00"
+    },
+    {
+      "group": "group-044",
+      "selector": "tests/integration/test_runner_receipt_wiring.py",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-044/attempt-01.xml",
+      "xml_sha256": "bbebe55e968f68340b39b6308a4ca1f6f648640c8a5cdcff2713e707fff07b18",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-044/attempt-01.log",
+      "log_sha256": "9917d27890fdc899f041f6d07f71100ce2bd800ee5071bf3d1d6e7e48caeab2a",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-044/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-044.xml",
+      "preserved_xml_sha256": "bbebe55e968f68340b39b6308a4ca1f6f648640c8a5cdcff2713e707fff07b18"
+    },
+    {
+      "group": "group-045",
+      "selector": "tests/integration/test_runtime_sources.py",
+      "counts": {
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-045/attempt-01.xml",
+      "xml_sha256": "c291d74c524c5c655d127172a05f6d027400421b73d6b1e63a38b9fe2430d6a0",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-045/attempt-01.log",
+      "log_sha256": "e2b13058e1332220a19034472538469f32f9411f21ff090158b0611292878f4b",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-045/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-045.xml",
+      "preserved_xml_sha256": "c291d74c524c5c655d127172a05f6d027400421b73d6b1e63a38b9fe2430d6a0"
+    },
+    {
+      "group": "group-046",
+      "selector": "tests/integration/test_stage_wiring.py",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-046/attempt-01.xml",
+      "xml_sha256": "40fd6f9286a90161bc1f2044158c4308d628155f88725eecb98da4aa38feb0b8",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-046/attempt-01.log",
+      "log_sha256": "80399f185a9d2881bdb6ca27ad86c4fd187dcacb904bad6dbf45229f84bba12b",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-046/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-046.xml",
+      "preserved_xml_sha256": "40fd6f9286a90161bc1f2044158c4308d628155f88725eecb98da4aa38feb0b8"
+    },
+    {
+      "group": "group-047",
+      "selector": "tests/integration/tool/test_durable.py",
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-047/attempt-01.xml",
+      "xml_sha256": "decf281c0158cdc380670523e266f74de8a7d7733bacde42ffbe24f7d768ba31",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-047/attempt-01.log",
+      "log_sha256": "39edcce6caf7f7cae3d49f33497df7ad53024eca444ded3476d355ce30bddc37",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-047/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-047.xml",
+      "preserved_xml_sha256": "decf281c0158cdc380670523e266f74de8a7d7733bacde42ffbe24f7d768ba31"
+    },
+    {
+      "group": "group-048",
+      "selector": "tests/integration/tool/test_office_recovery_postgres.py",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-048/attempt-01.xml",
+      "xml_sha256": "d83acecb440387cc9586c4b38f440dd6d52e2f9d6e3e00719e0a4cd565fb3a70",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-048/attempt-01.log",
+      "log_sha256": "852a4277b6e91618968ae578ed6e08b5652907c4cabf30a96d007649414781f2",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-048/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-048.xml",
+      "preserved_xml_sha256": "d83acecb440387cc9586c4b38f440dd6d52e2f9d6e3e00719e0a4cd565fb3a70"
+    },
+    {
+      "group": "group-049",
+      "selector": "tests/integration/tool/test_office_tools_postgres.py",
+      "counts": {
+        "tests": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-049/attempt-01.xml",
+      "xml_sha256": "d292080ea668d4d4be7b5944dbe86d790baf08be5c316518f363e195cfcc6f74",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-049/attempt-01.log",
+      "log_sha256": "df1600408d87f3e47bae927bd2092930bdc2c59ae5162f057685b508aa187d26",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-049/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-049.xml",
+      "preserved_xml_sha256": "d292080ea668d4d4be7b5944dbe86d790baf08be5c316518f363e195cfcc6f74"
+    },
+    {
+      "group": "group-050",
+      "selector": "tests/integration/tool/test_retrieval_postgres.py",
+      "counts": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-050/attempt-01.xml",
+      "xml_sha256": "6b7c17eb8fbf4306ca992b058840c18266c21bb1d6f3e308c22becb356b38821",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-050/attempt-01.log",
+      "log_sha256": "39aeb7cf7a85931128afe9f81d5be0b48671387fb2afa55d9f7800700440e3c7",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-050/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-050.xml",
+      "preserved_xml_sha256": "6b7c17eb8fbf4306ca992b058840c18266c21bb1d6f3e308c22becb356b38821"
+    },
+    {
+      "group": "group-051",
+      "selector": "tests/integration/tool/test_text_dispatch_postgres.py",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-051/attempt-01.xml",
+      "xml_sha256": "ef404f819bee2f99f29c901eab4a9202903ccc12db6b643a165fba0c6b4fe518",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-051/attempt-01.log",
+      "log_sha256": "73f04f9e0c9b0eacc53acaf420cda7cc2b43513fcc882e6a3dfd1975a2846adc",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-051/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-051.xml",
+      "preserved_xml_sha256": "ef404f819bee2f99f29c901eab4a9202903ccc12db6b643a165fba0c6b4fe518"
+    },
+    {
+      "group": "group-052",
+      "selector": "tests/integration/tool/test_text_recovery_process_postgres.py",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-052/attempt-01.xml",
+      "xml_sha256": "c3414d2b44fb4e44419f9d50db0934b3fac45a3aa263ff2ba78d4be11fb0d821",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-052/attempt-01.log",
+      "log_sha256": "18f9599a90db88383894638f4c864a8fbeea257c74f62d85d0a618ba08bfa6de",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-052/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-052.xml",
+      "preserved_xml_sha256": "c3414d2b44fb4e44419f9d50db0934b3fac45a3aa263ff2ba78d4be11fb0d821"
+    },
+    {
+      "group": "group-053",
+      "selector": "tests/integration/tool/test_text_results_postgres.py",
+      "counts": {
+        "tests": 26,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-053/attempt-01.xml",
+      "xml_sha256": "c9ea85733af2fd4c4d1ebc42d632e05eccbddaf2e1854375a670565da8ab8784",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-053/attempt-01.log",
+      "log_sha256": "6fef43425381af33e8df6dc8f6a8caeb7c73b46345d3265fb59ea8509c35806c",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-053/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-053.xml",
+      "preserved_xml_sha256": "c9ea85733af2fd4c4d1ebc42d632e05eccbddaf2e1854375a670565da8ab8784"
+    },
+    {
+      "group": "group-054",
+      "selector": "tests/integration/tool/test_tool_reconciliation_postgres.py",
+      "counts": {
+        "tests": 26,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-054/attempt-01.xml",
+      "xml_sha256": "9b971934a20714a6fd6c0f55d32f5832e54cb4fa49d1f4bd0612e1cbf56be5ea",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-054/attempt-01.log",
+      "log_sha256": "21762c99cdeca9d3666e4a0fcc426c700e3f6d2d8e7caa8fbb4bcc6835614b55",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-054/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-054.xml",
+      "preserved_xml_sha256": "9b971934a20714a6fd6c0f55d32f5832e54cb4fa49d1f4bd0612e1cbf56be5ea"
+    },
+    {
+      "group": "group-055",
+      "selector": "tests/integration/tool/test_tool_recovery_facade_postgres.py",
+      "counts": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "xml": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-055/attempt-01.xml",
+      "xml_sha256": "7af2553466fcba294bec25197e1e1183a9185fdbdeb4831cd29622114740d983",
+      "log": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-055/attempt-01.log",
+      "log_sha256": "91d25147a665e359248ec2a1d1af9c84fb2867e5dea0540a6bd211679bf6cee4",
+      "attempt_state": "tests/.artifacts/A/MS-I2i/full-campaign-20261010/group-055/attempt-01.state.json",
+      "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+      "preserved_xml": "docs/implementation/evidence/ms-i2i-modules/group-055.xml",
+      "preserved_xml_sha256": "7af2553466fcba294bec25197e1e1183a9185fdbdeb4831cd29622114740d983"
+    }
+  ],
+  "prior_incomplete_commands_not_used_for_passing_coverage": [
+    "tests/.artifacts/A/MS-I2i/full-final.log",
+    "tests/.artifacts/A/MS-I2i/full-resume-20261010-1.log"
+  ]
+}

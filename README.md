@@ -4,13 +4,13 @@ UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runti
 
 [开发启动与实际进度](docs/implementation/README.md)：`./ops/start.ps1 -WithPostgres`启动本机开发后端，`./ops/check.ps1 -WithPostgres`运行真实数据库检查。
 
-当前阶段为 `ms-i2i-a1 / ec1cc6877ab9bbfae28f1b6832977b2b5e8c3f50`：A有192个不同聚焦节点通过，B/MS-C7、C/MS-T2f、D/MS-R2f最终组件均已合入并接受；46次真实DeepSeek尝试含全部失败，五类最终任务完成。完整本轮回归正在运行，上次1077节点仍属于历史 `ms-i2g`。
+旧MS-I2i固定来源完整开发回归已经收尾：1691个不同节点最终通过，56组原始JUnit，原失败和两个中断记录保留。B/MS-C7、C/MS-T2f、D/MS-R2f最终组件及A消费者接受；46次真实DeepSeek尝试含全部失败，五类最终任务完成。当前执行MS-I2j，四方仍固定 `ms-i2j-start / abb4590f2bfe53c601e0f6a4a3b65447ba4ec502` 开发。
 
-仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支 `integration`，采用3个开发session＋1个集成session。见[实际范围与失败记录](docs/implementation/MS-I2i-A1.md)、[当前进度](docs/implementation/PROGRESS-2026-10-09.md)、[统一派发表](docs/coordination/DISPATCH.md)、[目录和分工](docs/plan/PARALLEL.md)。实际DeepSeek配置和凭据保存在受保护开发目录，操作入口见[接入说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)。
+仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支 `integration`，采用3个开发session＋1个集成session。见[完整范围与原失败](docs/implementation/MS-I2i.md)、[当前进度](docs/implementation/PROGRESS-2026-10-10.md)、[统一派发表](docs/coordination/DISPATCH.md)、[目录和分工](docs/plan/PARALLEL.md)。实际DeepSeek配置和凭据保存在受保护开发目录，操作入口见[接入说明](docs/implementation/DEEPSEEK_ACCEPTANCE.md)。
 
 ## 先看这些入口
 
-本轮原开工安排（历史）：[A/B/C/D可转发开工消息](docs/coordination/NEXT_WAVE.md) · [MS-I2i完整分包、接口与目录](docs/coordination/requests/A/MS-I2i-parallel-packages.md)。固定标签ms-i2i-start，运行来源ms-i2h-a3；当前组件接受及全量结果以本页和DISPATCH为准，不重复派发已完成的包。
+本轮开工安排：[四会话提示词](docs/coordination/MS-I2j-messages.md) · [MS-I2j完整分包、接口与目录](docs/coordination/requests/A/MS-I2j-parallel-packages.md)。A负责真实网页后台，B负责前端，C负责文件工具，D负责本机授权；旧完整验收不覆盖新派发。
 
 | 文档 | 用途 |
 | --- | --- |

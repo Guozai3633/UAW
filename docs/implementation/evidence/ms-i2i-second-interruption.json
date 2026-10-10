@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-10-10T10:45:06.027851",
+  "state": "interrupted_without_complete_xml_or_exit",
+  "pinned_source": "30566c62f7440b363d188910cdc14a8d69b940be",
+  "original_supervisor_state_path": "tests/.artifacts/A/MS-I2i/full-resume-20261010-1.state.json",
+  "log": {
+    "path": "tests/.artifacts/A/MS-I2i/full-resume-20261010-1.log",
+    "sha256": "ccf8359a30a753ff00d01292b8bf644381f0e41a9cd9123fbd9a4bf1cfe31e4b",
+    "last_modified": "2026-10-10T00:12:11.339872"
+  },
+  "complete_xml_present": false,
+  "exit_present": false,
+  "log_lines_with_passed": 9,
+  "accepted_full_coverage_nodes": 0,
+  "cause": "Process absent after turn interruption; exact exit/cause unavailable. Stale running state is not evidence of a live process.",
+  "remedy": "Fixed-source full campaign with independent original JUnit per completed group, expected full node set and resumable unfinished groups."
+}
