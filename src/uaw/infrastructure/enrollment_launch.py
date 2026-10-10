@@ -61,6 +61,7 @@ class PreparedEnrollmentLaunch:
         self.closing: asyncio.Task[None] | None = None
         self.candidates: OwnedEnrollmentCandidates | None = None
         self.owner: Principal | None = None
+        self.root_workspace: Ref | None = None
         self.control_key: IpcSigningBinding | None = None
         self.ready: dict[str, Any] | None = None
         self.connection: InstalledControlConnection | None = None
@@ -190,6 +191,7 @@ class PreparedEnrollmentLaunch:
             )
             launch.candidate_id = candidate["id"]
             launch.owner = Principal.model_validate(owner.wire())
+            launch.root_workspace = workspace
             launch.control_key = IpcSigningBinding(
                 device_id, bindings["control"][0], "control", bindings["control"][1]
             )
@@ -311,6 +313,7 @@ class PreparedEnrollmentLaunch:
             directory=self.state,
             credentials=self.vault,
             control_key=self.control_key,
+            native_root_selection=self.root_workspace is not None,
         )
         self.connecting = asyncio.current_task()
         try:

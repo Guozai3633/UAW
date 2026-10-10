@@ -5,10 +5,12 @@ command at bootstrap. Native confirmation and current server sources remain gate
 """
 
 import asyncio
+import inspect
 import os
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from pydantic import SecretStr
 from uaw_runner.admissions import PersistentAdmissions
@@ -51,6 +53,12 @@ from uaw.workspace.ports import ReceiptCommandReaderPort
 NAMESPACE_ENV = "UAW_INSTALLED_HELPER_NAMESPACE"
 HANDLE_ENV = "UAW_INSTALLED_HELPER_LAUNCH"
 MODULE = "uaw.infrastructure.installed_helper"
+
+
+def require_root_window_adapter() -> None:
+    parameters = inspect.signature(ReadOnlyHelper.__init__).parameters
+    if not {"session_lifetime_seconds", "native_timeout_seconds"} <= set(parameters):
+        raise CapabilityUnavailable("runner.installed.native_root_window_adapter")
 
 
 @dataclass(frozen=True)
@@ -195,7 +203,12 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
         roots: NativeRootSource,
         registry: ConnectionRegistry,
         currency: str,
+        native_root_selection: bool = False,
     ) -> None:
+        window: dict[str, Any] = {}
+        if native_root_selection:
+            require_root_window_adapter()
+            window = {"session_lifetime_seconds": 120.0, "native_timeout_seconds": 120.0}
         super().__init__(
             bootstrap=bootstrap,
             protocol=protocol,
@@ -205,6 +218,7 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
             roots=roots,
             registry=registry,
             currency=currency,
+            **window,
         )
         self.container = container
 
@@ -295,6 +309,7 @@ class PairedInstalledFactory:
             roots=roots,
             registry=registry,
             currency=launch.currency,
+            native_root_selection=launch.root_workspace is not None,
         )
         challenges.helper = helper
         try:
@@ -378,6 +393,8 @@ class InstalledHelperAssembly:
                 raise reject(
                     "enrollment_installed_source_changed", "Original protected source differs", 412
                 )
+            if launch.root_workspace is not None:
+                require_root_window_adapter()
             signer = ProtectedSigner(state, vault)
             native = WindowsEnrollmentConfirmation(
                 c.runner_enrollments,

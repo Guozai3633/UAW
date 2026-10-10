@@ -1,0 +1,94 @@
+{
+  "runtime_source": "5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e",
+  "metadata_source": "d0bae63fc611aed6b9e1c5e30d63a923167ab73f",
+  "human_device_and_actual_control_connection_passed_before_cleanup": true,
+  "human_root_selected": false,
+  "file_content_reads": 0,
+  "model_calls": 0,
+  "current_helper_running": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": {
+        "channel_hash": "24b75483d926b950d4c6b094a163b78bc73e57bffbc72d9a30e83ebb157851d7",
+        "failure_code": "ipc_timeout",
+        "file_reads": 0,
+        "model_calls": 0,
+        "native_human_confirmed": true,
+        "native_journal_hash": "a87c28268e6e93381b36ee8ac6ae4520e64bb6a60b063874dd9d9afd1809dc0c",
+        "owned_launch_cleanup": true,
+        "root_selected": false,
+        "status": "failed"
+      },
+      "raw_log": "tests/.artifacts/A/MS-I2l/m2-native-root-attempt-1.log",
+      "raw_log_sha256": "79eb8d9b8e344fd0a5351ddcdd6f2cf6cf92f8adf3f7a507ea4a55e87038499d",
+      "ended_at_utc": "2026-10-10T13:43:42.140433+00:00",
+      "local_state": {
+        "root_tickets": [
+          {
+            "kind": "root",
+            "state": "revoked",
+            "revision": 1,
+            "expires_at": "2026-10-10T13:43:41.557862+00:00",
+            "confirmation_expires_at": null
+          }
+        ],
+        "role_revocations": [
+          {
+            "role": "control",
+            "revoked": 1
+          },
+          {
+            "role": "device",
+            "revoked": 1
+          }
+        ],
+        "log_finished_utc": "2026-10-10T13:43:42.140433+00:00",
+        "native_decisions_count": 0,
+        "root_grants_count": 0
+      }
+    },
+    {
+      "attempt": 2,
+      "result": {
+        "channel_hash": "906e762f6ecb8886556d15ce3ae431b56fcc72fab70e9c06ba708451ff9dee26",
+        "failure_code": "ipc_timeout",
+        "file_reads": 0,
+        "model_calls": 0,
+        "native_human_confirmed": true,
+        "native_journal_hash": "112799b94be8b25d23f9269034f9fa93d362d80de71c6820dd3c069c2e5e22e3",
+        "owned_launch_cleanup": true,
+        "root_selected": false,
+        "status": "failed"
+      },
+      "raw_log": "tests/.artifacts/A/MS-I2l/m2-native-root-attempt-2.log",
+      "raw_log_sha256": "0804d1ac20ef45c52670b1b1bee9b5be606affad70b0815b0cece96236863198",
+      "ended_at_utc": "2026-10-10T13:47:51.202043+00:00",
+      "local_state": {
+        "root_tickets": [
+          {
+            "kind": "root",
+            "state": "revoked",
+            "revision": 1,
+            "expires_at": "2026-10-10T13:47:50.413547+00:00",
+            "confirmation_expires_at": null
+          }
+        ],
+        "role_revocations": [
+          {
+            "role": "control",
+            "revoked": 1
+          },
+          {
+            "role": "device",
+            "revoked": 1
+          }
+        ],
+        "native_decisions_count": 0,
+        "root_grants_count": 0
+      }
+    }
+  ],
+  "root_window_repair": "docs/coordination/requests/A/MS-I2l-D-native-root-window-repair.md",
+  "full_or_product_acceptance": false
+}

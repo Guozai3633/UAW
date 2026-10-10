@@ -11,7 +11,7 @@ import pytest
 from tests.unit.agent.test_installed_launch_contract import descriptor
 from uaw.infrastructure.enrollment_launch import PreparedEnrollmentLaunch
 from uaw.infrastructure.installed_control import InstalledControlConnection
-from uaw.infrastructure.installed_helper import InstalledLaunch
+from uaw.infrastructure.installed_helper import InstalledLaunch, require_root_window_adapter
 from uaw.infrastructure.installed_roots import InstalledRootSelection
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
@@ -223,3 +223,12 @@ async def test_launch_cannot_connect_before_original_ready():
     with pytest.raises(CapabilityUnavailable):
         await launch.connect()
     assert launch.connection is None
+
+
+def test_root_window_missing_runtime_dependency_is_explicit(monkeypatch):
+    monkeypatch.setattr(
+        "uaw.infrastructure.installed_helper.ReadOnlyHelper.__init__", lambda self: None
+    )
+    with pytest.raises(CapabilityUnavailable) as missing:
+        require_root_window_adapter()
+    assert missing.value.failure.message.endswith("runner.installed.native_root_window_adapter")

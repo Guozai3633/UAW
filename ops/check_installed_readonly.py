@@ -35,7 +35,14 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
         update={"agent_execution_enabled": False}
     )
     c = compose(settings)
-    result = {"status": "preparing", "file_reads": 0, "model_calls": 0, "root_selected": False}
+    result = {
+        "status": "preparing",
+        "file_reads": 0,
+        "model_calls": 0,
+        "root_selected": False,
+        "started_at": datetime.now(UTC).isoformat(),
+        "phase": "sources",
+    }
     launch, owner = None, None
     try:
         await c.start()
@@ -87,6 +94,7 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
             root_workspace=workspace,
         )
         print(json.dumps({"status": "waiting_native_device_confirmation"}), flush=True)
+        result["phase"] = "enrollment.native"
         await launch.start()
         record = await c.runner_enrollments.get(owner, launch.enrollment_id)
         decision = await c.records.get(c.configuration.platform, JOURNAL, launch.enrollment_id)
@@ -94,6 +102,7 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
             native_human_confirmed=record["state"] == "active",
             native_journal_hash=parameter_hash(decision.payload),
         )
+        result["phase"] = "ipc.handshake"
         channel = await launch.connect()
         result.update(status="connected", channel_hash=channel.content_hash)
         connection = launch.connection
@@ -104,6 +113,8 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
             and connection.session.peer
         )
         if workspace is not None:
+            result["phase"] = "native.root_selection"
+            result["connection_expires_at"] = connection.session.expires_at.isoformat()
             print(
                 json.dumps(
                     {"status": "waiting_native_directory_selection", "scope": "bounded_read_only"}
@@ -113,7 +124,11 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
             directory = launch.state.path.parent
             grants = await asyncio.to_thread(PersistentRootGrants, directory / "grants.sqlite")
             local = await asyncio.to_thread(LocalRoots, directory / "native.sqlite")
-            async with asyncio.timeout(60):
+            # One initial remaining budget; polling never resets/extends the source.
+            remaining = min(
+                120.0, (connection.session.expires_at - datetime.now(UTC)).total_seconds()
+            )
+            async with asyncio.timeout(max(0.0, remaining)):
                 while True:
                     await connection.session.check()
                     try:
@@ -129,6 +144,7 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                         await asyncio.sleep(0.1)
                         continue
                     break
+            result["phase"] = "native.root_receipt"
             ticket, _, expiry = await asyncio.to_thread(
                 launch.state.consumed_root, grant.selection_ticket_id, now=datetime.now(UTC)
             )
@@ -162,10 +178,12 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                 root_revision=grant.revision,
                 root_selection_hash=parameter_hash(ticket.document()),
             )
+        result["phase"] = "complete"
     except (DomainError, TimeoutError) as exc:
         result.update(
             status="failed",
             failure_code=exc.failure.code if isinstance(exc, DomainError) else "deadline_exceeded",
+            failed_phase=result["phase"],
         )
     finally:
         try:
@@ -181,6 +199,7 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                 )
         finally:
             await c.close()
+            result["finished_at"] = datetime.now(UTC).isoformat()
     return result
 
 

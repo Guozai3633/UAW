@@ -32,6 +32,7 @@ class InstalledControlConnection:
         directory: LocalState,
         credentials: WindowsCredentialStore,
         control_key: IpcSigningBinding,
+        native_root_selection: bool = False,
     ) -> None:
         service, records, config = (
             container.runner_enrollments,
@@ -47,6 +48,8 @@ class InstalledControlConnection:
         self.registry = ConnectionRegistry(max_connections=1)
         self.devices = RunnerDevices(records, config.platform, self.registry)
         self.directory, self.credentials = directory, credentials
+        # Trusted installed composition chooses this, never a body/model deadline.
+        self.session_lifetime_seconds = 120.0 if native_root_selection else 60.0
         self.session: AuthenticatedPipeSession | None = None
         self.channel_ref: Ref | None = None
         self.used = False
@@ -86,6 +89,7 @@ class InstalledControlConnection:
                         directory=self.directory,
                         credentials=self.credentials,
                     ),
+                    lifetime_seconds=self.session_lifetime_seconds,
                 )
                 await self.session.handshake()
                 if self.session.peer is None or self.session.peer.identity != helper.identity:
