@@ -26,7 +26,9 @@ class LocalRoots:
                 ticket_id TEXT PRIMARY KEY, root_handle TEXT UNIQUE NOT NULL,
                 native_path TEXT NOT NULL, file_device INTEGER NOT NULL, inode INTEGER NOT NULL)""")
 
-    def record(self, ticket: Ticket, path: Path) -> None:
+    def record(
+        self, ticket: Ticket, path: Path, *, expected_identity: tuple[int, int] | None = None
+    ) -> None:
         try:
             if not path.is_absolute():
                 raise ValueError("Relative path")
@@ -39,6 +41,11 @@ class LocalRoots:
             if not root.is_dir() or root == Path(root.anchor):
                 raise ValueError("Invalid root")
             identity = root.stat()
+            if (
+                expected_identity is not None
+                and (identity.st_dev, identity.st_ino) != expected_identity
+            ):
+                raise ValueError("Chosen directory identity changed")
         except OSError, ValueError, RuntimeError:
             raise reject(
                 "permission_denied", "Native root is unavailable", 403, "permission"

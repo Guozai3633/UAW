@@ -16,6 +16,12 @@ from uaw.shared.errors import CapabilityUnavailable, reject
 
 
 @dataclass(frozen=True)
+class NativeDirectoryDecision:
+    path: Path
+    identity: tuple[int, int]
+
+
+@dataclass(frozen=True)
 class NativePrompt:
     account: str
     device: str
@@ -99,7 +105,9 @@ class WindowsNativeDialog:
             raise reject("native_timeout", "Native confirmation expired", 410, "timeout")
         self.desktop()
 
-    def show(self, prompt: NativePrompt, stopped: Event, deadline: float) -> Path | None:
+    def show(
+        self, prompt: NativePrompt, stopped: Event, deadline: float
+    ) -> NativeDirectoryDecision | None:
         self.guard(stopped, deadline)
         if self.o.CoInitializeEx(None, 2) < 0:
             raise CapabilityUnavailable("runner.native_dialog_com")
@@ -125,6 +133,7 @@ class WindowsNativeDialog:
         monitor.start()
         try:
             selected = None
+            selected_identity = None
             if prompt.select_root:
 
                 class BrowseInfo(ctypes.Structure):
@@ -173,6 +182,8 @@ class WindowsNativeDialog:
                         raise reject(
                             "native_path_invalid", "Only a local absolute folder is supported"
                         )
+                    before = selected.stat()
+                    selected_identity = (before.st_dev, before.st_ino)
                 finally:
                     if pidl:
                         self.o.CoTaskMemFree(pidl)
@@ -188,7 +199,18 @@ class WindowsNativeDialog:
             self.guard(stopped, deadline)
             if result != 1:
                 raise reject("native_cancelled", "Read confirmation cancelled", 409, "cancelled")
-            return selected
+            if selected is not None:
+                after = selected.stat()
+                if selected_identity != (after.st_dev, after.st_ino):
+                    raise reject(
+                        "permission_denied",
+                        "Selected directory identity changed",
+                        403,
+                        "permission",
+                    )
+                assert selected_identity is not None
+                return NativeDirectoryDecision(selected, selected_identity)
+            return None
         finally:
             done.set()
             monitor.join(timeout=1)

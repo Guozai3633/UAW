@@ -16,7 +16,8 @@ from uaw.workspace.binding import aware
 from uaw.workspace.ports import CurrentKeyDirectory, NativeConfirmation, RunnerPrincipalMappingPort
 from uaw_runner.ipc.channel_source import ConnectionRegistry
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
-from uaw_runner.native_dialog import NativePrompt, WindowsNativeDialog
+from uaw_runner.native_dialog import NativeDirectoryDecision, NativePrompt, WindowsNativeDialog
+from uaw_runner.pairing import LocalRoots
 from uaw_runner.receipts import canonical, fixed_ref
 from uaw_runner.state import LocalState, Ticket
 
@@ -110,6 +111,7 @@ class WindowsNativeConfirmation:
         directory: CurrentKeyDirectory,
         clock: Callable[[], datetime],
         timeout_seconds: float = 60,
+        local_roots: LocalRoots | None = None,
     ) -> None:
         if not 0 < timeout_seconds <= 120:
             raise ValueError("Native confirmation timeout must be in (0,120]")
@@ -119,6 +121,7 @@ class WindowsNativeConfirmation:
             clock,
             timeout_seconds,
         )
+        self.local_roots = local_roots
         self.busy = False
 
     async def checked(
@@ -129,6 +132,9 @@ class WindowsNativeConfirmation:
         current = await self.source.current(ticket_id)
         if not isinstance(current, NativeChallenge):
             raise reject("dependency_protocol_invalid", "Native source type invalid", 503)
+        Principal.model_validate_json(canonical(current.owner.wire()))
+        Principal.model_validate_json(canonical(current.actor.wire()))
+        fixed_ref(current.channel_ref)
         ticket = current.ticket
         actual_hash = hashlib.sha256(
             signing_bytes(ticket.document(), ticket.device_id, ticket.key_id, "pairing-proof")
@@ -141,6 +147,8 @@ class WindowsNativeConfirmation:
             or ticket.state != "pending"
             or current.owner.kind != "user"
             or current.owner.id != principal_id
+            or current.actor.kind not in ("user", "runner")
+            or (current.actor.kind == "user" and current.actor.wire() != current.owner.wire())
             or actual_hash != document_hash
             or aware(current.expires_at) <= aware(self.clock())
             or current.expires_at > ticket.expires_at
@@ -165,6 +173,7 @@ class WindowsNativeConfirmation:
         self.busy = True
         stopped = Event()
         worker = monitor = None
+        monitor_stop = asyncio.Event()
         try:
             async with asyncio.timeout(self.timeout):
                 current = await self.checked(ticket_id, principal_id, device_id, document_hash)
@@ -179,14 +188,18 @@ class WindowsNativeConfirmation:
                     document_hash,
                     current.ticket.kind == "root",
                 )
+                if current.ticket.kind == "root" and self.local_roots is None:
+                    raise CapabilityUnavailable("runner.native_local_roots")
                 dialog = WindowsNativeDialog()
                 worker = asyncio.create_task(
                     asyncio.to_thread(dialog.show, prompt, stopped, deadline)
                 )
 
                 async def watch() -> None:
-                    while True:
+                    while not monitor_stop.is_set():
                         await asyncio.sleep(0.1)
+                        if monitor_stop.is_set():
+                            return
                         checked = await self.checked(
                             ticket_id, principal_id, device_id, document_hash
                         )
@@ -202,7 +215,11 @@ class WindowsNativeConfirmation:
                 done, _ = await asyncio.wait((worker, monitor), return_when=asyncio.FIRST_COMPLETED)
                 if monitor in done:
                     await monitor
-                path = await asyncio.shield(worker)
+                decision = await asyncio.shield(worker)
+                # Let an in-flight current-source check finish. Cancelling it would
+                # correctly invalidate the IPC session and race a successful decision.
+                monitor_stop.set()
+                await monitor
                 final = await self.checked(ticket_id, principal_id, device_id, document_hash)
                 if final.fingerprint() != current.fingerprint() or aware(self.clock()) >= expiry:
                     raise reject(
@@ -211,6 +228,32 @@ class WindowsNativeConfirmation:
                         403,
                         "permission",
                     )
+                path = None
+                if current.ticket.kind == "root":
+                    if not isinstance(decision, NativeDirectoryDecision):
+                        raise reject(
+                            "dependency_protocol_invalid", "Native selected identity missing", 503
+                        )
+                    assert self.local_roots is not None
+                    await asyncio.to_thread(
+                        self.local_roots.record,
+                        current.ticket,
+                        decision.path,
+                        expected_identity=decision.identity,
+                    )
+                    # Immutable local record retains the exact chosen identity across awaits.
+                    final = await self.checked(ticket_id, principal_id, device_id, document_hash)
+                    if (
+                        final.fingerprint() != current.fingerprint()
+                        or aware(self.clock()) >= expiry
+                    ):
+                        raise reject(
+                            "permission_denied",
+                            "Native source changed while recording selection",
+                            403,
+                            "permission",
+                        )
+                    path = decision.path
                 return NativeConfirmation(
                     ticket_id, principal_id, device_id, document_hash, expiry, path
                 )

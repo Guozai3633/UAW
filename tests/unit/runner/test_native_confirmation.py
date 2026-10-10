@@ -10,7 +10,8 @@ import pytest
 from uaw_runner.ipc.windows_pipe import WindowsApi
 from uaw_runner.keys import ProtectedSigner
 from uaw_runner.native_confirmation import NativeChallenge, WindowsNativeConfirmation
-from uaw_runner.native_dialog import NativePrompt
+from uaw_runner.native_dialog import NativeDirectoryDecision, NativePrompt
+from uaw_runner.pairing import LocalRoots
 from uaw_runner.state import LocalState
 
 from tests.unit.runner.conftest import NOW
@@ -58,7 +59,11 @@ async def native_input(tmp_path):
         signing_bytes(value.ticket.document(), "d1", "device1", "pairing-proof")
     ).hexdigest()
     adapter = WindowsNativeConfirmation(
-        source=source, directory=state, clock=lambda: NOW, timeout_seconds=1
+        source=source,
+        directory=state,
+        clock=lambda: NOW,
+        timeout_seconds=1,
+        local_roots=LocalRoots(tmp_path / "native.sqlite"),
     )
     return dict(
         state=state,
@@ -132,7 +137,8 @@ async def test_explicit_fixture_selection_binding_not_human_acceptance(native_in
     class UiDouble:
         def show(self, prompt, stopped, deadline):
             assert prompt.select_root and prompt.account == "u1"
-            return case["root"]
+            stat = case["root"].stat()
+            return NativeDirectoryDecision(case["root"], (stat.st_dev, stat.st_ino))
 
     monkeypatch.setattr("uaw_runner.native_confirmation.WindowsNativeDialog", UiDouble)
     result = await case["adapter"].confirm(**case["args"])
@@ -175,3 +181,71 @@ async def test_waiting_ui_current_changes_cancel_worker(native_input, monkeypatc
     with pytest.raises((DomainError, asyncio.CancelledError)):
         await asyncio.wait_for(work, 2)
     assert finished.is_set() and not case["adapter"].busy
+
+
+async def test_native_chosen_directory_identity_changed_before_local_record_denied(
+    native_input, monkeypatch
+):
+    case = native_input
+    selected = case["root"] / "selected"
+    selected.mkdir()
+    stat = selected.stat()
+
+    class ReplacedUiDouble:
+        def show(self, prompt, stopped, deadline):
+            selected.rename(selected.with_name("original"))
+            selected.mkdir()
+            return NativeDirectoryDecision(selected, (stat.st_dev, stat.st_ino))
+
+    monkeypatch.setattr("uaw_runner.native_confirmation.WindowsNativeDialog", ReplacedUiDouble)
+    with pytest.raises(DomainError):
+        await case["adapter"].confirm(**case["args"])
+    assert case["state"].get(case["args"]["ticket_id"], now=NOW).state == "pending"
+
+
+async def test_missing_local_identity_directory_is_unavailable(native_input):
+    case = native_input
+    case["adapter"].local_roots = None
+    with pytest.raises(CapabilityUnavailable):
+        await case["adapter"].confirm(**case["args"])
+
+
+async def test_noninteractive_desktop_never_approves(native_input, monkeypatch):
+    class NoDesktopDouble:
+        def show(self, prompt, stopped, deadline):
+            raise CapabilityUnavailable("runner.interactive_desktop")
+
+    monkeypatch.setattr("uaw_runner.native_confirmation.WindowsNativeDialog", NoDesktopDouble)
+    with pytest.raises(CapabilityUnavailable):
+        await native_input["adapter"].confirm(**native_input["args"])
+
+
+async def test_successful_ui_does_not_cancel_inflight_current_check(native_input, monkeypatch):
+    case = native_input
+    entered = Event()
+    cancelled = []
+    original = case["source"].current
+    calls = [0]
+
+    async def current(ticket_id):
+        calls[0] += 1
+        if calls[0] == 2:
+            entered.set()
+            try:
+                await asyncio.sleep(0.08)
+            except asyncio.CancelledError:
+                cancelled.append(True)
+                raise
+        return await original(ticket_id)
+
+    case["source"].current = current
+
+    class UiDouble:
+        def show(self, prompt, stopped, deadline):
+            assert entered.wait(0.5)
+            stat = case["root"].stat()
+            return NativeDirectoryDecision(case["root"], (stat.st_dev, stat.st_ino))
+
+    monkeypatch.setattr("uaw_runner.native_confirmation.WindowsNativeDialog", UiDouble)
+    result = await case["adapter"].confirm(**case["args"])
+    assert result.native_path == case["root"] and not cancelled
