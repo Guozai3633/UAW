@@ -1,6 +1,6 @@
 # 当前可转发开工消息：MS-I2l
 
-[四份完整提示词](MS-I2l-messages.md)；[分包四里程碑](requests/A/MS-I2l-parallel-packages.md)；[A/D固定必需接口](requests/A/MS-I2l-AD-contract.md)。准确开工SHA见DISPATCH正式发布回执，远端标签未核对前不启动。A/D先固定接口，B/C可先用已实现port独立推进；不需要重建worktree。
+[四份完整提示词](MS-I2l-messages.md)；[分包四里程碑](requests/A/MS-I2l-parallel-packages.md)；[A/D固定必需接口](requests/A/MS-I2l-AD-contract.md)。准确开工SHA **`8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`**；远端标签须匹配后启动。A/D先固定接口，B/C可先用已实现port独立推进；不需要重建worktree。
 
 ## 以下为历史派发，勿转发旧包
 

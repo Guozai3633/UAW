@@ -1,6 +1,6 @@
 # MS-I2l：首次本人授权、资料消费与页面恢复
 
-2026-10-10。共同开工标签 `ms-i2l-start`，准确SHA以 DISPATCH 正式发布回执为准；未发布时仅准备检查。开工标签不移动，后续接口用独立阶段标签。A/D 必需接口先固定在 [AD-contract v1](MS-I2l-AD-contract.md)，实际源码 `6277fd12c238629c1d5d998b7c83aeaeeb539ed6`。
+2026-10-10。共同开工标签 `ms-i2l-start`，准确SHA **`8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`**，与远端标签精确核对；不能用浮动integration代替。开工标签不移动，后续接口用独立阶段标签。A/D 必需接口先固定在 [AD-contract v1](MS-I2l-AD-contract.md)，实际源码 `6277fd12c238629c1d5d998b7c83aeaeeb539ed6`。
 
 ## 1. 来源与未完成门槛
 

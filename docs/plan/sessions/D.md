@@ -1,6 +1,6 @@
 # 本轮入口：Session D / MS-R2i
 
-状态：MS-I2l准备待正式发布，准确SHA见DISPATCH页首；未发布仅检查。固定AD契约的首次等待/进度、初始化stop、真实隐藏helper与本人流程。
+状态：MS-I2l正式发布，固定ms-i2l-start / `8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`；按对应提示词核对后自行开工。固定AD契约的首次等待/进度、初始化stop、真实隐藏helper与本人流程。
 
 先读[分包第1/2/6/7节](../../coordination/requests/A/MS-I2l-parallel-packages.md)和[A/D固定契约](../../coordination/requests/A/MS-I2l-AD-contract.md)，按四个连续里程碑推进，M1/M2阶段提交后继续本包。原worktree/分支不换；A不替worker同步。旧轮未标产品整轮accepted。
 
