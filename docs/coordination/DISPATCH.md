@@ -1,5 +1,11 @@
 # 当前安排：MS-I2k（2026-10-10）
 
+## A2阶段集成（整轮验收继续）
+
+- 运行源码 **4c3f159a13dfa84ff3ca019caf7643a07abd3887**，拟发布固定源码标签 `ms-i2k-a2-source` 和证据标签 `ms-i2k-a2`；实际发布以远程核对回执为准。B/MS-U2、C/MS-T2h、D/MS-R2h最终源码/独立交接均逐包审阅并合入，未操作worker分支。[接受范围与剩余接线](requests/A/MS-I2k-current-integration.md)。
+- 原审批pending/批准/拒绝到同一Agent step、C当前资料到Context Reader、独立native journal Reader及实际错误OS拒绝已实现；**63不同节点最终通过**，185源码类型/静态检查通过。原失败、分次执行及源码时期差异保留在[准确证据](../implementation/evidence/ms-i2k-a2.json)，不是新全量。
+- 当前首次可信launcher/control proof/native本人链仍未完成，默认缺源不可用；真正目录授权、文件→固定Model→成果、真实页面场景继续M2–M4。A使用B已交付构建物开展页面联调，未安装前端依赖；实际页面证据另记。共同开工标签与A1标签保持。
+
 ## A1阶段接口（共同开工标签不移动）
 
 - 源码 **4109b5f4a9ed5fac97598b1c5139ff7074d12bda**，源码标签 `ms-i2k-a1-source`，接口/证据阶段标签 `ms-i2k-a1`。四个设备登记实际HTTP、当前OS角色适配及普通Python安装Runner入口已提供；[接口与首次配对边界](requests/A/MS-I2k-enrollment-v1.md)。worker按本包约定自行消费阶段，A不修改worker分支。

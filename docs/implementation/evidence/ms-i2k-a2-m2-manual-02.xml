@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="171.026" timestamp="2026-10-10T16:44:21.676102+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_background_postgres" name="test_real_queue_pipeline_recovers_original_step_and_delivers[False-approve_once-case0]" time="169.845"><failure message="uaw.shared.schema.ContractViolation: ApprovalsDecideRequest: invalid fields at /decision">tests\integration\agent\test_background_postgres.py:135: in test_real_queue_pipeline_recovers_original_step_and_delivers
+    await control.approvals.decide(actor, {
+src\uaw\run\approval.py:194: in decide
+    validate_contract("ApprovalsDecideRequest", request)
+src\uaw\shared\schema.py:44: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: ApprovalsDecideRequest: invalid fields at /decision</failure></testcase></testsuite></testsuites>

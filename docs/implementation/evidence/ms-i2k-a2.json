@@ -1,0 +1,467 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2k-A2",
+  "runtime_source_commit": "4c3f159a13dfa84ff3ca019caf7643a07abd3887",
+  "publication_ref": "ms-i2k-a2",
+  "different_nodes": 63,
+  "full_regression": false,
+  "product_milestone_accepted": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2k-a2-tests.xml",
+    "sha256": "24a2e0b1dd1b58ea5d9f7d8e234b06948303379d90a9af1ba0ffd9aa22a24d21"
+  },
+  "history": [
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-cross-components.xml",
+      "sha256": "ee41dcbdf3053445d09d87d31046265370970ddd9ee60cfb00979d70a32c085a",
+      "counts": {
+        "tests": 54,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-manual-01.xml",
+      "sha256": "a4e508fc1a5ee0946d9b785f86c308fbc2fa0e367f43079cfeb06c80b4ddc0f1",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-manual-02.xml",
+      "sha256": "7aeab52072191d3296cd60a000066d2da4e6afa0671c20604e9f4693f89158f2",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-manual-03.xml",
+      "sha256": "59d06b9ed927828a709f301274c0a04da6cbe83daf375b2499efb24db2b7a6ac",
+      "counts": {
+        "tests": 4,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-manual-decline-04.xml",
+      "sha256": "ce2638427c0f49ecf5b7104796ad04e9d20025978858e6fb7b2d29ea0d297635",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m2-native-reader-01.xml",
+      "sha256": "ad3022c7271e28075f52d3c0f75e5928753793c9dfe3710ba97051a9c22fd620",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m3-file-context-01.xml",
+      "sha256": "94d0aba35fc6a80a393ebd4fd67b120b85318433a0d432493b77dfa8d61395fe",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2k-a2-m3-file-context-unit.xml",
+      "sha256": "b88b22db88bc4438579e36ef57eef7e3d670cf11a7072377ab75295452dec34b",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "per_node_latest": [
+    {
+      "classname": "tests.integration.agent.test_runner_pipe_wiring",
+      "name": "test_a_verifies_actual_two_process_read_and_rejects_transport_tampering",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_runner_pipe_wiring",
+      "name": "test_actual_a_control_client_to_independent_d_read_endpoint",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_current_bootstrap_intersection_os_keys_full_session",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_missing_bootstrap_never_mounts[registration]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_missing_bootstrap_never_mounts[challenges]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_missing_bootstrap_never_mounts[mapping]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_missing_bootstrap_never_mounts[credentials]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[owner]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[session]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[actor]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[OS-create]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[channel]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[nonce]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[challenge]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[revision]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[state]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[device]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[key]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[expiry]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_bootstrap_source_mismatch_denied[body-approval]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_changes_during_bootstrap_await_fail[owner]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_changes_during_bootstrap_await_fail[key]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_changes_during_bootstrap_await_fail[expiry]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_bootstrap",
+      "name": "test_changes_during_bootstrap_await_fail[cancel]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_real_hidden_helper_native_once_read_reconnect_recover_restart",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_actual_native_helper_timeout_does_not_bind[actual-timeout]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_missing_production_assembly_never_listens_and_closes",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_hidden_helper_current_bootstrap_rejects_before_listener[owner]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_hidden_helper_current_bootstrap_rejects_before_listener[key]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_hidden_helper_current_bootstrap_rejects_before_listener[OS-create]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_hidden_helper_current_bootstrap_rejects_before_listener[registration-revoked]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_helper_stop_pending_accept_and_pipe_can_no_longer_connect",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_helper_revoke_and_original_root_one_use_after_restart[revoke]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_helper_revoke_and_original_root_one_use_after_restart[bind-again]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_helper_revoke_and_original_root_one_use_after_restart[repeat-select]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_helper_unknown_recover_cannot_start_read",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_two_hidden_helpers_concurrent_once_journal_no_new_read_on_recover",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_cancel_owner_closes_pending_event_and_actual_process",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_current_sources_and_signature_changed_before_read_are_rejected[logout]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_current_sources_and_signature_changed_before_read_are_rejected[key-revoked]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_current_sources_and_signature_changed_before_read_are_rejected[workspace-version]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_current_sources_and_signature_changed_before_read_are_rejected[command-signature]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.runner.test_helper_runtime",
+      "name": "test_concurrent_close_waits_for_the_same_actual_process_cleanup",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_limits_do_not_expand_actual_file_maximum[max_characters-0]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_limits_do_not_expand_actual_file_maximum[max_utf8_bytes-0]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_limits_do_not_expand_actual_file_maximum[max_characters-65537]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_limits_do_not_expand_actual_file_maximum[max_utf8_bytes-65537]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_limits_do_not_expand_actual_file_maximum[max_characters-True]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_is_immutable_selected_text_and_fresh_named_copies",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_missing_owning_reader_refuses_export_and_ref_reuse",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_source_metadata_is_not_a_reader_grant[access]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_source_metadata_is_not_a_reader_grant[verifier]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_source_metadata_is_not_a_reader_grant[bridge]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.unit.tool.test_file_material",
+      "name": "test_material_source_metadata_is_not_a_reader_grant[signatures]",
+      "receipt": "m2-cross-components.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[False-None-case0]",
+      "receipt": "m2-manual-03.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[True-None-case0]",
+      "receipt": "m2-manual-03.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[False-approve_once-case0]",
+      "receipt": "m2-manual-03.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_background_postgres",
+      "name": "test_real_queue_pipeline_recovers_original_step_and_delivers[False-decline-case0]",
+      "receipt": "m2-manual-decline-04.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_file_bridge_postgres",
+      "name": "test_file_bridge_executor_persists_actual_c_evidence_and_reads_original",
+      "receipt": "m3-file-context-01.xml"
+    },
+    {
+      "classname": "tests.unit.agent.test_file_context",
+      "name": "test_file_batch_keeps_input_order_and_revocation_after_one_read",
+      "receipt": "m3-file-context-unit.xml"
+    },
+    {
+      "classname": "tests.unit.agent.test_file_context",
+      "name": "test_file_fragment_without_owning_reader_never_falls_back_to_blob",
+      "receipt": "m3-file-context-unit.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_native_enrollment_reader_uses_fixed_journal_without_ui_recursion",
+      "receipt": "m2-native-reader-01.xml"
+    },
+    {
+      "classname": "tests.integration.agent.test_enrollment_postgres",
+      "name": "test_native_enrollment_wrong_os_instance_never_opens_confirmation",
+      "receipt": "m2-native-reader-01.xml"
+    }
+  ],
+  "worker_review": {
+    "path": "docs/implementation/evidence/ms-i2k-worker-review.json",
+    "sha256": "c7868fab1d01f5e2d0f0cc8e814c97ef150839083b594c728f4f1e3198fb3e6b"
+  },
+  "socket": {
+    "path": "docs/implementation/evidence/ms-i2k-a2-socket.json",
+    "sha256": "7224c18a6db42e4e3bfe1209c9c37ab3139fd50ef3c3ee56d2d4c47d60c9d483"
+  },
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-ruff-final.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2k/m3-mypy-final.log",
+      "sha256": "6717ef4d9630c88010ab4e886348d7a3dfff249f2c932de533f15f3e1c5d0aa6"
+    }
+  ],
+  "original_failures": [
+    "Background test called RegistryEntry.spec as a property; corrected actual method use.",
+    "Background test omitted mandatory approval reason; corrected strict test DTO.",
+    "Declined result is denied per actual Tool contract, not failed; assertion corrected and only declined node rerun.",
+    "Import sorting/static checks failed initially; preserved raw receipts and corrected A imports.",
+    "Frontend development lock install rejected by automatic review citing installation-disabled instructions. Permission requested; no install/bypass performed."
+  ],
+  "execution_lineage": [
+    "Three passing background nodes03 loaded merged181-source composition before FileAwareContextInputs wiring; background logic bytes match committed source aside from imports/decline assertion. Ordinary Context routes remain delegated unchanged.",
+    "Decline04 executed after current file-aware composition; FileContext SQL/unit and Native Reader nodes separately verify the new affected paths.",
+    "Cross54 executed after all worker merges; native producer positive Windows UI path has not been exercised. Reader journal input is controlled native evidence.",
+    "Actual final TCP startup uses committed runtime and current ordinary-installed uaw_runner."
+  ],
+  "previous_stage": {
+    "path": "docs/implementation/evidence/ms-i2k-a1.json",
+    "sha256": "6e3c2197ba9336ddfbf24755b538033ce82e304f2dd3104fe7886a114fd06374"
+  },
+  "previous_full": {
+    "ref": "ms-i2i",
+    "different_nodes": 1691,
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    }
+  },
+  "prior_model_live": {
+    "path": "docs/implementation/evidence/ms-i2j-m2-live.json",
+    "sha256": "4b96e2d068d0edaf89754602f869fbc81e9977d288b84c0e7dd213af401b2d75"
+  },
+  "actual_external_model_calls_in_stage": 0,
+  "global_flags_opened": false,
+  "remaining": [
+    "Protected first launcher/current candidate/control proof assembly still unavailable; native human/root flows pending.",
+    "File material into real Model/Artifact pipeline not yet accepted; scoped Reader/Context routing alone is not product completion.",
+    "Actual authenticated page and current fixed DeepSeek office/academic/file scenarios pending; frontend install request unresolved.",
+    "Current milestone full regression deferred until actual components/consumers converge; previous1691 retained."
+  ]
+}

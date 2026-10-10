@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="9.772" timestamp="2026-10-10T16:43:41.074516+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_background_postgres" name="test_real_queue_pipeline_recovers_original_step_and_delivers[False-approve_once-case0]" time="8.531"><failure message="TypeError: 'method' object is not subscriptable">tests\integration\agent\test_background_postgres.py:106: in test_real_queue_pipeline_recovers_original_step_and_delivers
+    entry = next(e for e in registry.snapshot()[1] if e.spec["id"] == "text.inspect")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\agent\test_background_postgres.py:106: in &lt;genexpr&gt;
+    entry = next(e for e in registry.snapshot()[1] if e.spec["id"] == "text.inspect")
+                                                      ^^^^^^^^^^^^
+E   TypeError: 'method' object is not subscriptable</failure></testcase></testsuite></testsuites>

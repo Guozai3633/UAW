@@ -6,6 +6,8 @@
 
 A1阶段：当前账号/OS设备登记接口已交付，源码4109b5f（运行测试字节6640b8f，随后仅修示例）；15不同聚焦节点及178源码类型检查通过。生产首次配对/current native来源、实际页面/文件整链继续M2–M4，未标整轮接受。共同ms-i2k-start仍b7b79b1，不移动。
 
+A2阶段：运行源码4c3f159，B/MS-U2、C/MS-T2h、D/MS-R2h已逐包审阅合入；63不同聚焦节点最终通过，185源码Mypy/Ruff通过。原审批同step恢复及C资料当前Context来源已接线，native本人首次配对、实际页面/文件Model链继续；[分次范围及历史失败](../../implementation/MS-I2k-A2.md)。未标整轮accepted，旧1691仍为上次全量。
+
 ## 工作位置和顺序
 
 - 实际分支：`integration`。

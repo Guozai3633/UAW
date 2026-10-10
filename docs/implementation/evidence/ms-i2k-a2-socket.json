@@ -1,0 +1,45 @@
+{
+  "scope": "Actual localhost TCP HTTP and PostgreSQL background assembly; not browser UI or native approval",
+  "port": 8000,
+  "checks": [
+    {
+      "path": "/v1/web/session",
+      "status": 200
+    },
+    {
+      "path": "/v1/models",
+      "status": 200
+    },
+    {
+      "path": "/v1/conversations",
+      "status": 200
+    }
+  ],
+  "ready": {
+    "status": "ready",
+    "profile": "development",
+    "runtime_capabilities": {
+      "intent": true,
+      "agent": true,
+      "context": false,
+      "tool": false,
+      "workspace": false,
+      "model": true,
+      "run": true
+    },
+    "persistence": "postgresql",
+    "services": {
+      "configuration": true,
+      "run_admission": true,
+      "resource_ledger": true,
+      "agent_execution": true
+    }
+  },
+  "wrong_origin_status": 403,
+  "missing_native_source_status": 503,
+  "forged_approval_status": 422,
+  "logout_status": 200,
+  "revoked_status": 401,
+  "passed": true,
+  "owned_server_closed": true
+}
