@@ -196,7 +196,11 @@ class HelperProcess:
         self.closed = True
 
         def finish() -> None:
-            if self.process.poll() is None and self.process.stdin is not None:
+            if (
+                self.process.poll() is None
+                and self.process.stdin is not None
+                and not self.process.stdin.closed
+            ):
                 try:
                     self.process.stdin.write(b"stop\n")
                     self.process.stdin.flush()

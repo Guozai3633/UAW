@@ -563,3 +563,12 @@ git diff --check
 - E:/UAW/.worktrees/runner / dev/runner，远端正式 DISPATCH 核对 ms-i2l-start /8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0 后 ff-only/HEAD 等值，uv sync --frozen成功，旧历史和全部失败/清理保留。
 - M1源码 f400a928614805ab752ef648a4ac59d5b0090ee7；文件 helper_process/helper_host/新增 helper_stdio，新增 unit first_start，旧 helper_runtime 错误 code 断言更新。公开 start(first_start=None,on_progress=None)、HelperBootstrapProgress.waiting(policy)，具体构造/失败/限额见 requests/D/MS-R2i-stage-interface.md。
 - 41不同节点通过/56.96s；最新22单元/0.41s；Ruff、Mypy34源码、diff通过。原失败回执保留 tests/.artifacts/D/MS-R2i。真实Windows进程/OS凭据/IPC与临时根 journal，账号/肯定 UI 是受控 fixture，不是本人确认。M2初始化 stop 尚待实现，继续同包；A installed配置/真实来源缺则503，无自建公共协议/flags。
+
+## MS-R2i M2 阶段交接（2026-10-10）
+
+- M2源码 f37d44589ab874ebb3c8dca0f4806e06bde75a2f，helper_host/helper_process与D helper_start_fixture/test_helper_first_start；host初始化前stop/EOF、晚helper禁止监听并关闭、无blocked readline、实际native取消排空、close幂等。
+- Windows隐藏双进程18不同节点通过/70.67s，原EOF close失败保留后修复；Ruff/Mypy34/diff通过。构造、close、错误和A实际安装输入见 requests/D/MS-R2i-stage-cancel.md。回执 tests/.artifacts/D/MS-R2i/m2-final.xml/log，账号/current source/肯定UI均受控；实际native仅取消，无本人确认。A源码阶段尚未发布，不造生产配置，继续同包M3/M4。
+
+### MS-R2i A installed SQL 事件循环修复阶段
+
+源码67154f807a9c7aa69139a34af190a1ec058819b0；固定host __main__使用已有control_plane_loop，不改全局policy/契约。5实际Windows取消/Selector节点＋1实际D55435迁移后子端SQL检查通过。首轮库未迁移失败保留。构造及命令回执见MS-R2i-stage-cancel.md追加；A installed来源仍待阶段发布，继续本包。
