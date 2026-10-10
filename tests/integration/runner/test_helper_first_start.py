@@ -18,8 +18,8 @@ from uaw.shared.runner_bootstrap import FirstStartPolicy
 ipc_case = _ipc_fixture
 
 
-async def prepare_start(case, *, mode="valid", delay=0, seconds=5):
-    native, original, path = await prepare_helper(case)
+async def prepare_start(case, *, mode="valid", delay=0, seconds=5, native=None):
+    native, original, path = await prepare_helper(case, native=native)
     await original.close()
     policy = FirstStartPolicy(datetime.now(UTC) + timedelta(seconds=seconds), "a" * 64, seconds)
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -155,4 +155,24 @@ async def test_first_deadline_expires_during_factory_no_extension(ipc_case):
     with pytest.raises(DomainError):
         await process.start(first_start=policy)
     await wait_marker(ipc_case, "factory-cancelled")
+    cleaned(process)
+
+
+async def test_actual_hidden_host_uses_selector_loop_without_global_policy(ipc_case):
+    native, process, path, policy = await prepare_start(ipc_case)
+    try:
+        assert (await process.start(first_start=policy))["event"] == "ready"
+        await wait_marker(ipc_case, "selector-loop")
+    finally:
+        await process.close()
+    cleaned(process)
+
+
+async def test_installed_hidden_selector_reads_actual_session_d_postgres(ipc_case):
+    native, process, path, policy = await prepare_start(ipc_case, mode="sql-check", seconds=8)
+    try:
+        assert (await process.start(first_start=policy))["event"] == "ready"
+        await wait_marker(ipc_case, "actual-postgres-checked")
+    finally:
+        await process.close()
     cleaned(process)

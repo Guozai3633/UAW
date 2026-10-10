@@ -140,6 +140,7 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    from uaw.infrastructure.event_loop import control_plane_loop
     from uaw_runner.helper_host import main as installed_main
 
-    asyncio.run(installed_main())
+    asyncio.run(installed_main(), loop_factory=control_plane_loop)
