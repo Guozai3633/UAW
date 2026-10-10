@@ -1,4 +1,4 @@
-import {useEffect,useState,useSyncExternalStore} from 'react';
+import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {useSearchParams} from 'react-router';
 import * as Dialog from '@radix-ui/react-dialog';
 import {Plus,ArrowUp,MessageSquare,PanelLeft,RefreshCw,MoreHorizontal,ChevronDown,Square,Check, X, Sparkles,FolderOpen,LogOut,TriangleAlert} from 'lucide-react';
@@ -12,10 +12,13 @@ const stages:Record<Schema['RunStatus'],string>={queued:'queued',preparing:'prep
 const itemLabels:Record<string,string>={understanding:'任务理解',agent_message:'UAW',plan:'计划',tool_call:'工具',command:'命令状态',file_change:'文件变更',approval:'待确认动作',user_control:'你的决定',artifact:'成果已登记',review:'核验',context_compression:'上下文记录'};
 export function Workspace({controller,reviewPort}:{controller:WorkspaceController;reviewPort?:ReviewPort}){
  const s=useSyncExternalStore(controller.subscribe,controller.snapshot);const [params,setParams]=useSearchParams();
+ const urlConversation=params.get('conversation')??undefined;const selectedUrl=useRef(urlConversation);selectedUrl.current=urlConversation;
  const [newOpen,setNewOpen]=useState(false),[title,setTitle]=useState('新会话'),[model,setModel]=useState(''),[menu,setMenu]=useState(false);
- useEffect(()=>{void controller.start(params.get('conversation')??undefined);const off=controller.host.subscribe?.(()=>void controller.start());
+ useEffect(()=>{void controller.start(selectedUrl.current);const off=controller.host.subscribe?.(()=>void controller.start(selectedUrl.current));
   return()=>{off?.();controller.stop();};},[controller]);
  useEffect(()=>{if(s.active)setParams({conversation:s.active.id},{replace:true});},[s.active?.id]);
+ useEffect(()=>{const navigate=()=>void controller.start(new URLSearchParams(location.search).get('conversation')??undefined);
+  window.addEventListener('popstate',navigate);return()=>window.removeEventListener('popstate',navigate);},[controller]);
  const chosen=model||s.models[0]?.id||'';
  const understanding=s.draft?'发送后，将根据这段原文理解任务。':s.frame?.summary??(s.run?'正在等待实际任务理解…':'写下你的任务，从一段原文开始。');
  return <div className="workspace">
