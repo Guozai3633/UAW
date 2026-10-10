@@ -521,3 +521,16 @@ git diff --check
 ## MS-R2g M1/M2 阶段交接（2026-10-10）
 
 工作区E:/UAW/.worktrees/runner、dev/runner；干净fetch/ff-only ms-i2j-start/HEAD核对为abb4590f2bfe53c601e0f6a4a3b65447ba4ec502，uv sync --frozen64包。M1源码42ad508d3d98e703a51bff3d522bf2bbecdf169c；M2源码88bb0f33a86560a5bce89421e84f1f75cb7d3a09。固定确认/选择/绑定/撤销接口、文件、验证命令/回执和A真实来源要求见 requests/D/MS-R2g-stage-native.md。21项M1（真实原生自动取消/超时，不自动批准）、82项M2及checked CAS后30项通过，原失败保留。真人点击pending，账号/owner/肯定UI测试来源明示受控；未开放flags/用户项目/写入安装exec，未决定D03。本阶段文档另提交后继续M3/M4。
+
+
+## MS-R2g 最终交接（2026-10-10）
+
+- 原工作区E:/UAW/.worktrees/runner / dev/runner；干净后fetch tags→ff-only ms-i2j-start，HEAD/tag精确abb4590f2bfe53c601e0f6a4a3b65447ba4ec502，uv sync --frozen成功64包。未reset/rebase、公共覆盖或操作其他session，原MS-R2f接受历史保留。
+- M1源码42ad508d3d98e703a51bff3d522bf2bbecdf169c；M2源码88bb0f33a86560a5bce89421e84f1f75cb7d3a09；阶段handoff af19a01；最终源码d0ea31b7a05885806e9a72b9afff283ddc703122。本最终handoff另提交。
+- 文件：新增Runner native_dialog/native_confirmation/native_authorization；修改PairingVerifier/LocalRoots及LocalState checked approve CAS；新增D unit native确认、integration真实native取消/lifecycle/manual harness；原native_root_source/read_executor测试helper支持延后确认/actual clock。文档为D stage/final wiring、人为指南、bootstrap输入提案及本handoff。仅D允许目录，workspace四文件无需改，公共schema/shared/锁/HTTP/认证/组装/flags无修改。
+- 接口：RegisteredNativeChallenges从独立live registry/mapping/Ticket绑定完整account/device/OS identity；WindowsNativeConfirmation兼容既有NativeConfirmationPort，root必须显式注入同LocalRoots，真实选择identity仅本机保存；NativeReadAuthorization.select/bind/revoke接原PairingVerifier/RootSelectionPort/NativeRootSource和一次消费。NativeDecisionJournal保存原完整owner/actor/session证据，bind仍复查当前源，重启不改成许可缓存；控制面只获opaque旧RootSelection/Ref，不暴露绝对路径或重新解释Ticket为公开配对V2。
+- **550 passed /201.94秒，0failure/error/skip**（基线505＋新增45，不累加重试）；Ruff通过、格式58文件、Mypy29源码、diff通过。tests/.artifacts/D/MS-R2g/full.xml/full.log、checks.json/public-hashes.json、ruff/format/mypy.log、native UI自动取消回执、人为human-pending.json及所有原失败XML保留ignored。64份random IPC OS credential清理记录均cleaned=true，进程/pipe/句柄finally回收，无用户项目或其他DB操作。
+- 实际native窗口只自动取消/超时；肯定UI为明确typed double，账号/owner/Run authority/pairing来源受控。真实OS/IPC/密钥/签名/SQLite/临时根读取和终态journal/重连恢复实测；本人实际选择确认**pending**，指南及显式 --run-human harness已备但没有运行批准，默认模式只输出pending。
+- 失败修复保留：M1指针/Principal字段，身份记录unit fixture漏local_roots及LocalRoots导入，实际成功确认监视器取消导致IPC失效竞争。正常成功结束等待在途source检查；失败/取消仍关闭窗口并拒绝。最后550全通过，未删除或放松安全断言。人工和生产来源未过项不计成自动测试失败或虚假通过。
+- 完整签名、构造/成功拒绝重复样例、源来源、所有验证命令/回执及A要求见 [MS-R2g-final-wiring.md](../requests/D/MS-R2g-final-wiring.md)。A需真实受保护账号/设备/key/challenge/pairing/owner/期限登记、首次配对bootstrap、HTTP/控制端/组装和C业务核验；缺源不可用，最小提案见MS-R2g-bootstrap-inputs.md，绝不从模型path或approved布尔造授权。
+- 不改公共DTO/flags、不开放写入安装exec、不决定D01/D03/D06；开发Default桌面与SQLite不是正式安全部署/产品验收。组件范围M1→M4完成，人为验收pending。本包后停止、干净交付，等待A实际审阅/后续派发，不自动下一包。

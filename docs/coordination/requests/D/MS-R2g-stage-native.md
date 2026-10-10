@@ -46,3 +46,12 @@ async revoke(root_handle: str, *, expected_revision: int) -> None
 PairingVerifier的SQLite/根IO移到worker，交互后再读取Ticket/current key、原本机根身份；批准CAS在事务内重新取时钟且检查协作取消，取消完成后回收worker，不使用UI前期限。LocalRoots拒绝根或祖先reparse/link，绝对路径仍仅本机数据库。
 
 阶段82 passed /23.07秒（原native root/persistent pairing＋9个新生命周期节点），补checked CAS后30 passed /13.58秒。m2.xml/m2-2.xml、原m1错误保留；Ruff通过、Mypy29源通过。真实IPC双进程/OS凭据/SQLite/根验证，与肯定UI替身明确分开；pending真人交互、A生产认证/挑战登记/首次配对bootstrap及组装。继续M3/M4，不能以阶段成功开放用户项目或flags。
+
+
+## 最终接口补充（M3/M4）
+
+`WindowsNativeConfirmation(..., local_roots: LocalRoots | None = None)`：root交互必须显式注入与PairingVerifier/RootSource同一LocalRoots，缺省不可用。其内部WindowsNativeDialog返回本机NativeDirectoryDecision(path, identity)，选择时捕获实际目录st_dev/st_ino、最终明确点击后复核；确认adapter将这一固定identity写入本机LocalRoots并在源await后再检查，不向公共NativeConfirmation新增字段。替身UI也必须显式返回该typed结果，不能给Path/True冒充真实身份。
+
+NativeReadAuthorization增加本机NativeDecisionJournal（与LocalRoots同库），保存原Ticket文档和完整owner/actor/session/origin channel固定Ref，重复不同内容冲突；bind复核持久原确认主体与当前mapping，重启或新channel不能借同user ID换auth session绑定。记录是确认来源证据，不缓存当前权限，原key/root/channel/authority/期限/取消仍逐次查询。source monitor成功结束时等待在途current检查，不以task.cancel误关闭正常IPC；实际取消/超时仍取消监视并拒绝批准。
+
+人工脚本和状态见 MS-R2g-human-native-guide.md；命令缺 --run-human 只输出pending，无native批准。新真实批准对人的验收仍未运行。
