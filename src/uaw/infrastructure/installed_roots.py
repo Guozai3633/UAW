@@ -6,13 +6,14 @@ Default installed launches have no selector and never open a directory dialog.
 
 import asyncio
 import json
+from pathlib import Path
 from uuid import uuid4
 
 from uaw_runner.runtime import ReadOnlyHelper
 
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
 from uaw.shared.contracts import Ref
-from uaw.shared.errors import CapabilityUnavailable
+from uaw.shared.errors import CapabilityUnavailable, DomainError
 
 
 def workspace_pin(ref: Ref) -> Ref:
@@ -23,12 +24,42 @@ def workspace_pin(ref: Ref) -> Ref:
 
 
 class InstalledRootSelection:
-    def __init__(self, workspace: Ref, peers: EnrolledPeerRegistry) -> None:
+    def __init__(
+        self, workspace: Ref, peers: EnrolledPeerRegistry, *, diagnostic_path: Path | None = None
+    ) -> None:
         self.workspace = workspace_pin(workspace)
         self.peers = peers
         self.used = False
+        self.diagnostic_path = diagnostic_path
+        self.phase = "connected"
 
     async def __call__(self, helper: ReadOnlyHelper) -> None:
+        try:
+            await self.select(helper)
+        except BaseException as exc:
+            if self.diagnostic_path is not None:
+                # Private deployment diagnostics carry no path, proof or permission.
+                value = {
+                    "phase": self.phase,
+                    "error_type": type(exc).__name__,
+                    "failure_code": exc.failure.code
+                    if isinstance(exc, DomainError)
+                    else "internal_error",
+                }
+                writing = asyncio.create_task(
+                    asyncio.to_thread(
+                        self.diagnostic_path.write_text, json.dumps(value), encoding="utf-8"
+                    )
+                )
+                try:
+                    await asyncio.shield(writing)
+                except asyncio.CancelledError:
+                    await writing
+                except OSError:
+                    pass  # Diagnostic storage never changes the original denial.
+            raise
+
+    async def select(self, helper: ReadOnlyHelper) -> None:
         if self.used:
             # Reconnection does not reopen UI or imply the first selection succeeded.
             # Every subsequent command/recover still checks the owning current root.
@@ -37,6 +68,7 @@ class InstalledRootSelection:
             await helper.bootstrap.connected(helper.session)
             return
         self.used = True
+        self.phase = "current_session"
         session = helper.session
         if session is None or session.local is None:
             raise CapabilityUnavailable("runner.installed.connected_root_selection")
@@ -49,6 +81,7 @@ class InstalledRootSelection:
             helper.bootstrap.directory.lookup, peer.key_id, device_id=peer.device_id
         )
         expiry = min(session.expires_at, peer.expires_at)
+        self.phase = "issue_ticket"
         issuing = asyncio.create_task(
             asyncio.to_thread(
                 selections.issue,
@@ -72,6 +105,7 @@ class InstalledRootSelection:
         if issued.verification_code is None:
             raise CapabilityUnavailable("runner.installed.original_root_code")
         await helper.bootstrap.connected(session)
+        self.phase = "sign_original_proof"
         binding = helper.bootstrap.device_key
         signature = await helper.bootstrap.signer.sign_document(
             issued.ticket.document(),
@@ -80,9 +114,11 @@ class InstalledRootSelection:
             credential_handle=binding.credential_handle,
             domain="pairing-proof",
         )
+        self.phase = "authorization_assembly"
         auth = await helper.authorization()
         # NativeReadAuthorization verifies this independently issued original ticket,
         # current account/channel/key and the human native decision. No path is supplied.
+        self.phase = "native_select"
         selection = await auth.select(
             issued.ticket.ticket_id,
             expected_revision=0,
@@ -90,5 +126,7 @@ class InstalledRootSelection:
             proof_signature=signature,
         )
         await helper.bootstrap.connected(session)
+        self.phase = "bind_selection"
         await auth.bind(selection, self.workspace)
         await helper.bootstrap.connected(session)
+        self.phase = "complete"

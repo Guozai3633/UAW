@@ -14,7 +14,7 @@ from uaw.infrastructure.installed_control import InstalledControlConnection
 from uaw.infrastructure.installed_helper import InstalledLaunch, require_root_window_adapter
 from uaw.infrastructure.installed_roots import InstalledRootSelection
 from uaw.shared.contracts import Principal, Ref
-from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 
 
 @pytest.mark.parametrize("change", ["kind", "path", "scope", "approval", "null"])
@@ -124,6 +124,40 @@ async def test_root_current_source_revoked_after_native_does_not_bind(root_case)
     with pytest.raises(Exception) as changed:
         await c.selector(c.helper)
     assert changed.value.failure.code == "enrolled_current_key_denied"
+    c.auth.bind.assert_not_awaited()
+
+
+async def test_root_pre_dialog_failure_retains_private_phase_without_grant(root_case, tmp_path):
+    c = root_case
+    path = tmp_path / "root-selection-diagnostic.json"
+    c.selector.diagnostic_path = path
+    failure = ValueError("private details must never enter diagnostics")
+    c.helper.authorization.side_effect = failure
+    with pytest.raises(ValueError) as caught:
+        await c.selector(c.helper)
+    assert caught.value is failure
+    assert json.loads(path.read_text()) == {
+        "phase": "authorization_assembly",
+        "error_type": "ValueError",
+        "failure_code": "internal_error",
+    }
+    c.auth.select.assert_not_awaited()
+    c.auth.bind.assert_not_awaited()
+
+
+async def test_root_native_denial_preserves_original_error_and_never_binds(root_case, tmp_path):
+    c = root_case
+    path = tmp_path / "root-selection-diagnostic.json"
+    c.selector.diagnostic_path = path
+    c.auth.select.side_effect = reject("native_cancelled", "Private native detail", 409)
+    with pytest.raises(DomainError) as denied:
+        await c.selector(c.helper)
+    assert denied.value.failure.code == "native_cancelled"
+    assert json.loads(path.read_text()) == {
+        "phase": "native_select",
+        "error_type": "DomainError",
+        "failure_code": "native_cancelled",
+    }
     c.auth.bind.assert_not_awaited()
 
 

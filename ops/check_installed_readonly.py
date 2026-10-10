@@ -8,12 +8,14 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
 from starlette.requests import Request
+from uaw_runner.helper_process import HelperProcess
 from uaw_runner.keys import Ed25519SignatureAdapter
 from uaw_runner.native_authorization import NativeDecisionJournal
 from uaw_runner.pairing import LocalRoots
@@ -30,6 +32,40 @@ from uaw.shared.errors import DomainError, reject
 from uaw.shared.settings import Settings
 
 
+async def root_lifecycle(helper: HelperProcess, *, deadline: float) -> None:
+    """Consume the actual next child lifecycle frame; never infer a native decision."""
+    event = await helper.event(deadline=deadline)
+    code = event.get("code")
+    if (
+        set(event) == {"event", "code"}
+        and event["event"] == "failure"
+        and isinstance(code, str)
+        and re.fullmatch(r"[a-z][a-z0-9_]{0,127}", code)
+    ):
+        raise reject(code, "Installed root selection failed in child", 503, "dependency")
+    raise reject("dependency_protocol_invalid", "Unexpected root lifecycle frame", 503)
+
+
+def root_diagnostic(path: Path) -> dict | None:
+    """Read bounded private diagnostic fields, never a grant or user file."""
+    try:
+        with path.open("rb") as stream:
+            raw = stream.read(1025)
+        if len(raw) > 1024:
+            return None
+        value = json.loads(raw)
+        if not isinstance(value, dict) or set(value) != {"phase", "error_type", "failure_code"}:
+            return None
+        if not all(
+            isinstance(item, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,127}", item)
+            for item in value.values()
+        ):
+            return None
+        return value
+    except OSError, ValueError:
+        return None
+
+
 async def check(settings_path: Path, state_directory: Path, workspace: Ref | None) -> dict:
     settings = Settings.from_file(settings_path).model_copy(
         update={"agent_execution_enabled": False}
@@ -44,6 +80,7 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
         "phase": "sources",
     }
     launch, owner = None, None
+    lifecycle = None
     try:
         await c.start()
         if (
@@ -128,8 +165,17 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
             remaining = min(
                 120.0, (connection.session.expires_at - datetime.now(UTC)).total_seconds()
             )
+            assert launch.helper is not None
+            lifecycle = asyncio.create_task(
+                root_lifecycle(
+                    launch.helper,
+                    deadline=asyncio.get_running_loop().time() + max(0.0, remaining),
+                )
+            )
             async with asyncio.timeout(max(0.0, remaining)):
                 while True:
+                    if lifecycle.done():
+                        await lifecycle
                     await connection.session.check()
                     try:
                         grant = await asyncio.to_thread(
@@ -189,6 +235,11 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
         try:
             if launch:
                 await launch.close()
+                diagnostic = await asyncio.to_thread(
+                    root_diagnostic, launch.state.path.parent / "root-selection-diagnostic.json"
+                )
+                if diagnostic is not None:
+                    result["child_diagnostic"] = diagnostic
             result["owned_launch_cleanup"] = True
             if owner and c.browser_sessions:
                 await c.browser_sessions.logout(
@@ -198,6 +249,9 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                     ),
                 )
         finally:
+            if lifecycle is not None:
+                lifecycle.cancel()
+                await asyncio.gather(lifecycle, return_exceptions=True)
             await c.close()
             result["finished_at"] = datetime.now(UTC).isoformat()
     return result

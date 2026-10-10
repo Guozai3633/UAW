@@ -319,7 +319,11 @@ class PairedInstalledFactory:
             raise
         return HelperApplication(
             helper,
-            on_connected=InstalledRootSelection(launch.root_workspace, peers)
+            on_connected=InstalledRootSelection(
+                launch.root_workspace,
+                peers,
+                diagnostic_path=launch.state_directory / "root-selection-diagnostic.json",
+            )
             if launch.root_workspace is not None
             else None,
         )
