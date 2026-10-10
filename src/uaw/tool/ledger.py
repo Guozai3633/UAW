@@ -14,7 +14,7 @@ from uaw.shared.contracts import TrustedExecutionContext
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreMissing
 from uaw.tool.errors import fail
-from uaw.tool.schema import canonical, digest
+from uaw.tool.schema import canonical, canonical_result, digest
 
 Payload = dict[str, Any]
 PHASE_SCHEMAS = {
@@ -118,7 +118,9 @@ class ToolLedger:
                 "Unknown tool phase or incorrect named DTO",
                 phase="repository",
             )
-        payload = json.loads(canonical(payload))
+        payload = json.loads(
+            canonical_result(payload) if schema == "ToolResult" else canonical(payload)
+        )
 
         async def write(tx: RecordTransaction) -> Payload:
             return await immutable(tx, namespace, key, schema, payload)

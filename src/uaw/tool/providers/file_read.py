@@ -276,6 +276,24 @@ def verify_file_evidence(
     text = evidence.snapshot.decode("utf-8", errors="strict")
     selected = select_text(text, evidence.selection)
     location = args.get("location", {"kind": "whole"})
+    # A trusted cursor registry is still constrained by the fixed original range.
+    if evidence.selection != location:
+        if not isinstance(location, dict):
+            raise ValueError("Exact original file location required")
+        selected_range = evidence.selection
+        kind = "text_span" if location == {"kind": "whole"} else location["kind"]
+        lower = 0 if location == {"kind": "whole"} else cast(int, location["start"])
+        upper = len(text) if location == {"kind": "whole"} else cast(int, location["end"])
+        if (
+            selected_range.get("kind") != kind
+            or set(selected_range) != {"kind", "start", "end"}
+            or not lower
+            <= cast(int, selected_range["start"])
+            <= cast(int, selected_range["end"])
+            <= upper
+            or ("cursor" not in args and selected_range["start"] != lower)
+        ):
+            raise ValueError("Registered page escapes original fixed range")
     if "cursor" not in args and evidence.selection != location and evidence.next_cursor is None:
         raise ValueError("Original unpaged selection differs")
     if (

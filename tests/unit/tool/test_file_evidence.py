@@ -1,5 +1,6 @@
 """Exact file contracts, real signature checks, full/partial and cursor evidence."""
 
+import hashlib
 from copy import deepcopy
 from dataclasses import replace
 
@@ -10,6 +11,7 @@ from tests.unit.tool.file_evidence_fixture import (
     make_evidence,
     resign_evidence,
 )
+from uaw.shared.contracts import Ref
 from uaw.shared.errors import DomainError
 from uaw.tool.providers.file_read import file_arguments, verify_file_evidence
 from uaw.tool.schema import canonical, canonical_result, compile_schema
@@ -22,9 +24,7 @@ def checked(ctx, evidence, call, spec, signatures):
         spec,
         ctx,
         signatures=signatures,
-        provider_ref=__import__("uaw.shared.contracts", fromlist=["Ref"]).Ref.model_validate(
-            spec["provider_ref"]
-        ),
+        provider_ref=Ref.model_validate(spec["provider_ref"]),
     )
 
 
@@ -41,7 +41,7 @@ def test_actual_snapshot_exact_selection_and_whole_hash(ctx, location):
         ctx, arguments={"workspace_ref": WORKSPACE.wire(), "path": "file.txt", "location": location}
     )
     data = checked(ctx, evidence, call, spec, signatures)
-    assert data["content_hash"] == __import__("hashlib").sha256(evidence.snapshot).hexdigest()
+    assert data["content_hash"] == hashlib.sha256(evidence.snapshot).hexdigest()
     compile_schema(spec["output_schema"]).validate(data)
 
 
@@ -129,9 +129,7 @@ def test_only_canonical_relative_file_paths(ctx, path):
         file_arguments(
             call,
             spec,
-            __import__("uaw.shared.contracts", fromlist=["Ref"]).Ref.model_validate(
-                spec["provider_ref"]
-            ),
+            Ref.model_validate(spec["provider_ref"]),
         )
 
 
