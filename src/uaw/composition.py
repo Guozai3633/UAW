@@ -37,6 +37,7 @@ from uaw.run.enrollment import RunnerEnrollments
 from uaw.run.events import EventReader
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
+from uaw.run.file_context import FileAwareContextInputs, FileContextMaterials
 from uaw.run.inputs import RunInputReader
 from uaw.run.jobs import RunJobs
 from uaw.run.leases import ExecutionLeaseService
@@ -73,6 +74,7 @@ from uaw.tool.ledger import ToolLedger
 from uaw.tool.parameter_sources import PureParameterRecoveryAccess, PureParameterResourceReader
 from uaw.tool.ports import ToolRecoveryAccessPort
 from uaw.tool.providers.arithmetic import ArithmeticExecutor, ArithmeticVerifier
+from uaw.tool.providers.file_material import FileMaterialAdapter
 from uaw.tool.providers.file_read import ToolFileReadBridgePort, file_estimates, file_read_spec
 from uaw.tool.providers.file_store import (
     FileReadExecutor,
@@ -342,6 +344,7 @@ def assemble_registered_context(
     rule_assessor: RegisteredRuleAssessor | None = None,
     record_batch: ContextRecordBatchPort | None = None,
     batch_required: bool = False,
+    file_materials: FileContextMaterials | None = None,
 ) -> RegisteredContextBindings:
     records, config, blobs, sources = (
         container.records,
@@ -353,7 +356,7 @@ def assemble_registered_context(
         raise ConfigurationError("Registered Context requires the configured control-plane sources")
     runs = RegisteredRunContextSources(sources)
     transactions = TransactionalStore(records.database)
-    inputs = RegisteredContextInputs(
+    inputs = FileAwareContextInputs(
         controller=config.platform,
         records=records,
         blobs=blobs,
@@ -363,6 +366,7 @@ def assemble_registered_context(
         record_batch=record_batch,
         batch_required=batch_required,
     )
+    inputs.file_materials = file_materials
     reader = RegisteredContextReader(inputs)
     components = ContextComponents(
         readers={"input": reader, "content": reader, "rule": reader, "configuration": reader},
@@ -483,6 +487,7 @@ class FileToolBindings:
     approvals: ApprovalService
     receipts: FileReceiptStore
     executor: FileReadExecutor
+    materials: FileMaterialAdapter
 
 
 def assemble_file_tool(
@@ -548,7 +553,7 @@ def assemble_file_tool(
     facade = ToolFacade(
         registry, access, invocation=invocation, lookup=source, reconciler=reconciler
     )
-    return FileToolBindings(facade, ledger, service, source, executor)
+    return FileToolBindings(facade, ledger, service, source, executor, FileMaterialAdapter(source))
 
 
 def assemble_office_tools(

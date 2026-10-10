@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 
 from uaw.agent.assembly import assemble_agent_runtime
 from uaw.agent.completion.assembly import assemble_completion_runtime
+from uaw.agent.contracts import LoopOperation
 from uaw.agent.contracts import identifier as stable_id
 from uaw.agent.repository import pin
 from uaw.context.contracts import InstructionRule
@@ -370,6 +371,7 @@ class BackgroundAgent:
                     step_ctx,
                 )
             else:
+                await self.resume_approval(job, operation)
                 result = await self.agent.runtime.loop.resume(
                     pin("content", operation.wire()), operation.context
                 )
@@ -427,6 +429,55 @@ class BackgroundAgent:
                 return await self.failure(base, {"kind": "failed", "failure": exc.failure.wire()})
             return {**base, "stage": "finished", "state": "finished"}
         raise reject("background_stage_invalid", "Original background stage is invalid", 412)
+
+    async def resume_approval(self, job: Payload, operation: LoopOperation) -> None:
+        """Wake the original step after a real decision, never grant Tool dispatch."""
+        result = operation.result or {}
+        wait = result.get("wait_ref")
+        if operation.phase != "waiting" or not wait or wait.get("kind") != "approval":
+            return
+        c = self.control
+        assert c.records and c.run_service and c.approvals
+        actor, run = await self.guard(job)
+        if run["status"] != "waiting_for_user":
+            return
+        original = operation.tool_context
+        if original is None or not operation.proposal:
+            raise reject("background_approval_source_missing", "No original Tool context", 412)
+        approval = await c.approvals.get(actor, wait["id"])
+        binding = (await c.records.get(actor, "approval.bindings", wait["id"])).payload
+        calls = operation.proposal.get("proposed_calls", [])
+        if (
+            binding["context"] != original.wire()
+            or original.principal != actor
+            or original.run_id != run["id"]
+            or len(calls) != 1
+            or approval["action_id"] != calls[0]["action_id"]
+            or binding["request"]["action_id"] != approval["action_id"]
+        ):
+            raise reject("background_approval_source_changed", "Original approval differs", 412)
+        if approval["status"] == "approved":
+            await c.approvals.recheck(
+                Ref(kind="approval", id=approval["id"], version=str(approval["revision"])),
+                binding["request"],
+                original,
+            )
+        elif approval["status"] != "declined":
+            return
+        await self.agent.runtime.loop.verify(operation, operation.context)
+        _, current = await self.guard(job)
+        if current["status"] == "waiting_for_user":
+            await c.run_service.advance(
+                actor,
+                run["id"],
+                "running",
+                meta(
+                    "web-tool-resume-" + operation.id + "-" + str(approval["revision"]),
+                    current["revision"],
+                ),
+            )
+        # Invocation independently rechecks actual approval/policy/budget/cancellation.
+        # Decline resumes reasoning to observe the refusal; it creates no grant.
 
     async def finalize(self, job: Payload) -> None:
         from uaw.run.termination import RunTerminationController

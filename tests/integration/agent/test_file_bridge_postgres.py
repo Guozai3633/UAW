@@ -337,3 +337,29 @@ async def test_file_bridge_executor_persists_actual_c_evidence_and_reads_origina
     p.path.unlink()
     reread = await binding.receipts.read_observation(p.call["action_id"], p.ctx)
     assert reread == original and p.session.opens == 1
+    from uaw.run.file_context import FileContextMaterials
+
+    reader = FileContextMaterials(c.records, c.configuration.platform, binding.materials)
+    pin = await reader.register(
+        p.call["action_id"], p.ctx, authenticated_service=c.configuration.platform
+    )
+    # Reconstruct the A consumer after deleting the original file. Every read still
+    # traverses C's current owning journal/verifier, never opens or copies a new blob.
+    restarted = FileContextMaterials(c.records, c.configuration.platform, binding.materials)
+    data = await restarted.read(pin, p.ctx)
+    assert data.text == "actual original 中😀\n" and data.trust == "external"
+    assert data.kind == "material" and not data.required and data.ref == pin
+    assert p.session.opens == 1
+    spoof = p.ctx.model_copy(
+        update={
+            "principal": p.ctx.principal.model_copy(
+                update={"auth_session_id": "different-user-session"}
+            )
+        }
+    )
+    with pytest.raises(DomainError):
+        await restarted.read(pin, spoof)
+    p.access.allowed = False
+    with pytest.raises(DomainError):
+        await restarted.read(pin, p.ctx)
+    assert p.session.opens == 1

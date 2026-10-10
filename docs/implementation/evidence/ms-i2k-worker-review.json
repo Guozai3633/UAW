@@ -1,0 +1,242 @@
+{
+  "date": "2026-10-10",
+  "worker_branches_mutated": false,
+  "product_accepted": false,
+  "packages": [
+    {
+      "session": "B",
+      "baseline": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
+      "source": "ab14fe3063d4a1e781196aeab8a81e452cd5f207",
+      "handoff": "0b6d9edf9646a38bb8deb56b2cbdf21b65761bfc",
+      "changed_files": [
+        "apps/web/README.md",
+        "apps/web/package.json",
+        "apps/web/playwright.config.ts",
+        "apps/web/scripts/backend.mjs",
+        "apps/web/scripts/generate.mjs",
+        "apps/web/scripts/live.mjs",
+        "apps/web/src/features/review/Review.tsx",
+        "apps/web/src/features/review/port.ts",
+        "apps/web/src/features/workspace/Workspace.tsx",
+        "apps/web/src/features/workspace/controller.ts",
+        "apps/web/src/lib/api/a2-adapters.ts",
+        "apps/web/src/lib/api/browser-session.ts",
+        "apps/web/src/lib/api/canonical.ts",
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/api/generated/openapi.d.ts",
+        "apps/web/src/lib/api/generated/schema.json",
+        "apps/web/src/lib/api/generated/source.json",
+        "apps/web/src/lib/cache/acceptance-lookups.ts",
+        "apps/web/src/main.tsx",
+        "apps/web/src/styles.css",
+        "apps/web/tests/a2-fixtures.ts",
+        "apps/web/tests/e2e/backend/anonymous.spec.ts",
+        "apps/web/tests/e2e/controlled/a2-workspace.spec.ts",
+        "apps/web/tests/e2e/controlled/auth.spec.ts",
+        "apps/web/tests/e2e/controlled/backend.ts",
+        "apps/web/tests/e2e/controlled/workspace.spec.ts",
+        "apps/web/tests/e2e/live/workspace.spec.ts",
+        "apps/web/tests/unit/a2-adapters.test.ts",
+        "apps/web/tests/unit/controller.test.ts",
+        "apps/web/tests/unit/review.test.tsx",
+        "apps/web/tests/unit/u2-recovery.test.ts",
+        "docs/coordination/handoffs/B.md",
+        "docs/coordination/requests/B/MS-U2-final-wiring.md",
+        "docs/coordination/requests/B/MS-U2-stage-client.md"
+      ],
+      "source_hashes": {
+        "apps/web/README.md": "e38c7fe7425732318f88dc39c9d10662bb9340bd47f04ea9f8a016ebe683cdf0",
+        "apps/web/package.json": "9cb841a98f89fda16dc150e468469d51015600933ca02594fbf83e477a9b6ebe",
+        "apps/web/playwright.config.ts": "4330d2f317b059600be291c8addb968582b376c1bdf78b086583dc618b5d81af",
+        "apps/web/scripts/backend.mjs": "77d81841a139a9a87ee278d98f1699babc4d47e424f003ffe04842c226d2e963",
+        "apps/web/scripts/generate.mjs": "b8604bca028d56f8620dd51fc1631a3b6698d6d3e672570923e2b2034526e5dc",
+        "apps/web/scripts/live.mjs": "34c51ae1dbb58424dbff87d2d45ec1b46843879fbfd58ca9ea103e9ff821c286",
+        "apps/web/src/features/review/Review.tsx": "095115ea0fe9ac8fdc25a30134438a1c013d9aff0fd78029d5b9f1924f1a4fb4",
+        "apps/web/src/features/review/port.ts": "fce2275d647319731d32c4a5aecb637164a3d5909ea3ef219e7ff5c2eb7dae83",
+        "apps/web/src/features/workspace/Workspace.tsx": "e226fce5ccd8c2f7e72ad4d6ad9f75948046773a017205e5e313d251db95b1d7",
+        "apps/web/src/features/workspace/controller.ts": "69bef683d8f6943bb36b88e4236180a6b6fd059e7f39da9fc7a0abd46794b3d9",
+        "apps/web/src/lib/api/a2-adapters.ts": "012457bdea2218fdaff17cf8083c9836cd78455c3f69d09f1ac2a14faedad328",
+        "apps/web/src/lib/api/browser-session.ts": "f9d70140fceaa7b8507ff250863869616ff6728d472066a3414be5893e33e687",
+        "apps/web/src/lib/api/canonical.ts": "4b5d82a546485e62247e1ed53aa266cba00f21c4480b2132ef8cd6b005b41cc0",
+        "apps/web/src/lib/api/client.ts": "484ffc73e18605e254a7f835b1f099ed18bac72321101771b0487afbef13a9f0",
+        "apps/web/src/lib/api/generated/openapi.d.ts": "8793267377c3762aceb676011e1b2a18a0af1c9fc4ceda3a230d4a6bdeca8ca9",
+        "apps/web/src/lib/api/generated/schema.json": "5a8c52ac8226dbdf89e9553c93e3742be41a0bd0486b79496db2440a83fc9a92",
+        "apps/web/src/lib/api/generated/source.json": "25c199ea57a810d4a7dfd1022233971945a9c6249e4d24ad0cd318b085f2173c",
+        "apps/web/src/lib/cache/acceptance-lookups.ts": "e0c402337444e99b2bb542ea63d5ef56e1d69aec250ed632f3f8fb3f253cdc45",
+        "apps/web/src/main.tsx": "64076fc9f6b9f3c86c9a5844678424071de1f75b8c836459c945e26182db5334",
+        "apps/web/src/styles.css": "8a241d9b0cd159751279561349a7530cb6504d9c64229c71918e3b9ba4007fa3",
+        "apps/web/tests/a2-fixtures.ts": "4d2d25302da9044898a980ab6234d62b2d28b0b21b31c2aaad9a8d593c82c737",
+        "apps/web/tests/e2e/backend/anonymous.spec.ts": "3f5c641dca0609fc40b61f36bef2c79899fecbf3a3d8b0c37e69160128e37d7e",
+        "apps/web/tests/e2e/controlled/a2-workspace.spec.ts": "75b3a35293dc3d442c0b6f0a3619169dfb474c3082baa014f496a3189e0ea69a",
+        "apps/web/tests/e2e/controlled/auth.spec.ts": "811739d4cd3b6d97dfd861c533d861c070e24958d40056851d7a6a5b7edb2fe6",
+        "apps/web/tests/e2e/controlled/backend.ts": "2a3e3c58918c048c3520cc83be9c84e3af2aa297f3ad16cfb5483fd57026e743",
+        "apps/web/tests/e2e/controlled/workspace.spec.ts": "fc296d6753adc29d605f07377f29a9ad663f1cf40c5e31fe199a28c942ff6cf0",
+        "apps/web/tests/e2e/live/workspace.spec.ts": "cddc709e5543e61bb13abcea0dd1c2d8682e96e3d2f2fbb6eb2794bd98e6609d",
+        "apps/web/tests/unit/a2-adapters.test.ts": "55d1168552071d8c7b8b04b824cd5814c9019171ac846ae4e1109311e2820449",
+        "apps/web/tests/unit/controller.test.ts": "e1cd19df42b1c82148e4ce2e0c90d6ee3cc1a6639e049f39c876bbd4cf2e61ea",
+        "apps/web/tests/unit/review.test.tsx": "e526d1b91bbe489f286ee34a8496a6a5b7dc5e19c18af8995a02df6347fd2460",
+        "apps/web/tests/unit/u2-recovery.test.ts": "f9a9e7f36b55012be1ce1545ddb0355f31e639a49f52ddbec929ab589e8f1531",
+        "docs/coordination/handoffs/B.md": "f1387ffbd5e85992f0c304d020acc7309a0612b4211181238ed19f7a163c1a26",
+        "docs/coordination/requests/B/MS-U2-final-wiring.md": "959c5cf8fd3ed58918ffac7991ed4eeddb66a494f241534ee0c6c6f934310aca",
+        "docs/coordination/requests/B/MS-U2-stage-client.md": "e1b74f4b8058e509c0b8fd5f378da13ebe64dee2925322c56b30a3db306e75ee"
+      },
+      "receipts": [
+        {
+          "path": ".worktrees/context/apps/web/.test-results/u2-unit-final.xml",
+          "sha256": "00155fc00af4ad0a419c0054b1559bde0c7603a2ed96fe7d2cd2439b498829cb",
+          "different_nodes": 44,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/context/apps/web/.test-results/u2-browser-final.xml",
+          "sha256": "f3861f058a53ee100f044a569406346d28952260266c39568305b50fd66a8895",
+          "different_nodes": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/context/apps/web/.test-results/u2-backend-browser.xml",
+          "sha256": "790d4846ed1799b7481940df4c58492cfe903c2caf0579f094bdadc7f7afbe32",
+          "different_nodes": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "component_review": "allowed paths/source bytes/raw receipt counts verified; A consumers and human/product acceptance pending"
+    },
+    {
+      "session": "C",
+      "baseline": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
+      "source": "3ed6ef3434c024d00e6e7794e5bace28914fe426",
+      "handoff": "c9853b27db85e25e16f7dadf2b664ae37cca0593",
+      "changed_files": [
+        "docs/coordination/handoffs/C.md",
+        "docs/coordination/requests/C/MS-T2h-final-wiring.md",
+        "docs/coordination/requests/C/MS-T2h-stage-material-reader.md",
+        "src/uaw/tool/providers/file_material.py",
+        "src/uaw/tool/providers/file_store.py",
+        "tests/integration/tool/file_recovery_child.py",
+        "tests/integration/tool/test_file_material_bridge_postgres.py",
+        "tests/integration/tool/test_file_material_postgres.py",
+        "tests/integration/tool/test_file_material_recovery_postgres.py",
+        "tests/unit/tool/test_file_material.py"
+      ],
+      "source_hashes": {
+        "docs/coordination/handoffs/C.md": "00766a5b3f386e39a239cc22ead6680c663305d41820e906f0ea9e3e6f1e9918",
+        "docs/coordination/requests/C/MS-T2h-final-wiring.md": "1489fc4948bda174b470dd9743df9d8e6e45a77e0b0423dc44f4e171b3e715e5",
+        "docs/coordination/requests/C/MS-T2h-stage-material-reader.md": "938c76f72eed1a27e75e59a69c6e3b2fa29d4fa0fa5604ade0e24df0a94fdf41",
+        "src/uaw/tool/providers/file_material.py": "6084d6dd90fe0f3c00e3e5e0b837a28a6361beecb63a5e26392f2e0873e82bcb",
+        "src/uaw/tool/providers/file_store.py": "3fd3afa05a30296ebe285c00b0499085a465105ec96b894cd20cb4f08d85272e",
+        "tests/integration/tool/file_recovery_child.py": "fe91052237f20b6af47bd0c66b2335947d5e6e5927d1a7ae84fc7b2a293c83df",
+        "tests/integration/tool/test_file_material_bridge_postgres.py": "27d43d8b7177bef88b2f2c80dbd8d08eb67e95f404b26c718e59bfcde221773f",
+        "tests/integration/tool/test_file_material_postgres.py": "775860c530ffe9dc12cd835022baca3ec878492afa7a4ae51fed11a35f9f5654",
+        "tests/integration/tool/test_file_material_recovery_postgres.py": "2c2be76ef33fd555c29227d625bdcea96fa27307680d05fd9832e125314010a2",
+        "tests/unit/tool/test_file_material.py": "9399adeb4e8bfd3b1cb87104c0825c0b50241ce60c32873727f3bb08eb3d4a8f"
+      },
+      "receipts": [
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/m2-unit.xml",
+          "sha256": "4ab8fbe35b76fd2953a2fd811626e3d1b17263dd024051c26229a225aaaf3c1a",
+          "different_nodes": 369,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/material-fixed.xml",
+          "sha256": "a7f1f67144e965277b1cbbee75928b43efd4c6c73d82f7cffc05863fcb601e7c",
+          "different_nodes": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/a-bridge.xml",
+          "sha256": "a8846f286ee9b51d2fa237ae3eefac827005ed400eed940f5c363cc80a89ec9f",
+          "different_nodes": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/material-recovery.xml",
+          "sha256": "71863726954c72bf8be175efc5b3166cd15f0ffbd5d26d9eeb5f79bc402be4f4",
+          "different_nodes": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/material-extra.xml",
+          "sha256": "a947c6769fc5d8e430df9039479b8ea8dd5e440f74f09cc441346cdea233ec3d",
+          "different_nodes": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": ".worktrees/tool/tests/.artifacts/C/MS-T2h/original-affected.xml",
+          "sha256": "4df4cebd6e876b977c2af4ffc80ae2a2c1cd8c9b824a40c362df576410bd44f9",
+          "different_nodes": 45,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "component_review": "allowed paths/source bytes/raw receipt counts verified; A consumers and human/product acceptance pending"
+    },
+    {
+      "session": "D",
+      "baseline": "b7b79b150470a80f37b28fd52a2177f6de5b3124",
+      "source": "ba798ad70b1e62f21fe9f33b4d1252bdac2a653a",
+      "handoff": "1ff88c557f88b3b6979e2deb26d4ec8b1c84c7b5",
+      "changed_files": [
+        "apps/local_runner/uaw_runner/bootstrap.py",
+        "apps/local_runner/uaw_runner/helper_host.py",
+        "apps/local_runner/uaw_runner/helper_process.py",
+        "apps/local_runner/uaw_runner/runtime.py",
+        "docs/coordination/handoffs/D.md",
+        "docs/coordination/requests/D/MS-R2h-bootstrap-inputs.md",
+        "docs/coordination/requests/D/MS-R2h-final-wiring.md",
+        "docs/coordination/requests/D/MS-R2h-human-helper-guide.md",
+        "docs/coordination/requests/D/MS-R2h-stage-bootstrap.md",
+        "docs/coordination/requests/D/MS-R2h-stage-helper.md",
+        "tests/integration/runner/helper_fixture.py",
+        "tests/integration/runner/helper_manual.py",
+        "tests/integration/runner/test_bootstrap.py",
+        "tests/integration/runner/test_helper_runtime.py"
+      ],
+      "source_hashes": {
+        "apps/local_runner/uaw_runner/bootstrap.py": "874b98177aa66b7e9aff3dd8a1e2875cb3f13b95923231c1a6dfe06388b6aa50",
+        "apps/local_runner/uaw_runner/helper_host.py": "98910b64171180d39eab535faa8cc188b698908f6b8d34a49772f69f4488737b",
+        "apps/local_runner/uaw_runner/helper_process.py": "56aae6c3876b62a5304a653dc00f268595ce40b038de2253751dbf8df7bd69a4",
+        "apps/local_runner/uaw_runner/runtime.py": "38474089fbeec75cb2bb4b6711172be7537e150342497183dd21b96a54b3d31f",
+        "docs/coordination/handoffs/D.md": "25047fbb174e5d5fa698ecf9a07411c9b4a47904226b042852910ebb3cf33976",
+        "docs/coordination/requests/D/MS-R2h-bootstrap-inputs.md": "c3465ac91183baa784847ff13deba39a7925e90a435794dcaf3dd62d86818217",
+        "docs/coordination/requests/D/MS-R2h-final-wiring.md": "0d579d6a9949386318c6db12f665b33dc4301b01196cc55ac17da0117b0478c6",
+        "docs/coordination/requests/D/MS-R2h-human-helper-guide.md": "038b4a5132acbd6b1a80233914e0b3eeabe9e0671126497340b482b42782416e",
+        "docs/coordination/requests/D/MS-R2h-stage-bootstrap.md": "b37e871ff1c86f59b20e454a9b385223dfb683d1ea4a560120292d0393b2ef4d",
+        "docs/coordination/requests/D/MS-R2h-stage-helper.md": "bafad27b63d5af1582017dae058fb40fc26bb29e359f32daab5623d53bb7e4a8",
+        "tests/integration/runner/helper_fixture.py": "9165698bd3dacd9a80b55edc9f6b5bb06466dde5d6fb14c20b00ec83c70c517a",
+        "tests/integration/runner/helper_manual.py": "97c1f7b81b9795cae95838a71ed012eb0e5559196db4151b91719e566173aaec",
+        "tests/integration/runner/test_bootstrap.py": "cc82b31cdc6d50aa1a3ad0aa102f15df4da46c0c9bb23c9c922989f21c8930c5",
+        "tests/integration/runner/test_helper_runtime.py": "921187b3ff8319d08e470112f3921974184c1b228460d63d2468117f86d44b68"
+      },
+      "receipts": [
+        {
+          "path": ".worktrees/runner/tests/.artifacts/D/MS-R2h/full.xml",
+          "sha256": "ca3046ad426c139fe2bf90ccab825161dda9821730e769175fc9d896d35b0b5d",
+          "different_nodes": 591,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "component_review": "allowed paths/source bytes/raw receipt counts verified; A consumers and human/product acceptance pending"
+    }
+  ]
+}

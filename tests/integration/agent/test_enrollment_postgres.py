@@ -401,3 +401,62 @@ async def test_enrollment_capacity_rolls_back_new_record_and_replay_remains_orig
     await p.service.revoke(p.owner, first["id"], meta("revoke", 1))
     next_ = await p.service.begin(p.owner, p.candidate["id"], meta("second"))
     assert next_["state"] == "pending" and next_["id"] != first["id"]
+
+
+async def test_native_enrollment_reader_uses_fixed_journal_without_ui_recursion(enrollment_case):
+    from uaw.infrastructure.enrollment_native import JOURNAL, RegisteredNativeEnrollmentEvidence
+
+    p = enrollment_case
+    started = await p.service.begin(p.owner, p.candidate["id"], meta("native-begin"))
+    reader = RegisteredNativeEnrollmentEvidence(p.service)
+    with pytest.raises(DomainError) as missing:
+        await reader.current(started["proof_document"], owner=p.owner)
+    assert missing.value.failure.code == "enrollment_native_confirmation_pending"
+    # Controlled native outcome only: this verifies durable Reader/proof/current
+    # binding, and explicitly does not claim an actual human native decision.
+    evidence = await p.native.current(started["proof_document"], owner=p.owner)
+    evidence["confirmation_ref"] = fixed_ref(
+        "check",
+        "native-enrollment-" + started["id"],
+        {k: v for k, v in evidence.items() if k != "confirmation_ref"},
+    )
+    await p.control.records.put(
+        p.service.controller,
+        JOURNAL,
+        started["id"],
+        "RunnerNativePairingEvidence",
+        evidence,
+        expected_revision=0,
+        request_id="native-fixture",
+    )
+    p.service.native = reader
+    active = await p.service.complete(p.owner, started["id"], meta("native-complete", 1))
+    assert active["state"] == "active"
+    assert await p.service.get(p.owner, active["id"]) == active
+    p.candidates.allowed = False
+    with pytest.raises(DomainError):
+        await reader.current(started["proof_document"], owner=p.owner)
+
+
+async def test_native_enrollment_wrong_os_instance_never_opens_confirmation(
+    enrollment_case, monkeypatch
+):
+    from uaw_runner.keys import ProtectedSigner
+
+    from uaw.infrastructure import enrollment_native
+
+    p = enrollment_case
+    started = await p.service.begin(p.owner, p.candidate["id"], meta("native-begin"))
+    directory = SimpleNamespace(lookup=lambda *args, **kw: None)
+    native = enrollment_native.WindowsEnrollmentConfirmation(
+        p.service, directory, ProtectedSigner(directory, None), device_credential_handle="not-used"
+    )
+
+    def unexpected_ui():
+        raise AssertionError("OS mismatch must fail before any UI")
+
+    monkeypatch.setattr(enrollment_native, "WindowsNativeDialog", unexpected_ui)
+    with pytest.raises(DomainError) as denied:
+        await native.confirm(p.owner, started["id"], control_proof="not-used")
+    assert denied.value.failure.code == "enrollment_native_instance_denied" and not native.busy
+    assert (await p.service.get(p.owner, started["id"]))["state"] == "pending"

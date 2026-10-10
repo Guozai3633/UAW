@@ -1,6 +1,7 @@
 """Actual queued Intent/Agent/completion pipeline, with controlled model HTTP replies."""
 
 import hashlib
+import json
 
 import pytest
 from pydantic import SecretStr
@@ -22,14 +23,17 @@ from uaw.run.background import BackgroundAgent
 from uaw.run.inputs import RunInputReader
 from uaw.run.jobs import JOBS, RunJobs
 from uaw.shared.builtin_tools import publish_builtin_office
-from uaw.shared.contracts import Principal
+from uaw.shared.contracts import Principal, Ref, TrustedExecutionContext
 from uaw.shared.settings import Settings
 
 
 @pytest.mark.parametrize("case", [{"active_provider_for_tools": True}], indirect=True)
-@pytest.mark.parametrize("acceptance", [False, True])
+@pytest.mark.parametrize(
+    "acceptance,tool_decision",
+    [(False, None), (True, None), (False, "approve_once"), (False, "decline")],
+)
 async def test_real_queue_pipeline_recovers_original_step_and_delivers(
-    case, domain, tmp_path, acceptance
+    case, domain, tmp_path, acceptance, tool_decision
 ):
     config, runs, admin = domain
     await publish_builtin_office(config, admin, "background-office")
@@ -95,17 +99,98 @@ async def test_real_queue_pipeline_recovers_original_step_and_delivers(
     ]
     assert await queue.tick()  # actual role/rule
     assert await queue.tick()  # root creation
+    if tool_decision:
+        from datetime import UTC, datetime
+
+        registry = driver.tools.facade.registry
+        entry = next(e for e in registry.snapshot()[1] if e.spec()["id"] == "text.inspect")
+        case.responses.insert(
+            0,
+            decision(
+                "call_tools",
+                "Inspect supplied text",
+                [
+                    {
+                        "tool_ref": registry.reference(entry),
+                        "arguments": {"text": "A\r\n学术"},
+                        "action_id": "background-inspect",
+                    }
+                ],
+            ),
+        )
+
+        async def wake(key):
+            row = await runs.store.get(actor, JOBS, original["id"])
+            await runs.store.put(
+                actor,
+                JOBS,
+                row.resource_id,
+                row.schema_name,
+                {
+                    **row.payload,
+                    "revision": row.revision + 1,
+                    "ready_at": datetime.now(UTC).isoformat(),
+                },
+                expected_revision=row.revision,
+                request_id=key,
+            )
+
+        assert await queue.tick()
+        waiting = (await runs.store.get(actor, JOBS, original["id"])).payload
+        assert waiting["state"] == "waiting" and waiting["stage"] == "step", waiting
+        current = await runs.get_run(actor, original["id"])
+        assert current["status"] == "waiting_for_user"
+        waiting_ctx = TrustedExecutionContext.model_validate_json(
+            json.dumps(waiting["step_context"])
+        )
+        state = (await driver.agent.repository.owned(waiting["instance_ref"]["id"], waiting_ctx))[2]
+        operation = await driver.agent.repository.operation(
+            state.active_operation_ref.id, waiting_ctx
+        )
+        approval = await control.approvals.get(actor, operation.result["wait_ref"]["id"])
+        await wake("wake-still-pending")
+        assert await queue.tick()
+        assert (await runs.get_run(actor, original["id"]))["revision"] == current["revision"]
+        assert len(case.requests) == 2
+        await control.approvals.decide(
+            actor,
+            {
+                "approval_id": approval["id"],
+                "decision": {
+                    "decision": tool_decision,
+                    "expected_arguments_hash": approval["arguments_hash"],
+                    "expected_resource_refs": approval["resource_refs"],
+                    "reason": "Actual controlled SQL protocol decision",
+                },
+            },
+            meta("background-approval", approval["revision"]),
+        )
+        await wake("wake-actual-decision")
+        assert await queue.tick()
+        resumed = (await runs.store.get(actor, JOBS, original["id"])).payload
+        assert resumed["state"] == "queued" and resumed["step"] == 2, resumed
+        observed = await driver.agent.runtime.loop.observations.read(
+            (
+                await driver.agent.repository.operation(operation.id, operation.context)
+            ).observation_ref,
+            operation.context,
+        )
+        assert observed["result"]["kind"] == (
+            "ok" if tool_decision == "approve_once" else "denied"
+        ), observed
+        if tool_decision == "approve_once":
+            assert observed["result"]["payload"]["data"]["utf8_bytes"] == len("A\r\n学术".encode())
+        else:
+            assert observed["result"]["failure"]["code"] == "approval_declined"
+        assert len(case.requests) == 2
     # Restart the queue before the model step, retaining the original job context.
     queue = RunJobs(runs.store, actor, advance=driver.advance)
     assert await queue.tick()
     job = (await runs.store.get(actor, JOBS, original["id"])).payload
     assert job["stage"] == "delivery" and "failure" not in job, job
-    assert len(case.requests) == 3
+    assert len(case.requests) == (4 if tool_decision else 3)
     if acceptance:
-        import json
-
         from uaw.run.deliveries import DeliveryReader
-        from uaw.shared.contracts import Ref, TrustedExecutionContext
 
         assert await queue.tick()
         waiting = (await runs.store.get(actor, JOBS, original["id"])).payload
@@ -138,5 +223,5 @@ async def test_real_queue_pipeline_recovers_original_step_and_delivers(
         )
     assert await queue.tick()
     final = await runs.get_run(actor, original["id"])
-    assert final["status"] == "completed" and len(case.requests) == 3
+    assert final["status"] == "completed" and len(case.requests) == (4 if tool_decision else 3)
     assert not await queue.tick()
