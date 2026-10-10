@@ -2,9 +2,10 @@ import {validate} from './validation';
 import type {Schema, Result,DisplayItem} from './types';
 export class TransportError extends Error { constructor(readonly uncertain:boolean) {super(uncertain?'请求结果未知，先查询原运行；不会自动重发。':'连接中断，请重新读取。');} }
 export class ApiFailure extends Error { constructor(readonly result:Exclude<Result<never>,{kind:'ok'}>) {super(result.failure?.message ?? '等待服务端确认');} }
-export type WebSession = {identityKey:string; csrfHeader?:{name:string;value:string}}; // supplied by A's authenticated host, memory only
+export type WebSession = {identityKey:string; principal?:Schema['Principal'];csrfHeader?:{name:string;value:string}}; // supplied by A's authenticated host, memory only
 export class UawClient {
  constructor(private session:()=>WebSession|null, private transport:typeof fetch=(input,init)=>fetch(input,init)) {}
+ currentSession(){return this.session();}
  async call<T>(method:'GET'|'POST'|'DELETE',path:string,schema:string,query:Record<string,string|number|undefined>={},payload?:unknown,meta?:Schema['RequestMeta'],signal?:AbortSignal):Promise<T> {
   const qs=new URLSearchParams();for(const[k,v]of Object.entries(query))if(v!==undefined)qs.set(k,String(v));
   const url=path+(qs.size?'?'+qs:''); const headers:Record<string,string>={Accept:'application/json'};

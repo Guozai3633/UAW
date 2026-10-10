@@ -1,6 +1,7 @@
 // Explicit intercepted backend fixture. No SQL, LLM, Runner, product auth or acceptance.
 import type {Page,Route} from '@playwright/test';
 import {conversation,models,makeRun,makeItem,frame,approval,now,ref,ok,denied} from '../../fixtures';
+import {deliveryView} from '../../a2-fixtures';
 import type {Event,Payload} from '../../../src/lib/api/types';
 export async function controlledBackend(page:Page,scenario:'artifact'|'approval'|'running'|'unknown'|'denied'='artifact'){
  const state={turnPosts:0,controlPosts:0,decisionPosts:0,submitted:false,original:'',approval:structuredClone(approval),
@@ -19,7 +20,9 @@ export async function controlledBackend(page:Page,scenario:'artifact'|'approval'
   else if(path==='/v1/conversations/conv-one')data=conversation;
   else if(path.endsWith('/turns')){state.turnPosts++;state.original=body.payload.text;state.submitted=true;
    if(scenario==='unknown')return route.abort('connectionfailed');data=state.run;
-  }else if(path.endsWith('/items')){
+  }else if(path.includes('/turn-requests/')){if(scenario==='unknown')return route.fulfill({status:404,json:{kind:'missing',failure:{code:'record_missing',category:'arguments',message:'尚无原请求回执',retryable:false,failed_phase:'read'},output_refs:[]}});data=state.run;}
+  else if(path.endsWith('/delivery')){const view=deliveryView();view.requires_acceptance=false;view.contract.acceptance_required=false;data=view;}
+  else if(path.endsWith('/items')){
    const items=state.submitted?[makeItem('user-one','user_message',state.original),makeItem('understanding-one','understanding',frame.summary!)]:[];
    if(state.submitted&&scenario==='artifact'){const artifact=makeItem('artifact-item','artifact','# 材料报告\n\n|要点|来源|\n|---|---|\n|保留原文|用户材料|');artifact.resource_refs=[ref('artifact','artifact-one')];items.push(artifact);}
    if(state.submitted&&scenario==='approval'){const i=makeItem('approval-item','approval',approval.summary);i.resource_refs=[ref('approval',approval.id)];items.push(i);}

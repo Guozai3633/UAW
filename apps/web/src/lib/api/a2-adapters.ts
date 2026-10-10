@@ -1,3 +1,4 @@
+import {AcceptanceLookups} from '../cache/acceptance-lookups';
 import {ApiFailure,UawClient} from './client';
 import type {RecoveryPort} from '../../features/workspace/controller';
 import type {ReviewPort,ReviewSnapshot} from '../../features/review/port';
@@ -12,20 +13,28 @@ export class HttpRecoveryPort implements RecoveryPort {
  }
 }
 export class HttpReviewPort implements ReviewPort {
- constructor(private client:UawClient){}
+ constructor(private client:UawClient,private lookups=new AcceptanceLookups()){}
+ private scope(){const key=this.client.currentSession()?.identityKey;if(!key)throw new Error('当前浏览器会话不可用');this.lookups.bind(key);return key;}
+ private current(key:string,signal:AbortSignal){signal.throwIfAborted();if(this.client.currentSession()?.identityKey!==key)throw new Error('接受等待期间身份已变化');}
  async read(requested:Ref|undefined,runId:string,signal:AbortSignal):Promise<ReviewSnapshot>{
-  const view=await this.client.delivery(runId,signal);if(view.run_id!==runId)throw new Error('成果Run归属不匹配');
+  const key=this.scope();const view=await this.client.delivery(runId,signal);this.current(key,signal);if(view.run_id!==runId)throw new Error('成果Run归属不匹配');
   if(requested&&!matchesPin(view.artifact_ref,requested))throw new Error('成果与条目固定版本不匹配');
   await checkDelivery(view);
   const value:ReviewSnapshot={artifact:view.artifact,content:view.content,report:view.report,bundleRef:view.bundle_ref,contractRef:view.contract_ref,requiresAcceptance:view.requires_acceptance,delivery:view};
-  await checkReview(value,view.artifact_ref);signal.throwIfAborted();return value;
+  await checkReview(value,view.artifact_ref);this.current(key,signal);const pending=this.lookups.find(runId);if(pending&&view.acceptance&&pending.bundleId===view.bundle_ref.id&&pending.artifactId===view.artifact_ref.id)this.lookups.clear(runId);value.decisionUncertain=!!this.lookups.find(runId);return value;
  }
  async accept(value:ReviewSnapshot,meta:Schema['RequestMeta'],signal:AbortSignal){
-  const v=value.delivery;if(!v)throw new Error('缺实际RunDeliveryView');
+  const key=this.scope();const v=value.delivery;if(!v)throw new Error('缺实际RunDeliveryView');
   if(v.stale||v.acceptance||!v.requires_acceptance)throw new Error('当前成果已过时、已有决定或不要求接受');
-  const receipt=await this.client.acceptDelivery(v.run_id,{bundle_ref:v.bundle_ref,artifact_ref:v.artifact_ref,decision:'accept'},meta,signal);
-  if(!matchesPin(receipt.bundle_ref,v.bundle_ref)||receipt.decision!=='accept')throw new Error('接受回执版本不匹配');
-  return{kind:'ok' as const,payload:receipt,output_refs:[]};
+  if(this.lookups.find(v.run_id))throw new Error('接受结果尚未对账，不会换request_id重发。');
+  this.current(key,signal);this.lookups.mark({runId:v.run_id,requestId:meta.request_id,bundleId:v.bundle_ref.id,artifactId:v.artifact_ref.id});
+  try{const receipt=await this.client.acceptDelivery(v.run_id,{bundle_ref:v.bundle_ref,artifact_ref:v.artifact_ref,decision:'accept'},meta,signal);this.current(key,signal);
+   const principal=this.client.currentSession()?.principal;
+   if(!matchesPin(receipt.bundle_ref,v.bundle_ref)||receipt.decision!=='accept'||principal&&JSON.stringify(receipt.principal)!==JSON.stringify(principal))throw new Error('接受回执版本或主体不匹配');
+   // Keep lookup until authoritative GET delivery reconciles the receipt.
+   return{kind:'ok' as const,payload:receipt,output_refs:[]};
+  }catch(e){if(e instanceof ApiFailure&&e.result.kind!=='waiting'&&this.client.currentSession()?.identityKey===key)this.lookups.clear(v.run_id);throw e;}
+
  }
 }
 export async function checkDelivery(v:Schema['RunDeliveryView']){
