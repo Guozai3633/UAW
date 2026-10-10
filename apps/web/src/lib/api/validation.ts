@@ -10,7 +10,14 @@ function checkFormats(value:unknown):void {
 }
 checkFormats(schema);
 ajv.addSchema(schema);
+// Future Item types are display-only data. All fields/statuses stay validated.
+// This local display schema never validates approvals, Run or execute requests.
+const display=structuredClone(schema);
+display.$id='urn:uaw:web:display:0.1';
+(display.$defs.ItemType as {enum?:string[]}).enum=undefined;
+ajv.addSchema(display);
 export function validate(name:string,value:unknown): void {
- const check=ajv.getSchema(`urn:uaw:web:0.1#/$defs/${name}`);
+ const urn=name==='HttpConversationsItemsResult'?'urn:uaw:web:display:0.1':'urn:uaw:web:0.1';
+ const check=ajv.getSchema(`${urn}#/$defs/${name}`);
  if(!check || !check(value)) throw new Error(`协议数据不匹配：${name}`);
 }

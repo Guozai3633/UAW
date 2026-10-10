@@ -1,10 +1,13 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import openapiTS, { astToString } from 'openapi-typescript';
-const source = new URL('../../../contracts/', import.meta.url);
+const contractRef='ms-i2j-a1';
+const contractCommit=execFileSync('git',['rev-parse',`${contractRef}^{commit}`],{encoding:'utf8',maxBuffer:16777216}).trim();
+if(contractCommit!=='202544f452c485c84eb7fe08675576e31c75cad3')throw Error('Published API tag changed');
 const target = new URL('../src/lib/api/generated/', import.meta.url);
-const raw = await readFile(new URL('openapi.json', source), 'utf8');
-const schemaRaw = await readFile(new URL('uaw.schema.json', source), 'utf8');
+const raw=execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
+const schemaRaw=execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
 const api = JSON.parse(raw), schema = JSON.parse(schemaRaw);
 // Exact public routes checked in src/uaw/api/routes.py at ms-i2j-start.
 const allowed = {
@@ -14,7 +17,7 @@ const allowed = {
  '/v1/runs/{run_id}/control': ['post'], '/v1/tasks/{task_id}/frame': ['get'],
  '/v1/approvals/{approval_id}': ['get'], '/v1/approvals/{approval_id}/decisions': ['post'],
  '/v1/conversations/{conversation_id}/events': ['get'], '/v1/events/{event_id}/payload': ['get'],
- '/v1/models': ['get'] };
+ '/v1/models': ['get'], '/v1/web/session':['get','post','delete'] };
 const paths = Object.fromEntries(Object.entries(allowed).map(([path, methods]) => [path,
  Object.fromEntries(methods.map(method => { if (!api.paths[path]?.[method]) throw Error(`Missing ${path}`);
  return [method, api.paths[path][method]]; }))]));
@@ -28,7 +31,7 @@ visit(paths);
 for(const key of ['ConversationsCreateRequest','ConversationsGetRequest','ConversationsItemsRequest',
  'TurnsSubmitRequest','RunsGetRequest','RunsControlRequest','TasksFrameRequest','ApprovalsGetRequest',
  'ApprovalsDecideRequest','EventsReadRequest','EventsPayloadRequest','ModelsListRequest',
- 'CompletionAcceptance','ArtifactRecord','VerificationReport']) {
+ 'CompletionAcceptance','ArtifactRecord','VerificationReport','WebSessionGetRequest','WebSessionExchangeRequest','WebSessionLogoutRequest']) {
  used.add(key);visit(api.components.schemas[key]);
 }
 const clean = value => Array.isArray(value) ? value.map(clean) : value && typeof value === 'object'
@@ -56,6 +59,7 @@ for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
  $defs:Object.fromEntries([...defs].sort().map(k=>[k,clean(schema.$defs[k])]))},null,2)+'\n');
 await writeFile(new URL('source.json',target),JSON.stringify({baseline:'abb4590f2bfe53c601e0f6a4a3b65447ba4ec502',
+ contract_ref:contractRef,contract_commit:contractCommit,
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
  openapi_sha256:createHash('sha256').update(raw).digest('hex'),paths:allowed},null,2)+'\n');
 console.log(`Generated ${Object.keys(paths).length} actual paths; ${defs.size} schema definitions.`);

@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {Projection,SnapshotRequired} from '../../src/lib/events/projection';
-import {makeItem,now,ref} from '../fixtures';
+import {makeItem,makeRun,frame,now,ref} from '../fixtures';
 import type {Event,Payload} from '../../src/lib/api/types';
 const e=(seq:number,type:Event['type']='item.updated',extra:Partial<Event>={}):Event=>({event_id:'event-'+seq,stream_id:'conv-one',seq,type,schema_version:'0.1',occurred_at:now,payload_ref:ref('event','payload-'+seq),...extra});
 describe('versioned event projection',()=>{
@@ -18,3 +18,13 @@ describe('versioned event projection',()=>{
  it('honors replacement and ignores older fixed watermark',()=>{const p=new Projection();p.replaceItems([makeItem('i','agent_message','new',4)],8);
   p.replaceItems([makeItem('i','agent_message','old')],3);expect(p.sorted()[0].text).toBe('new');});
 });
+
+it('new Run and task identities start their own revision boundary and keep server order on equal timestamps',()=>{
+ const p=new Projection();p.apply(e(1,'run.updated'),{action:'run.updated',parameters:makeRun('completed',8)});
+ const next={...makeRun('running',1),id:'run-two',task_id:'task-two'};p.apply(e(2,'run.updated'),{action:'run.updated',parameters:next});expect(p.run).toEqual(next);
+ p.apply(e(3,'task.frame.committed'),{action:'task.frame.committed',parameters:{...frame,revision:5}});
+ p.apply(e(4,'task.frame.committed'),{action:'task.frame.committed',parameters:{...frame,task_id:'task-two',revision:1}});expect(p.frame?.task_id).toBe('task-two');
+ p.replaceItems([makeItem('z-user','user_message','original'),makeItem('a-result','artifact','result')],4);expect(p.sorted().map(i=>i.id)).toEqual(['z-user','a-result']);
+});
+
+it('duplicate IDs in snapshot pages retain the highest revision regardless of page order',()=>{const p=new Projection();p.replaceItems([makeItem('i','agent_message','new',4),makeItem('i','agent_message','old',1)],8);expect(p.sorted()).toHaveLength(1);expect(p.sorted()[0].text).toBe('new');});

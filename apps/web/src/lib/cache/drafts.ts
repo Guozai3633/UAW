@@ -8,7 +8,7 @@ export class DraftStore {
  private value=empty();private identity:string|null=null;
  constructor(private storage:Storage=localStorage){}
  bind(identity:string|null){if(identity===this.identity)return;
-  const previous=this.storage.getItem(key);this.value=empty();
+  let previous:string|null=null;try{previous=this.storage.getItem(key);}catch{/* unavailable storage: memory only */}this.value=empty();
   if(identity && this.identity===null && previous){try{const data=JSON.parse(previous);
    if(data.identity===identity && data.value?.version===1){
     const v=data.value;
@@ -22,7 +22,7 @@ export class DraftStore {
  draft(id:string,text:string){if(text.length<=131072)this.value.drafts[id]=text;this.flush();}
  remember(id:string){if(validId(id)){this.value.conversationIds=[...new Set([...this.value.conversationIds,id])].slice(-50);this.flush();}}
  recovery(value?:Recovery){if(value)this.value.recovery=structuredClone(value);else delete this.value.recovery;this.flush();}
- clear(){this.identity=null;this.value=empty();this.storage.removeItem(key);}
+ clear(){this.identity=null;this.value=empty();try{this.storage.removeItem(key);}catch{/* memory already cleared */}}
  private flush(){try{if(this.identity)this.storage.setItem(key,JSON.stringify({identity:this.identity,value:this.value}));else this.storage.removeItem(key);}catch{/* storage unavailable: memory only, no resubmission */}}
 }
 const validId=(v:unknown):v is string=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(v);

@@ -1,3 +1,4 @@
+import {makeItem,ok} from '../fixtures';
 import {describe,it,expect,vi} from 'vitest';
 import {UawClient,TransportError,ApiFailure,requestMeta} from '../../src/lib/api/client';
 describe('actual wire client',()=>{
@@ -20,4 +21,15 @@ describe('actual wire client',()=>{
   await expect(new UawClient(()=>null,f).run('run-one')).rejects.toBeInstanceOf(TransportError);});
  it('propagates permission denial',async()=>{const f=vi.fn().mockResolvedValue(new Response(JSON.stringify({kind:'denied',failure:{code:'origin_denied',category:'authorization',message:'浏览器入口未开放',retryable:false,failed_phase:'authentication'},output_refs:[]}),{status:403}));
   await expect(new UawClient(()=>null,f).models()).rejects.toThrow('浏览器入口未开放');});
+});
+
+it('future Item types stay readable but revisions remain strictly validated',async()=>{
+ const item={...makeItem('future-one','agent_message','read only'),type:'future_display'};
+ const f=vi.fn().mockImplementation(async()=>new Response(JSON.stringify(ok({items:[item],snapshot_revision:1}))));
+ const client=new UawClient(()=>null,f);expect((await client.items('conv-one')).items[0].type).toBe('future_display');
+ item.revision=-1;await expect(client.items('conv-one')).rejects.toBeInstanceOf(TransportError);
+});
+it('host cannot inject administrator authorization instead of the published CSRF protocol',async()=>{
+ const f=vi.fn();const client=new UawClient(()=>({identityKey:'user',csrfHeader:{name:'Authorization',value:'forbidden'}}),f);
+ await expect(client.submit('conv-one',{text:'task',attachment_refs:[]},requestMeta(1))).rejects.toThrow('HTTP认证协议');expect(f).not.toHaveBeenCalled();
 });

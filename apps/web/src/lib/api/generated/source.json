@@ -1,7 +1,9 @@
 {
   "baseline": "abb4590f2bfe53c601e0f6a4a3b65447ba4ec502",
-  "schema_sha256": "019b15c29d05c987ad1242c10ef17e2f825a216df0398ecbf4f70fd80a12232f",
-  "openapi_sha256": "b7c3ccb655a6732c5a24e9c02690fe230122fce6d9e00ee57e8660f76b0dfc8a",
+  "contract_ref": "ms-i2j-a1",
+  "contract_commit": "202544f452c485c84eb7fe08675576e31c75cad3",
+  "schema_sha256": "d44cbf71e70d31d48d233b290006767387003e2fb29c43adab772f7832c654ca",
+  "openapi_sha256": "26ac7fcc2c11fd9a61c9ae91dd37dc1216ca384b54f1a6910646149c0a7550ae",
   "paths": {
     "/v1/conversations": [
       "post"
@@ -38,6 +40,11 @@
     ],
     "/v1/models": [
       "get"
+    ],
+    "/v1/web/session": [
+      "get",
+      "post",
+      "delete"
     ]
   }
 }

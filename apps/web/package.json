@@ -9,14 +9,14 @@
     "pnpm": ">=10 <11"
   },
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 5177",
+    "dev": "vite --host 127.0.0.1 --port 5173",
     "generate": "node scripts/generate.mjs",
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
-    "test:e2e": "playwright test --project=chromium",
-    "test:live": "playwright test --project=live",
-    "preview": "vite preview --host 127.0.0.1 --port 5177"
+    "test:e2e": "pnpm build && playwright test --project=chromium",
+    "test:live": "node scripts/live.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 5173"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.2.0",

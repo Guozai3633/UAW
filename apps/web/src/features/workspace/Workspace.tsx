@@ -20,7 +20,7 @@ export function Workspace({controller,reviewPort}:{controller:WorkspaceControlle
  const understanding=s.draft?'发送后，将根据这段原文理解任务。':s.frame?.summary??(s.run?'正在等待实际任务理解…':'写下你的任务，从一段原文开始。');
  return <div className="workspace">
  <aside className={`sidebar ${menu?'mobile-open':''}`} aria-label="会话侧栏"><a href="/" className="brand"><span className="brand-mark">u</span><b>UAW</b><span>工作区</span></a>
- <button className="new-chat" disabled={!s.connected||s.busy} onClick={()=>setNewOpen(true)}><Plus size={16}/>新建会话<span>＋</span></button>
+ <button aria-label="新建会话" className="new-chat" disabled={!s.connected||s.busy} onClick={()=>setNewOpen(true)}><Plus size={16}/>新建会话<span>＋</span></button>
  <div className="sidebar-label">你的会话 <span>{s.conversations.length}</span></div><nav>{s.conversations.map(c=><button key={c.id} className={`conversation ${c.id===s.active?.id?'active':''}`} disabled={s.busy} onClick={()=>{setMenu(false);void controller.open(c.id);}}><MessageSquare size={15}/><span>{c.title}</span>{c.id===s.active?.id&&<MoreHorizontal size={15}/>}</button>)}</nav>
  {!s.conversations.length&&<p className="sidebar-hint">创建会话，或打开已知会话链接。<br/>服务器会话列表尚未接入。</p>}
  <div className="sidebar-bottom"><div className="project-chip"><FolderOpen size={15}/><span>本机项目授权待接入</span></div><div className="account"><span className="avatar">U</span><div><strong>{s.connected?'已连接用户会话':'等待身份入口'}</strong><small>个人工作区</small></div><button aria-label="退出并清理本地草稿" onClick={()=>void controller.logout()}><LogOut size={15}/></button></div></div></aside>
