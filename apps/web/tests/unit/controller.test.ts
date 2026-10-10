@@ -11,7 +11,8 @@ function setup(){let run=makeRun();let hasRun=false;let pending=structuredClone(
    else if(path.endsWith('/decisions')){const decision=JSON.parse(String(options.body)).payload.decision;pending={...pending,status:decision.decision==='decline'?'declined':'approved',revision:2};
     data={id:'grant-one',approval_ref:ref('approval',pending.id,'2'),actor:{id:'user-one',kind:'user',auth_session_id:'session-one'},decision,issued_at:now};}
    else data=conversation;
-  }else if(path==='/v1/models')data=models;
+  }else if(path==='/v1/conversations')data={items:[conversation],snapshot_revision:1};
+  else if(path==='/v1/models')data=models;
   else if(path==='/v1/conversations/conv-one')data=conversation;
   else if(path.endsWith('/items'))data={items:[],snapshot_revision:hasRun?1:0};
   else if(path.endsWith('/events'))data={items:hasRun?[{event_id:'event-one',stream_id:'conv-one',seq:1,type:'run.updated',schema_version:'0.1',occurred_at:now,payload_ref:ref('event','event-one')}]:[],snapshot_revision:hasRun?1:0};

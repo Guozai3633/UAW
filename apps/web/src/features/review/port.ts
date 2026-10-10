@@ -2,9 +2,9 @@ import type {Schema,Ref,Result} from '../../lib/api/types';
 import {validate} from '../../lib/api/validation';
 // Optional internal adapter proposed to A. No invented HTTP endpoint.
 export type ReviewSnapshot={artifact:Schema['ArtifactRecord'];content:string;report:Schema['VerificationReport'];
- bundleRef:Ref;contractRef:Ref;requiresAcceptance:boolean};
+ bundleRef:Ref;contractRef:Ref;requiresAcceptance:boolean;delivery?:Schema['RunDeliveryView']};
 export interface ReviewPort {
- read(artifactRef:Ref,runId:string,signal:AbortSignal):Promise<ReviewSnapshot>;
+ read(artifactRef:Ref|undefined,runId:string,signal:AbortSignal):Promise<ReviewSnapshot>;
  accept(snapshot:ReviewSnapshot,meta:Schema['RequestMeta'],signal:AbortSignal):Promise<Result<Schema['CompletionAcceptance']>>;
 }
 export async function checkReview(value:ReviewSnapshot,requested:Ref){
@@ -22,4 +22,4 @@ export async function sameReview(a:ReviewSnapshot,b:ReviewSnapshot){
  return JSON.stringify(a)===JSON.stringify(b);
 }
 
-const matchesPin=(actual:Ref,requested:Ref)=>actual.kind===requested.kind&&actual.id===requested.id&&actual.version===requested.version&&(!requested.content_hash||actual.content_hash===requested.content_hash);
+export const matchesPin=(actual:Ref,requested:Ref)=>actual.kind===requested.kind&&actual.id===requested.id&&actual.version===requested.version&&(!requested.content_hash||actual.content_hash===requested.content_hash);

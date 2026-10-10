@@ -28,11 +28,15 @@ export class WorkspaceController {
   const generation=this.generation;
   try{this.patch({loading:true});const page=await this.client.models(this.abort.signal);this.guard(generation);
    this.patch({models:page.items.filter(m=>m.status==='active'),connected:true,error:''});
-   const saved=this.drafts.read();const conversations=[];
-   for(const id of saved.conversationIds){try{const c=await this.client.conversation(id,this.abort.signal);this.guard(generation);conversations.push(c);}catch(e){if(this.abort.signal.aborted)throw e;}}
-   this.patch({conversations,recovery:saved.recovery});
+   const saved=this.drafts.read();await this.list(generation);this.guard(generation);const conversations=this.value.conversations;
+   this.patch({recovery:saved.recovery});
    if(saved.recovery)await this.open(saved.recovery.conversationId);else if(initialId)await this.open(initialId);else if(conversations[0])await this.open(conversations[0].id);
   }catch(e){if(generation===this.generation)this.fail(e);}finally{if(generation===this.generation)this.patch({loading:false});}
+ }
+ async list(g=this.generation){const load=async()=>{const page=await this.pages(c=>this.client.conversations(c,this.abort.signal));this.guard(g);
+   const newest=new Map<string,Conversation>();for(const c of page.items as Conversation[]){const old=newest.get(c.id);if(!old||c.revision>old.revision)newest.set(c.id,c);}
+   this.patch({conversations:[...newest.values()]});};
+  try{await load();}catch(e){if(e instanceof SnapshotRequired||e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){await load();}else throw e;}
  }
  stop(){this.stopped=true;this.abort.abort();clearTimeout(this.timer);this.generation++;}
  async logout(){this.stop();this.identity=null;this.drafts.clear();this.reset();await this.host.logout?.();}
@@ -90,13 +94,13 @@ export class WorkspaceController {
    }
    const approvalIds=new Set([...this.projection.approvals.keys(),...this.projection.sorted().flatMap(i=>i.type==='approval'?i.resource_refs.filter(r=>r.kind==='approval').map(r=>r.id):[])]);
    for(const id of approvalIds){const approval=await this.client.approval(id,signal);this.guard(g);this.projection.approvals.set(id,approval);}
-   this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：原请求查询接口尚未接入，不会重发。':'',recovery:rec,
+   this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：尚无原请求Run回执，不会重发。':'',recovery:rec,
     items:this.projection.sorted(),run:this.projection.run,frame:this.projection.frame,approvals:[...this.projection.approvals.values()]});
   };
   try{await load();}catch(e){if(e instanceof SnapshotRequired || e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){
     this.projection.clear();await load();}else throw e;}
  }
- async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
+ async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.list(g);await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
  async send(){const active=this.value.active,text=this.value.draft;
   if(!this.sameIdentity()||!active||!text.trim()||!this.value.connected||this.mutation||this.value.recovery)return;
   const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true,error:''});const g=this.generation;

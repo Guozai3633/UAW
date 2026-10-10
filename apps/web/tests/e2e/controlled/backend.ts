@@ -15,7 +15,7 @@ export async function controlledBackend(page:Page,scenario:'artifact'|'approval'
   if(scenario==='denied')return route.fulfill({status:403,json:denied()});
   let data:unknown;const body=req.method()==='POST'?req.postDataJSON():undefined;
   if(path==='/v1/models')data=models;
-  else if(path==='/v1/conversations'&&req.method()==='POST')data=conversation;
+  else if(path==='/v1/conversations')data=req.method()==='POST'?conversation:{items:[conversation],snapshot_revision:1};
   else if(path==='/v1/conversations/conv-one')data=conversation;
   else if(path.endsWith('/turns')){state.turnPosts++;state.original=body.payload.text;state.submitted=true;
    if(scenario==='unknown')return route.abort('connectionfailed');data=state.run;
