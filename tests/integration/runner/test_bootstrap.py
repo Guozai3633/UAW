@@ -132,7 +132,7 @@ async def test_changes_during_bootstrap_await_fail(ipc_case, change):
         if change == "owner":
             native["owners"].value = Principal(id="u1", kind="user", auth_session_id="changed")
         elif change == "key":
-            native["state"].revoke_key("device1")
+            native["state"].revoke_key("device1", expected_revision=0)
         elif change == "expiry":
             native["clock"][0] += timedelta(hours=1)
         else:
