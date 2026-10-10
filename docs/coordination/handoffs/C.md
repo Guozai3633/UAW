@@ -721,3 +721,83 @@ Task结论；D负责本机真人确认和helper来源。生产lines/cursor和项
 DTO须A统一设计生成/发布；本包无需新依赖/迁移/共享契约。只在C允许目录交付，不依赖D开发分支。
 
 A合入、公共冲突和整条链路回归由A处理。本包源码和handoff分开提交，干净后停止，不自动进入下一包。
+
+
+## MS-T2i：有界多资料消费与原恢复（2026-10-10）
+
+### 实际分支、固定输入与源码
+
+- 工作目录 `E:/UAW/.worktrees/tool`，分支 `dev/tool`。
+- 干净检查后fetch tags，远端 `git show origin/integration:docs/coordination/DISPATCH.md` 正式准确SHA为 **8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0**，固定标签 **ms-i2l-start**。ff-only成功，开工HEAD/标签/正式SHA完全相同；未合并浮动integration，未reset/rebase/stash。基线内旧准备状态未作为停工条件。
+- `.venv` 按uv.lock冻结同步（`uv sync --frozen --extra agent-engine --link-mode copy`，本worktree UV_CACHE_DIR）；uv.lock SHA256 `a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f`；schema SHA256 `dd1daee24015771cd5e320027a4f45a2ac31bae61f0f1a84bf6ef240c4f9611c`，shared/锁/组装/flags未修改。
+- M1接口源码 **ee6645e928bbe7db292de2f1cf053e7acbb07cd4**，阶段说明提交00e4dea；M2实际消费源码 **47bf1269de3a20f0150e88055662c8962ec5c774**，阶段样例提交d0241db，之后继续M3/M4。
+- 恢复/桥接测试阶段 **1cc88a876f1ff115b8ad92e4f8d4f2e0cebd10d6**；最终源码及测试 **44122503ecb60a4036a990eeb20e7340b9618394**。最后提交只修正取消前后测试快照基准，运行实现自M2未变。独立handoff提交随后生成，最终报告实际SHA。
+- 原MS-T2g/MS-T2h提交祖先、全部旧回执保留。旧handoff原字节86279、SHA256 `00766a5b3f386e39a239cc22ead6680c663305d41820e906f0ea9e3e6f1e9918`精确前缀保留，仅追加本节。
+
+### 改动文件及公开消费接口
+
+运行新增：`src/uaw/tool/providers/file_material_set.py`。
+单元新增：`tests/unit/tool/test_file_material_set.py`。
+SQL/自身恢复新增：`tests/integration/tool/file_material_set_fixture.py`、`file_material_set_recovery_child.py`、`test_file_material_set_postgres.py`、`test_file_material_set_bridge_postgres.py`。
+C文档：`docs/coordination/requests/C/MS-T2i-stage-interface.md`、`MS-T2i-final-wiring.md`和本handoff。没有修改已接受单文件Reader、Context/Agent/composition/shared/schema/锁/其他worker源码。
+
+```python
+FileMaterialSetLimits(max_characters=16384, max_utf8_bytes=65536)
+FileMaterialSet(materials: tuple[FileMaterial, ...])
+FileMaterialSetAdapter(reader: FileMaterialReaderPort | None, *, limits=None)
+async FileMaterialSetAdapter.read(refs: tuple[Ref, ...], ctx: TrustedExecutionContext) -> FileMaterialSet
+```
+
+- 严格1–8完整Ref tuple，保留完整wire/hash/version/location/access_scope，输入在首await前冻结。缺hash/非法tuple422，重复409，缺owning Reader503；不从Ref猜ctx/provider或获得权限。
+- 冻结有序materials tuple；refs返回原完整Refs副本，characters/utf8_bytes为实际正文合计。默认16384字符/65536 bytes，显式只可缩小正整数（bool拒绝），超量413，不截断/Unicode重写/拼接/部分返回。
+- 逐项owning read，所有项完成后按原顺序再次逐项owning read，精确Ref/当前Principal/完整冻结值一致才整体返回。撤销、缺项、版本/来源改变、跨主体/provider整体拒绝；错误与CancelledError传播，无后台Reader任务。
+- 保留每项原FileContent/Usage和call/provider/command/实际RunnerReceipt/observation/fragment/raw/material绑定。效果/费用分开，unknown不重发，不reserve/dispatch/retry/新attempt/新file.read/open，不调用export或BudgetService。
+- 没有集合SQL命名空间或正文缓存，没有自身句柄/连接，无需close；源Reader生命周期由A拥有。最终序列复核不是跨模块原子授权快照，之后的撤销不能收回已返回字节；后续复用必须再owning read。
+- 完整原文件hash、实际片段UTF8 hash、规范FileContent JSON/material hash分别保持。whole时前两者可相等；不从重读补snapshot，不增public DTO或EffectRecord。
+
+### 实际验证命令、回执和最终去重
+
+自身PowerShell `. ./ops/start-dev-db.ps1 -Session C`，独立loopback **55434**；`.venv/Scripts/alembic.exe upgrade head` exit0，current复读 **0003_attempt_identity (head)**。
+回执全部在ignored **tests/.artifacts/C/MS-T2i**，没有复制A配置/凭据或修改shared evidence/其他库。
+
+| 实际运行/回执 | 结果和覆盖 |
+|---|---|
+| m2-unit.xml/txt | 首次直接pytest.exe缺tests imports，收集error保留；改python -m pytest |
+| m2-unit-fixed.xml/txt | 新集合27单元通过 |
+| tool-unit.xml/txt | C全单元396通过，26.24秒 |
+| unit-extra.xml/txt | 最终集合28通过，含新增八来源恰好总量节点；单元去重397，不是一次397 |
+| set-first.xml/txt | 两原资料顺序/删除/取消重启1真实SQL通过，93.43秒 |
+| set-sql.xml/txt | 主批次13通过/2失败，1196.49秒；原UTF8与取消快照断言失败保留 |
+| set-a-bridge.xml/txt | 已发布A真实桥代码3SQL通过，89.57秒；transport/current authority受控 |
+| original-affected.xml/txt | 原单文件Reader17、恢复6、办公3，共26通过，992.74秒 |
+| set-extra-fixed.xml/txt | 等待中原SQL版本变化1通过；UTF8修复遗漏limits导入1失败，159.36秒 |
+| set-utf8-final.xml/txt | 修正UTF8真实合计配置/导入1通过，82.67秒 |
+| set-fee-final.xml/txt | 取消后固定费用状态基准1通过，69.79秒 |
+
+最终XML去重 **397单元＋46不同真实SQL通过**：新增28单元、20SQL，原受影响26SQL；最终failure/error/skip均0。多个运行组成，不把重试次数叠加。
+真实SQL覆盖：有序两个独立原attempt、重复、第二项等待期间第一项data/root/key/SQL版本撤销、缺项/错版本/跨会话主体/provider、实际UTF8总量、回复丢失/并发、删除文件/取消/执行role失效后恢复、独立进程两资料零新打开、数据拒绝与原费用清理、缺Reader和A原签名桥恢复。
+旧MS-T2h369/81及更早219SQL保持旧来源，本轮只实际复跑原26SQL，不将其余旧节点冒充本轮复跑；检索/索引等仍含全Tool单元兼容，未另外重复SQL。
+
+完整命令为 `.venv/Scripts/python.exe -m pytest <上述C模块/精确节点> --require-postgres -q --junitxml=<本回执根/...xml>`；主批次排除已运行order_and_restart，原兼容三个模块按`-k 'not office or approved_actual_result_fixed_receipt'`选26节点；定向只重跑UTF8和取消费用失败节点。新SQL带_postgres，与单元模块不重名；final-collection.txt新增48节点无冲突。
+静态：ruff全C源码/单元/SQL通过，**82文件格式**通过，**34 Tool源码mypy**通过；git diff --check及公共文件/允许目录/旧提交祖先检查通过。
+verification-index.json从实际XML生成每个节点最终状态、原全部failure/error、XML SHA256、实际基线/源码/公共摘要和来源界限；build_index.py不接受缺回执/未通过节点。observed-startup-diagnostics.json另记初始受限shell worktree定位、format前E501和limits导入F821，标明原tool输出与XML区别，未伪造测试结果。
+
+### 未通过项、修复和生产接线要求
+
+原失败均保留：导入启动器问题改本venv python模块入口；UTF8用例两项合计56000实际低于默认65536，明确收紧测试limit50000后实跑，不修改运行默认；后续unused-import自动移除产生NameError，补import后实跑；费用测试原账本取于cancel前，取消合法改变revision/cancel_requested，调整到cancel后固定财务快照，复跑保持held money0.10/pending。不是通过改执行/费用语义规避失败。
+
+```python
+from uaw.tool.providers.file_material_set import FileMaterialSetAdapter, FileMaterialSetLimits
+materials = await FileMaterialSetAdapter(
+    registered_current_owning_reader,
+    limits=FileMaterialSetLimits(max_characters=16384, max_utf8_bytes=65536),
+).read(original_material_refs, current_ctx)
+for item in materials.materials:
+    # A Context external低信任材料；Artifact沿原片段/观察来源引用
+    text, fragment, observation = item.text, item.fragment_ref, item.observation_ref
+```
+
+A已有 `FileToolBindings.materials` 可处理一个原attempt，跨attempt由A已登记来源Router解析各原ctx并核对当前数据权限，再调用单文件Reader；不能把调用方attempt替换当权限，也不能绕C直接Blob/SQL正文。A保存原Refs顺序/recipe，集合不新造plan或receipt。未发布actual多来源production Router则pending/缺Reader503，受控测试Router不注册产品能力。
+已验证固定基线的 `RegisteredFileBridge`、`RunnerCommands`、`RunnerPipeClient`、真实签名与original journal；原call/spec/ctx/provider、command/receipt绑定不改。A/D actual installed/native/root/channel/current-key来源、本人目录授权、Context→固定模型→Artifact/Task接受和汇合全量仍pending。A production桥仍只whole16384/64KiB，lines/cursor/nonempty project明确不可用，不重读原文件补snapshot。
+数据撤销仍拒绝材料，允许独立已接受原Usage/费用计划恢复时沿已有recover_file_accounting，不反向获得正文；确认/读成功不等于applied、工具成功或Task完成。公共契约/锁本包无新增缺口；多源生产装配归A，默认flags/用户固定模型未更改。
+本包仅MS-T2i，源码/独立handoff分开提交，交付后停止；不自动扩大完整MS-T2或替用户/其他会话操作。
