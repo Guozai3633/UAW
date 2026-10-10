@@ -25,3 +25,24 @@ NativePrompt只在本机窗口展示账号/设备/只读范围/准确期限/挑�
 实测：21 passed /3.02秒；m1-2.xml，Mypy workspace/Runner28源通过。原native窗口实际自动取消/超时3例，独立UI/source double单元18例明确不算真人授权；真人点击pending。m1.xml首次3失败/18通过：BrowseInfo wchar buffer未cast指针、测试Principal缺auth_session_id，均已修复，未放宽安全断言。回执ignored tests/.artifacts/D/MS-R2g。后续M2连接PairingVerifier/LocalRoots/一次消费，M3/M4接基线真实IPC/read/journal。
 
 API依据：[微软目录选择](https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shbrowseforfolderw)。这里选择旧式只读tree避免新版“新建/编辑/拖放”UI；路径及根身份仍由本机RootSource独立验证。正式安全桌面/抗其他同登录进程UI注入不作保证；不是D03部署或真人验收。
+
+
+## M2 阶段交付（继续M3/M4）
+
+实际M1源码42ad508d3d98e703a51bff3d522bf2bbecdf169c；M2源码88bb0f33a86560a5bce89421e84f1f75cb7d3a09，同固定基线/分支。新增NativeReadAuthorization，修改PairingVerifier/LocalRoots和LocalState的私有可选checked CAS，D integration lifecycle与原native fixture增加可选延后确认。
+
+```python
+NativeReadAuthorization(*, native: WindowsNativeConfirmation,
+    challenges: RegisteredNativeChallenges, verifier: PairingVerifier,
+    signer: ProtectedSigner, device_key: DeviceSigningBinding, roots: NativeRootSource)
+async select(ticket_id: str, *, expected_revision: int, code: str,
+             proof_signature: str) -> RootSelection
+async bind(selection: RootSelection, workspace_ref: Ref) -> None
+async revoke(root_handle: str, *, expected_revision: int) -> None
+```
+
+所有state/roots/source/mapping/confirmation须同一可信组装；select仅针对已有root Ticket，对其角色key/私钥持有/原签名挑战和真实native adapter复核。owner/actor来自registry + mapping，不接受主体/path/能力布尔参数。输出旧RootSelection是opaque handle/有界期限/原内部签名profile，不改公开PairComplete DTO或控制面协议。bind消费既有RootSelectionPort/NativeRootSource，持久CAS一次；重复或版本冲突拒绝。revoke用当前live channel完整owner与登记grant匹配后revision CAS，阻止当前RootSource读取；无owner不撤销其他主体的根。
+
+PairingVerifier的SQLite/根IO移到worker，交互后再读取Ticket/current key、原本机根身份；批准CAS在事务内重新取时钟且检查协作取消，取消完成后回收worker，不使用UI前期限。LocalRoots拒绝根或祖先reparse/link，绝对路径仍仅本机数据库。
+
+阶段82 passed /23.07秒（原native root/persistent pairing＋9个新生命周期节点），补checked CAS后30 passed /13.58秒。m2.xml/m2-2.xml、原m1错误保留；Ruff通过、Mypy29源通过。真实IPC双进程/OS凭据/SQLite/根验证，与肯定UI替身明确分开；pending真人交互、A生产认证/挑战登记/首次配对bootstrap及组装。继续M3/M4，不能以阶段成功开放用户项目或flags。

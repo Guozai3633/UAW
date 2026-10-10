@@ -516,3 +516,8 @@ git diff --check
 - 测试账号/owner/pairing/native确认和current authority是独立受控来源；没有从body授予批准，实连不是真实配对。当前最终无未通过项；早期fixture角色/输出编码/换行/import和M1回执目录/PID失败全部保留并已修复，没有删验权/签名检查。
 - A提供真实受保护进程→owner/actor/device/key/pairing/期限映射、native确认、真实当前authority/Root/PrincipalMapping、Container.reader数据权限、OS handles及持久路径；控制端/组装/业务Tool核验归A。缺这些来源默认不可用、不挂载生产/用户项目；开发IPC和SQLite不是D01/D03正式部署决策，未公开配对V2/list/写入安装exec/flags，不推断Tool applied或零费用。
 - 只完成本包；完整MS-R2与产品授权继续等待。最终handoff提交后干净交付，停止，等待A接受/下一实际包。
+
+
+## MS-R2g M1/M2 阶段交接（2026-10-10）
+
+工作区E:/UAW/.worktrees/runner、dev/runner；干净fetch/ff-only ms-i2j-start/HEAD核对为abb4590f2bfe53c601e0f6a4a3b65447ba4ec502，uv sync --frozen64包。M1源码42ad508d3d98e703a51bff3d522bf2bbecdf169c；M2源码88bb0f33a86560a5bce89421e84f1f75cb7d3a09。固定确认/选择/绑定/撤销接口、文件、验证命令/回执和A真实来源要求见 requests/D/MS-R2g-stage-native.md。21项M1（真实原生自动取消/超时，不自动批准）、82项M2及checked CAS后30项通过，原失败保留。真人点击pending，账号/owner/肯定UI测试来源明示受控；未开放flags/用户项目/写入安装exec，未决定D03。本阶段文档另提交后继续M3/M4。
