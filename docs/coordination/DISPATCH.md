@@ -2,6 +2,8 @@
 
 ## 四包正式派发
 
+**准确开工 SHA：`b7b79b150470a80f37b28fd52a2177f6de5b3124`，标签 `ms-i2k-start`。** 此提交包含下列四包、固定输入和全部源码/组件合并；后续 publication 元数据提交不改变此标签。worker 用 `git rev-parse 'ms-i2k-start^{commit}'` 与此 SHA 精确比较，快进后自己的 HEAD 必须等于它。
+
 - 共同开工标签 **ms-i2k-start**；准确标签 SHA 在下方发布回执。运行源码固定 **d52ed515f9def6b2d0144e779a5793a7022bf676**（ms-i2j-bridge-source），包含已审阅 B/MS-U1、C/MS-T2g、D/MS-R2g 最终源码/独立 handoff 和 A 原文件桥接装配。
 - A/MS-I2k：实际账号设备挑战/当前来源、页面与文件整链、逐包集成；B/MS-U2：A2默认列表/原请求恢复/完整成果/真实页面；C/MS-T2h：原文件资料owning Reader/证据及账务恢复；D/MS-R2h：真实本机helper装配/bootstrap消费和本人流程。
 - [每包四里程碑、任务、目标、目录](requests/A/MS-I2k-parallel-packages.md)、[固定输入与现有接口](requests/A/MS-I2k-input-contracts.md)、[四份可转发提示词](MS-I2k-messages.md)。各方保持原worktree/分支，自行fetch→干净检查→快进固定标签→核对SHA→锁依赖；A未操作worker工作区。

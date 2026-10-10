@@ -2,6 +2,8 @@
 
 开工以 DISPATCH 正式发布的 **ms-i2k-start** 准确 SHA 为准。以下四份完整转发；任务范围见 parallel-packages 与 MS-I2k-input-contracts。上轮真实页面/真人授权未完成的门槛已明确带入本轮，不能当成已经验收。
 
+固定开工 SHA：**b7b79b150470a80f37b28fd52a2177f6de5b3124**。四个会话消费同一个标签。后续 integration 的发布说明提交不是新的工作基线。
+
 ## A / MS-I2k
 
 ```text

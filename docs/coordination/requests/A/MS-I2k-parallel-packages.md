@@ -12,6 +12,8 @@
 
 A 发布 **ms-i2k-start**，包含已合入 B/C/D 最终源码、已验证的原 Tool 桥接适配及[固定输入协议](MS-I2k-input-contracts.md)。准确 SHA 以 DISPATCH 和远程核对为准，不用浮动 integration 代替。旧 ms-i2j-start、a1、a2 不移动。
 
+准确标签 SHA：**b7b79b150470a80f37b28fd52a2177f6de5b3124**；运行源码提交 d52ed515f9def6b2d0144e779a5793a7022bf676。标签还包含准备说明/回执，后续仅发布元数据的 integration commit 不要求 worker 追随。
+
 | Session / 包 | 保持目录与分支 | 独占开发范围 |
 | --- | --- | --- |
 | A / MS-I2k | E:/UAW，integration | A 原保留 api/run/agent/model/infrastructure/composition/共享契约、部署配置与 A 测试/全局文档 |
