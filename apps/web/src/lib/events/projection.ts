@@ -14,6 +14,7 @@ export class Projection {
   switch(payload.action){
    case 'item.updated':this.item(payload.parameters);break;
    case 'item.delta':{const patch=payload.parameters,old=this.items.get(patch.item_id);
+    if(old && event.result_revision && event.result_revision<=old.revision)break;
     if(!old || old.revision!==patch.base_revision || event.base_revision!==patch.base_revision || !event.result_revision || event.result_revision<=old.revision)throw new SnapshotRequired('条目版本不一致');
     this.item({...old,revision:event.result_revision,updated_at:event.occurred_at,
      text:patch.replacement_text??(old.text+(patch.text_delta??'')),
