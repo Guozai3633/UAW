@@ -1,5 +1,6 @@
 """Named SQL provider records and principal-isolated blobs of actual raw responses."""
 
+import hashlib
 import json
 from typing import Any
 
@@ -37,6 +38,11 @@ class ToolResponseStore:
     ) -> None:
         self.ledger, self.blobs = ledger, blobs
         self.provider_ref, self.provider, self.access = provider_ref, provider, access
+
+    transport_status = "local_computation_completed"
+
+    def data_bytes(self, data: JsonObject) -> bytes:
+        return canonical(data)
 
     async def binding(self, ctx: TrustedExecutionContext) -> tuple[Payload, Payload]:
         call = await self.ledger.attempt(ctx)
@@ -91,7 +97,7 @@ class ToolResponseStore:
     ) -> JsonObject:
         self.authenticate(authenticated_provider)
         await self.binding(ctx)
-        raw = canonical(data)
+        raw = self.data_bytes(data)
         measured: Payload = json.loads(canonical(usage))
         validate_dependency("Usage", measured, "result_source")
         if measured["attempt_id"] != ctx.attempt_id:
@@ -103,7 +109,7 @@ class ToolResponseStore:
                 status=409,
             )
         content_hash = await self.blobs.put(ctx.principal, raw)
-        if content_hash != digest(data):
+        if content_hash != hashlib.sha256(raw).hexdigest():
             raise fail(
                 "dependency_protocol_invalid",
                 "Raw blob digest differs from actual response",
@@ -116,7 +122,7 @@ class ToolResponseStore:
         receipt = {
             "attempt_id": ctx.attempt_id,
             "raw_result_ref": ref.wire(),
-            "transport_status": "local_computation_completed",
+            "transport_status": self.transport_status,
             "effect_state": "confirmed",
             "usage": measured,
         }
@@ -171,7 +177,11 @@ class ToolResponseStore:
             )
         content = await self.blobs.get(ctx.principal, ref.content_hash)
         data = json.loads(content)
-        if type(data) is not dict or canonical(data) != content or digest(data) != ref.content_hash:
+        if (
+            type(data) is not dict
+            or self.data_bytes(data) != content
+            or hashlib.sha256(content).hexdigest() != ref.content_hash
+        ):
             raise fail(
                 "raw_result_invalid",
                 "Actual saved raw response violates its fixed digest",
@@ -249,9 +259,9 @@ class ToolReceiptStore(ToolResponseStore):
                 category="dependency",
                 status=503,
             )
-        frozen = canonical({"data": data, "call": call, "spec": spec})
+        frozen = (self.data_bytes(data), canonical(call), canonical(spec))
         await self.verifier.verify(data, call, spec, ctx)
-        if frozen != canonical({"data": data, "call": call, "spec": spec}):
+        if frozen != (self.data_bytes(data), canonical(call), canonical(spec)):
             raise fail(
                 "tool_output_invalid",
                 "Output verifier changed fixed data",

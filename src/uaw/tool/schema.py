@@ -31,7 +31,7 @@ RESERVED = frozenset(
 )
 
 
-def canonical(value: Any) -> bytes:
+def canonical(value: Any, *, max_bytes: int = MAX_BYTES) -> bytes:
     """Preserve strings/numbers/null/omissions; only sort JSON object keys."""
     count = 0
     text_bytes = 0
@@ -51,10 +51,10 @@ def canonical(value: Any) -> bytes:
             for child in item:
                 visit(child, depth + 1)
         elif type(item) is str:
-            if len(item) > MAX_BYTES:
+            if len(item) > max_bytes:
                 raise ValueError("JSON exceeds string limit")
             text_bytes += len(item.encode("utf-8"))
-            if text_bytes > MAX_BYTES:
+            if text_bytes > max_bytes:
                 raise ValueError("JSON exceeds cumulative string limit")
         elif item is not None and type(item) not in (str, bool, int, float):
             raise ValueError("Only JSON values are accepted")
@@ -65,7 +65,7 @@ def canonical(value: Any) -> bytes:
     result = json.dumps(
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
     ).encode("utf-8")
-    if len(result) > MAX_BYTES:
+    if len(result) > max_bytes:
         raise ValueError("JSON exceeds byte limit")
     return result
 
@@ -165,3 +165,18 @@ def compile_schema(schema: dict[str, Any], *, arguments: bool = False) -> Draft2
         raise fail(
             "registration_invalid", "Tool schema is invalid or unsupported", phase="registration"
         ) from exc
+
+
+def canonical_result(value: Any) -> bytes:
+    """Only an existing named ToolResult with actual FileContent may use larger envelope."""
+    from uaw.shared.schema import validate_contract
+
+    if isinstance(value, dict) and isinstance(value.get("data"), dict):
+        data = value["data"]
+        if "workspace_ref" in data and "text" in data:
+            validate_contract("ToolResult", value)
+            validate_contract("FileContent", data)
+            if len(data["text"].encode("utf-8")) > 65536:
+                raise ValueError("FileContent exceeds 64 KiB")
+            return canonical(value, max_bytes=524288)
+    return canonical(value)

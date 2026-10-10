@@ -8,7 +8,7 @@ from uaw.tool.errors import fail, validate_dependency
 from uaw.tool.ledger import action_key
 from uaw.tool.receipt_store import ToolReceiptStore
 from uaw.tool.reconciliation import ToolReconciler
-from uaw.tool.schema import canonical
+from uaw.tool.schema import canonical_result
 
 
 class ToolResults:
@@ -146,7 +146,7 @@ class ToolResults:
         effect = await self.ledger.effect_from_attempt(ctx)
         result: JsonObject = {
             "kind": "ok",
-            "payload": json.loads(canonical(stored)),
+            "payload": json.loads(canonical_result(stored)),
             "output_refs": stored["output_refs"],
             "usage_ref": stored["usage_ref"],
             "revision": effect["revision"],
