@@ -54,3 +54,23 @@ test('controlled: disconnected reads reconcile original Run before reconnecting,
  state.disconnect=true;await page.getByRole('button',{name:'重新读取并连接'}).click();await expect(page.getByRole('alert')).toContainText('连接中断');await expect(page.getByRole('button',{name:'发送原文'})).toBeDisabled();
  state.disconnect=false;await page.getByRole('button',{name:'重新读取并连接'}).click();await expect(page.getByText('已连接 · 分页轮询')).toBeVisible();await page.reload();await expect(page.getByText('实际阶段 · running')).toBeVisible();expect(state.turnPosts).toBe(1);
 });
+
+
+test('controlled: a rejected historical event keeps recovery accessible and restores new conversation after validated reread',async({page})=>{
+ const state=await controlledBackend(page,'running');state.submitted=true;state.historyFault=true;
+ await page.goto('/?conversation=conv-one');
+ await expect(page.getByRole('alert')).toContainText('连接中断');
+ await expect(page.getByRole('button',{name:'新建会话',exact:true})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'发送原文'})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'重新读取并连接'})).toBeEnabled();
+ expect(state.turnPosts).toBe(0);state.historyFault=false;
+ await page.getByRole('button',{name:'重新读取并连接'}).click();
+ await expect(page.getByText('已连接 · 分页轮询')).toBeVisible();
+ await expect(page.getByLabel('AI理解的任务')).toContainText('整理材料，保留来源并输出Markdown报告。');
+ await expect(page.getByText('实际阶段 · running')).toBeVisible();
+ await expect(page.getByRole('button',{name:'新建会话',exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:'新建会话',exact:true}).click();
+ await page.getByRole('button',{name:'创建会话',exact:true}).click();
+ await expect(page.getByRole('button',{name:'新建会话',exact:true})).toBeEnabled();
+ expect(state.turnPosts).toBe(0);expect(state.controlPosts).toBe(0);expect(state.decisionPosts).toBe(0);
+});

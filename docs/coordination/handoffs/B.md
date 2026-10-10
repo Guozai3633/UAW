@@ -865,3 +865,13 @@ localhost8000实际GET返回401，真实浏览器通过显式5173→8000代理�
 A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包未把P1/MS-I2k或旧1691全量
 标accepted，未开放flags/DAG/exec/安装/写入。本包clean交付后停止，不自动下一包；
 真实launch到达时可按用户/A明确派发继续本包真实联调。
+
+
+## MS-U2 runtime-contract-repair（2026-10-10）
+
+- 实际位置 `E:/UAW/.worktrees/context` / `dev/context`；固定来源 `ms-i2k-start / b7b79b150470a80f37b28fd52a2177f6de5b3124`；前 HEAD `0b6d9edf9646a38bb8deb56b2cbdf21b65761bfc`，全部原源码/handoff保留。
+- 本次源码 `3799b92b2d89ec0281e82594b1ba04f3bcfb8352`；独立交接为随后的 docs 提交，完整 SHA 见最终回报。改生成器、两份生成物、5 个 fixture/测试文件；不改公共 schema、控制器、Model/Run/backend/锁或 flags。
+- 修复递归误删业务 description；运行时169定义完整对照固定源。A 原 HTTP200 事件回放通过，未知嵌套字段/错误 description 仍拒绝。历史失败后原 GET 恢复入口可用，无重发、无假状态。
+- `pnpm --dir apps/web generate/typecheck/test/test:e2e` 实跑；48 unit +20 controlled Chromium，最终0失败/错误/跳过；构建和重复生成字节一致通过。原2测试失败、辅助错误pnpm shim失败均保留。
+- 自身 ignored `apps/web/.test-results/u2-repair-*`，完整日志/构建摘要索引 `u2-repair-receipts.json`；产物在本目录 `apps/web/dist`，A只读复制和精确校验，不执行或修改 B 环境。
+- [逐文件改动、原失败、完整构建hash与A接线](../requests/B/MS-U2-runtime-contract-repair.md)。真实认证页面复验 pending A；不标 P1 accepted、不自动扩包。

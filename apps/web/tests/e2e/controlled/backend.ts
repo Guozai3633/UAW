@@ -5,7 +5,7 @@ import {deliveryView} from '../../a2-fixtures';
 import type {Event,Payload} from '../../../src/lib/api/types';
 export async function controlledBackend(page:Page,scenario:'artifact'|'approval'|'running'|'unknown'|'denied'='artifact'){
  const state={turnPosts:0,controlPosts:0,decisionPosts:0,submitted:false,original:'',approval:structuredClone(approval),
-  run:makeRun(scenario==='artifact'?'completed':scenario==='approval'?'waiting_for_user':'running'),cancelled:false,disconnect:false,staleApproval:false,
+  run:makeRun(scenario==='artifact'?'completed':scenario==='approval'?'waiting_for_user':'running'),cancelled:false,disconnect:false,staleApproval:false,historyFault:false,
   decisionBody:undefined as unknown};
  await page.addInitScript(()=>{window.uawWebHost={session:()=>({identityKey:'controlled:test-user:workspace-one:epoch-1'})};});
  const payloads=new Map<string,Payload>();
@@ -30,7 +30,11 @@ export async function controlledBackend(page:Page,scenario:'artifact'|'approval'
   }else if(path.endsWith('/events')){const events=state.submitted?[event(1,{action:'run.updated',parameters:state.run}),event(2,{action:'task.frame.committed',parameters:frame})]:[];
    if(state.submitted&&scenario==='approval')events.push(event(3,{action:'approval.required',parameters:state.approval}));
    data={items:events,snapshot_revision:events.length};
-  }else if(path.endsWith('/payload'))data=payloads.get(path.split('/').at(-2)!);
+  }else if(path.endsWith('/payload')){data=payloads.get(path.split('/').at(-2)!);
+   if(state.historyFault && (data as Payload)?.action==='task.frame.committed'){
+    data=structuredClone(data);Object.assign((data as {parameters:object}).parameters,{unexpected_field:'must reject'});
+   }
+  }
   else if(path.endsWith('/frame'))data=frame;
   else if(path.endsWith('/control')){state.controlPosts++;state.cancelled=true;data={operation_id:'control-one',status:'accepted'};}
   else if(path==='/v1/runs/run-one'){if(state.cancelled)state.run=makeRun('cancelled',2);data=state.run;}

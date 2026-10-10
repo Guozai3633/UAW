@@ -64,3 +64,28 @@ it('cursor-invalid responses resnapshot without sending and cursor loops fail ex
  const y=setup();const normal=y.transport.getMockImplementation()!;y.transport.mockImplementation(async(input,options)=>String(input).includes('/items')?new Response(JSON.stringify(ok({items:[],snapshot_revision:1,next_cursor:'loop'}))):normal(input,options));
  await y.c.start('conv-one');expect(y.c.snapshot().connected).toBe(false);expect(y.c.snapshot().error).toContain('游标循环');expect(y.posts).toHaveLength(0);y.c.stop();
 });
+
+// Replay A's actual event body; this controlled transport is not a live backend.
+it('a rejected historical event leaves reconnect usable; a valid reread restores creation without sending a turn',async()=>{
+ const actual=(await import('../fixtures/a-runtime-task-frame-event.json')).default;
+ const x=setup();const normal=x.transport.getMockImplementation()!;let broken=true;let payloadReads=0;
+ x.transport.mockImplementation(async(input,options)=>{
+  const path=String(input).split('?')[0];
+  if(options?.method!=='POST' && path.endsWith('/events'))return new Response(JSON.stringify(ok({items:[{
+   event_id:'event-8d13ffebd75540efa9ffee3d3a02cb32',stream_id:'conv-one',seq:1,type:'task.frame.committed',schema_version:'0.1',occurred_at:now,
+   payload_ref:ref('event','event-8d13ffebd75540efa9ffee3d3a02cb32')
+  }],snapshot_revision:1})));
+  if(path.endsWith('/payload')){payloadReads++;const wire=structuredClone(actual);
+   if(broken)Object.assign(wire.payload.parameters.output_specs[0],{unexpected_field:'must reject'});
+   return new Response(JSON.stringify(wire));}
+  return normal(input,options);
+ });
+ try{
+  await x.c.start('conv-one');expect(x.c.snapshot().connected).toBe(false);expect(x.c.snapshot().error).toContain('连接中断');
+  await x.c.create('blocked','model-one');expect(x.posts).toHaveLength(0);expect(x.c.snapshot().busy).toBe(false);
+  broken=false;await x.c.reconnect();expect(payloadReads).toBe(2);expect(x.c.snapshot().connected).toBe(true);
+  expect(x.c.snapshot().frame).toEqual(actual.payload.parameters);expect(x.c.snapshot().run).toBeUndefined();expect(x.posts).toHaveLength(0);
+  await x.c.create('after recover','model-one');expect(x.posts).toHaveLength(1);
+  expect(x.c.snapshot().busy).toBe(false);expect(x.c.snapshot().connected).toBe(true);
+ }finally{x.c.stop();}
+});

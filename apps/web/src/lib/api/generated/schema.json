@@ -4,9 +4,11 @@
   "$defs": {
     "Acknowledgement": {
       "type": "object",
+      "description": "确认受理，不证明整个任务已完成。",
       "properties": {
         "operation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "受理ID"
         },
         "status": {
           "type": "string",
@@ -15,7 +17,8 @@
             "unchanged",
             "completed",
             "pending"
-          ]
+          ],
+          "description": "确认状态"
         },
         "related_refs": {
           "type": "array",
@@ -23,7 +26,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "相关资源"
         }
       },
       "required": [
@@ -34,42 +38,55 @@
     },
     "AgentInstance": {
       "type": "object",
+      "description": "运行实例与持久定义分离。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "实例ID"
         },
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "所属运行"
         },
         "parent_agent_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "根实例无父"
         },
         "definition_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "使用的角色版本"
         },
         "delegation_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "子实例的委派契约"
         },
         "status": {
-          "$ref": "#/$defs/State"
+          "$ref": "#/$defs/State",
+          "description": "实例状态"
         },
         "model_policy_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "实际继承或覆盖政策"
         },
         "capability_policy_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "有效权限交集"
         },
         "context_epoch": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "上下文纪元"
         },
         "workspace_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "需要文件操作时绑定"
         },
         "result_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "终态结果"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "实例版本"
         }
       },
       "required": [
@@ -85,15 +102,19 @@
     },
     "AgentResult": {
       "type": "object",
+      "description": "子Agent返回候选成果，父Agent仍需核验。",
       "properties": {
         "agent_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "完成实例版本"
         },
         "outcome": {
-          "$ref": "#/$defs/Outcome"
+          "$ref": "#/$defs/Outcome",
+          "description": "真实结果"
         },
         "summary": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "结果摘要"
         },
         "output_refs": {
           "type": "array",
@@ -101,7 +122,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "交付引用"
         },
         "verification_refs": {
           "type": "array",
@@ -109,7 +131,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "核验证据"
         },
         "limitations": {
           "type": "array",
@@ -117,10 +140,12 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "未完成项"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "真实累计用量"
         }
       },
       "required": [
@@ -136,12 +161,15 @@
     },
     "ApprovalDecision": {
       "type": "object",
+      "description": "由用户或批准的审查服务签发，LLM工具参数不含批准结果。",
       "properties": {
         "decision": {
-          "$ref": "#/$defs/ApprovalDecisionKind"
+          "$ref": "#/$defs/ApprovalDecisionKind",
+          "description": "单次/限定持续/拒绝/取消"
         },
         "expected_arguments_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "对应动作参数"
         },
         "expected_resource_refs": {
           "type": "array",
@@ -149,16 +177,20 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "对应版本"
         },
         "scope_selector": {
-          "$ref": "#/$defs/ScopeSelector"
+          "$ref": "#/$defs/ScopeSelector",
+          "description": "限定持续范围"
         },
         "expires_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "持续授权截止"
         },
         "reason": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "理由"
         }
       },
       "required": [
@@ -190,6 +222,7 @@
       ]
     },
     "ApprovalDecisionKind": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "approve_once",
@@ -200,21 +233,27 @@
     },
     "ApprovalGrant": {
       "type": "object",
+      "description": "授权结果不是无限期全局允许。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "授权"
         },
         "approval_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "审批版本"
         },
         "actor": {
-          "$ref": "#/$defs/Principal"
+          "$ref": "#/$defs/Principal",
+          "description": "真实批准者"
         },
         "decision": {
-          "$ref": "#/$defs/ApprovalDecision"
+          "$ref": "#/$defs/ApprovalDecision",
+          "description": "用户决定"
         },
         "issued_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "签发时间"
         }
       },
       "required": [
@@ -227,6 +266,7 @@
       "additionalProperties": false
     },
     "ApprovalMode": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "assisted",
@@ -236,18 +276,23 @@
     },
     "ApprovalRequest": {
       "type": "object",
+      "description": "审批绑定动作、参数与资源版本。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "审批"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "审批版本"
         },
         "action_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "动作"
         },
         "arguments_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "规范参数"
         },
         "resource_refs": {
           "type": "array",
@@ -255,22 +300,28 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "预期目标版本"
         },
         "effect": {
-          "$ref": "#/$defs/EffectKind"
+          "$ref": "#/$defs/EffectKind",
+          "description": "效果"
         },
         "summary": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "用户可读动作"
         },
         "mode": {
-          "$ref": "#/$defs/ApprovalMode"
+          "$ref": "#/$defs/ApprovalMode",
+          "description": "当前政策"
         },
         "status": {
-          "$ref": "#/$defs/ApprovalStatus"
+          "$ref": "#/$defs/ApprovalStatus",
+          "description": "等待/批准等"
         },
         "expires_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "有效期"
         }
       },
       "required": [
@@ -288,6 +339,7 @@
       "additionalProperties": false
     },
     "ApprovalStatus": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "pending",
@@ -300,12 +352,15 @@
     },
     "ApprovalsDecideRequest": {
       "type": "object",
+      "description": "用户审批。",
       "properties": {
         "approval_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "审批"
         },
         "decision": {
-          "$ref": "#/$defs/ApprovalDecision"
+          "$ref": "#/$defs/ApprovalDecision",
+          "description": "批准范围"
         }
       },
       "required": [
@@ -316,9 +371,11 @@
     },
     "ApprovalsGetRequest": {
       "type": "object",
+      "description": "审批详情。",
       "properties": {
         "approval_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "审批"
         }
       },
       "required": [
@@ -328,12 +385,15 @@
     },
     "ArtifactContentView": {
       "type": "object",
+      "description": "实际文本或Markdown成果正文。",
       "properties": {
         "artifact": {
-          "$ref": "#/$defs/ArtifactRecord"
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "不可变成果元数据"
         },
         "content": {
-          "$ref": "#/$defs/ArtifactPreviewText"
+          "$ref": "#/$defs/ArtifactPreviewText",
+          "description": "完整正文"
         }
       },
       "required": [
@@ -343,35 +403,45 @@
       "additionalProperties": false
     },
     "ArtifactPreviewText": {
+      "description": "完整UTF-8文本预览；服务再检查最大65536字节和SHA256，不截断。",
       "type": "string",
       "maxLength": 65536
     },
     "ArtifactRecord": {
       "type": "object",
+      "description": "用户可编辑、预览、导出的版本化成果。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "成果"
         },
         "version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "内容版本"
         },
         "title": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "展示名"
         },
         "format_kind": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "例如markdown/csv/source_code"
         },
         "media_type": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "MIME"
         },
         "content_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "实际内容"
         },
         "size_bytes": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "字节数"
         },
         "content_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "摘要"
         },
         "provenance_refs": {
           "type": "array",
@@ -379,7 +449,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "生成/数据来源"
         },
         "verification_refs": {
           "type": "array",
@@ -387,10 +458,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "该版本证据"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "登记时间"
         }
       },
       "required": [
@@ -410,15 +483,19 @@
     },
     "ArtifactsContentRequest": {
       "type": "object",
+      "description": "读取完整文本/Markdown；固定版本与hash必需。",
       "properties": {
         "artifact_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "成果"
         },
         "version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "精确版本"
         },
         "content_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "预期SHA256"
         }
       },
       "required": [
@@ -430,12 +507,15 @@
     },
     "ArtifactsGetRequest": {
       "type": "object",
+      "description": "成果版本。",
       "properties": {
         "artifact_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "成果"
         },
         "version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "不指定返回当前版本"
         }
       },
       "required": [
@@ -445,16 +525,20 @@
     },
     "AuthenticationFailure": {
       "type": "object",
+      "description": "认证失败不透露受保护资源存在性。",
       "properties": {
         "code": {
           "$ref": "#/$defs/ID",
+          "description": "稳定认证错误码",
           "const": "authentication_required"
         },
         "message": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "安全提示"
         },
         "request_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "关联"
         }
       },
       "required": [
@@ -465,25 +549,32 @@
       "additionalProperties": false
     },
     "Bool": {
+      "description": "布尔值，不能用字符串true或整数替代。",
       "type": "boolean"
     },
     "Budget": {
       "type": "object",
+      "description": "运行总预算/子预算请求。",
       "properties": {
         "limits": {
-          "$ref": "#/$defs/ResourceVector"
+          "$ref": "#/$defs/ResourceVector",
+          "description": "总上限"
         },
         "max_steps": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "动作循环次数上限"
         },
         "max_depth": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "委派最大深度"
         },
         "deadline": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "绝对截止"
         },
         "parent_reservation_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "父预留引用"
         }
       },
       "required": [
@@ -496,15 +587,19 @@
     },
     "BudgetReservation": {
       "type": "object",
+      "description": "所有重试和子Agent共享父预算账本。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "预留"
         },
         "parent_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "父预留"
         },
         "estimates": {
-          "$ref": "#/$defs/ResourceVector"
+          "$ref": "#/$defs/ResourceVector",
+          "description": "预留量"
         },
         "settled_usage_refs": {
           "type": "array",
@@ -512,13 +607,16 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "尝试账单"
         },
         "status": {
-          "$ref": "#/$defs/ReservationState"
+          "$ref": "#/$defs/ReservationState",
+          "description": "预留状态"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "账本版本"
         }
       },
       "required": [
@@ -531,6 +629,7 @@
       "additionalProperties": false
     },
     "ChangeKind": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "add",
@@ -541,15 +640,19 @@
     },
     "ChangeSet": {
       "type": "object",
+      "description": "Diff绑定具体输入版本；不能覆盖用户之后的编辑。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "变更集"
         },
         "base_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "基础文件树"
         },
         "target_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "修改后文件树"
         },
         "units": {
           "type": "array",
@@ -557,7 +660,8 @@
             "$ref": "#/$defs/ChangeUnit"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "可选择改动"
         },
         "provenance_refs": {
           "type": "array",
@@ -565,10 +669,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "命令/模型动作来源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "登记版本"
         }
       },
       "required": [
@@ -583,30 +689,39 @@
     },
     "ChangeUnit": {
       "type": "object",
+      "description": "可审阅与选择的改动单位。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "改动块ID"
         },
         "path": {
-          "$ref": "#/$defs/RelativePath"
+          "$ref": "#/$defs/RelativePath",
+          "description": "文件"
         },
         "kind": {
-          "$ref": "#/$defs/ChangeKind"
+          "$ref": "#/$defs/ChangeKind",
+          "description": "修改/新增/删除/改名"
         },
         "before_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "改前版本"
         },
         "after_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "改后版本"
         },
         "location": {
-          "$ref": "#/$defs/Location"
+          "$ref": "#/$defs/Location",
+          "description": "文本改动位置"
         },
         "patch_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "差异内容"
         },
         "binary": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "二进制不能行级合并"
         }
       },
       "required": [
@@ -618,6 +733,7 @@
       "additionalProperties": false
     },
     "CheckState": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "passed",
@@ -628,18 +744,23 @@
     },
     "Checkpoint": {
       "type": "object",
+      "description": "引用跨模块已提交版本，不能声称撤销外部动作。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "检查点"
         },
         "run_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "运行版本"
         },
         "schema_version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "快照格式"
         },
         "committed_event_seq": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "最后提交事件"
         },
         "domains": {
           "type": "array",
@@ -647,7 +768,8 @@
             "$ref": "#/$defs/DomainCheckpoint"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "各域固定版本"
         },
         "pending_action_refs": {
           "type": "array",
@@ -655,10 +777,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "待对账动作"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提交时间"
         }
       },
       "required": [
@@ -674,18 +798,23 @@
     },
     "CompletionAcceptance": {
       "type": "object",
+      "description": "独立认证用户对确切成果版本的审阅记录。",
       "properties": {
         "bundle_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "确切不可变交付Bundle"
         },
         "principal": {
-          "$ref": "#/$defs/Principal"
+          "$ref": "#/$defs/Principal",
+          "description": "真实认证用户"
         },
         "decision": {
-          "$ref": "#/$defs/DeliveryDecision"
+          "$ref": "#/$defs/DeliveryDecision",
+          "description": "用户决定"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "实际登记时间"
         }
       },
       "required": [
@@ -698,12 +827,15 @@
     },
     "ConfigurationVersion": {
       "type": "object",
+      "description": "管理员配置发布经过校验后成为有效版本。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "配置域"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "版本"
         },
         "model_refs": {
           "type": "array",
@@ -711,7 +843,8 @@
             "$ref": "#/$defs/ModelRef"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "模型目录"
         },
         "provider_refs": {
           "type": "array",
@@ -719,7 +852,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "工具/搜索绑定"
         },
         "environment_template_refs": {
           "type": "array",
@@ -727,7 +861,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "环境模板"
         },
         "feature_flags": {
           "type": "array",
@@ -735,16 +870,20 @@
             "$ref": "#/$defs/FeatureFlag"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "能力开关"
         },
         "approval_policy_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "审批政策"
         },
         "storage_policy_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "存储部署政策"
         },
         "state": {
-          "$ref": "#/$defs/ProviderState"
+          "$ref": "#/$defs/ProviderState",
+          "description": "发布状态"
         }
       },
       "required": [
@@ -761,13 +900,16 @@
       "additionalProperties": false
     },
     "Constraint": {
+      "description": "命名兼容别名，结构以 Requirement 为准。",
       "$ref": "#/$defs/Requirement"
     },
     "Contract": {
       "type": "object",
+      "description": "语义目标+结构+证据契约，不写死行业字段。",
       "properties": {
         "goal": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "目标"
         },
         "requirements": {
           "type": "array",
@@ -775,7 +917,8 @@
             "$ref": "#/$defs/Requirement"
           },
           "minItems": 0,
-          "maxItems": 128
+          "maxItems": 128,
+          "description": "验收条件"
         },
         "outputs": {
           "type": "array",
@@ -783,13 +926,16 @@
             "$ref": "#/$defs/OutputSpec"
           },
           "minItems": 0,
-          "maxItems": 32
+          "maxItems": 32,
+          "description": "交付物要求"
         },
         "version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "契约版本"
         },
         "acceptance_required": {
           "$ref": "#/$defs/Bool",
+          "description": "Task结束是否需用户接受",
           "default": false
         }
       },
@@ -802,6 +948,7 @@
       "additionalProperties": false
     },
     "ControlMode": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "steer",
@@ -813,36 +960,47 @@
     },
     "Conversation": {
       "type": "object",
+      "description": "会话不等于Task；首期单用户仍有独立主体。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "owner_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "服务注入用户"
         },
         "title": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "标题"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "会话版本"
         },
         "project_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "可选本地/云项目绑定"
         },
         "model_policy_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "会话模型选择"
         },
         "memory_policy": {
-          "$ref": "#/$defs/MemoryPolicy"
+          "$ref": "#/$defs/MemoryPolicy",
+          "description": "独立读写开关"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "创建时间"
         },
         "updated_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "修改时间"
         },
         "approval_mode": {
           "$ref": "#/$defs/ApprovalMode",
+          "description": "用户选择；不能扩大管理员政策与本机权限。",
           "default": "manual"
         }
       },
@@ -861,12 +1019,15 @@
     },
     "ConversationModelChoice": {
       "type": "object",
+      "description": "用户选择当前会话模型；无法选inherit。",
       "properties": {
         "mode": {
-          "$ref": "#/$defs/ConversationModelMode"
+          "$ref": "#/$defs/ConversationModelMode",
+          "description": "explicit或auto"
         },
         "model_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "固定模型ID"
         },
         "allowed_model_ids": {
           "type": "array",
@@ -874,7 +1035,8 @@
             "$ref": "#/$defs/ID"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "Auto授权范围"
         }
       },
       "required": [
@@ -934,6 +1096,7 @@
       ]
     },
     "ConversationModelMode": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "explicit",
@@ -942,6 +1105,7 @@
     },
     "ConversationPage": {
       "type": "object",
+      "description": "稳定筛选条件的分页结果。",
       "properties": {
         "items": {
           "type": "array",
@@ -949,13 +1113,16 @@
             "$ref": "#/$defs/Conversation"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "本页"
         },
         "next_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "snapshot_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "读取版本"
         }
       },
       "required": [
@@ -966,21 +1133,27 @@
     },
     "ConversationsCreateRequest": {
       "type": "object",
+      "description": "创建会话。",
       "properties": {
         "title": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "标题"
         },
         "model_choice": {
-          "$ref": "#/$defs/ConversationModelChoice"
+          "$ref": "#/$defs/ConversationModelChoice",
+          "description": "用户选定模型"
         },
         "project_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "获准项目"
         },
         "memory_policy": {
-          "$ref": "#/$defs/MemoryPolicy"
+          "$ref": "#/$defs/MemoryPolicy",
+          "description": "记忆控制"
         },
         "approval_mode": {
           "$ref": "#/$defs/ApprovalMode",
+          "description": "用户选择；不能扩大管理员政策与本机权限。",
           "default": "manual"
         }
       },
@@ -993,9 +1166,11 @@
     },
     "ConversationsGetRequest": {
       "type": "object",
+      "description": "读取会话。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "路径会话"
         }
       },
       "required": [
@@ -1005,15 +1180,19 @@
     },
     "ConversationsItemsRequest": {
       "type": "object",
+      "description": "可见交互记录。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "limit": {
-          "$ref": "#/$defs/PageLimit"
+          "$ref": "#/$defs/PageLimit",
+          "description": "页大小"
         }
       },
       "required": [
@@ -1023,36 +1202,44 @@
     },
     "ConversationsListRequest": {
       "type": "object",
+      "description": "查询自己的会话。",
       "properties": {
         "cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "limit": {
-          "$ref": "#/$defs/PageLimit"
+          "$ref": "#/$defs/PageLimit",
+          "description": "页大小"
         }
       },
       "required": [],
       "additionalProperties": false
     },
     "Count": {
+      "description": "非负计数。",
       "type": "integer",
       "minimum": 0,
       "maximum": 2147483647
     },
     "Cursor": {
+      "description": "不透明分页/事件位置；主体与过滤范围绑定，过期需快照。",
       "type": "string",
       "minLength": 1,
       "maxLength": 2048
     },
     "Decimal": {
+      "description": "精确非负十进制字符串，用于金额，不以二进制float计账。",
       "type": "string",
       "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,9})?$"
     },
     "DeletionReceipt": {
       "type": "object",
+      "description": "删除回执含派生失效，不掩盖异步物理清除。",
       "properties": {
         "deletion_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "删除事务"
         },
         "deleted_refs": {
           "type": "array",
@@ -1060,7 +1247,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "逻辑删除"
         },
         "invalidated_refs": {
           "type": "array",
@@ -1068,10 +1256,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "索引/缓存失效"
         },
         "physical_cleanup_pending": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "物理回收状态"
         }
       },
       "required": [
@@ -1083,6 +1273,7 @@
       "additionalProperties": false
     },
     "DeliveryDecision": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "accept",
@@ -1093,15 +1284,19 @@
     },
     "DeliveryProposal": {
       "type": "object",
+      "description": "候选完成提案，不能由模型直接置Run为completed。",
       "properties": {
         "run_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "目标运行版本"
         },
         "contract_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "交付标准"
         },
         "outcome": {
-          "$ref": "#/$defs/Outcome"
+          "$ref": "#/$defs/Outcome",
+          "description": "建议终态"
         },
         "artifact_refs": {
           "type": "array",
@@ -1109,10 +1304,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "成果版本"
         },
         "report_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "语义及执行证据报告"
         },
         "unresolved_effect_refs": {
           "type": "array",
@@ -1120,10 +1317,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "未确认外部效果"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提案时间"
         }
       },
       "required": [
@@ -1160,15 +1359,19 @@
     },
     "DomainCheckpoint": {
       "type": "object",
+      "description": "一个域的恢复指针。",
       "properties": {
         "domain": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "域名"
         },
         "resource_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定版本"
         },
         "lease_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "可选控制租约"
         }
       },
       "required": [
@@ -1179,18 +1382,23 @@
     },
     "DraftPreview": {
       "type": "object",
+      "description": "发送前只读理解提示；发送后不得冒充已执行。",
       "properties": {
         "draft_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "对应草稿"
         },
         "interpretation": {
-          "$ref": "#/$defs/Interpretation"
+          "$ref": "#/$defs/Interpretation",
+          "description": "提示"
         },
         "model_config_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "实际模型"
         },
         "expires_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提示有效期"
         }
       },
       "required": [
@@ -1202,11 +1410,13 @@
       "additionalProperties": false
     },
     "Duration": {
+      "description": "毫秒；0仅在明确支持非阻塞查询的接口允许。",
       "type": "integer",
       "minimum": 0,
       "maximum": 604800000
     },
     "EffectKind": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "read",
@@ -1218,6 +1428,7 @@
       ]
     },
     "EffectState": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "confirmed",
@@ -1227,12 +1438,15 @@
     },
     "EnvVar": {
       "type": "object",
+      "description": "显式环境变量；秘密值只由Runner/服务注入。",
       "properties": {
         "name": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "变量名"
         },
         "value": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "非秘密值"
         }
       },
       "required": [
@@ -1243,36 +1457,47 @@
     },
     "EventEnvelope": {
       "type": "object",
+      "description": "持久事件有序号、版本与可追溯项。",
       "properties": {
         "event_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "事件去重键"
         },
         "stream_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "作用域流"
         },
         "seq": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "单调流序号"
         },
         "type": {
-          "$ref": "#/$defs/EventType"
+          "$ref": "#/$defs/EventType",
+          "description": "注册事件类型；payload_ref解引用后按EventPayload分支校验。"
         },
         "schema_version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "事件协议版本"
         },
         "occurred_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提交时间"
         },
         "item_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "交互项"
         },
         "payload_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定类型的事件payload"
         },
         "base_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "应用前版本"
         },
         "result_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "应用后版本"
         }
       },
       "required": [
@@ -1288,6 +1513,7 @@
     },
     "EventPage": {
       "type": "object",
+      "description": "稳定筛选条件的分页结果。",
       "properties": {
         "items": {
           "type": "array",
@@ -1295,13 +1521,16 @@
             "$ref": "#/$defs/EventEnvelope"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "本页"
         },
         "next_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "snapshot_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "读取版本"
         }
       },
       "required": [
@@ -1311,6 +1540,7 @@
       "additionalProperties": false
     },
     "EventPayload": {
+      "description": "互斥分支；所有字段须匹配所选action。",
       "oneOf": [
         {
           "$ref": "#/$defs/EventPayloadInput.committed"
@@ -1382,13 +1612,16 @@
     },
     "EventPayloadAgent.result": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "agent.result"
+          "const": "agent.result",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/AgentResult"
+          "$ref": "#/$defs/AgentResult",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1399,13 +1632,16 @@
     },
     "EventPayloadAgent.updated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "agent.updated"
+          "const": "agent.updated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/AgentInstance"
+          "$ref": "#/$defs/AgentInstance",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1416,13 +1652,16 @@
     },
     "EventPayloadApproval.decided": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "approval.decided"
+          "const": "approval.decided",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ApprovalGrant"
+          "$ref": "#/$defs/ApprovalGrant",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1433,13 +1672,16 @@
     },
     "EventPayloadApproval.required": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "approval.required"
+          "const": "approval.required",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ApprovalRequest"
+          "$ref": "#/$defs/ApprovalRequest",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1450,13 +1692,16 @@
     },
     "EventPayloadArtifact.registered": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "artifact.registered"
+          "const": "artifact.registered",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ArtifactRecord"
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1467,13 +1712,16 @@
     },
     "EventPayloadBudget.updated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "budget.updated"
+          "const": "budget.updated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/BudgetReservation"
+          "$ref": "#/$defs/BudgetReservation",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1484,13 +1732,16 @@
     },
     "EventPayloadChanges.committed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "changes.committed"
+          "const": "changes.committed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ChangeSet"
+          "$ref": "#/$defs/ChangeSet",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1501,13 +1752,16 @@
     },
     "EventPayloadCheckpoint.committed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "checkpoint.committed"
+          "const": "checkpoint.committed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/Checkpoint"
+          "$ref": "#/$defs/Checkpoint",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1518,13 +1772,16 @@
     },
     "EventPayloadConfiguration.activated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "configuration.activated"
+          "const": "configuration.activated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ConfigurationVersion"
+          "$ref": "#/$defs/ConfigurationVersion",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1535,13 +1792,16 @@
     },
     "EventPayloadControl.accepted": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "control.accepted"
+          "const": "control.accepted",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/Acknowledgement"
+          "$ref": "#/$defs/Acknowledgement",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1552,13 +1812,16 @@
     },
     "EventPayloadInput.committed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "input.committed"
+          "const": "input.committed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/InputRecord"
+          "$ref": "#/$defs/InputRecord",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1569,13 +1832,16 @@
     },
     "EventPayloadItem.delta": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "item.delta"
+          "const": "item.delta",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ItemPatch"
+          "$ref": "#/$defs/ItemPatch",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1586,13 +1852,16 @@
     },
     "EventPayloadItem.updated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "item.updated"
+          "const": "item.updated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/InteractionItem"
+          "$ref": "#/$defs/InteractionItem",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1603,13 +1872,16 @@
     },
     "EventPayloadMemory.deleted": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "memory.deleted"
+          "const": "memory.deleted",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/DeletionReceipt"
+          "$ref": "#/$defs/DeletionReceipt",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1620,13 +1892,16 @@
     },
     "EventPayloadPlan.committed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "plan.committed"
+          "const": "plan.committed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/TaskGraph"
+          "$ref": "#/$defs/TaskGraph",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1637,13 +1912,16 @@
     },
     "EventPayloadProcess.updated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "process.updated"
+          "const": "process.updated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ProcessRecord"
+          "$ref": "#/$defs/ProcessRecord",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1654,13 +1932,16 @@
     },
     "EventPayloadRun.updated": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "run.updated"
+          "const": "run.updated",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/RunRecord"
+          "$ref": "#/$defs/RunRecord",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1671,13 +1952,16 @@
     },
     "EventPayloadTask.frame.committed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "task.frame.committed"
+          "const": "task.frame.committed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/TaskFrame"
+          "$ref": "#/$defs/TaskFrame",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1688,13 +1972,16 @@
     },
     "EventPayloadTool.completed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "tool.completed"
+          "const": "tool.completed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ToolResult"
+          "$ref": "#/$defs/ToolResult",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1705,13 +1992,16 @@
     },
     "EventPayloadTool.started": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "tool.started"
+          "const": "tool.started",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/ValidatedCall"
+          "$ref": "#/$defs/ValidatedCall",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1722,13 +2012,16 @@
     },
     "EventPayloadUnderstanding.preview": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "understanding.preview"
+          "const": "understanding.preview",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/DraftPreview"
+          "$ref": "#/$defs/DraftPreview",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1739,13 +2032,16 @@
     },
     "EventPayloadVerification.completed": {
       "type": "object",
+      "description": "按action选择的独立参数/结果分支。",
       "properties": {
         "action": {
           "type": "string",
-          "const": "verification.completed"
+          "const": "verification.completed",
+          "description": "分支标识"
         },
         "parameters": {
-          "$ref": "#/$defs/VerificationReport"
+          "$ref": "#/$defs/VerificationReport",
+          "description": "该分支的明确结构"
         }
       },
       "required": [
@@ -1755,6 +2051,7 @@
       "additionalProperties": false
     },
     "EventType": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "input.committed",
@@ -1783,9 +2080,11 @@
     },
     "EventsPayloadRequest": {
       "type": "object",
+      "description": "读取同主体持久事件的严格分支载荷。",
       "properties": {
         "event_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "事件"
         }
       },
       "required": [
@@ -1795,15 +2094,19 @@
     },
     "EventsReadRequest": {
       "type": "object",
+      "description": "分页读取历史事件。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "limit": {
-          "$ref": "#/$defs/PageLimit"
+          "$ref": "#/$defs/PageLimit",
+          "description": "页大小"
         }
       },
       "required": [
@@ -1812,30 +2115,38 @@
       "additionalProperties": false
     },
     "ExitCode": {
+      "description": "真实进程退出码；不能用缺省0表示成功。",
       "type": "integer",
       "minimum": -2147483648,
       "maximum": 4294967295
     },
     "Failure": {
       "type": "object",
+      "description": "类型化失败，不携带秘密与隐藏思维。",
       "properties": {
         "code": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "稳定错误码"
         },
         "category": {
-          "$ref": "#/$defs/FailureCategory"
+          "$ref": "#/$defs/FailureCategory",
+          "description": "错误类别"
         },
         "message": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "面向用户的明确失败原因；不得为空。"
         },
         "retryable": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "是否允许按原契约恢复"
         },
         "failed_phase": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "失败阶段"
         },
         "recover_hint": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "可允许的修复建议"
         },
         "evidence_refs": {
           "type": "array",
@@ -1843,13 +2154,16 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "受控诊断证据"
         },
         "side_effect_state": {
-          "$ref": "#/$defs/EffectState"
+          "$ref": "#/$defs/EffectState",
+          "description": "实际副作用状态"
         },
         "retry_after_ms": {
-          "$ref": "#/$defs/Duration"
+          "$ref": "#/$defs/Duration",
+          "description": "可选退避"
         }
       },
       "required": [
@@ -1862,6 +2176,7 @@
       "additionalProperties": false
     },
     "FailureCategory": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "arguments",
@@ -1880,18 +2195,23 @@
     },
     "FeatureFlag": {
       "type": "object",
+      "description": "关闭能力在发现、调用、恢复和子Agent处均执行。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "能力旗标"
         },
         "enabled": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "当前允许"
         },
         "scope": {
-          "$ref": "#/$defs/ScopeSelector"
+          "$ref": "#/$defs/ScopeSelector",
+          "description": "适用产品范围"
         },
         "reason": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "说明"
         }
       },
       "required": [
@@ -1903,11 +2223,13 @@
       "additionalProperties": false
     },
     "Hash": {
+      "description": "SHA-256内容/规范参数摘要；不是匿名化。",
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
     "HttpApprovalsDecideResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -1920,10 +2242,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ApprovalGrant"
+          "$ref": "#/$defs/ApprovalGrant",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -1931,19 +2255,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2029,6 +2358,7 @@
     },
     "HttpApprovalsGetResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2041,10 +2371,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ApprovalRequest"
+          "$ref": "#/$defs/ApprovalRequest",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2052,19 +2384,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2150,6 +2487,7 @@
     },
     "HttpArtifactsContentResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2162,10 +2500,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ArtifactContentView"
+          "$ref": "#/$defs/ArtifactContentView",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2173,19 +2513,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2271,6 +2616,7 @@
     },
     "HttpArtifactsGetResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2283,10 +2629,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ArtifactRecord"
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2294,19 +2642,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2392,6 +2745,7 @@
     },
     "HttpConversationsCreateResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2404,10 +2758,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/Conversation"
+          "$ref": "#/$defs/Conversation",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2415,19 +2771,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2513,6 +2874,7 @@
     },
     "HttpConversationsGetResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2525,10 +2887,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/Conversation"
+          "$ref": "#/$defs/Conversation",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2536,19 +2900,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2634,6 +3003,7 @@
     },
     "HttpConversationsItemsResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2646,10 +3016,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ItemPage"
+          "$ref": "#/$defs/ItemPage",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2657,19 +3029,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2755,6 +3132,7 @@
     },
     "HttpConversationsListResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2767,10 +3145,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ConversationPage"
+          "$ref": "#/$defs/ConversationPage",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2778,19 +3158,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2876,6 +3261,7 @@
     },
     "HttpEventsPayloadResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -2888,10 +3274,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/EventPayload"
+          "$ref": "#/$defs/EventPayload",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -2899,19 +3287,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -2997,6 +3390,7 @@
     },
     "HttpEventsReadResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3009,10 +3403,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/EventPage"
+          "$ref": "#/$defs/EventPage",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3020,19 +3416,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3118,6 +3519,7 @@
     },
     "HttpModelsListResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3130,10 +3532,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/ModelPage"
+          "$ref": "#/$defs/ModelPage",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3141,19 +3545,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3239,6 +3648,7 @@
     },
     "HttpRunsControlResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3251,10 +3661,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/Acknowledgement"
+          "$ref": "#/$defs/Acknowledgement",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3262,19 +3674,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3360,6 +3777,7 @@
     },
     "HttpRunsDeliveryAcceptResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3372,10 +3790,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/CompletionAcceptance"
+          "$ref": "#/$defs/CompletionAcceptance",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3383,19 +3803,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3481,6 +3906,7 @@
     },
     "HttpRunsDeliveryResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3493,10 +3919,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/RunDeliveryView"
+          "$ref": "#/$defs/RunDeliveryView",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3504,19 +3932,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3602,6 +4035,7 @@
     },
     "HttpRunsGetResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3614,10 +4048,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/RunRecord"
+          "$ref": "#/$defs/RunRecord",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3625,19 +4061,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3723,6 +4164,7 @@
     },
     "HttpTasksFrameResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3735,10 +4177,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/TaskFrame"
+          "$ref": "#/$defs/TaskFrame",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3746,19 +4190,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3844,6 +4293,7 @@
     },
     "HttpTurnsLookupResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3856,10 +4306,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/RunRecord"
+          "$ref": "#/$defs/RunRecord",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3867,19 +4319,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -3965,6 +4422,7 @@
     },
     "HttpTurnsSubmitResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -3977,10 +4435,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/RunRecord"
+          "$ref": "#/$defs/RunRecord",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -3988,19 +4448,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -4086,6 +4551,7 @@
     },
     "HttpWebSessionExchangeResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -4098,10 +4564,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/WebSession"
+          "$ref": "#/$defs/WebSession",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -4109,19 +4577,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -4207,6 +4680,7 @@
     },
     "HttpWebSessionGetResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -4219,10 +4693,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/WebSession"
+          "$ref": "#/$defs/WebSession",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -4230,19 +4706,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -4328,6 +4809,7 @@
     },
     "HttpWebSessionLogoutResult": {
       "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
       "properties": {
         "kind": {
           "type": "string",
@@ -4340,10 +4822,12 @@
             "stale",
             "failed",
             "cancelled"
-          ]
+          ],
+          "description": "接口状态"
         },
         "payload": {
-          "$ref": "#/$defs/Acknowledgement"
+          "$ref": "#/$defs/Acknowledgement",
+          "description": "ok的业务结果"
         },
         "output_refs": {
           "type": "array",
@@ -4351,19 +4835,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
         },
         "wait_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
         }
       },
       "required": [
@@ -4448,6 +4937,7 @@
       ]
     },
     "ID": {
+      "description": "域内不透明标识，不能推断主体或访问权限。",
       "type": "string",
       "minLength": 1,
       "maxLength": 128,
@@ -4455,18 +4945,23 @@
     },
     "InputRecord": {
       "type": "object",
+      "description": "原文追加保存，不覆盖已有输入。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "输入"
         },
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "turn_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "轮次"
         },
         "text": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "用户原文"
         },
         "attachment_refs": {
           "type": "array",
@@ -4474,10 +4969,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "获准附件"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提交时间"
         }
       },
       "required": [
@@ -4492,27 +4989,35 @@
     },
     "InteractionItem": {
       "type": "object",
+      "description": "稳定前端交互对象，不依赖猜模型文本。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "交互项"
         },
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "运行"
         },
         "type": {
-          "$ref": "#/$defs/ItemType"
+          "$ref": "#/$defs/ItemType",
+          "description": "消息/工具/文件/审批等"
         },
         "status": {
-          "$ref": "#/$defs/ItemStatus"
+          "$ref": "#/$defs/ItemStatus",
+          "description": "交互状态"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "项版本"
         },
         "text": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "可见内容"
         },
         "resource_refs": {
           "type": "array",
@@ -4520,13 +5025,16 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "关联真实资源"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "开始"
         },
         "updated_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "最近更新"
         }
       },
       "required": [
@@ -4544,9 +5052,11 @@
     },
     "Interpretation": {
       "type": "object",
+      "description": "一个有来源的理解候选。",
       "properties": {
         "goal": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "候选目标"
         },
         "assumptions": {
           "type": "array",
@@ -4554,7 +5064,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "未获用户确认的假设"
         },
         "source_refs": {
           "type": "array",
@@ -4562,7 +5073,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "原文与补充来源"
         },
         "missing_facts": {
           "type": "array",
@@ -4570,7 +5082,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "缺少的信息"
         }
       },
       "required": [
@@ -4583,6 +5096,7 @@
     },
     "ItemPage": {
       "type": "object",
+      "description": "稳定筛选条件的分页结果。",
       "properties": {
         "items": {
           "type": "array",
@@ -4590,13 +5104,16 @@
             "$ref": "#/$defs/InteractionItem"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "本页"
         },
         "next_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "snapshot_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "读取版本"
         }
       },
       "required": [
@@ -4607,21 +5124,27 @@
     },
     "ItemPatch": {
       "type": "object",
+      "description": "增量文本不可与整段替换混淆。",
       "properties": {
         "item_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "项"
         },
         "base_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "原版本"
         },
         "status": {
-          "$ref": "#/$defs/ItemStatus"
+          "$ref": "#/$defs/ItemStatus",
+          "description": "新状态"
         },
         "text_delta": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "追加文本"
         },
         "replacement_text": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "完整替换"
         },
         "resource_refs": {
           "type": "array",
@@ -4629,7 +5152,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "替换资源"
         }
       },
       "required": [
@@ -4667,6 +5191,7 @@
       ]
     },
     "ItemStatus": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "pending",
@@ -4679,6 +5204,7 @@
       ]
     },
     "ItemType": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "user_message",
@@ -4696,6 +5222,7 @@
       ]
     },
     "JsonValue": {
+      "description": "仅用于显式扩展载荷/工具动态参数；必须再按关联schema验证，非可信权限。",
       "oneOf": [
         {
           "type": "null"
@@ -4725,6 +5252,7 @@
     },
     "Location": {
       "type": "object",
+      "description": "引用定位器，kind对应字段由Runtime交叉检查。",
       "properties": {
         "kind": {
           "type": "string",
@@ -4736,19 +5264,24 @@
             "json_pointer",
             "cell_range",
             "text_span"
-          ]
+          ],
+          "description": "定位种类"
         },
         "start": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "起点：页/行从1，字符offset从0"
         },
         "end": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "含义随kind，字符end为排他"
         },
         "anchor": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "段落ID/JSON Pointer/单元格范围"
         },
         "relative_path": {
-          "$ref": "#/$defs/RelativePath"
+          "$ref": "#/$defs/RelativePath",
+          "description": "工作区内文件位置"
         }
       },
       "required": [
@@ -4758,21 +5291,27 @@
     },
     "MemoryPolicy": {
       "type": "object",
+      "description": "读写独立开关，关闭后不能继续使用派生缓存。",
       "properties": {
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "政策版本"
         },
         "read_enabled": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "允许读"
         },
         "contribute_enabled": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "允许贡献"
         },
         "scope": {
-          "$ref": "#/$defs/ScopeSelector"
+          "$ref": "#/$defs/ScopeSelector",
+          "description": "生效范围"
         },
         "retention_ms": {
-          "$ref": "#/$defs/Duration"
+          "$ref": "#/$defs/Duration",
+          "description": "保留时间"
         }
       },
       "required": [
@@ -4785,21 +5324,27 @@
     },
     "ModelCatalogEntry": {
       "type": "object",
+      "description": "管理员模型目录，不返回密钥。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "稳定目录ID"
         },
         "provider_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "提供方"
         },
         "display_name": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "展示名"
         },
         "context_limit_tokens": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "上下文窗口"
         },
         "output_limit_tokens": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "输出上限"
         },
         "capabilities": {
           "type": "array",
@@ -4807,16 +5352,20 @@
             "$ref": "#/$defs/ID"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "协议能力"
         },
         "status": {
-          "$ref": "#/$defs/ProviderState"
+          "$ref": "#/$defs/ProviderState",
+          "description": "启停状态"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "目录版本"
         },
         "pricing_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "可选固定价格；缺少时账单显式pending/estimated，不填0。"
         }
       },
       "required": [
@@ -4833,6 +5382,7 @@
     },
     "ModelPage": {
       "type": "object",
+      "description": "稳定筛选条件的分页结果。",
       "properties": {
         "items": {
           "type": "array",
@@ -4840,13 +5390,16 @@
             "$ref": "#/$defs/ModelCatalogEntry"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "本页"
         },
         "next_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "snapshot_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "读取版本"
         }
       },
       "required": [
@@ -4871,12 +5424,15 @@
     },
     "ModelsListRequest": {
       "type": "object",
+      "description": "用户可用模型目录。",
       "properties": {
         "cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "续页"
         },
         "limit": {
-          "$ref": "#/$defs/PageLimit"
+          "$ref": "#/$defs/PageLimit",
+          "description": "页大小"
         }
       },
       "required": [],
@@ -4884,12 +5440,15 @@
     },
     "NodeSpec": {
       "type": "object",
+      "description": "任务图节点，与Agent实例不是一一对应。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "图内稳定ID"
         },
         "goal": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "节点目标"
         },
         "depends_on": {
           "type": "array",
@@ -4897,7 +5456,8 @@
             "$ref": "#/$defs/ID"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "前置节点ID"
         },
         "input_refs": {
           "type": "array",
@@ -4905,13 +5465,16 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "固定输入"
         },
         "output_contract": {
-          "$ref": "#/$defs/Contract"
+          "$ref": "#/$defs/Contract",
+          "description": "节点交付标准"
         },
         "agent_definition_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "可选指定角色"
         },
         "read_refs": {
           "type": "array",
@@ -4919,7 +5482,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "预计读集"
         },
         "write_refs": {
           "type": "array",
@@ -4927,10 +5491,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "预计写集"
         },
         "budget": {
-          "$ref": "#/$defs/Budget"
+          "$ref": "#/$defs/Budget",
+          "description": "节点预算上限"
         }
       },
       "required": [
@@ -4946,17 +5512,20 @@
       "additionalProperties": false
     },
     "NonEmptyText": {
+      "description": "非空业务文本。",
       "type": "string",
       "minLength": 1,
       "maxLength": 16384
     },
     "Object": {
+      "description": "动态工具参数或注册扩展配置；必须有具体ToolSpec/config schema约束。",
       "type": "object",
       "additionalProperties": {
         "$ref": "#/$defs/JsonValue"
       }
     },
     "Outcome": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "succeeded",
@@ -4968,18 +5537,27 @@
     },
     "OutputSpec": {
       "type": "object",
+      "description": "一个可交付结果要求。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "成果要求ID"
         },
         "kind": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "成果类型"
+        },
+        "description": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "内容/用途"
         },
         "required": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "必需"
         },
         "schema_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "结构检查schema"
         }
       },
       "required": [
@@ -4991,6 +5569,7 @@
       "additionalProperties": false
     },
     "PageLimit": {
+      "description": "每页数量。",
       "type": "integer",
       "minimum": 1,
       "maximum": 100,
@@ -4998,9 +5577,11 @@
     },
     "Principal": {
       "type": "object",
+      "description": "可信身份摘要，不包含凭据。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "身份ID"
         },
         "kind": {
           "type": "string",
@@ -5009,13 +5590,16 @@
             "admin",
             "service",
             "runner"
-          ]
+          ],
+          "description": "身份类别"
         },
         "auth_session_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "已认证会话/设备绑定"
         },
         "delegated_by": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "委托来源"
         }
       },
       "required": [
@@ -5027,39 +5611,51 @@
     },
     "ProcessRecord": {
       "type": "object",
+      "description": "启动返回进程句柄，实际结果使用poll。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "进程"
         },
         "spec": {
-          "$ref": "#/$defs/ProcessSpec"
+          "$ref": "#/$defs/ProcessSpec",
+          "description": "实际配置"
         },
         "status": {
-          "$ref": "#/$defs/ProcessState"
+          "$ref": "#/$defs/ProcessState",
+          "description": "进程状态"
         },
         "started_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "启动时间"
         },
         "ended_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "结束时间"
         },
         "exit_code": {
-          "$ref": "#/$defs/ExitCode"
+          "$ref": "#/$defs/ExitCode",
+          "description": "真实退出码；未结束缺省"
         },
         "stdout_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "输出内容"
         },
         "stderr_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "错误输出"
         },
         "output_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "未读日志"
         },
         "change_set_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "命令造成的改动"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "启动/终止失败"
         }
       },
       "required": [
@@ -5072,12 +5668,15 @@
     },
     "ProcessSpec": {
       "type": "object",
+      "description": "argv模式优先；shell模式是单独能力。",
       "properties": {
         "workspace_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "工作区版本"
         },
         "executable": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "可执行文件或批准句柄"
         },
         "argv": {
           "type": "array",
@@ -5085,10 +5684,12 @@
             "$ref": "#/$defs/Text"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "独立参数数组"
         },
         "cwd": {
-          "$ref": "#/$defs/RelativePath"
+          "$ref": "#/$defs/RelativePath",
+          "description": "根内工作目录，.表示根"
         },
         "environment": {
           "type": "array",
@@ -5096,17 +5697,21 @@
             "$ref": "#/$defs/EnvVar"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "额外非秘密环境变量"
         },
         "timeout_ms": {
           "$ref": "#/$defs/Duration",
+          "description": "最大运行时间",
           "minimum": 1
         },
         "shell_command": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "shell模式命令"
         },
         "shell_profile_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "获准shell配置"
         }
       },
       "required": [
@@ -5144,6 +5749,7 @@
       ]
     },
     "ProcessState": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "starting",
@@ -5156,6 +5762,7 @@
       ]
     },
     "ProviderState": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "draft",
@@ -5167,24 +5774,31 @@
     },
     "Ref": {
       "type": "object",
+      "description": "跨域资源引用；资源本体/权限归所属领域。",
       "properties": {
         "kind": {
-          "$ref": "#/$defs/RefKind"
+          "$ref": "#/$defs/RefKind",
+          "description": "来源类型"
         },
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "资源ID"
         },
         "version": {
-          "$ref": "#/$defs/Version"
+          "$ref": "#/$defs/Version",
+          "description": "实际来源版本"
         },
         "location": {
-          "$ref": "#/$defs/Location"
+          "$ref": "#/$defs/Location",
+          "description": "可选定位"
         },
         "content_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "取得内容摘要"
         },
         "access_scope": {
-          "$ref": "#/$defs/Scope"
+          "$ref": "#/$defs/Scope",
+          "description": "可见范围，由来源域确认"
         }
       },
       "required": [
@@ -5195,6 +5809,7 @@
       "additionalProperties": false
     },
     "RefKind": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "web",
@@ -5254,6 +5869,7 @@
       ]
     },
     "RelativePath": {
+      "description": "项目内相对路径；机器还须解析真实路径/链接并核验授权根。",
       "type": "string",
       "minLength": 1,
       "maxLength": 1024,
@@ -5261,12 +5877,15 @@
     },
     "RequestMeta": {
       "type": "object",
+      "description": "所有服务端操作的关联与幂等元数据。",
       "properties": {
         "request_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "同逻辑请求重试不变"
         },
         "schema_version": {
           "$ref": "#/$defs/Version",
+          "description": "契约版本",
           "const": "0.1"
         },
         "expected_revision": {
@@ -5277,7 +5896,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "修改时的CAS版本，创建可为0"
         }
       },
       "required": [
@@ -5288,15 +5908,19 @@
     },
     "Requirement": {
       "type": "object",
+      "description": "用户/政策验收要求。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "要求ID"
         },
         "text": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "语义内容"
         },
         "mandatory": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "是否必需"
         },
         "source_refs": {
           "type": "array",
@@ -5304,7 +5928,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 1,
-          "maxItems": 64
+          "maxItems": 64,
+          "description": "用户或政策来源"
         },
         "evidence_kinds": {
           "type": "array",
@@ -5312,7 +5937,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 32
+          "maxItems": 32,
+          "description": "可接受证据类别"
         }
       },
       "required": [
@@ -5325,12 +5951,15 @@
     },
     "RequirementVerdict": {
       "type": "object",
+      "description": "语义核验逐条覆盖要求。",
       "properties": {
         "requirement_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "要求"
         },
         "state": {
-          "$ref": "#/$defs/CheckState"
+          "$ref": "#/$defs/CheckState",
+          "description": "判定"
         },
         "evidence_refs": {
           "type": "array",
@@ -5338,10 +5967,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "实际证据"
         },
         "reason": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "判定依据"
         },
         "limitations": {
           "type": "array",
@@ -5349,7 +5980,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "缺口"
         }
       },
       "required": [
@@ -5383,6 +6015,7 @@
       ]
     },
     "ReservationState": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "reserved",
@@ -5393,31 +6026,40 @@
     },
     "ResourceVector": {
       "type": "object",
+      "description": "多维资源额度/估计/已用量；字段单位不混用。",
       "properties": {
         "input_tokens": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "输入token"
         },
         "output_tokens": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "输出token"
         },
         "model_calls": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "模型调用"
         },
         "tool_calls": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "工具调用"
         },
         "child_agents": {
-          "$ref": "#/$defs/Count"
+          "$ref": "#/$defs/Count",
+          "description": "子实例数"
         },
         "wall_time_ms": {
-          "$ref": "#/$defs/Duration"
+          "$ref": "#/$defs/Duration",
+          "description": "任务墙钟时间"
         },
         "money": {
-          "$ref": "#/$defs/Decimal"
+          "$ref": "#/$defs/Decimal",
+          "description": "金额"
         },
         "currency": {
           "type": "string",
-          "pattern": "^[A-Z]{3}$"
+          "pattern": "^[A-Z]{3}$",
+          "description": "币种"
         }
       },
       "required": [
@@ -5433,53 +6075,69 @@
       "additionalProperties": false
     },
     "Revision": {
+      "description": "CAS单调修订号；0仅表示对象尚不存在，已有版本从1开始。",
       "type": "integer",
       "minimum": 0
     },
     "RunDeliveryView": {
       "type": "object",
+      "description": "真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。",
       "properties": {
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "所属Run"
         },
         "bundle_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定Bundle"
         },
         "artifact_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定成果"
         },
         "artifact": {
-          "$ref": "#/$defs/ArtifactRecord"
+          "$ref": "#/$defs/ArtifactRecord",
+          "description": "成果记录"
         },
         "content": {
-          "$ref": "#/$defs/ArtifactPreviewText"
+          "$ref": "#/$defs/ArtifactPreviewText",
+          "description": "实际正文"
         },
         "contract_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定合同"
         },
         "contract": {
-          "$ref": "#/$defs/Contract"
+          "$ref": "#/$defs/Contract",
+          "description": "原要求合同"
         },
         "report_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定报告"
         },
         "report": {
-          "$ref": "#/$defs/VerificationReport"
+          "$ref": "#/$defs/VerificationReport",
+          "description": "逐项报告"
         },
         "proposal_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定提案"
         },
         "proposal": {
-          "$ref": "#/$defs/DeliveryProposal"
+          "$ref": "#/$defs/DeliveryProposal",
+          "description": "候选提案"
         },
         "requires_acceptance": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "合同要求用户接受"
         },
         "stale": {
-          "$ref": "#/$defs/Bool"
+          "$ref": "#/$defs/Bool",
+          "description": "相对于当前任务版本过时"
         },
         "acceptance": {
-          "$ref": "#/$defs/CompletionAcceptance"
+          "$ref": "#/$defs/CompletionAcceptance",
+          "description": "实际用户决定"
         }
       },
       "required": [
@@ -5501,42 +6159,55 @@
     },
     "RunRecord": {
       "type": "object",
+      "description": "调度执行实体；任务历史有多个Run。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "Run"
         },
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "任务"
         },
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "入口会话"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "状态版本"
         },
         "status": {
-          "$ref": "#/$defs/RunStatus"
+          "$ref": "#/$defs/RunStatus",
+          "description": "当前状态"
         },
         "root_agent_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "根实例"
         },
         "frame_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "当前任务理解"
         },
         "plan_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "可选图"
         },
         "budget": {
-          "$ref": "#/$defs/Budget"
+          "$ref": "#/$defs/Budget",
+          "description": "上限"
         },
         "outcome": {
-          "$ref": "#/$defs/Outcome"
+          "$ref": "#/$defs/Outcome",
+          "description": "终态"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "受理时间"
         },
         "ended_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "实际结束"
         }
       },
       "required": [
@@ -5551,6 +6222,7 @@
       "additionalProperties": false
     },
     "RunStatus": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "queued",
@@ -5566,12 +6238,15 @@
     },
     "RunsControlRequest": {
       "type": "object",
+      "description": "用户干预。",
       "properties": {
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "运行"
         },
         "control": {
-          "$ref": "#/$defs/UserControl"
+          "$ref": "#/$defs/UserControl",
+          "description": "控制指令"
         }
       },
       "required": [
@@ -5582,22 +6257,27 @@
     },
     "RunsDeliveryAcceptRequest": {
       "type": "object",
+      "description": "实际用户决定整份合同交付；不直接设置completed。",
       "properties": {
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "运行"
         },
         "bundle_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "精确Bundle"
         },
         "artifact_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "精确成果"
         },
         "decision": {
           "type": "string",
           "enum": [
             "accept",
             "reject"
-          ]
+          ],
+          "description": "现有DeliveryDecision的整份接受/拒绝子集。"
         }
       },
       "required": [
@@ -5610,9 +6290,11 @@
     },
     "RunsDeliveryRequest": {
       "type": "object",
+      "description": "读取本人Run的最新真实固定交付；无交付返回missing。",
       "properties": {
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "运行"
         }
       },
       "required": [
@@ -5622,9 +6304,11 @@
     },
     "RunsGetRequest": {
       "type": "object",
+      "description": "运行状态。",
       "properties": {
         "run_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "运行"
         }
       },
       "required": [
@@ -5634,18 +6318,23 @@
     },
     "Scope": {
       "type": "object",
+      "description": "资源域选择器，不是授权凭证。",
       "properties": {
         "principal_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "有效主体，由可信通道提供"
         },
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话范围"
         },
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "任务范围"
         },
         "project_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "已绑定项目范围"
         },
         "resource_refs": {
           "type": "array",
@@ -5653,7 +6342,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 128
+          "maxItems": 128,
+          "description": "进一步收窄资源"
         },
         "capabilities": {
           "type": "array",
@@ -5661,7 +6351,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 128
+          "maxItems": 128,
+          "description": "请求/有效能力标签，服务端求交集"
         }
       },
       "required": [
@@ -5671,15 +6362,19 @@
     },
     "ScopeSelector": {
       "type": "object",
+      "description": "客户端请求缩小可读范围，不能自行指定主体或授予能力。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话筛选"
         },
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "任务筛选"
         },
         "project_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "项目筛选"
         },
         "resource_refs": {
           "type": "array",
@@ -5687,7 +6382,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "指定材料"
         }
       },
       "required": [],
@@ -5695,6 +6391,7 @@
       "minProperties": 1
     },
     "State": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "pending",
@@ -5709,15 +6406,19 @@
     },
     "TaskFrame": {
       "type": "object",
+      "description": "版本化任务理解。原文保持独立，理解不能覆盖原文。",
       "properties": {
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "关联任务"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "当前理解版本"
         },
         "original_input_ref": {
-          "$ref": "#/$defs/UserInputRef"
+          "$ref": "#/$defs/UserInputRef",
+          "description": "原始用户输入"
         },
         "patch_refs": {
           "type": "array",
@@ -5725,12 +6426,14 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "运行中追加要求"
         },
         "goal": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 131072
+          "maxLength": 131072,
+          "description": "本轮以完整原文及追加要求作为任务基准；AI摘要单独放summary。"
         },
         "constraints": {
           "type": "array",
@@ -5738,7 +6441,8 @@
             "$ref": "#/$defs/Constraint"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "约束及来源"
         },
         "output_specs": {
           "type": "array",
@@ -5746,7 +6450,8 @@
             "$ref": "#/$defs/OutputSpec"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "成果要求"
         },
         "assumptions": {
           "type": "array",
@@ -5754,7 +6459,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "明确标记的假设"
         },
         "unresolved": {
           "type": "array",
@@ -5762,7 +6468,8 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "未解问题"
         },
         "evidence_refs": {
           "type": "array",
@@ -5770,19 +6477,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "已读取材料"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "版本提交时间"
         },
         "summary": {
-          "$ref": "#/$defs/NonEmptyText"
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "AI理解的提示摘要，不授权动作、不替代完整原文。"
         },
         "input_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "生成时的Run输入集合版本；旧理解不得覆盖新输入。"
         },
         "semantic_parse_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "有界模型提案及来源位置，保留模型回执。"
         }
       },
       "required": [
@@ -5802,19 +6514,23 @@
     },
     "TaskGraph": {
       "type": "object",
+      "description": "图修订不可变，执行状态另存。",
       "properties": {
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "所属任务"
         },
         "revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "计划版本"
         },
         "planning": {
           "type": "string",
           "enum": [
             "steps",
             "dag"
-          ]
+          ],
+          "description": "图仅用于步骤清单或DAG。"
         },
         "nodes": {
           "type": "array",
@@ -5822,13 +6538,16 @@
             "$ref": "#/$defs/NodeSpec"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "完整节点集合"
         },
         "source_frame_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "目标理解版本"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "提交时间"
         }
       },
       "required": [
@@ -5843,9 +6562,11 @@
     },
     "TasksFrameRequest": {
       "type": "object",
+      "description": "读取当前任务理解。",
       "properties": {
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "任务"
         }
       },
       "required": [
@@ -5854,24 +6575,30 @@
       "additionalProperties": false
     },
     "Text": {
+      "description": "普通短文本；大正文使用Blob/Ref，限额为实验默认可配置。",
       "type": "string",
       "maxLength": 16384
     },
     "Timestamp": {
+      "description": "UTC RFC3339时间；实现必须校验时间与时钟偏差。",
       "type": "string",
       "format": "date-time"
     },
     "ToolResult": {
       "type": "object",
+      "description": "基础设施响应成功和业务成功分别表达。",
       "properties": {
         "call_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "真实调用"
         },
         "status": {
-          "$ref": "#/$defs/ToolStatus"
+          "$ref": "#/$defs/ToolStatus",
+          "description": "成功/失败/等待/未知效果"
         },
         "data": {
-          "$ref": "#/$defs/Object"
+          "$ref": "#/$defs/Object",
+          "description": "由该工具output_schema约束的业务数据"
         },
         "output_refs": {
           "type": "array",
@@ -5879,19 +6606,24 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "大结果/文件/证据"
         },
         "failure": {
-          "$ref": "#/$defs/Failure"
+          "$ref": "#/$defs/Failure",
+          "description": "失败"
         },
         "effect_state": {
-          "$ref": "#/$defs/EffectState"
+          "$ref": "#/$defs/EffectState",
+          "description": "副作用确定性"
         },
         "usage_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "调用用量"
         },
         "next_cursor": {
-          "$ref": "#/$defs/Cursor"
+          "$ref": "#/$defs/Cursor",
+          "description": "分页"
         }
       },
       "required": [
@@ -5942,6 +6674,7 @@
       ]
     },
     "ToolStatus": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "succeeded",
@@ -5953,12 +6686,15 @@
     },
     "TurnsLookupRequest": {
       "type": "object",
+      "description": "按原提交request_id查询当前Run；没有记录返回missing，不发送新任务。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "原会话"
         },
         "request_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "原RequestMeta.request_id"
         }
       },
       "required": [
@@ -5969,12 +6705,15 @@
     },
     "TurnsSubmitRequest": {
       "type": "object",
+      "description": "提交原文并受理Run。",
       "properties": {
         "conversation_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "会话"
         },
         "text": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "用户原文"
         },
         "attachment_refs": {
           "type": "array",
@@ -5982,16 +6721,20 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "附件"
         },
         "task_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "继续已有任务"
         },
         "expected_task_revision": {
-          "$ref": "#/$defs/Revision"
+          "$ref": "#/$defs/Revision",
+          "description": "继续任务必需"
         },
         "budget": {
-          "$ref": "#/$defs/Budget"
+          "$ref": "#/$defs/Budget",
+          "description": "用户预算上限"
         }
       },
       "required": [
@@ -6033,12 +6776,15 @@
     },
     "UserControl": {
       "type": "object",
+      "description": "补充、排队、替换、取消、先交现有成果语义明确。",
       "properties": {
         "mode": {
-          "$ref": "#/$defs/ControlMode"
+          "$ref": "#/$defs/ControlMode",
+          "description": "干预方式"
         },
         "input_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "新要求；steer/enqueue/replace必需"
         },
         "preserve_refs": {
           "type": "array",
@@ -6046,10 +6792,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "明确保留的成果"
         },
         "reason": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "解释"
         }
       },
       "required": [
@@ -6083,6 +6831,7 @@
       ]
     },
     "UserInputRef": {
+      "description": "真实用户输入或已认证用户配置动作的引用；结构限制为input，来源真实性仍由Run核验。",
       "allOf": [
         {
           "$ref": "#/$defs/Ref"
@@ -6098,18 +6847,23 @@
     },
     "ValidatedCall": {
       "type": "object",
+      "description": "参数schema通过的固定工具版本。",
       "properties": {
         "tool_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "固定契约"
         },
         "arguments": {
-          "$ref": "#/$defs/Object"
+          "$ref": "#/$defs/Object",
+          "description": "规范参数"
         },
         "arguments_hash": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "规范摘要"
         },
         "action_id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "动作"
         }
       },
       "required": [
@@ -6122,12 +6876,15 @@
     },
     "VerificationCheck": {
       "type": "object",
+      "description": "实际执行/资料核验的证据，不能伪造运行。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "检查"
         },
         "kind": {
-          "$ref": "#/$defs/VerificationKind"
+          "$ref": "#/$defs/VerificationKind",
+          "description": "命令/结构/引用/语义"
         },
         "requirement_ids": {
           "type": "array",
@@ -6135,10 +6892,12 @@
             "$ref": "#/$defs/ID"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "覆盖要求"
         },
         "state": {
-          "$ref": "#/$defs/CheckState"
+          "$ref": "#/$defs/CheckState",
+          "description": "passed/failed/not_run/blocked"
         },
         "target_refs": {
           "type": "array",
@@ -6146,10 +6905,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "核验版本"
         },
         "process_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "命令检查必需"
         },
         "evidence_refs": {
           "type": "array",
@@ -6157,10 +6918,12 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "真实证据"
         },
         "summary": {
-          "$ref": "#/$defs/Text"
+          "$ref": "#/$defs/Text",
+          "description": "解释及限制"
         }
       },
       "required": [
@@ -6220,6 +6983,7 @@
       ]
     },
     "VerificationKind": {
+      "description": "取值含义见字段及协议约束。",
       "type": "string",
       "enum": [
         "command",
@@ -6231,12 +6995,15 @@
     },
     "VerificationReport": {
       "type": "object",
+      "description": "结构检查+真实执行+语义判定，不替代用户审阅。",
       "properties": {
         "id": {
-          "$ref": "#/$defs/ID"
+          "$ref": "#/$defs/ID",
+          "description": "报告"
         },
         "contract_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "交付要求"
         },
         "target_refs": {
           "type": "array",
@@ -6244,7 +7011,8 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "成果版本"
         },
         "checks": {
           "type": "array",
@@ -6252,7 +7020,8 @@
             "$ref": "#/$defs/VerificationCheck"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "具体检查"
         },
         "verdicts": {
           "type": "array",
@@ -6260,10 +7029,12 @@
             "$ref": "#/$defs/RequirementVerdict"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "逐要求结果"
         },
         "outcome": {
-          "$ref": "#/$defs/Outcome"
+          "$ref": "#/$defs/Outcome",
+          "description": "总体结果"
         },
         "limitations": {
           "type": "array",
@@ -6271,13 +7042,16 @@
             "$ref": "#/$defs/NonEmptyText"
           },
           "minItems": 0,
-          "maxItems": 256
+          "maxItems": 256,
+          "description": "缺口"
         },
         "reviewer_model_config_ref": {
-          "$ref": "#/$defs/Ref"
+          "$ref": "#/$defs/Ref",
+          "description": "语义评审模型"
         },
         "created_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "生成时间"
         }
       },
       "required": [
@@ -6293,21 +7067,26 @@
       "additionalProperties": false
     },
     "Version": {
+      "description": "不可变内容/协议版本，不可用显示名替代。",
       "type": "string",
       "minLength": 1,
       "maxLength": 128
     },
     "WebSession": {
       "type": "object",
+      "description": "浏览器用户身份和CSRF；会话凭据只在HttpOnly cookie中。",
       "properties": {
         "principal": {
-          "$ref": "#/$defs/Principal"
+          "$ref": "#/$defs/Principal",
+          "description": "服务器签发的用户和Web session"
         },
         "expires_at": {
-          "$ref": "#/$defs/Timestamp"
+          "$ref": "#/$defs/Timestamp",
+          "description": "固定会话截止"
         },
         "csrf_token": {
-          "$ref": "#/$defs/Hash"
+          "$ref": "#/$defs/Hash",
+          "description": "内存保留，修改请求X-UAW-CSRF"
         }
       },
       "required": [
@@ -6319,9 +7098,11 @@
     },
     "WebSessionExchangeRequest": {
       "type": "object",
+      "description": "精确Origin消费一次启动code。",
       "properties": {
         "launch_code": {
           "$ref": "#/$defs/NonEmptyText",
+          "description": "原启动fragment凭据",
           "maxLength": 256
         }
       },
@@ -6332,12 +7113,14 @@
     },
     "WebSessionGetRequest": {
       "type": "object",
+      "description": "读取当前浏览器用户会话。",
       "properties": {},
       "required": [],
       "additionalProperties": false
     },
     "WebSessionLogoutRequest": {
       "type": "object",
+      "description": "撤销当前浏览器会话并清cookie。",
       "properties": {},
       "required": [],
       "additionalProperties": false

@@ -37,8 +37,8 @@ for(const key of ['ConversationsCreateRequest','ConversationsGetRequest','Conver
  'ConversationsListRequest','TurnsLookupRequest','RunsDeliveryRequest','RunsDeliveryAcceptRequest','ArtifactsGetRequest','ArtifactsContentRequest','CompletionAcceptance','ArtifactRecord','VerificationReport','WebSessionGetRequest','WebSessionExchangeRequest','WebSessionLogoutRequest']) {
  used.add(key);visit(api.components.schemas[key]);
 }
-const clean = value => Array.isArray(value) ? value.map(clean) : value && typeof value === 'object'
- ? Object.fromEntries(Object.entries(value).filter(([k]) => k !== 'description').map(([k,v]) => [k,clean(v)])) : value;
+// Keep source annotations as well as constraints. Names in properties/$defs
+// are business fields, so recursive deletion by a keyword corrupts the contract.
 // Type shape cannot express JSON Schema if/then, nor required-only anyOf predicates.
 // Strip only these type predicates; runtime schema below retains every constraint.
 function typeShape(value) {
@@ -49,7 +49,7 @@ function typeShape(value) {
   !(k==='anyOf' && value.properties && v.every(x=>!x.$ref && !x.type)) &&
   !(k==='allOf' && v.every(x=>x.if))).map(([k,v])=>[k,typeShape(v)]));
 }
-const components = { schemas: Object.fromEntries([...used].sort().map(k => [k, typeShape(clean(api.components.schemas[k]))])) };
+const components = { schemas: Object.fromEntries([...used].sort().map(k => [k, typeShape(api.components.schemas[k])])) };
 await mkdir(target, {recursive:true});
 await writeFile(new URL('openapi.d.ts', target), astToString(await openapiTS({...api,paths,components})));
 // Runtime uses the exact draft2020-12 source refs, with only reachable DTOs.
@@ -60,7 +60,7 @@ function collect(value) { if (!value || typeof value !== 'object') return;
  for (const [k,v] of Object.entries(value)) if(k !== '$ref') collect(v); }
 for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
- $defs:Object.fromEntries([...defs].sort().map(k=>[k,clean(schema.$defs[k])]))},null,2)+'\n');
+ $defs:Object.fromEntries([...defs].sort().map(k=>[k,schema.$defs[k]]))},null,2)+'\n');
 await writeFile(new URL('source.json',target),JSON.stringify({baseline:'b7b79b150470a80f37b28fd52a2177f6de5b3124',
  contract_ref:contractRef,contract_commit:contractCommit,
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
