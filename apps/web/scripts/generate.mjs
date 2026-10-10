@@ -2,14 +2,14 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import openapiTS, { astToString } from 'openapi-typescript';
-const contractRef='ms-i2k-start';
+const contractRef='ms-i2l-start';
 const contractCommit=execFileSync('git',['rev-parse',`${contractRef}^{commit}`],{encoding:'utf8',maxBuffer:16777216}).trim();
-if(contractCommit!=='b7b79b150470a80f37b28fd52a2177f6de5b3124')throw Error('Published API tag changed');
+if(contractCommit!=='8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0')throw Error('Published API tag changed');
 const target = new URL('../src/lib/api/generated/', import.meta.url);
 const raw=execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
 const schemaRaw=execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
 const api = JSON.parse(raw), schema = JSON.parse(schemaRaw);
-// Exact public routes checked in src/uaw/api/routes.py at ms-i2k-start.
+// Exact public routes checked in src/uaw/api/routes.py at ms-i2l-start.
 const allowed = {
  '/v1/conversations': ['get','post'], '/v1/conversations/{conversation_id}': ['get'],
  '/v1/conversations/{conversation_id}/items': ['get'],
@@ -20,6 +20,8 @@ const allowed = {
  '/v1/conversations/{conversation_id}/turn-requests/{request_id}':['get'],
  '/v1/runs/{run_id}/delivery':['get'], '/v1/runs/{run_id}/delivery/acceptance':['post'],
  '/v1/artifacts/{artifact_id}':['get'], '/v1/artifacts/{artifact_id}/content':['get'],
+ '/v1/runner/enrollments':['post'], '/v1/runner/enrollments/{enrollment_id}':['get'],
+ '/v1/runner/enrollments/{enrollment_id}/confirmation':['post'], '/v1/runner/enrollments/{enrollment_id}/revocation':['post'],
  '/v1/models': ['get'], '/v1/web/session':['get','post','delete'] };
 const paths = Object.fromEntries(Object.entries(allowed).map(([path, methods]) => [path,
  Object.fromEntries(methods.map(method => { if (!api.paths[path]?.[method]) throw Error(`Missing ${path}`);
@@ -31,7 +33,7 @@ function visit(value) { if (!value || typeof value !== 'object') return;
  for (const [key, child] of Object.entries(value)) if (key !== '$ref') visit(child); }
 visit(paths);
 // Requests are inline in OpenAPI; include their unchanged named schema DTOs too.
-for(const key of ['ConversationsCreateRequest','ConversationsGetRequest','ConversationsItemsRequest',
+for(const key of ['RunnerEnrollmentsBeginRequest','RunnerEnrollmentsGetRequest','RunnerEnrollmentsCompleteRequest','RunnerEnrollmentsRevokeRequest','ConversationsCreateRequest','ConversationsGetRequest','ConversationsItemsRequest',
  'TurnsSubmitRequest','RunsGetRequest','RunsControlRequest','TasksFrameRequest','ApprovalsGetRequest',
  'ApprovalsDecideRequest','EventsReadRequest','EventsPayloadRequest','ModelsListRequest',
  'ConversationsListRequest','TurnsLookupRequest','RunsDeliveryRequest','RunsDeliveryAcceptRequest','ArtifactsGetRequest','ArtifactsContentRequest','CompletionAcceptance','ArtifactRecord','VerificationReport','WebSessionGetRequest','WebSessionExchangeRequest','WebSessionLogoutRequest']) {
@@ -61,7 +63,7 @@ function collect(value) { if (!value || typeof value !== 'object') return;
 for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
  $defs:Object.fromEntries([...defs].sort().map(k=>[k,schema.$defs[k]]))},null,2)+'\n');
-await writeFile(new URL('source.json',target),JSON.stringify({baseline:'b7b79b150470a80f37b28fd52a2177f6de5b3124',
+await writeFile(new URL('source.json',target),JSON.stringify({baseline:'8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0',
  contract_ref:contractRef,contract_commit:contractCommit,
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
  openapi_sha256:createHash('sha256').update(raw).digest('hex'),paths:allowed},null,2)+'\n');
