@@ -505,6 +505,16 @@ async def test_first_device_gate_controlled_yes_original_activation_and_cleanup(
         handle, SecretStr(base64.b64encode(p.keys["device"].private_bytes_raw()).decode())
     )
     shown = []
+    progress_calls = []
+
+    class Progress:
+        async def waiting(self, policy):
+            from uaw.infrastructure.db.records import parameter_hash
+
+            assert policy.challenge_hash == parameter_hash(started["proof_document"])
+            assert policy.expires_at == p.service.instant(started["proof_document"]["expires_at"])
+            assert (await p.service.get(p.owner, started["id"]))["state"] == "pending"
+            progress_calls.append(policy)
 
     class ControlledDialog:
         def show(self, prompt, stopped, deadline):
@@ -555,12 +565,15 @@ async def test_first_device_gate_controlled_yes_original_activation_and_cleanup(
         native=native,
         proofs=Proofs(),
         paired_factory=paired,
+        progress=Progress(),
     )
     try:
         assert (await factory.create(actual)).helper is owned
         assert len(shown) == 1 and not owned.closed
+        assert len(progress_calls) == 1
         assert (await factory.create(actual)).helper is owned
         assert len(shown) == 1
+        assert len(progress_calls) == 1
         paired.changed = True
         with pytest.raises(DomainError):
             await factory.create(actual)

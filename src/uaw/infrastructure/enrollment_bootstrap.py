@@ -6,11 +6,13 @@ from typing import Protocol
 from uaw_runner.helper_host import HelperApplication, HelperAssemblyPort
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 
+from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
 from uaw.infrastructure.enrollment_native import WindowsEnrollmentConfirmation
 from uaw.run.enrollment import RunnerEnrollments
 from uaw.shared.contracts import Principal, RequestMeta
 from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.runner_bootstrap import FirstStartPolicy, FirstStartProgressPort
 
 
 class CurrentEnrollmentControlProofPort(Protocol):
@@ -42,11 +44,13 @@ class FirstEnrollmentDeviceFactory:
         native: WindowsEnrollmentConfirmation | None,
         proofs: CurrentEnrollmentControlProofPort | None,
         paired_factory: HelperAssemblyPort | None,
+        progress: FirstStartProgressPort | None = None,
     ) -> None:
         if native is not None and native.service is not service:
             raise ValueError("Original enrollment service required")
         self.service, self.owner, self.key = service, owner, enrollment_id
         self.native, self.proofs, self.paired_factory = native, proofs, paired_factory
+        self.progress = progress
 
     async def create(self, identity: OsIdentity) -> HelperApplication:
         if self.native is None or self.proofs is None or self.paired_factory is None:
@@ -69,6 +73,18 @@ class FirstEnrollmentDeviceFactory:
             raise reject("enrollment_first_source_changed", "Original device source changed", 412)
         state = await self.service.get(self.owner, self.key)
         if state["state"] == "pending":
+            if self.progress is not None:
+                policy = FirstStartPolicy(
+                    expires_at=self.service.instant(document["expires_at"]),
+                    challenge_hash=parameter_hash(document),
+                )
+                async with asyncio.timeout(5):
+                    await self.progress.waiting(policy)
+                # A progress callback may wait or fail; it never grants permission.
+                if await self.native.checked(self.owner, self.key, proof) != document:
+                    raise reject(
+                        "enrollment_first_source_changed", "Source changed after progress", 412
+                    )
             # Only the real native producer reaches Yes. An empty HTTP confirmation
             # or supplied signature by itself cannot replace the owning UI journal.
             await self.native.confirm(self.owner, self.key, control_proof=proof)
