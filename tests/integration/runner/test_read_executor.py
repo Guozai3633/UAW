@@ -64,7 +64,7 @@ class RegisteredAuthorityFixture:
             "workspace_ref": case["workspace"].wire(),
             "binding_revision": 0,
             "fencing_token": command.fencing_token,
-            "lease_expires_at": (NOW + timedelta(minutes=5)).isoformat(),
+            "lease_expires_at": (case["clock"][0] + timedelta(minutes=5)).isoformat(),
             "request_ref": command.request_ref.wire(),
             "request_parameters": command.parameters,
             "policy_ref": command.trusted_context.capability_policy_ref.wire(),
@@ -145,7 +145,7 @@ async def configure(case, *, parameters=None, action="file.read"):
         },
         "trusted_context": case["ctx"].wire(),
         "fencing_token": 1,
-        "expires_at": (NOW + timedelta(minutes=4)).isoformat(),
+        "expires_at": (case["clock"][0] + timedelta(minutes=4)).isoformat(),
         "parameters": {
             "action": action,
             "parameters": parameters

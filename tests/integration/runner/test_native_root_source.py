@@ -76,8 +76,10 @@ async def make_native_case(
     device_handle="device-private",
     control_handle="control-private",
     existing_keys=None,
+    defer_confirmation=False,
+    clock_start=None,
 ):
-    clock = [NOW]
+    clock = [clock_start if clock_start is not None else NOW]
     state = (
         existing_keys
         if existing_keys is not None
@@ -112,8 +114,8 @@ async def make_native_case(
         device_id="d1",
         key_id="device1",
         public_bytes=state.lookup("device1", device_id="d1").public_bytes,
-        expires_at=NOW + timedelta(minutes=10),
-        now=NOW,
+        expires_at=clock[0] + timedelta(minutes=10),
+        now=clock[0],
         root_handle="native-root1",
         display_name="temporary test root",
     )
@@ -127,16 +129,18 @@ async def make_native_case(
         domain="pairing-proof",
         credential_handle=device_handle,
     )
-    await verifier.approve(
-        issued.ticket.ticket_id,
-        expected_revision=0,
-        principal_id="u1",
-        code=issued.verification_code,
-        proof_signature=proof,
-    )
-    selection = await verifier.root_selection(
-        issued.ticket.ticket_id, signer=protected, credential_handle=device_handle
-    )
+    selection = None
+    if not defer_confirmation:
+        await verifier.approve(
+            issued.ticket.ticket_id,
+            expected_revision=0,
+            principal_id="u1",
+            code=issued.verification_code,
+            proof_signature=proof,
+        )
+        selection = await verifier.root_selection(
+            issued.ticket.ticket_id, signer=protected, credential_handle=device_handle
+        )
     bindings = RootBindings(grants, PersistentRootSelection(state, local))
     source = NativeRootSource(
         bindings,
@@ -159,12 +163,15 @@ async def make_native_case(
                 "operation_id": "op1",
                 "trace_id": "trace1",
                 "attempt_id": "attempt1",
-                "deadline": (NOW + timedelta(hours=1)).isoformat(),
+                "deadline": (clock[0] + timedelta(hours=1)).isoformat(),
                 "capability_policy_ref": {"kind": "policy", "id": "policy1", "version": "1"},
             }
         )
     )
     return dict(
+        issued=issued,
+        verifier=verifier,
+        proof=proof,
         device_handle=device_handle,
         control_handle=control_handle,
         source=source,

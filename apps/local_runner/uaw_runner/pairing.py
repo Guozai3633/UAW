@@ -1,9 +1,11 @@
 """Internal pairing/selection state verification; no public pair.complete or IPC claim."""
 
+import asyncio
 import hashlib
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
+from threading import Event
 
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_signatures import VerificationKey, signing_bytes, verify
@@ -24,14 +26,26 @@ class LocalRoots:
                 ticket_id TEXT PRIMARY KEY, root_handle TEXT UNIQUE NOT NULL,
                 native_path TEXT NOT NULL, file_device INTEGER NOT NULL, inode INTEGER NOT NULL)""")
 
-    def record(self, ticket: Ticket, path: Path) -> None:
+    def record(
+        self, ticket: Ticket, path: Path, *, expected_identity: tuple[int, int] | None = None
+    ) -> None:
         try:
             if not path.is_absolute():
                 raise ValueError("Relative path")
             root = path.resolve(strict=True)
+            if root != path.absolute() or any(
+                getattr(part.lstat(), "st_file_attributes", 0) & 0x400
+                for part in (path, *path.parents)
+            ):
+                raise ValueError("Reparse/native root changed")
             if not root.is_dir() or root == Path(root.anchor):
                 raise ValueError("Invalid root")
             identity = root.stat()
+            if (
+                expected_identity is not None
+                and (identity.st_dev, identity.st_ino) != expected_identity
+            ):
+                raise ValueError("Chosen directory identity changed")
         except OSError, ValueError, RuntimeError:
             raise reject(
                 "permission_denied", "Native root is unavailable", 403, "permission"
@@ -95,7 +109,7 @@ class PairingVerifier:
     ) -> Ticket:
         if self.native is None:
             raise CapabilityUnavailable("runner.trusted_native_confirmation")
-        ticket = self.state.get(ticket_id, now=aware(self.clock()))
+        ticket = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
         if ticket.state != "pending" or ticket.revision != expected_revision:
             raise reject("revision_conflict", "Ticket is not pending", 409)
         if ticket.principal_id != principal_id:
@@ -103,6 +117,14 @@ class PairingVerifier:
         # Candidate public key comes from fixed server challenge state, not completion payload.
         # Proof establishes possession only; authenticated native confirmation is mandatory.
         key = VerificationKey(ticket.key_id, ticket.device_id, ticket.public_bytes, "device")
+        if ticket.kind == "root":
+            current_key = await asyncio.to_thread(
+                self.state.lookup, ticket.key_id, device_id=ticket.device_id
+            )
+            if current_key != key:
+                raise reject(
+                    "permission_denied", "Current root challenge key differs", 403, "permission"
+                )
         document = ticket.document()
         if not verify(document, proof_signature, key, "pairing-proof"):
             raise reject(
@@ -129,21 +151,58 @@ class PairingVerifier:
             raise reject(
                 "permission_denied", "Native confirmation mismatch/expiry", 403, "permission"
             )
+        latest = await asyncio.to_thread(self.state.get, ticket_id, now=now)
+        if latest != ticket:
+            raise reject("revision_conflict", "Native ticket changed during confirmation", 409)
         if ticket.kind == "root":
+            if (
+                await asyncio.to_thread(
+                    self.state.lookup, ticket.key_id, device_id=ticket.device_id
+                )
+                != key
+            ):
+                raise reject("permission_denied", "Current root key changed", 403, "permission")
             if self.roots is None:
                 raise CapabilityUnavailable("runner.local_root_directory")
             if confirmation.native_path is None:
                 raise reject("permission_denied", "Native path was not selected", 403, "permission")
             # Orphan local record after a losing CAS grants no rights; immutable and fail closed.
-            self.roots.record(ticket, confirmation.native_path)
-        return self.state.approve(
-            ticket_id,
-            expected_revision=expected_revision,
-            code=code,
-            confirmation_hash=document_hash,
-            confirmation_expires_at=confirmation.expires_at,
-            now=now,
+            await asyncio.to_thread(self.roots.record, ticket, confirmation.native_path)
+        stopped = Event()
+
+        def check() -> datetime:
+            if stopped.is_set():
+                raise reject(
+                    "native_cancelled", "Confirmation cancelled before CAS", 409, "cancelled"
+                )
+            return aware(self.clock())
+
+        task = asyncio.create_task(
+            asyncio.to_thread(
+                self.state.approve,
+                ticket_id,
+                expected_revision=expected_revision,
+                code=code,
+                confirmation_hash=document_hash,
+                confirmation_expires_at=confirmation.expires_at,
+                now=aware(self.clock()),
+                check=check,
+            )
         )
+        try:
+            return await asyncio.shield(task)
+        except asyncio.CancelledError:
+            stopped.set()
+            while not task.done():
+                try:
+                    await asyncio.shield(task)
+                except asyncio.CancelledError:
+                    continue
+                except Exception:
+                    break
+            if task.done() and not task.cancelled():
+                task.exception()
+            raise
 
     async def root_selection(
         self,
@@ -152,12 +211,12 @@ class PairingVerifier:
         signer: ProtectedSigner,
         credential_handle: str,
     ) -> RootSelection:
-        ticket = self.state.get(ticket_id, now=aware(self.clock()))
+        ticket = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
         if ticket.kind != "root" or ticket.state != "approved":
             raise reject("revision_conflict", "Root ticket is not approved", 409)
         if self.roots is None:
             raise CapabilityUnavailable("runner.local_root_directory")
-        self.roots.current(ticket)
+        await asyncio.to_thread(self.roots.current, ticket)
         signature = await signer.sign_document(
             ticket.document(),
             device_id=ticket.device_id,
@@ -166,9 +225,10 @@ class PairingVerifier:
             credential_handle=credential_handle,
         )
         # A revoke/consume/expiry during async secure-store access must not mint a usable selection.
-        current = self.state.get(ticket_id, now=aware(self.clock()))
+        current = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
         if current != ticket:
             raise reject("revision_conflict", "Root ticket changed", 409)
+        await asyncio.to_thread(self.roots.current, ticket)
         return RootSelection(
             selection_token=signature,
             display_name=ticket.display_name,
