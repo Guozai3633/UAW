@@ -88,7 +88,7 @@ def main():
     parser.add_argument("--run-human", action="store_true")
     args = parser.parse_args()
     if not args.run_human:
-        print("pending: 未执行本人选择确认；A 生产 bootstrap 来源仍待接线。")
+        print("pending: 未执行本人确认；此 harness 的 bootstrap 受控，不代表 installed 链验收。")
         return
     asyncio.run(run_human())
 
