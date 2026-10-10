@@ -28,3 +28,11 @@ FileMaterial为内部不可变Python值，content/usage/owner/refs使用既有Fi
 A负责实际Model/Context低信任资料分区、Artifact/Verification引用、生产设备/root/channel来源及完整Task结论；C不改Context/Agent/公共契约。M1无公共DTO改动请求；如需要跨HTTP资料协议，由A设计具名DTO后发布基线，不能把内部FileMaterial或snapshot直接序列化成产品正文。
 
 M1验证：6单元通过，实际字节副本/不可变性及边界；Ruff/Mypy通过。回执ignored tests/.artifacts/C/MS-T2h/m1-unit.xml/txt。继续M2/M3/M4，不等待整链，不把受控Reader当真人授权。
+
+## M2可接线源码与具体构造
+
+M2源码54d474e2f6492bd5877df0cfb4ba358ab3cf867d（原Tool369单元通过，Ruff/Mypy33源码通过）。实现FileMaterialAdapter(source,limits=FileMaterialLimits())；source是`assemble_file_tool(...).receipts`的专用FileReceiptStore。原A桥无需改签名：`reader=FileMaterialAdapter(binding.receipts)`；`material=await reader.export(original_action_id,original_ctx)`；后续`await reader.read(material.material_ref,original_ctx)`。缺生产数据权限/routes/pipe/key时503，不新建Source或Reader替身。
+
+正文`material.content`既有FileContent，`material.text`精确原片段；位置来自原selection，metadataRefs从该原attempt证据核对导出，整体/片段/资料canonical哈希分开。当前权限和原journal在命名CAS持久化之后再次读取，记录不能变成授权。原Usage保持pending未知维度，费用入口不被资料导出调用。
+
+内部持久行tool.file.material.{refs,observations,fragments,commands,receipts,providers,calls,owners,usages}只用已有Ref/Principal/Usage，正文沿原FileContent blob。没有新公共DTO、迁移、依赖、Object授权字段。真实SQL已启动55434，初次fixture试图修改既有frozen Location模型而失败，已改成wire副本修改并保留初轮回执；本阶段不计SQL通过，继续M3/M4和A桥样例。
