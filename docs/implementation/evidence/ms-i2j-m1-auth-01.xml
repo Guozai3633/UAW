@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="18" skipped="0" tests="33" time="5.735" timestamp="2026-10-10T12:48:02.760663+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.test_browser_sessions" name="test_real_session_logout_restart_and_no_persisted_credentials" time="0.608"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:93: in test_real_session_logout_restart_and_no_persisted_credentials
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_one_launch_code_consumed_by_one_concurrent_request" time="0.094"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:133: in test_one_launch_code_consumed_by_one_concurrent_request
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_denies_nonexact_origin_before_consuming_ticket[https://untrusted.invalid]" time="0.083"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:165: in test_exchange_denies_nonexact_origin_before_consuming_ticket
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_denies_nonexact_origin_before_consuming_ticket[http://localhost:5173]" time="0.095"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:165: in test_exchange_denies_nonexact_origin_before_consuming_ticket
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_denies_nonexact_origin_before_consuming_ticket[http://127.0.0.1:5173/]" time="0.085"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:165: in test_exchange_denies_nonexact_origin_before_consuming_ticket
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_denies_nonexact_origin_before_consuming_ticket[null]" time="0.091"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:165: in test_exchange_denies_nonexact_origin_before_consuming_ticket
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_denies_nonexact_origin_before_consuming_ticket[None]" time="0.099"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:165: in test_exchange_denies_nonexact_origin_before_consuming_ticket
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_write_requires_current_csrf_and_origin[headers0]" time="0.107"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:184: in test_write_requires_current_csrf_and_origin
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_write_requires_current_csrf_and_origin[headers1]" time="0.107"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:184: in test_write_requires_current_csrf_and_origin
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_write_requires_current_csrf_and_origin[headers2]" time="0.105"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:184: in test_write_requires_current_csrf_and_origin
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_user_only_launch_and_cli_compatibility" time="0.109"><failure message="assert 500 == 403&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:196: in test_user_only_launch_and_cli_compatibility
+    assert (
+E   assert 500 == 403
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_session_expiry_and_settings_rotation_revoke_original[expired]" time="0.117"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:229: in test_session_expiry_and_settings_rotation_revoke_original
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_session_expiry_and_settings_rotation_revoke_original[user]" time="0.095"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:229: in test_session_expiry_and_settings_rotation_revoke_original
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_session_expiry_and_settings_rotation_revoke_original[origin]" time="0.080"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:229: in test_session_expiry_and_settings_rotation_revoke_original
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_session_expiry_and_settings_rotation_revoke_original[key]" time="0.083"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:229: in test_session_expiry_and_settings_rotation_revoke_original
+    public = await login(client)
+             ^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_expired_ticket_not_consumed_and_bad_host_rejected" time="0.098"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:264: in test_expired_ticket_not_consumed_and_bad_host_rejected
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_precise_cors_and_duplicate_cookie_rejection" time="0.104"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:315: in test_precise_cors_and_duplicate_cookie_rejection
+    await login(client)
+tests\integration\test_browser_sessions.py:77: in login
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.integration.test_browser_sessions" name="test_exchange_body_owner_injection_is_rejected" time="0.097"><failure message="AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">tests\integration\test_browser_sessions.py:326: in test_exchange_body_owner_injection_is_rejected
+    code = await launch(client)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_browser_sessions.py:68: in launch
+    assert response.status_code == 200, response.json()
+E   AssertionError: {'kind': 'failed', 'failure': {'code': 'internal_error', 'category': 'infrastructure', 'message': 'Control-plane request failed', 'retryable': False, ...}, 'output_refs': []}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code</failure></testcase><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[https://127.0.0.1:5173]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://localhost:5173]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://0.0.0.0:5173]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1:5173/]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1:5173?x=1]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://user@127.0.0.1:5173]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1:80]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1:5173#x]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_only_precise_loopback_origin[http://127.0.0.1:wrong]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_browser_identity_and_independent_key_required[browser_session_signing_key]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_browser_identity_and_independent_key_required[browser_origin]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_browser_identity_and_independent_key_required[development_user_token]" time="0.001" /><testcase classname="tests.unit.shared.test_browser_settings" name="test_web_key_cannot_share_auth_or_cursor_secret" time="0.001" /><testcase classname="tests.integration.test_control_plane" name="test_http_authentication_role_injection_and_wire_dto" time="0.502" /></testsuite></testsuites>

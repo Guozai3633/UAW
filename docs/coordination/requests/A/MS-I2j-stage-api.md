@@ -33,6 +33,8 @@ POST仍使用 `{meta,payload}`，RequestMeta中的request_id稳定且同请求�
 | web.session.get | GET /v1/web/session | credentials:include，返回当前user Principal、期限和CSRF token，Cache-Control:no-store |
 | web.session.logout | DELETE /v1/web/session | credentials:include及X-UAW-CSRF，服务端撤销会话并删除cookie |
 
+阶段标签 `ms-i2j-a1`，源码固定 `c1045fde04a960d0345dc0881d86dba062de7f28`。GET成功返回HttpWebSessionGetResult；exchange、launch、logout分别返回相应HttpWeb*Result，仍沿用严格kind联合类型。DELETE用JSON正文 `{meta,payload:{}}`，不使用旧通用DELETE的If-Match约定。实际服务OpenAPI同时标记CLI Bearer与Web cookie两种认证，管理员路由只标CLI。
+
 以上对象/操作已写入源契约及生成物，M1共36项聚焦验证通过。B按阶段标签的实际schema生成客户端，不自行修改服务端DTO。
 
 cookie及一次code由独立浏览器签名密钥和随机ID生成，持久记录只保存身份、期限、版本、消费/撤销状态和令牌验证信息，不保存用户/管理员Bearer或供应商secret。短期code绑定独立认证的用户、配置Origin和账户凭据纪元，一次CAS消费；请求重放、换Origin/用户、过期或撤销拒绝。
@@ -82,6 +84,8 @@ D维护真实本机确认、RootSelection一次消费、根句柄和活连接/�
 
 - 初稿：只准备接入设计，旧回归仍收尾，未开放新端点/flags。
 - M1实现后：补实际接口schema、错误示例、localhost启动方式、验证回执和固定阶段SHA。
+
+M1完成：36项阶段验证和严格检查通过，原失败保留；启动用 `ops/browser-development.toml`、`ops/web_launch.py`，详见[实际M1记录](../../../implementation/MS-I2j-M1.md)。配置仍显式opt-in，旧全量1691不作为本轮代码的回执。
 
 ## 6. 已到达的阶段接口审阅
 

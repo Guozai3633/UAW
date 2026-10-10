@@ -178,3 +178,9 @@
 - 46实际模型尝试/五类最终完成，费用pending。
 - 新MS-I2j已派发，B前端归属与ms-i2j-start标签保留，worker分支未改。
 - [完整回执](../../implementation/MS-I2i.md)。
+## MS-I2j M1阶段接线（2026-10-10）
+
+源码c1045fd；阶段ms-i2j-a1；36不同聚焦节点通过。四个浏览器身份接口和原用户路由cookie接入实际实现；后台执行/成果/原请求查询后续M2。原schema未同步的18失败/15通过保留，同步后原33通过，再补3边界最终36。
+
+旧MS-I2i固定1691已独立封存，未覆写ms-i2j-start/B前端归属或worker分支。B按[阶段接口](../requests/A/MS-I2j-stage-api.md)接线，C/D正式阶段port已审阅待实际控制来源；真人确认仍pending，默认flags未开。阶段证据见[MS-I2j-M1](../../implementation/MS-I2j-M1.md)。
+

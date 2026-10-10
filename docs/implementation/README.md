@@ -92,3 +92,7 @@ uv sync --frozen --extra agent-engine
 2026-10-08：用户已确认B/C/D均同步ms-i2f2。新完整能力包MS-C5/MS-T2d/MS-R2d已发布；固定环境准备标签ms-i2g-start。A旧数据库兼容及8项SQL复验通过，新worker独立库由各自启动。
 
 841项是ms-i2f2运行代码的完整回执，本次环境/分工准备没有重新执行841项；运行源码不变。详细记录见[MS-I2g准备](MS-I2g-preparation.md)、[项目实际进度](PROGRESS-2026-10-08.md)及[完整功能包](../coordination/requests/A/MS-I2g-parallel-packages.md)。
+## 当前阶段：MS-I2j M1（2026-10-10）
+
+[浏览器身份与启动](MS-I2j-M1.md)：4个真实Web会话接口、Origin/CSRF、一次消费、重启与退出失效，36项聚焦验证通过。默认配置仍不启用Web；后台实际执行及用户页面/文件链正在M2–M4接线。上次完整1691属于固定旧MS-I2i。
+

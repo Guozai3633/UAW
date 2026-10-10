@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-10",
+  "phase": "MS-I2j-M1",
+  "acceptance": "development_loopback_browser_identity",
+  "execution_source_commit": "c1045fde04a960d0345dc0881d86dba062de7f28",
+  "publication_ref": "ms-i2j-a1",
+  "full_regression": false,
+  "final_receipt": {
+    "path": "docs/implementation/evidence/ms-i2j-m1-auth-03.xml",
+    "sha256": "c1d6da1bf536480b41c1bf1a1e385866ade4e0d0fa094be83c35a9efb7042dfb",
+    "counts": {
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "different_nodes": 36
+  },
+  "prior_attempts": [
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m1-auth-01.xml",
+      "sha256": "c64bc376f88d0bf010186a5fdf12ecfe58eeefe4423b8db8fd6ecf6a2e3069ee",
+      "counts": {
+        "tests": 33,
+        "failures": 18,
+        "errors": 0,
+        "skipped": 0
+      },
+      "different_nodes": 33
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2j-m1-auth-02.xml",
+      "sha256": "ad402ef2e36343d612a91ba60e348ae8dbeb45fbbacbd055b8a151ecf5de464f",
+      "counts": {
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "different_nodes": 33
+    }
+  ],
+  "original_failure": "Runtime schema had not been synchronized;18fail/15pass. Existing sync script applied; original33pass, then3 meaningful added cases give36final different nodes.",
+  "preparation_failure": "First shell redirection failed before pytest because the new ignored output directory was absent; directory created, no tests counted.",
+  "raw_logs": [
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m1-auth-01.log",
+      "sha256": "d789677ffa96e4d3567195be4707e09830bbda65f4e48bc968d63834bdf2f393"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m1-auth-02.log",
+      "sha256": "fb24cbccb91bf2614f2a486b57886d0d0d5c3eb2352c4327a5fb669d02d6deff"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m1-auth-03.log",
+      "sha256": "9c0382949baa46ce05f9dfdc439b8ebdc49cbff2344a3dd104808bf8c021055f"
+    }
+  ],
+  "static": [
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m1-ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2j/m1-mypy.log",
+      "sha256": "8cc045265129bcb862be4f8d0bc55932de455fc9b49c38fc85a5613cf038175b"
+    }
+  ],
+  "previous_full": {
+    "ref": "ms-i2i",
+    "source": "30566c62f7440b363d188910cdc14a8d69b940be",
+    "receipt": {
+      "path": "docs/implementation/evidence/ms-i2i-full-tests.xml",
+      "sha256": "3d53459f22a7681c1cc62e1addeade7bfe6fdc32b59279cf6c15e2f105f930c0"
+    },
+    "different_nodes": 1691
+  },
+  "flags_opened": false,
+  "web_opt_in": true,
+  "actual_model_calls": 0,
+  "limitations": [
+    "No actual Web UI/DeepSeek/browser background chain yet; M2-M4.",
+    "Native human read authorization and production account pairing pending.",
+    "Only loopback development identity; no OIDC/public hosting.",
+    "Old1691 full receipt does not validate this new source."
+  ]
+}

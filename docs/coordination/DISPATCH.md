@@ -1,5 +1,13 @@
 # 当前安排：MS-I2j（2026-10-10）
 
+## A M1实际阶段
+
+- 旧MS-I2i已发布 `ms-i2i / 6f1db65dc414b16def20d1b11278f204f9bfeaab`，原固定源码1691个不同节点完整通过，失败/中断/复跑记录保留。下方“仍运行中”段落是历史时点。
+- A M1源码 `c1045fde04a960d0345dc0881d86dba062de7f28`，阶段标签 **ms-i2j-a1**；真实SQL/HTTP/配置36项通过，1310schema/276接口契约核对通过。不是本轮全量或真实页面/模型整链。
+- B可在本包约定的M1/M3接线边界消费 [实际浏览器接口](requests/A/MS-I2j-stage-api.md) 和新公共schema：4个Web接口及原12个用户路由。Vite代理 `changeOrigin:true`，保留真实Origin；cookie自动携带，CSRF仅内存。B由自己保留阶段提交并同步该兼容标签，A未操作worker分支。
+- C正式文件port及D本机确认阶段签名已只读审阅，A继续M2/M3；缺实际来源不启用文件能力。本轮共同开工标签仍 `ms-i2j-start / abb4590`，B前端归属、各worker分支和默认flags保持。
+- [M1回执及启动](../implementation/MS-I2j-M1.md)。服务器列表/原请求查询/成果HTTP/后台执行仍待M2，不能把受理queued视为执行完成。
+
 - 用户要求提供四个会话提示词，本轮完整分包及正式归属已准备：A/MS-I2j用户入口/API/文件桥接；B/MS-U1真实前端；C/MS-T2g文件工具；D/MS-R2g本机确认与只读授权。
 - [四份可转发消息](MS-I2j-messages.md)；[范围、接口、目录、四里程碑](requests/A/MS-I2j-parallel-packages.md)。B新增独占apps/web与前端锁，暂停新Context优化。Python锁/契约/组装仍归A。
 - 共同固定开工标签 **ms-i2j-start**；准备前integration为 **00e59becd78118911b49e607809f14e0e2721b71**，Runtime来源 **30566c62f7440b363d188910cdc14a8d69b940be**。准确开工SHA用git rev-parse标签commit核对；实际推送/远程核对结果见本轮发布记录。
