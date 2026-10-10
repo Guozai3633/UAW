@@ -585,3 +585,7 @@ git diff --check
 - 当前未通过门槛：本人首次批准/本人根选择/实际installed授权读取pending；A1仍缺实际根Ticket签发/受保护交付、on_connected本人select/bind、父端RunnerDevices/Root/FileRoute/Tool当前authority。原账号生产身份/正式部署/Tool/Model/页面汇合由A完成；缺源503/不可用、不用fixture补生产，SID/PID/body approved/path不授权。A按MS-R2i-final-wiring.md消费现有PreparedEnrollmentLaunch/固定installed_helper/ports，无新DTO/依赖/flags。本人可复现指南MS-R2i-human-guide.md，--run-human未执行，默认pending；旧手动harness文案已明确受控。
 - 全部失败/清理来源保留：M1单位identity double嵌套/导入路径/旧错误类型预期/单文件Mypy路径和类型；M2已EOF stdin重复写；SQL初始未迁移；M3恢复期望漏command_ref；格式/闭包/手动编码。没有删权限或签名断言、隐藏失败、累加重试或重写历史。A原Proactor失败由A保留，D实际SQL检查和fixed installed消费证明修复。
 - 无用户项目/任意命令/新IPC wire/配对V2/根HTTP/public RefKind/写入安装exec/flags变更，不决定D01/D03/D06。组件和实际等待/取消消费交付，真实根与本人整链待A输入；最终源码/handoff分开提交，干净后停止在本包，不自动下一包。
+
+## MS-R2i 同包 root window 修复阶段（2026-10-10）
+
+A具体验证请求已交，固定A3源码5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e远端核对仅只读；保留原最终提交、不新包。D阶段源码e5d27593e9639fbca2a3964f055d73466093192c，runtime新增可信session_lifetime_seconds/native_timeout_seconds默认60，有限拒bool且0<native<=session<=120，原适配分别消费、不延长原授权/不改启动或首次账号native上限。25不同边界unit通过/0.12s，Ruff/Mypy34/diff通过，阶段构造及A接线MS-R2i-root-window-stage.md；继续实际注入、短源及取消/read/recover，真人A/本人重验。
