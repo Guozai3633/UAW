@@ -1,0 +1,102 @@
+{
+  "kind": "ok",
+  "payload": {
+    "action": "task.frame.committed",
+    "parameters": {
+      "goal": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。仅依据材料，不联网，不编造论文或引用。材料：观察性研究中，志愿参加学习辅导的20名学生平均成绩提高10分，未参加的20名学生平均提高3分。没有随机分组，也没有记录两组基线水平、额外学习时长或其他辅导。请明确区分相关与因果，指出选择偏差，不能把差异直接认定为辅导造成。",
+      "summary": "依据给定观察性研究材料，用Markdown讨论其能支持与不能支持的结论，区分相关与因果，指出选择偏差，并提出两个后续验证方案，且仅依据材料、不联网、不编造。",
+      "task_id": "task-4f194e5bdff94818a87c3680d3bcd119",
+      "revision": 1,
+      "created_at": "2026-10-10T05:49:34.075325+00:00",
+      "patch_refs": [],
+      "unresolved": [],
+      "assumptions": [],
+      "constraints": [
+        {
+          "id": "requirement-52a07eb4686782d8d522ffcaedd1d61baf31d907b9317a51f1ff98522d7ec887",
+          "text": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。",
+          "mandatory": true,
+          "source_refs": [
+            {
+              "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+              "kind": "input",
+              "version": "1",
+              "location": {
+                "end": 47,
+                "kind": "text_span",
+                "start": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "requirement-62d9fc3e5c8f9267d3ea3eb43882b602bb97cc3acc98e24b675779ec5dcb47ad",
+          "text": "仅依据材料，不联网，不编造论文或引用。",
+          "mandatory": true,
+          "source_refs": [
+            {
+              "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+              "kind": "input",
+              "version": "1",
+              "location": {
+                "end": 66,
+                "kind": "text_span",
+                "start": 47
+              }
+            }
+          ]
+        },
+        {
+          "id": "requirement-90763faa1b554b67a6775583072fa005846ec9b2acbb3052e7603965e7439146",
+          "text": "请明确区分相关与因果，指出选择偏差，不能把差异直接认定为辅导造成。",
+          "mandatory": true,
+          "source_refs": [
+            {
+              "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+              "kind": "input",
+              "version": "1",
+              "location": {
+                "end": 180,
+                "kind": "text_span",
+                "start": 147
+              }
+            }
+          ]
+        }
+      ],
+      "output_specs": [
+        {
+          "id": "output-fbe8bc57c218628fa19b51dfff0b70440dac5c6aa844c327ddaec05bc6a74d54",
+          "kind": "讨论能支持的结论",
+          "required": true,
+          "description": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。"
+        },
+        {
+          "id": "output-39c0b22eca179742ce131957d6a45fd5cbb4424c07ddc33179ed2c876456c3f5",
+          "kind": "讨论不能支持的结论",
+          "required": true,
+          "description": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。"
+        },
+        {
+          "id": "output-766f45294a97ec3cdf44621055d31898b03ac314e5c685605a67fbac18f9d0a0",
+          "kind": "两个后续验证方案",
+          "required": true,
+          "description": "请用Markdown讨论下面研究结果能支持什么结论、不能支持什么结论，并提出两个后续验证方案。"
+        }
+      ],
+      "evidence_refs": [],
+      "input_revision": 1,
+      "original_input_ref": {
+        "id": "input-29bc69175a0d47b7bef0e24b320de2fa",
+        "kind": "input",
+        "version": "1"
+      },
+      "semantic_parse_ref": {
+        "id": "semantic-712a51f1fd15c2e27cbe207d8ae1579abe4c16a22a164716bb57b848c657bdcc",
+        "kind": "semantic_parse",
+        "version": "1"
+      }
+    }
+  },
+  "output_refs": []
+}
