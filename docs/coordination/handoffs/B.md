@@ -875,3 +875,13 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - `pnpm --dir apps/web generate/typecheck/test/test:e2e` 实跑；48 unit +20 controlled Chromium，最终0失败/错误/跳过；构建和重复生成字节一致通过。原2测试失败、辅助错误pnpm shim失败均保留。
 - 自身 ignored `apps/web/.test-results/u2-repair-*`，完整日志/构建摘要索引 `u2-repair-receipts.json`；产物在本目录 `apps/web/dist`，A只读复制和精确校验，不执行或修改 B 环境。
 - [逐文件改动、原失败、完整构建hash与A接线](../requests/B/MS-U2-runtime-contract-repair.md)。真实认证页面复验 pending A；不标 P1 accepted、不自动扩包。
+
+
+## MS-U2 UTF-8文本成果契约修复（2026-10-10）
+
+- 原位置 `E:/UAW/.worktrees/context` / `dev/context`；固定源 `ms-i2k-start / b7b79b150470a80f37b28fd52a2177f6de5b3124`。首修 `3799b92b2d89ec0281e82594b1ba04f3bcfb8352` / `6c7493760e969eb373e7d58f0801a36fcf2ab5ce` 全部保留。
+- 新源码 `106fecdbddba3656503866a45f815f1237a67ae7`；独立交接是随后 docs 提交，准确 SHA 见最终回报。仅改 review/port.ts、A2 fixture、受控浏览器和新 review-media 单元文件。
+- 支持两个文本类型的可选唯一 charset=utf-8；严格拒绝其他媒体/编码/参数/CRLF；不改正文及bytes/hash/Ref/合同核验或接口。A实际media值接入完整受控A2 DTO回归。
+- 类型/build通过，51 unit +21 controlled Chromium最终0失败/错误/跳过；原判断2失败/1通过，以及新增测试初始转义错误回执均保留。原首修回执不覆盖。
+- 构建 `apps/web/dist`、ignored回执 `apps/web/.test-results/u2-media-*`，完整日志及新构建SHA256在 `u2-media-receipts.json`。
+- [精确改动、样例/拒绝语义、真实与受控边界、A接线和完整构建hash](../requests/B/MS-U2-utf8-media-repair.md)。完整原真实RunDeliveryView wire未提供；实际media+完整DTO受控回放通过，真实认证页面复验与真人文件授权pending A。不扩包、不标P1接受。
