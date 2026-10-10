@@ -90,7 +90,7 @@
       "control": {
         "identity": {
           "pid": 1,
-          "created": "example_001",
+          "created": "133987654321098765",
           "user_sid": "example_001",
           "logon_sid": "example_001"
         },
@@ -106,12 +106,12 @@
           "id": "example_001",
           "version": "example_001"
         },
-        "public_key": "example_001"
+        "public_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
       },
       "device": {
         "identity": {
           "pid": 1,
-          "created": "example_001",
+          "created": "133987654321098765",
           "user_sid": "example_001",
           "logon_sid": "example_001"
         },
@@ -127,7 +127,7 @@
           "id": "example_001",
           "version": "example_001"
         },
-        "public_key": "example_001"
+        "public_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
       },
       "nonce": "example_001",
       "expires_at": "2026-10-07T02:00:00Z"

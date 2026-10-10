@@ -97,6 +97,8 @@ def example(schema,depth=0):
         if s.get("format")=="uri":return "https://example.org/resource"
         if s.get("pattern")=="^[a-f0-9]{64}$":return "a"*64
         if s.get("pattern")=="^[1-9][0-9]*$":return "1"
+        if s.get("pattern")=="^[1-9][0-9]{0,19}$":return "133987654321098765"
+        if s.get("pattern")=="^[A-Za-z0-9+/]{43}=$":return "A"*43+"="
         if "^[A-Z]{3}$"==s.get("pattern"):return "CNY"
         if s.get("pattern","").startswith("^(0|"):return "0"
         if s.get("pattern","").startswith("^(?!"):return "src/main.py"
