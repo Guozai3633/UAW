@@ -77,6 +77,8 @@ class WindowsEnrollmentConfirmation:
             if (
                 current.revoked
                 or current.role != role
+                or current.device_id != document["device_id"]
+                or current.key_id != peer["key_id"]
                 or current.public_bytes != base64.b64decode(peer["public_key"], validate=True)
                 or hashlib.sha256(current.public_bytes).hexdigest()
                 != peer["key_ref"]["content_hash"]
@@ -85,7 +87,10 @@ class WindowsEnrollmentConfirmation:
                     "enrollment_native_key_denied", "Original current role key differs", 403
                 )
             keys[role] = current
-        verify(document, control_proof, keys["control"], "command")
+        if not verify(document, control_proof, keys["control"], "command"):
+            raise reject(
+                "enrollment_control_proof_denied", "Original control proof is invalid", 403
+            )
         await self.signer.check_private(
             device_id=document["device_id"],
             key_id=document["device"]["key_id"],

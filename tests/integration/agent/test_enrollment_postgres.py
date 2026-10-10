@@ -460,3 +460,193 @@ async def test_native_enrollment_wrong_os_instance_never_opens_confirmation(
         await native.confirm(p.owner, started["id"], control_proof="not-used")
     assert denied.value.failure.code == "enrollment_native_instance_denied" and not native.busy
     assert (await p.service.get(p.owner, started["id"]))["state"] == "pending"
+
+
+async def test_native_enrollment_invalid_control_signature_never_opens_ui(
+    enrollment_case, monkeypatch
+):
+    from uaw_runner.ipc.windows_pipe import WindowsApi
+    from uaw_runner.keys import ProtectedSigner
+
+    from uaw.infrastructure import enrollment_native
+    from uaw.shared.runner_signatures import VerificationKey
+
+    p = enrollment_case
+    actual = WindowsApi().current()
+    p.candidate["device"]["identity"] = {
+        "pid": actual.pid,
+        "created": str(actual.created),
+        "user_sid": actual.user_sid,
+        "logon_sid": actual.logon_sid,
+    }
+    p.candidate["control"]["identity"]["user_sid"] = actual.user_sid
+    p.candidate["control"]["identity"]["logon_sid"] = actual.logon_sid
+    started = await p.service.begin(p.owner, p.candidate["id"], meta("bad-proof-begin"))
+
+    class Directory:
+        def lookup(self, key_id, *, device_id):
+            role = "control" if key_id == "control-key" else "device"
+            return VerificationKey(
+                key_id, device_id, p.keys[role].public_key().public_bytes_raw(), role
+            )
+
+    directory = Directory()
+    native = enrollment_native.WindowsEnrollmentConfirmation(
+        p.service, directory, ProtectedSigner(directory, None), device_credential_handle="not-used"
+    )
+
+    def unexpected_ui():
+        raise AssertionError("Invalid proof must fail before UI or protected key access")
+
+    monkeypatch.setattr(enrollment_native, "WindowsNativeDialog", unexpected_ui)
+    with pytest.raises(DomainError) as denied:
+        await native.confirm(p.owner, started["id"], control_proof="invalid-signature")
+    assert denied.value.failure.code == "enrollment_control_proof_denied" and not native.busy
+
+
+async def test_control_enrollment_actual_os_protected_key_and_current_rechecks(
+    enrollment_case, tmp_path
+):
+    from uuid import uuid4
+
+    from pydantic import SecretStr
+    from uaw_runner.ipc.windows_pipe import WindowsApi
+    from uaw_runner.keys import ProtectedSigner
+    from uaw_runner.state import LocalState
+
+    from uaw.infrastructure.credentials import WindowsCredentialStore
+    from uaw.infrastructure.enrollment_control import WindowsEnrollmentControlProof
+    from uaw.shared.runner_signatures import VerificationKey, verify
+    from uaw.shared.schema import ContractViolation
+
+    p = enrollment_case
+    actual = WindowsApi().current()
+    p.candidate["control"]["identity"] = {
+        "pid": actual.pid,
+        "created": str(actual.created),
+        "user_sid": actual.user_sid,
+        "logon_sid": actual.logon_sid,
+    }
+    p.candidate["device"]["identity"]["user_sid"] = actual.user_sid
+    p.candidate["device"]["identity"]["logon_sid"] = actual.logon_sid
+    state = LocalState(tmp_path / "current-keys.sqlite")
+    for role in ("control", "device"):
+        state.register_key(
+            VerificationKey(
+                role + "-key",
+                p.candidate["device_id"],
+                p.keys[role].public_key().public_bytes_raw(),
+                role,
+            )
+        )
+    credentials = WindowsCredentialStore("enrollment-control-test-" + uuid4().hex)
+    handle = "control-" + uuid4().hex
+    await credentials.put(
+        handle, SecretStr(base64.b64encode(p.keys["control"].private_bytes_raw()).decode())
+    )
+    try:
+        started = await p.service.begin(p.owner, p.candidate["id"], meta("protected-control-begin"))
+        issuer = WindowsEnrollmentControlProof(
+            p.service, state, credentials, control_credential_handle=handle
+        )
+        proof = await issuer.issue(p.owner, started["id"])
+        assert verify(
+            started["proof_document"],
+            proof,
+            state.lookup("control-key", device_id=p.candidate["device_id"]),
+            "command",
+        )
+        # Ordinary command signer must still refuse an enrollment document.
+        with pytest.raises(ContractViolation):
+            await ProtectedSigner(state, credentials).sign_document(
+                started["proof_document"],
+                device_id=p.candidate["device_id"],
+                key_id="control-key",
+                domain="command",
+                credential_handle=handle,
+            )
+        await credentials.put(
+            handle,
+            SecretStr(base64.b64encode(Ed25519PrivateKey.generate().private_bytes_raw()).decode()),
+        )
+        with pytest.raises(DomainError) as mismatched:
+            await issuer.issue(p.owner, started["id"])
+        assert mismatched.value.failure.code == "enrollment_control_private_key_denied"
+        state.revoke_key("device-key", expected_revision=0)
+        with pytest.raises(DomainError) as revoked:
+            await issuer.issue(p.owner, started["id"])
+        assert revoked.value.failure.code == "enrollment_control_key_denied"
+    finally:
+        await credentials.delete(handle)
+    with pytest.raises(DomainError) as cleaned:
+        await credentials.resolve(handle)
+    assert cleaned.value.status_code == 404
+
+
+async def test_owned_prepared_helper_candidate_current_sql_os_and_revocation(
+    enrollment_case, tmp_path
+):
+    import os
+    import sys
+    from pathlib import Path
+
+    from uaw_runner.helper_process import HelperProcess
+    from uaw_runner.state import LocalState
+
+    from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
+    from uaw.shared.runner_signatures import VerificationKey
+
+    p = enrollment_case
+    state = LocalState(tmp_path / "candidate-current-keys.sqlite")
+    for role in ("control", "device"):
+        state.register_key(
+            VerificationKey(
+                role + "-key",
+                p.candidate["device_id"],
+                p.keys[role].public_key().public_bytes_raw(),
+                role,
+            )
+        )
+    # Actual fixed installed host, before start/assembly/handshake. The runtime
+    # import roots belong to this test's installed source; no request supplies them.
+    root = (await asyncio.to_thread(Path(__file__).resolve)).parents[3]
+    environment = dict(os.environ)
+    environment["PYTHONPATH"] = os.pathsep.join(
+        map(str, (root / "src", root / "apps/local_runner", Path(sys.prefix) / "Lib/site-packages"))
+    )
+    helper = await HelperProcess.prepare(
+        python=Path(sys._base_executable),
+        assembly_module="uaw.infrastructure.enrollment_native",
+        environment=environment,
+    )
+    source = OwnedEnrollmentCandidates(p.service, state)
+    try:
+        candidate = await source.capture(
+            p.owner,
+            helper,
+            device_id=p.candidate["device_id"],
+            control_actor=Principal.model_validate(p.candidate["control"]["actor"]),
+            device_actor=Principal.model_validate(p.candidate["device"]["actor"]),
+            control_key_id="control-key",
+            device_key_id="device-key",
+        )
+        assert candidate["device"]["identity"]["pid"] == helper.process.pid
+        assert not helper.started and not helper.closed
+        restarted = OwnedEnrollmentCandidates(p.service, state)
+        assert await restarted.current(candidate["id"], owner=p.owner) == candidate
+        p.service.candidates = restarted
+        pending = await p.service.begin(p.owner, candidate["id"], meta("actual-launch-begin"))
+        assert pending["state"] == "pending" and "pairing_ref" not in pending
+        assert await p.service.challenge(p.owner, pending["id"]) == pending["proof_document"]
+        other = p.owner.model_copy(update={"auth_session_id": "another-web-session"})
+        with pytest.raises(DomainError):
+            await restarted.current(candidate["id"], owner=other)
+        state.revoke_key("device-key", expected_revision=0)
+        with pytest.raises(DomainError) as revoked:
+            await restarted.current(candidate["id"], owner=p.owner)
+        assert revoked.value.failure.code == "enrollment_launcher_key_denied"
+    finally:
+        await helper.close()
+    assert helper.process.poll() is not None
+    with pytest.raises(DomainError):
+        await source.current(candidate["id"], owner=p.owner)
