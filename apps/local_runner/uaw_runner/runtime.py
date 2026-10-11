@@ -39,7 +39,12 @@ class HelperReadAssembly:
 
     async def create(self, command_ref: Ref, *, channel_ref: Ref) -> ReadOnlyRunner:
         helper = self.helper
-        await helper.registry.read(channel_ref, device_id=helper.protocol.device_id)
+        # Composition copies fixed connection metadata only. It grants no permission:
+        # endpoint checks after this await, and execute independently reads current
+        # Reader/owner/channel/root/authority before admission or opening a handle.
+        if helper.session is None:
+            raise CapabilityUnavailable("runner.ipc.handshake")
+        helper.registry._snapshot(helper.session, channel_ref, device_id=helper.protocol.device_id)
         return ReadOnlyRunner(
             protocol=helper.protocol,
             command_ref=command_ref,
