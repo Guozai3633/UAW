@@ -68,6 +68,24 @@ class MeasuredInstalledAssembly:
             return original_open(self, *args, **kwargs)
 
         WindowsReadHandle.__init__ = counted_open
+
+        def measure(port, method, label):
+            original = getattr(port, method)
+
+            async def measured(*args, **kwargs):
+                started = time.perf_counter()
+                try:
+                    return await original(*args, **kwargs)
+                finally:
+                    row = values["phases"].setdefault(label, {"calls": 0, "seconds": 0.0})
+                    row["calls"] += 1
+                    row["seconds"] += time.perf_counter() - started
+
+            setattr(port, method, measured)
+
+        measure(application.helper.protocol.async_authority, "current", "authority")
+        measure(application.helper.bootstrap.signer, "sign_document", "signatures")
+        measure(application.helper.journal, "publish", "receipt_publish")
         original_connected = application.on_connected
         original_serve = application.helper.serve_once
 

@@ -5,6 +5,7 @@ Every blocking operation runs in a worker with bounded waits; no impersonated bu
 
 import asyncio
 import ctypes
+import math
 import os
 import re
 import struct
@@ -398,6 +399,27 @@ class PipeConnection:
                 return actual == self.peer_identity
             except OSError:
                 return False
+
+    def readable_sync(self, deadline: float) -> bool:
+        # Idle is not an incomplete frame. No read is issued until the first byte;
+        # the original session deadline still bounds this permission-free wait.
+        with self.lock:
+            self.guard(deadline)
+            available = W.DWORD()
+            if not self.api.k.PeekNamedPipe(
+                self.handle, None, 0, None, ctypes.byref(available), None
+            ):
+                raise reject("ipc_broken", "IPC peer disconnected", 409, "dependency")
+            self.guard(deadline)
+            return bool(available.value)
+
+    async def wait_readable(self, *, deadline: float) -> float:
+        if not math.isfinite(deadline):
+            raise ValueError("Original finite session deadline required")
+        while True:
+            if await asyncio.to_thread(self.readable_sync, deadline):
+                return time.monotonic()
+            await asyncio.sleep(min(0.02, max(0.0, deadline - time.monotonic())))
 
     def close_sync(self) -> None:
         self.closed.set()

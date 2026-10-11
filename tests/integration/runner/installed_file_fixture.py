@@ -17,6 +17,7 @@ from tests.integration.agent.test_installed_launch import cleaned
 from tests.integration.test_browser_sessions import ORIGIN, envelope, login
 from tests.integration.test_control_plane import meta, seed
 from tests.integration.test_runtime_sources import profile
+from uaw.infrastructure.blob.filesystem import FSBlobStore
 from uaw.infrastructure.db.models import OutboxRow
 from uaw.infrastructure.db.transactions import reference
 from uaw.infrastructure.enrollment_launch import PreparedEnrollmentLaunch
@@ -53,6 +54,11 @@ class InstalledFileCase:
             yield
         finally:
             self.metrics["phases"][name] = time.perf_counter() - started
+            await asyncio.to_thread(
+                (self.trace.parent / "phase-metadata.json").write_text,
+                json.dumps(self.metrics),
+                encoding="utf-8",
+            )
 
     async def approve(self):
         async with self.phase("approval_query"):
@@ -91,6 +97,8 @@ async def new_run(c, owner, workspace):
     admin = Principal(
         id=c.settings.development_admin_id, kind="admin", auth_session_id="d-admin-fixture"
     )
+    # Explicit component availability fixture BEFORE new Run; production default stays empty.
+    c.tool_access.implemented_flags = frozenset({"file_access"})
     active = await seed(config, admin)
     # BEFORE a new Run: fixture-only connected model metadata, no model request.
     row = await c.records.get(config.platform, "providers", "fixture-provider")
@@ -236,6 +244,7 @@ async def new_run(c, owner, workspace):
 @asynccontextmanager
 async def installed_file_case(web, tmp_path, monkeypatch):
     c, client = web
+    c.blobs = FSBlobStore(tmp_path / "private-blobs")
     public = await login(client)
     owner = Principal.model_validate(public["principal"])
     workspace = Ref(kind="workspace", id="d-disposable-workspace", version="1")
@@ -309,6 +318,17 @@ async def installed_file_case(web, tmp_path, monkeypatch):
                     await asyncio.sleep(0.2)
             assert view["state"] == "ready", view
         launch = c.installed_lifecycle.active.launch
+        await asyncio.to_thread(
+            (tmp_path / "private-cleanup-locator.json").write_text,
+            json.dumps(
+                {
+                    "namespace": c.settings.platform_id,
+                    "handles": launch.handles,
+                    "roles": str(launch.state.path),
+                }
+            ),
+            encoding="utf-8",
+        )
         case.grant = await current_root(launch)
         async with case.phase("a8_assembly"):
             case.bindings = await assemble_installed_file(
@@ -320,6 +340,33 @@ async def installed_file_case(web, tmp_path, monkeypatch):
                 provider=Principal(id="d-file-service", kind="service", auth_session_id="internal"),
                 money_ceiling="0.05",
             )
+
+        def measure(port, method, label):
+            original = getattr(port, method)
+
+            async def measured(*args, **kwargs):
+                started = time.perf_counter()
+                try:
+                    return await original(*args, **kwargs)
+                finally:
+                    row = case.metrics.setdefault("operations", {}).setdefault(
+                        label, {"calls": 0, "seconds": 0.0}
+                    )
+                    row["calls"] += 1
+                    row["seconds"] += time.perf_counter() - started
+
+            setattr(port, method, measured)
+
+        for port, method, label in (
+            (c.budgets, "reserve", "budget_reserve"),
+            (c.budgets, "dispatch", "budget_dispatch"),
+            (c.execution_leases, "acquire", "lease_acquire"),
+            (case.bindings.control.commands, "register", "command_register"),
+            (case.bindings.control.commands, "collect", "command_collect"),
+            (case.bindings.bridge, "resolve", "bridge_source_checks"),
+            (case.bindings.bridge.pipe, "read", "signed_pipe_exchange"),
+        ):
+            measure(port, method, label)
         case.raw = {
             "tool_ref": tool_ref.wire(),
             "action_id": "d-original-read",
@@ -336,9 +383,16 @@ async def installed_file_case(web, tmp_path, monkeypatch):
         yield case
     finally:
         entry = c.installed_lifecycle.active
+        cleanup_failure = None
         async with case.phase("cleanup"):
-            await c.installed_lifecycle.close_owner(owner)
+            try:
+                await c.installed_lifecycle.close_owner(owner)
+            except BaseException as exc:
+                cleanup_failure = exc
+                case.metrics["cleanup_failure"] = type(exc).__name__
             if entry is not None and entry.launch is not None:
+                # Drain the exact owned launch even if A lifecycle stop itself fails.
+                # The original failure is re-raised below, never relabelled as passed.
                 await cleaned(entry.launch)
                 case.metrics["cleanup"] = {
                     "credential_handles_absent": len(entry.launch.handles),
@@ -357,3 +411,5 @@ async def installed_file_case(web, tmp_path, monkeypatch):
             await session.execute(
                 delete(OutboxRow).where(OutboxRow.principal_id == c.configuration.platform.id)
             )
+        if cleanup_failure is not None:
+            raise cleanup_failure
