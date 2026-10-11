@@ -631,3 +631,13 @@ A具体验证请求已交，固定A3源码5fbfa752f6d83a3e663b98b6b002eb8a481e8b
 - 371个不同保留随机namespace清理报告全部cleaned=true；完整/旧中断回归236个配置namespace逐一有清理覆盖，无自有full-run helper进程残留。旧中断时1个own helper-input namespace缺finally报告：路径/随机namespace/两个handle验证只属本session temp-full，确认原进程已无残留后删2自有凭据、复查缺失、撤销两role keys；interrupted-cleanup.json保留原退出interrupted，不冒称正常退出0，不枚举/触碰用户凭据或按泛进程名关闭。
 - A报告精确合入f0后的消费者源码4e303d01f8f1d90af45f380d8c319c8b261c4161，原撤销复现1通过/1.25s、74不同受影响消费者通过/45.57s、A Ruff/Mypy196通过；是A交接结果，不计D688。A5阶段仅当前源/Windows边界接受；A SQL/source性能和本人绑定独立待。A消费原RegisteredNativeChallenges/公共registry入口即可，无新接口需求，不需跨调用permission或schema cache。
 - 本人第四次已选目录/确认只读证明显示有效，但原journal1/grant0/原期限失败，文件/模型0；本修复没再弹本人窗/访问用户目录，不从decision恢复旧grant、不延长Ticket/grant或重发unknown。原content Ref/journal/flags/权限版本保持，不开放写入安装exec，不决定D01/D03/D06。源码和handoff独立、干净交付，在本包停，待A外部SQL/真实source及以后本人验收。
+
+## MS-R2i 独立D55435 SQL补验交接（2026-10-11）
+
+- 实际E:/UAW/.worktrees/runner /dev/runner，生产源码仍f0b397bbffa9c1202dd696b81664a433a87a4349，原最终handoff3a47f79fd21c149f5ec84009413d0115b835b0ec/原失败/清理完整保留；本次未改源码/flags/公共/锁，不重跑688。补验docs **f4d22aaa388045f7e009bb2b9a5f9fa9151a9d80**，文件requests/D/MS-R2i-sql-resume.md和stage-current-dedup追加，本handoff独立提交。
+- 干净核对后fetch tags，远端A5 source4e303d01f8f1d90af45f380d8c319c8b261c4161/metadata7581abde1d979f98abaadb93af8378e8b6bd319b准确，未合并浮动integration/移动start/reset/rebase/stash。当前D消费worktree原A1固定installed模块，与A新source/消费者结果分别记账。
+- 用户恢复Docker后仅 `. ./ops/start-dev-db.ps1 -Session D`，独立D55435 ready；两个URL校验127.0.0.1:55435/uaw_dev，当前worktree现有alembic upgrade head exit0，未触及A/B/C数据库/重置/清库，秘密不输出。
+- **单独7节点通过/29.57s（XML29.555），0失败/错误/跳过**：原未供給DB的sql-check1节点+未运行的installed SQL/Web6节点。688此前通过+7本次按class/name取并集=**695不同Runner节点最终通过**，不加重试/阶段/A74。原full-final.xml/log的688pass/1fail、原Docker未响应、4c晚role空档等失败原样保留；nodes-final-with-sql按新同源码回执覆盖那个失败状态，不删历史。
+- 命令/环境/迁移/公开接口不变与边界见MS-R2i-sql-resume.md。ignored tests/.artifacts/D/MS-R2i-current-dedup/sql-resume-setup/env/migrate.log、sql-resume.xml/log/checks.json、nodes-final-with-sql.json和嵌套installed-cleanup JSON保存真实SQL/Web/auth会话/原challenge/protected proof/当前role/Windows双进程/Selector/IPC/取消注销撤销重启回执。源码无变，原Ruff/77格式/Mypy34和7公共hash回执继续有效，本次doc diff通过。
+- 7个installed launch清理逐一验证，每次4随机protected handles删除/复查缺失、2role key撤销、own process退出0、proof管道关闭；sql-check独立IPC fixture按原finally清理，无temp-sql-resume helper残留。首次定位脚本glob只查artifact根漏嵌套7报告的assert保存audit-first，改rglob/resolve去重后全部验证，不算测试失败。未读/操作既有用户凭据或泛kill。文档首次提交自动审批服务deadline超时未执行；确认无文件后按已有授权允许的一次重试成功，无绕过。
+- D组件真实SQL门槛已补齐；没有自动Yes、本人新窗、用户文件/LLM/Tool产品通过声明。本人第四次journal1/grant0未bind仍真实保留，A负责实际source性能/本人重新确认与完整链路。缺source503，不从SID/PID/body批准派生权限，不延长旧Ticket/grant或cache许可，不重发unknown，原content Ref/签名journal/恢复和15/90/120边界保持。写入安装exec/flags关闭，不决定D01/D03/D06；独立docs/handoff、干净停同包，D库保持供后续明确验证，不删库。
