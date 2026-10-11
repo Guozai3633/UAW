@@ -1,3 +1,9 @@
+# MS-I2l A8
+
+源码 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6 / ms-i2l-a8-source；消费证据 ms-i2l-a8。86 不同节点最终通过，零失败/错误/跳过；199 源码 Mypy、运行代码 Ruff/格式及 287 接口/1358 对象校验通过。原 Tool/approval 和 browser-owned Runner file 来源装配完成，默认关闭；[来源契约](../requests/A/MS-I2l-installed-file-sources.md)与[阶段证据](../../implementation/evidence/ms-i2l-a8.json)。
+
+原 A7 回执、fixture 准备失败、停滞沙箱单元及真实环境复跑均保留。新的本人页面/实际文件到模型交付和 M3/M4 汇合继续，不开启 flags，不改 worker 源码/分支；后台仍 A7，旧全量 1691 不更新。
+
 # MS-I2l A7
 
 源码 47e981e059c222c60f78daeaf1e52b76bd3b1be0 / ms-i2l-a7-source；独立消费元数据 ms-i2l-a7。122 个不同节点通过，无最终失败/错误/跳过；198 源码 Mypy、运行代码 Ruff/格式和接口校验通过。本人第六次 grant 记录已固定，原最终 callback 清理取消保留；新受控 HTTP/OS/IPC 原回调和 stop 独立实跑。M3/M4/真实文件模型交付继续，flags 未开启。

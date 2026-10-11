@@ -1,3 +1,9 @@
+# A/MS-I2l A8 来源已固定，继续 M3/M4
+
+16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6 / ms-i2l-a8-source，消费证据 ms-i2l-a8。86 不同定向节点通过；原审批/数据权限与原 Windows 设备/根/签名/IPC 来源装配已验证。199 源码类型检查和契约检查通过。阶段说明 ../../implementation/MS-I2l-A8.md，输入与消费 ../../coordination/requests/A/MS-I2l-installed-file-sources.md。
+
+下一步 A：管理员 file provider/availability gate、每 Run 的精确 workspace/file 权限、混合工具及原审批来源路由、材料 origin/Context/固定模型/成果；再完成 B 实际页面本人授权和交付控制。当前后台加载 A7，flags 未开，未有用户文件正文或新模型调用，不标本轮 accepted，不发新包，不重做 worker 组件。
+
 # A/MS-I2l A7 已固定
 
 47e981e059c222c60f78daeaf1e52b76bd3b1be0 / ms-i2l-a7-source，消费证据 ms-i2l-a7。122 不同节点通过；浏览器 installed 生命周期、完整 callback 与停止清理受控实连通过。继续原文件 Tool/预算/Runner、真实页面和 M3/M4，不发新包。契约见 ../../coordination/requests/A/MS-I2l-browser-installed-v1.md。

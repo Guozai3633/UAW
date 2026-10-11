@@ -1,3 +1,13 @@
+# MS-I2l A8：原文件工具的当前来源已固定
+
+准确源码 **16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6** / `ms-i2l-a8-source`；消费证据 `ms-i2l-a8`。共同 start 与 A1–A7 不移动，继续本包 M3/M4，不发新包。
+
+86 个不同定向节点通过：81 实际 PostgreSQL/兼容、2 Windows OS/IPC 原 callback/journal/签名来源、3 等待后 stop/done/替换竞态；199 源码 Mypy、运行代码 Ruff/格式和 287 接口/1358 对象校验通过。[阶段范围](../implementation/MS-I2l-A8.md)与[内部来源契约](requests/A/MS-I2l-installed-file-sources.md)。原审批 pending/decline/批准后撤销、原 action/attempt/完整参数与当前 provider/角色检查已实跑。
+
+`file_access` 工具名称唯一由管理员 `local_files` 治理，固定与当前配置都检查；没有开 flags 或发布生产 file provider。来源装配使用原浏览器实例、真实控制 keys、session、根和设备；受控临时目录输入不代表新的本人授权，用户文件正文和新模型调用为 0。旧 A7 回执字节已保存，1691 旧全量不更新。
+
+A 继续管理员 file provider/availability gate、逐 Run 范围与混合工具/审批路由、材料 origin→Context→固定模型→准确成果引用，随后真实 B 页面与本人验收。当前 localhost 后台仍加载 A7，不宣称已运行 A8 产品文件链；不替 worker 改源码/工作区，不自动重新弹窗或接受成果。
+
 # MS-I2l A7：网页本机生命周期已固定
 
 准确源码 **47e981e059c222c60f78daeaf1e52b76bd3b1be0** / `ms-i2l-a7-source`；消费证据 `ms-i2l-a7`。本轮 start/A1–A6 不移动，不开始新包。
