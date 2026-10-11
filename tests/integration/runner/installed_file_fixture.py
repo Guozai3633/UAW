@@ -243,6 +243,7 @@ async def new_run(c, owner, workspace):
 
 @asynccontextmanager
 async def installed_file_case(web, tmp_path, monkeypatch):
+    setup_started = time.perf_counter()
     c, client = web
     c.blobs = FSBlobStore(tmp_path / "private-blobs")
     public = await login(client)
@@ -270,6 +271,7 @@ async def installed_file_case(web, tmp_path, monkeypatch):
         trace,
         {"Origin": ORIGIN, "X-UAW-CSRF": public["csrf_token"]},
     )
+    case.metrics["phases"]["fixture_new_run_setup"] = time.perf_counter() - setup_started
     get = c.records.get
 
     async def measured_get(*args, **kwargs):

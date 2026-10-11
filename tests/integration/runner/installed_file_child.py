@@ -14,6 +14,7 @@ from pathlib import Path
 from uaw_runner.handle_read import WindowsReadHandle
 from uaw_runner.native_dialog import NativeDirectoryDecision, WindowsNativeDialog
 
+from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.installed_helper import NAMESPACE_ENV, InstalledHelperAssembly
 from uaw.shared.errors import reject
 
@@ -41,25 +42,29 @@ WindowsNativeDialog.show = controlled_native
 
 class MeasuredInstalledAssembly:
     async def create(self, identity):
-        application = await InstalledHelperAssembly().create(identity)
         destination = Path(os.environ["UAW_D_METRICS"])
         values = {"queries": {}, "phases": {}, "opens": 0, "frames": []}
-        records = application.helper.container.records
-        original_get = records.get
+        original_get = PostgresRecordStore.get
 
         def save():
             destination.write_text(json.dumps(values), encoding="utf-8")
 
-        async def measured_get(*args, **kwargs):
+        async def measured_get(records, *args, **kwargs):
             started = time.perf_counter()
             try:
-                return await original_get(*args, **kwargs)
+                return await original_get(records, *args, **kwargs)
             finally:
                 row = values["queries"].setdefault(args[1], {"calls": 0, "seconds": 0.0})
                 row["calls"] += 1
                 row["seconds"] += time.perf_counter() - started
 
-        records.get = measured_get
+        PostgresRecordStore.get = measured_get
+        started = time.perf_counter()
+        try:
+            application = await InstalledHelperAssembly().create(identity)
+        finally:
+            values["phases"]["factory_create"] = time.perf_counter() - started
+            await asyncio.to_thread(save)
         original_open = WindowsReadHandle.__init__
 
         def counted_open(self, *args, **kwargs):

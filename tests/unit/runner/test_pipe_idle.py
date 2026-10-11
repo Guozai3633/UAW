@@ -62,6 +62,32 @@ async def test_ready_bytes_does_not_extend_bootstrap_or_frame_budget():
         session=SimpleNamespace(pipe=Pipe(), monotonic_expiry=until),
         endpoint=SimpleNamespace(serve_once=endpoint),
     )
-    with pytest.raises(TimeoutError):
+    with pytest.raises(DomainError) as expired:
         await ReadOnlyHelper.serve_once(helper)
+    assert expired.value.failure.code == "ipc_timeout"
     assert calls == [until] and helper.operation is None
+
+
+@pytest.mark.parametrize("mode", ["disconnect", "expiry", "cancel"])
+async def test_sent_receipt_waits_only_original_close_or_expiry(mode):
+    from uaw_runner.helper_host import wait_reply_close
+
+    checks = []
+
+    def live():
+        checks.append(True)
+        return mode != "disconnect"
+
+    until = asyncio.get_running_loop().time() + 0.06
+    helper = SimpleNamespace(
+        session=SimpleNamespace(monotonic_expiry=until, pipe=SimpleNamespace(live_sync=live))
+    )
+    task = asyncio.create_task(wait_reply_close(helper))
+    if mode == "cancel":
+        await asyncio.sleep(0.01)
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+    else:
+        await task
+    assert checks and helper.session.monotonic_expiry == until

@@ -63,6 +63,19 @@ class HelperBootstrapProgress(FirstStartProgressPort):
             raise
 
 
+async def wait_reply_close(helper: ReadOnlyHelper) -> None:
+    # Do not destroy a sent receipt's pipe before the control reader has verified
+    # its frame/current connection. This receives/executes nothing and grants no
+    # permission; explicit peer close/exit/own stop/original session expiry ends it.
+    session = helper.session
+    if session is None:
+        raise CapabilityUnavailable("runner.helper.connected_read")
+    while asyncio.get_running_loop().time() < session.monotonic_expiry:
+        if not await asyncio.to_thread(session.pipe.live_sync):
+            return
+        await asyncio.sleep(0.02)
+
+
 async def serve(application: HelperApplication) -> None:
     helper = application.helper
     try:
@@ -76,6 +89,7 @@ async def serve(application: HelperApplication) -> None:
                     await application.on_connected(helper)
                 receipt = await helper.serve_once()
                 emit("receipt", receipt_ref=receipt.wire())
+                await wait_reply_close(helper)
             except DomainError as exc:
                 emit("failure", code=exc.failure.code)
             finally:

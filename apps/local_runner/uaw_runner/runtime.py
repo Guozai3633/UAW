@@ -256,6 +256,8 @@ class ReadOnlyHelper:
             async with asyncio.timeout_at(until):
                 await self.bootstrap.connected(self.session)
                 return await self.endpoint.serve_once()
+        except TimeoutError:
+            raise reject("ipc_timeout", "Read frame deadline expired", 408, "timeout") from None
         finally:
             self.operation = None
 
