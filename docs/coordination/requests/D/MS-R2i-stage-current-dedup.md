@@ -53,3 +53,7 @@ D55435本轮TCP probe unavailable，SQL installed6节点尚未运行，不能将
 A报告精确合入f0后的消费者源码4e303d01f8f1d90af45f380d8c319c8b261c4161，原最后Ticket/control revoke复现通过、74不同受影响消费者通过/45.57s、A Ruff/196源码Mypy通过；这部分是A的交接结果，不加入D688，也不代表A真实SQL/本人绑定或全产品验收。A5仅当前源/Windows边界阶段接受，D不合并浮动integration。当前actual caller构造/接口不用修改；A保持真实current/source查询与原更早期限，不做permission/schema cache。
 
 本人第四次“已选目录并确认只读”证明窗口显示与本机decision，原journal1/grant0仍未bind、文件/模型0；此次组件修复没有新本人窗口或用户目录访问。A SQL profile/真实source性能及以后本人新确认由A继续，缺生产source503，不重发unknown命令，不从decision恢复旧grant或延长Ticket。写入安装exec/flags关闭，不决定D01/D03/D06。最终文档与独立handoff提交、工作区干净后停本包。
+
+## SQL恢复补验（2026-10-11，同日后续）
+
+上文SQL7未验证是当时真实停止点；用户恢复engine后仅D55435环境/现有迁移恢复，补7节点全通过/29.57s，0错误/失败/跳过。源码f0不变、不重跑688；最终695不同Runner节点通过，旧SQL/候选失败全部保留，不冒称本人根bind。独立命令/环境/清理见MS-R2i-sql-resume.md，handoff另提交。
