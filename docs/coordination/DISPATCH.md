@@ -1,4 +1,27 @@
-# MS-I2l A9 current：A 来源检查续项已固定
+# MS-I2l A10：worker 组件审阅与原用户/root 映射已固定
+
+2026-10-11。准确源码 **5f747fd0d259a92e6596c79547ca11246a20c504** /
+`ms-i2l-a10-source`。继续原 MS-I2l，不建立新共同 start，不移动旧标签。
+B 394d785/1b0fe02、C 223c9a9/730a419 已在 A 历史内；
+D 7926160/28850ff 的定向修复合入 72d98ac3，无冲突，未操作 worker 工作区。
+
+A 修复同一 EnrolledPeerRegistry 的完整原用户映射，保留双方 OS/keys、
+当前 Web 会话、原 native journal/签名和登记复查。新增内部有界 current/watch
+来源协议；初版仍做完整当前查询，**尚未装配 D endpoint/watch，不是性能优化完成**。
+231 个不同组件节点通过（新增30），210源码 Mypy、Ruff/格式和契约检查通过。
+[接口/范围](requests/A/MS-I2l-A10-owner-recheck.md)、
+[实际回执与失败](../implementation/evidence/ms-i2l-a10.json)。D195不叠加到A节点数。
+
+原首次双进程文件读取仍失败：旧 enrolled_actor_denied 已通过，但原 response
+deadline 内仍未完成准入；command1/open0，unknown 不重发。4临时凭据、
+2角色key、child和proof pipe清理通过。原失败与旧1691全量保留。
+B真实认证、固定用户模型文件交付、本人确认/接受和汇合全量仍 pending。
+无新模型调用或用户文件正文读取，flags 不开放。
+
+D 本次定向组件工作已结束；A继续批量当前来源与生产消费策略，不据未优化接口
+要求 D 自动扩包或合并浮动 integration。组件接受不代表 MS-I2l/P1 整轮接受。
+
+# MS-I2l A9 current：A 来源检查续项已固定（历史）
 
 准确源码 **923528d627413b5745e6c308451918f17efcb393** /
 `ms-i2l-a9-current-source`。56实际SQL/签名回归通过，新增4个跨任务变更检查；

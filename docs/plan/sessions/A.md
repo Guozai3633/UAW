@@ -1,4 +1,16 @@
-# A/MS-I2l-A9 current 来源续项
+# A/MS-I2l-A10 原 owner 修复与 worker 审阅
+
+准确源码 5f747fd0d259a92e6596c79547ca11246a20c504 / ms-i2l-a10-source。
+B/C 已在历史内，D 最新定向修复合入；不操作 worker 分支或源码。
+原 user/root 使用同一映射，完整会话、双方 OS/key 和 native journal/签名验证。
+231不同组件节点、210源码类型、Ruff/格式及契约检查通过。
+内部 current/watch 已定义并组件验证，尚未消费，仍完整查来源，不能宣称优化通过。
+原实际首次链 command1/open0：旧 owner 拒绝解除，现仍 response deadline 超时。
+unknown不重发，失败/费用/旧全量保留；无新模型调用、用户文件或 flags 开启。
+继续A逐来源批量检查和实际链；D定向包结束，三个worker不自动扩包。
+详见 ../../coordination/requests/A/MS-I2l-A10-owner-recheck.md 和 DISPATCH准确版本。
+
+# A/MS-I2l-A9 current 来源续项（历史）
 
 923528d627413b5745e6c308451918f17efcb393 / ms-i2l-a9-current-source。
 56实际SQL回归通过，新4个外部模型/命令/取消变更节点，组件并集201、源码类型209通过。
