@@ -1,3 +1,7 @@
+# B/MS-U3b 同轮续包已正式派发
+
+本机启动/状态/停止页面，原身份与launch刷新/未知请求恢复，受控与实际只读联调。A7 HTTP已固定，可立即开工；仅apps/web及B测试/文档，暂停Context。准确执行版本、文档标签与消费步骤按DISPATCH及MS-I2l-A8-continuation-packages.md的B章，不因A9文件交付未完成而等待。
+
 # 本轮入口：Session B / MS-U3
 
 状态：MS-I2l正式发布，固定ms-i2l-start / `8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`；按对应提示词核对后自行开工。apps/web当前会话刷新/身份恢复、真实登记状态与成果页面；暂停新Context优化。

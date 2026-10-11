@@ -1,3 +1,7 @@
+# C/MS-T2i-b 同轮续包已正式派发
+
+office/file原独立Invocation与结果/恢复的严格路由；A注入同一有效Agent access，原ledger/spec/provider绑定。仅Tool/C测试文档，private接口按续包C章；自己的55434受影响SQL实跑，先阶段后最终，不重做多材料包。准确版本和固定文档消费按DISPATCH。
+
 # 本轮入口：Session C / MS-T2i
 
 状态：MS-I2l正式发布，固定ms-i2l-start / `8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`；按对应提示词核对后自行开工。已有FileMaterialReader上有界多资料消费/原恢复，不新执行文件；独立55434真实SQL。

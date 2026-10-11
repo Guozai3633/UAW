@@ -1,3 +1,7 @@
+# A/MS-I2l-A9 同轮并行续包
+
+A8固定来源上继续管理员file provider/availability、每Run workspace/role/model与原审批所属service、Context/成果接线。B/MS-U3b、C/MS-T2i-b、D/MS-R2i-b已正式派发；先交生产输入，阶段到即审阅。不代写worker业务，当前包不变。续包说明见 ../../coordination/requests/A/MS-I2l-A8-continuation-packages.md；准确执行版本与文档标签按DISPATCH。
+
 # A/MS-I2l A8 来源已固定，继续 M3/M4
 
 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6 / ms-i2l-a8-source，消费证据 ms-i2l-a8。86 不同定向节点通过；原审批/数据权限与原 Windows 设备/根/签名/IPC 来源装配已验证。199 源码类型检查和契约检查通过。阶段说明 ../../implementation/MS-I2l-A8.md，输入与消费 ../../coordination/requests/A/MS-I2l-installed-file-sources.md。

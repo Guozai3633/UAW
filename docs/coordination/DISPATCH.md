@@ -1,3 +1,13 @@
+# MS-I2l A8 同轮续包：B/C/D 可立即并行开工
+
+2026-10-11。正式发布 **B/MS-U3b、C/MS-T2i-b、D/MS-R2i-b**；A继续 **MS-I2l-A9**。执行快照 `ms-i2l-a8 / 06ff3ef56b68d391387bc7b154fa58ecb00571f9`，源码 `ms-i2l-a8-source / 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6`；原 start 不移动，不建立 MS-I2m。
+
+[任务、模块/阶段/目录与固定私有输入](requests/A/MS-I2l-A8-continuation-packages.md)、[四份转发提示词](MS-I2l-A8-continuation-messages.md)由固定文档标签 `ms-i2l-a8-followup` 提供。新文档不在旧A8执行快照中；worker fetch 后精确核对文档标签与远端，再 `git show ms-i2l-a8-followup:<上述路径>` 只读消费，执行源码仅快进准确A8标签，不合浮动integration。
+
+B接现有本机生命周期页面/原身份刷新；C实现原office/file独立Invocation与结果恢复的严格路由；D用自己真实SQL/OS/IPC和临时根验证原审批预算→一次只读→journal恢复与等待成本。三者独立模块已给输入，可立即做M1–M4，不等A9所有生产门槛齐全。阶段接口/源码到即交A；A同时做管理员file provider/每Run范围/Context与成果及逐包接线。
+
+模块SQLworker实跑，A受影响与跨模块回归，汇合全量一次。旧组件不重做，flags不自动开放，受控native不代本人验收；不代点确认或接受。本文正式发布供用户转发，尚未向现有三个聊天直接发送消息或替其同步。
+
 # MS-I2l A8：原文件工具的当前来源已固定
 
 准确源码 **16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6** / `ms-i2l-a8-source`；消费证据 `ms-i2l-a8`。共同 start 与 A1–A7 不移动，继续本包 M3/M4，不发新包。
