@@ -50,4 +50,7 @@
 - [http · runner.enrollments.get](../interfaces/http--runner-enrollments-get.md)
 - [http · runner.enrollments.complete](../interfaces/http--runner-enrollments-complete.md)
 - [http · runner.enrollments.revoke](../interfaces/http--runner-enrollments-revoke.md)
+- [http · runner.local.begin](../interfaces/http--runner-local-begin.md)
+- [http · runner.local.get](../interfaces/http--runner-local-get.md)
+- [http · runner.local.stop](../interfaces/http--runner-local-stop.md)
 - [component · ui](../interfaces/component--ui.md)

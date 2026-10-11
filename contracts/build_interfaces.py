@@ -197,6 +197,15 @@ for op in OPERATIONS:
         wire["x-uaw-cas-required"]=cas
     for code,kind in status_map.items():
         wire["responses"][code]={"description":kind+"；failure.code区分原因，waiting含wait_ref。","content":{"application/json":{"schema":{"allOf":[resultref,{"properties":{"kind":{"const":kind}}}]}}}}
+    if op["id"].startswith("runner.local."):
+        wire["security"]=[{"webCookie":[]}]
+        wire["parameters"].append({"name":"Origin","in":"header","required":op["method"]!="GET","schema":{"type":"string"}})
+        if op["method"]!="GET":
+            wire["parameters"].append({"name":"X-UAW-CSRF","in":"header","required":True,"schema":{"$ref":"#/components/schemas/Hash"}})
+        wire["responses"]["503"]={"description":"实际部署或当前来源不可用；不产生隐式授权。","content":{"application/json":{"schema":resultref}}}
+        if op["id"]=="runner.local.begin":
+            wire["responses"].pop("200")
+            wire["responses"]["202"]={"description":"原启动已登记，payload是实际生命周期状态；不是批准或文件权限。","content":{"application/json":{"schema":result_ok}}}
     wire["responses"]["401"]={"description":"认证失败；不进入业务接口。","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AuthenticationFailure"}}}}
     if op["id"]=="events.stream":
         wire["responses"]["200"]={"description":"SSE事件流；每个data字段JSON为EventEnvelope。","content":{"text/event-stream":{"schema":{"type":"string"}}}}

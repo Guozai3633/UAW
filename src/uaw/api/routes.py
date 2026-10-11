@@ -21,6 +21,27 @@ from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 # id, method, route, request schema, response schema. All unlisted contracts remain unavailable.
 ROUTES = (
     (
+        "runner.local.begin",
+        "POST",
+        "/v1/runner/local",
+        "RunnerLocalBeginRequest",
+        "InstalledLaunchView",
+    ),
+    (
+        "runner.local.get",
+        "GET",
+        "/v1/runner/local/{launch_id}",
+        "RunnerLocalGetRequest",
+        "InstalledLaunchView",
+    ),
+    (
+        "runner.local.stop",
+        "POST",
+        "/v1/runner/local/{launch_id}/stop",
+        "RunnerLocalStopRequest",
+        "InstalledLaunchView",
+    ),
+    (
         "runner.enrollments.begin",
         "POST",
         "/v1/runner/enrollments",
@@ -356,10 +377,24 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     else:
                         assert meta is not None
                         result = await browser.logout(actor, meta)
+                        if container.installed_lifecycle is not None:
+                            await container.installed_lifecycle.close_owner(actor)
             elif actor is None:
                 raise reject(
                     "authentication_required", "Authenticated user required", 401, "permission"
                 )
+            elif operation.startswith("runner.local."):
+                local = container.installed_lifecycle
+                if local is None:
+                    raise CapabilityUnavailable("runner.installed.deployment_configuration")
+                if operation == "runner.local.get":
+                    result = await local.get(actor, payload["launch_id"])
+                else:
+                    assert meta is not None
+                    if operation == "runner.local.begin":
+                        result = await local.begin(actor, meta)
+                    else:
+                        result = await local.stop(actor, payload["launch_id"], meta)
             elif operation.startswith("runner.enrollments."):
                 service = container.runner_enrollments
                 if service is None:
@@ -520,7 +555,9 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 wire["revision"] = result["revision"]
             validate_contract(result_schema(operation), wire)
             response = JSONResponse(
-                status_code=202 if operation in ("turns.submit", "runs.control") else 200,
+                status_code=202
+                if operation in ("turns.submit", "runs.control", "runner.local.begin")
+                else 200,
                 content=wire,
                 headers={"Cache-Control": "no-store", "Referrer-Policy": "no-referrer"},
             )

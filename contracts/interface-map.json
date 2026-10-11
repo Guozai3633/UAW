@@ -234,6 +234,21 @@
           "doc": "docs/api/interfaces/http--runner-enrollments-revoke.md"
         },
         {
+          "id": "runner.local.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-begin.md"
+        },
+        {
+          "id": "runner.local.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-get.md"
+        },
+        {
+          "id": "runner.local.stop",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-stop.md"
+        },
+        {
           "id": "ui",
           "channel": "component",
           "doc": "docs/api/interfaces/component--ui.md"
@@ -299,6 +314,11 @@
           "id": "runner.enrollments.begin",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runner-enrollments-begin.md"
+        },
+        {
+          "id": "runner.local.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-begin.md"
         },
         {
           "id": "ingress",
@@ -1620,6 +1640,21 @@
           "id": "runner.enrollments.revoke",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runner-enrollments-revoke.md"
+        },
+        {
+          "id": "runner.local.begin",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-begin.md"
+        },
+        {
+          "id": "runner.local.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-get.md"
+        },
+        {
+          "id": "runner.local.stop",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runner-local-stop.md"
         },
         {
           "id": "workspace.binding",

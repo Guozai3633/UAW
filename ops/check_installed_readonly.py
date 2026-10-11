@@ -19,7 +19,6 @@ from uaw_runner.helper_process import HelperProcess
 from uaw_runner.keys import Ed25519SignatureAdapter
 from uaw_runner.native_authorization import NativeDecisionJournal
 from uaw_runner.pairing import LocalRoots
-from uaw_runner.root_source import PersistentRootGrants
 
 from uaw.api.authentication import authenticate
 from uaw.composition import compose
@@ -27,6 +26,7 @@ from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.enrollment_launch import PreparedEnrollmentLaunch
 from uaw.infrastructure.enrollment_native import JOURNAL
 from uaw.infrastructure.event_loop import control_plane_loop
+from uaw.infrastructure.installed_receipt import current_root
 from uaw.shared.contracts import Principal, Ref, RequestMeta
 from uaw.shared.errors import DomainError, reject
 from uaw.shared.settings import Settings
@@ -159,7 +159,6 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                 flush=True,
             )
             directory = launch.state.path.parent
-            grants = await asyncio.to_thread(PersistentRootGrants, directory / "grants.sqlite")
             local = await asyncio.to_thread(LocalRoots, directory / "native.sqlite")
             # One initial remaining budget; polling never resets/extends the source.
             remaining = min(
@@ -176,16 +175,10 @@ async def check(settings_path: Path, state_directory: Path, workspace: Ref | Non
                 while True:
                     if lifecycle.done():
                         await lifecycle
-                    await connection.session.check()
                     try:
-                        grant = await asyncio.to_thread(
-                            grants.find,
-                            principal_id=owner.id,
-                            device_id=connection.control_key.device_id,
-                            workspace_ref=workspace,
-                        )
+                        grant = await current_root(launch)
                     except DomainError as exc:
-                        if exc.failure.message != "One actual root binding required":
+                        if exc.failure.code != "installed_callback_pending":
                             raise
                         await asyncio.sleep(0.1)
                         continue

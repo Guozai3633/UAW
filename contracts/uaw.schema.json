@@ -14940,6 +14940,151 @@
       ],
       "additionalProperties": false
     },
+    "InstalledLaunchView": {
+      "type": "object",
+      "description": "原网页会话拥有的本机实例进度；ready只表示原生回调与当前根来源完成，不授予文件工具权限。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原启动身份"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原RequestMeta.request_id"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "状态持久CAS版本"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "starting",
+            "waiting_device",
+            "connecting",
+            "selecting_directory",
+            "ready",
+            "closed",
+            "failed",
+            "unavailable"
+          ],
+          "description": "实际生命周期"
+        },
+        "workspace_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "管理员安装配置中的逻辑工作区；不是本机路径"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "原启动时间"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "本次状态时间"
+        },
+        "enrollment_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原设备登记"
+        },
+        "device_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "当前实际通道绑定的设备版本与摘要"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "原通道期限，不从轮询重新计时"
+        },
+        "failure_code": {
+          "$ref": "#/$defs/ID",
+          "description": "有界错误码；不输出路径/proof/凭据"
+        }
+      },
+      "required": [
+        "id",
+        "request_id",
+        "revision",
+        "state",
+        "workspace_ref",
+        "created_at",
+        "updated_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "ready"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "device_ref",
+              "expires_at",
+              "enrollment_id"
+            ]
+          }
+        }
+      ]
+    },
+    "InstalledLaunchRecord": {
+      "type": "object",
+      "description": "内部持久启动历史；原完整Web主体不能由同账号新session替代，重启不恢复OS进程或授权。",
+      "properties": {
+        "owner": {
+          "$ref": "#/$defs/Principal",
+          "description": "原完整Web主体"
+        },
+        "view": {
+          "$ref": "#/$defs/InstalledLaunchView",
+          "description": "无本机路径的进度"
+        }
+      },
+      "required": [
+        "owner",
+        "view"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerLocalBeginRequest": {
+      "type": "object",
+      "description": "当前Web用户请求本机本人确认；异步返回原启动状态。",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "RunnerLocalGetRequest": {
+      "type": "object",
+      "description": "查询原本机启动；当前主体/通道/原根复查，后端重启标unavailable，不重发。",
+      "properties": {
+        "launch_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原启动"
+        }
+      },
+      "required": [
+        "launch_id"
+      ],
+      "additionalProperties": false
+    },
+    "RunnerLocalStopRequest": {
+      "type": "object",
+      "description": "原Web用户停止并drain自己本机实例，保留原历史。",
+      "properties": {
+        "launch_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原启动"
+        }
+      },
+      "required": [
+        "launch_id"
+      ],
+      "additionalProperties": false
+    },
     "RunnerRootSnapshot": {
       "type": "object",
       "description": "真实授权根来源的当前opaque元数据，不包含本机路径。",
@@ -49983,6 +50128,450 @@
         },
         "payload": {
           "$ref": "#/$defs/RunnerEnrollmentsRevokeRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerLocalBeginResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/InstalledLaunchView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerLocalBeginEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerLocalBeginRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerLocalGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/InstalledLaunchView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerLocalGetEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerLocalGetRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpRunnerLocalStopResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/InstalledLaunchView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpRunnerLocalStopEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunnerLocalStopRequest",
           "description": "业务参数"
         }
       },

@@ -1069,6 +1069,12 @@
 | [HttpRunnerEnrollmentsGetResult](objects/HttpRunnerEnrollmentsGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunnerEnrollmentsRevokeEnvelope](objects/HttpRunnerEnrollmentsRevokeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunnerEnrollmentsRevokeResult](objects/HttpRunnerEnrollmentsRevokeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerLocalBeginEnvelope](objects/HttpRunnerLocalBeginEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerLocalBeginResult](objects/HttpRunnerLocalBeginResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerLocalGetEnvelope](objects/HttpRunnerLocalGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerLocalGetResult](objects/HttpRunnerLocalGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunnerLocalStopEnvelope](objects/HttpRunnerLocalStopEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunnerLocalStopResult](objects/HttpRunnerLocalStopResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsCheckpointEnvelope](objects/HttpRunsCheckpointEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsCheckpointResult](objects/HttpRunsCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsControlEnvelope](objects/HttpRunsControlEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1102,6 +1108,8 @@
 | [HttpWebSessionLogoutEnvelope](objects/HttpWebSessionLogoutEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpWebSessionLogoutResult](objects/HttpWebSessionLogoutResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [InputRecord](objects/InputRecord.md) | 原文追加保存，不覆盖已有输入。 |
+| [InstalledLaunchRecord](objects/InstalledLaunchRecord.md) | 内部持久启动历史；原完整Web主体不能由同账号新session替代，重启不恢复OS进程或授权。 |
+| [InstalledLaunchView](objects/InstalledLaunchView.md) | 原网页会话拥有的本机实例进度；ready只表示原生回调与当前根来源完成，不授予文件工具权限。 |
 | [InteractionItem](objects/InteractionItem.md) | 稳定前端交互对象，不依赖猜模型文本。 |
 | [InternalIngressOutput](objects/InternalIngressOutput.md) | 互斥分支；所有字段须匹配所选action。 |
 | [InternalIngressOutputEvents](objects/InternalIngressOutputEvents.md) | 按action选择的独立参数/结果分支。 |
@@ -1195,6 +1203,9 @@
 | [RunnerEnrollmentsCompleteRequest](objects/RunnerEnrollmentsCompleteRequest.md) | 读取独立本机本人确认和双方签名证明后CAS登记。 |
 | [RunnerEnrollmentsGetRequest](objects/RunnerEnrollmentsGetRequest.md) | 当前原Web会话读取准确当前登记；不授予执行。 |
 | [RunnerEnrollmentsRevokeRequest](objects/RunnerEnrollmentsRevokeRequest.md) | 原当前Web用户撤销登记。 |
+| [RunnerLocalBeginRequest](objects/RunnerLocalBeginRequest.md) | 当前Web用户请求本机本人确认；异步返回原启动状态。 |
+| [RunnerLocalGetRequest](objects/RunnerLocalGetRequest.md) | 查询原本机启动；当前主体/通道/原根复查，后端重启标unavailable，不重发。 |
+| [RunnerLocalStopRequest](objects/RunnerLocalStopRequest.md) | 原Web用户停止并drain自己本机实例，保留原历史。 |
 | [RunnerNativePairingEvidence](objects/RunnerNativePairingEvidence.md) | 独立本机owning Reader返回的确认；不可从HTTP approved生成。 |
 | [RunnerProcessIdentity](objects/RunnerProcessIdentity.md) | 独立OS观察的进程实例；不是UAW账号。 |
 | [RunnerRequestRecord](objects/RunnerRequestRecord.md) | 版本1的原请求/原尝试，不是执行权限。 |

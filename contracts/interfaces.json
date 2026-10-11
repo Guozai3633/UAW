@@ -4052,6 +4052,100 @@
       "envelope": "HttpRunnerEnrollmentsRevokeEnvelope"
     },
     {
+      "id": "runner.local.begin",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "workspace.binding"
+      ],
+      "request": "RunnerLocalBeginRequest",
+      "response": "InstalledLaunchView",
+      "effect": "internal_write",
+      "rules": [
+        "精确Origin/cookie/CSRF；payload为空，不接路径/approved/owner/module/key。部署缺源503；最多一个自有实例。相同原会话/request_id只查询原历史，不重弹窗。HTTP成功202不是授权成功。"
+      ],
+      "method": "POST",
+      "path": "/v1/runner/local",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_browser_owned_installed_lifecycle_no_file_dispatch",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2l-A7.md",
+          "docs/implementation/evidence/ms-i2l-a7.json"
+        ]
+      },
+      "result": "HttpRunnerLocalBeginResult",
+      "envelope": "HttpRunnerLocalBeginEnvelope"
+    },
+    {
+      "id": "runner.local.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "RunnerLocalGetRequest",
+      "response": "InstalledLaunchView",
+      "effect": "read",
+      "rules": [
+        "同账号新Web session不能接管旧实例；状态不替代Tool/预算/RootSource。"
+      ],
+      "method": "GET",
+      "path": "/v1/runner/local/{launch_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_browser_owned_installed_lifecycle_no_file_dispatch",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2l-A7.md",
+          "docs/implementation/evidence/ms-i2l-a7.json"
+        ]
+      },
+      "result": "HttpRunnerLocalGetResult",
+      "envelope": "HttpRunnerLocalGetEnvelope"
+    },
+    {
+      "id": "runner.local.stop",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "workspace.binding"
+      ],
+      "request": "RunnerLocalStopRequest",
+      "response": "InstalledLaunchView",
+      "effect": "internal_write",
+      "rules": [
+        "可选meta.expected_revision按观察版本核对。退出Web/服务关闭也清理自有实例；不按进程名回收其他实例。"
+      ],
+      "method": "POST",
+      "path": "/v1/runner/local/{launch_id}/stop",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_browser_owned_installed_lifecycle_no_file_dispatch",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2l-A7.md",
+          "docs/implementation/evidence/ms-i2l-a7.json"
+        ]
+      },
+      "result": "HttpRunnerLocalStopResult",
+      "envelope": "HttpRunnerLocalStopEnvelope"
+    },
+    {
       "id": "tasks.attach_conversation",
       "channel": "http",
       "owner": "run",

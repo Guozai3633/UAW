@@ -1,0 +1,29 @@
+{
+  "source_commit": "4071f49ff462f313629050ca80d0b0df5e55fd83",
+  "runtime_source": "cb215bcffba8a9eff8aa55802b54854109f4a8e6",
+  "raw_log_sha256": "7fffd6ff3d693bd9fc752e70737276cefad5d84deb5bffe710fce2fa2c76344b",
+  "result": {
+    "channel_hash": "3ad6e876a4ce1bb1f2e493bdb129311e9928fbc11106ddb6c1557bc1639d3348",
+    "child_diagnostic": {
+      "error_type": "CancelledError",
+      "failure_code": "internal_error",
+      "phase": "bind_selection"
+    },
+    "connection_expires_at": "2026-10-11T08:09:28.660210+00:00",
+    "file_reads": 0,
+    "finished_at": "2026-10-11T08:09:19.523088+00:00",
+    "model_calls": 0,
+    "native_human_confirmed": true,
+    "native_journal_hash": "aa044718ac68143993dbe3af0dea1966baaa909277f58bf8064d9df6094b12f1",
+    "owned_launch_cleanup": true,
+    "phase": "complete",
+    "root_revision": 0,
+    "root_selected": true,
+    "root_selection_hash": "5d9986cbda9ca9ddc02c7a1b27c297519409b35b877442eb064b3320cbd2d0c1",
+    "started_at": "2026-10-11T08:07:15.478793+00:00",
+    "status": "native_root_bound"
+  },
+  "scope": "Actual human selection, consumed ticket/native journal/signature/grant verified; child final bind recheck cancelled by diagnostic cleanup. Not product file delivery.",
+  "flags_changed": false,
+  "new_full_regression": false
+}

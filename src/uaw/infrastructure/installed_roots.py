@@ -11,6 +11,7 @@ from uuid import uuid4
 
 from uaw_runner.runtime import ReadOnlyHelper
 
+from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
 from uaw.shared.contracts import Ref
 from uaw.shared.errors import CapabilityUnavailable, DomainError
@@ -132,3 +133,25 @@ class InstalledRootSelection:
         await auth.bind(selection, self.workspace)
         await helper.bootstrap.connected(session)
         self.phase = "complete"
+        if self.diagnostic_path is not None:
+            if session.channel_ref is None:
+                raise CapabilityUnavailable("runner.installed.complete_channel")
+            # This is only lifecycle progress. Consumers still independently check
+            # the original grant, owning journal, signature and live session.
+            marker = {
+                "workspace_ref": self.workspace.wire(),
+                "channel_ref": session.channel_ref.wire(),
+                "ticket_hash": parameter_hash(issued.ticket.document()),
+            }
+            writing = asyncio.create_task(
+                asyncio.to_thread(
+                    self.diagnostic_path.with_name("root-selection-complete.json").write_text,
+                    json.dumps(marker, allow_nan=False),
+                    encoding="utf-8",
+                )
+            )
+            try:
+                await asyncio.shield(writing)
+            except asyncio.CancelledError:
+                await writing
+                raise

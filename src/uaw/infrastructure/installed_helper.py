@@ -172,8 +172,12 @@ class EnrolledNativeChallenges:
         helper = self.helper
         if helper is None or helper.session is None or helper.session.channel_ref is None:
             raise CapabilityUnavailable("runner.native.current_installed_connection")
-        actual = await asyncio.to_thread(WindowsApi().current)
-        peer = await self.peers.current(actual, role="device")
+        # Fixed handshake metadata only selects the original source. The D
+        # registered challenge independently checks the live session, both roles,
+        # OS identity, owner and original Ticket after its awaited source reads.
+        peer = helper.session.local
+        if peer is None or peer.role != "device":
+            raise CapabilityUnavailable("runner.native.original_installed_device")
         current = await RegisteredNativeChallenges(
             state=self.state,
             registry=self.registry,
@@ -184,7 +188,6 @@ class EnrolledNativeChallenges:
         ).current(ticket_id)
         if current.owner != peer.owner or current.expires_at > peer.expires_at:
             raise reject("enrollment_root_source_changed", "Current root/enrollment differs", 412)
-        await self.peers.current(actual, role="device")
         return current
 
 

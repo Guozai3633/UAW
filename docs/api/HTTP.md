@@ -96,6 +96,9 @@
 | [runner.enrollments.get](interfaces/http--runner-enrollments-get.md) | [RunnerEnrollmentsGetRequest](objects/RunnerEnrollmentsGetRequest.md) | [RunnerEnrollmentRecord](objects/RunnerEnrollmentRecord.md) | `read` |
 | [runner.enrollments.complete](interfaces/http--runner-enrollments-complete.md) | [RunnerEnrollmentsCompleteRequest](objects/RunnerEnrollmentsCompleteRequest.md) | [RunnerEnrollmentRecord](objects/RunnerEnrollmentRecord.md) | `internal_write` |
 | [runner.enrollments.revoke](interfaces/http--runner-enrollments-revoke.md) | [RunnerEnrollmentsRevokeRequest](objects/RunnerEnrollmentsRevokeRequest.md) | [RunnerEnrollmentRecord](objects/RunnerEnrollmentRecord.md) | `internal_write` |
+| [runner.local.begin](interfaces/http--runner-local-begin.md) | [RunnerLocalBeginRequest](objects/RunnerLocalBeginRequest.md) | [InstalledLaunchView](objects/InstalledLaunchView.md) | `internal_write` |
+| [runner.local.get](interfaces/http--runner-local-get.md) | [RunnerLocalGetRequest](objects/RunnerLocalGetRequest.md) | [InstalledLaunchView](objects/InstalledLaunchView.md) | `read` |
+| [runner.local.stop](interfaces/http--runner-local-stop.md) | [RunnerLocalStopRequest](objects/RunnerLocalStopRequest.md) | [InstalledLaunchView](objects/InstalledLaunchView.md) | `internal_write` |
 | [tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md) | [TasksAttach_conversationRequest](objects/TasksAttach_conversationRequest.md) | [TaskRecord](objects/TaskRecord.md) | `internal_write` |
 | [admin.providers.revoke](interfaces/http--admin-providers-revoke.md) | [AdminProvidersRevokeRequest](objects/AdminProvidersRevokeRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [events.payload](interfaces/http--events-payload.md) | [EventsPayloadRequest](objects/EventsPayloadRequest.md) | [EventPayload](objects/EventPayload.md) | `read` |

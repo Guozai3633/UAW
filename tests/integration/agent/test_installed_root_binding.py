@@ -15,6 +15,7 @@ from tests.integration.agent.test_installed_launch import cleaned, installed_env
 from tests.integration.test_browser_sessions import login
 from tests.integration.test_browser_sessions import web as web
 from uaw.infrastructure.enrollment_launch import PreparedEnrollmentLaunch
+from uaw.infrastructure.installed_receipt import current_root
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import DomainError
 
@@ -55,18 +56,12 @@ async def test_actual_installed_root_binding_original_journal_and_current_channe
         )
         async with asyncio.timeout(110):
             while True:
-                await session.check()
                 try:
-                    grant = await asyncio.to_thread(
-                        grants.find,
-                        principal_id=owner.id,
-                        device_id=launch.control_key.device_id,
-                        workspace_ref=workspace,
-                    )
+                    grant = await current_root(launch)
                 except DomainError as exc:
-                    if exc.failure.message != "One actual root binding required":
+                    if exc.failure.code != "installed_callback_pending":
                         raise
-                    await asyncio.sleep(0.1)
+                    await asyncio.sleep(0.2)
                     continue
                 break
         ticket, _, expiry = await asyncio.to_thread(
@@ -86,6 +81,7 @@ async def test_actual_installed_root_binding_original_journal_and_current_channe
             device_id=grant.device_id,
             domain="root-selection",
         )
+        assert await asyncio.to_thread(grants.get, grant.root_handle) == grant
         await session.check()
     finally:
         await cleaned(launch)

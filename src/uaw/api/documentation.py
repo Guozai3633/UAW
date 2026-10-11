@@ -88,7 +88,11 @@ def install_openapi(app: FastAPI) -> None:
                         }
                     },
                 }
-            code = "202" if operation in ("turns.submit", "runs.control") else "200"
+            code = (
+                "202"
+                if operation in ("turns.submit", "runs.control", "runner.local.begin")
+                else "200"
+            )
             for status in (code, "401", "403", "404", "409", "412", "413", "422", "500", "503"):
                 entry["responses"][status] = {
                     "description": "Typed operation result",

@@ -1,8 +1,11 @@
 """Short PostgreSQL transactions. No shared AsyncSession across concurrent calls."""
 
+import asyncio
 import hashlib
 import json
-from collections.abc import Awaitable, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager
+from contextvars import ContextVar
 from typing import Any
 
 from sqlalchemy import select, update
@@ -42,6 +45,41 @@ def parameter_hash(data: dict[str, Any]) -> str:
 class PostgresRecordStore:
     def __init__(self, database: Database) -> None:
         self.database = database
+        self._current_reads: ContextVar[tuple[asyncio.Task[Any], AsyncSession] | None] = ContextVar(
+            "uaw_current_record_reads", default=None
+        )
+
+    @asynccontextmanager
+    async def current_reads(self) -> AsyncIterator[None]:
+        """Short owning-task READ COMMITTED reads, never an authorization/data cache.
+
+        Each get still executes a fresh SELECT. Reusing checkout avoids a ping and
+        rollback for every nested source read. Child tasks never share this session.
+        Do not hold this scope over native UI, model, tool dispatch or user waits.
+        """
+        task = asyncio.current_task()
+        if task is None:
+            raise RuntimeError("Current record reads require an owning task")
+        active = self._current_reads.get()
+        if active is not None and active[0] is task:
+            yield
+            return
+        async with self.database.sessions() as session:
+            await session.connection(execution_options={"isolation_level": "READ COMMITTED"})
+            token = self._current_reads.set((task, session))
+            try:
+                yield
+            finally:
+                self._current_reads.reset(token)
+
+    @asynccontextmanager
+    async def _read_session(self) -> AsyncIterator[AsyncSession]:
+        active = self._current_reads.get()
+        if active is not None and active[0] is asyncio.current_task():
+            yield active[1]
+            return
+        async with self.database.sessions() as session:
+            yield session
 
     @staticmethod
     def _identity(principal: Principal, namespace: str, resource_id: str) -> dict[str, str]:
@@ -54,7 +92,7 @@ class PostgresRecordStore:
         self, principal: Principal, namespace: str, resource_id: str, *, revision: int | None = None
     ) -> Record:
         key = self._identity(principal, namespace, resource_id)
-        async with self.database.sessions() as session:
+        async with self._read_session() as session:
             if revision is not None:
                 validate_contract("Revision", revision)
                 version = await session.scalar(
@@ -78,7 +116,8 @@ class PostgresRecordStore:
                 if version is None:
                     raise StoreMissing()
                 return self._record(version)
-            row = await session.get(RecordRow, key)
+            # Never trust SQLAlchemy's identity map for mutable current authority.
+            row = await session.get(RecordRow, key, populate_existing=True)
             if row is None or row.deleted:
                 raise StoreMissing()
             return self._record(row)

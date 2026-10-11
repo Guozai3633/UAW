@@ -15,4 +15,5 @@
 - [http · web.session.get](../interfaces/http--web-session-get.md)
 - [http · web.session.logout](../interfaces/http--web-session-logout.md)
 - [http · runner.enrollments.begin](../interfaces/http--runner-enrollments-begin.md)
+- [http · runner.local.begin](../interfaces/http--runner-local-begin.md)
 - [component · ingress](../interfaces/component--ingress.md)

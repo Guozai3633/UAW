@@ -53,6 +53,12 @@ for operation in ("IntentRuntime.understand", "IntentRuntime.revise", "tasks.fra
         "entrypoint": "src/uaw/api/routes.py" if operation == "tasks.frame" else "src/uaw/intent/facade.py",
         "evidence": ["docs/implementation/P1-01.md", "docs/implementation/evidence/p0-tests.xml"],
     }
+for operation in ("runner.local.begin", "runner.local.get", "runner.local.stop"):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_browser_owned_installed_lifecycle_no_file_dispatch",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2l-A7.md", "docs/implementation/evidence/ms-i2l-a7.json"],
+    }
 for operation in ("approvals.get", "approvals.decide"):
     IMPLEMENTATIONS[operation] = {
         "scope": "development_manual_consent_no_executor",

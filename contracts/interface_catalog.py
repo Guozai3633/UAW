@@ -1876,6 +1876,28 @@ def finalize(graph,strategies):
     endpoint("runner.enrollments.get", "GET", "/v1/runner/enrollments/{enrollment_id}", "run", "ui workspace.binding", "当前原Web会话读取准确当前登记；不授予执行。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord")
     endpoint("runner.enrollments.complete", "POST", "/v1/runner/enrollments/{enrollment_id}/confirmation", "run", "ui workspace.binding", "读取独立本机本人确认和双方签名证明后CAS登记。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord", "internal_write", ["meta.expected_revision必需；无approved/code/key/proof body；缺当前本机来源503，不由网页代替真人确认。"])
     endpoint("runner.enrollments.revoke", "POST", "/v1/runner/enrollments/{enrollment_id}/revocation", "run", "ui workspace.binding", "原当前Web用户撤销登记。", "enrollment_id|ID|原登记", "RunnerEnrollmentRecord", "internal_write", ["meta.expected_revision必需；当前原会话，不能恢复旧配对。"])
+    obj("InstalledLaunchView", "run", "原网页会话拥有的本机实例进度；ready只表示原生回调与当前根来源完成，不授予文件工具权限。", {
+        "id": field("ID", "原启动身份"), "request_id": field("ID", "原RequestMeta.request_id"),
+        "revision": field("Revision", "状态持久CAS版本"),
+        "state": field({"type":"string", "enum":["starting","waiting_device","connecting","selecting_directory","ready","closed","failed","unavailable"]}, "实际生命周期"),
+        "workspace_ref": field("Ref", "管理员安装配置中的逻辑工作区；不是本机路径"),
+        "created_at": field("Timestamp", "原启动时间"), "updated_at": field("Timestamp", "本次状态时间"),
+        "enrollment_id": field("ID", "原设备登记", True),
+        "device_ref": field("Ref", "当前实际通道绑定的设备版本与摘要", True),
+        "expires_at": field("Timestamp", "原通道期限，不从轮询重新计时", True),
+        "failure_code": field("ID", "有界错误码；不输出路径/proof/凭据", True),
+    })
+    TYPES["InstalledLaunchView"]["allOf"] = [
+        {"if":{"properties":{"state":{"const":"ready"}},"required":["state"]},
+         "then":{"required":["device_ref","expires_at","enrollment_id"]}},
+    ]
+    obj("InstalledLaunchRecord", "run", "内部持久启动历史；原完整Web主体不能由同账号新session替代，重启不恢复OS进程或授权。", {
+        "owner": field("Principal", "原完整Web主体"),
+        "view": field("InstalledLaunchView", "无本机路径的进度"),
+    })
+    endpoint("runner.local.begin", "POST", "/v1/runner/local", "run", "ui ingress workspace.binding", "当前Web用户请求本机本人确认；异步返回原启动状态。", "", "InstalledLaunchView", "internal_write", ["精确Origin/cookie/CSRF；payload为空，不接路径/approved/owner/module/key。部署缺源503；最多一个自有实例。相同原会话/request_id只查询原历史，不重弹窗。HTTP成功202不是授权成功。"])
+    endpoint("runner.local.get", "GET", "/v1/runner/local/{launch_id}", "run", "ui workspace.binding", "查询原本机启动；当前主体/通道/原根复查，后端重启标unavailable，不重发。", "launch_id|ID|原启动", "InstalledLaunchView", rules=["同账号新Web session不能接管旧实例；状态不替代Tool/预算/RootSource。"])
+    endpoint("runner.local.stop", "POST", "/v1/runner/local/{launch_id}/stop", "run", "ui workspace.binding", "原Web用户停止并drain自己本机实例，保留原历史。", "launch_id|ID|原启动", "InstalledLaunchView", "internal_write", ["可选meta.expected_revision按观察版本核对。退出Web/服务关闭也清理自有实例；不按进程名回收其他实例。"])
     record("RunnerRootSnapshot","run","真实授权根来源的当前opaque元数据，不包含本机路径。","owner|Principal|原用户\ndevice_id|ID|设备\nworkspace_ref|Ref|实际工作区\nroot_handle|ID|授权根\nbinding_revision|Revision|根版本\nallowed_actions|[](ID)|当前获准读动作\nexpires_at|Timestamp|根期限")
     record("RunnerCommandDraft","run","控制服务从独立登记源构建的签字正文。","command_id|ID|命令\noperation_id|ID|原操作\nrequest_ref|Ref|原请求\ntrusted_context|TrustedExecutionContext|原上下文\nfencing_token|Revision|当前栅栏\nexpires_at|Timestamp|有界期限\nparameters|RunnerParameters|原业务参数")
     record("RunnerCommandRegisterRequest","run","仅内部控制服务可创建签字记录，不发送命令。","command_id|ID|稳定命令\nrequest_ref|Ref|已登记实际请求\ndevice_ref|Ref|当前设备绑定\nlease_ref|Ref|当前根租约\nfencing_token|Revision|栅栏\nexpires_at|Timestamp|期限")

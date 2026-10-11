@@ -34,12 +34,22 @@ class Settings(BaseModel):
     agent_queue_capacity: int = Field(default=16, ge=1, le=64)
     agent_max_output_tokens: int = Field(default=2048, ge=128, le=8192)
     agent_acceptance_required: bool = False
+    installed_state_directory: Path | None = None
+    installed_workspace_id: ID | None = None
     database_url: SecretStr | None = None
     blob_directory: Path = Path(".data/blobs")
     max_request_bytes: int = Field(default=1_048_576, ge=1024, le=1_048_576)
 
     @model_validator(mode="after")
     def valid_database(self) -> Self:
+        if bool(self.installed_state_directory) != bool(self.installed_workspace_id):
+            raise ValueError("Installed lifecycle requires both state directory and workspace pin")
+        if self.installed_state_directory is not None and (
+            not self.installed_state_directory.is_absolute()
+            or not self.browser_origin
+            or not self.database_url
+        ):
+            raise ValueError("Installed lifecycle requires absolute state, Web auth and database")
         if self.database_url and not self.database_url.get_secret_value().startswith(
             "postgresql+psycopg://"
         ):
@@ -140,6 +150,8 @@ class Settings(BaseModel):
         if "blob_directory" in config:
             directory = Path(config["blob_directory"])
             config["blob_directory"] = directory.resolve()
+        if "installed_state_directory" in config:
+            config["installed_state_directory"] = Path(config["installed_state_directory"])
         try:
             return cls.model_validate(config)
         except ValueError as exc:

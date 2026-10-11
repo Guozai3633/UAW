@@ -257,6 +257,13 @@ class RunnerEnrollments:
         return source
 
     async def get(self, owner: Principal, key: str) -> Payload:
+        # Short source check only: no native window or dispatch is inside this scope.
+        # Every nested read remains a fresh READ COMMITTED SELECT, including the
+        # final Web/owner/source reads; no permission or outcome is reused.
+        async with self.records.current_reads():
+            return await self._get_current(owner, key)
+
+    async def _get_current(self, owner: Principal, key: str) -> Payload:
         await self.actor(owner)
         row = await self.records.get(self.controller, ENROLLMENTS, key)
         value = row.payload

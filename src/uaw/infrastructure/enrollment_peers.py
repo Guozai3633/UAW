@@ -8,7 +8,7 @@ from typing import Literal
 from uaw_runner.ipc.sessions import RegisteredPeer
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 
-from uaw.run.enrollment import RunnerEnrollments
+from uaw.run.enrollment import Payload, RunnerEnrollments
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_signatures import VerificationKey
@@ -56,10 +56,21 @@ class EnrolledPeerRegistry:
     async def current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
         if role not in ("control", "device"):
             raise reject("enrolled_role_denied", "Exact registered peer role required", 403)
-        role_name: Literal["control", "device"] = "control" if role == "control" else "device"
         if self.directory is None:
             raise CapabilityUnavailable("enrollment.current_role_key_directory")
         value = await self.enrollments.get(self.user, self.enrollment_id)
+        return await self._checked_peer(value, identity, role=role)
+
+    async def _checked_peer(
+        self, value: Payload, identity: OsIdentity, *, role: str
+    ) -> RegisteredPeer:
+        # The caller just read this complete current enrollment. There is no
+        # intervening await before this method; final get/OS/key checks remain.
+        if role not in ("control", "device"):
+            raise reject("enrolled_role_denied", "Exact registered peer role required", 403)
+        role_name: Literal["control", "device"] = "control" if role == "control" else "device"
+        if self.directory is None:
+            raise CapabilityUnavailable("enrollment.current_role_key_directory")
         if value["state"] != "active":
             raise reject("enrolled_pairing_pending", "Actual native pairing is not active", 403)
         doc = value["proof_document"]
@@ -127,4 +138,4 @@ class EnrolledPeerRegistry:
             peer["identity"]["user_sid"],
             peer["identity"]["logon_sid"],
         )
-        return (await self.current(identity, role=role)).owner
+        return (await self._checked_peer(value, identity, role=role)).owner

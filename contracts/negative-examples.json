@@ -1031,6 +1031,21 @@
       "rejected": true
     },
     {
+      "case": "http:runner.local.begin cannot succeed without payload",
+      "schema": "HttpRunnerLocalBeginResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runner.local.get cannot succeed without payload",
+      "schema": "HttpRunnerLocalGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runner.local.stop cannot succeed without payload",
+      "schema": "HttpRunnerLocalStopResult",
+      "rejected": true
+    },
+    {
       "case": "http:tasks.attach_conversation cannot succeed without payload",
       "schema": "HttpTasksAttachConversationResult",
       "rejected": true

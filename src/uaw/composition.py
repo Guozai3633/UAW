@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from uaw.api.browser import BrowserSessions
 from uaw.context.authority import RegisteredCompositionAuthority
@@ -100,6 +101,9 @@ from uaw.tool.results import ToolResults
 from uaw.tool.retrieval import ToolRetriever
 from uaw.workspace.ports import CurrentKeyDirectory, SignaturePort
 
+if TYPE_CHECKING:
+    from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
+
 
 @dataclass(frozen=True)
 class RuntimeBindings:
@@ -153,9 +157,12 @@ class Container:
     runner_enrollments: RunnerEnrollments | None = None
     completion_controller: RunCompletionController | None = None
     background_jobs: RunJobs | None = None
+    installed_lifecycle: InstalledLifecycle | None = None
     started: bool = False
 
     async def start(self) -> None:
+        if self.started:
+            return
         if self.database:
             try:
                 await self.database.check()
@@ -173,10 +180,16 @@ class Container:
             except Exception:
                 await self.close()
                 raise
+        if self.settings.installed_state_directory is not None:
+            from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
+
+            self.installed_lifecycle = InstalledLifecycle(self)
         self.started = True
 
     async def close(self) -> None:
         self.started = False
+        if self.installed_lifecycle:
+            await self.installed_lifecycle.close()
         if self.background_jobs:
             await self.background_jobs.close()
         if self.model_service:
