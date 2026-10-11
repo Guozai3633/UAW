@@ -242,9 +242,21 @@ class RunnerCommands:
 
     async def _collect(self, record: Payload, actor: Principal) -> Payload:
         # Metadata/authority only; never held over native UI, dispatch or file
-        # reads. Every get remains a fresh READ COMMITTED SELECT in this task.
+        # reads. Default reads remain fresh. If explicitly enabled internally,
+        # repeated inputs have a final fresh full-row SQL witness before return.
         async with self.store.current_reads():
-            return await self._collect_current(record, actor)
+            try:
+                async with self.store.checked_read_batch():
+                    result = await self._collect_current(record, actor)
+                return result
+            except StoreConflict as exc:
+                if exc.failure.code != "current_read_source_changed":
+                    raise
+                # Diagnose the owning denial from fresh inputs (e.g. cancelled
+                # Run) without ever allowing a changed pass or executing a tool.
+                # Even if the new state happens to validate, retain the conflict.
+                await self._collect_current(record, actor)
+                raise
 
     async def _collect_current(self, record: Payload, actor: Principal) -> Payload:
         command = record["command"]
@@ -354,9 +366,10 @@ class RunnerCommands:
         deadline = instant(record["command"]["expires_at"])
         seconds = max(0, (deadline - self.devices.now()).total_seconds())
         async with asyncio.timeout(seconds):
-            # Both passes still issue fresh SELECTs. Keep their short metadata
-            # reads on one owning-task connection rather than paying another
-            # checkout between passes. No execution/user wait belongs here.
+            # Two fresh metadata passes. The optional checked-input mode ends
+            # each with its own witness, never reusing inputs between passes.
+            # External OS/key/root checks still run. No execution/user wait
+            # belongs in either pass or its short owning connection.
             async with self.store.current_reads():
                 first = await self._collect(record, actor)
                 second = await self._collect(record, actor)

@@ -59,10 +59,43 @@ class EnrolledPeerRegistry:
         self.original_enrollment: bytes | None = None
 
     async def current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
-        # A bounded source check only: reuse the owning READ COMMITTED
-        # connection, while every nested source read remains a fresh SELECT.
-        async with self.enrollments.records.current_reads():
-            return await self._current(identity, role=role)
+        # One metadata-only source pass, fresh by default. Optional repeated
+        # inputs have a fresh SQL witness at the owning boundary. Both
+        # actual OS instances, keys and proofs are still independently checked.
+        async with self.enrollments.records.checked_read_batch():
+            result = await self._current(identity, role=role)
+        if self.enrollments.records.checked_metadata:
+            await self._external_original()
+        return result
+
+    async def _external_original(self) -> None:
+        """Fresh OS/key checks after the SQL witness await; bytes only select originals."""
+        if self.original_enrollment is None or self.directory is None:
+            raise CapabilityUnavailable("enrollment.original_external_source")
+        document = json.loads(self.original_enrollment)["proof_document"]
+        for role_name in ("control", "device"):
+            peer = document[role_name]
+            expected_identity = OsIdentity(
+                peer["identity"]["pid"],
+                int(peer["identity"]["created"]),
+                peer["identity"]["user_sid"],
+                peer["identity"]["logon_sid"],
+            )
+            if await self.observe(expected_identity.pid) != expected_identity:
+                raise reject("enrolled_os_instance_changed", "Original role process changed", 403)
+            key = await asyncio.to_thread(
+                self.directory.lookup, peer["key_id"], device_id=document["device_id"]
+            )
+            expected_key = VerificationKey(
+                peer["key_id"],
+                document["device_id"],
+                base64.b64decode(peer["public_key"], validate=True),
+                "control" if role_name == "control" else "device",
+            )
+            if key != expected_key:
+                raise reject("enrolled_current_key_denied", "Original role key changed", 403)
+        if self.enrollments.now() >= self.enrollments.instant(document["expires_at"]):
+            raise reject("enrolled_source_changed", "Original enrollment deadline passed", 412)
 
     async def _current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
         if role not in ("control", "device"):
@@ -158,10 +191,13 @@ class EnrolledPeerRegistry:
         )
 
     async def owner(self, *, authenticated_principal: Principal, device_id: str) -> Principal:
-        async with self.enrollments.records.current_reads():
-            return await self._owner(
+        async with self.enrollments.records.checked_read_batch():
+            result = await self._owner(
                 authenticated_principal=authenticated_principal, device_id=device_id
             )
+        if self.enrollments.records.checked_metadata:
+            await self._external_original()
+        return result
 
     async def _owner(self, *, authenticated_principal: Principal, device_id: str) -> Principal:
         value = await self._snapshot()

@@ -112,3 +112,7 @@ A新增有界原command current/watch内部port，14个SQL/签名节点通过，
 未装配D执行端，不将接口通过或timeout拒绝当成本问题解决。
 修复前序列化/fixture/受控hook失败保留。210源码Mypy及改动Ruff/格式通过。
 详细输入/输出/来源范围/限制见[A10接线说明](../coordination/requests/A/MS-I2l-A10-owner-recheck.md)。
+A11 同轮续项见 [checked reads](../coordination/requests/A/MS-I2l-A11-checked-reads.md) 和
+[回执](evidence/ms-i2l-a11.json)。93个不同定向节点，含历史组件并集245；非一次全量。
+默认关闭的 SQL witness 选项、相同快照 SELECT 42→34 已验证；两次实际候选读取仍失败，
+其中最新91.23秒、command1/open0，临时凭据/keys/child/proof清理。未标生产优化或整轮接受。

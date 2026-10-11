@@ -13,8 +13,9 @@ class RegisteredRunnerAuthority(AsyncRunnerAuthorityPort):
         self.commands = commands
 
     async def current(self, command: Payload, *, authenticated_principal: Principal) -> Payload:
-        # The initial/final registered-command reads and both authority passes
-        # remain fresh READ COMMITTED queries within one short owning scope.
+        # Initial/final registered-command reads remain fresh. Authority passes
+        # use fresh reads by default; the optional internal duplicate-input mode
+        # has a separate fresh READ COMMITTED witness at the end of each pass.
         # Never carry this session into the caller's file/IPC execution.
         async with self.commands.store.current_reads():
             return await self._current(command, authenticated_principal)

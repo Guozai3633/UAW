@@ -1,6 +1,7 @@
 """Original root-owner relationship: real SQL/crypto, controlled OS/native inputs."""
 
 import pytest
+from sqlalchemy import event
 
 from tests.integration.agent.test_enrolled_peer_current import active_registry
 from tests.integration.agent.test_enrollment_postgres import enrollment_case as enrollment_case
@@ -28,6 +29,7 @@ from uaw.shared.runner_signatures import VerificationKey
 )
 async def test_root_owner_requires_original_current_relationship(enrollment_case, change):
     m = await active_registry(enrollment_case)
+    m.registry.enrollments.records._checked_metadata = True
     p = m.p
     owner, device_id = p.owner, m.peers["device_id"]
     assert await m.registry.owner(authenticated_principal=owner, device_id=device_id) == owner
@@ -66,6 +68,7 @@ async def test_root_owner_requires_original_current_relationship(enrollment_case
 
 async def test_root_owner_catches_key_revocation_during_final_os_await(enrollment_case):
     m = await active_registry(enrollment_case)
+    m.registry.enrollments.records._checked_metadata = True
     original = m.registry.observe
     count = 0
 
@@ -83,3 +86,26 @@ async def test_root_owner_catches_key_revocation_during_final_os_await(enrollmen
     with pytest.raises(DomainError) as denied:
         await m.registry.owner(authenticated_principal=m.p.owner, device_id=m.peers["device_id"])
     assert denied.value.failure.code == "enrolled_current_key_denied"
+
+
+async def test_root_owner_rechecks_device_key_after_final_sql_witness(enrollment_case):
+    m = await active_registry(enrollment_case)
+    m.registry.enrollments.records._checked_metadata = True
+
+    def revoked(_connection, _cursor, statement, _parameters, _context, _many):
+        if statement.lstrip().upper().startswith("SELECT") and " IN " in statement:
+            key = m.keys["device"]
+            m.keys["device"] = VerificationKey(
+                key.key_id, key.device_id, key.public_bytes, key.role, True
+            )
+
+    engine = m.registry.enrollments.records.database.engine.sync_engine
+    event.listen(engine, "before_cursor_execute", revoked)
+    try:
+        with pytest.raises(DomainError) as denied:
+            await m.registry.owner(
+                authenticated_principal=m.p.owner, device_id=m.peers["device_id"]
+            )
+        assert denied.value.failure.code == "enrolled_current_key_denied"
+    finally:
+        event.remove(engine, "before_cursor_execute", revoked)

@@ -31,8 +31,9 @@ class RegisteredRunnerRecheckPort(Protocol):
 class RegisteredRunnerRechecks:
     """Fresh full owning sources, capped by the original command and 10s per call.
 
-    This first implementation retains full checks. It is a bounded source contract,
-    not a claim that repeated original SQL graph expansion fits the product budget.
+    Full source predicates remain, with fresh reads by default. Optional duplicate
+    metadata inputs require a final fresh full-row SQL witness. This internal port is
+    not yet consumed by the installed endpoint/watch or a product performance gate.
     Watch returns on changed snapshot, raises on revocation/deadline/dependency;
     neither result permits execution. No synthetic event or cached grant is used.
     """
