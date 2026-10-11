@@ -180,5 +180,14 @@
     "file Context/fixed model/delivery",
     "M3/M4 milestone regression"
   ],
-  "original_human_receipt": "docs/implementation/evidence/ms-i2l-native-human-6.json"
+  "original_human_receipt": "docs/implementation/evidence/ms-i2l-native-human-6.json",
+  "source_sha": "47e981e059c222c60f78daeaf1e52b76bd3b1be0",
+  "source_tag": "ms-i2l-a7-source",
+  "metadata_tag": "ms-i2l-a7",
+  "contracts": {
+    "interfaces": 287,
+    "types": 1358,
+    "status": "passed",
+    "report_sha256": "f68c7a48531721fcc526b16d93411cbc4a6a17c49ddf6beb4e060d8413ffcc2c"
+  }
 }

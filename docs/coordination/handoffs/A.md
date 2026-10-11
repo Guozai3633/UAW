@@ -1,3 +1,7 @@
+# MS-I2l A7
+
+源码 47e981e059c222c60f78daeaf1e52b76bd3b1be0 / ms-i2l-a7-source；独立消费元数据 ms-i2l-a7。122 个不同节点通过，无最终失败/错误/跳过；198 源码 Mypy、运行代码 Ruff/格式和接口校验通过。本人第六次 grant 记录已固定，原最终 callback 清理取消保留；新受控 HTTP/OS/IPC 原回调和 stop 独立实跑。M3/M4/真实文件模型交付继续，flags 未开启。
+
 # MS-I2l A6：实际来源绑定与数据库测量通过
 
 准确源码 **cb215bcffba8a9eff8aa55802b54854109f4a8e6** / `ms-i2l-a6-source`；消费证据 `ms-i2l-a6`。旧标签与start不移动，不派新包。

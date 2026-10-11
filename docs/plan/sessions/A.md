@@ -1,3 +1,7 @@
+# A/MS-I2l A7 已固定
+
+47e981e059c222c60f78daeaf1e52b76bd3b1be0 / ms-i2l-a7-source，消费证据 ms-i2l-a7。122 不同节点通过；浏览器 installed 生命周期、完整 callback 与停止清理受控实连通过。继续原文件 Tool/预算/Runner、真实页面和 M3/M4，不发新包。契约见 ../../coordination/requests/A/MS-I2l-browser-installed-v1.md。
+
 # A/MS-I2l A6真实来源已固定
 
 cb215bcffba8a9eff8aa55802b54854109f4a8e6 / ms-i2l-a6-source；消费证据ms-i2l-a6。实际SQL绑定和测量2节点通过，D695组件通过；本人新实例根授权继续待，旧失败和flags不变。继续当前生产接线，不开新包。

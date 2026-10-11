@@ -1,3 +1,13 @@
+# MS-I2l A7：网页本机生命周期已固定
+
+准确源码 **47e981e059c222c60f78daeaf1e52b76bd3b1be0** / `ms-i2l-a7-source`；消费证据 `ms-i2l-a7`。本轮 start/A1–A6 不移动，不开始新包。
+
+122 个不同定向节点通过，含实际 SQL/Windows 双进程/原 native ticket-journal-signature/完整回调及 HTTP ready→当前复查→stop 清理。198 源码严格类型、运行代码 Ruff/格式与 287 接口/1358 对象契约校验通过。不是新的全量或本人网页/文件成果验收；旧失败、中断和上次全量来源保留。
+
+新增 POST /v1/runner/local、GET /v1/runner/local/{launch_id}、POST /v1/runner/local/{launch_id}/stop；需要管理员显式安装配置，默认缺源 503。202 仅启动登记，原会话/Origin/CSRF/去重/退出关闭；callback 完成 marker 不授权。
+
+消费约束见 [网页本机生命周期](requests/A/MS-I2l-browser-installed-v1.md)，完整边界见 [A7](../implementation/MS-I2l-A7.md)。B 可消费固定接口；A 继续原 Tool/预算/Runner 文件路线及页面 M3/M4。文件 flags、子 Agent/DAG/写入安装 exec 不开启。
+
 # MS-I2l A6：实际来源绑定与数据库测量通过
 
 准确源码 **cb215bcffba8a9eff8aa55802b54854109f4a8e6** / `ms-i2l-a6-source`；消费证据 `ms-i2l-a6`。旧标签与start不移动，不派新包。
