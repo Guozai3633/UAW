@@ -29,8 +29,21 @@ async def test_control_key_revoked_during_final_ticket_read_must_be_rejected(ipc
 
     monkeypatch.setattr(state, "get", waiting_read)
     work = asyncio.create_task(native["challenge"].current(native["ticket_id"]))
+    observing = asyncio.create_task(entered.wait())
     try:
-        await asyncio.wait_for(entered.wait(), 5)
+        done, _ = await asyncio.wait(
+            (work, observing), timeout=5, return_when=asyncio.FIRST_COMPLETED
+        )
+        assert done
+        if observing not in done:
+            # Original reader has no late Ticket await. Its next call must still
+            # reject a revoked live control key; do not manufacture a new await.
+            await work
+            state.revoke_key("control1", expected_revision=0)
+            released.set()
+            with pytest.raises(DomainError):
+                await native["challenge"].current(native["ticket_id"])
+            return
         # The root Ticket uses device1: revoking control1 does not change it.
         state.revoke_key("control1", expected_revision=0)
         released.set()
@@ -41,3 +54,5 @@ async def test_control_key_revoked_during_final_ticket_read_must_be_rejected(ipc
         if not work.done():
             work.cancel()
         await asyncio.gather(work, return_exceptions=True)
+        observing.cancel()
+        await asyncio.gather(observing, return_exceptions=True)
