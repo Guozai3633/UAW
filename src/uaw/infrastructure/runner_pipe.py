@@ -64,6 +64,12 @@ class LiveChannelRegistry(Protocol):
     async def authenticated_principal(self, channel_ref: Ref, *, device_id: str) -> Principal: ...
 
 
+class OriginalJournalReceiptPort(Protocol):
+    async def read(self, command_ref: Ref, *, actor: Principal) -> Payload:
+        """Read an original published journal envelope; never execute or send."""
+        ...
+
+
 @dataclass(frozen=True)
 class CheckedPipeReceipt:
     command_ref: Ref
@@ -148,9 +154,11 @@ class RunnerPipeClient:
         registry: LiveChannelRegistry,
         commands: ReceiptCommandReaderPort | None,
         signatures: SignaturePort | None,
+        recovery: OriginalJournalReceiptPort | None = None,
     ) -> None:
         self.session, self.registry, self.commands = session, registry, commands
         self.signatures = signatures
+        self.recovery = recovery
         self.busy = False
 
     async def read(self, command_ref: Ref, *, recover: bool = False) -> CheckedPipeReceipt:
@@ -178,15 +186,19 @@ class RunnerPipeClient:
                         "runner_pipe_source_denied", "Independent command/device differs", 403
                     )
                 await self.session.check()
-                await self.session.send(
-                    "recover" if recover else "command", {"command_ref": ref.wire()}
-                )
-                frame = await self.session.receive()
-                if frame["kind"] != "receipt":
-                    raise reject(
-                        "runner_pipe_response_invalid", "Actual signed receipt required", 412
+                if recover and self.recovery is not None:
+                    body = await self.recovery.read(ref, actor=actor)
+                else:
+                    await self.session.send(
+                        "recover" if recover else "command", {"command_ref": ref.wire()}
                     )
-                actual = verify_receipt_body(frame["body"], source, ref, self.signatures)
+                    frame = await self.session.receive()
+                    if frame["kind"] != "receipt":
+                        raise reject(
+                            "runner_pipe_response_invalid", "Actual signed receipt required", 412
+                        )
+                    body = frame["body"]
+                actual = verify_receipt_body(body, source, ref, self.signatures)
                 if await self.commands.resolve(ref, authenticated_principal=actor) != source:
                     raise reject("runner_pipe_source_changed", "Recovery source changed", 412)
                 await self.session.check()

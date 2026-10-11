@@ -2,7 +2,7 @@
   "date": "2026-10-11",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A9 scoped provider/Run admission, original approval/Tool/result routing, file material evidence, current enrollment/channel/command checks; 191 deduplicated targeted nodes only. Original Windows installed read chain fails; no new product LLM/file/browser delivery or milestone full regression.",
+  "scope": "A9 original published journal followup: 197 deduplicated component nodes (prior 191 plus 6). First Windows installed file read, human page, fixed LLM file delivery and milestone full regression remain pending.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -156,7 +156,7 @@
     "office_tool_approval_dispatch_and_recovery_wiring": true,
     "windows_ipc_control_client_wiring": true,
     "loopback_browser_sessions": true,
-    "scope": "Inherited earlier capabilities retain their pinned receipts. This A9 receipt verifies targeted components only; ms-i2l-a9.json separately records all failed attempts and pending product gates.",
+    "scope": "Inherited capabilities retain original receipts. The original journal followup proves six additional controlled execution/real SQL/SQLite/crypto checks, not first product file execution.",
     "browser_owned_installed_lifecycle_components": true,
     "browser_owned_installed_file_source_assembly": true,
     "actual_product_file_model_delivery": false,
@@ -164,10 +164,11 @@
     "original_run_approval_routing_components": true,
     "original_file_material_reference_components": true,
     "installed_file_product_delivery": false,
-    "original_authenticated_browser_delivery": false
+    "original_authenticated_browser_delivery": false,
+    "original_installed_journal_recovery_components": true
   },
   "test_counts": {
-    "tests": 191,
+    "tests": 197,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -175,8 +176,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "b5bdef4fe0e58781c9c08ad9d9505d7ca73beaa0f4a0d8b022223ebe790b93f6",
-  "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes",
+  "test_evidence_sha256": "891a915b4b358b50938822075bb3338865a568bc24fc31bf940c0bc776e8982f",
+  "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -304,13 +305,14 @@
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
     "src/uaw/infrastructure/installed_channels.py": "6a822244f375706de5e761f0c3b8add19f55a7e9ec472aba8910713e720e6232",
     "src/uaw/infrastructure/installed_control.py": "a568cba6bf555871f9fc77b367771ba623b7cfe9b28b6c605e225c55f78df212",
-    "src/uaw/infrastructure/installed_files.py": "cf3b5053da8f2ab12646e2e1a1af9cb28841c91c053ca828f57dea7fbd7cb9b0",
+    "src/uaw/infrastructure/installed_files.py": "591b245d09e0af36dc7db38260d0ecd71aecfdee5b1b28dcbca21813f17e448c",
     "src/uaw/infrastructure/installed_helper.py": "22df0e90b2bcd4481706505be4081eac5f823e051c8f333974454eae2b5ba8d8",
+    "src/uaw/infrastructure/installed_journal.py": "4a42c405d9359580aea664d5b6a30063ed6ac122061f9553d5c6f2a2ae3fa13e",
     "src/uaw/infrastructure/installed_lifecycle.py": "4c9bbe44be315d3610fe1f6519abfb7ac7e84b3c7ebb6cc7eb021a68bf446636",
     "src/uaw/infrastructure/installed_receipt.py": "90435e6e4bcb56d12b8f9167c7535b28ea9a322aa995626de93c94cb7831ab54",
     "src/uaw/infrastructure/installed_roots.py": "720627c0ae75589649ed572c4da4bbcd3efcdfca6bf6bc9b0b09845705fa7ff7",
     "src/uaw/infrastructure/installed_tool_authority.py": "4b80dbe97b6901aa07db87a6609e95314dbbe49cf827601030543f85fe473595",
-    "src/uaw/infrastructure/runner_pipe.py": "834a2fa12a8d806791ec46bb9bb7fce23a277ecd2d21bf7bb8370d3d245b4108",
+    "src/uaw/infrastructure/runner_pipe.py": "d2cab040c4476bcf93af0daa6478a0c71ea75fbd6ca661462a70bb1630bbf3d0",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
     "src/uaw/intent/frame.py": "4459d533d5f80c152a5e470c4c26224122bacad6a382bcc38c4c8a236a2946dd",
@@ -440,6 +442,7 @@
     "tests/integration/agent/test_file_provider_http.py": "57dacb08d2cfb8c0c55d8278f3534f26dc8a2ad4ccfaa7675d8c8007851ff111",
     "tests/integration/agent/test_file_run_admission.py": "97cf47288459945c355593b1e20ae6f2e71e814a0699cbe030f02410c9d022bd",
     "tests/integration/agent/test_installed_file_authority.py": "c587c74c27068e9c182eb612c111892bc8b44c085897d1325a7230e81c819f6b",
+    "tests/integration/agent/test_installed_journal_recovery.py": "af2e7b42366d28992126fd068e1d055f6348488cb180ea07672ff643cb73ce72",
     "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
     "tests/integration/agent/test_installed_lifecycle.py": "e7cc921898e558f6fc803d8275802f08090de3792fc83884e1b62520929e1f6f",
     "tests/integration/agent/test_installed_lifecycle_native.py": "dad09bbdd6b733ae7422a1dabdcc3d7f02325fca1718b60312dfb67169344976",
@@ -616,7 +619,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a9.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a9-journal.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a9.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

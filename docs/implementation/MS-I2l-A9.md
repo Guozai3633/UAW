@@ -63,3 +63,19 @@ Windows原 FileTool实链 source2–source12失败均保留。
 
 默认 flags、子Agent、DAG、写入、安装和exec保持关闭。
 汇合全量在实链修复后执行，本阶段不标 MS-I2l/P1 accepted。
+
+## 原 journal 恢复续项
+
+A追加`InstalledJournalRecovery`与RunnerPipeClient的可信recovery port。
+仅installed装配注入原目录的ReadExecutionJournal/ReceiptJournal和同一个原命令Reader；
+该Journal verifier没有执行authority或owner mapping，不会构造新的执行准入。
+已有发布Ref读取后核对原签名、exact command/owner/attempt/bytes，再复查当前来源与journal。
+首次command仍单次发送；后续材料复读不再向只处理一次命令的原helper发送recover。
+
+新6项实际SQL/SQLite/签名组件检查通过，覆盖原文件被移除后读取、无回执、未发布、
+签名变化、设备撤销及读取后撤销；明确受控的执行/通道来源不算真人或首次Windows实读。
+首次测试错误调用ReceiptJournal.save（既有名称publish）造成5项准备失败，已保留；
+修正调用名后6项复跑通过。209源码Mypy与源码Ruff/格式通过。
+[续项证据](evidence/ms-i2l-a9-journal.json)将组件去重并集更新为197，
+原191/A8和失败回执各自保留。已失效原通道仍拒绝，不自动新建数据授权或重连。
+原首次文件实读、真实固定模型/本人页面及全量门槛没有变化。

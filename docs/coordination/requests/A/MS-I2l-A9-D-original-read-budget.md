@@ -38,6 +38,12 @@ A 保留 provider/Run 原准入、权限/审批 owning service、控制签名和
 A 负责精简原命令 register 后没有等待的重复 collect，以及登记到发送前的来源展开。
 任何新的来源 port 都先明确契约，再由双方各自实现；A 不修改 D 业务源码或分支。
 
+A随后已补充`InstalledJournalRecovery`：首次仍原command单次发送；后续原材料
+通过实际ReadExecutionJournal发布Ref及ReceiptJournal读取并验证原签名。
+不会向D已进入回执后等待的同一连接再次发送recover。仍需原当前owner/device/channel/root
+与数据权限；已关闭或撤销的旧通道不自动重连。6个实际SQL/SQLite/签名组件节点通过，
+不能证明首次Windows读取通过。新源码准确SHA由DISPATCH的journal续项发布。
+
 ## 不变门槛
 
 不增加原 10 秒 frame/response、15 秒普通启动、90 秒首次、120 秒根窗口、

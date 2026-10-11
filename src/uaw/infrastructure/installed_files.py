@@ -9,9 +9,13 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
+from uaw_runner.admissions import PersistentAdmissions
 from uaw_runner.control_signing import ControlCommandSigner, ControlKeyBinding
 from uaw_runner.keys import Ed25519SignatureAdapter, ProtectedSigner
 from uaw_runner.pairing import LocalRoots
+from uaw_runner.protocol import RunnerProtocol
+from uaw_runner.read_state import ReadExecutionJournal
+from uaw_runner.receipts import ReceiptJournal
 from uaw_runner.root_source import NativeRootSource, PersistentRootGrants
 
 from uaw.composition import (
@@ -22,6 +26,7 @@ from uaw.composition import (
     assemble_runner_control,
 )
 from uaw.infrastructure.db.records import parameter_hash
+from uaw.infrastructure.installed_journal import InstalledJournalRecovery
 from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
 from uaw.infrastructure.installed_receipt import current_root
 from uaw.infrastructure.installed_tool_authority import InstalledFileResources
@@ -260,6 +265,18 @@ async def assemble_installed_file(
     route = InstalledFileRoute(lifecycle, admitted=container.file_run_sources)
     provider_ref = Ref.model_validate(registry.get(tool_ref.wire()).spec()["provider_ref"])
     access = RegisteredFileDataAccess(container, registry, provider_ref, provider)
+    # This verifier has no execution authority or principal mapping. It can
+    # only verify existing signed receipts via the original registered Reader.
+    journal = ReceiptJournal(
+        directory / "receipts.sqlite",
+        protocol=RunnerProtocol(
+            device_id=key.device_id,
+            bindings=RootBindings(grants),
+            admissions=PersistentAdmissions(directory / "admissions.sqlite"),
+            signatures=signatures,
+        ),
+        reader=control.receipt_commands,
+    )
     bridge = RegisteredFileBridge(
         commands=control.commands,
         pipe=RunnerPipeClient(
@@ -267,6 +284,11 @@ async def assemble_installed_file(
             registry=connection.registry,
             commands=control.receipt_commands,
             signatures=signatures,
+            recovery=InstalledJournalRecovery(
+                executions=ReadExecutionJournal(directory / "reads.sqlite"),
+                journal=journal,
+                commands=control.receipt_commands,
+            ),
         ),
         routes=route,
         access=access,

@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "dc06bea56e14c1edbb445e37686e830d6c390f88",
+  "status": "original published journal recovery components verified; first installed read pending",
+  "new_distinct_nodes": 6,
+  "component_union_nodes": 197,
+  "scope": "Actual SQL/SQLite/Ed25519; execution/channel/native are controlled sources. Temporary file originally read once, removed before recovery; no extra send/open.",
+  "passing_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a9-journal-recovery2.xml",
+    "sha256": "1d065e59fb39fedbea4bec9b663f0dc2d59096972118444163b48b21f7f93914",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failed_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a9-journal-recovery.xml",
+    "sha256": "657983eba6c492f4ddba07a8946297a06060eb961a1b8e7289eaacd3ec067cf1",
+    "tests": 13,
+    "failures": 5,
+    "reason": "test used save instead of existing ReceiptJournal.publish; retained; final six-node rerun passes"
+  },
+  "static": {
+    "mypy_source_files": 209,
+    "source_ruff": "passed",
+    "source_format": "passed"
+  },
+  "product_gates": {
+    "first_installed_file_read": false,
+    "fixed_llm_file_delivery": false,
+    "original_authenticated_browser": false,
+    "full_milestone": false
+  },
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "default_flags_enabled": false,
+  "previous_stage_evidence": "docs/implementation/evidence/ms-i2l-a9.json",
+  "recovery_limit": "Current original owner/device/channel/root and data authority remain required. A closed/revoked old channel is not silently reconnected or treated as a new data grant."
+}
