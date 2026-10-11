@@ -1,3 +1,16 @@
+# MS-I2l A9 current：A 来源检查续项已固定
+
+准确源码 **923528d627413b5745e6c308451918f17efcb393** /
+`ms-i2l-a9-current-source`。56实际SQL/签名回归通过，新增4个跨任务变更检查；
+组件去重并集201，209源码类型及契约一致性通过。
+两次完整权限读取与前后命令查询共享短 READ COMMITTED 连接，每个 SELECT 仍独立执行。
+没有权限缓存、延长期限或性能提升比例承诺。[范围与回执](../implementation/evidence/ms-i2l-a9-current.json)。
+
+D 已收到下方正式定向修复并核对准确 journal 基线开始工作；
+其执行版本仍为225f5006，不自动消费本页 A 新源码或浮动 integration。
+A 本次没有变更 D port/wire；阶段到后由 A 接最新控制端并实跑受影响链。
+原首次本机读取/固定模型文件成果/本人页面/汇合全量仍 pending，默认flags保持关闭。
+
 # MS-I2l A9 journal：固定源码与 D 定向修复派发
 
 2026-10-11。准确执行源码 **225f5006f9ad246fb17816363beda4f1f1445876** /

@@ -1,3 +1,11 @@
+# A/MS-I2l-A9 current 来源续项
+
+923528d627413b5745e6c308451918f17efcb393 / ms-i2l-a9-current-source。
+56实际SQL回归通过，新4个外部模型/命令/取消变更节点，组件并集201、源码类型209通过。
+完整两轮来源与前后命令查询保留，只共用短 owning-task READ COMMITTED 连接。
+D 已收到 journal 固定版本的定向修复并开工，不自动同步 A 新版本；A继续自身来源/接线。
+首次原文件与真实模型/本人交付/全量仍 pending；无新的模型调用或用户文件读取。
+
 # A/MS-I2l-A9 journal 与 D 定向修复
 
 2026-10-11。执行源码 ms-i2l-a9-journal-source /
