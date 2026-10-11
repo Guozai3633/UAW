@@ -246,8 +246,18 @@ class ReadOnlyHelper:
             raise reject("ipc_busy", "Helper operation already active", 409)
         self.operation = asyncio.current_task()
         try:
-            await self.bootstrap.connected(self.session)
-            return await self.endpoint.serve_once()
+            # Do not consume the frame/response budget while a user is deciding
+            # an original approval. This wait grants nothing, performs no read,
+            # and never renews the authenticated session or native root deadline.
+            first_byte = await self.session.pipe.wait_readable(
+                deadline=self.session.monotonic_expiry
+            )
+            until = min(first_byte + self.session.pipe.timeout, self.session.monotonic_expiry)
+            async with asyncio.timeout_at(until):
+                await self.bootstrap.connected(self.session)
+                return await self.endpoint.serve_once()
+        except TimeoutError:
+            raise reject("ipc_timeout", "Read frame deadline expired", 408, "timeout") from None
         finally:
             self.operation = None
 
