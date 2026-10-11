@@ -34,4 +34,3 @@
 新增任务说明不在旧A8快照内：先核对固定文档标签 ms-i2l-a8-followup 与远端一致，再用 git show ms-i2l-a8-followup:docs/coordination/requests/A/MS-I2l-A8-continuation-packages.md 只读读取固定规则及自己的章节；A7 browser-installed-v1和A8 installed-file-sources在执行快照内读取。M1接口/阶段SHA交付后继续M2–M4，A逐包审阅，不等所有worker完成。
 用独立55435/测试临时根，消费A8原installed装配，完成真实Web/SQL/OS双keys/双进程来源→原FileTool审批/预算→RunnerPipeClient→helper一次只读→签名journal。新Run前的受控provider/flags明确标fixture，不改旧Run固定来源或发布生产权限。测试丢回复原journal恢复/文件变化保持原快照、零新dispatch/open、等待后撤销/取消/stop/版本/期限。记录每个阶段实际耗时及来源查询成本，A错误报A、D错误自己修；不加时/删检查，不重跑旧695全量。原15/90/120与lease较早期限保持。不再自动弹本人窗口、读取用户目录或代批准。M1/M2阶段到即交A，最终清理回执与独立handoff，真实/受控/待真人明确分列。
 ```
-
