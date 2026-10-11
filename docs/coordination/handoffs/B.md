@@ -910,3 +910,16 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - A只读复制本worktree `apps/web/.test-results/u3-final-dist/`，source与每文件SHA见final-wiring/manifest，不执行B环境。截图仅受控设备页面且目视已核对。匿名实际8000/5178为401/denied、刷新零POST；未读取A私有配置/key、未启动停止A服务。
 - `scripts/u3-readonly.mjs --authenticated`当前exit2/pending，缺受保护环境限时同源launch/Web URL及实际conversation/enrollment IDs；不算通过/skip。认证恢复/真实登记源、本人native/目录授权、文件整链、真人合同接受/审批取消仍pending A与本人，没有新HTTP DTO或root来源。没有代点native或成果接受；未运行原会触发真人决定的U2 live suite。
 - A负责原来源/locator/具体Reader及部署准确构建；新增HTTP先发固定阶段DTO。默认模型/flags保持，P1/MS-I2整轮不标accepted。最终源码与handoff分别提交后clean停止，不自动扩包。
+
+
+## MS-U3b 本机生命周期同轮续包（2026-10-11）
+
+- 实际worktree `E:/UAW/.worktrees/context` / `dev/context`，原干净HEAD `8a590123c1aa166688e7ed830e8c9c5d2d76e89b`。fetch只读远端正式DISPATCH，执行tag `ms-i2l-a8 / 06ff3ef56b68d391387bc7b154fa58ecb00571f9`、源码tag `ms-i2l-a8-source / 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6`，文档tag `ms-i2l-a8-followup / 610a920d9cc83900f056b0eb2ccfaf13cb122ff8`与远端一致；只快进准确执行tag、HEAD一致。uv frozen/pnpm锁离线成功，不合浮动integration/reset/rebase/stash，共同start不移动，原提交保留。
+- M1源码 `8271fd9e7467870e6e147eb7e00ff3d583f23e8b` / 阶段文档 `017741b9a3a8f0bdf0b416289ea706f4c99f1f38`；M2源码 `81e128cf505fb7d62a1980d975b2302e6f60bd11` / 阶段构建文档 `533fc7ca45e44381f706d28ee83fd760e53ef673`，交阶段后继续M3/M4。最终源码 `394d78579bb6841bd936b11af557bc401d0b2dba`；独立交接为随后docs提交，准确SHA见最终回报。
+- 只改20个apps/web源码/生成物/测试及B文档，完整修改清单、接口/示例/关闭错误语义和逐文件dist/hash见[MS-U3b-final-wiring](../requests/B/MS-U3b-final-wiring.md)。没有Context/shared/schema/锁/backend/Model/composition/其他worker修改。
+- localStart/localGet/localStop严格三HTTP与InstalledLaunchView/HttpRunnerLocalBegin/Get/StopResult，25paths/28methods/188完整定义；无path/proof/approved入参。HttpInstalledLaunchPort(client,storage?)公开start/get/stop/lookup/clear，保存完整身份隔离原IDs/CAS，不保存状态/授权。双击一个写、迟到GET不回退；无IDunknown仅明确人工重放原request_id，有ID/stop未知先GET，不自动换ID或刷新POST。
+- InstalledConnection默认实HTTP可host注入，只有本人点击“连接本机只读目录”启动；三步系统提示、actual state/原期限/停止CAS、有界串行2秒/120读取。202和ready不是file许可；注销/身份切换Abort/clear，同账号新Web session不能接管。原Review/hash/原文/一次全局Recovery链保持，不扩多Run，不代置completed。
+- 最终78单元＋36受控Chromium各0失败/错误/跳过，类型/构建/完整字段保留/重复生成/冻结安装/diff-check通过，准确不同节点在自身ignored u3b-final-receipts.json；不累加M1/M2或重复跑。原GET回退1失败、测试换行tsc错误、Node ESM/JSON收集失败均保留并修复，标准imports不放宽schema。自动审批额度中断动作未执行，后续按正常审批恢复，没有绕过。
+- 真实匿名较早1节点（19:20:28+08）通过，最新localhost不可达exit2/pending；旧XML时点保留，不当当前服务pass。真实认证/SQL没有本包通过声明，A来源未提供，pending不算完成。
+- 根据用户最新约束，认证不再使用新launch创建新session；verifyOwnedInstalledPage(originalOwnerPage,originalId)仅原Page GET/reload、完整principal/expiry和原ID/request/version复查，阻止写入、不导出cookie/不创建context或关闭A page。可选CLI只接A明确提供的UAW_U3B_WEB_URL/OWNER_CDP_URL/LOCAL_LAUNCH_ID，三项当前缺，exit2；trace/screenshot/video/自动失败DOM快照关闭，认证不读取A配置、不代点native/连接/停止/成果接受。受控复用验证器1节点仅证明测试路径，不是本人真实源。
+- 最终只读构建 `apps/web/.test-results/u3b-final-dist/` 与完整hash已交付，A只读复制，不执行B环境。A负责实际owning lifecycle/当前配置、部署、认证原上下文及真人授权、A9 file来源/Run与整链。SQL/native/文件/接受与汇合全量仍pending；不标P1/MS-I2l整轮accepted，默认模型/flags不变。本续包源码/handoff分开clean交付，之后停止。
