@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "22bfb00954a061a48fc3f6143593e2e91bd2c6a7",
+  "scope": "A original authority short owning-task READ COMMITTED connection; real SQL and Ed25519, controlled channel/root/consent. Both full passes and final registered command SELECT remain. External task model/command/cancel changes reject; no shared AsyncSession across tasks.",
+  "passing_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a9-current-scope.xml",
+    "sha256": "5c20ae846df7101ef10b262bf1029c004d423db69b63f46e89ad0ecc415cd661",
+    "tests": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_distinct_nodes": 4,
+  "component_union_nodes": 201,
+  "mypy_source_files": 209,
+  "ruff_changed_files": "passed",
+  "format_changed_files": "passed",
+  "performance": "Connection scope reduced; no before/after latency benchmark claimed. Authority SELECTs/checkpoints retained.",
+  "previous_report": "docs/implementation/evidence/ms-i2l-a9-journal.json",
+  "product_gates": {
+    "first_installed_file_read": false,
+    "fixed_llm_file_delivery": false,
+    "original_authenticated_browser": false,
+    "full_milestone": false
+  },
+  "default_flags_enabled": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0
+}

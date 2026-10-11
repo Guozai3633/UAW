@@ -54,7 +54,8 @@ Windows原 FileTool实链 source2–source12失败均保留。
 没有以延长期限、重发unknown或删除关键等待后检查处理此失败。
 
 [A/D具体修复请求](../coordination/requests/A/MS-I2l-A9-D-original-read-budget.md)
-已写明责任与回归门槛，尚未授权/正式派发。A继续负责控制端与实际来源适配。
+已写明责任与回归门槛；2026-10-11 用户授权后，按准确 journal 源码正式发布并直接发送现有 D。
+A继续负责控制端与实际来源适配。
 
 实际后台8000和准确B构建5173已启动，匿名同源会话接口401正确；
 当前没有原拥有者浏览器页和有效新本人实例。
@@ -79,3 +80,20 @@ A追加`InstalledJournalRecovery`与RunnerPipeClient的可信recovery port。
 [续项证据](evidence/ms-i2l-a9-journal.json)将组件去重并集更新为197，
 原191/A8和失败回执各自保留。已失效原通道仍拒绝，不自动新建数据授权或重连。
 原首次文件实读、真实固定模型/本人页面及全量门槛没有变化。
+
+## 原 authority 短连接续项
+
+`RunnerCommands.collect` 的两次完整检查及 `RegisteredRunnerAuthority.current` 的
+前后 registered command 查询共用短 owning-task READ COMMITTED 连接范围。
+每次 get 仍执行 SELECT；原完整检查、等待后比较、期限和拒绝行为均保留。
+连接在返回当前来源前释放，不带入调用方 IPC/文件执行，不共享给子任务。
+
+56 个实际 SQL/Ed25519 回归节点通过，含新增4个检查：正常两轮检查、
+子任务改变模型绑定、撤销命令、取消 Run。后3者被拒绝；子任务使用不同 SQLAlchemy
+session，返回或异常后 owning context 清空。channel/root/consent仍为受控组件输入。
+209源码Mypy与改动Ruff/格式通过。没有前后耗时基准，不宣称性能提升比例。
+
+[本续项证据](evidence/ms-i2l-a9-current.json)与
+[201不同定向节点](evidence/ms-i2l-a9-current-tests.xml)保留原191、journal197、所有失败及旧全量。
+D 已收到准确 journal 执行基线和具体任务；本改动没有改变公开 wire 或 D port，
+D 不自动消费 A 浮动 HEAD。首次本机读取、模型文件成果、原本人页面与整轮仍 pending。

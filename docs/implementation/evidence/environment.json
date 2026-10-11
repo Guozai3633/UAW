@@ -2,7 +2,7 @@
   "date": "2026-10-11",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A9 original published journal followup: 197 deduplicated component nodes (prior 191 plus 6). First Windows installed file read, human page, fixed LLM file delivery and milestone full regression remain pending.",
+  "scope": "A9 current authority scope: 201 deduplicated component nodes. Latest 56 real SQL/crypto regressions include four new external mutation checks; channel/root/consent controlled. First installed file read, human page, fixed LLM file delivery and full milestone remain pending.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -156,7 +156,7 @@
     "office_tool_approval_dispatch_and_recovery_wiring": true,
     "windows_ipc_control_client_wiring": true,
     "loopback_browser_sessions": true,
-    "scope": "Inherited capabilities retain original receipts. The original journal followup proves six additional controlled execution/real SQL/SQLite/crypto checks, not first product file execution.",
+    "scope": "Inherited original receipts retained; current short connection reuse is not permission caching or product file execution.",
     "browser_owned_installed_lifecycle_components": true,
     "browser_owned_installed_file_source_assembly": true,
     "actual_product_file_model_delivery": false,
@@ -165,10 +165,11 @@
     "original_file_material_reference_components": true,
     "installed_file_product_delivery": false,
     "original_authenticated_browser_delivery": false,
-    "original_installed_journal_recovery_components": true
+    "original_installed_journal_recovery_components": true,
+    "original_authority_current_scope": true
   },
   "test_counts": {
-    "tests": 197,
+    "tests": 201,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -176,8 +177,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "891a915b4b358b50938822075bb3338865a568bc24fc31bf940c0bc776e8982f",
-  "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery",
+  "test_evidence_sha256": "e2597aead0e61d825f5e3a81909fcd9fb716c2b4edc2bc34f18ce9fc7298b6e3",
+  "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -356,8 +357,8 @@
     "src/uaw/run/leases.py": "2662f761d98c26af6e03c5ad8a2ce26c6a18383666eeaedcfc6d678eae50ccfe",
     "src/uaw/run/permissions.py": "7012035b94d99e79f5d787396eaafc51e94006be49b75341bc0eb59f866a7c4f",
     "src/uaw/run/queries.py": "45c2d8e1be5418ca38b76a72dff2e8c84b3df0c5b6fae449efa6d3cfde0dc174",
-    "src/uaw/run/runner_authority.py": "7d1916d27d1001206861d671451fd33a0febe4e85b4bfcedbcd973fa2774de59",
-    "src/uaw/run/runner_commands.py": "6d0137b66ce7ca48431fa87c1132d477a32814f8cd127ac273dc01fe3feef499",
+    "src/uaw/run/runner_authority.py": "ff19acd1bc873263ab7246b09dc102f68fb5a90a3248f5bcb57cfd0b1ded11ea",
+    "src/uaw/run/runner_commands.py": "1d1609c1268c66cf797a768c460025c93be04bc6ad88026ab2bbd93e857fedd4",
     "src/uaw/run/runner_devices.py": "70bb40170f070d80fd6c2c4c977d0d13bd2163d71a3f843918a61fece9e6b31c",
     "src/uaw/run/runner_mapping.py": "e2739893586e0842f415761cd230f256fdcd7eac64c5be2e9fc906716b3664f4",
     "src/uaw/run/runner_receipts.py": "78fe7aa19ed24d6cea413129c82b10576c5777cb79171c81070f4350614acd01",
@@ -454,6 +455,7 @@
     "tests/integration/agent/test_native_late_authority.py": "341186813e19a7c43ebf131719f0c7ef02798027794cc2ad7b35263ca0ebeeea",
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
     "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
+    "tests/integration/agent/test_runner_current_scope.py": "2166a4ea058a6c2b39ba2428ea2d8f06837dd4bbf321330f7225a76ed5ea440b",
     "tests/integration/agent/test_runner_pipe_wiring.py": "c2f72576c1977377e006f33c84321ef3b10990a02d0fe131fc4ec82affb80a2f",
     "tests/integration/agent/test_steer_postgres.py": "6d4d3a9c486e5a0ff39db4b0d3867768e0d100f9787e05e8008b8ed83b180377",
     "tests/integration/context/model_input_fixture.py": "9a1fcbcb72a51e77fb8cdc33bd1cee9deadf609c9bb2c2ac743eb63ec8cfca02",
@@ -619,8 +621,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a9-journal.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a9.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a9-current.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a9-journal.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

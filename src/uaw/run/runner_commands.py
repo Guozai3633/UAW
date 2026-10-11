@@ -354,8 +354,12 @@ class RunnerCommands:
         deadline = instant(record["command"]["expires_at"])
         seconds = max(0, (deadline - self.devices.now()).total_seconds())
         async with asyncio.timeout(seconds):
-            first = await self._collect(record, actor)
-            second = await self._collect(record, actor)
+            # Both passes still issue fresh SELECTs. Keep their short metadata
+            # reads on one owning-task connection rather than paying another
+            # checkout between passes. No execution/user wait belongs here.
+            async with self.store.current_reads():
+                first = await self._collect(record, actor)
+                second = await self._collect(record, actor)
         if first != second or self.devices.now() >= deadline:
             raise reject("runner_authority_changed", "Authority changed during checks", 412)
         return second
