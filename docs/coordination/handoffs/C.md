@@ -801,3 +801,97 @@ A已有 `FileToolBindings.materials` 可处理一个原attempt，跨attempt由A�
 已验证固定基线的 `RegisteredFileBridge`、`RunnerCommands`、`RunnerPipeClient`、真实签名与original journal；原call/spec/ctx/provider、command/receipt绑定不改。A/D actual installed/native/root/channel/current-key来源、本人目录授权、Context→固定模型→Artifact/Task接受和汇合全量仍pending。A production桥仍只whole16384/64KiB，lines/cursor/nonempty project明确不可用，不重读原文件补snapshot。
 数据撤销仍拒绝材料，允许独立已接受原Usage/费用计划恢复时沿已有recover_file_accounting，不反向获得正文；确认/读成功不等于applied、工具成功或Task完成。公共契约/锁本包无新增缺口；多源生产装配归A，默认flags/用户固定模型未更改。
 本包仅MS-T2i，源码/独立handoff分开提交，交付后停止；不自动扩大完整MS-T2或替用户/其他会话操作。
+
+
+## MS-T2i-b 最终交接：严格办公/file原runtime路由（2026-10-11）
+
+### 实际来源、分支与提交
+
+- worktree `E:/UAW/.worktrees/tool`，实际分支 `dev/tool`。干净原HEAD `c8c54563793ebb4c33e846163a0928179c87ee44`，fetch origin --tags，读取远端origin/integration的正式续包DISPATCH，逐标签ls-remote核对后仅 `git merge --ff-only ms-i2l-a8`；HEAD当时等于标签commit。
+- 执行快照 **ms-i2l-a8 / 06ff3ef56b68d391387bc7b154fa58ecb00571f9**；源码标签 **ms-i2l-a8-source / 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6**；固定新规则 **ms-i2l-a8-followup / 610a920d9cc83900f056b0eb2ccfaf13cb122ff8** 用git show只读消费。原ms-i2l-start / 8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0未移动，未合浮动integration/reset/rebase/stash。
+- M1/M2源码 **f80ca330fc8a6817b98d55f6c8ce042f2f2a49ad**，阶段接口文档 c9e39ad77649e83912f21e6a700404f8917704ab；A组装access缺口提案 b0afbf7a29d04a841fdc67902547606dea0fa854，随后继续本包。
+- M3源码/恢复SQL **4e0bec668acc644f7c5e00ddca9b8dc7565043d9**；最终源码/测试 **223c9a9963414bdc1ae71d3e723224d0958ab63c**（最后只修测试预期/原恢复顺序，不改已有Invocation/Lookup）；最终接线文档 **8c409736f85732a388e96a019fe3708f381fb374**。此独立handoff提交随后产生，实际SHA写最终回报和ignored delivery。
+- 旧handoff原字节95637、SHA256 `732fea6a6bf3132f9009a851418f676ba798b659a2cecd2bdc0608352a6fc1ef`精确前缀保留；MS-T2g及MS-T2h/MS-T2i原提交与回执保留，不重做已接受包。
+
+### 修改文件与接口
+
+运行：新增 `src/uaw/tool/runtime_router.py`；`src/uaw/tool/discovery.py`仅新增可选固定Ref筛选，默认原独立调用不变。
+单元：`tests/unit/tool/test_runtime_router.py`。
+真实SQL/恢复：`tests/integration/tool/runtime_router_fixture.py`、`runtime_router_recovery_child.py`、`test_runtime_router_postgres.py`、`test_runtime_router_recovery_postgres.py`（与单元模块不同名）。
+文档：C requests下 `MS-T2i-b-stage-runtime.md`、`MS-T2i-b-agent-access-proposal.md`、`MS-T2i-b-final-wiring.md`及本handoff。没有改公共schema/锁/Agent/composition/API/Context/Runner或其他worktree。
+
+```python
+class ToolResultReadPort(Protocol):
+    async def read_result(self, action_id: str, ctx: TrustedExecutionContext) -> JsonObject: ...
+
+@dataclass(frozen=True)
+class ToolRuntimeRoute:
+    tool_ref: Ref
+    provider_ref: Ref
+    facade: ToolFacade
+    results: ToolResultReadPort
+
+RoutedToolRuntime(registry, ledger, routes: tuple[ToolRuntimeRoute, ...], *, access: ToolAccessPort)
+async discover(request: JsonObject, ctx) -> JsonObject  # RuntimeToolruntimeDiscoverResult
+async invoke(request: JsonObject, ctx) -> JsonObject  # RuntimeToolruntimeInvokeResult
+async reconcile(request: JsonObject, ctx) -> JsonObject  # RuntimeToolruntimeReconcileResult
+async read_outcome(action_id: str, ctx) -> JsonObject  # actual ToolReconciliationReceipt
+async read_result(action_id: str, ctx) -> JsonObject  # RuntimeToolruntimeInvokeResult / actual ToolResult
+```
+
+1–128显式tuple；完整Tool配置Ref/spec hash、provider原version及存在的hash固定，唯一tool id/version，拒绝位置/范围/冲突hash；同registry、同actual records store、原Invocation存在并且 `facade.invocation.access is access`。复制固定Refs，不修改已传facade/Invocation，不授角色/provider/flags。
+发现只允许固定已绑定route，当前共享access/角色/能力/flags/environment/provider先过滤，排序及上限前排除未绑定；使用原小目录词法实现，不冒充语义，不替LLM选择，原retriever/索引不改。
+调用冻结原request，normalize唯一选择，保留完整字段和同ctx/action/attempt，委托原权限/资源/config/审批/预算/一次发送链；未知不换attempt，不fallback或新流水线。
+三项恢复由SQL原attempt/call/spec/ctx选所属唯一route，当前全规格/provider需相符，Reader等待返回后再复核绑定；原Reader继续核对当前数据权限/实际证据，不读新执行access、不发送、不扫描其他provider。
+ToolResult原字段为call_ref，不扩公共tool_ref。缺route/Lookup/Reader明确不可用/缺来源，extra receipt_ref拒绝；read_outcome/read_result数据错误抛DomainError。confirmed/核对ok/工具结果与applied/业务成功/Task完成分开。
+原office ProviderReceipt已保存而source receipt未publish时reconcile正确missing；只有原同request/ctx、无executor恢复Invocation沿已有ToolResults.resume发布真实已保存结果，随后可读。file沿原登记journal恢复真实签名内容。unknown/缺原响应保留原held，不重发，不从未记dispatch/超时/Runner ok推断未执行或零费。
+正文撤销不阻断允许的独立原费用计划协调，原recover_file_accounting重放原已接受Usage/固定计划；不读原文件/Reader，不新reserve。路由器从不持有Tool会话事务锁调用BudgetService，不承诺跨模块原子授权快照。
+
+### 实际验证、去重回执与原失败
+
+`uv sync --frozen --extra agent-engine --link-mode copy`，自身.cache/uv、91包锁定环境。自身 `. ./ops/start-dev-db.ps1 -Session C`，独立loopback **55434**；本venv `python -m alembic upgrade head` exit0，current **0003_attempt_identity (head)**。
+回执全部ignored `tests/.artifacts/C/MS-T2i-b`，不复制A配置/凭据，不改共享evidence/其他库。
+
+| 回执 | 实际结果 |
+|---|---|
+| M1-unit.xml / M4-unit-extra.xml | 阶段28 / 后续32通过，保留原回执 |
+| final-unit.xml | 118通过：旧受影响85+新33，4.68秒 |
+| final-router-unit.xml | 最终路由36通过，2.45秒；去重单元121 |
+| M3-sql.xml | 间接fixture未在模块注册，8收集error，修导入；不是SQL通过 |
+| M3-sql-fixture-fixed.txt | 收集24后执行session中断，无完成XML，不算通过 |
+| resume-first.xml | 1失败：新测试错用ToolResult.tool_ref；改既有call_ref |
+| M4-sql.xml | 本包42节点中36通过/6失败，1414.50秒；原失败保留 |
+| discovery-fixed.xml | 3种组合非空query修正，3通过，2.41秒 |
+| loss-fixed.xml | 原办公未publish回执正确missing，再无executor恢复，3通过，277.83秒 |
+| affected-sql.xml | 原三办公工具结果/重建及file原结果/丢回应/unknown，6通过，219.34秒 |
+
+最终XML按节点去重 **121单元＋48真实SQL** 全部通过，最终failure/error/skip为0：新36单元/42SQL，原受影响85单元/6SQL；不是一次121/48，不叠加重试。verification-index.json/build_index.py列每个最终节点、15原失败/error、所有XML SHA256和固定来源；scope-check.json验证C目录、公共锁/契约/组装未变和旧handoff原字节。
+原15XML失败/error来自8fixture收集、1字段预期、3非法空query、3尚未publish办公source receipt错误预期ok。原mypy首次discover字典类型推断失败已显式JsonObject修正；ruff/format前的长行经format修正。自动审批审核曾因额度不足导致新增诊断命令未执行，用户继续后正常审核恢复，未绕审批。
+仅修测试预期/导入/类型标注，未用重做动作或改变费用/Reader语义掩盖失败。后续只定向重跑上述6 SQL失败节点，没有全量重复。
+
+命令：`python -m pytest tests/unit/tool/test_runtime_router.py tests/unit/tool/test_access_identity.py tests/unit/tool/test_registry_schema.py tests/unit/tool/test_recovery_facade.py --junitxml=<final-unit.xml>`；补构造类型边界后单独最终router模块复验。
+新SQL：`python -m pytest tests/integration/tool/test_runtime_router_postgres.py tests/integration/tool/test_runtime_router_recovery_postgres.py --require-postgres -vv -o faulthandler_timeout=120 --junitxml=<M4-sql.xml>`；两失败函数定向复验。
+原兼容精确选择 `test_office_tools_postgres.py::test_office_approved_actual_result_fixed_receipt_fresh_objects`（3）和 `test_file_pipeline_postgres.py` 的 `test_actual_file_read_preserves_original_and_pending_fee_restart`、`test_original_journal_reply_loss_file_changed_cancel_recovers_old_bytes`、`test_no_original_journal_retains_unknown_hold_and_refuses_new_attempt`（各1）。旧多资料/219 SQL/历史全量不冒充本轮复跑。
+ruff七文件、format七文件、两个受影响运行源码mypy通过；最后两个恢复测试修正再次check/format通过；git diff --check通过。
+
+### 接线样例、未完成生产项与停止边界
+
+详尽成功/拒绝/旧版本与重复示例见 **MS-T2i-b-final-wiring.md**。
+
+```python
+# A在原assembly构造时已给每个Invocation同一个effective_agent_access，不能事后由router替换。
+assert file.facade.invocation is not None
+file_results = file.facade.invocation.results  # A8 FileToolBindings无单独results字段
+assert isinstance(file_results, ToolResults)
+runtime = RoutedToolRuntime(
+    registry, office.ledger,
+    tuple(ToolRuntimeRoute(pin, office_provider_ref, office.facade, office.results)
+          for pin in office_tool_refs)
+    + (ToolRuntimeRoute(file_tool_ref, file_provider_ref, file.facade, file_results),),
+    access=effective_agent_access,
+)
+```
+
+A8原assemble_office_tools/file_tool和installed_file从container.tool_access直接取Run sources，没有独立Agent access参数；C具名 **MS-T2i-b-agent-access-proposal.md** 提最小keyword构造/传递缺口，A处理自己的assembly/Agent消费。不可用Run access代替同一Agent有效port，不全局替换RegisteredFileDataAccess依赖的真实Run sources；same records实例已兼容多个ToolLedger。A按持久原action/完整ctx选实际approval service/Reader，结果与账务来源分开。
+SQL、实际Decimal/JSON/text计算、临时目录Windows文件句柄读取、真实Ed25519签名/原SQLjournal、独立恢复子进程实际运行；Agent/角色/配置flag/provider决定、文件bridge/root/device来源和批准/拒绝决定是明确controlled fixtures，未注册为产品能力。**真实native本人授权/installed生产双进程整链、本轮生产Agent/model/Artifact/Task验收均0，仍待A/D来源和接线。** 本轮未开放flags/网络/目录/exec或改模型，没有新增公共DTO/依赖。
+原效果/费用/attempt及full-file/fragment/material hash语义不变。原fixture清理自身随机主体，测试子进程退出；C独立DB保留供后续验证，没有C常驻executor/重试任务。本包MS-T2i-b完成后停止，不自动扩MS-T2或下一包；A负责审阅合入、公共接线冲突和整链验收。
