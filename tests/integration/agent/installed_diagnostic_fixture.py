@@ -12,7 +12,7 @@ import time
 from dataclasses import replace
 from pathlib import Path
 
-from uaw_runner.native_dialog import WindowsNativeDialog
+from uaw_runner.native_dialog import NativeDirectoryDecision, WindowsNativeDialog
 
 from uaw.infrastructure.installed_helper import NAMESPACE_ENV, InstalledHelperAssembly
 from uaw.shared.errors import reject
@@ -24,6 +24,11 @@ def controlled_dialog(self, prompt, stopped, deadline):
     ).startswith("web-platform-"):
         raise reject("diagnostic_fixture_denied", "Disposable test tenant required", 403)
     if prompt.select_root:
+        selected = os.environ.get("UAW_TEST_INSTALLED_SELECTED_ROOT")
+        if selected:
+            path = Path(selected)
+            identity = path.stat()
+            return NativeDirectoryDecision(path, (identity.st_dev, identity.st_ino))
         raise reject("diagnostic_reached_native", "Controlled root UI rejects", 409)
     return None
 

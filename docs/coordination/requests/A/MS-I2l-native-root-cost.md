@@ -14,6 +14,8 @@ D 对一次完整 challenge 的静态展开约为20次 channel check；当前 En
 
 复跑入口为 `tests/integration/agent/test_installed_pre_ui.py --require-postgres`。实际运行要求A开发数据库55432与当前锁环境，不能用缺失数据库的setup结果冒充通过。profile会增加开销，因此profile耗时不能直接当未经instrumentation的产品延迟；优化比较应使用同一测量方式，并另保留无profile节点回执。
 
+另已准备 `tests/integration/agent/test_installed_root_binding.py`：在独立测试租户与临时目录中显式提供受控 DirectoryDecision，消费实际当前Web/原OS双进程/keys、原Ticket签名、owning journal、grant和当前channel；首次确认及目录选择都属测试输入。它只验证生产来源装配能完成绑定，不能证明真人同意或实际用户文件已读。原selected目录仅A测试临时目录，测试后排空自有helper并删除随机凭据；数据库恢复后实跑，当前尚未计accepted。
+
 2026-10-11本次profile准备发生SQL ConnectionTimeout，131.37秒，仅setup error，没有进入授权链；原回执 `tests/.artifacts/A/MS-I2l/m2-root-profile-before.xml/log` 保留。Docker Desktop已启动，engine/read-only status仍未响应；当前等待用户核对界面状态，暂不启动新的真人确认。公开schema样例微测100次：Peer0.0189s、Candidate0.0413s、Record0.0500s、Evidence0.0198s。这只说明这些纯schema检查在该样例上成本较小，没有依据先增加schema结果缓存。
 
 ## 修复边界
