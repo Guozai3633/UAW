@@ -50,8 +50,13 @@ class RoutedToolRuntime:
         self._routes: dict[bytes, ToolRuntimeRoute] = {}
         versions = set()
         for route in routes:
-            if not isinstance(route, ToolRuntimeRoute):
-                raise ValueError("Expected a trusted ToolRuntimeRoute")
+            if (
+                not isinstance(route, ToolRuntimeRoute)
+                or not isinstance(route.tool_ref, Ref)
+                or not isinstance(route.provider_ref, Ref)
+                or not isinstance(route.facade, ToolFacade)
+            ):
+                raise ValueError("Expected a trusted ToolRuntimeRoute with typed fixed Refs/facade")
             tool, provider = route.tool_ref.wire(), route.provider_ref.wire()
             validate_contract("Ref", tool)
             validate_contract("Ref", provider)
@@ -210,6 +215,7 @@ class RoutedToolRuntime:
                 raise ValueError("Expected revision must be a strict integer")
             route = await self._original(fixed["action_id"], ctx)
             result = await route.facade.reconcile(fixed, ctx)
+            await self._original(fixed["action_id"], ctx)
         except DomainError as exc:
             result = error_result(exc)
         except ContractViolation, ValueError, TypeError, RecursionError, OverflowError:
@@ -222,11 +228,13 @@ class RoutedToolRuntime:
     async def read_outcome(self, action_id: str, ctx: TrustedExecutionContext) -> JsonObject:
         route = await self._original(action_id, ctx)
         result = await route.facade.read_outcome(action_id, ctx)
+        await self._original(action_id, ctx)
         validate_contract("ToolReconciliationReceipt", result)
         return result
 
     async def read_result(self, action_id: str, ctx: TrustedExecutionContext) -> JsonObject:
         route = await self._original(action_id, ctx)
         result = await route.results.read_result(action_id, ctx)
+        await self._original(action_id, ctx)
         validate_contract("RuntimeToolruntimeInvokeResult", result)
         return result

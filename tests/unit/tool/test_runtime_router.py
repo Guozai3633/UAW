@@ -226,3 +226,114 @@ async def test_reconcile_extra_receipt_ref_rejected_before_ledger(routing, call,
         ctx,
     )
     assert result["failure"]["code"] == "invalid_arguments" and routing.ledger.reads == 0
+
+
+def test_all_128_routes_are_accepted_without_changing_facades(routing, spec):
+    p = routing
+    routes = []
+    for i in range(128):
+        current = {**spec, "id": f"bounded.tool.{i}"}
+        if i < 127:
+            p.registry.register(
+                current,
+                expected_revision=p.registry.revision,
+                binding=AdapterBinding(
+                    p.route.provider_ref, frozenset({"component-test"}), implemented=True
+                ),
+            )
+        if i == 127:
+            routes.append(p.route)
+        else:
+            entry = p.registry.get(
+                {"kind": "configuration", "id": current["id"], "version": current["version"]}
+            )
+            routes.append(
+                replace(p.route, tool_ref=Ref.model_validate(p.registry.reference(entry)))
+            )
+    before = p.facade.invocation.access
+    RoutedToolRuntime(p.registry, p.ledger, tuple(routes), access=p.access)
+    assert p.facade.invocation.access is before
+
+
+async def test_registered_unbound_invocation_cannot_use_another_facade(routing, spec, call, ctx):
+    p = routing
+    other = {**spec, "id": "other.tool"}
+    p.registry.register(
+        other,
+        expected_revision=p.registry.revision,
+        binding=AdapterBinding(
+            p.route.provider_ref, frozenset({"component-test"}), implemented=True
+        ),
+    )
+    raw = {
+        **call,
+        "tool_ref": p.registry.reference(
+            p.registry.get(
+                {"kind": "configuration", "id": other["id"], "version": other["version"]}
+            )
+        ),
+    }
+    result = await p.router.invoke(raw, ctx)
+    assert result["failure"]["code"] == "dependency_unavailable"
+    assert not hasattr(p.facade, "seen") and p.ledger.reads == 0
+
+
+async def test_cancellation_propagates_without_reinvocation(routing, call, ctx):
+    p = routing
+    p.facade.entered, p.facade.release = asyncio.Event(), asyncio.Event()
+    task = asyncio.create_task(p.router.invoke(call, ctx))
+    await p.facade.entered.wait()
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    assert p.facade.seen[1] is ctx and p.ledger.reads == 0
+
+
+async def test_reconcile_freezes_request_before_ledger_wait(routing, call, ctx):
+    p = routing
+    entered, release = asyncio.Event(), asyncio.Event()
+    original = p.ledger.attempt
+
+    async def delayed(context):
+        entered.set()
+        await release.wait()
+        return await original(context)
+
+    p.ledger.attempt = delayed
+    raw = {"action_id": call["action_id"], "expected_revision": 1}
+    pending = asyncio.create_task(p.router.reconcile(raw, ctx))
+    await entered.wait()
+    raw["action_id"], raw["expected_revision"] = "wrong", 999
+    release.set()
+    assert (await pending)["failure"]["code"] == "controlled_recovery"
+    assert p.facade.seen == ({"action_id": call["action_id"], "expected_revision": 1}, ctx)
+
+
+async def test_result_registration_revoked_during_reader_wait_is_not_returned(routing, call, ctx):
+    p = routing
+
+    async def revoked(action_id, context):
+        p.registry.unregister(p.route.tool_ref.wire(), expected_revision=p.registry.revision)
+        return error_result(
+            fail("controlled_reader", "Original result Reader reached", phase="receipt")
+        )
+
+    p.results.read_result = revoked
+    with pytest.raises(DomainError):
+        await p.router.read_result(call["action_id"], ctx)
+    assert p.access.calls == 0
+
+
+@pytest.mark.parametrize("change", ["tool", "provider", "facade"])
+def test_route_requires_typed_refs_and_original_facade(routing, change):
+    p = routing
+    bad = replace(
+        p.route,
+        **{
+            "tool": {"tool_ref": p.route.tool_ref.wire()},
+            "provider": {"provider_ref": None},
+            "facade": {"facade": None},
+        }[change],
+    )
+    with pytest.raises(ValueError):
+        RoutedToolRuntime(p.registry, p.ledger, (bad,), access=p.access)
