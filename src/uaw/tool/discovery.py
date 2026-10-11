@@ -8,6 +8,7 @@ from uaw.shared.errors import DomainError
 from uaw.tool.errors import fail
 from uaw.tool.ports import ToolAccess
 from uaw.tool.registry import RegistryEntry, ToolRegistry
+from uaw.tool.schema import canonical
 
 
 def check_access(access: ToolAccess, ctx: TrustedExecutionContext) -> None:
@@ -101,11 +102,15 @@ def discover(
     max_candidates: int,
     access: ToolAccess,
     ctx: TrustedExecutionContext,
+    *,
+    tool_refs: frozenset[bytes] | None = None,
 ) -> dict[str, Any]:
     check_access(access, ctx)
     revision, entries = registry.snapshot()
     candidates = []
     for entry in entries:
+        if tool_refs is not None and canonical(registry.reference(entry)) not in tool_refs:
+            continue
         try:
             require_entry(entry, access)
         except DomainError:
