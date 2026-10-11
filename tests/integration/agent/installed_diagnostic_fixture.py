@@ -62,17 +62,25 @@ class MeasuredDiagnosticAssembly:
                     metric["elapsed_seconds"] += time.perf_counter() - before
 
             records.get = measured_read
-            profile.enable()
+            cpu_profile = os.environ.get("UAW_TEST_INSTALLED_CPU_PROFILE") == "1"
+            if cpu_profile:
+                profile.enable()
             try:
                 await original(helper)
             finally:
-                profile.disable()
+                if cpu_profile:
+                    profile.disable()
                 records.get = read
-                stats = pstats.Stats(profile)
+                stats = pstats.Stats(profile) if cpu_profile else None
                 # Only function names, counts and aggregate CPU times: no source values.
-                rows = sorted(stats.stats.items(), key=lambda item: item[1][3], reverse=True)
+                rows = (
+                    sorted(stats.stats.items(), key=lambda item: item[1][3], reverse=True)
+                    if stats is not None
+                    else []
+                )
                 output = {
                     "elapsed_seconds": time.perf_counter() - started,
+                    "cpu_profile_enabled": cpu_profile,
                     "record_reads_by_namespace": reads,
                     "functions": [
                         {

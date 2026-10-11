@@ -6,6 +6,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from uaw_runner.keys import Ed25519SignatureAdapter
 from uaw_runner.native_authorization import NativeDecisionJournal
 from uaw_runner.pairing import LocalRoots
 from uaw_runner.root_source import PersistentRootGrants
@@ -78,7 +79,13 @@ async def test_actual_installed_root_binding_original_journal_and_current_channe
         )
         assert grant.owner == owner and grant.workspace_ref == workspace
         assert grant.native_path == selected and grant.capabilities == frozenset({"read"})
-        assert grant.revision == 1 and not grant.revoked and expiry > datetime.now(UTC)
+        # RootGrant's original native repository starts at0, independently of SQL revisions.
+        assert grant.revision == 0 and not grant.revoked and expiry > datetime.now(UTC)
+        assert Ed25519SignatureAdapter(launch.state).verify_document(
+            {**ticket.document(), "signature": grant.selection_signature},
+            device_id=grant.device_id,
+            domain="root-selection",
+        )
         await session.check()
     finally:
         await cleaned(launch)
