@@ -51,6 +51,49 @@ class ConnectionRegistry:
             )
         return session
 
+    def _snapshot(
+        self, session: AuthenticatedPipeSession, channel_ref: Ref, *, device_id: str
+    ) -> RunnerChannelSnapshot:
+        """Private metadata only, bracketed by live checks in native challenge reads.
+
+        No await, IO or permission cache. Public readers remain independently checked.
+        """
+        ref = fixed_ref(channel_ref)
+        if (
+            self.connections.get(ref.id) is not session
+            or session.channel_ref is None
+            or session.channel_ref.wire() != ref.wire()
+            or session.pipe.closed.is_set()
+        ):
+            raise CapabilityUnavailable("runner.ipc.registered_live_connection")
+        local, peer = session.local, session.peer
+        if (
+            local is None
+            or peer is None
+            or {local.role, peer.role} != {"control", "device"}
+            or local.device_id != device_id
+            or peer.device_id != device_id
+        ):
+            raise reject(
+                "permission_denied", "Current connection device/roles differ", 403, "permission"
+            )
+        control = local if local.role == "control" else peer
+        device = local if local.role == "device" else peer
+        return RunnerChannelSnapshot.model_validate_json(
+            canonical(
+                {
+                    "device_id": device.device_id,
+                    "owner": device.owner.wire(),
+                    "actor": control.actor.wire(),
+                    "pairing_ref": device.pairing_ref.wire(),
+                    "channel_ref": ref.wire(),
+                    "key_ref": device.key_ref.wire(),
+                    "connected": True,
+                    "expires_at": session.expires_at.isoformat(),
+                }
+            )
+        )
+
     async def read(self, channel_ref: Ref, *, device_id: str) -> JsonObject:
         session = await self.session(channel_ref, device_id=device_id)
         assert session.local is not None and session.peer is not None
