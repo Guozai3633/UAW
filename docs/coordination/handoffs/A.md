@@ -1,3 +1,11 @@
+# MS-I2l A4：根授权诊断与原生窗口显示已集成
+
+准确运行源码 **e05b15801c0ef8104de740e5ef61ad03ffe92ce6** / `ms-i2l-a4-source`；消费/证据 `ms-i2l-a4`。共同start和旧阶段标签不移动，本包继续，不发新包。
+
+55不同定向节点通过（A47真实SQL/OS/IPC预弹窗受控拒绝与诊断取消边界，D8自有窗口可见/取消/期限）；196源码Mypy/Ruff通过。[阶段报告](../../implementation/MS-I2l-A4.md)。旧1691仍属ms-i2i，不是新全量。
+
+第四次本人已见、选择目录并确认只读范围；本机native_roots/native_decisions各1，root_grants为0，原120秒期限到时绑定未完成。原失败和清理保留，不将真人确认或journal当当前根授权。先测量原native_select后续重复复核成本，不延長原Ticket/授权、不再反复要求本人点窗。实际文件/固定模型/用户页面整链仍继续；flags关闭、原办公completed和旧学术failed/成果/费用保持。
+
 # MS-I2l A3：原 installed 父端连接与可选本人目录入口
 
 源码 **5fbfa752f6d83a3e663b98b6b002eb8a481e8b3e** / `ms-i2l-a3-source`；消费/证据 `ms-i2l-a3`。共同start/A1/A2标签保留，不派新包。

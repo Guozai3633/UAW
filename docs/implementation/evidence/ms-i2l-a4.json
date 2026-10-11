@@ -1,0 +1,37 @@
+{
+  "runtime_source": "e05b15801c0ef8104de740e5ef61ad03ffe92ce6",
+  "distinct_affected_nodes": 55,
+  "suites": [
+    {
+      "scope": "A root diagnostics and actual pre-UI sources",
+      "nodes": 47,
+      "evidence": "docs/implementation/evidence/ms-i2l-a4-m2-root-diagnostic-final-cancel.xml",
+      "sha256": "4ae30df45108f96d02a0977e7f5ce864c9bdf0aaa4536cffcea1caad3168d3bf"
+    },
+    {
+      "scope": "D owned native window display and cancellation",
+      "nodes": 8,
+      "evidence": "docs/implementation/evidence/ms-i2l-a4-m2-native-visibility.xml",
+      "sha256": "fe810be4d6c157c8627e3d657eaf360bae968f0a60ae29d07d134ba157bb2feb"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "typechecked_source_files": 196,
+  "history": [
+    "m2-root-pre-ui.xml: diagnostic own 20 second lifecycle budget expired; no proof of pre-UI failure",
+    "m2-root-pre-ui-trace.xml: fixture mutation of frozen HelperApplication failed; fixture corrected",
+    "m2-root-pre-ui-trace-fixed.xml: original120 session/110 event budget reached controlled rejecting UI in49.91 seconds",
+    "m2-root-diagnostic-final.xml:45 passed before two cancellation/write competition cases",
+    "m2-root-diagnostic-final-cancel.xml:47 passed after cancellation fix"
+  ],
+  "native_human_root": "visible and human confirmed, own native decision stored, binding failed on original120 deadline",
+  "native_display_test": "real hidden owned child, visible/topmost, automatic cancel only",
+  "controlled_pre_ui_test": "disposable SQL/Web tenant, real installed OS/IPC, controlled first confirm, root always rejected",
+  "new_full_suite": false,
+  "file_content_reads": 0,
+  "model_calls": 0,
+  "feature_flags_changed": false,
+  "human_attempt_evidence": "docs/implementation/evidence/ms-i2l-native-root-visible-failure.json"
+}

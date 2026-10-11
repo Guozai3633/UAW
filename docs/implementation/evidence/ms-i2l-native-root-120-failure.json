@@ -1,0 +1,47 @@
+{
+  "runtime_source": "87d30a21f917ebf11fd80cfe6bb0e60a0039c28d",
+  "attempt": 3,
+  "raw_log": "tests/.artifacts/A/MS-I2l/m2-native-root-attempt-3.log",
+  "raw_log_sha256": "f615eb673aa39d93212852fc23ce2facd17d2ff1d53b9143842d27f36bfe42e2",
+  "result": {
+    "channel_hash": "ad4849e01a114f34577d5f47e1d1bb08e8a556fd71d97f8e8d3584c64d8d3a64",
+    "connection_expires_at": "2026-10-10T14:00:22.068445+00:00",
+    "failed_phase": "native.root_selection",
+    "failure_code": "deadline_exceeded",
+    "file_reads": 0,
+    "finished_at": "2026-10-10T14:00:22.791752+00:00",
+    "model_calls": 0,
+    "native_human_confirmed": true,
+    "native_journal_hash": "c86726b84f183474d4a1960312857e4e6a48b77f6d50420654f301ded438075c",
+    "owned_launch_cleanup": true,
+    "phase": "native.root_selection",
+    "root_selected": false,
+    "started_at": "2026-10-10T13:58:06.154200+00:00",
+    "status": "failed"
+  },
+  "local_state_after_owned_cleanup": {
+    "root_tickets": [
+      {
+        "kind": "root",
+        "state": "revoked",
+        "revision": 1,
+        "expires_at": "2026-10-10T14:00:22.066209+00:00",
+        "confirmation_expires_at": null
+      }
+    ],
+    "keys": [
+      {
+        "role": "control",
+        "revoked": 1
+      },
+      {
+        "role": "device",
+        "revoked": 1
+      }
+    ],
+    "native_decisions": 0,
+    "root_grants": 0
+  },
+  "user_report": "没有看到目录选择窗口",
+  "human_root_authorization_passed": false
+}
