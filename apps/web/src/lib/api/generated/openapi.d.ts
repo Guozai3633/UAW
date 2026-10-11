@@ -340,6 +340,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/runner/local": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 当前Web用户请求本机本人确认；异步返回原启动状态。 */
+        post: operations["http_runner_local_begin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runner/local/{launch_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 查询原本机启动；当前主体/通道/原根复查，后端重启标unavailable，不重发。 */
+        get: operations["http_runner_local_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runner/local/{launch_id}/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 原Web用户停止并drain自己本机实例，保留原历史。 */
+        post: operations["http_runner_local_stop"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/models": {
         parameters: {
             query?: never;
@@ -1501,6 +1552,66 @@ export interface components {
             usage_ref?: components["schemas"]["Ref"];
         };
         /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerLocalBeginResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["InstalledLaunchView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerLocalGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["InstalledLaunchView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunnerLocalStopResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["InstalledLaunchView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
         HttpRunsControlResult: {
             /**
              * @description 接口状态
@@ -1716,6 +1827,34 @@ export interface components {
             attachment_refs: components["schemas"]["Ref"][];
             /** @description 提交时间 */
             created_at: components["schemas"]["Timestamp"];
+        };
+        /** @description 原网页会话拥有的本机实例进度；ready只表示原生回调与当前根来源完成，不授予文件工具权限。 */
+        InstalledLaunchView: {
+            /** @description 原启动身份 */
+            id: components["schemas"]["ID"];
+            /** @description 原RequestMeta.request_id */
+            request_id: components["schemas"]["ID"];
+            /** @description 状态持久CAS版本 */
+            revision: components["schemas"]["Revision"];
+            /**
+             * @description 实际生命周期
+             * @enum {string}
+             */
+            state: "starting" | "waiting_device" | "connecting" | "selecting_directory" | "ready" | "closed" | "failed" | "unavailable";
+            /** @description 管理员安装配置中的逻辑工作区；不是本机路径 */
+            workspace_ref: components["schemas"]["Ref"];
+            /** @description 原启动时间 */
+            created_at: components["schemas"]["Timestamp"];
+            /** @description 本次状态时间 */
+            updated_at: components["schemas"]["Timestamp"];
+            /** @description 原设备登记 */
+            enrollment_id?: components["schemas"]["ID"];
+            /** @description 当前实际通道绑定的设备版本与摘要 */
+            device_ref?: components["schemas"]["Ref"];
+            /** @description 原通道期限，不从轮询重新计时 */
+            expires_at?: components["schemas"]["Timestamp"];
+            /** @description 有界错误码；不输出路径/proof/凭据 */
+            failure_code?: components["schemas"]["ID"];
         };
         /** @description 稳定前端交互对象，不依赖猜模型文本。 */
         InteractionItem: {
@@ -2211,6 +2350,18 @@ export interface components {
         RunnerEnrollmentsRevokeRequest: {
             /** @description 原登记 */
             enrollment_id: components["schemas"]["ID"];
+        };
+        /** @description 当前Web用户请求本机本人确认；异步返回原启动状态。 */
+        RunnerLocalBeginRequest: Record<string, never>;
+        /** @description 查询原本机启动；当前主体/通道/原根复查，后端重启标unavailable，不重发。 */
+        RunnerLocalGetRequest: {
+            /** @description 原启动 */
+            launch_id: components["schemas"]["ID"];
+        };
+        /** @description 原Web用户停止并drain自己本机实例，保留原历史。 */
+        RunnerLocalStopRequest: {
+            /** @description 原启动 */
+            launch_id: components["schemas"]["ID"];
         };
         /** @description 独立OS观察的进程实例；不是UAW账号。 */
         RunnerProcessIdentity: {
@@ -5884,6 +6035,507 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpRunnerEnrollmentsRevokeResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_local_begin: {
+        parameters: {
+            query?: never;
+            header: {
+                Origin: string;
+                "X-UAW-CSRF": components["schemas"]["Hash"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 当前Web用户请求本机本人确认；异步返回原启动状态。 */
+                    payload: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            /** @description 原启动已登记，payload是实际生命周期状态；不是批准或文件权限。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 实际部署或当前来源不可用；不产生隐式授权。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalBeginResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_local_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+                Origin?: string;
+            };
+            path: {
+                launch_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 实际部署或当前来源不可用；不产生隐式授权。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runner_local_stop: {
+        parameters: {
+            query?: never;
+            header: {
+                Origin: string;
+                "X-UAW-CSRF": components["schemas"]["Hash"];
+            };
+            path: {
+                launch_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /** @description 原Web用户停止并drain自己本机实例，保留原历史。 */
+                    payload: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 实际部署或当前来源不可用；不产生隐式授权。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

@@ -1,6 +1,6 @@
-import Ajv2020 from 'ajv/dist/2020';
+import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import schema from './generated/schema.json';
+import schema from './generated/schema.json' with {type:'json'};
 const ajv = new Ajv2020({allErrors:true,strict:false,validateFormats:true});
 addFormats(ajv);
 function checkFormats(value:unknown):void {
