@@ -30,6 +30,10 @@ DEFAULT_DISABLED = (
     "memory",
     "extensions",
 )
+# Published ToolSpec uses file_access; the administrator's single governing
+# switch is local_files. This mapping is a protocol compatibility rule, not a
+# second grant or an alternative enabled flag.
+CAPABILITY_FLAGS = {"file_access": "local_files"}
 
 
 class ConfigurationService:
@@ -540,11 +544,12 @@ class ConfigurationService:
     ) -> None:
         if boundary not in ("discovery", "call", "resume", "child"):
             raise ValueError("Unknown capability boundary")
+        governing_flag = CAPABILITY_FLAGS.get(capability, capability)
         for config in (await self.snapshot(fixed_ref), await self.current()):
             flags = [
                 f
                 for f in config["feature_flags"]
-                if f["id"] == capability
+                if f["id"] == governing_flag
                 and all(scope.get(k) == v for k, v in f["scope"].items() if k != "resource_refs")
                 and (
                     not f["scope"].get("resource_refs")

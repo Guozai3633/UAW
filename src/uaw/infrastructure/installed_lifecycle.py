@@ -207,6 +207,24 @@ class InstalledLifecycle:
         if entry is not None and entry.owner == owner:
             await self.stop_entry(entry)
 
+    async def owned_ready(self, owner: Principal, workspace: Ref) -> PreparedEnrollmentLaunch:
+        """Internal consumer lookup; no caller-selected device, process or directory."""
+        entry = self.active
+        if entry is None or entry.owner != owner:
+            raise CapabilityUnavailable("file.current_browser_owned_launch")
+        view = await self.get(owner, entry.id)
+        if (
+            self.active is not entry
+            or entry.stopping
+            or entry.done.is_set()
+            or entry.launch is None
+            or view["state"] != "ready"
+            or view["workspace_ref"] != workspace.wire()
+            or entry.launch.root_workspace != workspace
+        ):
+            raise CapabilityUnavailable("file.current_browser_owned_root")
+        return entry.launch
+
     async def stop(self, owner: Principal, identifier: str, meta: RequestMeta) -> Payload:
         await self.actor(owner)
         view = await self.record(owner, identifier)

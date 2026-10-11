@@ -2,7 +2,7 @@
   "date": "2026-10-11",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A7 scoped browser installed lifecycle, current READ COMMITTED source checks, controlled real SQL/Windows OS/IPC/native callback and owned stop; 122 different nodes; no new full regression or human browser/file/model delivery",
+  "scope": "MS-I2l A8 scoped original file approval/data source and installed route assembly; 81 actual PostgreSQL compatibility nodes, 2 controlled native Windows OS/IPC nodes and 3 closing-race units; no new full or user file/model/browser delivery",
   "components": {
     "fastapi": {
       "installed": true,
@@ -156,11 +156,13 @@
     "office_tool_approval_dispatch_and_recovery_wiring": true,
     "windows_ipc_control_client_wiring": true,
     "loopback_browser_sessions": true,
-    "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility.",
-    "browser_owned_installed_lifecycle_components": true
+    "scope": "Inherited earlier accepted capabilities retain their pinned receipts; this A8 receipt verifies 86 scoped nodes only.",
+    "browser_owned_installed_lifecycle_components": true,
+    "browser_owned_installed_file_source_assembly": true,
+    "actual_product_file_model_delivery": false
   },
   "test_counts": {
-    "tests": 122,
+    "tests": 86,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -168,8 +170,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "42b29f8cdeb04b7fb3173611ba34bc37c9880ee69e2428c119260a0f81f53cdc",
-  "runtime_implementation": "development_browser_owned_installed_lifecycle_no_file_dispatch",
+  "test_evidence_sha256": "5380039243887094e96aa808c7bae66152aa040db4c9cbeb6d236c12ae44ac0e",
+  "runtime_implementation": "development_browser_owned_installed_file_source_assembly_no_file_dispatch",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -295,8 +297,9 @@
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/infrastructure/installed_control.py": "d88fa1efba701b98e73635341b3070fa3fceb205dbc47a7cce98d94c69c0d91d",
+    "src/uaw/infrastructure/installed_files.py": "a1bbc534f029763bab080d76772aff6d380a61403cd357afb51ecfe654f5bf78",
     "src/uaw/infrastructure/installed_helper.py": "ae03f3a570712de17f3c642cf330b7d16de737f960dd18c00193c2f20c299b68",
-    "src/uaw/infrastructure/installed_lifecycle.py": "328ed7aa053063b0fca372f3c9bc442995a606a82dd2e5804ee9d61c353e7509",
+    "src/uaw/infrastructure/installed_lifecycle.py": "b1779b89be5cab154b827fa90440a75f96be93c45ef206f9c11995b1b9bbf1cd",
     "src/uaw/infrastructure/installed_receipt.py": "90435e6e4bcb56d12b8f9167c7535b28ea9a322aa995626de93c94cb7831ab54",
     "src/uaw/infrastructure/installed_roots.py": "d123c545a210e559b3f8d1634f07ea09f24565088a7568012890e8767bd192de",
     "src/uaw/infrastructure/runner_pipe.py": "834a2fa12a8d806791ec46bb9bb7fce23a277ecd2d21bf7bb8370d3d245b4108",
@@ -350,7 +353,7 @@
     "src/uaw/run/tool_sources.py": "f093d3ad6355d764320f190d27f806d802c0e2eb27944f285195f439224a6030",
     "src/uaw/shared/__init__.py": "1283eb8e79ae3de55f83e2275103dfa565386ff251fcb66099764778684b0d18",
     "src/uaw/shared/builtin_tools.py": "7f7b687082cb67e5b49b5c55d208fbbe15fa1e6d755af731423cf02a5c93e510",
-    "src/uaw/shared/configuration.py": "b1259c03a75dc0f58334e8d9cc696b9f91f364c0a4f580495a7da2bae60bd388",
+    "src/uaw/shared/configuration.py": "baac478c2f24cfb83185751ba29831ff3189adfc77d6b639ef7e63f5a07189d2",
     "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
     "src/uaw/shared/credentials.py": "9d5079401cfacd59ff201150d06b0c819662c16b2252273a99ff9d1dd99b8eb0",
     "src/uaw/shared/errors.py": "a4fdc31da7753ae0859aff6eae0694fc66423bad3eac1ba31f463176ae4de7a3",
@@ -415,10 +418,12 @@
     "tests/integration/agent/test_enrollment_postgres.py": "0f8db11822847d42b35c5b5e1779c3f25c07558075047d07afc9386a4cb52d21",
     "tests/integration/agent/test_evaluation_postgres.py": "d9c599777426d54627731864d105372fd58d0ba8960a503221bcfbbbc088c8dc",
     "tests/integration/agent/test_file_bridge_postgres.py": "263cbeb4f709fddd6aa32d7362c036aa30640e00875fd9f25b750b5396a037f4",
+    "tests/integration/agent/test_file_flag_mapping.py": "4f8a86d67733cad4fc03ea5886c02ed54a6a7d897ef8312eb4e993aa0b535c06",
     "tests/integration/agent/test_file_material_origins.py": "c1df018cd83643ba73556ced27379c059e76a6f0dd66710010e647b20accfae9",
+    "tests/integration/agent/test_installed_file_authority.py": "c587c74c27068e9c182eb612c111892bc8b44c085897d1325a7230e81c819f6b",
     "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
     "tests/integration/agent/test_installed_lifecycle.py": "e7cc921898e558f6fc803d8275802f08090de3792fc83884e1b62520929e1f6f",
-    "tests/integration/agent/test_installed_lifecycle_native.py": "2819a223f0a0723c4130a18295a0b56e32a3b334880ff6314cc88a1ffb1d09d4",
+    "tests/integration/agent/test_installed_lifecycle_native.py": "dad09bbdd6b733ae7422a1dabdcc3d7f02325fca1718b60312dfb67169344976",
     "tests/integration/agent/test_installed_pre_ui.py": "419cd3e06d89db4f786872f78e524db8d6bce3f06450f9e324c2e159f6d5611f",
     "tests/integration/agent/test_installed_root_binding.py": "fa1f57590b615a8bead8266a33ec81e53ab02ba5593d673a3f248b37096c72de",
     "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
@@ -521,6 +526,7 @@
     "tests/unit/agent/test_file_context.py": "c164f212dd27e7b4ba2905aca8f9c1c8f3b36b7ad6ce7ee008a6193e53202671",
     "tests/unit/agent/test_first_start_policy.py": "417e68a8cb67429ea6e414f757f039765ebb28d104fa5b33907e5bdf0369df33",
     "tests/unit/agent/test_installed_diagnostics.py": "351b9e8ca826c805b6f731ebd7acf4cbe3749e13878d33f7f583bf44396d665a",
+    "tests/unit/agent/test_installed_file_route.py": "363793b9b18095a8f910cdb262a3ab869f645f8a7165e746ec36cb0ded722b30",
     "tests/unit/agent/test_installed_launch_contract.py": "241af726e96fae11a8f1101f39aa95058ee916794df7ea0aff0d5b712e5cd95b",
     "tests/unit/agent/test_installed_receipt_boundary.py": "dfe01b18bf8edb277aff7d80968f209cd0c36d9fae740ef4f0ac2e1de0e50d0a",
     "tests/unit/agent/test_installed_root_control.py": "3fdd34a1f41020de0157640d17bca8e664ea24269ecb5e2666ad50b0dd72a9fe",
