@@ -1,0 +1,50 @@
+{
+  "source_commit": "cb215bcffba8a9eff8aa55802b54854109f4a8e6",
+  "source_tag": "ms-i2l-a6-source",
+  "metadata_tag": "ms-i2l-a6",
+  "test_counts": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "tests": [
+    "actual SQL/Web/OS/IPC original root binding, native journal and Ed25519 signature",
+    "actual controlled pre-UI rejection and measured source reads"
+  ],
+  "first_binding_revision": 0,
+  "controlled_UI": true,
+  "user_file_content_reads": 0,
+  "model_calls": 0,
+  "feature_flags_changed": false,
+  "history": [
+    "m2-real-binding-after-dedup.xml:wrong new test initial revision1; actual grant0 generated,1fail/1pass119.54s",
+    "m2-real-binding-fixed.xml:existing revision0 contract and actual selection signature checked,1pass79.97s",
+    "m2-root-source-measure-after.xml:1pass41.72s,CPU profiler off,source28.354359s,5148 reads"
+  ],
+  "D_component": {
+    "runtime_source": "f0b397bbffa9c1202dd696b81664a433a87a4349",
+    "handoff": "484e0c1b1e680c73f739313bdd134ece18830716",
+    "distinct_final_nodes": 695,
+    "SQL_supplement_nodes": 7,
+    "A_count_not_added": true
+  },
+  "human_attempt_5": {
+    "result": {
+      "failed_phase": "enrollment.native",
+      "failure_code": "enrollment_native_timeout",
+      "file_reads": 0,
+      "finished_at": "2026-10-11T07:53:59.067396+00:00",
+      "model_calls": 0,
+      "owned_launch_cleanup": true,
+      "phase": "enrollment.native",
+      "root_selected": false,
+      "started_at": "2026-10-11T07:52:54.739199+00:00",
+      "status": "failed"
+    },
+    "raw_log_sha256": "154a8cd20ba25fafb5c7509c4ae51dccabdffc2f8b30bdc4a0dce8fb8352c00f",
+    "scope": "account window expired before directory phase; no human binding claimed"
+  },
+  "human_root_bound": false,
+  "new_full_regression": false
+}

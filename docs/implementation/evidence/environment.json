@@ -2,7 +2,7 @@
   "date": "2026-10-11",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A5 scoped74 current-source dedup and late authority recheck; Windows IPC/controlled source ports; SQL/profile and actual human binding pending; not full",
+  "scope": "MS-I2l A6 scoped2 real SQL/Web/OS/IPC source-to-root binding and measured controlled pre-UI source reads; human root pending; not full",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 74,
+    "tests": 2,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,7 +167,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "fdbfda8ec6f188faadc0d78157d275bb8c28403a263d4018408677a431557fbb",
+  "test_evidence_sha256": "63130bf6e34e8e7faf44901d8e80867793d591787c58dc6715e3c6f96034ab18",
   "runtime_implementation": "development_current_native_source_dedup_with_live_authority_boundaries",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -558,18 +558,18 @@
     "src/uaw/resources/uaw.schema.json": "dd1daee24015771cd5e320027a4f45a2ac31bae61f0f1a84bf6ef240c4f9611c",
     "tests/integration/agent/test_native_late_authority.py": "341186813e19a7c43ebf131719f0c7ef02798027794cc2ad7b35263ca0ebeeea",
     "tests/integration/runner/test_native_current_boundaries.py": "397ecacef846904489a022365fcfe6a8ac092c6ba40f5d45ec464bd5a73fe760",
-    "tests/integration/agent/test_installed_root_binding.py": "a042d701466bb15286bbf443b85f6c0047b8dec0cf09bd1ead87d0cb920a6000",
-    "tests/integration/agent/installed_diagnostic_fixture.py": "5ee03fed6a2ece4132367e545862145fb6824f8364e3b9717cbf581f75d8fdde"
+    "tests/integration/agent/test_installed_root_binding.py": "e2636c0d34667b3e5673f1d0c502cb4e6a5e00f9e1e52565c09ae926a42fec42",
+    "tests/integration/agent/installed_diagnostic_fixture.py": "2092c07547ce9697ba99164372c5ed10055258896849101cdb4adc053759c4a1"
   },
   "verification_lineage": {
     "full_runtime_receipt_ref": "ms-i2i",
     "full_runtime_tests": 1691,
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
-    "previous_environment": "docs/implementation/evidence/environment-before-ms-i2l-a5.json",
-    "current_stage": "docs/implementation/evidence/ms-i2l-a5.json",
-    "current_stage_source": "4e303d01f8f1d90af45f380d8c319c8b261c4161",
-    "current_stage_different_nodes": 74,
+    "previous_environment": "docs/implementation/evidence/environment-before-ms-i2l-a6.json",
+    "current_stage": "docs/implementation/evidence/ms-i2l-a6.json",
+    "current_stage_source": "cb215bcffba8a9eff8aa55802b54854109f4a8e6",
+    "current_stage_different_nodes": 2,
     "current_stage_is_full_regression": false
   }
 }

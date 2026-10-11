@@ -1,0 +1,24 @@
+{
+  "elapsed_seconds": 28.35435900000084,
+  "cpu_profile_enabled": false,
+  "record_reads_by_namespace": {
+    "web.sessions": {
+      "calls": 2808,
+      "elapsed_seconds": 11.307375500040507
+    },
+    "runner.enrollments": {
+      "calls": 702,
+      "elapsed_seconds": 2.7962324999462
+    },
+    "runner.enrollment.launcher.candidates": {
+      "calls": 1404,
+      "elapsed_seconds": 5.379035800066049
+    },
+    "runner.enrollment.native.decisions": {
+      "calls": 234,
+      "elapsed_seconds": 0.9245617000342463
+    }
+  },
+  "functions": [],
+  "record_read_count_total": 5148
+}

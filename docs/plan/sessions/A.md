@@ -1,3 +1,7 @@
+# A/MS-I2l A6真实来源已固定
+
+cb215bcffba8a9eff8aa55802b54854109f4a8e6 / ms-i2l-a6-source；消费证据ms-i2l-a6。实际SQL绑定和测量2节点通过，D695组件通过；本人新实例根授权继续待，旧失败和flags不变。继续当前生产接线，不开新包。
+
 # A/MS-I2l A5来源已固定
 
 4e303d01f8f1d90af45f380d8c319c8b261c4161 / ms-i2l-a5-source；消费证据ms-i2l-a5。74定向通过，D迟到撤销修复已接受。实际SQL/profile/真人根绑定待Docker引擎；不加时、不用旧grant、不发新包。
