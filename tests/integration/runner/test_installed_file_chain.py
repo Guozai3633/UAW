@@ -1,5 +1,7 @@
 """A8 original FileTool execution, actual OS/SQL/IPC; decisions controlled."""
 
+import asyncio
+
 from tests.integration.runner.installed_file_fixture import installed_file_case
 from tests.integration.test_browser_sessions import web as web
 
@@ -34,3 +36,18 @@ async def test_a8_file_facade_approval_budget_actual_helper_read(web, tmp_path, 
             "ref_kind": original.receipt_ref.kind,
             "ref_version": original.receipt_ref.version,
         }
+
+        # Application-level lost delivery: preserve the actual published bytes.
+        # A recovery reads the original journals, never sends recover to the used
+        # single-command helper or starts a new execution.
+        await asyncio.to_thread(
+            (p.root / "read.txt").write_bytes, b"changed after original signed receipt"
+        )
+        async with p.phase("original_signed_journal_recovery"):
+            restored = await p.bindings.bridge.recover(
+                p.raw, p.bindings.tool.facade.registry.get(p.raw["tool_ref"]).spec(), p.ctx
+            )
+        assert restored == original
+        assert restored.snapshot == "actual 中😀\r\nKeeṕ exact  ".encode()
+        assert p.metrics["sends"] == ["command"]
+        assert (await p.child_metrics())["opens"] == 1

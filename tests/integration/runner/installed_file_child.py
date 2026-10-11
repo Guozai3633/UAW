@@ -50,7 +50,11 @@ class MeasuredInstalledAssembly:
         original_get = PostgresRecordStore.get
 
         def save():
-            destination.write_text(json.dumps(values), encoding="utf-8")
+            # Metadata is observational only. Publish whole JSON atomically so
+            # parent diagnostics cannot see a truncated concurrent write.
+            temporary = destination.with_name(destination.name + ".pending")
+            temporary.write_text(json.dumps(values), encoding="utf-8")
+            temporary.replace(destination)
 
         async def measured_get(records, *args, **kwargs):
             started = time.perf_counter()
