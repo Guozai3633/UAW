@@ -4,7 +4,7 @@
 
 ## 原签名证据
 
-`src/uaw/composition.py:531 assemble_file_tool(...)` 和 `:598 assemble_office_tools(...)` 从 `container.tool_access` 取得 access，同时用于 ToolApprovalAuthority 与 ToolInvocation。签名没有额外 `effective_agent_access`。`src/uaw/infrastructure/installed_files.py:194 assemble_installed_file(...)` 直接委托 assemble_file_tool，没有单独的每 Agent access 输入。A8 FileToolBindings 提供 facade/ledger/approvals/receipts/executor/materials，没有 results；OfficeToolBindings 有 results。
+`src/uaw/composition.py:531 assemble_file_tool(...)` 和 `:597 assemble_office_tools(...)` 从 `container.tool_access` 取得 access，同时用于 ToolApprovalAuthority 与 ToolInvocation。签名没有额外 `effective_agent_access`。`src/uaw/infrastructure/installed_files.py:194 assemble_installed_file(...)` 直接委托 assemble_file_tool，没有单独的每 Agent access 输入。A8 FileToolBindings 提供 facade/ledger/approvals/receipts/executor/materials，没有 results；OfficeToolBindings 有 results。
 
 ## 最小变更与消费影响
 
