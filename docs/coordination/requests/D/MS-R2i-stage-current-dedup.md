@@ -18,3 +18,15 @@
 ```
 
 A第四次本人“已选目录并确认只读”但journal1/grant0/原deadline失败保留。阶段并未续期或恢复旧grant，没有文件/模型通过声明；先受控source复跑测量，暂不反复要求本人点击。A4已交当前来源，A SQL profile setup因Docker不可用未到授权逻辑，不能当D失败或通过。D继续同包原Windows/native/root/IPC/读取/journal回归，SQL installed单列真实可用情况。A如要跨组件优化公共接口仍先明确提案，不偷改shared/A实现。
+
+## 阶段候选接受阻断与修复（2026-10-11）
+
+A实际消费者 m2-d-late-authority-before.xml/log 复现4c候选：最后state.get await时撤销control key，不改变device root Ticket，纯末尾metadata快照仍返回挑战。D自己late-before.xml/log同样1fail/2pass复现；这是D遗漏有效角色边界，不是fixture问题。4c候选及其11次check结果未接受、不能称权限验证完成。全面回归full.log已中断/superseded-full.json记录未通过，缺XML不算成功。
+
+修复源码 **f0b397bbffa9c1202dd696b81664a433a87a4349**：最终Ticket读取后追加真实session.check，保留先前本机Ticket指纹与owner前后值，最终角色/进程/当前key/通道/期限检查结束后只做同步严格快照和新时钟判定。单次RegisteredNative.current为3次完整check，完整bootstrap真实测量14次（第二调用累计28且后续撤销拒绝），仍少于原5/静态20；不强锁11次数字。没有无限原子快照声明，returned challenge不是grant；恰在最后角色check中改变Ticket由原PairingVerifier批准/current revision/CAS拒绝，不开启UI或建立grant。
+
+修复5节点通过/5.12s：final Ticket await中的control revoke、原Ticket revoke、取消；最后role check中的Ticket revoke不能批准/产生grant；14次真实bootstrap全量交集/新调用复查。原63不同阶段节点与新增4去重共67，完整最终源码的全面回归继续；不累加4c被中断的部分通过。
+
+旧候选回归中断后，本session temp-full有57个实际IPC随机namespace，56有正常cleaned报告、1正在运行helper无finally报告；已确认无该temp-full自有Python实例残留，按唯一own helper-input中的随机namespace/两个handle和键库路径（必须位于本session temp-full）清除2自有凭据并复查缺失，撤销两role key，单独interrupted-cleanup JSON保留原退出为interrupted，不冒称正常退出0。未枚举/操作任何其他用户凭据或按通用进程名kill。全部旧清理/失败记录保留，新全面回归用temp-full-final。
+
+D55435本轮TCP probe unavailable，SQL installed6节点尚未运行，不能将组件回归或A Docker profile setup失败称SQL通过；不启动其他session数据库。前轮真实SQL回执保留。这轮没有本人/文件/模型新通过声明，A先消费f0固定修复再测受控source，旧原本人确认journal1/grant0仍未绑定。
