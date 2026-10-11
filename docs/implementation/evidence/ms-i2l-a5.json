@@ -1,0 +1,31 @@
+{
+  "source_commit": "4e303d01f8f1d90af45f380d8c319c8b261c4161",
+  "source_tag": "ms-i2l-a5-source",
+  "metadata_tag": "ms-i2l-a5",
+  "test_counts": {
+    "tests": 74,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scopes": {
+    "tests.integration.agent.test_native_late_authority": 1,
+    "tests.integration.runner.test_native_current_boundaries": 45,
+    "tests.unit.agent.test_installed_root_control": 19,
+    "tests.unit.agent.test_installed_diagnostics": 9
+  },
+  "test_receipt": "docs/implementation/evidence/ms-i2l-a5-tests.xml",
+  "typechecked_source_files": 196,
+  "accepted_D_runtime_stage": "f0b397bbffa9c1202dd696b81664a433a87a4349",
+  "rejected_D_candidate": "4c4cefe52e3bee59884498af2a1575e3678c83d1",
+  "failed_consumer_receipt": "tests/.artifacts/A/MS-I2l/m2-d-late-authority-before.xml",
+  "failed_test_setup": "combined A/D checkout tests loaded duplicate --require-postgres option; rerun in one A checkout",
+  "fixed_original_consumer_receipt": "tests/.artifacts/A/MS-I2l/m2-d-original-failure-fixed.xml",
+  "validation_scope": "real owned Windows IPC/role keys, explicit controlled authority ports; no UI/SQL/user file reads",
+  "actual_installed_SQL_profile": "setup ConnectionTimeout before authorization logic; not verified",
+  "actual_installed_SQL_root_binding": "prepared test only; not executed",
+  "new_full_regression": false,
+  "human_root_bound": false,
+  "feature_flags_changed": false,
+  "notes": "Original after-confirmation journal1/grant0 failure retained; no deadline extension or old grant reuse"
+}

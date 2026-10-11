@@ -2,7 +2,7 @@
   "date": "2026-10-11",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "MS-I2l A4 scoped55: real SQL/OS/IPC pre-UI controlled rejection and owned visible window cancellation; actual human decision persisted but root binding timed out; not full",
+  "scope": "MS-I2l A5 scoped74 current-source dedup and late authority recheck; Windows IPC/controlled source ports; SQL/profile and actual human binding pending; not full",
   "components": {
     "fastapi": {
       "installed": true,
@@ -159,7 +159,7 @@
     "scope": "Inherited accepted capabilities belong to previous pinned sources; current36 checks cover only M1 and CLI admission compatibility."
   },
   "test_counts": {
-    "tests": 55,
+    "tests": 74,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -167,8 +167,8 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "8fbfa60fb46536f8806e6536bc62ca9da5a559543380a5c95a80289e81bc2a14",
-  "runtime_implementation": "development_owned_installed_root_diagnostics_and_native_window_display",
+  "test_evidence_sha256": "fdbfda8ec6f188faadc0d78157d275bb8c28403a263d4018408677a431557fbb",
+  "runtime_implementation": "development_current_native_source_dedup_with_live_authority_boundaries",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
     "alembic.ini": "6345f41122a1e2b592ddaf48facff0721bc021cda1b985c52363e479b0fde714",
@@ -183,14 +183,14 @@
     "apps/local_runner/uaw_runner/helper_process.py": "8ef22c940aa20c5c5f97dbef0178096bec278e808098a9764bbc4060a81af5fa",
     "apps/local_runner/uaw_runner/helper_stdio.py": "a8d4d9708ab3cff3c52edef128df53f12fa01e704e7e595ac9ee786e3af66f86",
     "apps/local_runner/uaw_runner/ipc/__init__.py": "69e9fe62782d844331cdc16cd0e2465f2f524930513a7da21c46a54251a6981c",
-    "apps/local_runner/uaw_runner/ipc/channel_source.py": "81632a6ea6b6f20c58066679aab22dfa0c628ef371d2facef876394ccf883912",
+    "apps/local_runner/uaw_runner/ipc/channel_source.py": "4e29281237f59e8601e6ce48daeb18edc7d288a4b6024d1fe3a5b187b5b1c672",
     "apps/local_runner/uaw_runner/ipc/frames.py": "bb53a6a4209ab30a60384ad77bcac9d7849ce89d592bbc4057cd18280dc00e31",
     "apps/local_runner/uaw_runner/ipc/read_endpoint.py": "de5c885957014927d4922545d1dfb156aaee2eb60048754747e4cee4a10d819d",
     "apps/local_runner/uaw_runner/ipc/sessions.py": "b7be591d32e1f41ad980caa0981eb1ef967c8591d81b0d102aa0d602040f1fce",
     "apps/local_runner/uaw_runner/ipc/windows_pipe.py": "5fad1e00383d33d159cc35038d4fa09c168340b435d2279dd5fcbbc00da77313",
     "apps/local_runner/uaw_runner/keys.py": "666d094de8279d98a6d09c972dce170e734a0868837e7ba5a025cb32f7a3e43d",
     "apps/local_runner/uaw_runner/native_authorization.py": "e96ca8ec61b8f0ba51c030b9d03915384608b06ecb12ad082d4de4b77610f394",
-    "apps/local_runner/uaw_runner/native_confirmation.py": "8a85c5c1c88d925cdc9b7fc40852eed197cfefefae899ff8b3cde386f9f6dadf",
+    "apps/local_runner/uaw_runner/native_confirmation.py": "9d5ad4d0c2b8d52bc2c58a31db38e8112853dfad2e5a0b6c1bd788b1bfabba4a",
     "apps/local_runner/uaw_runner/native_dialog.py": "a9b7564ab99182be600085c2b5b97cf4ddc01b050919dfa0ce7a22a5c58ae2b0",
     "apps/local_runner/uaw_runner/pairing.py": "889d95d8f61e8e66d82e4a92c1454bbeb938944a456cef59f0b9452071178517",
     "apps/local_runner/uaw_runner/protocol.py": "f9f15080b0098a74cd8db46e1d657c5f89dfcd915c83154276617fa338d4238f",
@@ -555,17 +555,21 @@
     "tests/unit/tool/test_text_inspect.py": "245a9948113b02121928c7fc8ccf700363b322eedd0d7fe85db3f7d1975691c2",
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
-    "src/uaw/resources/uaw.schema.json": "dd1daee24015771cd5e320027a4f45a2ac31bae61f0f1a84bf6ef240c4f9611c"
+    "src/uaw/resources/uaw.schema.json": "dd1daee24015771cd5e320027a4f45a2ac31bae61f0f1a84bf6ef240c4f9611c",
+    "tests/integration/agent/test_native_late_authority.py": "341186813e19a7c43ebf131719f0c7ef02798027794cc2ad7b35263ca0ebeeea",
+    "tests/integration/runner/test_native_current_boundaries.py": "397ecacef846904489a022365fcfe6a8ac092c6ba40f5d45ec464bd5a73fe760",
+    "tests/integration/agent/test_installed_root_binding.py": "a042d701466bb15286bbf443b85f6c0047b8dec0cf09bd1ead87d0cb920a6000",
+    "tests/integration/agent/installed_diagnostic_fixture.py": "5ee03fed6a2ece4132367e545862145fb6824f8364e3b9717cbf581f75d8fdde"
   },
   "verification_lineage": {
     "full_runtime_receipt_ref": "ms-i2i",
     "full_runtime_tests": 1691,
     "full_regression_repeated_for_current_phase": false,
     "runtime_sources_identical_to_execution_baseline": false,
-    "previous_environment": "docs/implementation/evidence/environment-before-ms-i2l-a4.json",
-    "current_stage": "docs/implementation/evidence/ms-i2l-a4.json",
-    "current_stage_source": "e05b15801c0ef8104de740e5ef61ad03ffe92ce6",
-    "current_stage_different_nodes": 55,
+    "previous_environment": "docs/implementation/evidence/environment-before-ms-i2l-a5.json",
+    "current_stage": "docs/implementation/evidence/ms-i2l-a5.json",
+    "current_stage_source": "4e303d01f8f1d90af45f380d8c319c8b261c4161",
+    "current_stage_different_nodes": 74,
     "current_stage_is_full_regression": false
   }
 }

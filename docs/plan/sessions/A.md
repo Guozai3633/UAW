@@ -1,3 +1,7 @@
+# A/MS-I2l A5来源已固定
+
+4e303d01f8f1d90af45f380d8c319c8b261c4161 / ms-i2l-a5-source；消费证据ms-i2l-a5。74定向通过，D迟到撤销修复已接受。实际SQL/profile/真人根绑定待Docker引擎；不加时、不用旧grant、不发新包。
+
 # A/MS-I2l A4当前来源已固定
 
 e05b15801c0ef8104de740e5ef61ad03ffe92ce6 / ms-i2l-a4-source；消费证据ms-i2l-a4。55定向通过；本人选择确认已留本机记录，绑定仍因原期限失败。继续测量和生产接线；不加时、不复用旧授权、不发新包。
