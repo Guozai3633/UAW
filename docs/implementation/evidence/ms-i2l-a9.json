@@ -1,0 +1,269 @@
+{
+  "date": "2026-10-11",
+  "status": "scoped_components_verified; product_file_chain_pending",
+  "base_commit": "ab721b7",
+  "passing_distinct_nodes": 191,
+  "passing_receipts": [
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-metadata-office.xml",
+      "sha256": "fdf3742e4ec390d4406f099f486c291bde9cf5883f3b3e1588122ccbc2b3b74a",
+      "nodes": 23,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-original-gate-lifecycle.xml",
+      "sha256": "96894a0432d40f9619fc870ba6507481d32eaf6e522166156d9ffc6357b1a80e",
+      "nodes": 12,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-source-peer-final.xml",
+      "sha256": "a0053e7b312921f124a6691dfd9412c8cd59bda20f9c247ca3abd7d7b8295a9f",
+      "nodes": 25,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-final-units.xml",
+      "sha256": "ac9201cc2dde94b89375d332c876e59395f86cba6e568f1f9c3d8ff3d5a26a2b",
+      "nodes": 48,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-current-command-http.xml",
+      "sha256": "074c66da63ead5824124d8238ec625d0b57bcce97f6df28aabe2101f027550d2",
+      "nodes": 55,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-bridge-current.xml",
+      "sha256": "bbe710e5066054ddaa20edbc7401970625f104c581dce8f574534d210457917d",
+      "nodes": 12,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-file-evidence.xml",
+      "sha256": "610326da5d281bd20a5e02521399384ed5a5e17f4dc8d3c57e776df7df193bf3",
+      "nodes": 21,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-owning-route-units3.xml",
+      "sha256": "7fe4c0f9dc61dfb014bb84575451ad93dffcea2239a1c70559f345a468d54b2a",
+      "nodes": 52,
+      "scope": "targeted component checks; overlap deduplicated"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-source-profile.xml",
+      "sha256": "d6a3012f35783a12ba1fc917fd66ef05aa35fc7395d92e0023f6dc9c2408c034",
+      "nodes": 1,
+      "scope": "targeted component checks; overlap deduplicated"
+    }
+  ],
+  "failed_attempts": [
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-m1-first.xml",
+      "sha256": "b3caa6e89ecdd3b89c9d94b712e6eb794aa08dfcd2faec3ef17c4c2c9fda32ac",
+      "counts": {
+        "tests": 8,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-chain.xml",
+      "sha256": "8c570ed37c47da3e4b68718966de651d0ce8680117115214fbb2303e261d9759",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source10.xml",
+      "sha256": "bbb5a7012da5067391fc89a8f4e18d791c9508b99b2f2f95e0a1e728354372de",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source11.xml",
+      "sha256": "e0e3b2d60aab955023ec2b1e62450880f91525ae9e5e6f6d89c5fef9b765298f",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source2.xml",
+      "sha256": "b36a8840ae7924efca636a0551765bfea41cafcbad6316805dd6f68f079471c6",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source3.xml",
+      "sha256": "a26bed8ef6042ac12e19522c7ad1adb7b6a2b36fff484ffd75778baa2d670461",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source4.xml",
+      "sha256": "59cf6db525b8e860922e8659ba7f09a2e638b7451325a7b29f4bf4d930dc169e",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source5.xml",
+      "sha256": "d170580291953a06a10a46ae2d767d9e5fee6b68ceab1a98c446b32519bdd57d",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source6.xml",
+      "sha256": "72547adfd4b7215137ca2f4f0ba588a0bf2b8bd4d420fee18982f32b2dc3128b",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source7.xml",
+      "sha256": "94b67115e007cb3965bed00a82b4f9cee67d1ea8dab2fc9aa0dc84ea2f8ef71f",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source8.xml",
+      "sha256": "921b9c563f415976da5553702893e470642a9d1136afd7508b6429f58171d782",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-native-source9.xml",
+      "sha256": "8729afa5adea942624e6fe45c6d85b3be4239197f1a42a43fd6b0ea1a5227ba5",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-owning-route-units2.xml",
+      "sha256": "3f6b56544d3d1af537119797721dfb6bae23852ee4b943941a75492be6ea4814",
+      "counts": {
+        "tests": 52,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-peer-revocation.xml",
+      "sha256": "c3254acd1ce2e4909cb4d5f07778f3a981e17d57966f241cf33008887e9d90d6",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 5,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    },
+    {
+      "receipt": "tests/.artifacts/A/MS-I2l/a9-source12.xml",
+      "sha256": "4bcaae4a4e26fa823970fbe22a784435f3be1a14cb5644ed49f93dca144affb4",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "status": "historical failed attempt retained; not part of passing union"
+    }
+  ],
+  "pre_test_stops": [
+    {
+      "log": "tests/.artifacts/A/MS-I2l/a9-owning-route-units.log",
+      "reason": "restricted local socketpair during Windows event-loop setup; stopped owning processes"
+    },
+    {
+      "log": "tests/.artifacts/A/MS-I2l/a9-cleanup-diagnostic.log",
+      "reason": "faulthandler confirms socket.accept in fallback_socketpair, before async test"
+    },
+    {
+      "log": "tests/.artifacts/A/MS-I2l/a9-final-mypy.log",
+      "reason": "Runner source directory omitted; corrected two-directory invocation passes 208 files"
+    },
+    {
+      "log": "tests/.artifacts/A/MS-I2l/a9-final-ruff.log",
+      "reason": "466 existing generated-catalog style findings; no wholesale catalogue reformat"
+    }
+  ],
+  "latest_installed_attempt": {
+    "receipt": "tests/.artifacts/A/MS-I2l/a9-source12.xml",
+    "failure_code": "ipc_broken",
+    "sent_commands": 1,
+    "file_opens": 0,
+    "credential_handles_absent": 4,
+    "role_keys_revoked": 2,
+    "child_exited": true,
+    "proof_pipe_closed": true,
+    "status": "failed; not replayed or relabelled as passed"
+  },
+  "product_gates": {
+    "installed_original_file_read": false,
+    "human_native_consent_new_instance": false,
+    "fixed_llm_file_delivery": false,
+    "original_authenticated_browser": false,
+    "milestone_full_regression": false
+  },
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "default_flags_enabled": false,
+  "scope_note": "Controlled temporary data and native decisions do not establish human authorization. Earlier live model usage and last_full remain unchanged."
+}

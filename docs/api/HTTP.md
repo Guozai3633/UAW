@@ -101,4 +101,5 @@
 | [runner.local.stop](interfaces/http--runner-local-stop.md) | [RunnerLocalStopRequest](objects/RunnerLocalStopRequest.md) | [InstalledLaunchView](objects/InstalledLaunchView.md) | `internal_write` |
 | [tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md) | [TasksAttach_conversationRequest](objects/TasksAttach_conversationRequest.md) | [TaskRecord](objects/TaskRecord.md) | `internal_write` |
 | [admin.providers.revoke](interfaces/http--admin-providers-revoke.md) | [AdminProvidersRevokeRequest](objects/AdminProvidersRevokeRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
+| [admin.providers.accept](interfaces/http--admin-providers-accept.md) | [AdminProvidersAcceptRequest](objects/AdminProvidersAcceptRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [events.payload](interfaces/http--events-payload.md) | [EventsPayloadRequest](objects/EventsPayloadRequest.md) | [EventPayload](objects/EventPayload.md) | `read` |

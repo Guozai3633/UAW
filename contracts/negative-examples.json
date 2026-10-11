@@ -1056,6 +1056,11 @@
       "rejected": true
     },
     {
+      "case": "http:admin.providers.accept cannot succeed without payload",
+      "schema": "HttpAdminProvidersAcceptResult",
+      "rejected": true
+    },
+    {
       "case": "http:events.payload cannot succeed without payload",
       "schema": "HttpEventsPayloadResult",
       "rejected": true

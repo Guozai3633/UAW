@@ -6269,6 +6269,45 @@
       },
       "turn_id": "example_001"
     },
+    "FileRunSourceBinding": {
+      "run_id": "example_001",
+      "owner": {
+        "id": "example_001",
+        "kind": "user",
+        "auth_session_id": "example_001"
+      },
+      "conversation_id": "example_001",
+      "task_id": "example_001",
+      "configuration_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "model_policy_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "fixed_model_id": "example_001",
+      "provider_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "launch_id": "example_001",
+      "workspace_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "device_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "root_identity_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expires_at": "2026-10-07T02:00:00Z"
+    },
     "RunToolAccessBinding": {
       "run_id": "example_001",
       "principal": {
@@ -6663,6 +6702,9 @@
       "version": "example_001"
     },
     "AdminProvidersRevokeRequest": {
+      "provider_id": "example_001"
+    },
+    "AdminProvidersAcceptRequest": {
       "provider_id": "example_001"
     },
     "EventsPayloadRequest": {
@@ -16224,6 +16266,30 @@
       }
     },
     "HttpAdminProvidersRevokeEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.1"
+      },
+      "payload": {
+        "provider_id": "example_001"
+      }
+    },
+    "HttpAdminProvidersAcceptResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "id": "example_001",
+        "revision": 0,
+        "kind": "runtime",
+        "state": "disconnected",
+        "config_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      }
+    },
+    "HttpAdminProvidersAcceptEnvelope": {
       "meta": {
         "request_id": "example_001",
         "schema_version": "0.1"

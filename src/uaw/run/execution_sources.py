@@ -44,6 +44,13 @@ class RunExecutionSources:
         self.store, self.configuration, self.permissions = store, configuration, permissions
 
     async def current(self, ctx: TrustedExecutionContext) -> RunSourceSnapshot:
+        # Metadata only: each mutable read remains a fresh READ COMMITTED SELECT.
+        # The owning task reuses checkout, never an authorization snapshot; this
+        # scope is released before any model/tool/native/user operation.
+        async with self.store.current_reads():
+            return await self._current(ctx)
+
+    async def _current(self, ctx: TrustedExecutionContext) -> RunSourceSnapshot:
         access = require_snapshot(await self.permissions.resolve(ctx), ctx)
         data = await self.data(ctx)
         again = require_snapshot(await self.permissions.resolve(ctx), ctx)
@@ -59,6 +66,10 @@ class RunExecutionSources:
         Callers must separately check current complete session/data ownership,
         e.g. the independently registered Tool binding, and actual resource Reader.
         """
+        async with self.store.current_reads():
+            return await self._data(ctx)
+
+    async def _data(self, ctx: TrustedExecutionContext) -> RunDataSnapshot:
         validate_contract("TrustedExecutionContext", ctx.wire())
         if ctx.principal.kind != "user" or not ctx.principal.auth_session_id:
             raise reject("run_principal_denied", "Authenticated user session required", 403)

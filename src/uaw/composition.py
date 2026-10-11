@@ -50,12 +50,14 @@ from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
 from uaw.run.runner_mapping import RegisteredRunnerPrincipalMapping
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
+from uaw.run.service_router import RunCompletionRouter
 from uaw.run.tool_sources import PureTextResourceReader, RunToolAccessSources, RunToolRecoveryAccess
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable
 from uaw.shared.ports import (
     AgentPort,
+    ApprovalPort,
     ContextPort,
     IntentPort,
     ModelPort,
@@ -69,7 +71,7 @@ from uaw.shared.ports import (
 )
 from uaw.shared.settings import ConfigurationError, Settings
 from uaw.tool.approval import ToolApprovalAdapter
-from uaw.tool.authority import ToolApprovalAuthority
+from uaw.tool.authority import ActionResourceReaderPort, ToolApprovalAuthority
 from uaw.tool.budget import ToolBudgetAdapter
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
@@ -103,6 +105,7 @@ from uaw.workspace.ports import CurrentKeyDirectory, SignaturePort
 
 if TYPE_CHECKING:
     from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
+    from uaw.run.file_admission import InstalledFileRunSources
 
 
 @dataclass(frozen=True)
@@ -141,7 +144,7 @@ class Container:
     run_service: RunFacade | None = None
     budgets: BudgetService | None = None
     execution_leases: ExecutionLeaseService | None = None
-    approvals: ApprovalService | None = None
+    approvals: ApprovalPort | None = None
     execution_permissions: ExecutionPolicyResolver | None = None
     run_sources: RunExecutionSources | None = None
     tool_access: RunToolAccessSources | None = None
@@ -155,9 +158,10 @@ class Container:
     runner_principals: RegisteredRunnerPrincipalMapping | None = None
     browser_sessions: BrowserSessions | None = None
     runner_enrollments: RunnerEnrollments | None = None
-    completion_controller: RunCompletionController | None = None
+    completion_controller: RunCompletionController | RunCompletionRouter | None = None
     background_jobs: RunJobs | None = None
     installed_lifecycle: InstalledLifecycle | None = None
+    file_run_sources: InstalledFileRunSources | None = None
     started: bool = False
 
     async def start(self) -> None:
@@ -181,9 +185,18 @@ class Container:
                 await self.close()
                 raise
         if self.settings.installed_state_directory is not None:
+            from uaw.infrastructure.file_availability import InstalledFileAvailability
             from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
+            from uaw.run.file_admission import InstalledFileRunSources
 
             self.installed_lifecycle = InstalledLifecycle(self)
+            if self.configuration:
+                self.configuration.file_availability = InstalledFileAvailability(
+                    self.installed_lifecycle
+                )
+            self.file_run_sources = InstalledFileRunSources(self)
+            if self.run_service:
+                self.run_service.file_admission = self.file_run_sources
         self.started = True
 
     async def close(self) -> None:
@@ -539,6 +552,7 @@ def assemble_file_tool(
     signatures: SignaturePort,
     money_ceiling: str,
     currency: str = "USD",
+    resource_reader: ActionResourceReaderPort | None = None,
 ) -> FileToolBindings:
     """Explicit composition only; no registration, grant or product flag opening."""
     records, config, blobs, access, budgets, policies = (
@@ -557,7 +571,7 @@ def assemble_file_tool(
     if spec != file_read_spec(provider_ref):
         raise ConfigurationError("Exact registered file.read specification required")
     ledger = ToolLedger(records)
-    resources = FileResourceReader(provider_ref, bridge)
+    resources = resource_reader or FileResourceReader(provider_ref, bridge)
     authority = ToolApprovalAuthority(
         ledger, registry, config, access, resources, policies=policies
     )

@@ -12,6 +12,7 @@ from uaw.context.registered import RegisteredContextInputs
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.model.facade import ModelFacade
 from uaw.model.policy import PolicyResolver
+from uaw.run.file_context import FileContextMaterials
 from uaw.run.tool_sources import RunToolAccessSources, reference
 from uaw.shared.contracts import Ref, TrustedExecutionContext
 from uaw.shared.errors import DomainError, reject
@@ -19,17 +20,37 @@ from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreMissing
 from uaw.tool.discovery import require_entry
 from uaw.tool.registry import ToolRegistry
-from uaw.tool.results import ToolResults
 from uaw.tool.retrieval import ToolRetriever
+from uaw.tool.runtime_router import ToolResultReadPort
 
 OBSERVATIONS = "agent.observations"
 
 
 class AgentObservations:
     def __init__(
-        self, store: PostgresRecordStore, sources: AgentSourcePort, *, results: ToolResults | None
+        self,
+        store: PostgresRecordStore,
+        sources: AgentSourcePort,
+        *,
+        results: ToolResultReadPort | None,
+        file_materials: FileContextMaterials | None = None,
     ) -> None:
         self.store, self.sources, self.results = store, sources, results
+        self.file_materials = file_materials
+
+    async def file_fragment(self, observed: Payload) -> Ref | None:
+        if observed["call"]["tool_ref"]["id"] != "file.read" or observed["result"]["kind"] != "ok":
+            return None
+        if self.file_materials is None:
+            raise reject(
+                "agent_file_origin_unavailable", "Owning file material Reader required", 503
+            )
+        original = TrustedExecutionContext.model_validate_json(json.dumps(observed["context"]))
+        return await self.file_materials.register(
+            observed["call"]["action_id"],
+            original,
+            authenticated_service=self.file_materials.controller,
+        )
 
     async def save_tool(self, result: Payload, call: Payload, ctx: TrustedExecutionContext) -> Ref:
         await self.sources.current(ctx)
@@ -125,10 +146,26 @@ class RegisteredAgentContexts:
                 "agent_role_instructions_missing", "Role method needs a real registered rule", 503
             )
         data: Payload = {"task_frame": view.frame, "observations": []}
+        if self.observations.file_materials is not None:
+            data["admitted_workspaces"] = [
+                pin.wire() for pin in ctx.scope.resource_refs if pin.kind == "workspace"
+            ]
+        fragments: list[Ref] = []
         if ctx.model_policy_ref is None or ctx.run_id is None:
             raise reject("agent_context_missing", "Actual Run/model required", 403)
         for ref in observations:
-            data["observations"].append(await self.observations.read(ref, ctx))
+            observed = await self.observations.read(ref, ctx)
+            fragment = await self.observations.file_fragment(observed)
+            if fragment is not None:
+                if fragment not in fragments:
+                    fragments.append(fragment)
+                # Read the original external bytes through FileAwareContextInputs,
+                # instead of copying them into a newly trusted generic material.
+                data["observations"].append(
+                    {"call": observed["call"], "file_fragment_ref": fragment.wire()}
+                )
+            else:
+                data["observations"].append(observed)
         access = await self.access.snapshot(ctx)
         revision, entries = self.registry.snapshot()
         selected = entries
@@ -206,13 +243,16 @@ class RegisteredAgentContexts:
                 epoch = 0
             request = ContextRequest(
                 purpose="agent_step",
-                source_refs=(material,),
+                source_refs=(material, *fragments),
                 model_policy_ref=ctx.model_policy_ref,
                 output_reserve=self.output_reserve,
                 tool_reserve=2048,
                 expected_epoch=epoch,
                 preserve=PreservationSpec(
-                    required_refs=(), exact_strings=(), requirement_ids=(), pending_action_refs=()
+                    required_refs=tuple(fragments),
+                    exact_strings=(),
+                    requirement_ids=(),
+                    pending_action_refs=(),
                 ),
             )
             rule_selection = RulesRequest(

@@ -4201,6 +4201,35 @@
       "envelope": "HttpAdminProvidersRevokeEnvelope"
     },
     {
+      "id": "admin.providers.accept",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.configuration"
+      ],
+      "request": "AdminProvidersAcceptRequest",
+      "response": "ProviderBinding",
+      "effect": "internal_write",
+      "rules": [
+        "管理员认证和原provider expected_revision必需；无connected、approved、路径或proof输入。当前原native/root/设备不可用返回503；不启动本人确认。"
+      ],
+      "method": "POST",
+      "path": "/v1/admin/providers/{provider_id}/installed-readonly-acceptance",
+      "auth": "admin",
+      "errors": [],
+      "feature": null,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_closed_installed_readonly_provider_acceptance",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/coordination/requests/A/MS-I2l-A9-source-contract.md"
+        ]
+      },
+      "result": "HttpAdminProvidersAcceptResult",
+      "envelope": "HttpAdminProvidersAcceptEnvelope"
+    },
+    {
       "id": "events.payload",
       "channel": "http",
       "owner": "run",

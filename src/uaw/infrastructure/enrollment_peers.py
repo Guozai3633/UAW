@@ -2,16 +2,18 @@
 
 import asyncio
 import base64
+import json
 from collections.abc import Awaitable, Callable
 from typing import Literal
 
 from uaw_runner.ipc.sessions import RegisteredPeer
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 
-from uaw.run.enrollment import Payload, RunnerEnrollments
+from uaw.run.enrollment import ENROLLMENTS, Payload, RunnerEnrollments
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.runner_signatures import VerificationKey
+from uaw.shared.schema import validate_contract
 from uaw.workspace.ports import CurrentKeyDirectory
 
 ObserveProcess = Callable[[int], Awaitable[OsIdentity]]
@@ -52,20 +54,57 @@ class EnrolledPeerRegistry:
     ) -> None:
         self.enrollments, self.user, self.enrollment_id = enrollments, owner, enrollment_id
         self.directory, self.observe = directory, observe
+        # Immutable comparison bytes, not a cached grant/outcome. Every use
+        # still reads current owner/candidate/OS keys/journal/enrollment/expiry.
+        self.original_enrollment: bytes | None = None
 
     async def current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
+        # A bounded source check only: reuse the owning READ COMMITTED
+        # connection, while every nested source read remains a fresh SELECT.
+        async with self.enrollments.records.current_reads():
+            return await self._current(identity, role=role)
+
+    async def _current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
         if role not in ("control", "device"):
             raise reject("enrolled_role_denied", "Exact registered peer role required", 403)
         if self.directory is None:
             raise CapabilityUnavailable("enrollment.current_role_key_directory")
-        value = await self.enrollments.get(self.user, self.enrollment_id)
-        return await self._checked_peer(value, identity, role=role)
+        value = await self._snapshot()
+        result = await self._checked_peer(value, identity, role=role)
+        encoded = json.dumps(value, sort_keys=True, allow_nan=False).encode()
+        if self.original_enrollment is not None and self.original_enrollment != encoded:
+            raise reject("enrolled_source_changed", "Original active enrollment changed", 412)
+        self.original_enrollment = encoded
+        return result
+
+    async def _snapshot(self) -> Payload:
+        """Read comparison metadata; this method never returns an admitted peer.
+
+        _checked_peer subsequently validates the full current candidate, owning
+        journal and signatures before returning any identity or owner authority.
+        """
+        service = self.enrollments
+        await service.actor(self.user)
+        row = await service.records.get(service.controller, ENROLLMENTS, self.enrollment_id)
+        validate_contract("RunnerEnrollmentRecord", row.payload)
+        if (
+            row.schema_name != "RunnerEnrollmentRecord"
+            or row.payload["id"] != self.enrollment_id
+            or row.payload["revision"] != row.revision
+            or (
+                self.original_enrollment is not None
+                and json.dumps(row.payload, sort_keys=True, allow_nan=False).encode()
+                != self.original_enrollment
+            )
+        ):
+            raise reject("enrolled_source_changed", "Original enrollment metadata changed", 412)
+        return row.payload
 
     async def _checked_peer(
         self, value: Payload, identity: OsIdentity, *, role: str
     ) -> RegisteredPeer:
-        # The caller just read this complete current enrollment. There is no
-        # intervening await before this method; final get/OS/key checks remain.
+        # Snapshot is comparison data only. Full current enrollment authority is
+        # established below, after role observation and before returning a peer.
         if role not in ("control", "device"):
             raise reject("enrolled_role_denied", "Exact registered peer role required", 403)
         role_name: Literal["control", "device"] = "control" if role == "control" else "device"
@@ -96,7 +135,7 @@ class EnrolledPeerRegistry:
             raise reject(
                 "enrolled_current_key_denied", "Current role key is revoked or differs", 403
             )
-        final = await self.enrollments.get(self.user, self.enrollment_id)
+        final = await self.enrollments.recheck_owned(self.user, value)
         if final != value or await self.observe(identity.pid) != registered:
             raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
         if (
@@ -119,7 +158,13 @@ class EnrolledPeerRegistry:
         )
 
     async def owner(self, *, authenticated_principal: Principal, device_id: str) -> Principal:
-        value = await self.enrollments.get(self.user, self.enrollment_id)
+        async with self.enrollments.records.current_reads():
+            return await self._owner(
+                authenticated_principal=authenticated_principal, device_id=device_id
+            )
+
+    async def _owner(self, *, authenticated_principal: Principal, device_id: str) -> Principal:
+        value = await self._snapshot()
         if value["state"] != "active" or value["proof_document"]["device_id"] != device_id:
             raise reject(
                 "enrolled_device_denied", "Active independent device relationship required", 403

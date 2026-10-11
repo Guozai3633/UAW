@@ -1041,6 +1041,7 @@
 | [ExecutionLeaseStateRecord](objects/ExecutionLeaseStateRecord.md) | 同Run根执行租约的当前持久状态，终态不因时钟回退复活。 |
 | [ExecutionLeaseTtl](objects/ExecutionLeaseTtl.md) | 有界租约TTL毫秒，不超过Run截止时间。 |
 | [ExecutionPolicySnapshot](objects/ExecutionPolicySnapshot.md) | 实时父子权限交集，非可复用授权；来源均为当前主体持久政策。 |
+| [FileRunSourceBinding](objects/FileRunSourceBinding.md) | Run准入固定原浏览器实例、只读根证据及用户模型；不是权限缓存或可提交的授权。 |
 | [HttpApprovalsDecideEnvelope](objects/HttpApprovalsDecideEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpApprovalsDecideResult](objects/HttpApprovalsDecideResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpApprovalsGetEnvelope](objects/HttpApprovalsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1260,6 +1261,7 @@
 | [AdminExtensionsRollbackRequest](objects/AdminExtensionsRollbackRequest.md) | 恢复已核验旧包为新配置修订。 |
 | [AdminExtensionsValidateRequest](objects/AdminExtensionsValidateRequest.md) | 核验安装包、依赖和权限需求。 |
 | [AdminPoliciesRegisterRequest](objects/AdminPoliciesRegisterRequest.md) | 登记有类型政策。 |
+| [AdminProvidersAcceptRequest](objects/AdminProvidersAcceptRequest.md) | 管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。 |
 | [AdminProvidersConfigureRequest](objects/AdminProvidersConfigureRequest.md) | 登记非秘密服务配置。 |
 | [AdminProvidersRevokeRequest](objects/AdminProvidersRevokeRequest.md) | 撤销提供方，固定旧配置不能绕过当前撤销。 |
 | [AdminSecretsPutRequest](objects/AdminSecretsPutRequest.md) | 仅管理端TLS写入秘密，不回显不记录正文。 |
@@ -1316,6 +1318,8 @@
 | [HttpAdminExtensionsValidateResult](objects/HttpAdminExtensionsValidateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpAdminPoliciesRegisterEnvelope](objects/HttpAdminPoliciesRegisterEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpAdminPoliciesRegisterResult](objects/HttpAdminPoliciesRegisterResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpAdminProvidersAcceptEnvelope](objects/HttpAdminProvidersAcceptEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpAdminProvidersAcceptResult](objects/HttpAdminProvidersAcceptResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpAdminProvidersConfigureEnvelope](objects/HttpAdminProvidersConfigureEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpAdminProvidersConfigureResult](objects/HttpAdminProvidersConfigureResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpAdminProvidersRevokeEnvelope](objects/HttpAdminProvidersRevokeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |

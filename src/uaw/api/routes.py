@@ -10,11 +10,12 @@ from fastapi.routing import APIRoute
 from uaw.api.authentication import authenticate
 from uaw.api.browser import COOKIE, authenticated
 from uaw.composition import Container
-from uaw.infrastructure.db.transactions import RecordTransaction
+from uaw.infrastructure.db.transactions import RecordTransaction, reference
 from uaw.run.deliveries import DeliveryReader
 from uaw.run.queries import RunQueries
 from uaw.shared.contracts import Ref, RequestMeta
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
+from uaw.shared.file_provider import FileProviderConnectionAcceptance
 from uaw.shared.observability import report_request_failure
 from uaw.shared.schema import ContractViolation, parse_json, validate_contract
 
@@ -193,6 +194,13 @@ ROUTES = (
         "DELETE",
         "/v1/admin/providers/{provider_id}",
         "AdminProvidersRevokeRequest",
+        "ProviderBinding",
+    ),
+    (
+        "admin.providers.accept",
+        "POST",
+        "/v1/admin/providers/{provider_id}/installed-readonly-acceptance",
+        "AdminProvidersAcceptRequest",
         "ProviderBinding",
     ),
     (
@@ -535,6 +543,20 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     result = await configuration.revoke_provider(
                         actor, payload["provider_id"], meta
                     )
+                elif operation == "admin.providers.accept":
+                    if meta.expected_revision is None or meta.expected_revision < 1:
+                        raise reject(
+                            "file_provider_revision_required",
+                            "Original provider revision required",
+                            400,
+                        )
+                    result = await FileProviderConnectionAcceptance(configuration).accept(
+                        actor,
+                        Ref.model_validate(
+                            reference("provider", payload["provider_id"], meta.expected_revision)
+                        ),
+                        meta,
+                    )
                 elif operation == "admin.configuration.stage":
                     result = await configuration.stage(actor, payload, meta)
                 elif operation == "admin.configuration.validate":
@@ -550,7 +572,7 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     }[operation]
                     result = await configuration.register(actor, kind, payload, meta)
             validate_contract(response_schema, result)
-            wire = {"kind": "ok", "payload": result, "output_refs": []}
+            wire: dict[str, Any] = {"kind": "ok", "payload": result, "output_refs": []}
             if "revision" in result:
                 wire["revision"] = result["revision"]
             validate_contract(result_schema(operation), wire)

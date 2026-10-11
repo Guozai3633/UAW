@@ -15,6 +15,11 @@ IMPLEMENTATIONS = {
                              "docs/implementation/evidence/p0-tests.xml"]}
     for operation in HTTP
 }
+IMPLEMENTATIONS["admin.providers.accept"] = {
+    "scope": "development_closed_installed_readonly_provider_acceptance",
+    "entrypoint": "src/uaw/api/routes.py",
+    "evidence": ["docs/coordination/requests/A/MS-I2l-A9-source-contract.md"],
+}
 IMPLEMENTATIONS["RunRuntime.create"] = {
     "scope": "development_run_admission", "entrypoint": "src/uaw/run/facade.py",
     "evidence": ["docs/implementation/P0-04.md", "docs/implementation/evidence/p0-tests.xml"],

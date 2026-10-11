@@ -5,7 +5,7 @@ import json
 
 from uaw.run.runner_commands import RunnerCommands
 from uaw.shared.contracts import Principal, Ref
-from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.errors import CapabilityUnavailable
 from uaw.workspace.contracts import RegisteredReceiptCommand, RunnerCommand
 from uaw.workspace.ports import ReceiptCommandReaderPort
 
@@ -24,15 +24,10 @@ class RegisteredReceiptCommandReader(ReceiptCommandReaderPort):
             record = await self.commands.read(
                 command_ref, authenticated_principal=authenticated_principal
             )
-            device_id = record["device_ref"]["id"]
-            owner = await self.commands.devices.owner(authenticated_principal, device_id)
-            current = await self.commands.read(
-                command_ref, authenticated_principal=authenticated_principal
-            )
-            again = await self.commands.devices.owner(authenticated_principal, device_id)
-        if current["command"] != record["command"] or again != owner:
-            raise reject("runner_receipt_source_changed", "Registered recovery source changed", 412)
-        command = RunnerCommand.model_validate_json(json.dumps(current["command"]))
-        if command.trusted_context.principal != owner:
-            raise reject("runner_owner_denied", "Actual device owner differs from command", 403)
-        return RegisteredReceiptCommand(command, device_id, owner)
+            # The owning read already brackets original command/request/signature
+            # with fresh device/channel/owner checks. Re-entering it and then
+            # resolving owner twice expands the same graph without intervening IO.
+            command = RunnerCommand.model_validate_json(json.dumps(record["command"]))
+        return RegisteredReceiptCommand(
+            command, record["device_ref"]["id"], command.trusted_context.principal
+        )

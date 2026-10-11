@@ -15,4 +15,5 @@
 - [http · admin.secrets.put](../interfaces/http--admin-secrets-put.md)
 - [http · admin.policies.register](../interfaces/http--admin-policies-register.md)
 - [http · admin.providers.revoke](../interfaces/http--admin-providers-revoke.md)
+- [http · admin.providers.accept](../interfaces/http--admin-providers-accept.md)
 - [component · support.configuration](../interfaces/component--support-configuration.md)

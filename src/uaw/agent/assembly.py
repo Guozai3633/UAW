@@ -1,5 +1,6 @@
 """Explicit internal assembly; no default API bindings or flags are changed."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -15,12 +16,15 @@ from uaw.agent.tool_access import AgentToolAccess
 from uaw.model.facade import ModelFacade
 from uaw.model.gateway import ModelGateway
 from uaw.model.input_router import ContextModelInputs
+from uaw.run.file_context import FileContextMaterials
 from uaw.shared.contracts import Ref
 from uaw.shared.settings import ConfigurationError
 from uaw.tool.facade import ToolFacade
 from uaw.tool.invocation.dispatch import ToolInvocation
+from uaw.tool.ledger import ToolLedger
 from uaw.tool.registry import ToolRegistry
 from uaw.tool.retrieval import ToolRetriever
+from uaw.tool.runtime_router import RoutedToolRuntime, ToolRuntimeRoute
 
 if TYPE_CHECKING:
     from uaw.composition import (
@@ -41,6 +45,37 @@ class AgentAssembly:
         return LangGraphAgentEngine(self.runtime, checkpointer=checkpointer)
 
 
+def bind_agent_tool_facade(
+    original: ToolFacade,
+    registry: ToolRegistry,
+    access: AgentToolAccess,
+    *,
+    retriever: ToolRetriever | None = None,
+) -> ToolFacade:
+    """Clone dispatch with the actual Agent access; preserve original owning gates/readers."""
+    existing = original.invocation
+    if existing is None or original.registry is not registry or existing.registry is not registry:
+        raise ConfigurationError("Original registered ToolInvocation required")
+    invocation = ToolInvocation(
+        registry,
+        existing.ledger,
+        existing.budgets,
+        existing.approvals,
+        access=access,
+        executor=existing.executor,
+        estimates=existing.estimates,
+        results=existing.results,
+        prepare=existing.prepare,
+    )
+    return ToolFacade(
+        registry,
+        invocation=invocation,
+        lookup=original.lookup,
+        reconciler=original.reconciler,
+        retriever=retriever,
+    )
+
+
 def assemble_agent_runtime(
     container: Container,
     contexts: RegisteredContextBindings,
@@ -51,6 +86,8 @@ def assemble_agent_runtime(
     retriever: ToolRetriever | None = None,
     max_output_tokens: int = 512,
     instruction_refs: tuple[Ref, ...] = (),
+    tool_routes: Callable[[AgentToolAccess], tuple[ToolRuntimeRoute, ...]] | None = None,
+    file_materials: FileContextMaterials | None = None,
 ) -> AgentAssembly:
     if type(max_output_tokens) is not int or not 1 <= max_output_tokens <= 16384:
         raise ConfigurationError("Root output reserve must be between 1 and 16384 tokens")
@@ -79,7 +116,9 @@ def assemble_agent_runtime(
             original.adapter,
         )
     )
-    observations = AgentObservations(container.records, sources, results=tools.results)
+    observations = AgentObservations(
+        container.records, sources, results=tools.results, file_materials=file_materials
+    )
     context_adapter = RegisteredAgentContexts(
         contexts.inputs,
         contexts.components,
@@ -95,31 +134,24 @@ def assemble_agent_runtime(
         model, original.policies, sources, max_output_tokens=max_output_tokens
     )
     access = AgentToolAccess(container.tool_access, repository, sources)
-    existing = tools.invocation
-    invocation = ToolInvocation(
-        registry,
-        existing.ledger,
-        existing.budgets,
-        existing.approvals,
-        access=access,
-        executor=existing.executor,
-        estimates=existing.estimates,
-        results=existing.results,
-        prepare=existing.prepare,
-    )
-    facade = ToolFacade(
-        registry,
-        invocation=invocation,
-        lookup=tools.facade.lookup,
-        reconciler=tools.facade.reconciler,
-        retriever=retriever,
-    )
+    facade = bind_agent_tool_facade(tools.facade, registry, access, retriever=retriever)
+    runtime_tools: ToolFacade | RoutedToolRuntime = facade
+    if tool_routes is not None:
+        # The factory is trusted composition code. It receives this exact Agent
+        # access and returns independent original provider facades, not grants.
+        runtime_tools = RoutedToolRuntime(
+            registry,
+            ToolLedger(container.records),
+            tool_routes(access),
+            access=access,
+        )
+        observations.results = runtime_tools
     loop = AgentLoop(
         repository,
         context_adapter,
         models,
         observations,
-        tools=facade,
+        tools=runtime_tools,
         completion=completion,
         tool_access=access,
     )

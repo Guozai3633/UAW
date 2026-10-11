@@ -24,29 +24,36 @@ from uaw.composition import (
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
 from uaw.infrastructure.installed_receipt import current_root
+from uaw.infrastructure.installed_tool_authority import InstalledFileResources
 from uaw.infrastructure.runner_pipe import RunnerPipeClient
+from uaw.run.file_admission import InstalledFileRunSources
 from uaw.run.file_bridge import FileDeviceRoute, RegisteredFileBridge
 from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
 from uaw.tool.approval import ToolApprovalAdapter
 from uaw.tool.invocation.schema import normalize
-from uaw.tool.ledger import ToolLedger
+from uaw.tool.ledger import ToolLedger, action_key
 from uaw.tool.providers.file_read import file_arguments
 from uaw.tool.registry import ToolRegistry
 from uaw.workspace.binding import RootBindings
 
 
 class InstalledFileRoute:
-    def __init__(self, lifecycle: InstalledLifecycle) -> None:
+    def __init__(
+        self, lifecycle: InstalledLifecycle, *, admitted: InstalledFileRunSources | None = None
+    ) -> None:
         self.lifecycle = lifecycle
+        self.admitted = admitted
 
     async def current(self, workspace: Ref, ctx: TrustedExecutionContext) -> FileDeviceRoute:
         workspace = Ref.model_validate_json(json.dumps(workspace.wire(), allow_nan=False))
         ctx = TrustedExecutionContext.model_validate_json(json.dumps(ctx.wire(), allow_nan=False))
         if workspace not in ctx.scope.resource_refs:
             raise reject("file_workspace_denied", "Exact admitted workspace required", 403)
-        launch = await self.lifecycle.owned_ready(ctx.principal, workspace)
+        if self.admitted is not None:
+            await self.admitted.current(ctx, workspace)
+        launch = await self.lifecycle.owned_source(ctx.principal, workspace)
         entry = self.lifecycle.active
         connection = launch.connection
         assert connection is not None and launch.control_key is not None
@@ -181,7 +188,24 @@ class OriginalFileApprovalGate:
             or request["parameters"] != {"action": "file.read", "parameters": call["arguments"]}
         ):
             raise reject("file_original_approval_denied", "Original Tool request differs", 403)
-        await self.approvals.require_approved(ctx)
+        key = action_key(ctx, str(call["action_id"]))
+        original_request = await self.ledger.get("tool.approval.requests", key, ctx)
+        if original_request is None:
+            raise reject("approval_pending", "Original Tool approval required", 403)
+        service = self.approvals.approvals
+        approval_id = "approval-" + parameter_hash({"run": ctx.run_id, "action": call["action_id"]})
+        approval = await service.get(ctx.principal, approval_id)
+        if approval["status"] != "approved":
+            raise reject(
+                "approval_" + str(approval["status"]),
+                "Original approval does not allow the read",
+                403,
+            )
+        await service.recheck(
+            Ref(kind="approval", id=approval_id, version=str(approval["revision"])),
+            original_request,
+            ctx,
+        )
 
 
 @dataclass(frozen=True)
@@ -233,7 +257,7 @@ async def assemble_installed_file(
             directory=launch.state,
         ),
     )
-    route = InstalledFileRoute(lifecycle)
+    route = InstalledFileRoute(lifecycle, admitted=container.file_run_sources)
     provider_ref = Ref.model_validate(registry.get(tool_ref.wire()).spec()["provider_ref"])
     access = RegisteredFileDataAccess(container, registry, provider_ref, provider)
     bridge = RegisteredFileBridge(
@@ -250,6 +274,7 @@ async def assemble_installed_file(
         provider=provider,
         signatures=signatures,
     )
+    assert control.commands.roots is not None
     tool = assemble_file_tool(
         container,
         registry=registry,
@@ -259,6 +284,7 @@ async def assemble_installed_file(
         recovery_access=access,
         signatures=signatures,
         money_ceiling=money_ceiling,
+        resource_reader=InstalledFileResources(control.commands.roots, key.device_id),
     )
     assert tool.facade.invocation is not None
     gate.approvals = tool.facade.invocation.approvals

@@ -13,6 +13,7 @@ from uaw_runner.runtime import ReadOnlyHelper
 
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
+from uaw.infrastructure.installed_channels import InstalledConnectionRegistry
 from uaw.shared.contracts import Ref
 from uaw.shared.errors import CapabilityUnavailable, DomainError
 
@@ -84,6 +85,8 @@ class InstalledRootSelection:
             helper.bootstrap.directory.lookup, peer.key_id, device_id=peer.device_id
         )
         expiry = min(session.expires_at, peer.expires_at)
+        if isinstance(helper.registry, InstalledConnectionRegistry):
+            expiry = min(expiry, helper.registry.original_expiry)
         self.phase = "issue_ticket"
         issuing = asyncio.create_task(
             asyncio.to_thread(

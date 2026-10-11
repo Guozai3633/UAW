@@ -1,5 +1,6 @@
 """Persist real artifacts, requirement verdicts and an immutable delivery bundle."""
 
+from uaw.agent.adapters import AgentObservations
 from uaw.agent.completion.activity import tool_activity
 from uaw.agent.completion.contracts import contract_from_frame, report_outcome
 from uaw.agent.completion.evidence import (
@@ -83,7 +84,13 @@ class CompletionCoordinator:
         for ref in binding["observation_refs"]:
             if self.observations is None:
                 raise CapabilityUnavailable("completion.actual_tool_observations")
-            await self.observations.read(Ref.model_validate(ref), ctx)
+            observed = await self.observations.read(Ref.model_validate(ref), ctx)
+            if isinstance(self.observations, AgentObservations):
+                fragment = await self.observations.file_fragment(observed)
+                if fragment is not None:
+                    materials = self.observations.file_materials
+                    assert materials is not None
+                    checked_reading(fragment, await materials.read(fragment, ctx))
         if self.read_evidence is not None:
             for ref in view.frame["evidence_refs"]:
                 pin = Ref.model_validate(ref)
@@ -199,6 +206,17 @@ class CompletionCoordinator:
             data["observations"].append(
                 {"id": f"observation-{index}", "ref": ref.wire(), "result": row.payload["result"]}
             )
+            if isinstance(self.observations, AgentObservations):
+                fragment = await self.observations.file_fragment(observed)
+                if fragment is not None:
+                    materials = self.observations.file_materials
+                    assert materials is not None
+                    reading = await materials.read(fragment, ctx)
+                    checked_reading(fragment, reading)
+                    offered[f"file-source-{index}"] = fragment
+                    data["sources"].append(
+                        {"id": f"file-source-{index}", "ref": fragment.wire(), "text": reading.text}
+                    )
         activity, activity_pins, activity_offered, activity_ids = await tool_activity(
             self.records, ctx
         )

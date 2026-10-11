@@ -15,6 +15,7 @@ from uaw.infrastructure.db.transactions import (
     timestamp,
 )
 from uaw.run.events import EventReader
+from uaw.run.file_admission import FileRunAdmissionPort, InstalledFileRunSources
 from uaw.run.history import append_input
 from uaw.run.state import validate_transition, validate_worker_transition
 from uaw.shared.configuration import ConfigurationService
@@ -52,6 +53,7 @@ class RunFacade:
         self.transactions = TransactionalStore(store.database)
         self.configuration = configuration
         self.events = events
+        self.file_admission: FileRunAdmissionPort | None = None
 
     async def create(
         self, request: JsonObject, meta: RequestMeta, ctx: TrustedExecutionContext
@@ -304,6 +306,11 @@ class RunFacade:
                 },
             )
             await tx.emit(conversation_id, "run.updated", run)
+            if InstalledFileRunSources.scopes(config, conversation_id):
+                if self.file_admission is None:
+                    raise CapabilityUnavailable("file.original_run_admission")
+                binding = (await tx.load("run.bindings", run_id)).payload
+                await self.file_admission.admit(tx, actor, run, binding, config)
             if on_admitted is not None:
                 await on_admitted(tx, run)
             return run

@@ -2,7 +2,7 @@
 
 import hashlib
 import hmac
-from typing import Any
+from typing import Any, Protocol
 from urllib.parse import urlsplit
 
 from pydantic import SecretStr
@@ -14,7 +14,7 @@ from uaw.infrastructure.db.transactions import (
     identifier,
     reference,
 )
-from uaw.shared.contracts import Principal, RequestMeta
+from uaw.shared.contracts import JsonObject, Principal, RequestMeta
 from uaw.shared.credentials import CredentialStorePort
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
@@ -34,6 +34,20 @@ DEFAULT_DISABLED = (
 # switch is local_files. This mapping is a protocol compatibility rule, not a
 # second grant or an alternative enabled flag.
 CAPABILITY_FLAGS = {"file_access": "local_files"}
+FILE_PROFILE = reference("provider_profile", "tool.installed.readonly", 1)
+FILE_SETTINGS = {
+    "adapter_version": "1",
+    "currency": "USD",
+    "max_characters": 16384,
+    "max_return_bytes": 65536,
+    "actions": ["file.read"],
+}
+
+
+class FileAvailabilityPort(Protocol):
+    """Installed owning source, never a caller-provided connected/approved bit."""
+
+    async def require(self, scope: JsonObject) -> None: ...
 
 
 class ConfigurationService:
@@ -44,6 +58,7 @@ class ConfigurationService:
         self.transactions = TransactionalStore(store.database)
         self.credentials = credentials
         self.platform = platform
+        self.file_availability: FileAvailabilityPort | None = None
 
     @staticmethod
     def _admin(actor: Principal) -> None:
@@ -154,6 +169,14 @@ class ConfigurationService:
     @staticmethod
     def _profile(draft: Payload) -> None:
         profile = draft["profile_ref"]
+        if profile == FILE_PROFILE:
+            if (
+                draft["kind"] != "local"
+                or set(draft) != {"id", "kind", "profile_ref", "settings"}
+                or draft["settings"] != FILE_SETTINGS
+            ):
+                raise reject("file_provider_invalid", "Closed installed read-only profile required")
+            return
         if profile == reference("provider_profile", "tool.builtin.office", 1):
             if (
                 draft["kind"] != "local"
@@ -345,9 +368,36 @@ class ConfigurationService:
         validate_contract("StoragePolicy", storage)
         seen = set()
         for flag in value["feature_flags"]:
-            if flag["id"] not in DEFAULT_DISABLED or flag["enabled"]:
+            if flag["id"] not in DEFAULT_DISABLED:
                 raise CapabilityUnavailable(flag["id"])
-            if flag["scope"].get("resource_refs"):
+            if flag["enabled"]:
+                if flag["id"] != "local_files" or self.file_availability is None:
+                    raise CapabilityUnavailable(flag["id"])
+                scope = flag["scope"]
+                resources = scope.get("resource_refs", [])
+                if (
+                    set(scope) != {"conversation_id", "resource_refs"}
+                    or not scope["conversation_id"]
+                    or len(resources) != 1
+                    or resources[0]["kind"] != "workspace"
+                ):
+                    raise reject(
+                        "file_flag_scope_required", "Exact conversation/workspace required"
+                    )
+                matches = []
+                for provider in providers.values():
+                    draft = await tx.load("provider.configs", provider["id"])
+                    if draft.payload["profile_ref"] == FILE_PROFILE:
+                        self._profile(draft.payload)
+                        if draft.revision != provider["revision"] or provider["state"] != "active":
+                            raise reject(
+                                "file_provider_unavailable", "Active file provider required", 503
+                            )
+                        matches.append(provider)
+                if len(matches) != 1:
+                    raise CapabilityUnavailable("file.unique_active_provider")
+                await self.file_availability.require(scope)
+            elif flag["scope"].get("resource_refs") and flag["id"] != "local_files":
                 raise CapabilityUnavailable("resource_scoped_flags")
             key = (flag["id"], str(sorted(flag["scope"].items())))
             if key in seen:

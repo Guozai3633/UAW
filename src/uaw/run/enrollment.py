@@ -264,6 +264,8 @@ class RunnerEnrollments:
             return await self._get_current(owner, key)
 
     async def _get_current(self, owner: Principal, key: str) -> Payload:
+        from uaw.infrastructure.enrollment_native import RegisteredNativeEnrollmentEvidence
+
         await self.actor(owner)
         row = await self.records.get(self.controller, ENROLLMENTS, key)
         value = row.payload
@@ -283,7 +285,21 @@ class RunnerEnrollments:
                 raise reject(
                     "enrollment_pairing_pin_changed", "Original pairing digest differs", 412
                 )
-            evidence = await self.proof(value["proof_document"], owner)
+            if (
+                type(self.native) is RegisteredNativeEnrollmentEvidence
+                and self.native.service is self
+            ):
+                # Two full live source stages around a bounded fresh journal
+                # read replace recursive challenge -> candidate expansion.
+                # Neither the journal nor a cached outcome grants permission.
+                async with asyncio.timeout(10):
+                    evidence = frozen(
+                        await self.native.recorded(frozen(value["proof_document"]), owner=owner)
+                    )
+                self.validate_proof(value["proof_document"], owner, evidence)
+                await self.original(value, owner)
+            else:
+                evidence = await self.proof(value["proof_document"], owner)
             if any(
                 evidence[k] != value[k]
                 for k in ("confirmation_ref", "device_proof", "control_proof")
@@ -292,6 +308,11 @@ class RunnerEnrollments:
                     "enrollment_native_source_changed", "Original native proof changed", 412
                 )
         await self.actor(owner)
+        final = await self.records.get(self.controller, ENROLLMENTS, key)
+        if final != row:
+            raise reject(
+                "enrollment_record_changed", "Current enrollment changed while checking", 412
+            )
         return value
 
     async def challenge(self, owner: Principal, key: str) -> Payload:
@@ -312,11 +333,70 @@ class RunnerEnrollments:
         await self.actor(owner)
         return frozen(row.payload["proof_document"])
 
+    async def recheck_owned(self, owner: Principal, expected: Payload) -> Payload:
+        """Fresh final source stage for a previously fully checked enrollment.
+
+        Expected bytes are a comparison target, never a permission cache. Check
+        current owner, original candidate (both actual processes/keys), journal,
+        signatures, enrollment revision/state and deadline without recursive get.
+        """
+        from uaw.infrastructure.enrollment_native import RegisteredNativeEnrollmentEvidence
+
+        if (
+            type(self.native) is not RegisteredNativeEnrollmentEvidence
+            or self.native.service is not self
+        ):
+            return await self.get(owner, expected["id"])
+        async with self.records.current_reads():
+            validate_contract("RunnerEnrollmentRecord", expected)
+            if expected.get("state") != "active" or expected.get("pairing_ref") != fixed_ref(
+                "content", expected["id"], {k: v for k, v in expected.items() if k != "pairing_ref"}
+            ):
+                raise reject(
+                    "enrollment_pairing_pin_changed", "Original active pairing differs", 412
+                )
+            await self.actor(owner)
+            row = await self.records.get(self.controller, ENROLLMENTS, expected["id"])
+            if (
+                row.payload != expected
+                or row.schema_name != "RunnerEnrollmentRecord"
+                or row.revision != expected["revision"]
+            ):
+                raise reject(
+                    "enrollment_record_changed", "Original current enrollment differs", 412
+                )
+            await self.original(row.payload, owner)
+            async with asyncio.timeout(10):
+                evidence = frozen(
+                    await self.native.recorded(frozen(expected["proof_document"]), owner=owner)
+                )
+            self.validate_proof(expected["proof_document"], owner, evidence)
+            if any(
+                evidence[k] != expected[k]
+                for k in ("confirmation_ref", "device_proof", "control_proof")
+            ):
+                raise reject(
+                    "enrollment_native_source_changed", "Original native proof changed", 412
+                )
+            await self.actor(owner)
+            if (
+                await self.records.get(self.controller, ENROLLMENTS, expected["id"]) != row
+                or self.instant(expected["proof_document"]["expires_at"]) <= self.now()
+            ):
+                raise reject(
+                    "enrollment_record_changed", "Original enrollment changed while waiting", 412
+                )
+            return frozen(expected)
+
     async def proof(self, document: Payload, owner: Principal) -> Payload:
         if self.native is None:
             raise CapabilityUnavailable("enrollment.native_human_evidence")
         async with asyncio.timeout(10):
             evidence = frozen(await self.native.current(frozen(document), owner=owner))
+        self.validate_proof(document, owner, evidence)
+        return evidence
+
+    def validate_proof(self, document: Payload, owner: Principal, evidence: Payload) -> None:
         validate_contract("RunnerNativePairingEvidence", evidence)
         if (
             evidence["owner"] != owner.wire()
@@ -356,7 +436,6 @@ class RunnerEnrollments:
             )
             if not verify(document, evidence[role + "_proof"], key, domain):
                 raise reject("enrollment_key_proof_denied", "Original role-key proof differs", 403)
-        return evidence
 
     async def complete(self, owner: Principal, key: str, meta: RequestMeta) -> Payload:
         before = await self.get(owner, key)

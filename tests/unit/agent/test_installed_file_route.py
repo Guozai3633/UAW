@@ -56,6 +56,7 @@ async def test_final_device_wait_rechecks_original_lifecycle(monkeypatch, change
         return grant
 
     lifecycle.owned_ready = owned_ready
+    lifecycle.owned_source = owned_ready
     monkeypatch.setattr("uaw.infrastructure.installed_files.current_root", current_root)
     with pytest.raises(DomainError) as denied:
         await InstalledFileRoute(lifecycle).current(workspace, ctx)

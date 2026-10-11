@@ -5,6 +5,7 @@ OS instances, role keys and the signed handshake independently supply identity.
 """
 
 import asyncio
+import json
 from typing import Any
 
 from uaw_runner.helper_process import HelperProcess
@@ -16,6 +17,7 @@ from uaw_runner.state import LocalState
 from uaw.composition import Container
 from uaw.infrastructure.credentials import WindowsCredentialStore
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
+from uaw.infrastructure.installed_channels import InstalledConnectionRegistry
 from uaw.run.runner_devices import DEVICES, RunnerDevices
 from uaw.shared.contracts import Principal, Ref, RequestMeta
 from uaw.shared.errors import CapabilityUnavailable, reject
@@ -73,6 +75,12 @@ class InstalledControlConnection:
                 identity = await asyncio.to_thread(WindowsApi().current)
                 peer = await self.peers.current(identity, role="control")
                 device = await self.peers.current(helper.identity, role="device")
+                assert self.peers.original_enrollment is not None
+                self.registry = InstalledConnectionRegistry(
+                    json.loads(self.peers.original_enrollment),
+                    lifetime_seconds=self.session_lifetime_seconds,
+                )
+                self.devices.channels = self.registry
                 if (
                     peer.device_id != self.control_key.device_id
                     or peer.key_id != self.control_key.key_id

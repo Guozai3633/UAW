@@ -258,10 +258,10 @@ class RegisteredFileBridge:
             RequestMeta(request_id=identifier + "-register", schema_version="0.1"),
             authenticated_service=commands.devices.controller,
         )
-        # Registration is not permission to send. Fresh complete authority follows.
-        actor = Principal.model_validate(device["source"]["actor"])
-        await commands.collect(record, actor)
-        await self.resolve(call, spec, ctx)
+        # register() ends with a complete current collect after its CAS. There
+        # is no await/side effect here before evidence starts its independent
+        # current resource checks. The child still performs execution admission;
+        # a stored command alone cannot authorize a send or file open.
         return await self.evidence(
             call,
             spec,

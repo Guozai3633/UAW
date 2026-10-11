@@ -230,6 +230,19 @@ class RegisteredNativeEnrollmentEvidence:
             raise reject(
                 "enrollment_native_challenge_changed", "Current original document differs", 412
             )
+        value = await self.recorded(proof_document, owner=owner)
+        if await self.service.challenge(owner, key) != proof_document:
+            raise reject("enrollment_native_challenge_changed", "Original source changed", 412)
+        return value
+
+    async def recorded(self, proof_document: Payload, *, owner: Principal) -> Payload:
+        """Owning journal bytes only; no permission and no challenge/current shortcut.
+
+        RunnerEnrollments surrounds this read with full candidate/OS/key/owner
+        checks and verifies the actual enrollment row plus both original proofs.
+        This internal method never opens UI, grants permission or returns a peer.
+        """
+        key = proof_document["enrollment_id"]
         try:
             row = await self.service.records.get(self.service.controller, JOURNAL, key)
         except StoreMissing:
@@ -252,6 +265,4 @@ class RegisteredNativeEnrollmentEvidence:
             )
         ):
             raise reject("enrollment_native_decision_changed", "Original decision differs", 412)
-        if await self.service.challenge(owner, key) != proof_document:
-            raise reject("enrollment_native_challenge_changed", "Original source changed", 412)
         return row.payload

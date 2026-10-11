@@ -71,6 +71,7 @@ class OwnedLaunch:
     task: asyncio.Task[None] | None = None
     stopping: bool = False
     running: bool = False
+    cleaning: bool = False
     done: asyncio.Event = field(default_factory=asyncio.Event)
     cleanup_failed: bool = False
     persistence_failed: bool = False
@@ -207,12 +208,13 @@ class InstalledLifecycle:
         if entry is not None and entry.owner == owner:
             await self.stop_entry(entry)
 
-    async def owned_ready(self, owner: Principal, workspace: Ref) -> PreparedEnrollmentLaunch:
-        """Internal consumer lookup; no caller-selected device, process or directory."""
+    async def owned_source(self, owner: Principal, workspace: Ref) -> PreparedEnrollmentLaunch:
+        """Actual original instance only. Consumers still require current native proof."""
         entry = self.active
         if entry is None or entry.owner != owner:
             raise CapabilityUnavailable("file.current_browser_owned_launch")
-        view = await self.get(owner, entry.id)
+        view = await self.record(owner, entry.id)
+        await self.actor(owner)
         if (
             self.active is not entry
             or entry.stopping
@@ -224,6 +226,13 @@ class InstalledLifecycle:
         ):
             raise CapabilityUnavailable("file.current_browser_owned_root")
         return entry.launch
+
+    async def owned_ready(self, owner: Principal, workspace: Ref) -> PreparedEnrollmentLaunch:
+        launch = await self.owned_source(owner, workspace)
+        await current_root(launch)
+        if await self.owned_source(owner, workspace) is not launch:
+            raise reject("installed_original_source_changed", "Original instance changed", 412)
+        return launch
 
     async def stop(self, owner: Principal, identifier: str, meta: RequestMeta) -> Payload:
         await self.actor(owner)
@@ -241,7 +250,7 @@ class InstalledLifecycle:
             entry.stopping = True
             if first_stop:
                 entry.stop_code = code
-            if first_stop and entry.running:
+            if first_stop and entry.running and not entry.cleaning:
                 entry.task.cancel()
             # run's finally drains PreparedEnrollmentLaunch's own native/process/key cleanup.
             try:
@@ -298,18 +307,40 @@ class InstalledLifecycle:
 
             async def child_failure() -> None:
                 assert entry.launch is not None and entry.launch.helper is not None
-                frame = await entry.launch.helper.event(
-                    deadline=asyncio.get_running_loop().time() + max(0.0, remaining)
-                )
-                child_code = frame.get("code")
-                if (
-                    set(frame) == {"event", "code"}
-                    and frame["event"] == "failure"
-                    and isinstance(child_code, str)
-                    and re.fullmatch(r"[a-z][a-z0-9_]{0,127}", child_code)
-                ):
-                    raise reject(child_code, "Installed child stopped", 503, "dependency")
-                raise reject("dependency_protocol_invalid", "Unexpected installed lifecycle", 503)
+                receipt_seen = False
+                deadline = asyncio.get_running_loop().time() + max(0.0, remaining)
+                while True:
+                    frame = await entry.launch.helper.event(deadline=deadline)
+                    child_code = frame.get("code")
+                    if (
+                        set(frame) == {"event", "code"}
+                        and frame["event"] == "failure"
+                        and isinstance(child_code, str)
+                        and re.fullmatch(r"[a-z][a-z0-9_]{0,127}", child_code)
+                    ):
+                        raise reject(child_code, "Installed child stopped", 503, "dependency")
+                    if (
+                        set(frame) == {"event", "receipt_ref"}
+                        and frame["event"] == "receipt"
+                        and not receipt_seen
+                    ):
+                        pin = Ref.model_validate(frame["receipt_ref"])
+                        if (
+                            pin.kind != "content"
+                            or pin.content_hash is None
+                            or pin.location is not None
+                            or pin.access_scope is not None
+                        ):
+                            raise reject(
+                                "dependency_protocol_invalid", "Unexpected receipt progress", 503
+                            )
+                        # Progress is not receipt evidence, permission or task completion.
+                        # The owning Tool Reader verifies actual signed journal bytes.
+                        receipt_seen = True
+                        continue
+                    raise reject(
+                        "dependency_protocol_invalid", "Unexpected installed lifecycle", 503
+                    )
 
             lifecycle = asyncio.create_task(child_failure())
             async with asyncio.timeout(max(0.0, remaining)):
@@ -356,9 +387,16 @@ class InstalledLifecycle:
         except Exception:
             outcome, code = "failed", "installed_internal_error"
         finally:
+            # Source failure may already be draining its own launch. A later
+            # stop must await that cleanup rather than cancelling it again.
+            entry.cleaning = True
+            entry.running = False
             try:
                 if entry.launch is not None:
                     await entry.launch.close()
+            except asyncio.CancelledError:
+                entry.cleanup_failed = True
+                outcome, code = "failed", "installed_cleanup_cancelled"
             except Exception:
                 entry.cleanup_failed = True
                 outcome, code = "failed", "installed_cleanup_incomplete"

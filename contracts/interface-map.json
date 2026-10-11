@@ -582,6 +582,11 @@
           "doc": "docs/api/interfaces/http--admin-providers-revoke.md"
         },
         {
+          "id": "admin.providers.accept",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-accept.md"
+        },
+        {
           "id": "support.configuration",
           "channel": "component",
           "doc": "docs/api/interfaces/component--support-configuration.md"
@@ -2508,6 +2513,11 @@
           "id": "admin.providers.revoke",
           "channel": "http",
           "doc": "docs/api/interfaces/http--admin-providers-revoke.md"
+        },
+        {
+          "id": "admin.providers.accept",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--admin-providers-accept.md"
         },
         {
           "id": "support.configuration",

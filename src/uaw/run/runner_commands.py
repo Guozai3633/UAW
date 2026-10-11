@@ -241,6 +241,12 @@ class RunnerCommands:
         return result
 
     async def _collect(self, record: Payload, actor: Principal) -> Payload:
+        # Metadata/authority only; never held over native UI, dispatch or file
+        # reads. Every get remains a fresh READ COMMITTED SELECT in this task.
+        async with self.store.current_reads():
+            return await self._collect_current(record, actor)
+
+    async def _collect_current(self, record: Payload, actor: Principal) -> Payload:
         command = record["command"]
         request = await self._request(Ref.model_validate(command["request_ref"]))
         ctx = TrustedExecutionContext.model_validate_json(json.dumps(request["context"]))
@@ -378,7 +384,7 @@ class RunnerCommands:
             "lease_ref": request["lease_ref"],
             "holder": authenticated_service.wire(),
         }
-        sources = await self.collect(provisional, actor)
+        sources = await self._collect(provisional, actor)
         attempt_key = "attempt-" + parameter_hash(
             {
                 key: registered["context"].get(key)
@@ -415,7 +421,11 @@ class RunnerCommands:
             or record["state"] != "active"
         ):
             raise StoreConflict()
-        await self.collect(record, actor)
+        # Independent full source reread after signing, before persistent CAS.
+        # Compare with the pre-sign stage rather than recursively doing two more
+        # complete reads at each stage. Final registration still uses collect.
+        if await self._collect(record, actor) != sources:
+            raise reject("runner_authority_changed", "Authority changed during signing", 412)
 
         async def write(tx: RecordTransaction) -> Payload:
             actual = await tx.load(DEVICES, device["device_id"])
@@ -463,6 +473,10 @@ class RunnerCommands:
         return row.payload
 
     async def read(self, command_ref: Ref, *, authenticated_principal: Principal) -> Payload:
+        async with self.store.current_reads():
+            return await self._read_current(command_ref, authenticated_principal)
+
+    async def _read_current(self, command_ref: Ref, authenticated_principal: Principal) -> Payload:
         record = await self.record(command_ref.id)
         request = await self._request(Ref.model_validate(record["command"]["request_ref"]))
         if (
@@ -477,7 +491,12 @@ class RunnerCommands:
         device = await self.devices.current(
             record["device_ref"]["id"], authenticated_principal=authenticated_principal
         )
-        if device["source"]["owner"] != record["command"]["trusted_context"]["principal"]:
+        if device["source"]["owner"] != record["command"]["trusted_context"]["principal"] or record[
+            "device_ref"
+        ] != {
+            **reference("device", device["device_id"], device["revision"]),
+            "content_hash": parameter_hash(device),
+        }:
             raise reject("runner_owner_denied", "Command belongs to another owner", 403)
         if self.signer is None:
             raise CapabilityUnavailable("runner.control_signature_source")
@@ -486,11 +505,13 @@ class RunnerCommands:
             "runner_signature_protocol_invalid",
         )
         again = await self.record(command_ref.id)
-        if again["command"] != record["command"]:
+        if again != record:
             raise StoreConflict()
-        await self.devices.current(
+        current_device = await self.devices.current(
             device["device_id"], authenticated_principal=authenticated_principal
         )
+        if current_device != device:
+            raise reject("runner_device_changed", "Original device changed while reading", 412)
         return record
 
     async def revoke(

@@ -17941,6 +17941,80 @@
       ],
       "additionalProperties": false
     },
+    "FileRunSourceBinding": {
+      "type": "object",
+      "description": "Run准入固定原浏览器实例、只读根证据及用户模型；不是权限缓存或可提交的授权。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "owner": {
+          "$ref": "#/$defs/Principal",
+          "description": "原完整网页主体"
+        },
+        "conversation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原会话"
+        },
+        "task_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原任务"
+        },
+        "configuration_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定配置"
+        },
+        "model_policy_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "固定用户模型政策"
+        },
+        "fixed_model_id": {
+          "$ref": "#/$defs/ID",
+          "description": "固定用户模型"
+        },
+        "provider_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原只读提供方"
+        },
+        "launch_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原本机实例"
+        },
+        "workspace_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原工作区"
+        },
+        "device_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "当前设备版本摘要"
+        },
+        "root_identity_hash": {
+          "$ref": "#/$defs/Hash",
+          "description": "原根证据摘要，无目录或正文"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "原根最早期限"
+        }
+      },
+      "required": [
+        "run_id",
+        "owner",
+        "conversation_id",
+        "task_id",
+        "configuration_ref",
+        "model_policy_ref",
+        "fixed_model_id",
+        "provider_ref",
+        "launch_id",
+        "workspace_ref",
+        "device_ref",
+        "root_identity_hash",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
     "RunToolAccessBinding": {
       "type": "object",
       "description": "可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。",
@@ -18718,6 +18792,20 @@
         "provider_id": {
           "$ref": "#/$defs/ID",
           "description": "提供方"
+        }
+      },
+      "required": [
+        "provider_id"
+      ],
+      "additionalProperties": false
+    },
+    "AdminProvidersAcceptRequest": {
+      "type": "object",
+      "description": "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。",
+      "properties": {
+        "provider_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原配置只读提供方"
         }
       },
       "required": [
@@ -50868,6 +50956,154 @@
         },
         "payload": {
           "$ref": "#/$defs/AdminProvidersRevokeRequest",
+          "description": "业务参数"
+        }
+      },
+      "required": [
+        "meta",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "HttpAdminProvidersAcceptResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/ProviderBinding",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "HttpAdminProvidersAcceptEnvelope": {
+      "type": "object",
+      "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RequestMeta",
+          "description": "幂等与版本元信息"
+        },
+        "payload": {
+          "$ref": "#/$defs/AdminProvidersAcceptRequest",
           "description": "业务参数"
         }
       },

@@ -29907,6 +29907,308 @@
         "x-uaw-implementation-scope": "development_control_plane"
       }
     },
+    "/v1/admin/providers/{provider_id}/installed-readonly-acceptance": {
+      "post": {
+        "operationId": "http_admin_providers_accept",
+        "summary": "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "provider_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "原配置只读提供方"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpAdminProvidersAcceptResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "support.configuration"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_closed_installed_readonly_provider_acceptance",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
     "/v1/events/{event_id}/payload": {
       "get": {
         "operationId": "http_events_payload",
@@ -48139,6 +48441,80 @@
         ],
         "additionalProperties": false
       },
+      "FileRunSourceBinding": {
+        "type": "object",
+        "description": "Run准入固定原浏览器实例、只读根证据及用户模型；不是权限缓存或可提交的授权。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Principal",
+            "description": "原完整网页主体"
+          },
+          "conversation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原会话"
+          },
+          "task_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原任务"
+          },
+          "configuration_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定配置"
+          },
+          "model_policy_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "固定用户模型政策"
+          },
+          "fixed_model_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "固定用户模型"
+          },
+          "provider_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原只读提供方"
+          },
+          "launch_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原本机实例"
+          },
+          "workspace_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原工作区"
+          },
+          "device_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "当前设备版本摘要"
+          },
+          "root_identity_hash": {
+            "$ref": "#/components/schemas/Hash",
+            "description": "原根证据摘要，无目录或正文"
+          },
+          "expires_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "原根最早期限"
+          }
+        },
+        "required": [
+          "run_id",
+          "owner",
+          "conversation_id",
+          "task_id",
+          "configuration_ref",
+          "model_policy_ref",
+          "fixed_model_id",
+          "provider_ref",
+          "launch_id",
+          "workspace_ref",
+          "device_ref",
+          "root_identity_hash",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
       "RunToolAccessBinding": {
         "type": "object",
         "description": "可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。",
@@ -48916,6 +49292,20 @@
           "provider_id": {
             "$ref": "#/components/schemas/ID",
             "description": "提供方"
+          }
+        },
+        "required": [
+          "provider_id"
+        ],
+        "additionalProperties": false
+      },
+      "AdminProvidersAcceptRequest": {
+        "type": "object",
+        "description": "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。",
+        "properties": {
+          "provider_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原配置只读提供方"
           }
         },
         "required": [
@@ -81066,6 +81456,154 @@
           },
           "payload": {
             "$ref": "#/components/schemas/AdminProvidersRevokeRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpAdminProvidersAcceptResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ProviderBinding",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpAdminProvidersAcceptEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/AdminProvidersAcceptRequest",
             "description": "业务参数"
           }
         },

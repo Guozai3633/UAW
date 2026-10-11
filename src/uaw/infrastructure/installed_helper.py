@@ -6,6 +6,7 @@ command at bootstrap. Native confirmation and current server sources remain gate
 
 import asyncio
 import inspect
+import json
 import os
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -37,13 +38,18 @@ from uaw.infrastructure.enrollment_candidates import OwnedEnrollmentCandidates
 from uaw.infrastructure.enrollment_native import WindowsEnrollmentConfirmation
 from uaw.infrastructure.enrollment_peers import EnrolledPeerRegistry
 from uaw.infrastructure.enrollment_pipe import EnrollmentProofClient, decode
+from uaw.infrastructure.installed_channels import InstalledConnectionRegistry
 from uaw.infrastructure.installed_roots import InstalledRootSelection, workspace_pin
+from uaw.infrastructure.installed_tool_authority import (
+    InstalledControlVerifier,
+    InstalledToolApprovalGate,
+)
 from uaw.run.runner_authority import RegisteredRunnerAuthority
 from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
 from uaw.shared.contracts import Principal, Ref
-from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 from uaw.shared.runner_bootstrap import FirstStartProgressPort
 from uaw.shared.schema import validate_contract
 from uaw.shared.settings import Settings
@@ -225,6 +231,36 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
         )
         self.container = container
 
+    async def serve_once(self) -> Ref:
+        try:
+            return await super().serve_once()
+        except BaseException as exc:
+            # Owning deployment diagnostics only. No command, content, path,
+            # credential, proof or identity is serialized into this file.
+            diagnostic = {
+                "phase": "readonly_exchange",
+                "error_type": type(exc).__name__,
+                "failure_code": exc.failure.code
+                if isinstance(exc, DomainError)
+                else "internal_error",
+            }
+            directory = self.bootstrap.directory
+            if not isinstance(directory, LocalState):
+                raise
+            path = directory.path.parent / "read-operation-diagnostic.json"
+            writing = asyncio.create_task(
+                asyncio.to_thread(path.write_text, json.dumps(diagnostic), encoding="utf-8")
+            )
+            while True:
+                try:
+                    await asyncio.shield(writing)
+                    break
+                except asyncio.CancelledError:
+                    continue
+                except OSError:
+                    break
+            raise
+
     async def close(self) -> None:
         try:
             await super().close()
@@ -271,6 +307,16 @@ class PairedInstalledFactory:
             directory=state,
         )
         devices = RunnerDevices(c.records, c.configuration.platform, registry)
+        pairing = await service.get(launch.owner, launch.enrollment_id)
+        registry = InstalledConnectionRegistry(
+            pairing, lifetime_seconds=120.0 if launch.root_workspace is not None else 60.0
+        )
+        devices.channels = registry
+        verifier = InstalledControlVerifier(
+            state,
+            device_id=launch.device_id,
+            control_key_id=pairing["proof_document"]["control"]["key_id"],
+        )
         commands = RunnerCommands(
             c.records,
             devices,
@@ -279,6 +325,8 @@ class PairedInstalledFactory:
             c.budgets,
             c.execution_leases,
             roots=roots,
+            gate=InstalledToolApprovalGate(c, roots, launch.device_id),
+            signer=verifier,
         )
         reader = RegisteredReceiptCommandReader(commands)
         protocol = RunnerProtocol(

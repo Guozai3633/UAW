@@ -2056,6 +2056,7 @@ def finalize(graph,strategies):
     record("ReservationAccounting","run","每个attempt独占预留；发出调用意图后保留未知用量。","run_id|ID|运行\noperation_id|ID|操作\ntrace_id|ID|链路\nattempt_id|ID|尝试\ndeadline|Timestamp|预留截止\ndispatched|Bool|已经提交调用意图\nheld|ResourceVector|待确认额度\nused|ResourceVector|已观察消耗\nbilling_pending|Bool|账单待确认\nusage?|Usage|最近实际观察\nusage_revision?|Revision|用量修订")
     TYPES["ReservationAccounting"]["dependentRequired"]={"usage":["usage_revision"],"usage_revision":["usage"]}
     record("RunAdmissionBinding","run","受理时固定实际来源、用户模型政策和配置。","input_ref|UserInputRef|原始输入\nmodel_policy_ref|Ref|用户选择\nconfiguration_ref|Ref|固定配置\nturn_id|ID|提交轮次")
+    record("FileRunSourceBinding", "run", "Run准入固定原浏览器实例、只读根证据及用户模型；不是权限缓存或可提交的授权。", "run_id|ID|原Run\nowner|Principal|原完整网页主体\nconversation_id|ID|原会话\ntask_id|ID|原任务\nconfiguration_ref|Ref|固定配置\nmodel_policy_ref|Ref|固定用户模型政策\nfixed_model_id|ID|固定用户模型\nprovider_ref|Ref|原只读提供方\nlaunch_id|ID|原本机实例\nworkspace_ref|Ref|原工作区\ndevice_ref|Ref|当前设备版本摘要\nroot_identity_hash|Hash|原根证据摘要，无目录或正文\nexpires_at|Timestamp|原根最早期限")
     record("RunToolAccessBinding","run","可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。","run_id|ID|实际Run\nagent_id?|ID|单个Agent槽位\nprincipal|Principal|完整用户与认证会话\nscope|Scope|固定执行范围\nmodel_policy_ref|Ref|固定用户模型\ncapability_policy_ref|Ref|实际权限版本\nrole_ref|Ref|实际角色版本及摘要\nenvironment|ID|部署环境\nrevision|Revision|CAS版本\nstate|NonEmptyText|active或revoked")
     TYPES["RunToolAccessBinding"]["properties"]["state"]["enum"]=["active","revoked"]
     RULES["RunToolAccessBinding"]=["仅内部已认证controller可登记/撤销；HTTP和模型工具不接受此对象。", "Run/Agent槽位、完整Principal/session、scope和固定政策逐次匹配。", "角色类别不授权资源，不替换固定模型；当前Run/权限/配置/提供方均须复查。"]
@@ -2099,6 +2100,7 @@ def finalize(graph,strategies):
     for name in ["ConfigurationVersion","ConfigurationDraft"]:
         TYPES[name]["properties"]["model_refs"]["items"]=ref("ModelRef")
     endpoint("admin.providers.revoke","DELETE","/v1/admin/providers/{provider_id}","support","support.configuration","撤销提供方，固定旧配置不能绕过当前撤销。","provider_id|ID|提供方","ProviderBinding","internal_write",["管理员认证与expected_revision必需；不撤销已发生的外部动作。"],auth="admin")
+    endpoint("admin.providers.accept", "POST", "/v1/admin/providers/{provider_id}/installed-readonly-acceptance", "support", "support.configuration", "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。", "provider_id|ID|原配置只读提供方", "ProviderBinding", "internal_write", ["管理员认证和原provider expected_revision必需；无connected、approved、路径或proof输入。当前原native/root/设备不可用返回503；不启动本人确认。"], auth="admin")
     endpoint("events.payload","GET","/v1/events/{event_id}/payload","run","run.events","读取同主体持久事件的严格分支载荷。","event_id|ID|事件","EventPayload")
     for operation in OPERATIONS:
         if operation["id"]=="admin.configuration.validate":
