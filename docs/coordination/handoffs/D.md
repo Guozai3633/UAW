@@ -610,3 +610,11 @@ A具体验证请求已交，固定A3源码5fbfa752f6d83a3e663b98b6b002eb8a481e8b
 - 原本人第三次120秒根选择失败/未见窗口保留；A受控实际SQL/OS/IPC预UI110秒诊断已到目录入口并拒绝（49.91s），先前20秒诊断和fixture冻结字段失败保留，不能据短诊断断言D业务错误。原D首显示测试HWND符号表示/临时父目录setup和Ruff import失败亦保留，修正后复跑，不删安全断言或重写历史。
 - A报告精确合入阶段后的运行源码e05b15801c0ef8104de740e5ef61ad03ffe92ce6、8项消费者显示检查通过，第四次本人尝试正在进行；这是A声明，不计入D152且D未合并浮动来源。A继续当前installed/实际owner-key-challenge-authority、connected后原failure/closed/私有phase/type/code及本人选择/确认、清理回执。当前修复不证明原失败必为后台，也不证明本人已见/已确认；详见MS-R2i-native-root-review.md与human-guide追加。
 - 仅本人授权窗口可见，其他helper隐藏；缺来源503，不从SID/PID/body批准推权限、不读用户项目。写入安装exec/flags关闭，不决定D01/D03/D06；最终源码与handoff分开、干净交付，在本包停止，等待A实际本人验收与派发。
+
+## MS-R2i 第四次本人确认后停止点：只读交接（2026-10-11）
+
+- E:/UAW/.worktrees/runner /dev/runner，实际Runtime仍ef609407b0875fb51c53121a31a5a56d37dab93a；保留原基线、所有源码/handoff/失败/清理。只读审查提案源码文档 **0e8001d0a64d85bc71c4ddd55d99599b0ab8c593**，文件仅 requests/D/MS-R2i-post-confirm-review.md；本handoff另提交。本次不改生产代码/契约/A/factory/flags，无新测试执行，不把先前152/644当新性能回执。
+- A准确运行e05b15801c0ef8104de740e5ef61ad03ffe92ce6，固定commit git show核对installed/EnrolledPeerRegistry。安全证据 docs/implementation/evidence/ms-i2l-native-root-visible-failure.json只读：本人已选目录并确认只读，native_roots=1/native_decisions=1/root_grants=0，原120秒结束父deadline_exceeded/child native_select CancelledError，原Ticket清理后revoked、自有key撤销/资源清理、文件和模型0。显示修复有效；实际授权bind仍失败，不从本机decision恢复grant，不宣称产品成功。
+- D record后的root_selection是本机Ticket/目录/受保护签名及等待后复核；final challenges.current才再展开当前独立源。原确认记录落盘不保证其await已返回，现粗phase无法证明超时在签名或final current。审查发现完整BootstrapNativeChallenges.current静态成功图约20 session.check/6直接registration.current/7 mapping.owner；固定A实现展开53次current、约113次get方法调用，但不是实测SQL/耗时，也不代表失败路径已完成这些调用。
+- A先受控临时账号/root量测record/sign/current/connected/bind及current/get次数耗时与池等待，不反复要求本人点击，不打印proof/code/私钥/路径；A优化自己的真实SQL source仍保留当前全账号/key/owner/expiry。D提案是私有角色快照构造、单次RegisteredNative.current保留真实session前后check避免调用其他自校验公共访问器，5降2是目标而非实现；后check/fingerprint/关键await复查/所有字段与原期限保持。落地需源变化/撤销/过期/替换/取消真实回归；暂不根据猜测删检查或延长时间。
+- 详见 MS-R2i-post-confirm-review.md 调用表、精确source、测量与有依据策略。当前仅doc diff检查通过，干净交付；普通15/first90/root120/旧更早期限不改，缺源不可用，写入安装exec/flags关闭，不决定D03。在同包等待A分段source证据，当前不操作本人窗口/用户目录。
