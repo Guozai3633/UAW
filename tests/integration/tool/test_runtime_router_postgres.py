@@ -193,13 +193,26 @@ async def test_lost_original_reply_cancel_and_revoke_execute_access_restore_no_s
     before = m.access.calls
     for p in (m.office, m.file):
         effect = await fresh.ledger.effect(p.raw["action_id"], p.case.ctx)
+        observed = await fresh.runtime.reconcile(
+            {"action_id": p.raw["action_id"], "expected_revision": effect["revision"]},
+            p.case.ctx,
+        )
+        if p is m.office:
+            # Saved computation is real, but its source receipt was never published.
+            # Lookup must not invent publication or claim an accepted outcome.
+            assert (
+                observed["kind"] == "missing" and observed["failure"]["code"] == "receipt_missing"
+            )
+        else:
+            assert observed["kind"] == "ok"
+        assert (await fresh.runtime.invoke(p.raw, p.case.ctx))["kind"] == "ok"
+        current = await fresh.ledger.effect(p.raw["action_id"], p.case.ctx)
         assert (
             await fresh.runtime.reconcile(
-                {"action_id": p.raw["action_id"], "expected_revision": effect["revision"]},
+                {"action_id": p.raw["action_id"], "expected_revision": current["revision"]},
                 p.case.ctx,
             )
         )["kind"] == "ok"
-        assert (await fresh.runtime.invoke(p.raw, p.case.ctx))["kind"] == "ok"
         assert (await fresh.runtime.read_result(p.raw["action_id"], p.case.ctx))["kind"] == "ok"
     assert m.access.calls == before and fresh.bridge.calls == fresh.bridge.opens == 0
     assert m.office.executor.calls == m.file.bridge.opens == 1

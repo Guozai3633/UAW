@@ -130,13 +130,16 @@ async def main():
         output = []
         for d, ctx in zip(data["sources"], contexts, strict=True):
             call = await ledger.attempt(ctx)
+            # Resume the original saved response/journal through the existing
+            # Invocation; it has no executor and its access.snapshot raises.
+            # Office Lookup cannot fabricate a not-yet-published source receipt.
+            normalized = await runtime.invoke(d["request"], ctx)
+            assert normalized["kind"] == "ok", normalized
             effect = await ledger.effect(call["action_id"], ctx)
             reconciled = await runtime.reconcile(
                 {"action_id": call["action_id"], "expected_revision": effect["revision"]}, ctx
             )
             assert reconciled["kind"] == "ok", reconciled
-            normalized = await runtime.invoke(d["request"], ctx)
-            assert normalized["kind"] == "ok", normalized
             result = await runtime.read_result(call["action_id"], ctx)
             outcome = await runtime.read_outcome(call["action_id"], ctx)
             output.append(
