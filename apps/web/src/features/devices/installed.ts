@@ -30,9 +30,10 @@ export class HttpInstalledLaunchPort implements InstalledLaunchPort {
  clear(){this.value=undefined;this.identity=undefined;this.generation++;this.writing=false;try{this.storage.removeItem(key);}catch{/* local lookup is cleared */}}
  async get(id:string,signal:AbortSignal){const identity=this.bind(),g=this.generation;const lookup=this.value;
   if(lookup?.launchId&&lookup.launchId!==id)throw Error('只能读取原本机实例。');
-  const view=await this.client.localGet(id,signal);this.guard(identity,g,signal);this.check(view,id,lookup?.requestId);
-  if(lookup?.revision!==undefined&&view.revision<lookup.revision)throw Error('本机状态版本回退。');
-  const stop=lookup?.stop;this.value={requestId:view.request_id,launchId:view.id,revision:view.revision,...(stop&&!terminalLaunch(view)?{stop}:{})};this.save();return view;
+  const view=await this.client.localGet(id,signal);this.guard(identity,g,signal);const latest=this.value??lookup;this.check(view,id,latest?.requestId);
+  if(latest?.launchId&&latest.launchId!==id)throw Error('只能读取当前原实例。');
+  if(latest?.revision!==undefined&&view.revision<latest.revision)throw Error('本机状态版本回退。');
+  const stop=latest?.stop;this.value={requestId:view.request_id,launchId:view.id,revision:view.revision,...(stop&&!terminalLaunch(view)?{stop}:{})};this.save();return view;
  }
  async start(signal:AbortSignal,recoverOriginal=false){const identity=this.bind(),g=this.generation;if(this.writing)throw Error('原本机操作仍在进行。');this.writing=true;
   try{let original=this.value;

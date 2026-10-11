@@ -38,3 +38,21 @@ it('stale revisions, mismatched IDs/request and unavailable writes do not bypass
  localStorage.clear();let posts=0;const transport=vi.fn(async(_i:RequestInfo|URL,o?:RequestInit)=>{if(o?.method==='POST')posts++;return new Response(JSON.stringify(ok(installed('connecting',2))));});const port=new HttpInstalledLaunchPort(new UawClient(session,transport));await port.get('launch-one',signal);await expect(port.stop(installed('starting'),signal)).rejects.toThrow('版本');expect(posts).toBe(0);
  const storage={getItem:()=>null,removeItem:()=>{},setItem:()=>{throw Error('no storage');}} as unknown as Storage;await expect(new HttpInstalledLaunchPort(new UawClient(session,transport),storage).start(signal)).rejects.toThrow('保存');expect(posts).toBe(0);
 });
+
+it('concurrent old GET cannot roll the latest in-operation lookup revision backward',async()=>{
+ const pending:((r:Response)=>void)[]=[];const port=new HttpInstalledLaunchPort(new UawClient(session,vi.fn(()=>new Promise<Response>(r=>pending.push(r))))),signal=new AbortController().signal;
+ const old=port.get('launch-one',signal),fresh=port.get('launch-one',signal);pending[1](new Response(JSON.stringify(ok(installed('ready',3)))));await fresh;pending[0](new Response(JSON.stringify(ok(installed('starting',1)))));await expect(old).rejects.toThrow('回退');expect(port.lookup()?.revision).toBe(3);
+});
+
+it('logout clear wins a late start, abort preserves unknown original ID, and explicit 503 stays unavailable',async()=>{
+ const signal=new AbortController().signal;let release!:(r:Response)=>void,id='';const port=new HttpInstalledLaunchPort(new UawClient(session,vi.fn(async(_i:RequestInfo|URL,o?:RequestInit)=>{id=JSON.parse(String(o?.body)).meta.request_id;return new Promise<Response>(r=>{release=r;});})));
+ const start=port.start(signal);port.clear();release(new Response(JSON.stringify(ok(installed('ready',2,id)))));await expect(start).rejects.toThrow('身份');expect(localStorage.getItem('uaw.web.local-launch.v1')).toBeNull();
+ const abort=new AbortController(),cancelled=new HttpInstalledLaunchPort(new UawClient(session,vi.fn(async()=>{abort.abort();return new Response(JSON.stringify(ok(installed())));})));await expect(cancelled.start(abort.signal)).rejects.toThrow();expect(cancelled.lookup()?.requestId).toBeDefined();cancelled.clear();
+ const unavailable=new HttpInstalledLaunchPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify({...denied('dependency_unavailable','本机来源未配置'),kind:'failed'}),{status:503}))));await expect(unavailable.start(signal)).rejects.toThrow('未配置');expect(unavailable.lookup()).toBeUndefined();
+});
+
+it('controlled RPC timeout uses the fixed 15s transport bound and retains original unknown start metadata',async()=>{
+ const deadline=new AbortController();const timeout=vi.spyOn(AbortSignal,'timeout').mockImplementationOnce(ms=>{expect(ms).toBe(15000);return deadline.signal;});
+ const fetcher=vi.fn((_i:RequestInfo|URL,o?:RequestInit)=>new Promise<Response>((_resolve,reject)=>{o?.signal?.addEventListener('abort',()=>reject(o.signal?.reason),{once:true});}));
+ try{const port=new HttpInstalledLaunchPort(new UawClient(session,fetcher));const pending=expect(port.start(new AbortController().signal)).rejects.toThrow('未知');deadline.abort(new DOMException('controlled timeout','TimeoutError'));await pending;expect(port.lookup()?.requestId).toBeDefined();expect(port.lookup()?.launchId).toBeUndefined();await expect(port.start(new AbortController().signal)).rejects.toThrow('原请求ID');expect(fetcher).toHaveBeenCalledOnce();}finally{timeout.mockRestore();}
+});

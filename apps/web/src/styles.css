@@ -10,3 +10,5 @@
 .device-panel{max-height:65vh;overflow:auto}.device-panel input{width:100%;padding:8px;border:1px solid #e4e7e9;border-radius:8px}.device-panel p{overflow-wrap:anywhere;font-size:13px;color:#66716c}.review-body code{overflow-wrap:anywhere;font-size:11px}
 
 .dialog{max-height:90dvh;overflow:auto}.installed-panel{font-size:12px;line-height:1.7;overflow-wrap:anywhere}.installed-panel ol{padding-left:22px}.installed-panel .dialog-actions{flex-wrap:wrap}.installed-panel button{border:1px solid #e1e4ec;border-radius:7px;background:#f7f8fc;padding:8px 10px}
+
+.installed-panel ol{list-style:decimal}
