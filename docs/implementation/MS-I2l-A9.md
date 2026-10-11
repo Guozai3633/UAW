@@ -1,4 +1,22 @@
-# MS-I2l A9：文件准入、原审批与交付来源的组件阶段
+# MS-I2l A12：原来源标识批读候选（默认关闭）
+
+2026-10-12。本阶段只改 A 的 records、RunnerCommands、EnrolledPeerRegistry 及 A 测试/文档。
+先记住原拥有者检查所读取的行标识，后续 pass 批读最新完整记录，运行原完整校验后
+再做 fresh 完整 SQL witness；不保存旧值、权限或批准结果。最多 64 plan、每次 256 行，
+默认 `checked_metadata=False`，生产组装未开启。D current/watch 消费仍未装配。
+
+92 不同定向节点通过；历史组件并集 250，旧节点未全部在最终版重跑，非一次全量。
+210 源码 Mypy 与本阶段 Ruff/格式通过，首批错误码断言及准备命令失败均保留。
+组件受控 SELECT 42→冷29→原标识新鲜批读24，三次 snapshot 一致；仅是组件样本。
+
+原临时文件 Windows 双进程链候选仍失败：87.92 秒、原 command 1 次/open 0 次，
+`invocation_interrupted`、unknown 不重发。4 临时凭据、2 keys、child/proof pipe清理通过；
+默认关闭已恢复，恢复后18节点通过。没有新模型调用、用户材料读取或本人确认/接受。
+具体输入/策略及测量见 [A12 来源文档](../coordination/requests/A/MS-I2l-A12-source-prefetch.md)，
+所有失败和来源摘要见 [A12 回执](evidence/ms-i2l-a12.json)。
+后续处理当前来源与执行/监控重复展开的消费边界，不能把 SQL 缩减标为首次文件链通过。
+
+# MS-I2l A9：文件准入、原审批与交付来源的组件阶段（历史）
 
 2026-10-11。源码以 `ms-i2l-a9-source` 固定，准确 SHA 由 DISPATCH 发布。
 这是同轮组件阶段，**完整本机文件读取、真实文件模型交付和本人页面验收未通过**。

@@ -246,7 +246,13 @@ class RunnerCommands:
         # repeated inputs have a final fresh full-row SQL witness before return.
         async with self.store.current_reads():
             try:
-                async with self.store.checked_read_batch():
+                async with self.store.checked_read_batch(
+                    plan=(
+                        "runner-command",
+                        self.devices.controller.id,
+                        record["command"]["command_id"],
+                    )
+                ):
                     result = await self._collect_current(record, actor)
                 return result
             except StoreConflict as exc:

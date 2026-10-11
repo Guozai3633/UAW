@@ -211,3 +211,108 @@ async def test_default_mode_keeps_every_read_fresh(database, principal):
         after = await store.get(principal, "checked-batch-test", "record")
         assert after.revision == 2 and after.payload["operation_id"] == "after"
     assert store._current_reads.get() is None
+
+
+async def test_locator_plan_prefetches_fresh_values_with_two_selects(database, principal):
+    store = await saved(database, principal)
+    plan = ("test-source", principal.id)
+    for number in range(5):
+        await store.put(
+            principal,
+            "checked-batch-test",
+            f"row-{number}",
+            "Acknowledgement",
+            {"operation_id": "before", "status": "completed"},
+            expected_revision=0,
+            request_id=f"create-{number}",
+        )
+    async with store.checked_read_batch(plan=plan):
+        for number in range(5):
+            await store.get(principal, "checked-batch-test", f"row-{number}")
+    assert store._read_plans[plan] == tuple(
+        (principal.id, "checked-batch-test", f"row-{number}") for number in range(5)
+    )
+    await store.put(
+        principal,
+        "checked-batch-test",
+        "row-0",
+        "Acknowledgement",
+        {"operation_id": "updated", "status": "completed"},
+        expected_revision=1,
+        request_id="updated",
+    )
+    queries = []
+
+    def capture(_connection, _cursor, statement, _parameters, _context, _many):
+        if statement.lstrip().upper().startswith("SELECT") and "uaw_records" in statement:
+            queries.append(statement)
+
+    event.listen(database.engine.sync_engine, "before_cursor_execute", capture)
+    try:
+        async with store.checked_read_batch(plan=plan):
+            rows = [await store.get(principal, "checked-batch-test", f"row-{n}") for n in range(5)]
+            assert rows[0].revision == 2 and rows[0].payload["operation_id"] == "updated"
+        assert len(queries) == 2 and all(" IN " in query for query in queries)
+    finally:
+        event.remove(database.engine.sync_engine, "before_cursor_execute", capture)
+
+
+@pytest.mark.parametrize("change", ["update", "delete"])
+async def test_prefetch_wait_change_rejects_and_retains_original_locators(
+    database, principal, change
+):
+    store = await saved(database, principal)
+    plan = ("test-source", principal.id)
+    async with store.checked_read_batch(plan=plan):
+        await store.get(principal, "checked-batch-test", "record")
+    original = store._read_plans[plan]
+    with pytest.raises(StoreConflict) as denied:
+        async with store.checked_read_batch(plan=plan):
+            if change == "update":
+                await store.put(
+                    principal,
+                    "checked-batch-test",
+                    "record",
+                    "Acknowledgement",
+                    {"operation_id": "updated", "status": "completed"},
+                    expected_revision=1,
+                    request_id="updated",
+                )
+            else:
+                await store.delete(
+                    principal,
+                    "checked-batch-test",
+                    "record",
+                    expected_revision=1,
+                    request_id="deleted",
+                )
+            assert (await store.get(principal, "checked-batch-test", "record")).revision == 1
+    assert denied.value.failure.code == "current_read_source_changed"
+    assert store._read_plans[plan] == original
+    assert store._current_batch.get() is None
+
+
+async def test_deleted_locator_is_not_a_cached_presence(database, principal):
+    store = await saved(database, principal)
+    plan = ("test-source", principal.id)
+    async with store.checked_read_batch(plan=plan):
+        await store.get(principal, "checked-batch-test", "record")
+    await store.delete(
+        principal, "checked-batch-test", "record", expected_revision=1, request_id="deleted"
+    )
+    with pytest.raises(StoreMissing):
+        async with store.checked_read_batch(plan=plan):
+            await store.get(principal, "checked-batch-test", "record")
+
+
+async def test_locator_plans_are_bounded_and_failed_sources_are_not_learned(database, principal):
+    store = await saved(database, principal)
+    for number in range(65):
+        async with store.checked_read_batch(plan=("bounded", str(number))):
+            await store.get(principal, "checked-batch-test", "record")
+    assert len(store._read_plans) == 64 and ("bounded", "0") not in store._read_plans
+    with pytest.raises(RuntimeError, match="predicate denied"):
+        async with store.checked_read_batch(plan=("failed",)):
+            await store.get(principal, "checked-batch-test", "record")
+            raise RuntimeError("predicate denied")
+    assert ("failed",) not in store._read_plans

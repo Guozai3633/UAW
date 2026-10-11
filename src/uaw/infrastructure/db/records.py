@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 import json
+from collections import OrderedDict
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
@@ -54,13 +55,19 @@ class PostgresRecordStore:
         self._current_batch: ContextVar[
             tuple[asyncio.Task[Any], dict[tuple[str, str, str], Record]] | None
         ] = ContextVar("uaw_current_record_batch", default=None)
+        # Source-local locators only. Values/permissions never survive a pass.
+        self._read_plans: OrderedDict[tuple[str, ...], tuple[tuple[str, str, str], ...]] = (
+            OrderedDict()
+        )
 
     @property
     def checked_metadata(self) -> bool:
         return self._checked_metadata
 
     @asynccontextmanager
-    async def checked_read_batch(self) -> AsyncIterator[None]:
+    async def checked_read_batch(
+        self, *, plan: tuple[str, ...] | None = None
+    ) -> AsyncIterator[None]:
         """One bounded metadata pass, with a fresh SQL witness before returning.
 
         Disabled by default until the installed first-read budget is accepted.
@@ -72,11 +79,20 @@ class PostgresRecordStore:
         passes never inherit these inputs. Nested source Readers in the same
         owning task share the outer witness, which must finish before the
         enclosing authority may return. The caller keeps the original deadline.
+        An optional owning-source plan retains at most 64 sets of row locators;
+        subsequent passes prefetch CURRENT values and still run every predicate
+        and the final witness. Plans never retain row payloads or allowed states.
         """
         if not self.checked_metadata:
             async with self.current_reads():
                 yield
             return
+        if plan is not None and (
+            type(plan) is not tuple
+            or not 1 <= len(plan) <= 4
+            or any(type(part) is not str or not part or len(part) > 256 for part in plan)
+        ):
+            raise ValueError("A bounded owning-source locator plan is required")
         task = asyncio.current_task()
         if task is None:
             raise RuntimeError("Checked metadata reads require an owning task")
@@ -88,29 +104,42 @@ class PostgresRecordStore:
         async with self.current_reads(), asyncio.timeout(10):
             token = self._current_batch.set((task, rows))
             try:
+                addresses = self._read_plans.get(plan, ()) if plan is not None else ()
+                if addresses:
+                    rows.update(await self._current_rows(addresses))
                 yield
                 if rows:
-                    async with self._read_session() as session:
-                        current = await session.scalars(
-                            select(RecordRow)
-                            .where(
-                                tuple_(
-                                    RecordRow.principal_id,
-                                    RecordRow.namespace,
-                                    RecordRow.resource_id,
-                                ).in_(tuple(rows)),
-                                RecordRow.deleted.is_(False),
-                            )
-                            .execution_options(populate_existing=True)
-                        )
-                        observed = {
-                            (row.principal_id, row.namespace, row.resource_id): self._record(row)
-                            for row in current
-                        }
-                    if observed != rows:
+                    if await self._current_rows(tuple(rows)) != rows:
                         raise StoreConflict("current_read_source_changed")
+                if plan is not None:
+                    # Learn only after every predicate and the final witness
+                    # succeeds. Next use performs fresh SQL before consuming
+                    # any input; a learned address is never an admitted value.
+                    self._read_plans[plan] = tuple(rows)
+                    self._read_plans.move_to_end(plan)
+                    while len(self._read_plans) > 64:
+                        self._read_plans.popitem(last=False)
             finally:
                 self._current_batch.reset(token)
+
+    async def _current_rows(
+        self, addresses: tuple[tuple[str, str, str], ...]
+    ) -> dict[tuple[str, str, str], Record]:
+        async with self._read_session() as session:
+            current = await session.scalars(
+                select(RecordRow)
+                .where(
+                    tuple_(RecordRow.principal_id, RecordRow.namespace, RecordRow.resource_id).in_(
+                        addresses
+                    ),
+                    RecordRow.deleted.is_(False),
+                )
+                .execution_options(populate_existing=True)
+            )
+            return {
+                (row.principal_id, row.namespace, row.resource_id): self._record(row)
+                for row in current
+            }
 
     @asynccontextmanager
     async def current_reads(self) -> AsyncIterator[None]:

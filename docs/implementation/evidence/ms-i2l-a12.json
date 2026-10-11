@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "d73349201a29ed3ba2bcf319aee539a636a75567",
+  "scope": "A-owned current metadata locator prefetch candidate; no worker business edits or full milestone acceptance",
+  "targeted_substage_union_nodes": 92,
+  "historical_component_union_nodes": 250,
+  "note": "Historical A11 receipt nodes retained, not all rerun on final source. A12 actual Windows candidate failed. Default-off restored.",
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-prefetch-regression.xml",
+      "sha256": "558780d3ac659b094c61e81c9c0e195c4d9ebfaae28a18b2780b6fdd45813fd6",
+      "tests": 92,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-final-mode.xml",
+      "sha256": "da5a56dfc6c276ac439f6d4099c78ef384a5f5d393026e33a379bf68e1556d01",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failed_receipts_retained": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-prefetch.xml",
+      "sha256": "56409db475891240136082a47777139b0fa202356c55c6aa3f1c23b77e57c6bd",
+      "tests": 29,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-first-chain.xml",
+      "sha256": "76b52bd72b9653bdf2b9df39db9878cea500fbe9dc62976f179d475d2e8e7ee4",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "preparation_failures_retained": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-mypy.log",
+      "sha256": "c1c88156bd82f3cda5cf424d0a26c5924775800ca6ae43024bdba156ef07f85f"
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a12-prefetch-final.log",
+      "sha256": "39c2a5858d47f097519105be651c5910e1b135fcb135d85c29ef65282ed57176"
+    }
+  ],
+  "measurement": {
+    "same_snapshot": true,
+    "baseline": {
+      "selects": 42,
+      "seconds": 0.23057089999929303
+    },
+    "checked_batch": {
+      "selects": 29,
+      "seconds": 0.22602959999494487
+    },
+    "fresh_locator_prefetch": {
+      "selects": 24,
+      "seconds": 0.21836159999656957
+    },
+    "scope": "actual SQL/registered authority; channel/root/gate controlled"
+  },
+  "candidate_source_hashes": {
+    "src/uaw/infrastructure/db/records.py": "b541d92d862963813f8b597f3631a77c7b147eae61a37a2c8adc6af51003b620",
+    "src/uaw/infrastructure/enrollment_peers.py": "9ad2232b12fc35b6f8a79293b6690879f5bcc3d9b36be6ff019600fe7e7aa436",
+    "src/uaw/run/runner_commands.py": "3bf133b3ce162ff358fc2c7f10a591bb268ac979afa1f3031d18ca031c3df31d"
+  },
+  "first_installed_chain": {
+    "passed": false,
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a12-first-chain.xml",
+      "sha256": "76b52bd72b9653bdf2b9df39db9878cea500fbe9dc62976f179d475d2e8e7ee4",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "seconds": 87.92,
+    "metadata": {
+      "parent": {
+        "phases": {
+          "fixture_new_run_setup": 1.1823641999944812,
+          "web_launch_to_callback_ready": 30.029641699999047,
+          "a8_assembly": 0.6290876000057324,
+          "approval_query": 2.825701999994635,
+          "controlled_sql_decision": 1.3090541000055964,
+          "approved_facade_to_signed_result": 46.66507339999953,
+          "cleanup": 1.2380238999976427
+        },
+        "operations": {
+          "budget_reserve": {
+            "calls": 1,
+            "seconds": 0.04288110000197776
+          },
+          "budget_dispatch": {
+            "calls": 1,
+            "seconds": 0.03317779999633785
+          },
+          "bridge_source_checks": {
+            "calls": 2,
+            "seconds": 4.979985300000408
+          },
+          "lease_acquire": {
+            "calls": 1,
+            "seconds": 0.05373110000073211
+          },
+          "command_collect": {
+            "calls": 1,
+            "seconds": 2.3687014000024647
+          },
+          "command_register": {
+            "calls": 1,
+            "seconds": 4.972498399998585
+          },
+          "signed_pipe_exchange": {
+            "calls": 1,
+            "seconds": 10.022625300000072
+          }
+        },
+        "sends": [
+          "command"
+        ],
+        "cleanup": {
+          "credential_handles_absent": 4,
+          "role_keys_revoked": 2,
+          "child_exited": true,
+          "proof_pipe_closed": true
+        },
+        "cleanup_failure": null,
+        "read_outcome": null
+      },
+      "child": {
+        "phases": {
+          "factory_create": 3.274651499996253,
+          "owner_mapping": {
+            "calls": 95,
+            "seconds": 6.353023899959226,
+            "errors": {}
+          },
+          "session_current": {
+            "calls": 145,
+            "seconds": 23.13582789999782,
+            "errors": {
+              "ipc_closed": 1
+            }
+          },
+          "signatures": {
+            "calls": 2,
+            "seconds": 0.01876790000096662,
+            "errors": {}
+          },
+          "callback": 19.648866499999713,
+          "endpoint_dispatch": {
+            "calls": 1,
+            "seconds": 8.266476999997394,
+            "errors": {
+              "CancelledError": 1
+            }
+          },
+          "endpoint_watch": {
+            "calls": 1,
+            "seconds": 8.253927500001737,
+            "errors": {
+              "ipc_closed": 1
+            }
+          },
+          "registered_reader": {
+            "calls": 3,
+            "seconds": 1.8673045999967144,
+            "errors": {}
+          },
+          "runner_execute": {
+            "calls": 1,
+            "seconds": 7.021690900000976,
+            "errors": {
+              "CancelledError": 1
+            }
+          },
+          "runner_current": {
+            "calls": 1,
+            "seconds": 6.370662000001175,
+            "errors": {
+              "CancelledError": 1
+            }
+          },
+          "root_source": {
+            "calls": 7,
+            "seconds": 2.2711818999960087,
+            "errors": {}
+          },
+          "authority": {
+            "calls": 2,
+            "seconds": 4.778877900003863,
+            "errors": {
+              "CancelledError": 1
+            }
+          },
+          "read_exchanges": [
+            52.55961119999847
+          ]
+        },
+        "opens": 0,
+        "frames": [
+          "command"
+        ]
+      }
+    },
+    "mode": "Explicit temporary candidate default; restored after run. Not a final production default-mode full pass."
+  },
+  "checked_metadata_default_enabled": false,
+  "installed_recheck_watch_consumed": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "flags_enabled": false,
+  "fixed_llm_file_delivery": false,
+  "original_authenticated_browser": false,
+  "human_acceptance": false,
+  "product_full_milestone": false,
+  "static": {
+    "mypy_source_files": 210,
+    "ruff": "passed",
+    "format": "passed"
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a11.json"
+}

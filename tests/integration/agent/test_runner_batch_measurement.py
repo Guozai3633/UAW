@@ -24,7 +24,7 @@ async def test_same_snapshot_uses_fewer_current_selects(case, tmp_path):
             queries.append(statement)
 
     @asynccontextmanager
-    async def original_reads():
+    async def original_reads(**_kwargs):
         async with store.current_reads():
             yield
 
@@ -45,6 +45,13 @@ async def test_same_snapshot_uses_fewer_current_selects(case, tmp_path):
         current = {"selects": len(queries), "seconds": time.perf_counter() - start}
         assert before == after
         assert current["selects"] < baseline["selects"]
+        queries.clear()
+        start = time.perf_counter()
+        repeated = await case.authority().current(
+            record["command"], authenticated_principal=case.actor
+        )
+        warm = {"selects": len(queries), "seconds": time.perf_counter() - start}
+        assert repeated == before and warm["selects"] < current["selects"]
         assert store._current_batch.get() is None
         (tmp_path / "authority-batch-measurement.json").write_text(
             json.dumps(
@@ -52,6 +59,7 @@ async def test_same_snapshot_uses_fewer_current_selects(case, tmp_path):
                     "same_snapshot": True,
                     "baseline": baseline,
                     "checked_batch": current,
+                    "fresh_locator_prefetch": warm,
                     "scope": "actual SQL/registered authority; channel/root/gate controlled",
                 }
             ),

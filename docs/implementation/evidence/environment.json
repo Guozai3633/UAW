@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A11 245 distinct scoped union with historical nodes carried forward; 93 targeted substage nodes. Actual SQL/crypto/temporary Windows chain; no human/model delivery or full milestone.",
+  "scope": "A12 92 distinct targeted nodes; 250 union incl historical nodes not all rerun. Actual Windows candidate FAILED, default-off restored; no full milestone.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 245,
+    "tests": 250,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "84d60b81dcafb831353e4543b0345e5ef575b5051a06cd9a3094eaf4aa2848d0",
+  "test_evidence_sha256": "10974306d439f04fc48ea77a0f77756b664500b79094304c86451aa22e58b255",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -295,7 +295,7 @@
     "src/uaw/infrastructure/db/__init__.py": "4daabe1f937d387d75c22b0ea581e5bf75bf06924285face28f42d451e7fcfdc",
     "src/uaw/infrastructure/db/context_batch.py": "7b4fe4ded93b1ced50221e94f5b1793e755b0307fbf365859c301dc35ed85116",
     "src/uaw/infrastructure/db/models.py": "903d669461df37767b8be9fdcd6aa1cfc6060afd34a06d09e444976c35762fb5",
-    "src/uaw/infrastructure/db/records.py": "1cc81c58de1216665479f0ad621c1e31e0fb8368132c26ff6ce66eba1d186e30",
+    "src/uaw/infrastructure/db/records.py": "2fabc403a491fcee134c6208255dd7fe196f7f26d50807ad9fad3b9001f4e507",
     "src/uaw/infrastructure/db/session.py": "9caa1a66587b9c24d342d5bca020c7164917153a18bd965eae1864138b2ae9dc",
     "src/uaw/infrastructure/db/transactions.py": "a0020ced142502b438852023d3c83f31e424e47edea264b8d43e036fe65a4108",
     "src/uaw/infrastructure/enrollment_bootstrap.py": "0d8b39b75094980289653d2f2bc03192e9e89e4d72dfa69f66e0a19be414b42c",
@@ -303,7 +303,7 @@
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
     "src/uaw/infrastructure/enrollment_launch.py": "22af6318ddfce078046818c7311f4a293d89e904cd4027f1f00401cda7da41ca",
     "src/uaw/infrastructure/enrollment_native.py": "eecf9515f81c809fdc882bb988b3866c564fef6dc3ae0fb9da2042d87b5f63b0",
-    "src/uaw/infrastructure/enrollment_peers.py": "46653ff32caf22f4b6cf5928fa6bf1aa0bd1fbd60c8a16223f3534098c109a42",
+    "src/uaw/infrastructure/enrollment_peers.py": "9ad2232b12fc35b6f8a79293b6690879f5bcc3d9b36be6ff019600fe7e7aa436",
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
@@ -361,7 +361,7 @@
     "src/uaw/run/permissions.py": "7012035b94d99e79f5d787396eaafc51e94006be49b75341bc0eb59f866a7c4f",
     "src/uaw/run/queries.py": "45c2d8e1be5418ca38b76a72dff2e8c84b3df0c5b6fae449efa6d3cfde0dc174",
     "src/uaw/run/runner_authority.py": "a8f2cccb1c9a38150e069965576445210f5d04b0743cbe89a0814d33287026f2",
-    "src/uaw/run/runner_commands.py": "4d4c99e1777e2340b599fb545f09f6104f44911debc14119f661e6567be84225",
+    "src/uaw/run/runner_commands.py": "3bf133b3ce162ff358fc2c7f10a591bb268ac979afa1f3031d18ca031c3df31d",
     "src/uaw/run/runner_devices.py": "70bb40170f070d80fd6c2c4c977d0d13bd2163d71a3f843918a61fece9e6b31c",
     "src/uaw/run/runner_mapping.py": "e2739893586e0842f415761cd230f256fdcd7eac64c5be2e9fc906716b3664f4",
     "src/uaw/run/runner_receipts.py": "78fe7aa19ed24d6cea413129c82b10576c5777cb79171c81070f4350614acd01",
@@ -431,7 +431,7 @@
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
     "tests/integration/agent/test_approval_router.py": "59768ec636bda8fbab91bf663d8c48c7940cadbfeff5fea9c6d6e5497e2d1661",
     "tests/integration/agent/test_background_postgres.py": "cf02ef04f1e8efe4a00b12e75ee1e1a1fb386bd3f4c2aaa87cd3eb362a51f257",
-    "tests/integration/agent/test_checked_record_batch.py": "e12f71b5b03d9ca51e78dca105a2db08724803f5734b33e1693e1ffcced64a0a",
+    "tests/integration/agent/test_checked_record_batch.py": "7e65d9c0a3b2b6f25ed6224d6aaf23488dd43e0f44b7724d9471ec4290e63e29",
     "tests/integration/agent/test_completion_postgres.py": "b9519a9a95b0249e63b5ca48ddf5ff5f99af05467771157137a017ff05c79947",
     "tests/integration/agent/test_components_postgres.py": "315b7c3b1f9dfb1c542389cd99863e9beba700e7015679d1108212fcbe6dc643",
     "tests/integration/agent/test_context_batch_postgres.py": "b9f7e19681aa1fefa020d3ecb022eb0c94191226d7a98775a4d3051339bdfcd7",
@@ -462,7 +462,7 @@
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
     "tests/integration/agent/test_registered_runner_recheck.py": "6909f0b23bb7ac32e2e87e31c0af834764db058b6acf00bd3156f4cd4f36057f",
     "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
-    "tests/integration/agent/test_runner_batch_measurement.py": "25ad8a235649bbc5c3b297bf6d31f4e384245986e5d192f38b01127e6fd13dc3",
+    "tests/integration/agent/test_runner_batch_measurement.py": "2366a6ff6254d9f6cc36d73dc051b5dda16e476d1afc66b071b4b9fa828d231d",
     "tests/integration/agent/test_runner_current_scope.py": "9444ed1ce4a185cceb44ea4cdaf018b188f7893d273c27b51c3a63757c7fa86f",
     "tests/integration/agent/test_runner_pipe_wiring.py": "c2f72576c1977377e006f33c84321ef3b10990a02d0fe131fc4ec82affb80a2f",
     "tests/integration/agent/test_steer_postgres.py": "6d4d3a9c486e5a0ff39db4b0d3867768e0d100f9787e05e8008b8ed83b180377",
@@ -629,8 +629,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a11.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a10.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a12.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a11.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

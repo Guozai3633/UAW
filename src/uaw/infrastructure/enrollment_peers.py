@@ -62,7 +62,9 @@ class EnrolledPeerRegistry:
         # One metadata-only source pass, fresh by default. Optional repeated
         # inputs have a fresh SQL witness at the owning boundary. Both
         # actual OS instances, keys and proofs are still independently checked.
-        async with self.enrollments.records.checked_read_batch():
+        async with self.enrollments.records.checked_read_batch(
+            plan=("enrollment", self.enrollment_id, self.user.id, self.user.auth_session_id)
+        ):
             result = await self._current(identity, role=role)
         if self.enrollments.records.checked_metadata:
             await self._external_original()
@@ -191,7 +193,9 @@ class EnrolledPeerRegistry:
         )
 
     async def owner(self, *, authenticated_principal: Principal, device_id: str) -> Principal:
-        async with self.enrollments.records.checked_read_batch():
+        async with self.enrollments.records.checked_read_batch(
+            plan=("enrollment", self.enrollment_id, self.user.id, self.user.auth_session_id)
+        ):
             result = await self._owner(
                 authenticated_principal=authenticated_principal, device_id=device_id
             )
