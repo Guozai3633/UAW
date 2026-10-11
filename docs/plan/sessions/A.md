@@ -438,6 +438,18 @@ A3阶段：可信自有helper候选、原控制签名证明与首次设备native
 - 50轮主计划的退出标准保持有效。
 - 真正的P1阶段验收需真实用户授权、测试、成果和审阅证据。
 
+## MS-I2l A9 当前阶段
+
+准确源码ms-i2l-a9-source / e2f0394cee72ae0877c05af0ccd4b7e25ae709de。
+provider/Run原范围准入、C混合路由、HTTP原审批所属service与材料/成果来源已接线。
+191去重定向检查通过；原Windows文件链尚未通过，不标整轮accepted。
+
+A接下来与D修复重复完整来源展开的成本：A控制端/SQL适配，D原执行器/端点。
+具体请求在requests/A/MS-I2l-A9-D-original-read-budget.md，尚未正式派发。
+保持原响应/lease/root/启动期限及当前撤销检查；unknown对账不重发。
+完成实际一次读后，再验证同一个本人浏览器上下文、固定模型引用/成果和接受，
+最后做本轮汇合全量。没有新开MS-I2m或要求worker同步浮动integration。
+
 ## 当前session开工说明
 
 沿用已有聊天与独立worktree，粘贴本session说明。A先在DISPATCH公布真实基线SHA和派发包。

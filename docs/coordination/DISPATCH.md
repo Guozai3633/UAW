@@ -1,4 +1,25 @@
-# MS-I2l A8 同轮续包：B/C/D 可立即并行开工
+# MS-I2l A9：组件阶段源码固定，原文件实链未通过
+
+2026-10-11。准确源码 **e2f0394cee72ae0877c05af0ccd4b7e25ae709de** /
+`ms-i2l-a9-source`。不是新的共同start，不移动旧标签，不建立MS-I2m。
+A继续负责控制端来源/接线；B/C/D原交付已按准确源码合入，组件接受不等于整轮接受。
+
+191个不同定向节点通过（59单元/132集成，部分native/pipe输入为明确受控来源），
+208源码Mypy、运行代码Ruff与契约一致性通过。
+[实际范围及失败](../implementation/MS-I2l-A9.md)、
+[各批回执/摘要](../implementation/evidence/ms-i2l-a9.json)保留15份失败XML。
+Windows原链source12仍ipc_broken：原command发1次、打开文件0次；
+凭据/keys/原进程及pipe已清理。原期限、unknown不重发和默认flags保持。
+
+[A/D具体修复请求](requests/A/MS-I2l-A9-D-original-read-budget.md)已准备，
+**未正式派发或授权向D聊天发送**。worker不因本阶段标签自动开始或消费浮动integration。
+A9不是完整MS-I2l/P1 accepted，汇合全量等待实际文件/固定模型/本人页面链通过；
+旧1691全量、本人历史回执和模型费用不覆盖。
+
+实际8000/5173已启动，匿名会话接口401正确；尚无有效原拥有者浏览器页和新本人实例。
+B认证只读继续pending；没有向B交付伪新ticket+旧launch_id或导出cookie。
+
+# MS-I2l A8 同轮续包：B/C/D 可立即并行开工（历史已交付）
 
 2026-10-11。正式发布 **B/MS-U3b、C/MS-T2i-b、D/MS-R2i-b**；A继续 **MS-I2l-A9**。执行快照 `ms-i2l-a8 / 06ff3ef56b68d391387bc7b154fa58ecb00571f9`，源码 `ms-i2l-a8-source / 16e0efaf6daff2fbbd0281473a8c6cc1f652d0e6`；原 start 不移动，不建立 MS-I2m。
 
