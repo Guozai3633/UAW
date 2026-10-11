@@ -28,3 +28,14 @@ M1 72单元通过（原66+新6）、类型通过，generator字段逐定义等�
 M2页面入口将置于原“本机设备与目录状态”对话框，InstalledConnection组件接受port/identity/connected；本人点击“连接本机只读目录”，系统账号确认→目录选择→只读确认三步提示，实际状态/原版本/停止。默认装配真实HTTP port，可选host注入。GET有界轮询、退出Abort/clear，202/ready不当文件Tool权限。M1交付后继续M2–M4，不等待A合入；A可按此签名接线，末包交独立dist/hash及handoff。
 
 认证实连需A受保护限时同源launch和实际原launch ID；当前未提供，真实验收pending。不会读取A私有配置或代点native/成果接受，不扩Context/多Run/flags。
+
+
+## M2 页面已交付，继续M3/M4
+
+源码 **81e128cf505fb7d62a1980d975b2302e6f60bd11**。默认window host可注入installedLaunch:InstalledLaunchPort；省注入使用HttpInstalledLaunchPort(client)。原本机对话框内InstalledConnection接受port/identity/connected，原设备查询保留。本人点击才start，明确系统账号确认/目录选择/只读确认三步，实际状态/原期限/失败码/原ID；ready和202不当file Tool许可。停止先GET再CAS，丢回复只读对账。
+
+默认串行2秒GET、最多120次本次读取，终态停止；达到上限显示手动读取入口，不更新原期限。错误隐藏旧ready，保留原ID；关闭/pagehide/注销/身份变化Abort、清旧状态，不自动再启动。无IDunknown只提供显式恢复原request_id按钮。组件没有赋权/模型/目录path或新API。
+
+类型/build通过，3个新UI节点通过（单独运行，不将原72重复累计）；M1契约与原回归保留。自身u3b-m2-build.log、u3b-m2-ui.log/.xml。准确独立阶段dist位于apps/web/.test-results/u3b-m2-dist/，每文件hash在u3b-m2-build.json；A只读复制该构建，不执行B环境。原chunk>500KB警告保留。
+
+继续M3竞争/恢复与M4受控Chromium、真实缺源回执；认证只读需A限时launch及原launch ID，真人操作未代理。
