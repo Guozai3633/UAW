@@ -1,4 +1,25 @@
-# MS-I2l A11：默认关闭的查询优化候选与真实失败已固定
+# MS-I2l A12：原来源标识批读候选已固定，首次读取仍未通过
+
+2026-10-12。准确源码 **f47e2b62af92b976af0fc4b77552eef44df7dde9** /
+`ms-i2l-a12-source`。继续原轮次；旧 start 与标签不移动。
+B/C/D 保留原提交、handoff 与测试记录，停在已交付点，无新 worker 包或同步要求。
+
+A 在显式内部优化模式下保存原来源所需行的标识，下一次 pass 批读其最新值，
+执行原完整校验并最终 fresh SQL witness。plan最多64、本次256行；不保留旧值或权限。
+`checked_metadata=False`为production默认，未装配 D current/watch，flags保持关闭。
+
+92不同定向节点通过，恢复默认后18节点通过（包含于92）；历史组件并集250，
+历史节点未全在本版重跑，非一次全量。210源码Mypy、Ruff/格式和契约检查通过。
+受控同snapshot SELECT42→冷29→原标识新鲜批读24，仅是组件样本。
+
+真实临时文件Windows候选87.92秒失败，原command1/open0，unknown不重发。
+4临时凭据、2keys、child/proof清理通过，默认关闭已恢复。无新模型或用户正文访问。
+首次文件读取、固定模型文件交付、B原认证/本人接受与汇合全量仍pending。
+A继续当前来源与执行/等待检查的消费边界；不把批读缩减视为原响应预算通过。
+[输入/策略/限制](requests/A/MS-I2l-A12-source-prefetch.md)、
+[本阶段实际回执](../implementation/evidence/ms-i2l-a12.json)。
+
+# MS-I2l A11：默认关闭的查询优化候选与真实失败已固定（历史）
 
 准确源码 **691f28c929bc50446a881ee9ae49f8fdfb97dfff** /
 `ms-i2l-a11-source`，继续本轮，不移动旧标签或创建新共同包。

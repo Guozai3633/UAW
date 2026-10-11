@@ -1,4 +1,17 @@
-# A/MS-I2l-A11 默认关闭的 checked metadata 选项
+# A/MS-I2l-A12 原来源标识批读候选（默认关闭）
+
+准确源码 f47e2b62af92b976af0fc4b77552eef44df7dde9 / ms-i2l-a12-source。
+92不同定向节点；恢复默认后18包含其中，历史组件并集250非一次全量。
+210源码Mypy、Ruff/格式及契约检查通过。
+只保存来源行标识，下一pass fresh批读与最终全行witness，完整校验保留；
+最多64 plan/256行，production默认关闭，不装配D current/watch或开启flags。
+同受控snapshot SELECT42→冷29→新鲜标识批读24；不是整链收益证明。
+真实Windows候选87.92秒仍失败，command1/open0，unknown不重发，清理完成；
+无新模型/用户文件/本人接受。旧1691全量和所有失败保持。
+继续A当前来源与执行/等待消费边界；B/C/D保留交付点，不自动扩包或同步。
+详见 ../../coordination/requests/A/MS-I2l-A12-source-prefetch.md 与 DISPATCH。
+
+# A/MS-I2l-A11 默认关闭的 checked metadata 选项（历史）
 
 准确源码 691f28c929bc50446a881ee9ae49f8fdfb97dfff / ms-i2l-a11-source。
 93不同定向节点通过；历史组件并集245，非一次最终版全量。210源码类型及契约检查通过。
