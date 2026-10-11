@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-11",
+  "scope": "localhost deployment health and static page only",
+  "backend_ready_status": 200,
+  "page_status": 200,
+  "page_sha256": "02aa11b71c656f620bbbcc2724108f23b60b7bc45a47ca144becaa2d6904255a",
+  "existing_B_build": "web-static-ms-u3",
+  "begin_documented_202": true,
+  "unauthenticated_begin_denied": 401,
+  "native_launch_started": false,
+  "human_browser_validation": false,
+  "file_reads": 0,
+  "model_calls": 0,
+  "source_sha": "47e981e059c222c60f78daeaf1e52b76bd3b1be0"
+}
