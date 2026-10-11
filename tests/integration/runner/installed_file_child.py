@@ -12,7 +12,10 @@ from dataclasses import replace
 from pathlib import Path
 
 from uaw_runner.handle_read import WindowsReadHandle
+from uaw_runner.ipc.read_endpoint import ReadOnlyPipeEndpoint
+from uaw_runner.ipc.sessions import AuthenticatedPipeSession
 from uaw_runner.native_dialog import NativeDirectoryDecision, WindowsNativeDialog
+from uaw_runner.read_executor import ReadOnlyRunner
 
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.installed_helper import NAMESPACE_ENV, InstalledHelperAssembly
@@ -47,7 +50,11 @@ class MeasuredInstalledAssembly:
         original_get = PostgresRecordStore.get
 
         def save():
-            destination.write_text(json.dumps(values), encoding="utf-8")
+            # Metadata is observational only. Publish whole JSON atomically so
+            # parent diagnostics cannot see a truncated concurrent write.
+            temporary = destination.with_name(destination.name + ".pending")
+            temporary.write_text(json.dumps(values), encoding="utf-8")
+            temporary.replace(destination)
 
         async def measured_get(records, *args, **kwargs):
             started = time.perf_counter()
@@ -79,11 +86,16 @@ class MeasuredInstalledAssembly:
 
             async def measured(*args, **kwargs):
                 started = time.perf_counter()
+                row = values["phases"].setdefault(label, {"calls": 0, "seconds": 0.0, "errors": {}})
+                row["calls"] += 1
                 try:
                     return await original(*args, **kwargs)
+                except BaseException as exc:
+                    failure = getattr(exc, "failure", None)
+                    code = failure.code if failure is not None else type(exc).__name__
+                    row["errors"][code] = row["errors"].get(code, 0) + 1
+                    raise
                 finally:
-                    row = values["phases"].setdefault(label, {"calls": 0, "seconds": 0.0})
-                    row["calls"] += 1
                     row["seconds"] += time.perf_counter() - started
 
             setattr(port, method, measured)
@@ -91,6 +103,14 @@ class MeasuredInstalledAssembly:
         measure(application.helper.protocol.async_authority, "current", "authority")
         measure(application.helper.bootstrap.signer, "sign_document", "signatures")
         measure(application.helper.journal, "publish", "receipt_publish")
+        measure(application.helper.commands, "resolve", "registered_reader")
+        measure(application.helper.protocol.principal_mapping, "owner", "owner_mapping")
+        measure(application.helper.roots, "current", "root_source")
+        measure(AuthenticatedPipeSession, "check", "session_current")
+        measure(ReadOnlyPipeEndpoint, "dispatch", "endpoint_dispatch")
+        measure(ReadOnlyPipeEndpoint, "watch", "endpoint_watch")
+        measure(ReadOnlyRunner, "current", "runner_current")
+        measure(ReadOnlyRunner, "execute", "runner_execute")
         original_connected = application.on_connected
         original_serve = application.helper.serve_once
 

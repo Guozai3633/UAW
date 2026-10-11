@@ -14,14 +14,30 @@ from tests.integration.test_control_plane import meta
 
 
 @pytest.mark.parametrize(
-    "change", ["root", "control_key", "stop", "role", "cancel", "policy_version", "expiry"]
+    "change",
+    [
+        "root",
+        "control_key",
+        "stop",
+        "role",
+        "cancel",
+        "policy_version",
+        "expiry",
+        "owner",
+        "configuration",
+        "provider",
+    ],
 )
 async def test_original_file_admission_rechecks_after_source_wait(
     web, tmp_path, monkeypatch, change
 ):
     async with installed_file_case(web, tmp_path, monkeypatch) as p:
         bridge = p.bindings.bridge
-        current = bridge.routes.current
+        # A9 installs a separate current resource Reader before the original
+        # approval. Waiting here preserves zero reserve/dispatch/open, while
+        # awaiting bridge.routes would never be reached for pending approval.
+        resources = p.bindings.tool.facade.invocation.approvals.authority.resources
+        current = resources.resolve
         fired = False
         entered = asyncio.Event()
         release = asyncio.Event()
@@ -35,7 +51,7 @@ async def test_original_file_admission_rechecks_after_source_wait(
                 await release.wait()
             return value
 
-        bridge.routes.current = wait_source
+        resources.resolve = wait_source
         if change == "expiry":
             # Earlier caller deadline only, never extend Run/root/session/lease.
             p.ctx = p.ctx.model_copy(
@@ -78,6 +94,53 @@ async def test_original_file_admission_rechecks_after_source_wait(
                         },
                     },
                     meta("d-after-wait-cancel", run["revision"]),
+                )
+            elif change == "owner":
+                await p.container.browser_sessions.logout(p.owner, meta("d-after-wait-owner"))
+            elif change == "provider":
+                config = p.container.configuration
+                pin = p.bindings.tool.facade.registry.get(p.raw["tool_ref"]).spec()["provider_ref"]
+                row = await p.container.records.get(config.platform, "providers", pin["id"])
+                await p.container.records.put(
+                    config.platform,
+                    "providers",
+                    row.resource_id,
+                    "ProviderBinding",
+                    {**row.payload, "revision": row.revision + 1, "state": "disconnected"},
+                    expected_revision=row.revision,
+                    request_id="d-after-wait-provider",
+                )
+            elif change == "configuration":
+                config = p.container.configuration
+                value = await config.current()
+                await p.container.records.put(
+                    config.platform,
+                    "configurations",
+                    value["id"],
+                    "ConfigurationVersion",
+                    {
+                        **value,
+                        "revision": value["revision"] + 1,
+                        "feature_flags": [{**f, "enabled": False} for f in value["feature_flags"]],
+                    },
+                    expected_revision=value["revision"],
+                    request_id="d-after-wait-configuration",
+                )
+                row = await p.container.records.get(
+                    config.platform, "configuration.pointer", "current"
+                )
+                await p.container.records.put(
+                    config.platform,
+                    "configuration.pointer",
+                    "current",
+                    "Ref",
+                    {
+                        "kind": "configuration",
+                        "id": value["id"],
+                        "version": str(value["revision"] + 1),
+                    },
+                    expected_revision=row.revision,
+                    request_id="d-after-wait-pointer",
                 )
             elif change == "policy_version":
                 row = await p.container.records.get(

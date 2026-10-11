@@ -937,3 +937,59 @@ async def test_invalid_currency_not_inferred_from_command(read_case):
             executions=case["executions"],
             currency="unknown",
         )
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "cancel",
+        "fence",
+        "lease",
+        "request",
+        "policy",
+        "flags",
+        "owner",
+        "channel",
+        "root",
+        "control_key",
+    ],
+)
+async def test_private_key_await_then_admission_rechecks_without_open(
+    read_case, monkeypatch, change
+):
+    """Real signature/root/CAS; independently registered component authority fixture."""
+    case = read_case
+    check = case["runner"].signer.check_private
+
+    async def changed(*args, **kwargs):
+        await check(*args, **kwargs)
+        await asyncio.sleep(0)
+        value = case["authority"].value
+        if change == "cancel":
+            value["cancelled"] = True
+        elif change == "fence":
+            value["fencing_token"] += 1
+        elif change == "lease":
+            value["lease_expires_at"] = case["clock"][0].isoformat()
+        elif change == "request":
+            value["request_ref"]["version"] = "2"
+        elif change == "policy":
+            value["policy_ref"]["version"] = "2"
+        elif change == "flags":
+            value["feature_enabled"] = False
+        elif change == "owner":
+            case["owners"].revoked = True
+        elif change == "channel":
+            case["channel"].value["connected"] = False
+        elif change == "root":
+            case["grants"].revoke("native-root1", expected_revision=0)
+        else:
+            case["state"].revoke_key("control1", expected_revision=0)
+
+    monkeypatch.setattr(case["runner"].signer, "check_private", changed)
+    monkeypatch.setattr(
+        "uaw_runner.read_executor.WindowsReadHandle",
+        lambda *args: pytest.fail("changed private-key await must not open"),
+    )
+    with pytest.raises(DomainError):
+        await execute(case)

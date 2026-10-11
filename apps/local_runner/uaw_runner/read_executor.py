@@ -301,7 +301,10 @@ class ReadOnlyRunner:
                 credential_handle=self.device_key.credential_handle,
             )
             self.admission.deadline(command, first)
-            await self.current(command, actor, source, first, channel)
+            # Admission itself rereads owner and full authority around current
+            # external key/root checks. The following current() compares against
+            # the original root/channel/authority before the execution CAS. No
+            # additional identical full pass is needed immediately before admit.
             admitted = await self.protocol.admit_async(
                 canonical(command.wire()), authenticated_principal=actor
             )
