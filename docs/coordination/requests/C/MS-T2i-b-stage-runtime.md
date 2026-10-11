@@ -14,11 +14,13 @@ runtime = RoutedToolRuntime(
     registry, original_ledger,
     (
         ToolRuntimeRoute(office_tool_ref, office_provider_ref, office.facade, office.results),
-        ToolRuntimeRoute(file_tool_ref, file_provider_ref, file.facade, file.results),
+        ToolRuntimeRoute(file_tool_ref, file_provider_ref, file.facade, file.facade.invocation.results),
     ),
     access=effective_agent_access,
 )
 ```
+
+A8 的 FileToolBindings 没有 results 字段；上例需先断言 file.facade.invocation 和其 results 存在，实际 owning Reader 是原 ToolResults。不得改用 materials/receipts 充当规范结果。
 
 在构造独立 facade 时，A 必须已将同一个 `effective_agent_access` 注入每个原 `ToolInvocation(access=...)`。不是仅 facade.access，不能用 Run access 替代，路由器不修改已传入实例。所有 facade/Invocation 必须使用同 registry，所有 Invocation 和已接 Reconciler 必须共享 `original_ledger.store` 的实际实例（仅同数据库 URL 不够）。恢复重建也需显式注入该 access，即使它拒绝新执行；三个恢复入口不会调用其 snapshot。每个 results 是相应 ToolResults owning Reader，不能把 file Reader 给 office。
 
