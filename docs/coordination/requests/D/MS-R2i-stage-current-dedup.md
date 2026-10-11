@@ -18,3 +18,38 @@
 ```
 
 A第四次本人“已选目录并确认只读”但journal1/grant0/原deadline失败保留。阶段并未续期或恢复旧grant，没有文件/模型通过声明；先受控source复跑测量，暂不反复要求本人点击。A4已交当前来源，A SQL profile setup因Docker不可用未到授权逻辑，不能当D失败或通过。D继续同包原Windows/native/root/IPC/读取/journal回归，SQL installed单列真实可用情况。A如要跨组件优化公共接口仍先明确提案，不偷改shared/A实现。
+
+## 阶段候选接受阻断与修复（2026-10-11）
+
+A实际消费者 m2-d-late-authority-before.xml/log 复现4c候选：最后state.get await时撤销control key，不改变device root Ticket，纯末尾metadata快照仍返回挑战。D自己late-before.xml/log同样1fail/2pass复现；这是D遗漏有效角色边界，不是fixture问题。4c候选及其11次check结果未接受、不能称权限验证完成。全面回归full.log已中断/superseded-full.json记录未通过，缺XML不算成功。
+
+修复源码 **f0b397bbffa9c1202dd696b81664a433a87a4349**：最终Ticket读取后追加真实session.check，保留先前本机Ticket指纹与owner前后值，最终角色/进程/当前key/通道/期限检查结束后只做同步严格快照和新时钟判定。单次RegisteredNative.current为3次完整check，完整bootstrap真实测量14次（第二调用累计28且后续撤销拒绝），仍少于原5/静态20；不强锁11次数字。没有无限原子快照声明，returned challenge不是grant；恰在最后角色check中改变Ticket由原PairingVerifier批准/current revision/CAS拒绝，不开启UI或建立grant。
+
+修复5节点通过/5.12s：final Ticket await中的control revoke、原Ticket revoke、取消；最后role check中的Ticket revoke不能批准/产生grant；14次真实bootstrap全量交集/新调用复查。原63不同阶段节点与新增4去重共67，完整最终源码的全面回归继续；不累加4c被中断的部分通过。
+
+旧候选回归中断后，本session temp-full有57个实际IPC随机namespace，56有正常cleaned报告、1正在运行helper无finally报告；已确认无该temp-full自有Python实例残留，按唯一own helper-input中的随机namespace/两个handle和键库路径（必须位于本session temp-full）清除2自有凭据并复查缺失，撤销两role key，单独interrupted-cleanup JSON保留原退出为interrupted，不冒称正常退出0。未枚举/操作任何其他用户凭据或按通用进程名kill。全部旧清理/失败记录保留，新全面回归用temp-full-final。
+
+D55435本轮TCP probe unavailable，SQL installed6节点尚未运行，不能将组件回归或A Docker profile setup失败称SQL通过；不启动其他session数据库。前轮真实SQL回执保留。这轮没有本人/文件/模型新通过声明，A先消费f0固定修复再测受控source，旧原本人确认journal1/grant0仍未绑定。
+
+## 最终源码、回归与未通过项
+
+最终生产源码 **f0b397bbffa9c1202dd696b81664a433a87a4349**，阶段文档62ae9258e80771d1bdf5832bb1a08c39c1b80941；前候选4c/静态11次目标保留为未接受历史。本轮无公共/A/锁/schema/factory/HTTP/flags编辑；7份原公共repository hash逐一一致。末尾真实role/pipe check仍是最终await，Ticket在该check内随后改变由原approve/current revision/CAS拒绝，不能将current返回值视为grant。
+
+实际全Runner运行 **689不同节点：688通过、1失败、0错误/跳过，347.43s（XML347.260s）**。新增45等待边界均通过；原native/crypto/signature/current owner/根身份/期限/取消/并发/Admission/读取/重启签名content journal兼容均纳入此运行，不能与阶段节点或旧644重复累加。
+
+唯一失败是既有 test_helper_first_start.py::test_installed_hidden_selector_reads_actual_session_d_postgres，在helper factory的sql-check首次读取UAW_TEST_DATABASE_URL时本轮未供给环境，helper bootstrap失败，尚未进入授权逻辑；同时D55435 TCP probe不可用。6个test_installed_first_start.py的真实SQL/Web节点明确未运行，合计7个SQL来源门槛未验证；不是权限测试跳过或用fixture冒充SQL。
+
+```powershell
+.venv/Scripts/python.exe -m pytest -q tests/unit/runner tests/integration/runner --ignore=tests/integration/runner/test_installed_first_start.py --basetemp=tests/.artifacts/D/MS-R2i-current-dedup/temp-full-final --junitxml=tests/.artifacts/D/MS-R2i-current-dedup/full-final.xml
+# 真实SQL补验前只供给D独立环境，不使用A/B/C数据库：
+. ./ops/start-dev-db.ps1 -Session D
+.venv/Scripts/python.exe -m pytest -q tests/integration/runner/test_installed_first_start.py tests/integration/runner/test_helper_first_start.py::test_installed_hidden_selector_reads_actual_session_d_postgres --basetemp=tests/.artifacts/D/MS-R2i-current-dedup/temp-sql --junitxml=tests/.artifacts/D/MS-R2i-current-dedup/sql.xml
+```
+
+本轮已实际尝试上述Session D启动；Docker setup无响应、没有ready，D55435仍不通，未启动SQL pytest/无SQL XML。停止仅本次自有setup，sql-setup.log与sql-unavailable.json记录interrupted/not_passed，不算启动成功，不触及其他session DB；既有前包真实D SQL回执仍保留。外部Docker engine恢复并真实D库迁移就绪后才能补7节点；不以缺源改变授权策略。
+
+最终Ruff通过、77文件格式、Mypy34源码、diff通过。ignored MS-R2i-current-dedup下 full-final.xml/log/checks.json/nodes.json/ruff-final/format-final/mypy-final.log/public-hashes.json；前候选中断full.log/无XML、stage/late-before的实际失败、late-after5通过、SQL setup未通过全部保留。371个不同保留随机namespace清理回执全部cleaned=true，完整与被中断回归236个配置namespace均被实际清理覆盖；无本session full-run helper进程残留。中断时1个own namespace补清理并标原退出interrupted，不能改成正常退出0。
+
+A报告精确合入f0后的消费者源码4e303d01f8f1d90af45f380d8c319c8b261c4161，原最后Ticket/control revoke复现通过、74不同受影响消费者通过/45.57s、A Ruff/196源码Mypy通过；这部分是A的交接结果，不加入D688，也不代表A真实SQL/本人绑定或全产品验收。A5仅当前源/Windows边界阶段接受，D不合并浮动integration。当前actual caller构造/接口不用修改；A保持真实current/source查询与原更早期限，不做permission/schema cache。
+
+本人第四次“已选目录并确认只读”证明窗口显示与本机decision，原journal1/grant0仍未bind、文件/模型0；此次组件修复没有新本人窗口或用户目录访问。A SQL profile/真实source性能及以后本人新确认由A继续，缺生产source503，不重发unknown命令，不从decision恢复旧grant或延长Ticket。写入安装exec/flags关闭，不决定D01/D03/D06。最终文档与独立handoff提交、工作区干净后停本包。

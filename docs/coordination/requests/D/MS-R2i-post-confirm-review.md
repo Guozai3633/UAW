@@ -45,3 +45,7 @@ RegisteredNativeChallenges.current 自身5次check来自 registry.session、auth
 落地前必须新增/复跑实际await期间owner/actor/channel替换、key/root撤销、session/原Ticket过期、进程退出/取消、错误device/schema、OS实例变化与原选择一次消费/重启journal；前后current来源变化均拒绝。不能只按调用次数写镜像测试，也不能用冻结permission快照替代真实source。具体D代码优化待分段证据，当前无已确认D业务错误，不以猜测删检查。
 
 普通15/first90/新root最多120保持；不延长旧Ticket/grant、不开flags、不从SID/PID/body approved推权限、不代本人确认，不把真人已选择等同bind/Tool成功。第四次失败和清理保留；A先完成受控量测与自己的source优化，再决定下一次本人验收。
+
+## 只读提案后实施与最终边界
+
+已按同包派发在D实现内部去重：候选4c最后Ticket await引入控制角色撤销空档，由A和D实际复现并保留失败，候选不接受；修复f0b397bbffa9c1202dd696b81664a433a87a4349补末尾实时session.check，完整bootstrap14次检查（目标11不再适用）。公共入口自足、独立A challenge/原指纹/期限/取消/签名/CAS保持，returned challenge不是grant。详见MS-R2i-stage-current-dedup.md的阶段/失败/修复与最终回执。689运行688通过1 SQL来源失败，另6 SQL未运行，不能称全部验证或本人根绑定完成；A阶段74消费者通过独立记账，不重复累加。
