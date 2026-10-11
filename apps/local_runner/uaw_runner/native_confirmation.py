@@ -71,7 +71,7 @@ class RegisteredNativeChallenges:
             raise CapabilityUnavailable("runner.native_registered_owner")
         ticket = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
         session = await self.registry.session(self.channel_ref, device_id=self.device_id)
-        # One registered session, two fresh live checks. The private snapshot only
+        # One registered session, fresh checks around source and local IO. The private snapshot only
         # copies fixed handshake metadata; it cannot admit or authorize anything.
         channel = self.registry._snapshot(session, self.channel_ref, device_id=self.device_id)
         actor = channel.actor
@@ -106,6 +106,9 @@ class RegisteredNativeChallenges:
         # local Ticket read also catches revoke/expiry during those source awaits.
         await session.check()
         latest = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
+        # Local Ticket IO is an await too: a control-role revoke does not change
+        # this device Ticket, so current role/pipe checks must end the sequence.
+        await session.check()
         final_channel = self.registry._snapshot(session, self.channel_ref, device_id=self.device_id)
         expiry = min(ticket.expires_at, datetime.fromisoformat(final_channel.expires_at))
         if (

@@ -7,6 +7,7 @@ import asyncio
 import json
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
+from threading import Event
 
 import pytest
 from uaw_runner.ipc.windows_pipe import WindowsApi
@@ -37,13 +38,13 @@ async def test_full_bootstrap_still_current_without_redundant_registry_entry_che
     monkeypatch.setattr(session, "check", checked)
     first = await native["checked"].current(native["ticket_id"])
     # Full independent challenge, before/after native reads, both bootstrap checks.
-    assert calls == 11
+    assert calls == 14
     second = await native["checked"].current(native["ticket_id"])
-    assert calls == 22 and first.fingerprint() == second.fingerprint()
+    assert calls == 28 and first.fingerprint() == second.fingerprint()
     native["state"].revoke_key("device1", expected_revision=0)
     with pytest.raises(DomainError):
         await native["checked"].current(native["ticket_id"])
-    assert calls > 22 and session.pipe.closed.is_set()  # No cached permission.
+    assert calls > 28 and session.pipe.closed.is_set()  # No cached permission.
 
 
 CHANGES = [
@@ -230,3 +231,74 @@ async def test_private_snapshot_rejects_missing_principal_fields(ipc_case, monke
     monkeypatch.setattr(Principal, "wire", malformed)
     with pytest.raises(ValueError):
         native["registry"]._snapshot(session, session.channel_ref, device_id="d1")
+
+
+@pytest.mark.parametrize("change", ["control_key", "ticket_revoke", "cancel"])
+async def test_authority_changed_during_final_ticket_read_is_rechecked(
+    ipc_case, monkeypatch, change
+):
+    native = await lifecycle_setup(ipc_case, clock_start=datetime.now(UTC))
+    original = native["state"].get
+    loop = asyncio.get_running_loop()
+    entered, release = asyncio.Event(), Event()
+    calls = 0
+
+    def waiting_read(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            loop.call_soon_threadsafe(entered.set)
+            assert release.wait(5)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(native["state"], "get", waiting_read)
+    work = asyncio.create_task(native["challenge"].current(native["ticket_id"]))
+    try:
+        await asyncio.wait_for(entered.wait(), 5)
+        if change == "control_key":
+            native["state"].revoke_key("control1", expected_revision=0)
+        elif change == "ticket_revoke":
+            native["state"].revoke(native["ticket_id"], expected_revision=0, now=native["clock"][0])
+        else:
+            work.cancel()
+        release.set()
+        with pytest.raises(asyncio.CancelledError if change == "cancel" else DomainError):
+            await asyncio.wait_for(work, 5)
+    finally:
+        release.set()
+        if not work.done():
+            work.cancel()
+        await asyncio.gather(work, return_exceptions=True)
+
+
+async def test_ticket_revoked_in_last_role_check_cannot_approve_or_create_grant(
+    ipc_case, monkeypatch
+):
+    native = await lifecycle_setup(ipc_case, clock_start=datetime.now(UTC))
+    original = native["session"].check
+    calls = 0
+
+    async def last_check_changes_ticket():
+        nonlocal calls
+        calls += 1
+        await original()
+        if calls == 3:
+            # The final role read has completed; this is not a grant. Existing
+            # approve/current revision/CAS must reject a changed original Ticket.
+            native["state"].revoke(native["ticket_id"], expected_revision=0, now=native["clock"][0])
+
+    monkeypatch.setattr(native["session"], "check", last_check_changes_ticket)
+    monkeypatch.setattr(
+        "uaw_runner.native_confirmation.WindowsNativeDialog",
+        lambda: pytest.fail("revoked Ticket must never open UI"),
+    )
+    with pytest.raises(DomainError):
+        await native["lifecycle"].select(
+            native["ticket_id"],
+            expected_revision=0,
+            code=native["issued"].verification_code,
+            proof_signature=native["proof"],
+        )
+    assert native["state"].get(native["ticket_id"], now=native["clock"][0]).state == "revoked"
+    with native["grants"].state.transaction() as db:
+        assert db.execute("SELECT COUNT(*) FROM root_grants").fetchone()[0] == 0
