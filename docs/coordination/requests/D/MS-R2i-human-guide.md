@@ -35,3 +35,9 @@ A已正式发布 ms-i2l-a1 /348df5ae3032f898def9bd72a1b7e22cc21fe8c4，提供固
 后者沿既有MS-R2h手动harness创建随机临时根、真实隐藏IPC/OS密钥/设备签名读取和撤销清理，但账号/owner/challenge/authority仍受控，不能证明本轮真实installed首次账号链；回执位置仍是MS-R2h harness自己的ignored目录，必须标其准确来源。本轮只运行默认pending并保存tests/.artifacts/D/MS-R2i/manual-default.log/human-pending.json。
 
 不打开写入/安装/exec或flags、不代替用户选择模式、不决定D01/D03/D06。完整产品/本人/Tool/Model/HTTP整链由A接受，不把D组件回归当全量产品通过。
+
+## 本人重验提示（2026-10-11，同包窗口修复）
+
+A消费D源码ef609407b0875fb51c53121a31a5a56d37dab93a及自己的当前诊断消费者后，再由本人按上面顺序启动新实例。目录窗口会在原初始化回调请求显示/前台，并只将自身临时置顶；系统拒绝焦点时闪动提醒。账号/最终只读窗口仍默认“取消”。本人仅选择A事先说明的本轮临时根，不能选择用户项目或以网页路径代替。
+
+如果本人仍未看到目录窗口，直接取消本轮，保存A connected后原failure/closed与私有phase/error_type/code、实际OS实例和清理回执；不增加超时、不自动重开或选目录。原第三次本人未见目录窗口/父端deadline_exceeded失败保留。真实隐藏子进程自动取消测试只证明初始化窗口可见与销毁；本人看见/选择/最终确认均需单独实际回执，未操作是pending。

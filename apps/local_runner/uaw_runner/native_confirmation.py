@@ -71,17 +71,20 @@ class RegisteredNativeChallenges:
             raise CapabilityUnavailable("runner.native_registered_owner")
         ticket = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
         session = await self.registry.session(self.channel_ref, device_id=self.device_id)
-        actor = await self.registry.authenticated_principal(
-            self.channel_ref, device_id=self.device_id
-        )
+        # One registered session, fresh checks around source and local IO. The private snapshot only
+        # copies fixed handshake metadata; it cannot admit or authorize anything.
+        channel = self.registry._snapshot(session, self.channel_ref, device_id=self.device_id)
+        actor = channel.actor
         owner = await self.mapping.owner(authenticated_principal=actor, device_id=self.device_id)
-        channel = await self.registry.read(self.channel_ref, device_id=self.device_id)
+        if not isinstance(owner, Principal):
+            raise reject("dependency_protocol_invalid", "Native owner source type invalid", 503)
+        # Snapshot full fields, not a mutable model borrowed from an adapter.
+        owner = Principal.model_validate_json(canonical(owner.wire()))
         if (
             owner.kind != "user"
             or owner.id != ticket.principal_id
             or ticket.device_id != self.device_id
-            or owner.wire() != channel["owner"]
-            or actor.wire() != channel["actor"]
+            or owner.wire() != channel.owner.wire()
         ):
             raise reject(
                 "permission_denied", "Native account/device relationship differs", 403, "permission"
@@ -92,15 +95,35 @@ class RegisteredNativeChallenges:
             raise reject(
                 "permission_denied", "Native endpoint OS instance differs", 403, "permission"
             )
-        await session.check()
-        return NativeChallenge(
-            ticket,
-            owner,
-            actor,
-            self.channel_ref,
-            identity,
-            min(ticket.expires_at, datetime.fromisoformat(str(channel["expires_at"]))),
+        final_owner = await self.mapping.owner(
+            authenticated_principal=actor, device_id=self.device_id
         )
+        if not isinstance(final_owner, Principal):
+            raise reject("dependency_protocol_invalid", "Native owner source type invalid", 503)
+        final_owner = Principal.model_validate_json(canonical(final_owner.wire()))
+        # Re-read current peers/roles/keys/process/deadline after external owner
+        # and OS awaits. Never reuse validation across this boundary. The final
+        # local Ticket read also catches revoke/expiry during those source awaits.
+        await session.check()
+        latest = await asyncio.to_thread(self.state.get, ticket_id, now=aware(self.clock()))
+        # Local Ticket IO is an await too: a control-role revoke does not change
+        # this device Ticket, so current role/pipe checks must end the sequence.
+        await session.check()
+        final_channel = self.registry._snapshot(session, self.channel_ref, device_id=self.device_id)
+        expiry = min(ticket.expires_at, datetime.fromisoformat(final_channel.expires_at))
+        if (
+            latest != ticket
+            or final_owner.wire() != owner.wire()
+            or final_channel.wire() != channel.wire()
+            or aware(expiry) <= aware(self.clock())
+        ):
+            raise reject(
+                "permission_denied",
+                "Native ticket/account/channel changed or expired",
+                403,
+                "permission",
+            )
+        return NativeChallenge(ticket, owner, actor, self.channel_ref, identity, expiry)
 
 
 class WindowsNativeConfirmation:
