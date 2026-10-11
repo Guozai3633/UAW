@@ -169,6 +169,59 @@ class EnrolledPeerRegistry:
             raise reject(
                 "enrolled_device_denied", "Active independent device relationship required", 403
             )
+        if authenticated_principal.kind == "user":
+            # RootSource queries the trusted context's original Web owner. It
+            # must share this exact mapping with native bootstrap/admission,
+            # but a user is not either channel actor. Check the complete live
+            # relationship rather than copying ctx/user ID into an owner grant.
+            if (
+                authenticated_principal != self.user
+                or value["proof_document"]["owner"] != self.user.wire()
+            ):
+                raise reject("enrolled_owner_denied", "Original complete Web owner required", 403)
+            control = value["proof_document"]["control"]["identity"]
+            identity = OsIdentity(
+                control["pid"], int(control["created"]), control["user_sid"], control["logon_sid"]
+            )
+            # The owning recheck inside _checked_peer validates the original
+            # candidate's BOTH processes/keys plus the actual native journal
+            # and both signatures. Then check each role's OS/key after that IO.
+            await self._checked_peer(value, identity, role="control")
+            for role_name in ("control", "device"):
+                peer = value["proof_document"][role_name]
+                role_identity = OsIdentity(
+                    peer["identity"]["pid"],
+                    int(peer["identity"]["created"]),
+                    peer["identity"]["user_sid"],
+                    peer["identity"]["logon_sid"],
+                )
+                if await self.observe(role_identity.pid) != role_identity:
+                    raise reject(
+                        "enrolled_os_instance_changed", "Current role process differs", 403
+                    )
+                if self.directory is None:
+                    raise CapabilityUnavailable("enrollment.current_role_key_directory")
+                key = await asyncio.to_thread(
+                    self.directory.lookup, peer["key_id"], device_id=device_id
+                )
+                if key != VerificationKey(
+                    peer["key_id"],
+                    device_id,
+                    base64.b64decode(peer["public_key"], validate=True),
+                    "control" if role_name == "control" else "device",
+                ):
+                    raise reject("enrolled_current_key_denied", "Current role key differs", 403)
+            if (
+                await self._snapshot() != value
+                or self.enrollments.now()
+                >= self.enrollments.instant(value["proof_document"]["expires_at"])
+            ):
+                raise reject("enrolled_source_changed", "Original owner relationship changed", 412)
+            encoded = json.dumps(value, sort_keys=True, allow_nan=False).encode()
+            if self.original_enrollment is not None and self.original_enrollment != encoded:
+                raise reject("enrolled_source_changed", "Original owner binding changed", 412)
+            self.original_enrollment = encoded
+            return Principal.model_validate(self.user.wire())
         matches = [
             (role, peer)
             for role, peer in ((r, value["proof_document"][r]) for r in ("control", "device"))

@@ -37,23 +37,29 @@ class RegisteredRunnerAuthority(AsyncRunnerAuthorityPort):
         root = actual["root"]
         if root != record["root"]:
             raise reject("runner_root_changed", "Registered root binding changed", 412)
-        saved = actual["request"]
-        result = {
-            "context": saved["context"],
-            "device_id": actual["device"]["device_id"],
-            "root_handle": root["root_handle"],
-            "workspace_ref": root["workspace_ref"],
-            "binding_revision": root["binding_revision"],
-            "fencing_token": actual["lease"]["fencing_token"],
-            "lease_expires_at": actual["lease"]["expires_at"],
-            "request_ref": record["command"]["request_ref"],
-            "request_parameters": saved["parameters"],
-            "policy_ref": saved["context"]["capability_policy_ref"],
-            "required_scope_capability": saved["parameters"]["action"],
-            "allowed_actions": root["allowed_actions"],
-            "feature_enabled": True,
-            "connected": actual["device"]["source"]["connected"],
-            "cancelled": actual["budget"]["ledger"]["cancel_requested"],
-        }
-        validate_contract("RunnerAuthoritySnapshot", result)
-        return result
+        return authority_snapshot(record, actual)
+
+
+def authority_snapshot(record: Payload, actual: Payload) -> Payload:
+    """Pure strict projection of freshly checked owning sources; grants no access."""
+    root = actual["root"]
+    saved = actual["request"]
+    result = {
+        "context": saved["context"],
+        "device_id": actual["device"]["device_id"],
+        "root_handle": root["root_handle"],
+        "workspace_ref": root["workspace_ref"],
+        "binding_revision": root["binding_revision"],
+        "fencing_token": actual["lease"]["fencing_token"],
+        "lease_expires_at": actual["lease"]["expires_at"],
+        "request_ref": record["command"]["request_ref"],
+        "request_parameters": saved["parameters"],
+        "policy_ref": saved["context"]["capability_policy_ref"],
+        "required_scope_capability": saved["parameters"]["action"],
+        "allowed_actions": root["allowed_actions"],
+        "feature_enabled": True,
+        "connected": actual["device"]["source"]["connected"],
+        "cancelled": actual["budget"]["ledger"]["cancel_requested"],
+    }
+    validate_contract("RunnerAuthoritySnapshot", result)
+    return result

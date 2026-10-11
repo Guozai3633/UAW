@@ -97,3 +97,18 @@ session，返回或异常后 owning context 清空。channel/root/consent仍为�
 [201不同定向节点](evidence/ms-i2l-a9-current-tests.xml)保留原191、journal197、所有失败及旧全量。
 D 已收到准确 journal 执行基线和具体任务；本改动没有改变公开 wire 或 D port，
 D 不自动消费 A 浮动 HEAD。首次本机读取、模型文件成果、原本人页面与整轮仍 pending。
+
+## D 定向修复与 A 原 owner/current 续项
+
+D最终源码7926160、交接28850ff已审阅合入；B394d785/C223c9a9已在历史内，没有重复合并。
+D195不同定向节点是worker组件覆盖，未与A统计直接相加；A复验10个私钥await后拒绝节点通过。
+
+A修复同一原映射对ctx原用户的查询，16个实际SQL/签名节点通过。
+原首次文件链两次回执均失败：第一次单独mapping违反helper构造约束（11.86秒），
+第二次同一mapping原用户分支消除旧身份拒绝，但原10秒响应仍取消（77.52秒、command1/open0）。
+原随机凭据/keys/child/proof均清理，无用户正文、新模型调用或native操作。
+
+A新增有界原command current/watch内部port，14个SQL/签名节点通过，仍是完整来源查询，
+未装配D执行端，不将接口通过或timeout拒绝当成本问题解决。
+修复前序列化/fixture/受控hook失败保留。210源码Mypy及改动Ruff/格式通过。
+详细输入/输出/来源范围/限制见[A10接线说明](../coordination/requests/A/MS-I2l-A10-owner-recheck.md)。

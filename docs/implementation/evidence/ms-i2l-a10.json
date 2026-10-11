@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "72d98ac3ab54923622e7fef649da75bab0db20e3",
+  "status": "D component merge and A root-owner/recheck scope; first installed chain remains failed",
+  "worker_sources": {
+    "B": "394d78579bb6841bd936b11af557bc401d0b2dba",
+    "C": "223c9a9963414bdc1ae71d3e723224d0958ab63c",
+    "D_source": "79261603c5a045c576410bf3c5cc21b2af11d719",
+    "D_handoff": "28850ff72efb47fbb1174ca2f011ff7700a47ec9"
+  },
+  "component_union_nodes": 231,
+  "new_distinct_nodes": 30,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a10-root-owner-final.xml",
+      "sha256": "95792778a75ae51477ccc4220dac4705381a8bb250bf3aab41f871a9aa11b2c0",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-recheck5.xml",
+      "sha256": "8bbc7bb0d12c9051849b1e6d9de6031e750f8270f715a1633010d4c62cb0904d",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-d-consumer.xml",
+      "sha256": "b5c2d01942229072b2f0f480142b5021788f590fb56d2503f9340126451ef552",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failed_receipts_retained": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-owner-chain.xml",
+      "sha256": "ecb63b5ff794720779e4645054fca7999aa8031d9ca793c770760f86e246067e",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-owner-chain2.xml",
+      "sha256": "54f153bba18581a4457325642b09b183316516a95feb3e00576967a60e6b220f",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-recheck.xml",
+      "sha256": "8f87340abce652f2b1350c5161924efc38da06a8b710492f6b9640f1df28371c",
+      "tests": 63,
+      "failures": 10,
+      "errors": 4,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-recheck2.xml",
+      "sha256": "491153763b868f1a38fc06909e04c442421ed1a5423ad290aec9b2c7807f8c19",
+      "tests": 14,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-recheck3.xml",
+      "sha256": "da4c76289ee076869efc3e2f43db43a41764f21e1a58ec135200d73b5d86e42f",
+      "tests": 14,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a9-recheck4.xml",
+      "sha256": "394ad7684c5f53da0059b5b227f097d826b8c141925839d96b8d7b461705b841",
+      "tests": 14,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "additional_compatible_control_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a9-recheck.xml",
+    "passing_control_nodes": 49,
+    "note": "49 control nodes passed in mixed failed batch; original report remains failed, not claimed fully passing"
+  },
+  "first_chain": {
+    "passed": false,
+    "seconds": 77.52,
+    "command_sends": 1,
+    "opens": 0,
+    "blocked_at": "original response deadline after owner/root mapping passes; invoke interrupted/unknown",
+    "first_current_seconds": 6.673156700002437,
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    }
+  },
+  "scope": "Actual SQL/Ed25519 and D temporary OS component checks; native selection and channel/root component inputs controlled. Worker195 is not added to A totals. No human acceptance.",
+  "recheck_watch": "full fresh owning checks, internal port not wired to production Runner; no performance reduction claimed",
+  "static": {
+    "mypy_source_files": 210,
+    "ruff_changed_files": "passed",
+    "format_changed_files": "passed"
+  },
+  "product_gates": {
+    "first_installed_file_read": false,
+    "fixed_llm_file_delivery": false,
+    "original_authenticated_browser": false,
+    "full_milestone": false
+  },
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "flags_enabled": false,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a9-current.json"
+}

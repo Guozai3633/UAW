@@ -4,6 +4,7 @@ import asyncio
 
 import pytest
 
+from tests.integration.test_control_plane import domain as domain
 from tests.integration.test_control_plane import meta
 from tests.integration.test_runner_control import case as case
 from uaw.infrastructure.db.transactions import reference

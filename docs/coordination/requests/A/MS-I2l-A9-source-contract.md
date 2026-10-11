@@ -1,5 +1,9 @@
 # A9 当前开发接口与接线状态
 
+最新同轮续项：D 定向任务已获用户授权并完成交付，28850ff 合入A；
+原user/root映射及有界current/watch契约见[ A10 ](MS-I2l-A10-owner-recheck.md)。
+下方A9初始状态保留历史，不作为当前派发或产品接受记录。
+
 2026-10-11。A继续自己已发布 A8 后的 integration HEAD。A9组件源码由ms-i2l-a9-source固定，准确SHA见DISPATCH；没有自动派发D修复包。worker 保持原 A8 快照，只有收到明确任务和准确新阶段SHA才同步，不消费浮动 integration。
 
 ## 文件管理与准入
