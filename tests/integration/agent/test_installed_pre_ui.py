@@ -31,6 +31,9 @@ async def test_installed_actual_sources_reach_root_dialog_without_file_access(
     env = installed_environment()
     env["PYTHONPATH"] += os.pathsep + str(ROOT)
     env["UAW_TEST_INSTALLED_DIAGNOSTIC"] = "1"
+    profile_path = os.environ.get("UAW_TEST_INSTALLED_PROFILE")
+    if profile_path:
+        env["UAW_TEST_INSTALLED_PROFILE"] = profile_path
     launch = await PreparedEnrollmentLaunch.prepare(
         c,
         owner=owner,
