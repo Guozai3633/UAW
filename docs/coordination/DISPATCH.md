@@ -1,4 +1,25 @@
-# MS-I2l A10：worker 组件审阅与原用户/root 映射已固定
+# MS-I2l A11：默认关闭的查询优化候选与真实失败已固定
+
+准确源码 **691f28c929bc50446a881ee9ae49f8fdfb97dfff** /
+`ms-i2l-a11-source`，继续本轮，不移动旧标签或创建新共同包。
+本阶段93个不同定向节点通过；连同历史组件回执并集245，历史节点未全部在最终版重跑，
+不是一次全量。210源码Mypy、Ruff/格式及契约检查通过。
+
+新增一次metadata pass中的重复行输入和最终全量SQL witness，包含墓碑/完整内容/schema/revision、
+子任务隔离、取消、改回原值及新增SQL等待后的双方OS/key复查。
+`checked_metadata=False`为默认，实际production composition未打开；原逐次fresh读取保持。
+受控同snapshot SELECT42→34；该组件测量不代表整链性能。
+
+两次实际优化候选Windows链仍失败，最新91.23秒、command1/open0、结果unknown不重发。
+4凭据/2keys/child/proof清理通过。保留候选源码摘要和失败；不能宣称生产预算通过。
+默认关闭后44项回归通过；没有把默认路径新的完整Windows链或模型/本人页面标通过。
+首次文件链、固定用户模型文件交付、B真实认证/本人接受及汇合全量仍pending。
+无新模型或用户正文访问，flags不开放，不派无新来源的新worker包。
+[具体接口/开关/限制](requests/A/MS-I2l-A11-checked-reads.md)、
+[逐批验收/失败](../implementation/evidence/ms-i2l-a11.json)。
+A继续处理原响应预算与有效current/watch生产消费；D组件修复已接受，完整修复未接受。
+
+# MS-I2l A10：worker 组件审阅与原用户/root 映射已固定（历史）
 
 2026-10-11。准确源码 **5f747fd0d259a92e6596c79547ca11246a20c504** /
 `ms-i2l-a10-source`。继续原 MS-I2l，不建立新共同 start，不移动旧标签。

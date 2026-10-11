@@ -1,4 +1,15 @@
-# A/MS-I2l-A10 原 owner 修复与 worker 审阅
+# A/MS-I2l-A11 默认关闭的 checked metadata 选项
+
+准确源码 691f28c929bc50446a881ee9ae49f8fdfb97dfff / ms-i2l-a11-source。
+93不同定向节点通过；历史组件并集245，非一次最终版全量。210源码类型及契约检查通过。
+重复行输入+最终fresh完整SQL witness；角色keys/OS在新增等待后复查，子任务/取消隔离。
+checked_metadata默认False，production composition未开；受控测量SELECT42→34，非整链收益。
+两次实际候选原Windows读取仍失败，最新command1/open0，所有cleanup与失败保留；unknown不重发。
+默认关闭后44节点通过，真实文件模型/原页面本人交付与全量仍pending。
+继续A原预算和有效current/watch装配，B/C/D组件已审阅，不自动扩包或开启flags。
+详见 ../../coordination/requests/A/MS-I2l-A11-checked-reads.md 和 DISPATCH。
+
+# A/MS-I2l-A10 原 owner 修复与 worker 审阅（历史）
 
 准确源码 5f747fd0d259a92e6596c79547ca11246a20c504 / ms-i2l-a10-source。
 B/C 已在历史内，D 最新定向修复合入；不操作 worker 分支或源码。
