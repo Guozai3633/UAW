@@ -1,3 +1,23 @@
+# MS-I2l A9 journal：固定源码与 D 定向修复派发
+
+2026-10-11。准确执行源码 **225f5006f9ad246fb17816363beda4f1f1445876** /
+`ms-i2l-a9-journal-source`。用户已明确授权 A 向现有 D 聊天发送下述具体修复。
+本页正式发布 D 原只读链预算修复；不是新的共同 start，不移动旧标签。
+
+D 在自己原工作区/分支核对远端标签和本记录后，合入准确源码标签，保留自己的历史。
+不合浮动 integration，不 reset/rebase，不同步其他 worker。
+读取 [具体请求](requests/A/MS-I2l-A9-D-original-read-budget.md) 与
+[A 原来源契约](requests/A/MS-I2l-A9-source-contract.md)。仅修改 D 原允许源码、测试和 D 文档。
+先给出每个执行/等待检查点及所需 A 来源 port，阶段接口/源码提交即交 A，随后完成 D 自有修复和实际验证。
+公开 port 由 A 接受并实现；A 保留控制端、原审批/预算/SQL/材料链。
+
+新增原 journal 恢复 6 节点通过，定向并集197，209源码类型检查和契约校验通过。
+恢复只读原已发布 signed journal；不第二次发 command，不复活关闭通道。
+首次 Windows 原读、固定模型文件交付、原拥有者页面和汇合全量仍未通过。
+原 source12 失败、旧191节点和全部费用/本人回执保留；原期限和 flags 不变。
+完整范围见 [A9](../implementation/MS-I2l-A9.md) 与
+[journal 回执](../implementation/evidence/ms-i2l-a9-journal.json)。
+
 # MS-I2l A9：组件阶段源码固定，原文件实链未通过
 
 2026-10-11。准确源码 **e2f0394cee72ae0877c05af0ccd4b7e25ae709de** /
@@ -12,7 +32,7 @@ Windows原链source12仍ipc_broken：原command发1次、打开文件0次；
 凭据/keys/原进程及pipe已清理。原期限、unknown不重发和默认flags保持。
 
 [A/D具体修复请求](requests/A/MS-I2l-A9-D-original-read-budget.md)已准备，
-**未正式派发或授权向D聊天发送**。worker不因本阶段标签自动开始或消费浮动integration。
+当时未正式派发；现已由上方 journal 续项取得用户授权并固定新源码。worker仅消费上方准确版本。
 A9不是完整MS-I2l/P1 accepted，汇合全量等待实际文件/固定模型/本人页面链通过；
 旧1691全量、本人历史回执和模型费用不覆盖。
 
