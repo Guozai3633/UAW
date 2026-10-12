@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-12",
+  "previous_published_commit": "3213f8dfd4888a21d9b83ca54c851b002ac7637d",
+  "source_parent_commit": "b9723feefef9953cdbe7e22f39332e85d926b9d2",
+  "scope": "A installed exact composite wiring, owning-task SQL record and transactional load observation, and exact D composite consumer integration",
+  "targeted_substage_union_nodes": 163,
+  "historical_component_union_nodes": 321,
+  "note": "Multiple targeted batches; final D consumer 46, source SQL 115 and Windows assembly/peer 2. Historical nodes not all rerun. Superseded non-parameterized lease node retained in original XML but excluded from current union.",
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-d-stage-component.xml",
+      "sha256": "3aa36a8c84af65a3ac555f5cabdb87ced56ad497434c71f04bd08735fe30c7f5",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-installed-source.xml",
+      "sha256": "d052122c630320c0158c14f68b1020103da4f2621b92e0e2bb7c6c2e16028089",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-source-regression.xml",
+      "sha256": "21a7586056943454b81b5629d86ba1f78da0526090856e460b1bf2d0bc06b68e",
+      "tests": 114,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-device-lease-watch.xml",
+      "sha256": "99abec792e38ab9881a7fa11f9ddadd9cb63ea243f8b62359870e426fb156342",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-peer-watch.xml",
+      "sha256": "cfeef97fa33aaea9b48a5b4f47b8587e2364669b18709ddcf45deb5ebe6b55eb",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a15-d-final-component.xml",
+      "sha256": "becf57a8fbbdfbcc3148730a79f69d6b0d17a7b90432ef2173acbd1ffad0316c",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "preserved_failure": {
+    "path": "tests/.artifacts/A/MS-I2l/a15-transaction-witness-first.xml",
+    "sha256": "7b1fc65ae43438cd1e7ef570d0612d373ee4e343e53a45c669f6d2a1811bcda9",
+    "tests": 32,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "reason": "New lease test expected a lease-named error; original pinned revision correctly denies with revision_conflict. Exact denial and actual released state now asserted; original failure retained."
+  },
+  "preserved_static_fix": "Final lint initially found a 101-character assertion line; formatting corrected, no semantic change.",
+  "sql_observation": {
+    "a14_coverage_correction": "A14 get-only observation missed RecordTransaction.load device/lease sources. A15 joins same-Database TransactionalStore load inputs and RecordStore adapters.",
+    "task_isolated": true,
+    "child_inherits_allowed_baseline": false,
+    "observes": [
+      "current full payload/schema/revision",
+      "historical revisions",
+      "missing/tombstones",
+      "TransactionalStore.inspect/execute load"
+    ],
+    "max_observed_addresses": 256,
+    "arbitrary_raw_sql_or_range_queries_covered": false,
+    "direct_unbound_RecordTransaction_covered": false,
+    "poll_unchanged": "one fresh current/history UNION; callback once",
+    "wait_result_is_permission": false,
+    "non_sql_sources_covered": false,
+    "deadline_extended": false
+  },
+  "actual_installed_peer_sql": {
+    "owning_reads": 1,
+    "fresh_sql_checks": 4,
+    "covered_namespaces": [
+      "runner.enrollment.launcher.candidates",
+      "runner.enrollment.native.decisions",
+      "runner.enrollments",
+      "web.sessions"
+    ],
+    "native_journal_change_detected": true,
+    "source_is_execution_permission": false
+  },
+  "actual_installed_peer_cleanup": {
+    "credential_handles_absent": 4,
+    "role_keys_revoked": 2,
+    "child_exited": true,
+    "proof_pipe_closed": true
+  },
+  "actual_installed_peer_commands": 0,
+  "exact_worker_delivery": {
+    "session": "D",
+    "stage_code": "bb24f69761429a110e5906063ed4333220f35f53",
+    "stage_docs": "2748a5524fd22722ad9aab13b831b0d07356e947",
+    "measurement_wrapper_fix": "68c665cf7baea2361b99ba8fb6805e8356384cfe",
+    "final_code": "13ecd4bd44a896f51ec9c736eef0b4d6a8789be2",
+    "final_docs": "9f8d0f157da36449834b542bc25bfe4aa1dec02b",
+    "handoff": "cde9ecab1f0c674663d440659bf0bfed26d019f4",
+    "worker_reported_nodes": 243,
+    "a_rerun_consumer_nodes": 46,
+    "accepted": "component and interface scope only; full first file chain and SQL/native watch integration pending"
+  },
+  "first_file_chain_passed": false,
+  "product_full_milestone": false,
+  "new_file_commands": 0,
+  "user_file_reads": 0,
+  "new_model_calls": 0,
+  "human_confirmation_or_acceptance": false,
+  "flags_enabled": false,
+  "checked_metadata_default_enabled": false,
+  "static": {
+    "mypy_source_files": 211,
+    "ruff": "passed",
+    "format": "passed",
+    "receipts": {
+      "a15-mypy-final.log": "7fb9376deb19a329fb4cb4b09c489d863bf68b6a30db4a1d87ba0c783e152367",
+      "a15-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a15-format-final.log": "a0281462a8ffbcadb3732bd8ea18fb7283bbd8213e202d80cf5d71d52b97de21"
+    }
+  },
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a14.json"
+}

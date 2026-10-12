@@ -225,6 +225,11 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
             and current_source.commands.store is container.records
             and current_source.commands.roots is roots
             and current_source.commands.devices.channels is registry
+            and isinstance(protocol.principal_mapping, EnrolledPeerRegistry)
+            and protocol.principal_mapping.enrollments is container.runner_enrollments
+            and protocol.principal_mapping.enrollments.records is container.records
+            and roots.mapping is protocol.principal_mapping
+            and bootstrap.registration is protocol.principal_mapping
         ):
             raise CapabilityUnavailable("runner.installed.current_source_binding")
         window: dict[str, Any] = {}
@@ -240,13 +245,13 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
             roots=roots,
             registry=registry,
             currency=currency,
+            current_source=current_source,
             **window,
         )
         self.container = container
-        # A owning source is available to the next explicit D consumer adapter.
-        # The existing D runtime/endpoint has no current_source argument yet;
-        # exposing this object does not replace any of its existing checks.
-        self.current_source = current_source
+        # The D runtime passes this exact owning object to its endpoint/factory.
+        # Composition itself grants nothing; effect boundaries still use fresh
+        # full current plus independent native/key/OS and one-use CAS guards.
 
     async def serve_once(self) -> Ref:
         try:

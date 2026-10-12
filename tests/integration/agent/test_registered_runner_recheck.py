@@ -238,3 +238,66 @@ async def test_watch_earlier_original_command_deadline_interrupts_poll_io(case):
     assert asyncio.get_running_loop().time() - started < 5
     assert case.commands.store._read_witness.get() is None
     assert case.commands.store._current_reads.get() is None
+
+
+@pytest.mark.parametrize("change", ["lease", "device"])
+async def test_watch_actual_transactional_lease_or_device_revocation_is_observed(case, change):
+    source, ref, channel, _ = await prepared(case)
+    polling = asyncio.Event()
+    original = case.commands.store._witness_rows
+    polls = 0
+
+    async def witness(*args):
+        nonlocal polls
+        result = await original(*args)
+        polls += 1
+        if polls == 3:
+            polling.set()
+        return result
+
+    async def release():
+        await polling.wait()
+        if change == "lease":
+            await case.leases.release(
+                {
+                    "lease_ref": case.registered["lease_ref"],
+                    "fencing_token": case.lease["fencing_token"],
+                },
+                meta("watch-release"),
+                case.ctx,
+                holder=case.controller,
+            )
+        else:
+            await case.devices.revoke(
+                case.device["device_id"],
+                case.device["revision"],
+                meta("watch-device-revoke"),
+                authenticated_service=case.controller,
+            )
+
+    case.commands.store._witness_rows = witness
+    changed = asyncio.create_task(release())
+    try:
+        with pytest.raises(DomainError) as denied:
+            await source.wait_changed(
+                ref,
+                authenticated_principal=case.actor,
+                channel_ref=channel,
+                deadline=asyncio.get_running_loop().time() + 5,
+            )
+        await changed
+        if change == "lease":
+            # Release changes the original pinned revision before current()
+            # can grant admission. The lease service reports that conflict.
+            assert denied.value.failure.code == "revision_conflict"
+            assert (await case.leases.state(case.ctx, holder=case.controller))[
+                "state"
+            ] == "released"
+        else:
+            assert denied.value.failure.code == "runner_device_inactive"
+            assert (await case.devices._load(case.device["device_id"]))["state"] == "revoked"
+        assert polls >= 4
+    finally:
+        changed.cancel()
+        await asyncio.gather(changed, return_exceptions=True)
+    assert case.commands.store.database._record_observers.get() is None

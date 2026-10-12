@@ -13,7 +13,7 @@ from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.db.session import Database
 from uaw.shared.contracts import Principal, RequestMeta
 from uaw.shared.schema import validate_contract
-from uaw.shared.stores import StoreConflict, StoreMissing
+from uaw.shared.stores import Record, StoreConflict, StoreMissing
 
 Payload = dict[str, Any]
 
@@ -33,14 +33,23 @@ def reference(kind: str, resource_id: str, revision: int = 1) -> Payload:
 
 
 class RecordTransaction:
-    def __init__(self, session: AsyncSession, owner: str) -> None:
+    def __init__(self, session: AsyncSession, owner: str, database: Database | None = None) -> None:
         self.session = session
         self.owner = owner
+        self.database = database
 
     async def load(self, namespace: str, resource_id: str) -> RecordRow:
         row = await self.session.get(RecordRow, (self.owner, namespace, resource_id))
         if row is None or row.deleted:
+            if self.database is not None:
+                self.database.observe_record((self.owner, namespace, resource_id), None, None)
             raise StoreMissing()
+        if self.database is not None:
+            self.database.observe_record(
+                (self.owner, namespace, resource_id),
+                None,
+                Record(namespace, resource_id, row.revision, row.schema_name, row.payload),
+            )
         return row
 
     async def write(
@@ -152,7 +161,7 @@ class TransactionalStore:
                     func.pg_advisory_xact_lock(func.hashtextextended(f"{owner.id}:{aggregate}", 0))
                 )
             )
-            return await action(RecordTransaction(session, owner.id))
+            return await action(RecordTransaction(session, owner.id, self.database))
 
     async def execute(
         self,
@@ -201,7 +210,7 @@ class TransactionalStore:
                 return on_replay(result) if on_replay else result
             if verify:
                 await verify()
-            result = await action(RecordTransaction(session, owner.id))
+            result = await action(RecordTransaction(session, owner.id, self.database))
             session.add(
                 RequestRow(
                     principal_id=owner.id,

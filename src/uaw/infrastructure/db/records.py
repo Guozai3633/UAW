@@ -91,13 +91,14 @@ class PostgresRecordStore:
         async with self.current_reads(), asyncio.timeout(10):
             token = self._read_witness.set((task, rows, versions))
             try:
-                yield
-                if rows or versions:
-                    actual, observed = await self._witness_rows(rows, versions)
-                    if {key: actual.get(key) for key in rows} != rows or {
-                        key: observed.get(key) for key in versions
-                    } != versions:
-                        raise StoreConflict("current_read_source_changed")
+                with self.database.observe_reads(self._observe):
+                    yield
+                    if rows or versions:
+                        actual, observed = await self._witness_rows(rows, versions)
+                        if {key: actual.get(key) for key in rows} != rows or {
+                            key: observed.get(key) for key in versions
+                        } != versions:
+                            raise StoreConflict("current_read_source_changed")
             finally:
                 self._read_witness.reset(token)
 
@@ -375,7 +376,7 @@ class PostgresRecordStore:
                 saved.schema_name,
                 json.loads(json.dumps(saved.payload, allow_nan=False)),
             )
-            self._observe(batch_key, revision, result)
+            self.database.observe_record(batch_key, revision, result)
             return result
         if batch is not None and len(batch) >= 256:
             raise StoreConflict("current_read_capacity_exceeded")
@@ -401,20 +402,20 @@ class PostgresRecordStore:
                     )
                 )
                 if version is None:
-                    self._observe(batch_key, revision, None)
+                    self.database.observe_record(batch_key, revision, None)
                     raise StoreMissing()
                 result = self._record(version)
-                self._observe(batch_key, revision, result)
+                self.database.observe_record(batch_key, revision, result)
                 return result
             # Never trust SQLAlchemy's identity map for mutable current authority.
             row = await session.get(RecordRow, key, populate_existing=True)
             if row is None or row.deleted:
-                self._observe(batch_key, revision, None)
+                self.database.observe_record(batch_key, revision, None)
                 raise StoreMissing()
             result = self._record(row)
             if batch is not None:
                 batch[batch_key] = self._record(row)
-            self._observe(batch_key, revision, result)
+            self.database.observe_record(batch_key, revision, result)
             return result
 
     @staticmethod
