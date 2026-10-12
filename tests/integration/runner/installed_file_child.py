@@ -5,9 +5,11 @@ no root path, proof, credential, body, principal identifier or key material.
 """
 
 import asyncio
+import hashlib
 import json
 import os
 import time
+from contextvars import ContextVar
 from dataclasses import replace
 from pathlib import Path
 
@@ -72,6 +74,37 @@ class MeasuredInstalledAssembly:
         finally:
             values["phases"]["factory_create"] = time.perf_counter() - started
             await asyncio.to_thread(save)
+        # Observe actual owning-task capture metadata only, never row payloads/permission.
+        in_watch = ContextVar("d_actual_sql_watch", default=False)
+        original_observe = PostgresRecordStore._observe
+        original_witness = PostgresRecordStore._witness_rows
+
+        def observed(records, key, revision, value):
+            original_observe(records, key, revision, value)
+            if in_watch.get():
+                category = "current" if revision is None else "history"
+                rows = values.setdefault("watch_capture", {}).setdefault(category, {})
+                rows[key[1]] = rows.get(key[1], 0) + 1
+                address = hashlib.sha256(json.dumps(key).encode()).hexdigest()
+                addresses = values.setdefault("watch_address_hashes", {}).setdefault(key[1], [])
+                if address not in addresses:
+                    addresses.append(address)
+
+        async def witnessed(records, rows, versions):
+            started = time.perf_counter()
+            try:
+                return await original_witness(records, rows, versions)
+            finally:
+                if in_watch.get():
+                    metric = values.setdefault("watch_sql", {"calls": 0, "seconds": 0.0})
+                    metric["calls"] += 1
+                    metric["seconds"] += time.perf_counter() - started
+                    if metric["calls"] == 3:
+                        values["watch_polling"] = True
+                        save()
+
+        PostgresRecordStore._observe = observed
+        PostgresRecordStore._witness_rows = witnessed
         original_open = WindowsReadHandle.__init__
 
         def counted_open(self, *args, **kwargs):
@@ -110,6 +143,19 @@ class MeasuredInstalledAssembly:
             return await original_current(*args, **kwargs)
 
         application.helper.current_source.current = bounded_current
+        measure(application.helper.current_source, "wait_changed", "sql_watch")
+        original_wait = application.helper.current_source.wait_changed
+
+        async def watched(*args, **kwargs):
+            values.setdefault("watch_deadlines", []).append(kwargs["deadline"])
+            token = in_watch.set(True)
+            try:
+                return await original_wait(*args, **kwargs)
+            finally:
+                in_watch.reset(token)
+
+        application.helper.current_source.wait_changed = watched
+        measure(AuthenticatedPipeSession, "check_local", "local_connection_checks")
         measure(application.helper.bootstrap.signer, "sign_document", "signatures")
         measure(application.helper.journal, "publish", "receipt_publish")
         measure(application.helper.commands, "resolve", "registered_reader")
@@ -120,6 +166,20 @@ class MeasuredInstalledAssembly:
         measure(ReadOnlyPipeEndpoint, "watch", "endpoint_watch")
         measure(ReadOnlyRunner, "current", "runner_current")
         measure(ReadOnlyRunner, "execute", "runner_execute")
+        if os.environ.get("UAW_D_MONITOR_WAIT") == "1":
+
+            async def controlled_execution_wait(self, *args, **kwargs):
+                # Explicit component wait only: no OS read or execution allowance.
+                # Actual A registered source watch remains untouched and uncached.
+                values["controlled_execution_wait"] = True
+                save()
+                try:
+                    await asyncio.Event().wait()
+                finally:
+                    values["controlled_wait_cancelled"] = True
+                    save()
+
+            ReadOnlyRunner.execute = controlled_execution_wait
         original_connected = application.on_connected
         original_serve = application.helper.serve_once
 
