@@ -5,7 +5,8 @@ No transport, pairing V2, execution or cross-service atomic authorization is cla
 
 import asyncio
 import json
-from collections.abc import Callable
+import time
+from collections.abc import Awaitable, Callable
 from datetime import datetime
 from threading import Event
 
@@ -175,11 +176,16 @@ class AsyncAdmission:
         command: RunnerCommand,
         current: RunnerAuthoritySnapshot,
         cancelled: Event,
+        response_deadline: float | None = None,
     ) -> Admission:
         def guard() -> None:
             if cancelled.is_set():
                 raise reject("cancelled", "Admission coroutine cancelled", 409, "cancelled")
             self.deadline(command, current)
+            if response_deadline is not None and time.monotonic() >= response_deadline:
+                raise reject(
+                    "ipc_timeout", "Original admission reply deadline expired", 410, "timeout"
+                )
 
         guard()
         # Fresh local key/root checks after the second authority await, off the event loop.
@@ -200,6 +206,38 @@ class AsyncAdmission:
             ),
             check=guard,
         )
+
+    async def admit_current(
+        self,
+        command: RunnerCommand,
+        *,
+        refresh: Callable[[], Awaitable[tuple[RunnerAuthoritySnapshot, object]]],
+        response_deadline: float | None,
+    ) -> Admission:
+        """Trusted read composite brackets external checks before the original CAS.
+
+        The callback is injected by ReadOnlyRunner, never supplied by a body;
+        it rereads independent owner/channel/root/authority and native keys/OS.
+        This replaces the older authority graph, not an additional permission.
+        """
+        from uaw_runner.read_current import reply_deadline
+
+        if response_deadline is None:
+            raise CapabilityUnavailable("runner.file_read.original_reply_deadline")
+        cancelled = Event()
+        try:
+            reply_deadline(response_deadline)
+            current, _ = await refresh()
+            reply_deadline(response_deadline)
+            result = await asyncio.to_thread(
+                self.commit, command, current, cancelled, response_deadline
+            )
+            reply_deadline(response_deadline)
+            self.deadline(command, current)
+            return result
+        except asyncio.CancelledError:
+            cancelled.set()
+            raise
 
     async def admit(self, data: str | bytes, *, authenticated_principal: Principal) -> Admission:
         parse_json(data)
