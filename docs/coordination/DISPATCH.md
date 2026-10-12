@@ -1,4 +1,31 @@
-# A14 来源正式发布：SQL-only wait_changed
+# A15 正式来源与 D 原监控修复续项
+
+准确源码 **1af0a8967ada3b92870c15151f73b31ab09b27e0** / `ms-i2l-a15-source`。
+本记录属于随后元数据发布，不移动旧标签，不建立新共同 start；fetch 后核对远端 peeled tag 与本 SHA。
+D 在原 dev/runner 自行合入准确来源，不消费浮动 integration；A 不操作 worker 分支/环境。
+
+A 已精确合入 D M1、wrapper 修复、M2 最终 `13ecd4bd` / `9f8d0f1` / `cde9eca`，
+InstalledReadOnlyHelper 通过 super 显式传同一个 current_source。
+A14 对事务 lease/device 的覆盖描述过宽：其 get-only observer 不覆盖 RecordTransaction.load。
+A15 已补齐同 Database owning-task 事务读取，并验证实际 lease 释放/device 撤销，原两轮 current 保持。
+真实 Windows 双角色 peer 捕获原 web.sessions、enrollment、launcher candidates、native 账号确认 SQL journal；
+后者属于 SQL，目录 native Ticket/grant/签名的 SQLite 来源仍需独立检查。
+
+163 不同定向节点通过（SQL/source115、D consumer/endpoint46、Windows2）；321 历史并集未全部重跑。
+211 源码 Mypy、15 文件 Ruff/格式、1362 schema/288接口检查通过；452 源码摘要已固定。
+D 243 worker 定向回执按组件/接口接受，完整首次文件链仍 command1/open0、原10秒回复期限失败。
+A 两项 Windows 测试 command0/open0，随机凭据/keys/child/proof 清理通过；无新模型或本人操作。
+
+D 原修复继续：[准确监控消费任务](requests/A/MS-I2l-A15-D-watch-consumer.md)。
+M1先交实际 SQL/本机覆盖表、显式监控消费和 A 必需参数，阶段到即审阅；随后继续 M2 原首次读、
+一次打开/签名 journal/丢回复恢复与撤销回归。保留真实 key/OS/live pipe/native SQLite/CAS 检查，
+不使用 allowed 缓存、删除校验或延长原期限。监控返回只要求停止 work，unknown 不重发。
+A 同时处理原注册/发送/来源成本及自身装配；B/C保持交付点，本轮没有新的 B/C 任务。
+默认优化/flags、子Agent/DAG/写入安装exec不打开；原本人/固定模型文件交付与汇合全量仍 pending。
+[来源与覆盖修正](requests/A/MS-I2l-A15-transactional-watch.md)、
+[实际回执](../implementation/evidence/ms-i2l-a15.json)。旧失败/费用/1691历史全量保持。
+
+# A14 来源正式发布：SQL-only wait_changed（历史，事务覆盖见 A15 修正）
 
 准确来源 **bfe158ab9e0d8d71ce312b4b3907302dac106b54** / `ms-i2l-a14-source`。
 108去重定向节点通过，267历史并集非当前全量；210源码类型、Ruff/格式、1362schema/288接口检查通过。

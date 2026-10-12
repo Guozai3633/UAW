@@ -1,4 +1,16 @@
-# A14准确来源
+# A15 准确来源与原预算修复监控接线
+
+ms-i2l-a15-source / 1af0a8967ada3b92870c15151f73b31ab09b27e0。
+精确合入 D 最终源码/文档/handoff，A installed 显式传递同对象 current_source。
+A14 漏掉的事务 load 已加入同 Database owning-task observer；lease/device 实际撤销与真实双角色账号 SQL 覆盖通过。
+163 定向节点（115 SQL＋46 D＋2 Windows）通过，321 历史并集不是当前全量；211 类型、Ruff/格式及契约通过。
+D 按 DISPATCH 继续原监控消费修复，M1到即接，M2原首次链与journal恢复；A推进原注册/发送/生产来源成本，
+只改A源码，不改worker业务/分支。B/C保留原交付点，没有新共同包。
+首次链仍command1/open0，原回复期限失败；native/key/OS/pipe独立检查、原期限及unknown不重发保持。
+flags默认关闭，无新模型/用户正文/本人操作。汇合原材料模型/页面/本人接受后才全量。
+详见 ../../coordination/requests/A/MS-I2l-A15-transactional-watch.md 与 MS-I2l-A15-D-watch-consumer.md。
+
+# A14准确来源（历史）
 
 ms-i2l-a14-source / bfe158ab9e0d8d71ce312b4b3907302dac106b54。
 D M1逐包合入和A自身装配继续；SQL监控不能替代本机/双方账号权限。
