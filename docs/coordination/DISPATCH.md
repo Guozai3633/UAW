@@ -1,3 +1,17 @@
+# A14 来源正式发布：SQL-only wait_changed
+
+准确来源 **bfe158ab9e0d8d71ce312b4b3907302dac106b54** / `ms-i2l-a14-source`。
+108去重定向节点通过，267历史并集非当前全量；210源码类型、Ruff/格式、1362schema/288接口检查通过。
+接口签名不变，wait_changed明确只覆盖实际SQL输入变化，初次完整current与效果前fresh current保持。
+双方当前账号/设备、native/key/OS/live pipe监控需要单独完整覆盖；D不能仅凭本port替换session.check。
+监控持有局部变化baseline，不保存允许；原reply与较早command期限不增加。
+production输入优化与flags仍默认关闭。原首次读/本人/固定模型交付及汇合全量pending。
+[接口与限制](requests/A/MS-I2l-A14-sql-watch.md)、[回执](../implementation/evidence/ms-i2l-a14.json)。
+
+D继续固定A13的M2，不要求中途同步A14；A将合入已提交M1并进行自身installed参数接线。
+B/C保持已交付点。旧标签/失败/费用/1691旧全量不移动或覆盖。
+本正式记录属于随后元数据提交，来源标签中的准备字样不代表未发布。
+
 # MS-I2l A14 准备：SQL 变化监控，执行校验保持完整
 
 2026-10-12，A13 后继续自身来源工作；尚待准确来源标签发布，不要求 worker 同步。

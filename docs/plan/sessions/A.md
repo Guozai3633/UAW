@@ -1,3 +1,8 @@
+# A14准确来源
+
+ms-i2l-a14-source / bfe158ab9e0d8d71ce312b4b3907302dac106b54。
+D M1逐包合入和A自身装配继续；SQL监控不能替代本机/双方账号权限。
+
 # A14 SQL 等待来源与 D 阶段逐包集成
 
 初次完整current后只比较当前SQL变化；固定原身份/Ref与reply/command较早期限。
