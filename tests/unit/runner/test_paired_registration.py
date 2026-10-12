@@ -205,3 +205,23 @@ async def test_critical_pair_await_denial_cancel_expiry_never_falls_back(paired_
     with pytest.raises(error):
         await c.session.check()
     assert c.closed.is_set() and c.registry.single_calls == []
+
+
+async def test_waiting_pair_is_cancelled_at_original_earlier_session_expiry(paired_case):
+    c = paired_case
+    drained = asyncio.Event()
+
+    async def pending():
+        try:
+            await asyncio.Event().wait()
+        finally:
+            drained.set()
+
+    c.registry.hook = pending
+    started = asyncio.get_running_loop().time()
+    c.session.monotonic_expiry = started + 0.02
+    with pytest.raises(DomainError) as denied:
+        await c.session.check()
+    assert denied.value.failure.code == "ipc_timeout"
+    assert asyncio.get_running_loop().time() - started < 0.1
+    assert drained.is_set() and c.closed.is_set() and c.registry.single_calls == []

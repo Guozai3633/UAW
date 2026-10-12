@@ -637,7 +637,13 @@ class AuthenticatedPipeSession:
 
     async def check(self) -> None:
         try:
-            async with asyncio.timeout(self.pipe.timeout):
+            now = time.monotonic()
+            until = min(
+                now + self.pipe.timeout,
+                self.monotonic_expiry,
+                now + max(0.0, (self.expires_at - datetime.now(UTC)).total_seconds()),
+            )
+            async with asyncio.timeout_at(until):
                 await self._check()
         except TimeoutError:
             await self.close()
