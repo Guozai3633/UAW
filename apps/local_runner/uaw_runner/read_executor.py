@@ -24,12 +24,15 @@ from uaw.workspace.contracts import (
     RunnerReceipt,
     RunnerRootSnapshot,
 )
+from uaw.workspace.ports import RegisteredReadCurrent, RunnerReadCurrentPort
 from uaw_runner.async_admission import AsyncAdmission
 from uaw_runner.handle_read import WindowsReadHandle
 from uaw_runner.keys import ProtectedSigner
 from uaw_runner.protocol import RunnerProtocol, timestamp
+from uaw_runner.read_current import checked_current, reply_deadline
 from uaw_runner.read_state import ReadAttempt, ReadExecutionJournal
 from uaw_runner.receipts import ReceiptJournal, canonical, fixed_ref
+from uaw_runner.root_source import NativeRootSource
 
 T = TypeVar("T")
 
@@ -59,12 +62,14 @@ class ReadOnlyRunner:
         channel_ref: Ref | None = None,
         signer: ProtectedSigner | None = None,
         device_key: DeviceSigningBinding | None = None,
+        current_source: RunnerReadCurrentPort | None = None,
     ) -> None:
         # Fixed Ref supplied by trusted registration/assembly, never computed from input.
         self.protocol, self.command_ref, self.journal = protocol, fixed_ref(command_ref), journal
         self.executions, self.currency, self.roots = executions, currency, roots
         self.channel, self.channel_ref = channel, fixed_ref(channel_ref) if channel_ref else None
         self.signer, self.device_key = signer, device_key
+        self.current_source = current_source
         validate_contract("MeasuredResources", {"currency": currency})
         if journal.protocol is not protocol:
             raise reject("binding_mismatch", "Executor/journal protocol must be identical")
@@ -131,7 +136,13 @@ class ReadOnlyRunner:
         source: RegisteredReceiptCommand,
         expected: RunnerAuthoritySnapshot | None = None,
         channel_expected: RunnerChannelSnapshot | None = None,
+        *,
+        response_deadline: float | None = None,
     ) -> tuple[RunnerAuthoritySnapshot, RunnerChannelSnapshot]:
+        if self.current_source is not None:
+            return await self.composite_current(
+                command, actor, source, expected, channel_expected, response_deadline
+            )
         self.admission.deadline(command)
         await self.journal._resolve(self.command_ref, actor, source)
         self.admission.deadline(command)
@@ -179,13 +190,96 @@ class ReadOnlyRunner:
             raise reject("revision_conflict", "Authority changed during external checks", 409)
         return final, final_channel
 
+    async def composite_current(
+        self,
+        command: RunnerCommand,
+        actor: Principal,
+        source: RegisteredReceiptCommand,
+        expected: RunnerAuthoritySnapshot | None,
+        channel_expected: RunnerChannelSnapshot | None,
+        response_deadline: float | None,
+    ) -> tuple[RunnerAuthoritySnapshot, RunnerChannelSnapshot]:
+        if response_deadline is None:
+            raise CapabilityUnavailable("runner.file_read.original_reply_deadline")
+        if not isinstance(self.roots, NativeRootSource) or self.channel_ref is None:
+            raise CapabilityUnavailable("runner.file_read.composite_native_sources")
+        assert self.current_source is not None and self.device_key is not None
+
+        current_source, channel_ref, device_key = (
+            self.current_source,
+            self.channel_ref,
+            self.device_key,
+        )
+
+        async def fresh() -> RegisteredReadCurrent:
+            reply_deadline(response_deadline)
+            self.admission.deadline(command)
+            try:
+                async with asyncio.timeout_at(response_deadline):
+                    value = await current_source.current(
+                        self.command_ref,
+                        authenticated_principal=Principal.model_validate_json(
+                            canonical(actor.wire())
+                        ),
+                        channel_ref=channel_ref,
+                        deadline=response_deadline,
+                    )
+            except TimeoutError:
+                raise reject(
+                    "ipc_timeout", "Original current reply deadline expired", 410, "timeout"
+                ) from None
+            reply_deadline(response_deadline)
+            result = checked_current(
+                value,
+                command_ref=self.command_ref,
+                channel_ref=channel_ref,
+                actor=actor,
+                device_id=self.protocol.device_id,
+                key_id=device_key.key_id,
+                command=command,
+                source=source,
+            )
+            self.admission.check(command, result.authority, result.source.owner)
+            if min(
+                timestamp(result.root.expires_at), timestamp(result.channel.expires_at)
+            ) <= aware(self.protocol.clock()):
+                raise reject("deadline_exceeded", "Current root/channel expired", 410, "timeout")
+            if expected is not None and result.authority.wire() != expected.wire():
+                raise reject("revision_conflict", "Read authority changed", 409)
+            if channel_expected is not None and result.channel.wire() != channel_expected.wire():
+                raise reject("revision_conflict", "Authenticated channel changed", 409)
+            return result
+
+        first = await fresh()
+
+        # Composite already owns mapping/channel/root/authority checks. Retain
+        # the local consumed native selection/key/OS checks without recursing
+        # into those owning services again at the same checkpoint.
+        def external() -> None:
+            assert isinstance(self.roots, NativeRootSource)
+            native = self.roots._read(
+                self.protocol.device_id, command_workspace(command), first.source.owner
+            )
+            if native != first.root.wire():
+                raise reject("revision_conflict", "Native root differs from composite", 409)
+            self.admission.external(command, first.authority)
+
+        await asyncio.to_thread(external)
+        final = await fresh()  # critical native/key/OS await is always bracketed
+        if final != first:
+            raise reject("revision_conflict", "Read source changed during external checks", 409)
+        return final.authority, final.channel
+
     def guard(
         self,
         command: RunnerCommand,
         current: RunnerAuthoritySnapshot,
         stopped: Event,
         handle: WindowsReadHandle | None = None,
+        response_deadline: float | None = None,
     ) -> None:
+        if response_deadline is not None and time.monotonic() >= response_deadline:
+            raise reject("ipc_timeout", "Original execution reply deadline expired", 410, "timeout")
         if stopped.is_set():
             raise reject("cancelled", "Read coroutine cancelled", 409, "cancelled")
         self.admission.external(command, current)
@@ -257,7 +351,11 @@ class ReadOnlyRunner:
         return receipt
 
     async def execute(
-        self, command: RunnerCommand, *, authenticated_principal: Principal
+        self,
+        command: RunnerCommand,
+        *,
+        authenticated_principal: Principal,
+        response_deadline: float | None = None,
     ) -> RunnerReceipt:
         self.available()
         command = RunnerCommand.model_validate_json(canonical(command.wire()))
@@ -289,11 +387,33 @@ class ReadOnlyRunner:
         previous = await asyncio.to_thread(self.executions.get, source, self.command_ref)
         if previous is not None:
             return await self.restore(previous, source, actor)
+
+        async def checkpoint(
+            expected: RunnerAuthoritySnapshot | None = None,
+            channel_expected: RunnerChannelSnapshot | None = None,
+        ) -> tuple[RunnerAuthoritySnapshot, RunnerChannelSnapshot]:
+            return await self.current(
+                command,
+                actor,
+                source,
+                expected,
+                channel_expected,
+                response_deadline=response_deadline,
+            )
+
+        def guard(
+            command: RunnerCommand,
+            current: RunnerAuthoritySnapshot,
+            stopped: Event,
+            handle: WindowsReadHandle | None = None,
+        ) -> None:
+            self.guard(command, current, stopped, handle, response_deadline)
+
         stopped = Event()
         handle: WindowsReadHandle | None = None
         started = time.perf_counter_ns()
         try:
-            first, channel = await self.current(command, actor, source)
+            first, channel = await checkpoint()
             assert self.signer is not None and self.device_key is not None
             await self.signer.check_private(
                 device_id=self.protocol.device_id,
@@ -305,9 +425,16 @@ class ReadOnlyRunner:
             # external key/root checks. The following current() compares against
             # the original root/channel/authority before the execution CAS. No
             # additional identical full pass is needed immediately before admit.
-            admitted = await self.protocol.admit_async(
-                canonical(command.wire()), authenticated_principal=actor
-            )
+            if self.current_source is None:
+                admitted = await self.protocol.admit_async(
+                    canonical(command.wire()), authenticated_principal=actor
+                )
+            else:
+                admitted = await self.admission.admit_current(
+                    command,
+                    refresh=lambda: checkpoint(first, channel),
+                    response_deadline=response_deadline,
+                )
             self.admission.deadline(command, first)
             if (
                 admitted.state != "admitted"
@@ -319,14 +446,14 @@ class ReadOnlyRunner:
                     409,
                     "cancelled",
                 )
-            current, _ = await self.current(command, actor, source, first, channel)
+            current, _ = await checkpoint(first, channel)
             attempt, won = await asyncio.to_thread(
                 self.executions.claim,
                 source,
                 self.command_ref,
                 root_handle=current.root_handle,
                 root_revision=current.binding_revision,
-                check=lambda: self.guard(command, current, stopped),
+                check=lambda: guard(command, current, stopped),
             )
             if not won:
                 return await self.restore(attempt, source, actor)
@@ -349,21 +476,21 @@ class ReadOnlyRunner:
 
             def opened() -> None:
                 nonlocal handle
-                self.guard(command, current, stopped)
+                guard(command, current, stopped)
                 grant = self.protocol.bindings.repository.get(current.root_handle)
                 handle = WindowsReadHandle(grant, str(parameters["path"]))
-                self.guard(command, current, stopped, handle)
+                guard(command, current, stopped, handle)
 
             try:
                 await io(opened)
                 assert handle is not None
-                current, _ = await self.current(command, actor, source, first, channel)
+                current, _ = await checkpoint(first, channel)
 
                 def read() -> JsonObject:
                     assert handle is not None
-                    self.guard(command, current, stopped, handle)
+                    guard(command, current, stopped, handle)
                     content = handle.read(parameters)
-                    self.guard(command, current, stopped, handle)
+                    guard(command, current, stopped, handle)
                     return content
 
                 result = await io(read)
@@ -380,7 +507,7 @@ class ReadOnlyRunner:
                 }:
                     raise
                 failure = exc
-            current, _ = await self.current(command, actor, source, first, channel)
+            current, _ = await checkpoint(first, channel)
             # Failed observed read has no payload; it does not imply not_applied/zero charge.
             draft: JsonObject = {
                 "command_id": command.command_id,
@@ -410,27 +537,25 @@ class ReadOnlyRunner:
                 credential_handle=self.device_key.credential_handle,
             )
             draft["signature"] = signature
-            current, _ = await self.current(command, actor, source, first, channel)
+            current, _ = await checkpoint(first, channel)
             data = canonical(draft)
             await asyncio.to_thread(self.journal._verify, data, source)
             # Final authority query follows signing/verification, then local guard in CAS.
-            current, _ = await self.current(command, actor, source, first, channel)
+            current, _ = await checkpoint(first, channel)
             await asyncio.to_thread(
                 self.executions.signed,
                 attempt,
                 data,
-                check=lambda: self.guard(
-                    command, current, stopped, handle if failure is None else None
-                ),
+                check=lambda: guard(command, current, stopped, handle if failure is None else None),
             )
             self.admission.deadline(command, current)
             # Once recorded, a late cancelled publication can only recover this signature.
             actual = await self.journal.publish(
                 self.command_ref, data, authenticated_principal=actor
             )
-            current, _ = await self.current(command, actor, source, first, channel)
+            current, _ = await checkpoint(first, channel)
             await asyncio.to_thread(
-                self.guard, command, current, stopped, handle if failure is None else None
+                guard, command, current, stopped, handle if failure is None else None
             )
             await asyncio.to_thread(self.executions.published, attempt, actual)
             self.admission.deadline(command, current)

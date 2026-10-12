@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from uaw.shared.contracts import Ref
 from uaw.shared.errors import CapabilityUnavailable, reject
-from uaw.workspace.ports import ReceiptCommandReaderPort
+from uaw.workspace.ports import ReceiptCommandReaderPort, RunnerReadCurrentPort
 from uaw_runner.bootstrap import BootstrapConsumer, BootstrapNativeChallenges
 from uaw_runner.ipc.channel_source import ConnectionRegistry
 from uaw_runner.ipc.read_endpoint import ReadOnlyPipeEndpoint
@@ -56,6 +56,7 @@ class HelperReadAssembly:
             channel_ref=channel_ref,
             signer=helper.bootstrap.signer,
             device_key=helper.bootstrap.device_key,
+            current_source=helper.current_source,
         )
 
 
@@ -73,6 +74,7 @@ class ReadOnlyHelper:
         currency: str,
         session_lifetime_seconds: float = 60,
         native_timeout_seconds: float = 60,
+        current_source: RunnerReadCurrentPort | None = None,
     ) -> None:
         if (
             any(
@@ -108,6 +110,7 @@ class ReadOnlyHelper:
             registry,
             currency,
         )
+        self.current_source = current_source
         self.session_lifetime_seconds = session_lifetime_seconds
         self.native_timeout_seconds = native_timeout_seconds
         self.listener: WindowsPipeListener | None = None
@@ -196,6 +199,7 @@ class ReadOnlyHelper:
                 registry=self.registry,
                 commands=self.commands,
                 runners=HelperReadAssembly(self),
+                current_source=self.current_source,
             )
             return channel_ref
         except BaseException:
@@ -260,7 +264,7 @@ class ReadOnlyHelper:
             until = min(first_byte + self.session.pipe.timeout, self.session.monotonic_expiry)
             async with asyncio.timeout_at(until):
                 await self.bootstrap.connected(self.session)
-                return await self.endpoint.serve_once()
+                return await self.endpoint.serve_once(deadline=until)
         except TimeoutError:
             raise reject("ipc_timeout", "Read frame deadline expired", 408, "timeout") from None
         finally:
