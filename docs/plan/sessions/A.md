@@ -1,4 +1,15 @@
-# A19：审批只读等待释放锁，继续重复来源结构
+# A20：联合登记source已固定，D消费正式续项
+
+ms-i2l-a20-source / 46dd884f47fad35da19cd310be4e3aba0d45bc58。
+current_pair严格control/device输入，返回完整tuple2；owning登记图只展开一次，双方OS/key前后检查和
+fresh SQL witness/外部复查保留，不缓存allowed。33定向通过，427历史并集非当前全量。
+真实Windows同结果SQL22→14、OS8/key8不减；组件样本不报整链比例。469摘要/类型/格式/契约固定。
+D按DISPATCH准确source自行开工IPC paired消费者与原首次链；阶段SHA到即审阅，不改D业务/分支。
+A继续自身重复root/Tool权威图、原注册/发送接线，B/C保留交付点没有新包。
+D消费/首次链/材料模型成果/本人接受/全量pending，flags/checked_metadata/子Agent/DAG/写入安装exec不开放。
+具体分工见 ../../coordination/requests/A/MS-I2l-A20-D-paired-registration.md。
+
+# A19：审批只读等待释放锁，继续重复来源结构（历史）
 
 ms-i2l-a19-source / 115b46207863fa271385c3e4d3cc88fbbdefc471。
 审批锁内完整检查→锁外原工具/native authority→新事务锁内完整检查与比较，

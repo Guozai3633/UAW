@@ -1,4 +1,15 @@
-# 2026-10-12：A15 监控续项已交付，停止等待
+# 2026-10-12：A20 联合登记消费者正式续项
+
+固定source ms-i2l-a20-source / **46dd884f47fad35da19cd310be4e3aba0d45bc58**。
+fetch后核对远端tag peeled与origin/integration DISPATCH正式记录；自行合此固定source，不合浮动integration。
+保留原c315352/9225919和所有旧回执，不reset/rebase/代同步，不在包中途切其他source。
+沿原MS-I2l-A9预算修复：M1消费A current_pair并严格校验完整两角色、保留旧current兼容/错误无fallback；
+M2实际IPC/两key/OS/取消/期限、单独原首次链及签名journal恢复/清理，阶段SHA即报，继续至独立handoff。
+只改原D local_runner/tests/requests/handoff；不改A/shared/锁/flags/B/C。原更早期限/私钥/pipe/CAS保持。
+来源/策略/允许目录/验收见[正式任务](../../coordination/requests/A/MS-I2l-A20-D-paired-registration.md)。
+当前published_ready_to_start，实际开工待D回执；本续项后停止，不自动扩包。
+
+# 2026-10-12：A15 监控续项已交付，停止等待（历史）
 
 最终源码c3153522617a719e9f92f922116f54418d946544、handoff92259195c50bbf59e42e83de804b0ab39e81bf50
 已由A精确合入；271 worker不同定向节点按组件/接口接受，A另复验34受影响节点通过。

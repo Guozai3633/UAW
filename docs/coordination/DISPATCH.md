@@ -1,4 +1,44 @@
-# A19 正式来源：审批外部等待释放会话锁，首次链仍未通过
+# A20 正式来源与 D 联合登记消费续项
+
+准确源码 **46dd884f47fad35da19cd310be4e3aba0d45bc58** / `ms-i2l-a20-source`。
+固定 tag peeled SHA 与本正式记录一致再开工，fetch 后读取 origin/integration 的此记录；
+source 中旧准备状态不能覆盖随后正式派发，不合浮动 integration。旧 start/标签不移动。
+
+A提供 EnrolledPeerRegistry.current_pair(control_os, device_os)→tuple(control_peer, device_peer)。
+一次原 owning enrollment 图前后分别观察双方OS/key，最后fresh SQL witness/两角色外部复查；
+每次都检查原Web owner、实际candidate/native journal/双签名与撤销/版本/expiry，不缓存allowed。
+旧current/owner兼容，公共DTO/IPC wire/ports/schema/锁/flags不变。
+
+33不同定向节点通过，427历史并集未全部重跑；212类型/3文件静态/1362schema/288接口通过，
+469源码摘要固定。真实Windows双进程返回完整peer相同，owning图2→1、SQL22→14，OS8/key8不減。
+组件单样本0.115→0.084秒，不能报整链比例。command0/open0，4随机凭据/2keys/child/proof清理通过。
+首轮追加测试Ruff import排序失败保留，修复后静态通过；本轮实际测试无失败/错误/跳过。
+
+## 正式续项与交付点
+
+| Session | 本阶段范围 | 状态/固定输入 |
+| --- | --- | --- |
+| A | 联合登记源/重复root与Tool权威图/逐包审阅接线 | 继续自己integration阶段HEAD，不回退；source/test已交付 |
+| B | MS-U3b原网页组件 | 保留394d785/1b0fe02，当前没有新包，不同步浮动integration |
+| C | MS-T2i-b原工具组件 | 保留223c9a9/730a419，当前没有新包，不同步浮动integration |
+| D | 原文件预算修复：联合登记IPC消费者 | **published_ready_to_start**，先核对上述46dd884...固定source；实际开工待D回执 |
+
+D任务：[明确输入/输出/策略/目录/M1–M2](requests/A/MS-I2l-A20-D-paired-registration.md)。
+M1 paired消费者/旧current兼容/严格返回/错误无fallback，阶段SHA到即审阅；
+M2真实双方key/OS/pipe/取消/期限与原完整首次链、原journal恢复/清理，最终独立handoff。
+D自行在E:/UAW/.worktrees/runner / dev/runner合固定tag，保留c315352/9225919和旧回执；
+A不修改D业务/分支或代同步；D不修改A source/共享契约/锁/flags或B/C目录。
+有paired方法但失败不退回旧许可；缺paired source则旧current兼容，保留独立directory/live pipe/期限/私钥检查。
+
+D消费尚未合入，A20未重跑原首次链，不将source测量当生产IPC/首次文件验收。
+最新原A19独立首次链103.49秒command1/open0，无signed journal；旧A18open1也是独立失败。
+unknown不重发；10秒reply/30秒lease/120秒root和更早源期限不改。
+固定用户模型，不开启子Agent/DAG/写入安装exec，不替本人确认或成果接受。
+原模型材料/准确引用/核验/本人页面/接受/汇合全量pending，旧1691全量/失败/费用/标签保持。
+[A source及测量](requests/A/MS-I2l-A20-paired-registration.md)、
+[实际回执](../implementation/evidence/ms-i2l-a20.json)、[进度](../implementation/PROGRESS-2026-10-12.md)。
+
+# A19 正式来源：审批外部等待释放会话锁，首次链仍未通过（历史）
 
 准确源码 **115b46207863fa271385c3e4d3cc88fbbdefc471** / `ms-i2l-a19-source`。
 本正式记录由随后元数据提交发布；旧 start/标签不移动，没有新 worker 包或自动同步。
