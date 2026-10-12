@@ -1,3 +1,31 @@
+# A21 正式来源：D A20组件已接受，联合目录续项
+
+准确源码 **88e7078cc0b7aee66136ebd44ec0d057e184b209** / `ms-i2l-a21-source`。
+远端tag peeled SHA与本正式记录一致后D开工；不合浮动integration、不回退start、不移动旧标签。
+
+D A20最终handoff9a419a9已精确合入1ca249b；A另实跑40联合登记/Windows通过，按组件接受。
+D报告106去重worker节点单独记录；原首次链80.78秒失败command1/open0，无signedjournal，unknown未重发。
+补记历史A15清理26目录名实为22物理实例，不覆盖原清理证据。
+
+A已实现两真实file Gate的check_root、call-local ResourceReader及Runner可选消费。
+D原NativeRootSource尚缺checked_current：原owner/read→原SQL审批callback→原owner/read及完整比较。
+方法缺失仍走旧路径；存在但非法/失败不fallback，没有实际联合root提速或首次链成功证据。
+原权限/账号/native/key/取消/版本/签名/期限/CAS保持，公开DTO/ports/schema/IPC wire不变。
+
+61不同定向通过（40登记/Windows＋10协议＋11实际SQL），478历史并集未全部重跑；
+213源码Mypy、6文件静态/格式、474源码摘要。初次测试准备失败、沙箱中断和格式失败保留。
+原1691全量/旧标签/费用保持；flags/checked_metadata关闭，未新调用模型或访问用户文件。
+
+| Session | 当前范围 | 正式安排 |
+| --- | --- | --- |
+| A | 原SQL来源与目录/审批/Runner接线 | 继续当前integration HEAD；D阶段即审阅，然后实际材料/模型/成果/本人链 |
+| B | MS-U3b网页组件 | 保留394d785/1b0fe02，当前没有新包 |
+| C | MS-T2i-b工具组件 | 保留223c9a9/730a419，当前没有新包 |
+| D | 原读取预算修复联合目录消费 | 固定A21 source；按[具体续项](requests/A/MS-I2l-A21-D-joint-root-consumer.md)完成M1–M3，阶段SHA即报A |
+
+[A内部契约](requests/A/MS-I2l-A21-joint-root-approval.md)、[回执](../implementation/evidence/ms-i2l-a21.json)。
+完整首次读取/固定模型材料引用/核验/本人接受/汇合全量仍pending。以下旧派发为历史。
+
 # A20 正式来源与 D 联合登记消费续项
 
 准确源码 **46dd884f47fad35da19cd310be4e3aba0d45bc58** / `ms-i2l-a20-source`。

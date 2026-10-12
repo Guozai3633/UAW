@@ -1,3 +1,12 @@
+# A21 当前：联合目录与原审批接线
+
+固定source ms-i2l-a21-source / 88e7078cc0b7aee66136ebd44ec0d057e184b209。
+D A20已精确合入，A40消费者回归通过；A新增Gate/Runner联合root消费及原SQL审批验证。
+61去重定向通过，213类型/6文件静态与格式通过；478历史并集不是当前全量。
+D尚需原NativeRootSource.checked_current；A阶段到即审阅，不改worker业务或操作worker分支。
+真实首次链仍command1/open0无journal，不标整轮accepted；flags/原deadline保持。
+详细内部接口与算法见../../coordination/requests/A/MS-I2l-A21-joint-root-approval.md。
+
 # A20：联合登记source已固定，D消费正式续项
 
 ms-i2l-a20-source / 46dd884f47fad35da19cd310be4e3aba0d45bc58。

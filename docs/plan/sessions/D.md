@@ -1,3 +1,12 @@
+# A21 当前：原读取预算修复联合目录续项
+
+固定source ms-i2l-a21-source / **88e7078cc0b7aee66136ebd44ec0d057e184b209**。
+远端tag及正式DISPATCH准确一致再合此tag，不合浮动integration，保留A20原提交/handoff/失败。
+A20组件已接受，首次链未通过。按../../coordination/requests/A/MS-I2l-A21-D-joint-root-consumer.md
+实现原NativeRootSource.checked_current、实际A Gate消费测量、原首次链与独立handoff。
+M1阶段即报A；只改D允许路径，不延长原期限、删当前复查、假造journal或重发unknown。
+没有新B/C包，不代用户确认或接受。以下旧派发为历史。
+
 # 2026-10-12：A20 联合登记消费者正式续项
 
 固定source ms-i2l-a20-source / **46dd884f47fad35da19cd310be4e3aba0d45bc58**。
