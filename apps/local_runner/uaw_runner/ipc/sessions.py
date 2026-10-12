@@ -89,6 +89,39 @@ class IpcSigner:
     ) -> None:
         self.binding, self.directory, self.credentials = binding, directory, credentials
 
+    async def check_private(self) -> None:
+        """Current local OS credential possession only; produces no IPC/receipt proof."""
+        if self.credentials is None:
+            raise CapabilityUnavailable("runner.ipc.protected_key")
+        binding = self.binding
+        key = await asyncio.to_thread(
+            self.directory.lookup, binding.key_id, device_id=binding.device_id
+        )
+        if (
+            key.revoked
+            or key.role != binding.role
+            or key.key_id != binding.key_id
+            or key.device_id != binding.device_id
+        ):
+            raise reject("ipc_signature_denied", "Current local role key rejected", 403)
+        secret = await self.credentials.resolve(binding.credential_handle)
+        try:
+            raw = base64.b64decode(secret.get_secret_value(), validate=True)
+            if (
+                Ed25519PrivateKey.from_private_bytes(raw).public_key().public_bytes_raw()
+                != key.public_bytes
+            ):
+                raise ValueError("Key mismatch")
+        except ValueError, TypeError:
+            raise reject("ipc_signature_denied", "Local protected key rejected", 403) from None
+        if (
+            await asyncio.to_thread(
+                self.directory.lookup, binding.key_id, device_id=binding.device_id
+            )
+            != key
+        ):
+            raise reject("ipc_signature_denied", "Local key changed during possession check", 403)
+
     async def signature(self, frame: dict[str, Any]) -> str:
         if self.credentials is None:
             raise CapabilityUnavailable("runner.ipc.protected_key")
@@ -164,6 +197,7 @@ class AuthenticatedPipeSession:
         self.receive_sequence = 0
         self.busy = asyncio.Lock()
         self.started = False
+        self.original_peers: tuple[str, str, str] | None = None
 
     async def registered(self, identity: OsIdentity, role: str) -> RegisteredPeer:
         if self.registration is None:
@@ -369,6 +403,11 @@ class AuthenticatedPipeSession:
             self.channel_ref = Ref(
                 kind="content", id=self.connection, version="1", content_hash=digest(projection)
             )
+            self.original_peers = (
+                canonical(self.local.wire()),
+                canonical(self.peer.wire()),
+                canonical(self.channel_ref.wire()),
+            )
             await self.check()
         except BaseException:
             await self.close()
@@ -429,6 +468,84 @@ class AuthenticatedPipeSession:
         except TimeoutError:
             await self.close()
             raise reject("ipc_timeout", "Handshake deadline exceeded", 410, "timeout") from None
+
+    async def check_local(self, *, deadline: float) -> None:
+        """OS/key/pipe invalidation only; SQL registration remains an independent watch.
+
+        Handshake identities select comparisons, never an account or permission.
+        Full registered checks remain at receive/send and actual effect boundaries.
+        No new remote private-key proof is invented: the original signed handshake,
+        frame and owning enrollment proofs are independently verified there.
+        """
+        if self.local is None or self.peer is None or self.channel_ref is None:
+            raise CapabilityUnavailable("runner.ipc.handshake")
+        local, peer = self.local, self.peer
+        before = (
+            canonical(local.wire()),
+            canonical(peer.wire()),
+            canonical(self.channel_ref.wire()),
+        )
+        if self.original_peers is None or before != self.original_peers:
+            raise reject("ipc_identity_denied", "Original handshake metadata differs", 403)
+
+        def expiry() -> None:
+            self.pipe.guard(min(deadline, self.monotonic_expiry))
+            if min(self.expires_at, local.expires_at, peer.expires_at) <= datetime.now(UTC):
+                raise reject("ipc_timeout", "Original local authorization expired", 410)
+
+        try:
+            async with asyncio.timeout_at(min(deadline, self.monotonic_expiry)):
+                expiry()
+                if (
+                    not await asyncio.to_thread(self.pipe.live_sync)
+                    or self.pipe.peer_identity != peer.identity
+                    or await asyncio.to_thread(self.pipe.api.current) != local.identity
+                ):
+                    raise reject("ipc_identity_denied", "Original OS pipe instances differ", 403)
+                for saved in (local, peer):
+                    key = await asyncio.to_thread(
+                        self.directory.lookup, saved.key_id, device_id=saved.device_id
+                    )
+                    if (
+                        key.revoked
+                        or key.role != saved.role
+                        or key.device_id != saved.device_id
+                        or key.key_id != saved.key_id
+                        or saved.key_ref.content_hash
+                        != hashlib.sha256(key.public_bytes).hexdigest()
+                    ):
+                        raise reject(
+                            "ipc_signature_denied", "Current original role key differs", 403
+                        )
+                    expiry()
+                binding = self.signer.binding
+                if (
+                    binding.role != local.role
+                    or binding.key_id != local.key_id
+                    or binding.device_id != local.device_id
+                    or self.signer.directory is not self.directory
+                ):
+                    raise reject("ipc_identity_denied", "Original local signer differs", 403)
+                await self.signer.check_private()
+                expiry()
+                if (
+                    self.local is None
+                    or self.peer is None
+                    or self.channel_ref is None
+                    or before
+                    != (
+                        canonical(self.local.wire()),
+                        canonical(self.peer.wire()),
+                        canonical(self.channel_ref.wire()),
+                    )
+                ):
+                    raise reject("ipc_identity_denied", "Original connection metadata changed", 403)
+        except TimeoutError:
+            await self.close()
+            raise reject("ipc_timeout", "Original local check deadline expired", 410) from None
+        except BaseException:
+            await self.close()
+            raise
 
     async def check(self) -> None:
         try:

@@ -23,6 +23,7 @@ from uaw_runner.pairing import PairingVerifier
 from uaw_runner.protocol import RunnerProtocol
 from uaw_runner.read_executor import ReadOnlyRunner
 from uaw_runner.read_state import ReadExecutionJournal
+from uaw_runner.read_watch import LocalReadInvalidation
 from uaw_runner.receipts import ReceiptJournal
 from uaw_runner.root_source import NativeRootSource
 
@@ -200,6 +201,7 @@ class ReadOnlyHelper:
                 commands=self.commands,
                 runners=HelperReadAssembly(self),
                 current_source=self.current_source,
+                local_monitor=LocalReadInvalidation(self.roots) if self.current_source else None,
             )
             return channel_ref
         except BaseException:
