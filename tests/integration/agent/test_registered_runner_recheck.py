@@ -1,6 +1,7 @@
 """SQL/Ed25519 current/watch source; channel/root/consent are controlled."""
 
 import asyncio
+from datetime import timedelta
 
 import pytest
 
@@ -65,35 +66,47 @@ async def test_recheck_reads_actual_original_source_not_ref_claims(case, change)
 
 async def test_watch_observes_real_cancellation_and_releases_read_scope(case):
     source, ref, channel, _ = await prepared(case)
-    calls = 0
+    polling = asyncio.Event()
+    original = case.commands.store._witness_rows
+    polls = 0
 
-    async def changed():
-        nonlocal calls
-        calls += 1
-        if calls == 3:
-            await case.domain[1].control(
-                case.ctx.principal,
-                {
-                    "run_id": case.ctx.run_id,
-                    "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
-                },
-                meta("watch-cancel", 2),
-            )
-        else:
-            # The shared controlled signer consumes its hook once. Re-arm
-            # explicitly so cancellation occurs in the next watch iteration.
-            case.signer.hook = changed
+    async def witness(*args):
+        nonlocal polls
+        polls += 1
+        result = await original(*args)
+        if polls == 3:
+            # Initial full validation is over; a different task changes the
+            # actual owning Run while fresh metadata-only polls are running.
+            polling.set()
+        return result
 
-    case.signer.hook = changed
-    with pytest.raises(DomainError) as cancelled:
-        await source.wait_changed(
-            ref,
-            authenticated_principal=case.actor,
-            channel_ref=channel,
-            deadline=asyncio.get_running_loop().time() + 5,
+    async def cancel_run():
+        await polling.wait()
+        await case.domain[1].control(
+            case.ctx.principal,
+            {
+                "run_id": case.ctx.run_id,
+                "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
+            },
+            meta("watch-cancel", 2),
         )
+
+    case.commands.store._witness_rows = witness
+    cancellation = asyncio.create_task(cancel_run())
+    try:
+        with pytest.raises(DomainError) as cancelled:
+            await source.wait_changed(
+                ref,
+                authenticated_principal=case.actor,
+                channel_ref=channel,
+                deadline=asyncio.get_running_loop().time() + 5,
+            )
+        await cancellation
+    finally:
+        cancellation.cancel()
+        await asyncio.gather(cancellation, return_exceptions=True)
     assert cancelled.value.failure.code == "execution_cancelled"
-    assert calls >= 3
+    assert polls >= 4
     assert case.commands.store._current_reads.get() is None
 
 
@@ -195,5 +208,33 @@ async def test_current_keeps_original_deadline_through_final_witness(case):
             deadline=asyncio.get_running_loop().time() + 0.5,
         )
     assert denied.value.failure.code == "runner_recheck_timeout"
+    assert case.commands.store._read_witness.get() is None
+    assert case.commands.store._current_reads.get() is None
+
+
+async def test_watch_earlier_original_command_deadline_interrupts_poll_io(case):
+    case.registered["expires_at"] = (case.devices.now() + timedelta(seconds=3)).isoformat()
+    source, ref, channel, _ = await prepared(case)
+    original = case.commands.store._witness_rows
+    polls = 0
+
+    async def delayed(*args):
+        nonlocal polls
+        polls += 1
+        if polls > 1:
+            await asyncio.sleep(10)
+        return await original(*args)
+
+    case.commands.store._witness_rows = delayed
+    started = asyncio.get_running_loop().time()
+    with pytest.raises(DomainError) as expired:
+        await source.wait_changed(
+            ref,
+            authenticated_principal=case.actor,
+            channel_ref=channel,
+            deadline=started + 8,
+        )
+    assert expired.value.failure.code == "runner_watch_timeout" and polls == 2
+    assert asyncio.get_running_loop().time() - started < 5
     assert case.commands.store._read_witness.get() is None
     assert case.commands.store._current_reads.get() is None

@@ -3,6 +3,7 @@
 import asyncio
 import json
 import math
+from datetime import datetime
 from typing import Protocol
 
 from uaw.run.runner_authority import authority_snapshot
@@ -39,10 +40,9 @@ class RegisteredRunnerRechecks:
     """Fresh full owning sources, capped by the original command and 10s per call.
 
     Full source predicates remain, with fresh reads by default. Optional duplicate
-    metadata inputs require a final fresh full-row SQL witness. This internal port is
-    not yet consumed by the installed endpoint/watch or a product performance gate.
-    Watch returns on changed snapshot, raises on revocation/deadline/dependency;
-    neither result permits execution. No synthetic event or cached grant is used.
+    metadata inputs require a final fresh full-row SQL witness. Watch checks one
+    full source, then fresh SQL input changes; it is not native/key/pipe monitoring
+    or an execution permission. No synthetic event or cached grant is used.
     """
 
     def __init__(self, commands: RunnerCommands) -> None:
@@ -184,25 +184,47 @@ class RegisteredRunnerRechecks:
         deadline: float,
     ) -> None:
         self._deadline(deadline)
+        ref, channel = self._fixed(command_ref), self._fixed(channel_ref, channel=True)
+        actor = Principal.model_validate_json(
+            json.dumps(authenticated_principal.wire(), allow_nan=False)
+        )
+        expiry: datetime | None = None
+        budget: asyncio.Timeout | None = None
+
+        async def initial() -> None:
+            nonlocal expiry
+            state = await self.current(
+                ref,
+                authenticated_principal=actor,
+                channel_ref=channel,
+                deadline=deadline,
+            )
+            expiry = instant(state.source.command.expires_at)
+            assert budget is not None
+            budget.reschedule(
+                min(
+                    deadline,
+                    asyncio.get_running_loop().time()
+                    + max(0, (expiry - self.commands.devices.now()).total_seconds()),
+                )
+            )
+
+        def check() -> None:
+            if expiry is None or self.commands.devices.now() >= expiry:
+                raise reject("runner_deadline_denied", "Original command deadline passed", 409)
+
         try:
-            async with asyncio.timeout_at(deadline):
-                first = await self.current(
-                    command_ref,
-                    authenticated_principal=authenticated_principal,
-                    channel_ref=channel_ref,
+            async with asyncio.timeout_at(deadline) as budget:
+                await self.commands.store.wait_for_read_change(
+                    initial, deadline=deadline, check=check
+                )
+                # A change is never permission to continue. Resolve any actual
+                # owning denial for diagnostics; valid changes also end watch.
+                await self.current(
+                    ref,
+                    authenticated_principal=actor,
+                    channel_ref=channel,
                     deadline=deadline,
                 )
-                while True:
-                    await asyncio.sleep(
-                        min(0.05, max(0, deadline - asyncio.get_running_loop().time()))
-                    )
-                    current = await self.current(
-                        command_ref,
-                        authenticated_principal=authenticated_principal,
-                        channel_ref=channel_ref,
-                        deadline=deadline,
-                    )
-                    if current != first:
-                        return
         except TimeoutError:
             raise reject("runner_watch_timeout", "Original watch deadline passed", 410) from None

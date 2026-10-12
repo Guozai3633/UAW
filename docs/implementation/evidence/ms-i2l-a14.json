@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "6ec7d0f5ea30d718efcdab29309f8c19c3436366",
+  "scope": "A-only SQL invalidation wait under original response and command deadline; current remains full, D consumer pending",
+  "targeted_substage_union_nodes": 108,
+  "historical_component_union_nodes": 267,
+  "note": "107 regression nodes, 25 final affected nodes, 1 earlier command deadline node; distinct union 108, not a single full rerun.",
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a14-watch-first.xml",
+      "sha256": "96e13a82e204382dbbd9a8d9aa91ffab5a42cdc930460ae7db578e5e3b6a7e55",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a14-watch-regression.xml",
+      "sha256": "982ef273cc1bde99abf2b4445580128396d562bdabf4c49efdc0fe2766153493",
+      "tests": 107,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a14-watch-final.xml",
+      "sha256": "cc1f1a9cedabedf1fb5c74560cc2f6d163e94d313da884ac16acf6a094f21f7d",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a14-command-deadline.xml",
+      "sha256": "457a02da0e64dc9c25ea2b573782bd458d82ab2c9be10fab5ecaa32a528ee672",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "sql_watch": {
+    "initial_full_validation": true,
+    "unchanged_polls": "one fresh current/history UNION statement; read callback once",
+    "signal_is_allowance": false,
+    "covers_native_key_os_pipe": false,
+    "holds_session_over_sleep": false,
+    "baseline_reused_across_calls": false,
+    "response_deadline_extended": false
+  },
+  "first_file_chain_passed": false,
+  "new_file_commands": 0,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_acceptance": false,
+  "flags_enabled": false,
+  "checked_metadata_default_enabled": false,
+  "product_full_milestone": false,
+  "static": {
+    "mypy_source_files": 210,
+    "ruff": "passed",
+    "format": "passed"
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a13.json"
+}

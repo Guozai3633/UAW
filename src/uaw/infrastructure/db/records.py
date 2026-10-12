@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 import json
+import math
 from collections import OrderedDict
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
@@ -99,6 +100,57 @@ class PostgresRecordStore:
                         raise StoreConflict("current_read_source_changed")
             finally:
                 self._read_witness.reset(token)
+
+    async def wait_for_read_change(
+        self,
+        read: Callable[[], Awaitable[None]],
+        *,
+        deadline: float,
+        check: Callable[[], None],
+    ) -> None:
+        """Observe one checked SQL source, then signal change only, never allowance.
+
+        The callback performs the owning metadata validation, without effects.
+        Its first observations receive the ordinary final fresh witness. Later
+        polls compare fresh current/history/absence inputs in one SQL statement,
+        without rerunning semantic validation while nothing has changed. No
+        session is held over sleep. The baseline lives only in this call, is not
+        returned and cannot authorize execution. Non-SQL/key/native/live pipe
+        changes need the consumer's independent guards and monitoring.
+        """
+        now = asyncio.get_running_loop().time()
+        if (
+            type(deadline) not in (int, float)
+            or not math.isfinite(deadline)
+            or not now < deadline <= now + 10
+        ):
+            raise StoreConflict("current_watch_deadline_denied")
+        task = asyncio.current_task()
+        if any(
+            active is not None and active[0] is task
+            for active in (self._current_reads.get(), self._read_witness.get())
+        ):
+            raise StoreConflict("current_watch_scope_denied")
+        async with asyncio.timeout_at(deadline):
+            async with self.current_witness():
+                active = self._read_witness.get()
+                assert active is not None
+                _, rows, versions = active
+                await read()
+                check()
+                if not rows and not versions:
+                    raise StoreConflict("current_watch_sources_missing")
+            # The scope's final witness and connection cleanup must finish
+            # before this baseline becomes an observation for waiting only.
+            check()
+            while True:
+                await asyncio.sleep(min(0.05, max(0, deadline - asyncio.get_running_loop().time())))
+                actual, previous = await self._witness_rows(rows, versions)
+                check()
+                if {key: actual.get(key) for key in rows} != rows or {
+                    key: previous.get(key) for key in versions
+                } != versions:
+                    return
 
     def _observe(
         self, key: tuple[str, str, str], revision: int | None, value: Record | None

@@ -54,7 +54,11 @@ class RunnerReadCurrentPort(Protocol):
         channel_ref: Ref,
         deadline: float,
     ) -> None:
-        """Signal a source change/denial; returning never grants execution."""
+        """Signal owning SQL change/denial, never permission to execute.
+
+        Native root, current key, OS instance and live pipe monitoring remain
+        independent consumer duties; this port does not report their changes.
+        """
         ...
 
 

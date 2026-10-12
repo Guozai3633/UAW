@@ -1,3 +1,11 @@
+# A14 SQL 等待来源与 D 阶段逐包集成
+
+初次完整current后只比较当前SQL变化；固定原身份/Ref与reply/command较早期限。
+108去重定向节点通过，267历史并集不是全量。native/key/OS/pipe独立覆盖仍由A/D继续明确。
+D固定M1 bb24f697与2748a552已审阅；A先固定自身来源，再合入阶段与显式factory参数，
+D继续M2，不代写worker源码，不合并浮动分支。源标签与实际验证由DISPATCH发布。
+旧首次读/本人/模型/全量pending，flags默认关闭。
+
 # A13 准确来源已固定
 
 ms-i2l-a13-source / 69fae72742a8a64b55a240cb735066aeef78240f。

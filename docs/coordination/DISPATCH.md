@@ -1,3 +1,17 @@
+# MS-I2l A14 准备：SQL 变化监控，执行校验保持完整
+
+2026-10-12，A13 后继续自身来源工作；尚待准确来源标签发布，不要求 worker 同步。
+wait_changed 初次完整 current＋最终 fresh witness，后续未变化轮只查单 SQL current/history。
+变化后重新核验具体 owning 拒绝或结束等待，不输出允许；baseline仅本次调用，不跨调用复用。
+原 actor/command/channel 固定，监控受原 reply 与较早 command 期限约束；native/key/OS/pipe不由其覆盖。
+完整 current、注册/发送、CAS与 D 原本机监控不变；不打开输入优化或 flags。
+107回归＋25最终受影响＋1较早command到期检查，去重108；267历史并集，非最新全量。
+210源码类型与Ruff/格式通过；契约检查回执见阶段报告。
+[实际接口与限制](requests/A/MS-I2l-A14-sql-watch.md)、
+[回执](../implementation/evidence/ms-i2l-a14.json)。
+D M1固定 bb24f697/2748a552 已审阅，A等自身来源固定后逐包合入；D继续M2，不等待最终全包。
+旧首次文件链和本人/模型交付仍pending，无新file command/模型调用/本人操作。
+
 # 正式发布：MS-I2l A13 来源与 D 原预算修复续项
 
 准确执行来源 **69fae72742a8a64b55a240cb735066aeef78240f** /
