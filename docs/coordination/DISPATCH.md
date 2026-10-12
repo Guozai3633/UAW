@@ -1,3 +1,20 @@
+# MS-I2l A13 来源准备：统一 current，等待准确来源发布
+
+2026-10-12。继续原 MS-I2l-A9，不移动旧标签或建立新共同 start。
+统一 RunnerReadCurrentPort、最后一条 SQL 的完整 current/history witness、
+原 installed 工厂同对象绑定已实现。D 尚未消费；不是首次文件读取或整轮接受。
+101 项受影响 SQL/权威回归＋1 项真实 Windows 装配通过，23 项先行 SQL 包含于其中；
+102 不同本阶段节点，260 历史组件并集，历史节点未全部在本版重跑。
+210 源码类型、Ruff/格式通过；最终契约检查以本阶段实际回执为准。
+Docker 原中断保留；4 临时凭据/2 keys/child/proof 清理核对完成，file command0/open0。
+production checked_metadata 默认 False，flags 不变，无新模型或用户正文访问。
+
+D 具体续项待准确 ms-i2l-a13-source SHA 正式公布后开工；B/C保留已交付点。
+[完整接口](requests/A/MS-I2l-A13-current-source.md)、
+[D消费任务](requests/A/MS-I2l-A13-D-current-consumer.md)、
+[本阶段验证](../implementation/evidence/ms-i2l-a13.json)。
+旧首次文件链、模型文件交付、原本人浏览器及接受、汇合全量仍 pending。
+
 # MS-I2l A12：原来源标识批读候选已固定，首次读取仍未通过
 
 2026-10-12。准确源码 **f47e2b62af92b976af0fc4b77552eef44df7dde9** /

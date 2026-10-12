@@ -1,3 +1,14 @@
+# A/MS-I2l-A13：统一当前来源与 D 消费准备
+
+继续自身 d72bd7c A12 后的 integration，不回退 worker 基线。
+RunnerReadCurrentPort.current 返回同一次原完整校验的 command/authority/channel/root，
+最后 fresh UNION SQL 比较本次 current/history/absence/tombstone 来源。
+同原命令、store、root、registry 的 installed holder 已装配，D runtime 消费尚待续项。
+101 SQL/权威＋1 实际 Windows 装配通过，102不同本阶段节点；260历史并集非全量重跑。
+保留原 Docker 中断、旧文件链失败、1691旧全量与费用；flags 默认不打开。
+准确标签/SHA与D正式续项由DISPATCH发布，B/C不自动同步或扩包。
+D阶段接口到达后 A 只改自身 factory 接线，实读/固定模型/原本人页面汇合后才全量。
+
 # A/MS-I2l-A12 原来源标识批读候选（默认关闭）
 
 准确源码 f47e2b62af92b976af0fc4b77552eef44df7dde9 / ms-i2l-a12-source。

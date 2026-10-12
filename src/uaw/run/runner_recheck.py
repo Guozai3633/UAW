@@ -10,7 +10,14 @@ from uaw.run.runner_commands import RunnerCommands, pin
 from uaw.run.runner_devices import instant
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import reject
-from uaw.workspace.contracts import RunnerAuthoritySnapshot
+from uaw.workspace.contracts import (
+    RegisteredReceiptCommand,
+    RunnerAuthoritySnapshot,
+    RunnerChannelSnapshot,
+    RunnerCommand,
+    RunnerRootSnapshot,
+)
+from uaw.workspace.ports import RegisteredReadCurrent
 
 
 class RegisteredRunnerRecheckPort(Protocol):
@@ -57,12 +64,46 @@ class RegisteredRunnerRechecks:
     async def recheck(
         self, command_ref: Ref, *, authenticated_principal: Principal, channel_ref: Ref
     ) -> RunnerAuthoritySnapshot:
+        return (
+            await self.current(
+                command_ref,
+                authenticated_principal=authenticated_principal,
+                channel_ref=channel_ref,
+                deadline=asyncio.get_running_loop().time() + 10,
+            )
+        ).authority
+
+    @staticmethod
+    def _deadline(deadline: float) -> None:
+        now = asyncio.get_running_loop().time()
+        if (
+            type(deadline) not in (float, int)
+            or not math.isfinite(deadline)
+            or not now < deadline <= now + 10
+        ):
+            raise reject(
+                "runner_watch_deadline_denied", "Original finite response deadline required", 403
+            )
+
+    async def current(
+        self,
+        command_ref: Ref,
+        *,
+        authenticated_principal: Principal,
+        channel_ref: Ref,
+        deadline: float,
+    ) -> RegisteredReadCurrent:
+        self._deadline(deadline)
         ref, channel = self._fixed(command_ref), self._fixed(channel_ref, channel=True)
         actor = Principal.model_validate_json(
             json.dumps(authenticated_principal.wire(), allow_nan=False)
         )
         try:
-            async with asyncio.timeout(10), self.commands.store.current_reads():
+            async with (
+                asyncio.timeout_at(deadline),
+                self.commands.store.current_reads(),
+                self.commands.store.current_witness(),
+            ):
                 record = await self.commands.record(ref.id)
                 if record["state"] != "active" or ref.wire() != pin(
                     "content", ref.id, record["command"]
@@ -75,15 +116,60 @@ class RegisteredRunnerRechecks:
                     raise reject(
                         "runner_recheck_channel_denied", "Original current channel required", 403
                     )
+                signed = RunnerCommand.model_validate_json(
+                    json.dumps(record["command"], allow_nan=False)
+                )
+                owner = signed.trusted_context.principal
+                connection = RunnerChannelSnapshot.model_validate_json(
+                    json.dumps(actual["device"]["source"], allow_nan=False)
+                )
+                root = RunnerRootSnapshot.model_validate_json(
+                    json.dumps(actual["root"], allow_nan=False)
+                )
+                authority = RunnerAuthoritySnapshot.model_validate_json(
+                    json.dumps(authority_snapshot(record, actual), allow_nan=False)
+                )
+                if (
+                    connection.actor != actor
+                    or connection.owner != owner
+                    or root.owner != owner
+                    or root.device_id != connection.device_id
+                    or root.workspace_ref != authority.workspace_ref
+                    or root.root_handle != authority.root_handle
+                    or root.binding_revision != authority.binding_revision
+                    or root.allowed_actions != authority.allowed_actions
+                    or authority.device_id != connection.device_id
+                    or authority.context != signed.trusted_context
+                    or record["device_ref"]["id"] != connection.device_id
+                    or actual["root"] != record["root"]
+                    or signed.parameters["action"] != "file.read"
+                ):
+                    raise reject(
+                        "runner_read_current_binding_denied", "Original read sources differ", 412
+                    )
                 if await self.commands.record(ref.id) != record:
                     raise reject(
                         "runner_command_changed", "Original command changed while checking", 412
                     )
                 if self.commands.devices.now() >= instant(record["command"]["expires_at"]):
                     raise reject("runner_deadline_denied", "Original command deadline passed", 409)
-                return RunnerAuthoritySnapshot.model_validate_json(
-                    json.dumps(authority_snapshot(record, actual), allow_nan=False)
+                result = RegisteredReadCurrent(
+                    ref,
+                    RegisteredReceiptCommand(signed, connection.device_id, owner),
+                    authority,
+                    connection,
+                    root,
                 )
+            # SQL inputs have a final single-statement comparison point. Closing
+            # the owning connection may await: this is not an atomic grant
+            # spanning SQL, OS or native stores. Check deadlines after cleanup;
+            # D keeps native/key/handle guards and rereads after critical work.
+            if (
+                asyncio.get_running_loop().time() >= deadline
+                or self.commands.devices.now() >= instant(result.source.command.expires_at)
+            ):
+                raise reject("runner_deadline_denied", "Original read deadline passed", 409)
+            return result
         except TimeoutError:
             raise reject(
                 "runner_recheck_timeout", "Original owning recheck deadline passed", 410
@@ -97,30 +183,24 @@ class RegisteredRunnerRechecks:
         channel_ref: Ref,
         deadline: float,
     ) -> None:
-        now = asyncio.get_running_loop().time()
-        if (
-            type(deadline) not in (float, int)
-            or not math.isfinite(deadline)
-            or not now < deadline <= now + 10
-        ):
-            raise reject(
-                "runner_watch_deadline_denied", "Original finite response deadline required", 403
-            )
+        self._deadline(deadline)
         try:
             async with asyncio.timeout_at(deadline):
-                first = await self.recheck(
+                first = await self.current(
                     command_ref,
                     authenticated_principal=authenticated_principal,
                     channel_ref=channel_ref,
+                    deadline=deadline,
                 )
                 while True:
                     await asyncio.sleep(
                         min(0.05, max(0, deadline - asyncio.get_running_loop().time()))
                     )
-                    current = await self.recheck(
+                    current = await self.current(
                         command_ref,
                         authenticated_principal=authenticated_principal,
                         channel_ref=channel_ref,
+                        deadline=deadline,
                     )
                     if current != first:
                         return

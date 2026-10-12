@@ -8,7 +8,54 @@ from typing import Protocol, runtime_checkable
 
 from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.runner_signatures import VerificationKey
-from uaw.workspace.contracts import RegisteredReceiptCommand, RootSelection, RunnerCommand
+from uaw.workspace.contracts import (
+    RegisteredReceiptCommand,
+    RootSelection,
+    RunnerAuthoritySnapshot,
+    RunnerChannelSnapshot,
+    RunnerCommand,
+    RunnerRootSnapshot,
+)
+
+
+@dataclass(frozen=True)
+class RegisteredReadCurrent:
+    """Internal full current source projection; no CAS or execution permission.
+
+    D retains the original signed command/receipt checks, native root/key checks,
+    admission and execution CAS and OS-handle guards at each effect boundary.
+    Returned models are detached; they never become a cache across an await.
+    """
+
+    command_ref: Ref
+    source: RegisteredReceiptCommand
+    authority: RunnerAuthoritySnapshot
+    channel: RunnerChannelSnapshot
+    root: RunnerRootSnapshot
+
+
+class RunnerReadCurrentPort(Protocol):
+    async def current(
+        self,
+        command_ref: Ref,
+        *,
+        authenticated_principal: Principal,
+        channel_ref: Ref,
+        deadline: float,
+    ) -> RegisteredReadCurrent:
+        """Check all original owning sources under the original response deadline."""
+        ...
+
+    async def wait_changed(
+        self,
+        command_ref: Ref,
+        *,
+        authenticated_principal: Principal,
+        channel_ref: Ref,
+        deadline: float,
+    ) -> None:
+        """Signal a source change/denial; returning never grants execution."""
+        ...
 
 
 @dataclass(frozen=True)

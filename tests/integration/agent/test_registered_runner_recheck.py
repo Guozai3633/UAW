@@ -11,6 +11,7 @@ from uaw.run.runner_commands import pin
 from uaw.run.runner_recheck import RegisteredRunnerRechecks
 from uaw.shared.contracts import Ref
 from uaw.shared.errors import DomainError
+from uaw.shared.stores import StoreConflict
 
 
 async def prepared(case):
@@ -116,3 +117,83 @@ async def test_watch_original_deadline_cancels_io_and_next_call_has_fresh_scope(
             deadline=asyncio.get_running_loop().time() + 11,
         )
     assert denied.value.failure.code == "runner_watch_deadline_denied"
+
+
+async def test_composite_current_returns_original_detached_sources(case):
+    source, ref, channel, record = await prepared(case)
+    state = await source.current(
+        ref,
+        authenticated_principal=case.actor,
+        channel_ref=channel,
+        deadline=asyncio.get_running_loop().time() + 5,
+    )
+    assert state.command_ref == ref
+    assert state.source.command.wire() == record["command"]
+    assert state.source.owner == state.channel.owner == state.root.owner == case.ctx.principal
+    assert state.channel.actor == case.actor and state.channel.channel_ref == channel
+    assert state.root.wire() == case.root.value
+    assert state.authority.wire() == await case.authority().current(
+        record["command"], authenticated_principal=case.actor
+    )
+    state.source.command.parameters["action"] = "exec"
+    state.authority.request_parameters["action"] = "exec"
+    current = await source.current(
+        ref,
+        authenticated_principal=case.actor,
+        channel_ref=channel,
+        deadline=asyncio.get_running_loop().time() + 5,
+    )
+    assert current.source.command.parameters["action"] == "file.read"
+    assert current.authority.request_parameters["action"] == "file.read"
+
+
+async def test_current_catches_actual_run_cancel_during_final_command_lookup(case):
+    source, ref, channel, _ = await prepared(case)
+    original = case.commands.record
+    calls = 0
+
+    async def cancel_on_final(identifier):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            await case.domain[1].control(
+                case.ctx.principal,
+                {
+                    "run_id": case.ctx.run_id,
+                    "control": {"mode": "cancel", "preserve_refs": [], "reason": "Stop"},
+                },
+                meta("current-final-cancel", 2),
+            )
+        return await original(identifier)
+
+    case.commands.record = cancel_on_final
+    with pytest.raises(StoreConflict) as denied:
+        await source.current(
+            ref,
+            authenticated_principal=case.actor,
+            channel_ref=channel,
+            deadline=asyncio.get_running_loop().time() + 5,
+        )
+    assert calls == 2 and denied.value.failure.code == "current_read_source_changed"
+    assert case.commands.store._read_witness.get() is None
+
+
+async def test_current_keeps_original_deadline_through_final_witness(case):
+    source, ref, channel, _ = await prepared(case)
+    original = case.commands.store._witness_rows
+
+    async def delayed(*args):
+        await asyncio.sleep(5)
+        return await original(*args)
+
+    case.commands.store._witness_rows = delayed
+    with pytest.raises(DomainError) as denied:
+        await source.current(
+            ref,
+            authenticated_principal=case.actor,
+            channel_ref=channel,
+            deadline=asyncio.get_running_loop().time() + 0.5,
+        )
+    assert denied.value.failure.code == "runner_recheck_timeout"
+    assert case.commands.store._read_witness.get() is None
+    assert case.commands.store._current_reads.get() is None

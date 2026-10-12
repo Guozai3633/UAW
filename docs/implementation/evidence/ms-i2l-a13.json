@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "d72bd7c8ce13ad0a0f06c42fb87bb3c029cc212d",
+  "scope": "A owning composite current source, SQL final witness and installed binding; D consumer not yet implemented",
+  "targeted_substage_union_nodes": 102,
+  "historical_component_union_nodes": 260,
+  "note": "101 affected SQL/authority nodes and 1 Windows assembly node; retained historical nodes are not a current-source full rerun.",
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a13-current-rerun.xml",
+      "sha256": "91fcee1d6c148c38dd7aaacdc5c477ea57c957dc0c2a7c3b1df4a44236148ece",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a13-source-regression.xml",
+      "sha256": "0edbe07ec8402ad50443fc3e063e6a45207dba7cbfbe16b9df5bdc46a2143902",
+      "tests": 101,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a13-installed-source.xml",
+      "sha256": "755ea492d3de8504d50d778dc1cd58b182d44e61f05ab83e779fbe82c507c10c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "environment_interruption": {
+    "path": "tests/.artifacts/A/MS-I2l/a13-current.log",
+    "sha256": "25dd0466dc206b6dae8edfcd501146bf6654bd46fe307c9a3632a0c0f0c3eef2",
+    "reason": "Docker engine unavailable; exact owned pytest stopped, no completed XML. Original log retained. Existing A container restarted after user started Docker; rerun passed."
+  },
+  "installed_assembly": {
+    "mode": "Real Web/SQL/Windows OS keys and child; explicitly controlled native decisions; no file command",
+    "metadata_sha256": "f1717bba998b71122a50db6d66827b8daf96d0f3909a2d7e209dd7a361da0451",
+    "commands_sent": 0,
+    "file_opens": 0,
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    },
+    "full_first_read_passed": false
+  },
+  "current_source_installed_as_holder": true,
+  "d_execution_consumer_wired": false,
+  "watch_is_cheap_notification": false,
+  "checked_metadata_default_enabled": false,
+  "source_limit": "Final SQL statement comparison is not cross SQL/OS/native/key atomic permission; D effect guards remain required.",
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "flags_enabled": false,
+  "fixed_llm_file_delivery": false,
+  "original_authenticated_browser": false,
+  "human_acceptance": false,
+  "product_full_milestone": false,
+  "static": {
+    "mypy_source_files": 210,
+    "ruff": "passed",
+    "format": "passed"
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a12.json"
+}

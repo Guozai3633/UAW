@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from typing import Any
 
-from sqlalchemy import select, tuple_, update
+from sqlalchemy import Integer, literal, select, tuple_, union_all, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -59,6 +59,129 @@ class PostgresRecordStore:
         self._read_plans: OrderedDict[tuple[str, ...], tuple[tuple[str, str, str], ...]] = (
             OrderedDict()
         )
+        self._read_witness: ContextVar[
+            tuple[
+                asyncio.Task[Any],
+                dict[tuple[str, str, str], Record | None],
+                dict[tuple[str, str, str, int], Record | None],
+            ]
+            | None
+        ] = ContextVar("uaw_read_witness", default=None)
+
+    @asynccontextmanager
+    async def current_witness(self) -> AsyncIterator[None]:
+        """Observe fresh reads; reject changes at the final metadata boundary.
+
+        The observer never skips a get or stores an allowance; optional input
+        optimization is a separate caller-controlled mode, disabled by default.
+        Both current and historical reads (including
+        absence/tombstones) receive a final fresh full-record SQL comparison.
+        Only the owning task shares its observation scope. No effects belong here.
+        """
+        task = asyncio.current_task()
+        if task is None:
+            raise RuntimeError("Current witnesses require an owning task")
+        active = self._read_witness.get()
+        if active is not None and active[0] is task:
+            yield
+            return
+        rows: dict[tuple[str, str, str], Record | None] = {}
+        versions: dict[tuple[str, str, str, int], Record | None] = {}
+        async with self.current_reads(), asyncio.timeout(10):
+            token = self._read_witness.set((task, rows, versions))
+            try:
+                yield
+                if rows or versions:
+                    actual, observed = await self._witness_rows(rows, versions)
+                    if {key: actual.get(key) for key in rows} != rows or {
+                        key: observed.get(key) for key in versions
+                    } != versions:
+                        raise StoreConflict("current_read_source_changed")
+            finally:
+                self._read_witness.reset(token)
+
+    def _observe(
+        self, key: tuple[str, str, str], revision: int | None, value: Record | None
+    ) -> None:
+        active = self._read_witness.get()
+        if active is None or active[0] is not asyncio.current_task():
+            return
+        _, rows, versions = active
+        remembered = key in rows if revision is None else (*key, revision) in versions
+        if remembered:
+            return
+        if len(rows) + len(versions) >= 256:
+            raise StoreConflict("current_read_capacity_exceeded")
+        saved = (
+            Record(
+                value.namespace,
+                value.resource_id,
+                value.revision,
+                value.schema_name,
+                json.loads(json.dumps(value.payload, allow_nan=False)),
+            )
+            if value is not None
+            else None
+        )
+        if revision is None:
+            rows.setdefault(key, saved)
+        else:
+            versions.setdefault((*key, revision), saved)
+
+    async def _witness_rows(
+        self,
+        rows: dict[tuple[str, str, str], Record | None],
+        versions: dict[tuple[str, str, str, int], Record | None],
+    ) -> tuple[dict[tuple[str, str, str], Record], dict[tuple[str, str, str, int], Record]]:
+        # Current and historical sources share ONE fresh statement snapshot.
+        statements: list[Any] = []
+        for model, addresses, historical in (
+            (RecordRow, rows, False),
+            (RecordVersionRow, versions, True),
+        ):
+            if not addresses:
+                continue
+            statement = select(
+                model.principal_id,
+                model.namespace,
+                model.resource_id,
+                model.revision,
+                model.schema_name,
+                model.payload,
+                (model.revision if historical else literal(None, Integer)).label(
+                    "requested_revision"
+                ),
+            )
+            keys: tuple[Any, ...] = (model.principal_id, model.namespace, model.resource_id)
+            if historical:
+                statement = statement.join(
+                    RecordRow,
+                    (model.principal_id == RecordRow.principal_id)
+                    & (model.namespace == RecordRow.namespace)
+                    & (model.resource_id == RecordRow.resource_id),
+                )
+                keys = (*keys, model.revision)
+            statements.append(
+                statement.where(tuple_(*keys).in_(tuple(addresses)), RecordRow.deleted.is_(False))
+            )
+        current: dict[tuple[str, str, str], Record] = {}
+        previous: dict[tuple[str, str, str, int], Record] = {}
+        async with self._read_session() as session:
+            values = (await session.execute(union_all(*statements))).mappings()
+            for value in values:
+                key = (value["principal_id"], value["namespace"], value["resource_id"])
+                record = Record(
+                    value["namespace"],
+                    value["resource_id"],
+                    value["revision"],
+                    value["schema_name"],
+                    json.loads(json.dumps(value["payload"], allow_nan=False)),
+                )
+                if value["requested_revision"] is None:
+                    current[key] = record
+                else:
+                    previous[(*key, value["requested_revision"])] = record
+        return current, previous
 
     @property
     def checked_metadata(self) -> bool:
@@ -193,13 +316,15 @@ class PostgresRecordStore:
         batch_key = (principal.id, namespace, resource_id)
         if batch is not None and batch_key in batch:
             saved = batch[batch_key]
-            return Record(
+            result = Record(
                 saved.namespace,
                 saved.resource_id,
                 saved.revision,
                 saved.schema_name,
                 json.loads(json.dumps(saved.payload, allow_nan=False)),
             )
+            self._observe(batch_key, revision, result)
+            return result
         if batch is not None and len(batch) >= 256:
             raise StoreConflict("current_read_capacity_exceeded")
         async with self._read_session() as session:
@@ -224,15 +349,20 @@ class PostgresRecordStore:
                     )
                 )
                 if version is None:
+                    self._observe(batch_key, revision, None)
                     raise StoreMissing()
-                return self._record(version)
+                result = self._record(version)
+                self._observe(batch_key, revision, result)
+                return result
             # Never trust SQLAlchemy's identity map for mutable current authority.
             row = await session.get(RecordRow, key, populate_existing=True)
             if row is None or row.deleted:
+                self._observe(batch_key, revision, None)
                 raise StoreMissing()
             result = self._record(row)
             if batch is not None:
                 batch[batch_key] = self._record(row)
+            self._observe(batch_key, revision, result)
             return result
 
     @staticmethod

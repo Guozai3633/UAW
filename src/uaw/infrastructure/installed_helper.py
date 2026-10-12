@@ -48,13 +48,14 @@ from uaw.run.runner_authority import RegisteredRunnerAuthority
 from uaw.run.runner_commands import RunnerCommands
 from uaw.run.runner_devices import RunnerDevices
 from uaw.run.runner_receipts import RegisteredReceiptCommandReader
+from uaw.run.runner_recheck import RegisteredRunnerRechecks
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 from uaw.shared.runner_bootstrap import FirstStartProgressPort
 from uaw.shared.schema import validate_contract
 from uaw.shared.settings import Settings
 from uaw.workspace.binding import RootBindings
-from uaw.workspace.ports import ReceiptCommandReaderPort
+from uaw.workspace.ports import ReceiptCommandReaderPort, RunnerReadCurrentPort
 
 NAMESPACE_ENV = "UAW_INSTALLED_HELPER_NAMESPACE"
 HANDLE_ENV = "UAW_INSTALLED_HELPER_LAUNCH"
@@ -212,8 +213,20 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
         roots: NativeRootSource,
         registry: ConnectionRegistry,
         currency: str,
+        current_source: RunnerReadCurrentPort,
         native_root_selection: bool = False,
     ) -> None:
+        if not (
+            isinstance(current_source, RegisteredRunnerRechecks)
+            and isinstance(commands, RegisteredReceiptCommandReader)
+            and isinstance(protocol.async_authority, RegisteredRunnerAuthority)
+            and commands.commands is current_source.commands
+            and protocol.async_authority.commands is current_source.commands
+            and current_source.commands.store is container.records
+            and current_source.commands.roots is roots
+            and current_source.commands.devices.channels is registry
+        ):
+            raise CapabilityUnavailable("runner.installed.current_source_binding")
         window: dict[str, Any] = {}
         if native_root_selection:
             require_root_window_adapter()
@@ -230,6 +243,10 @@ class InstalledReadOnlyHelper(ReadOnlyHelper):
             **window,
         )
         self.container = container
+        # A owning source is available to the next explicit D consumer adapter.
+        # The existing D runtime/endpoint has no current_source argument yet;
+        # exposing this object does not replace any of its existing checks.
+        self.current_source = current_source
 
     async def serve_once(self) -> Ref:
         try:
@@ -360,6 +377,7 @@ class PairedInstalledFactory:
             roots=roots,
             registry=registry,
             currency=launch.currency,
+            current_source=RegisteredRunnerRechecks(commands),
             native_root_selection=launch.root_workspace is not None,
         )
         challenges.helper = helper
