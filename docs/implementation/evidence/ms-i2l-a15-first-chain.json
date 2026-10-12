@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-12",
+  "source": "1af0a8967ada3b92870c15151f73b31ab09b27e0",
+  "tag": "ms-i2l-a15-source",
+  "scope": "Actual A database/Web/Windows/dual keys/two-process installed temporary-file chain; native decisions, model/provider metadata and approval explicitly controlled",
+  "test_counts": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a15-first-chain.xml",
+    "sha256": "cb701c092d596d03481e6a07c1f278bb6b749701ace7c9541ce3f5ddd7149007"
+  },
+  "test_wall_seconds": 50.62,
+  "tool_result": {
+    "kind": "failed",
+    "failure_code": "invocation_interrupted",
+    "effect": "unknown, reconcile original attempt; no resend"
+  },
+  "command_sends": 1,
+  "actual_opens": 1,
+  "actual_execution_attempts": 1,
+  "signed_data_present": false,
+  "published_ref_present": false,
+  "post_read_current_cancelled": true,
+  "all_composite_reply_deadlines_equal": true,
+  "deadline_extended": false,
+  "parent_phases": {
+    "fixture_new_run_setup": 1.0125591000005443,
+    "web_launch_to_callback_ready": 14.85116299999936,
+    "a8_assembly": 0.4519421999993938,
+    "approval_query": 1.2640607000003001,
+    "controlled_sql_decision": 0.5758695000004082,
+    "approved_facade_to_signed_result": 29.46678509999947,
+    "cleanup": 0.5255323999999746
+  },
+  "parent_operations": {
+    "budget_reserve": {
+      "calls": 1,
+      "seconds": 0.018538499999522173
+    },
+    "budget_dispatch": {
+      "calls": 1,
+      "seconds": 0.01644490000035148
+    },
+    "bridge_source_checks": {
+      "calls": 2,
+      "seconds": 3.3918941000001723
+    },
+    "lease_acquire": {
+      "calls": 1,
+      "seconds": 0.023762499999975262
+    },
+    "command_collect": {
+      "calls": 1,
+      "seconds": 1.4237364000000525
+    },
+    "command_register": {
+      "calls": 1,
+      "seconds": 2.911787699999877
+    },
+    "signed_pipe_exchange": {
+      "calls": 1,
+      "seconds": 10.02191490000041
+    }
+  },
+  "child_phases": {
+    "factory_create": 1.4534213000006275,
+    "owner_mapping": {
+      "calls": 115,
+      "seconds": 4.097811899995577,
+      "errors": {}
+    },
+    "session_current": {
+      "calls": 171,
+      "seconds": 14.677180299997417,
+      "errors": {
+        "ipc_closed": 1
+      }
+    },
+    "signatures": {
+      "calls": 2,
+      "seconds": 0.006734200000209967,
+      "errors": {}
+    },
+    "callback": 9.872698799999853,
+    "endpoint_dispatch": {
+      "calls": 1,
+      "seconds": 9.212370899999769,
+      "errors": {
+        "CancelledError": 1
+      }
+    },
+    "endpoint_watch": {
+      "calls": 1,
+      "seconds": 9.208641199999875,
+      "errors": {
+        "ipc_closed": 1
+      }
+    },
+    "registered_reader": {
+      "calls": 2,
+      "seconds": 0.5971084999991945,
+      "errors": {}
+    },
+    "runner_execute": {
+      "calls": 1,
+      "seconds": 8.552082999999584,
+      "errors": {
+        "CancelledError": 1
+      }
+    },
+    "runner_current": {
+      "calls": 3,
+      "seconds": 8.169342800000777,
+      "errors": {
+        "CancelledError": 1
+      }
+    },
+    "composite_current": {
+      "calls": 5,
+      "seconds": 8.076027899998735,
+      "errors": {
+        "CancelledError": 1
+      }
+    },
+    "root_source": {
+      "calls": 18,
+      "seconds": 2.1494960000009087,
+      "errors": {}
+    },
+    "read_exchanges": [
+      32.558017199999995
+    ]
+  },
+  "parent_record_get_calls": 8182,
+  "child_record_get_calls": 7671,
+  "note": "Nested/parallel phase times and get counts cannot be summed or treated as SQL SELECT counts. Child entire lifetime includes startup/native, not only reply window.",
+  "cleanup": {
+    "credential_handles_absent": 4,
+    "role_keys_revoked": 2,
+    "child_exited": true,
+    "proof_pipe_closed": true
+  },
+  "first_file_chain_passed": false,
+  "journal_recovery_assertions_reached": false,
+  "user_file_reads": 0,
+  "new_model_calls": 0,
+  "human_actions": 0,
+  "flags_enabled": false,
+  "milestone_accepted": false
+}

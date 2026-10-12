@@ -141,5 +141,7 @@
     "interfaces": 288,
     "errors": []
   },
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a14.json"
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a14.json",
+  "post_publication_first_chain": "docs/implementation/evidence/ms-i2l-a15-first-chain.json",
+  "post_publication_failed_nodes": 1
 }

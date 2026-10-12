@@ -1,5 +1,11 @@
 # A15 正式来源与 D 原监控修复续项
 
+发布后的实际首次链补验：50.62 秒失败，command1/**open1**，已创建原一次执行行；
+signed_data/published_ref 均不存在，原结果 unknown，不重发。读后 current 被取消，尚未完成回执/恢复断言。
+5 composite 共8.076秒、3 runner.current 共8.169秒（嵌套累计，不与墙钟相加），同一原 reply deadline。
+4凭据、2 keys、child/proof 清理通过。准确源码保持下述 A15；D继续已派发监控修复，不中途同步新元数据。
+[失败与实际打开证据](../implementation/evidence/ms-i2l-a15-first-chain.json)。
+
 准确源码 **1af0a8967ada3b92870c15151f73b31ab09b27e0** / `ms-i2l-a15-source`。
 本记录属于随后元数据发布，不移动旧标签，不建立新共同 start；fetch 后核对远端 peeled tag 与本 SHA。
 D 在原 dev/runner 自行合入准确来源，不消费浮动 integration；A 不操作 worker 分支/环境。
@@ -13,7 +19,8 @@ A15 已补齐同 Database owning-task 事务读取，并验证实际 lease 释�
 
 163 不同定向节点通过（SQL/source115、D consumer/endpoint46、Windows2）；321 历史并集未全部重跑。
 211 源码 Mypy、15 文件 Ruff/格式、1362 schema/288接口检查通过；452 源码摘要已固定。
-D 243 worker 定向回执按组件/接口接受，完整首次文件链仍 command1/open0、原10秒回复期限失败。
+D 243 worker 定向回执按组件/接口接受，其旧完整首次文件链 command1/open0、原10秒回复期限失败；
+A 发布后新补验 command1/open1，仍无签名回执，具体见本节顶部，不能标整链通过。
 A 两项 Windows 测试 command0/open0，随机凭据/keys/child/proof 清理通过；无新模型或本人操作。
 
 D 原修复继续：[准确监控消费任务](requests/A/MS-I2l-A15-D-watch-consumer.md)。

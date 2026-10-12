@@ -6,7 +6,8 @@ A14 漏掉的事务 load 已加入同 Database owning-task observer；lease/devi
 163 定向节点（115 SQL＋46 D＋2 Windows）通过，321 历史并集不是当前全量；211 类型、Ruff/格式及契约通过。
 D 按 DISPATCH 继续原监控消费修复，M1到即接，M2原首次链与journal恢复；A推进原注册/发送/生产来源成本，
 只改A源码，不改worker业务/分支。B/C保留原交付点，没有新共同包。
-首次链仍command1/open0，原回复期限失败；native/key/OS/pipe独立检查、原期限及unknown不重发保持。
+发布后补验command1/open1，原一次执行行1，读后current取消，无signed_data/published_ref；原回复预算仍失败。
+原失败与清理已记录，native/key/OS/pipe独立检查、原期限及unknown不重发保持，不计入163通过节点。
 flags默认关闭，无新模型/用户正文/本人操作。汇合原材料模型/页面/本人接受后才全量。
 详见 ../../coordination/requests/A/MS-I2l-A15-transactional-watch.md 与 MS-I2l-A15-D-watch-consumer.md。
 

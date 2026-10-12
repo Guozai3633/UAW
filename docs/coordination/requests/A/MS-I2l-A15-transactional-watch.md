@@ -103,3 +103,16 @@ Windows 两次装配均 command0/open0，随机 4 凭据、2 keys、child、proo
 首次文件链、固定用户模型文件交付、原本人浏览器接受和汇合全量仍 pending。
 flags、子 Agent、DAG、写入/安装/exec 不开放，没有新模型调用或用户正文访问。
 实际证据见 docs/implementation/evidence/ms-i2l-a15.json；D 续项见 MS-I2l-A15-D-watch-consumer.md。
+
+## 发布后的实际首次链补验
+
+在准确 `ms-i2l-a15-source` / `1af0a8967ada3b92870c15151f73b31ab09b27e0` 上，
+原 A PostgreSQL/Web/Windows 双角色实际链新临时实例运行 50.62 秒失败。native/审批和模型连接元数据受控，
+没有访问用户材料或触发本人窗口。完整断言未放宽，新增失败单独记录，不计入163通过节点。
+
+本次 command1/**实际 open1**，原一次执行行1；signed_data 与 published_ref 均不存在。
+工具返回 invocation_interrupted，原效果 unknown，不重发；原 journal 恢复断言尚未执行。
+5 次 composite 共8.076秒、3次 runner.current 共8.169秒，后一次读后复查取消；
+所有原 composite reply deadline 相等。嵌套累计与 startup lifetime 不等于回复段墙钟。
+仍保留后台完整 session.check 监控，D 已正式接续 SQL/本机监控修复，不能提前宣称预算达标。
+4随机凭据、2 keys、child/proof清理完成。详见 docs/implementation/evidence/ms-i2l-a15-first-chain.json。
