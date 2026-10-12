@@ -299,10 +299,25 @@ class RunnerCommands:
         if self.roots is None or self.gate is None or self.signer is None:
             raise CapabilityUnavailable("runner.root_action_signing_sources")
         before = parameter_hash(request)
-        await require_none(self.gate.check(copy(request), ctx), "runner_gate_protocol_invalid")
+        missing = object()
+        joint = getattr(self.gate, "check_root", missing)
+        if joint is missing:
+            await require_none(self.gate.check(copy(request), ctx), "runner_gate_protocol_invalid")
+            root = copy(await self.roots.current(device["device_id"], workspace, ctx))
+        elif callable(joint):
+            root = copy(
+                await joint(
+                    copy(request),
+                    ctx,
+                    roots=self.roots,
+                    device_id=device["device_id"],
+                    workspace=workspace,
+                )
+            )
+        else:
+            raise reject("runner_gate_protocol_invalid", "Root gate is not callable", 503)
         if parameter_hash(request) != before:
             raise StoreConflict()
-        root = copy(await self.roots.current(device["device_id"], workspace, ctx))
         validate_contract("RunnerRootSnapshot", root)
         if "root" in record and root != record["root"]:
             raise reject("runner_root_changed", "Registered root binding changed", 412)

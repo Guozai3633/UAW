@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from uaw_runner.keys import Ed25519SignatureAdapter, signature_key_id
 
 from uaw.infrastructure.db.records import parameter_hash
+from uaw.infrastructure.installed_root_check import checked_file_root
 from uaw.run.approval import ApprovalService
 from uaw.run.tool_sources import RunToolAccessSources
 from uaw.shared.contracts import JsonObject, Ref, TrustedExecutionContext
@@ -64,8 +65,13 @@ class InstalledControlVerifier:
 
 
 class InstalledFileResources:
-    def __init__(self, roots: RunnerRootSourcePort, device_id: str) -> None:
+    def __init__(
+        self, roots: RunnerRootSourcePort, device_id: str, *, observed: JsonObject | None = None
+    ) -> None:
         self.roots, self.device_id = roots, device_id
+        self.observed = (
+            None if observed is None else json.loads(json.dumps(observed, allow_nan=False))
+        )
 
     async def resolve(
         self, call: dict[str, Any], spec: dict[str, Any], ctx: TrustedExecutionContext
@@ -80,7 +86,12 @@ class InstalledFileResources:
         if workspace not in ctx.scope.resource_refs:
             raise reject("installed_file_workspace_denied", "Original Run workspace required", 403)
         snapshot = RunnerRootSnapshot.model_validate_json(
-            json.dumps(await self.roots.current(self.device_id, workspace, ctx))
+            json.dumps(
+                self.observed
+                if self.observed is not None
+                else await self.roots.current(self.device_id, workspace, ctx),
+                allow_nan=False,
+            )
         )
         root = snapshot.wire()
         if (
@@ -108,6 +119,30 @@ class InstalledToolApprovalGate:
         self.container, self.roots, self.device_id = container, roots, device_id
 
     async def check(self, request: JsonObject, ctx: TrustedExecutionContext) -> None:
+        await self._check(request, ctx, InstalledFileResources(self.roots, self.device_id))
+
+    async def check_root(
+        self,
+        request: JsonObject,
+        ctx: TrustedExecutionContext,
+        *,
+        roots: RunnerRootSourcePort,
+        device_id: str,
+        workspace: Ref,
+    ) -> JsonObject:
+        if roots is not self.roots or device_id != self.device_id:
+            raise reject("installed_root_source_changed", "Original root source required", 412)
+
+        async def check(observed: JsonObject | None) -> None:
+            await self._check(
+                request, ctx, InstalledFileResources(roots, device_id, observed=observed)
+            )
+
+        return await checked_file_root(roots, device_id, workspace, ctx, check)
+
+    async def _check(
+        self, request: JsonObject, ctx: TrustedExecutionContext, resources: InstalledFileResources
+    ) -> None:
         c = self.container
         assert (
             c.records
@@ -151,7 +186,7 @@ class InstalledToolApprovalGate:
             registry,
             c.configuration,
             access,
-            InstalledFileResources(self.roots, self.device_id),
+            resources,
             policies=c.execution_permissions,
         )
         service = ApprovalService(

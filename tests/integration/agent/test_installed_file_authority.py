@@ -8,6 +8,7 @@ from tests.integration.test_runtime_sources import profile
 from tests.integration.tool.conftest import tool_case as tool_case
 from uaw.infrastructure.db.transactions import reference
 from uaw.infrastructure.installed_files import OriginalFileApprovalGate, RegisteredFileDataAccess
+from uaw.infrastructure.installed_tool_authority import InstalledToolApprovalGate
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import DomainError
 from uaw.tool.invocation.schema import normalize
@@ -349,3 +350,78 @@ async def test_original_file_gate_consumes_exact_sql_user_decision(original_file
         )
         with pytest.raises(DomainError):
             await gate.check(request, ctx)
+
+
+async def test_joint_root_gate_preserves_original_sql_decision_and_shared_authority(
+    original_file_gate,
+):
+    gate, service, request, ctx, c = original_file_gate
+    call, spec, _ = await gate.ledger.action("actual-file-action", ctx)
+    waiting = await gate.approvals.precheck(call, spec, ctx)
+    record = await service.get(ctx.principal, waiting["wait_ref"]["id"])
+    await service.decide(
+        ctx.principal,
+        {
+            "approval_id": record["id"],
+            "decision": {
+                "decision": "approve_once",
+                "expected_arguments_hash": record["arguments_hash"],
+                "expected_resource_refs": record["resource_refs"],
+                "reason": "Controlled SQL joint root test",
+            },
+        },
+        meta("joint-root-original-approval", record["revision"]),
+    )
+    original_authority, original_resources = service.authority, service.authority.resources
+    workspace = ctx.scope.resource_refs[0]
+    root = {
+        "owner": ctx.principal.wire(),
+        "device_id": "joint-root-device",
+        "workspace_ref": workspace.wire(),
+        "root_handle": "joint-root-handle",
+        "binding_revision": 1,
+        "allowed_actions": ["file.read"],
+        "expires_at": ctx.deadline,
+    }
+
+    class BracketedRoots:
+        def __init__(self):
+            self.calls = 0
+
+        async def current(self, device, workspace, ctx):
+            raise AssertionError("Joint callback must not recursively read roots")
+
+        async def checked_current(self, device, workspace, ctx, *, check):
+            self.calls += 1
+            await check(root)
+            return root
+
+    roots = BracketedRoots()
+    assert (
+        await gate.check_root(
+            request, ctx, roots=roots, device_id=root["device_id"], workspace=workspace
+        )
+        == root
+    )
+    assert roots.calls == 1
+    child = InstalledToolApprovalGate(c, roots, root["device_id"])
+    assert (
+        await child.check_root(
+            request, ctx, roots=roots, device_id=root["device_id"], workspace=workspace
+        )
+        == root
+    )
+    assert roots.calls == 2
+    assert service.authority is original_authority
+    assert service.authority.resources is original_resources
+    await c.tool_access.revoke(
+        ctx, meta("revoke-joint-root-role", 1), authenticated_service=c.configuration.platform
+    )
+    with pytest.raises(DomainError):
+        await gate.check_root(
+            request, ctx, roots=roots, device_id=root["device_id"], workspace=workspace
+        )
+    with pytest.raises(DomainError):
+        await child.check_root(
+            request, ctx, roots=roots, device_id=root["device_id"], workspace=workspace
+        )

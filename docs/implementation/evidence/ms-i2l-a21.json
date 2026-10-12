@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "97681494e173534acc7ac36bf03c48eea233c449",
+  "d_handoff": "9a419a943e3c385f4a4beb532fdb25dbe05be991",
+  "merge_commit": "1ca249b13de90ffd3db8387e96d1dc00e887189c",
+  "targeted_distinct_passing": 61,
+  "historical_union_not_all_rerun": 478,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-paired-consumer.xml",
+      "sha256": "37a81335e85803e818f98aa4278b8e6a0656b4a9c84b877a3e85b2eee0a42e72",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-root-sql.xml",
+      "sha256": "03f6fad1d8187f90c2eb9ee0156a38054f43c4dbb9dc69f1ac159989b660df60",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-root-child.xml",
+      "sha256": "dca1c6d252d2fffa678a1387d9766b604f088796f04f194841d5d924bef9e6be",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-root-protocol-final-passing.xml",
+      "sha256": "e96426b3b0de29906cb375eb0a430f8108c1e155fb062c68042ef0e474ad5315",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "worker_reported_distinct_passing": 106,
+  "worker_report_not_added_to_A_count": true,
+  "paired_consumer_accepted_as_component": true,
+  "joint_root_A_consumers_implemented": true,
+  "joint_native_root_D_implementation_pending": true,
+  "production_still_legacy_root_path": true,
+  "first_file_chain_accepted": false,
+  "first_file_chain_rerun_by_A_this_stage": false,
+  "latest_worker_first_chain": {
+    "seconds": 80.78,
+    "command": 1,
+    "open": 0,
+    "signed_journal": 0,
+    "unknown_not_resent": true,
+    "source": "docs/coordination/requests/D/MS-I2l-A20-final-paired-consumer.md"
+  },
+  "retained_initial_failures": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-root-protocol-initial-errors.xml",
+      "sha256": "3574fad4e9c8bf75128c684792e6d775937d9e48f5e302fe3059751413a00258",
+      "tests": 9,
+      "failures": 0,
+      "errors": 9,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a21-root-protocol-final.xml",
+      "sha256": "98053505f6a6e47c4caed368b9e4c92c8aac04e3f8acd645513bf8fb8c9f3ccb",
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "preparation_corrections": [
+    "Strict tuple fixture loaded through JSON, then complete fixed Tool call built with normalize",
+    "Initial mypy omitted MYPYPATH; final source analysis uses src and apps/local_runner",
+    "Initial SQL selector nonexistent filename collected no tests; corrected to existing runner_current_scope",
+    "Sandbox protocol test without progress interrupted; elevated actual protocol checks passed",
+    "Format check required one test file formatting; final six files passed"
+  ],
+  "static": {
+    "mypy_source_files": 213,
+    "receipts": {
+      "a21-mypy-final.log": "aad6fe7c6ae49e250b481a7f614453d2b0147565255ed373dd37d30579f60e89",
+      "a21-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a21-format-final.log": "771744bf77b40dacce2b51ccee68c2e15c1ccc057465174b08fa0698c8f5200b"
+    }
+  },
+  "cleanup_count_correction_only": {
+    "D_A15_directory_alias_count": 26,
+    "D_A15_distinct_physical_instances": 22,
+    "original_cleanup_assertions_retained": true
+  },
+  "public_interfaces_changed": false,
+  "flags_changed": false,
+  "deadline_extended": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_confirmation_or_acceptance": false,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a20.json",
+  "product_milestone_accepted": false
+}

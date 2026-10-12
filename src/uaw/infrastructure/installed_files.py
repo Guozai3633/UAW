@@ -29,14 +29,18 @@ from uaw.infrastructure.db.records import parameter_hash
 from uaw.infrastructure.installed_journal import InstalledJournalRecovery
 from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
 from uaw.infrastructure.installed_receipt import current_root
+from uaw.infrastructure.installed_root_check import checked_file_root
 from uaw.infrastructure.installed_tool_authority import InstalledFileResources
 from uaw.infrastructure.runner_pipe import RunnerPipeClient
+from uaw.run.approval import ApprovalService
 from uaw.run.file_admission import InstalledFileRunSources
 from uaw.run.file_bridge import FileDeviceRoute, RegisteredFileBridge
 from uaw.shared.contracts import JsonObject, Principal, Ref, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.ports import RunnerRootSourcePort
 from uaw.shared.schema import validate_contract
 from uaw.tool.approval import ToolApprovalAdapter
+from uaw.tool.authority import ToolApprovalAuthority
 from uaw.tool.invocation.schema import normalize
 from uaw.tool.ledger import ToolLedger, action_key
 from uaw.tool.providers.file_read import file_arguments
@@ -181,6 +185,49 @@ class OriginalFileApprovalGate:
         self.approvals: ToolApprovalAdapter | None = None
 
     async def check(self, request: JsonObject, ctx: TrustedExecutionContext) -> None:
+        await self._check(request, ctx)
+
+    async def check_root(
+        self,
+        request: JsonObject,
+        ctx: TrustedExecutionContext,
+        *,
+        roots: RunnerRootSourcePort,
+        device_id: str,
+        workspace: Ref,
+    ) -> JsonObject:
+        async def check(observed: JsonObject | None) -> None:
+            if observed is None:
+                await self.check(request, ctx)
+                return
+            if self.approvals is None:
+                raise CapabilityUnavailable("file.original_tool_approval")
+            service = self.approvals.approvals
+            original = self.approvals.authority
+            if type(service) is not ApprovalService or service.authority is not original:
+                raise CapabilityUnavailable("file.original_joint_approval")
+            # A call-local Reader/service, never mutation of shared authority.
+            authority = ToolApprovalAuthority(
+                original.ledger,
+                original.registry,
+                original.configuration,
+                original.access,
+                InstalledFileResources(roots, device_id, observed=observed),
+                policies=original.policies,
+            )
+            joint = ApprovalService(
+                service.store, service.configuration, authority, permissions=service.permissions
+            )
+            await self._check(request, ctx, joint)
+
+        return await checked_file_root(roots, device_id, workspace, ctx, check)
+
+    async def _check(
+        self,
+        request: JsonObject,
+        ctx: TrustedExecutionContext,
+        service_override: ApprovalService | None = None,
+    ) -> None:
         if self.approvals is None:
             raise CapabilityUnavailable("file.original_tool_approval")
         call = await self.ledger.attempt(ctx)
@@ -197,7 +244,7 @@ class OriginalFileApprovalGate:
         original_request = await self.ledger.get("tool.approval.requests", key, ctx)
         if original_request is None:
             raise reject("approval_pending", "Original Tool approval required", 403)
-        service = self.approvals.approvals
+        service = service_override or self.approvals.approvals
         approval_id = "approval-" + parameter_hash({"run": ctx.run_id, "action": call["action_id"]})
         approval = await service.get(ctx.principal, approval_id)
         if approval["status"] != "approved":
