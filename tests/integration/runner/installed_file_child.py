@@ -101,6 +101,15 @@ class MeasuredInstalledAssembly:
             setattr(port, method, measured)
 
         measure(application.helper.protocol.async_authority, "current", "authority")
+        # Exact A source object from the installed factory, no test allowance.
+        measure(application.helper.current_source, "current", "composite_current")
+        original_current = application.helper.current_source.current
+
+        async def bounded_current(*args, **kwargs):
+            values.setdefault("reply_deadlines", []).append(kwargs["deadline"])
+            return await original_current(*args, **kwargs)
+
+        application.helper.current_source.current = bounded_current
         measure(application.helper.bootstrap.signer, "sign_document", "signatures")
         measure(application.helper.journal, "publish", "receipt_publish")
         measure(application.helper.commands, "resolve", "registered_reader")
@@ -128,8 +137,8 @@ class MeasuredInstalledAssembly:
             session = application.helper.session
             receive = session.receive
 
-            async def counted_receive():
-                frame = await receive()
+            async def counted_receive(*args, **kwargs):
+                frame = await receive(*args, **kwargs)
                 values["frames"].append(frame["kind"])
                 return frame
 
