@@ -20,7 +20,7 @@ from uaw.shared.ports import (
     RunnerCommandSigningPort,
     RunnerRootSourcePort,
 )
-from uaw.shared.schema import validate_contract
+from uaw.shared.schema import contract_validation_scope, validate_contract
 from uaw.shared.stores import StoreConflict, StoreMissing
 from uaw.tool.ledger import ToolLedger, action_key
 
@@ -244,7 +244,7 @@ class RunnerCommands:
         # Metadata/authority only; never held over native UI, dispatch or file
         # reads. Default reads remain fresh. If explicitly enabled internally,
         # repeated inputs have a final fresh full-row SQL witness before return.
-        async with self.store.current_reads():
+        async with self.store.current_reads(), contract_validation_scope():
             try:
                 async with self.store.checked_read_batch(
                     plan=(

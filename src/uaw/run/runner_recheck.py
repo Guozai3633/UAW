@@ -11,6 +11,7 @@ from uaw.run.runner_commands import RunnerCommands, pin
 from uaw.run.runner_devices import instant
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import reject
+from uaw.shared.schema import contract_validation_scope
 from uaw.workspace.contracts import (
     RegisteredReceiptCommand,
     RunnerAuthoritySnapshot,
@@ -103,6 +104,7 @@ class RegisteredRunnerRechecks:
                 asyncio.timeout_at(deadline),
                 self.commands.store.current_reads(),
                 self.commands.store.current_witness(),
+                contract_validation_scope(),
             ):
                 record = await self.commands.record(ref.id)
                 if record["state"] != "active" or ref.wire() != pin(

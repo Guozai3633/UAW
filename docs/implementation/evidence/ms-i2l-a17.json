@@ -1,0 +1,757 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "3d0ac536e69b48724edba9f79fe0d59226813ce3",
+  "scope": "A-only task-local pure JSON schema success reuse; current SQL/predicates/signatures/external sources unchanged",
+  "targeted_distinct_passing": 80,
+  "historical_union_not_all_rerun": 368,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a17-shape-unit-final.xml",
+      "sha256": "49fa5875a75b16e006b9cd3a6d3ac6583c2b33e208a669ab9440713b15cbc316",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a17-shape-sql.xml",
+      "sha256": "651a3eca6652af9ae7d6a3428a387e63e5030c284844b59684962d78a9ed5bdb",
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a17-measure.xml",
+      "sha256": "ae719b859bb28b10c5128484c7f8a5d8d37dce68a4854d0116afbad31ebb7489",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "shape_scope": {
+    "max_entries": 256,
+    "max_encoded_bytes": 16384,
+    "max_nodes": 2048,
+    "max_depth": 32,
+    "retained": "schema name + SHA256 + actual validator object; no raw values or permissions",
+    "cross_task_thread_later_hit": false,
+    "errors_cached": false,
+    "fresh_sql_unchanged": true,
+    "native_key_os_signature_predicates_skipped": false
+  },
+  "same_source_measurement": {
+    "same_full_projection": true,
+    "unchanged_fresh_sql": true,
+    "baseline": {
+      "hits": 0,
+      "misses": 221,
+      "selects": 43,
+      "seconds": 0.3998113000016019
+    },
+    "shape_reuse": {
+      "hits": 171,
+      "misses": 50,
+      "selects": 43,
+      "seconds": 0.2435598999982176
+    },
+    "scope": "actual registered SQL; channel/root/native/gate controlled"
+  },
+  "diagnostic_profile": {
+    "scope": "whole child serve loop incl concurrent monitors; profiler overhead; not per-task cost",
+    "selected_self_seconds": 4.1987733,
+    "top": [
+      {
+        "module": "validators.py",
+        "line": 396,
+        "function": "descend",
+        "calls": 138703,
+        "primitive_calls": 8179,
+        "self_seconds": 0.5860529,
+        "cumulative_seconds": 4.9569038
+      },
+      {
+        "module": "validators.py",
+        "line": 339,
+        "function": "evolve",
+        "calls": 130485,
+        "primitive_calls": 130447,
+        "self_seconds": 0.35118190000000005,
+        "cumulative_seconds": 0.8440085
+      },
+      {
+        "module": "_core.py",
+        "line": 254,
+        "function": "pointer",
+        "calls": 55042,
+        "primitive_calls": 55028,
+        "self_seconds": 0.3473833,
+        "cumulative_seconds": 1.0587545
+      },
+      {
+        "module": "_types.py",
+        "line": 94,
+        "function": "is_type",
+        "calls": 230375,
+        "primitive_calls": 230375,
+        "self_seconds": 0.24476640000000002,
+        "cumulative_seconds": 0.357186
+      },
+      {
+        "module": "validators.py",
+        "line": 282,
+        "function": "__attrs_post_init__",
+        "calls": 130534,
+        "primitive_calls": 130534,
+        "self_seconds": 0.2378741,
+        "cumulative_seconds": 0.26266130000000004
+      },
+      {
+        "module": "_keywords.py",
+        "line": 282,
+        "function": "type",
+        "calls": 90791,
+        "primitive_calls": 90791,
+        "self_seconds": 0.209762,
+        "cumulative_seconds": 0.5706616
+      },
+      {
+        "module": "_core.py",
+        "line": 165,
+        "function": "create_resource",
+        "calls": 179162,
+        "primitive_calls": 179140,
+        "self_seconds": 0.14898840000000002,
+        "cumulative_seconds": 0.27020310000000003
+      },
+      {
+        "module": "_core.py",
+        "line": 653,
+        "function": "lookup",
+        "calls": 56447,
+        "primitive_calls": 56433,
+        "self_seconds": 0.14453680000000002,
+        "cumulative_seconds": 1.7815286000000001
+      },
+      {
+        "module": "jsonschema.py",
+        "line": 287,
+        "function": "maybe_in_subresource",
+        "calls": 110084,
+        "primitive_calls": 110084,
+        "self_seconds": 0.1000555,
+        "cumulative_seconds": 0.2387999
+      },
+      {
+        "module": "validators.py",
+        "line": 452,
+        "function": "is_type",
+        "calls": 230375,
+        "primitive_calls": 230375,
+        "self_seconds": 0.0883112,
+        "cumulative_seconds": 0.44549720000000004
+      },
+      {
+        "module": "_keywords.py",
+        "line": 274,
+        "function": "ref",
+        "calls": 58760,
+        "primitive_calls": 8173,
+        "self_seconds": 0.07915670000000001,
+        "cumulative_seconds": 5.281735
+      },
+      {
+        "module": "_keywords.py",
+        "line": 290,
+        "function": "properties",
+        "calls": 16391,
+        "primitive_calls": 5144,
+        "self_seconds": 0.07845830000000001,
+        "cumulative_seconds": 4.536387
+      },
+      {
+        "module": "_core.py",
+        "line": 410,
+        "function": "get_or_retrieve",
+        "calls": 56447,
+        "primitive_calls": 56447,
+        "self_seconds": 0.0753544,
+        "cumulative_seconds": 0.18450950000000002
+      },
+      {
+        "module": "jsonschema.py",
+        "line": 47,
+        "function": "_dollar_id",
+        "calls": 124286,
+        "primitive_calls": 124286,
+        "self_seconds": 0.0712537,
+        "cumulative_seconds": 0.1259642
+      },
+      {
+        "module": "_keywords.py",
+        "line": 285,
+        "function": "<genexpr>",
+        "calls": 157656,
+        "primitive_calls": 157656,
+        "self_seconds": 0.0707422,
+        "cumulative_seconds": 0.251527
+      },
+      {
+        "module": "_core.py",
+        "line": 716,
+        "function": "_evolve",
+        "calls": 56447,
+        "primitive_calls": 56447,
+        "self_seconds": 0.0696363,
+        "cumulative_seconds": 0.32330820000000005
+      },
+      {
+        "module": "windows_pipe.py",
+        "line": 170,
+        "function": "process",
+        "calls": 369,
+        "primitive_calls": 358,
+        "self_seconds": 0.0630391,
+        "cumulative_seconds": 0.11217410000000001
+      },
+      {
+        "module": "validators.py",
+        "line": 459,
+        "function": "_validate_reference",
+        "calls": 56447,
+        "primitive_calls": 56433,
+        "self_seconds": 0.0581484,
+        "cumulative_seconds": 1.856643
+      },
+      {
+        "module": "_core.py",
+        "line": 227,
+        "function": "id",
+        "calls": 124286,
+        "primitive_calls": 124286,
+        "self_seconds": 0.0539236,
+        "cumulative_seconds": 0.1799341
+      },
+      {
+        "module": "_core.py",
+        "line": 700,
+        "function": "in_subresource",
+        "calls": 124237,
+        "primitive_calls": 124237,
+        "self_seconds": 0.0515112,
+        "cumulative_seconds": 0.237214
+      },
+      {
+        "module": "exceptions.py",
+        "line": 55,
+        "function": "__init__",
+        "calls": 14010,
+        "primitive_calls": 14010,
+        "self_seconds": 0.0489788,
+        "cumulative_seconds": 0.0489788
+      },
+      {
+        "module": "exceptions.py",
+        "line": 165,
+        "function": "_set",
+        "calls": 18176,
+        "primitive_calls": 18176,
+        "self_seconds": 0.0486479,
+        "cumulative_seconds": 0.0753636
+      },
+      {
+        "module": "validators.py",
+        "line": 1335,
+        "function": "validator_for",
+        "calls": 130496,
+        "primitive_calls": 130496,
+        "self_seconds": 0.040194,
+        "cumulative_seconds": 0.057673600000000005
+      },
+      {
+        "module": "_types.py",
+        "line": 56,
+        "function": "is_string",
+        "calls": 136401,
+        "primitive_calls": 136401,
+        "self_seconds": 0.0371123,
+        "cumulative_seconds": 0.057735800000000004
+      },
+      {
+        "module": "_keywords.py",
+        "line": 351,
+        "function": "oneOf",
+        "calls": 2486,
+        "primitive_calls": 257,
+        "self_seconds": 0.036185800000000004,
+        "cumulative_seconds": 0.8736980000000001
+      },
+      {
+        "module": "windows_pipe.py",
+        "line": 225,
+        "function": "guard",
+        "calls": 2187,
+        "primitive_calls": 2187,
+        "self_seconds": 0.0355718,
+        "cumulative_seconds": 0.0366017
+      },
+      {
+        "module": "_utils.py",
+        "line": 95,
+        "function": "ensure_list",
+        "calls": 78696,
+        "primitive_calls": 78696,
+        "self_seconds": 0.0316923,
+        "cumulative_seconds": 0.0438192
+      },
+      {
+        "module": "helper_stdio.py",
+        "line": 22,
+        "function": "poll",
+        "calls": 1240,
+        "primitive_calls": 1240,
+        "self_seconds": 0.0312795,
+        "cumulative_seconds": 0.033374
+      },
+      {
+        "module": "_keywords.py",
+        "line": 36,
+        "function": "additionalProperties",
+        "calls": 13502,
+        "primitive_calls": 12894,
+        "self_seconds": 0.0293203,
+        "cumulative_seconds": 0.9084968000000001
+      },
+      {
+        "module": "validators.py",
+        "line": 349,
+        "function": "iter_errors",
+        "calls": 18126,
+        "primitive_calls": 8110,
+        "self_seconds": 0.0291059,
+        "cumulative_seconds": 5.3988316
+      },
+      {
+        "module": "_keywords.py",
+        "line": 270,
+        "function": "<genexpr>",
+        "calls": 67514,
+        "primitive_calls": 67514,
+        "self_seconds": 0.0251145,
+        "cumulative_seconds": 0.049175500000000004
+      },
+      {
+        "module": "_keywords.py",
+        "line": 215,
+        "function": "pattern",
+        "calls": 26866,
+        "primitive_calls": 26866,
+        "self_seconds": 0.0246396,
+        "cumulative_seconds": 0.1623688
+      },
+      {
+        "module": "_keywords.py",
+        "line": 269,
+        "function": "enum",
+        "calls": 9658,
+        "primitive_calls": 9658,
+        "self_seconds": 0.023788700000000003,
+        "cumulative_seconds": 0.0729642
+      },
+      {
+        "module": "_keywords.py",
+        "line": 231,
+        "function": "minLength",
+        "calls": 30359,
+        "primitive_calls": 30359,
+        "self_seconds": 0.0221019,
+        "cumulative_seconds": 0.08400590000000001
+      },
+      {
+        "module": "windows_pipe.py",
+        "line": 403,
+        "function": "readable_sync",
+        "calls": 957,
+        "primitive_calls": 957,
+        "self_seconds": 0.021991100000000003,
+        "cumulative_seconds": 0.046845200000000004
+      },
+      {
+        "module": "_utils.py",
+        "line": 69,
+        "function": "find_additional_properties",
+        "calls": 15792,
+        "primitive_calls": 15792,
+        "self_seconds": 0.0215505,
+        "cumulative_seconds": 0.036940900000000006
+      },
+      {
+        "module": "_keywords.py",
+        "line": 237,
+        "function": "maxLength",
+        "calls": 31116,
+        "primitive_calls": 31116,
+        "self_seconds": 0.020804100000000002,
+        "cumulative_seconds": 0.0773162
+      },
+      {
+        "module": "_types.py",
+        "line": 52,
+        "function": "is_object",
+        "calls": 71116,
+        "primitive_calls": 71116,
+        "self_seconds": 0.0203798,
+        "cumulative_seconds": 0.0326072
+      },
+      {
+        "module": "_utils.py",
+        "line": 127,
+        "function": "equal",
+        "calls": 59128,
+        "primitive_calls": 59128,
+        "self_seconds": 0.0182659,
+        "cumulative_seconds": 0.024802900000000003
+      },
+      {
+        "module": "schema.py",
+        "line": 40,
+        "function": "validate_contract",
+        "calls": 8106,
+        "primitive_calls": 8096,
+        "self_seconds": 0.0174273,
+        "cumulative_seconds": 5.3713395
+      }
+    ]
+  },
+  "profile_not_per_task_or_production_ratio": true,
+  "actual_first_chain_and_diagnostic_failures": [
+    {
+      "scope": "original diagnostic before source optimization",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a17-profile.xml",
+        "sha256": "c57e97acaf9f197a6fc9754f45b5554e1435c4bd1605e8254eb8db183ff30fda",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "commands": 1,
+      "opens": 0,
+      "attempts": [],
+      "phases": {
+        "fixture_new_run_setup": 0.708909400000266,
+        "web_launch_to_callback_ready": 19.935513599999467,
+        "a8_assembly": 0.3202092999999877,
+        "approval_query": 1.7085702000003948,
+        "controlled_sql_decision": 0.9193488999990223,
+        "approved_facade_to_signed_result": 35.16196820000005,
+        "cleanup": 5.211616600001435
+      },
+      "operations": {
+        "budget_reserve": {
+          "calls": 1,
+          "seconds": 0.03111669999998412
+        },
+        "budget_dispatch": {
+          "calls": 1,
+          "seconds": 0.0330839999987802
+        },
+        "bridge_source_checks": {
+          "calls": 2,
+          "seconds": 3.7626296000016737
+        },
+        "lease_acquire": {
+          "calls": 1,
+          "seconds": 0.025863200000458164
+        },
+        "command_collect": {
+          "calls": 1,
+          "seconds": 1.6316274999990128
+        },
+        "command_register": {
+          "calls": 1,
+          "seconds": 3.554872400000022
+        },
+        "signed_pipe_exchange": {
+          "calls": 1,
+          "seconds": 10.0071982999998
+        }
+      },
+      "child_phases": {
+        "factory_create": 1.8707381000003807,
+        "owner_mapping": {
+          "calls": 91,
+          "seconds": 5.682594100000642,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "session_current": {
+          "calls": 115,
+          "seconds": 14.59976679999454,
+          "errors": {}
+        },
+        "signatures": {
+          "calls": 2,
+          "seconds": 0.006661600002189516,
+          "errors": {}
+        },
+        "callback": 14.294639300000199,
+        "endpoint_dispatch": {
+          "calls": 1,
+          "seconds": 8.630898299999899,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "endpoint_watch": {
+          "calls": 1,
+          "seconds": 8.598612900001172,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "registered_reader": {
+          "calls": 3,
+          "seconds": 3.2346914000008837,
+          "errors": {}
+        },
+        "local_connection_checks": {
+          "calls": 68,
+          "seconds": 4.673351300001741,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "sql_watch": {
+          "calls": 1,
+          "seconds": 7.565113399999973,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "composite_current": {
+          "calls": 2,
+          "seconds": 12.669383799999196,
+          "errors": {
+            "CancelledError": 2
+          }
+        },
+        "runner_execute": {
+          "calls": 1,
+          "seconds": 6.394164399998772,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "root_source": {
+          "calls": 6,
+          "seconds": 2.8486778999977105,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_current": {
+          "calls": 1,
+          "seconds": 5.1281313999988924,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "read_exchanges": [
+          38.77852239999993
+        ]
+      },
+      "composite_watch_deadlines_equal": true,
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "controlled_native_approval_model_metadata": true
+    },
+    {
+      "scope": "actual first chain after source optimization",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a17-first-chain.xml",
+        "sha256": "70f470d08a334f466dccd24e747ee8157ada04a3fb7d07d18e29ce34101ac11a",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "commands": 1,
+      "opens": 0,
+      "attempts": [],
+      "phases": {
+        "fixture_new_run_setup": 1.5072438999995939,
+        "web_launch_to_callback_ready": 35.87481040000057,
+        "a8_assembly": 0.7084114999997837,
+        "approval_query": 3.11453149999943,
+        "controlled_sql_decision": 1.535030299997743,
+        "approved_facade_to_signed_result": 55.77952309999819,
+        "cleanup": 1.3888284000022395
+      },
+      "operations": {
+        "budget_reserve": {
+          "calls": 1,
+          "seconds": 0.05370960000072955
+        },
+        "budget_dispatch": {
+          "calls": 1,
+          "seconds": 0.05394019999948796
+        },
+        "bridge_source_checks": {
+          "calls": 2,
+          "seconds": 6.210842899999989
+        },
+        "lease_acquire": {
+          "calls": 1,
+          "seconds": 0.06771069999740575
+        },
+        "command_collect": {
+          "calls": 1,
+          "seconds": 3.0928389000000607
+        },
+        "command_register": {
+          "calls": 1,
+          "seconds": 6.244825400000991
+        },
+        "signed_pipe_exchange": {
+          "calls": 1,
+          "seconds": 10.021966000000248
+        }
+      },
+      "child_phases": {
+        "factory_create": 3.899978400000691,
+        "owner_mapping": {
+          "calls": 99,
+          "seconds": 7.504611099997419,
+          "errors": {}
+        },
+        "session_current": {
+          "calls": 117,
+          "seconds": 18.279729800022324,
+          "errors": {}
+        },
+        "signatures": {
+          "calls": 2,
+          "seconds": 0.017214199997397372,
+          "errors": {}
+        },
+        "callback": 21.78896970000278,
+        "endpoint_dispatch": {
+          "calls": 1,
+          "seconds": 8.40951910000149,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "endpoint_watch": {
+          "calls": 1,
+          "seconds": 8.393536999999924,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "registered_reader": {
+          "calls": 3,
+          "seconds": 2.017178600002808,
+          "errors": {}
+        },
+        "local_connection_checks": {
+          "calls": 88,
+          "seconds": 3.6090922999865143,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "sql_watch": {
+          "calls": 1,
+          "seconds": 7.741715000000113,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "composite_current": {
+          "calls": 3,
+          "seconds": 11.222657499998604,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_execute": {
+          "calls": 1,
+          "seconds": 6.877496199998859,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "root_source": {
+          "calls": 10,
+          "seconds": 2.8188247000034607,
+          "errors": {}
+        },
+        "runner_current": {
+          "calls": 1,
+          "seconds": 6.091807200002222,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "read_exchanges": [
+          62.20269539999936
+        ]
+      },
+      "composite_watch_deadlines_equal": true,
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "controlled_native_approval_model_metadata": true
+    }
+  ],
+  "uncompleted_unit_run": {
+    "path": "tests/.artifacts/A/MS-I2l/a17-shape-unit.log",
+    "sha256": "a42e713a78781ab8421d1a767400e2936c33be6fdb6ff7d0534d543daee89264",
+    "status": "sandbox run interrupted; no XML completion, not counted. Same tests later ran through normal approval."
+  },
+  "approval_interruption": {
+    "action": "same-source SQL performance measurement",
+    "executed": false,
+    "reason": "automatic approval review usage limit; not unsafe determination",
+    "resolution": "user continued; same require_escalated action approved and completed; no bypass"
+  },
+  "first_file_chain_passed": false,
+  "product_milestone_accepted": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_confirmation_acceptance": false,
+  "flags_changed": false,
+  "checked_metadata_default_enabled": false,
+  "static": {
+    "mypy_source_files": 212,
+    "ruff": "passed",
+    "format_files": 8,
+    "receipts": {
+      "a17-mypy.log": "c50f9ea1d2c0e1b76e16436379e6f2251cfc2db1a603474e586d6114f633643b",
+      "a17-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a17-format-final.log": "8336dba398354d06ccbf5a857a1a7ebe27c544fb12be9f4408a9b11d2d0a48b7"
+    }
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a16.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}
