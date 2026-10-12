@@ -5,6 +5,7 @@ no root path, proof, credential, body, principal identifier or key material.
 """
 
 import asyncio
+import hashlib
 import json
 import os
 import time
@@ -84,6 +85,10 @@ class MeasuredInstalledAssembly:
                 category = "current" if revision is None else "history"
                 rows = values.setdefault("watch_capture", {}).setdefault(category, {})
                 rows[key[1]] = rows.get(key[1], 0) + 1
+                address = hashlib.sha256(json.dumps(key).encode()).hexdigest()
+                addresses = values.setdefault("watch_address_hashes", {}).setdefault(key[1], [])
+                if address not in addresses:
+                    addresses.append(address)
 
         async def witnessed(records, rows, versions):
             started = time.perf_counter()
@@ -94,6 +99,9 @@ class MeasuredInstalledAssembly:
                     metric = values.setdefault("watch_sql", {"calls": 0, "seconds": 0.0})
                     metric["calls"] += 1
                     metric["seconds"] += time.perf_counter() - started
+                    if metric["calls"] == 3:
+                        values["watch_polling"] = True
+                        save()
 
         PostgresRecordStore._observe = observed
         PostgresRecordStore._witness_rows = witnessed
@@ -158,6 +166,20 @@ class MeasuredInstalledAssembly:
         measure(ReadOnlyPipeEndpoint, "watch", "endpoint_watch")
         measure(ReadOnlyRunner, "current", "runner_current")
         measure(ReadOnlyRunner, "execute", "runner_execute")
+        if os.environ.get("UAW_D_MONITOR_WAIT") == "1":
+
+            async def controlled_execution_wait(self, *args, **kwargs):
+                # Explicit component wait only: no OS read or execution allowance.
+                # Actual A registered source watch remains untouched and uncached.
+                values["controlled_execution_wait"] = True
+                save()
+                try:
+                    await asyncio.Event().wait()
+                finally:
+                    values["controlled_wait_cancelled"] = True
+                    save()
+
+            ReadOnlyRunner.execute = controlled_execution_wait
         original_connected = application.on_connected
         original_serve = application.helper.serve_once
 

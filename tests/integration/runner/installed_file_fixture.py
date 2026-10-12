@@ -242,7 +242,7 @@ async def new_run(c, owner, workspace):
 
 
 @asynccontextmanager
-async def installed_file_case(web, tmp_path, monkeypatch):
+async def installed_file_case(web, tmp_path, monkeypatch, *, monitor_wait=False):
     setup_started = time.perf_counter()
     c, client = web
     c.blobs = FSBlobStore(tmp_path / "private-blobs")
@@ -295,6 +295,8 @@ async def installed_file_case(web, tmp_path, monkeypatch):
             UAW_D_FIXTURE_ROOT=str(root.resolve()),
             UAW_D_METRICS=str(trace.resolve()),
         )
+        if monitor_wait:
+            env["UAW_D_MONITOR_WAIT"] = "1"
         return await prepare(*args, **{**kwargs, "environment": env})
 
     monkeypatch.setattr(
