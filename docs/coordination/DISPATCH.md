@@ -1,4 +1,31 @@
-# A15 正式来源与 D 原监控修复续项
+# A16 正式来源：D 监控组件已接受，原首次文件链仍失败
+
+准确源码 **02033c0831d1a5e56580136a392f69ee753cca9f** / `ms-i2l-a16-source`。
+本正式记录由随后元数据提交发布，不移动旧标签、不建立新共同start或worker包。
+D源码c3153522617a719e9f92f922116f54418d946544/handoff92259195c50bbf59e42e83de804b0ab39e81bf50
+已经通过精确merge71a0d319070ac64764947d331c842d48ae7cf698合入；原M1和文档/失败历史全部保留。
+
+D 271个不同定向通过回执按组件/接口接受；A合入后32监控/恢复/SQL节点及2真实installed账号退出/lease变化通过。
+这34项是分批定向，不是全量；346历史并集未全部在本版重跑。212源码Mypy、11文件Ruff/格式、
+1362schema/288接口检查通过，458源码摘要固定。随机凭据/keys/child/proof清理通过。
+
+新监控装配已由原runtime自动连接A15同一current_source/native roots，无新公共参数。
+SQL初次完整校验后单SQL变化比较；独立本机key/OS/private/pipe/Ticket/grant/签名检查保留，
+任一路返回/异常/到期停止work。执行边界完整current/CAS和旧journal独立数据权限保持。
+
+A新临时Run单独首次链仍1失败/59.56秒：command1/open1、execution claim1、无receipt_data/ref；
+打开后current未完成，原回复期限终止，unknown不重发。6composite累计10.252秒含监控与执行并行，
+所有deadline相同，不与墙钟相加。完整读取/签名journal/恢复、模型材料成果/原本人接受与汇合全量仍pending。
+
+当前B/MS-U3b、C/MS-T2i-b、D/A15组件续项均保留交付点，无新worker包/自动同步；
+A继续自己所属重复source成本、原注册/发送与生产装配。业务缺陷才返原worker，
+不以无新输入的等待包制造并行。flags/输入优化仍默认关闭，不开启子Agent/DAG/写入安装exec，
+无新模型/用户正文/本人操作。原1691旧全量、旧标签、全部失败与费用保留。
+[A16接受与缺口](requests/A/MS-I2l-A16-watch-integration.md)、
+[实际验证含首次链失败](../implementation/evidence/ms-i2l-a16.json)、
+[当前能力/四会话状态](../implementation/PROGRESS-2026-10-12.md)。
+
+# A15 正式来源与 D 原监控修复续项（历史）
 
 发布后的实际首次链补验：50.62 秒失败，command1/**open1**，已创建原一次执行行；
 signed_data/published_ref 均不存在，原结果 unknown，不重发。读后 current 被取消，尚未完成回执/恢复断言。

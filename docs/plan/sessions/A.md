@@ -1,4 +1,14 @@
-# A15 准确来源与原预算修复监控接线
+# A16：D 监控续项已合入接受，A处理自身来源成本
+
+ms-i2l-a16-source / 02033c0831d1a5e56580136a392f69ee753cca9f。
+D源码c315352/handoff9225919通过精确merge71a0d31合入，按组件接受；A另实跑34定向节点通过。
+原首次链新临时Run59.56秒失败，command1/open1、claim1、无signed_data/published_ref，原reply不延长、unknown不重发。
+212源码Mypy、Ruff/格式/契约通过；346历史并集不是当前全量，458源码摘要固定；所有cleanup/失败保留。
+无新B/C/D包，不操作worker源码/分支。A继续同对象production source成本、注册/发送、Context/模型/成果接线，
+阶段输入具体后才安排下一worker续项。默认flags/输入优化不开放，原模型材料/本人交付与汇合全量pending。
+详见 ../../coordination/requests/A/MS-I2l-A16-watch-integration.md 与当前实际进度。
+
+# A15 准确来源与原预算修复监控接线（历史）
 
 ms-i2l-a15-source / 1af0a8967ada3b92870c15151f73b31ab09b27e0。
 精确合入 D 最终源码/文档/handoff，A installed 显式传递同对象 current_source。
