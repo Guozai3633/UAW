@@ -1,4 +1,16 @@
-# A17：同次来源纯格式计算复用已固定，继续递归读取成本
+# A18：本机角色等待合并已固定，继续结构重复
+
+ms-i2l-a18-source / 684b50a863b1d480cc46da4aa6d9df156d0159c3。
+同角色OS/key一次worker读取，真实数据读取/原权限/SQL/journal/外部等待后检查保持。
+61不同定向通过、373历史并集未全部重跑；212类型/6文件静态/契约通过，466源码摘要固定。
+同实际双角色输出，OS8/key8/SQL22不减少，registry线程等待8→4；不是整链性能比例。
+3独立首次链仍失败，其中默认新Run55.39秒command1/open1/claim1但无signed journal，全部cleanup保留。
+组合输入候选两次失败并恢复False/清空plans，生产不启用；原deadline不增加、unknown不重发。
+A接下来处理完整来源图中的重复展开/原注册发送，关键await前后复查、取消和数据恢复保持；
+不改worker业务/分支，无新B/C/D包。flags/子Agent/DAG/写入安装exec关闭，模型材料/本人/全量pending。
+详见 ../../coordination/requests/A/MS-I2l-A18-native-observation.md 与DISPATCH。
+
+# A17：同次来源纯格式计算复用已固定，继续递归读取成本（历史）
 
 ms-i2l-a17-source / 4f4680a0522cee4574d74067e40f271313adfc79。
 80不同定向节点通过，368历史并集非当前全量，462源码摘要；212类型/8文件静态/契约通过。

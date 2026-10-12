@@ -1,4 +1,37 @@
-# A17 正式来源：纯格式计算复用，原首次链仍未通过
+# A18 正式来源：本机角色等待合并，首次链仍未通过
+
+准确源码 **684b50a863b1d480cc46da4aa6d9df156d0159c3** / `ms-i2l-a18-source`。
+本正式记录由随后元数据提交发布，旧标签/start不移动，无新worker包或自动同步。
+A只改enrollment_peers/candidates和A验证，不代写D业务或操作worker分支。
+
+真实Windows角色观察把同次进程观察和当前key读取放在一个worker内，句柄先关闭再读key。
+原OS/key读取、账号/候选/journal/角色/SQL与等待后复查不减少，custom async observer保留原独立await。
+真实双角色同完整projection、OS8→8/key8→8/SQL22→22、registry角色worker等待8→4，
+样本0.083→0.077秒不作为生产整链比例；candidate观察在两个测量样本中均使用新机制。
+
+61不同定向节点通过（4单元＋56SQL/来源＋1真实Windows测量）；373历史并集未全部重跑。
+212源码Mypy、6文件Ruff/格式、1362schema/288接口检查通过，466源码摘要固定。
+测量command0/open0并核对4随机凭据/2keys/child/proof清理。
+
+完整首次成功断言另行运行，3独立Run均失败：
+- native改动前组合输入候选91.01秒，command1/open0/claim0；
+- native改动后default链55.39秒，command1/open1/claim1，打开后current取消；
+- native改动后组合候选54.89秒，command1/open0/claim0。
+
+三者无signed_data/published_ref，原deadline不延长，unknown不重发，所有清理核对完成。
+两次组合候选仅临时fixture，结束actual reset确认False并清空plans；生产checked_metadata默认不启用。
+默认链6composite累计10.014秒含监控与执行并行，不能与墙钟相加或据跨轮负载变化宣称通用提速。
+
+本轮只能确认等待次数减量，不能确认原完整文件读取/签名journal/恢复成功。
+B/C/D保持交付点无新包；A下一阶段直接处理来源图重复展开/原注册发送的结构成本，
+保持关键await前后真实校验、权限/取消/原期限及旧journal独立数据权限，不以缓存allowed换通过。
+无新模型/用户正文/本人操作，不开放flags/子Agent/DAG/写入安装exec；固定模型材料成果、
+原本人接受与汇合全量仍pending。旧1691全量、全部旧失败/费用/标签保持。
+[实现与限制](requests/A/MS-I2l-A18-native-observation.md)、
+[所有回执/候选/默认链失败](../implementation/evidence/ms-i2l-a18.json)、
+[当前实际进度](../implementation/PROGRESS-2026-10-12.md)。
+
+# A17 正式来源：纯格式计算复用，原首次链仍未通过（历史）
 
 准确源码 **4f4680a0522cee4574d74067e40f271313adfc79** / `ms-i2l-a17-source`。
 本记录由随后元数据提交发布；旧标签/start不移动，无新worker包、不要求同步浮动integration。
