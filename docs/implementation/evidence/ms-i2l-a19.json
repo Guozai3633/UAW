@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "a1cd7f048953d47ad455d88eaec03f6a8f0fe1aa",
+  "scope": "Read-only approval external wait outside conversation lock; locked fresh complete sources before/after, no allowed cache",
+  "targeted_distinct_passing": 63,
+  "historical_union_not_all_rerun": 411,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a19-approval-final.xml",
+      "sha256": "6f0e7d369a9b5ed9ad4f9c7e67a1b378ab4f18fdd1ff4da73dfbdda96163bf63",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a19-sources.xml",
+      "sha256": "fd3e132bea44758e6aef47f3a880f7cecaccd19544482b3640ff5481f99600b9",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "initial_approval_failure_retained": {
+    "path": "tests/.artifacts/A/MS-I2l/a19-approval.xml",
+    "sha256": "91103df7cb37d1434d41012b7b2793f9c4d3afd17afbe97516c9907763509530",
+    "tests": 40,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_failure_reason": "test used invalid auto_review mode, corrected to existing automatic enum",
+  "initial_mypy_failure": "one no-any-return annotation error, corrected; initial tool output retained in transcript",
+  "first_file_chain": {
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a19-first-chain.xml",
+      "sha256": "080ee0a33d75bab5067c2be9075f38af2046678d5d5100794666b9d16545e5f4",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "command_sends": 1,
+    "opens": 0,
+    "attempts": [],
+    "phases": {
+      "fixture_new_run_setup": 1.541595700000471,
+      "web_launch_to_callback_ready": 35.615988300000026,
+      "a8_assembly": 0.663115999999718,
+      "approval_query": 3.321629699999903,
+      "controlled_sql_decision": 1.5968597999999474,
+      "approved_facade_to_signed_result": 53.65918710000187,
+      "cleanup": 1.5998280000021623
+    },
+    "operations": {
+      "budget_reserve": {
+        "calls": 1,
+        "seconds": 0.05010539999784669
+      },
+      "budget_dispatch": {
+        "calls": 1,
+        "seconds": 0.0409687000028498
+      },
+      "bridge_source_checks": {
+        "calls": 2,
+        "seconds": 5.6451417000025685
+      },
+      "lease_acquire": {
+        "calls": 1,
+        "seconds": 0.06811910000033095
+      },
+      "command_collect": {
+        "calls": 1,
+        "seconds": 2.833225099999254
+      },
+      "command_register": {
+        "calls": 1,
+        "seconds": 6.023393499999656
+      },
+      "signed_pipe_exchange": {
+        "calls": 1,
+        "seconds": 10.059745500002464
+      }
+    },
+    "child_phases": {
+      "factory_create": 3.858413500001916,
+      "owner_mapping": {
+        "calls": 99,
+        "seconds": 7.051008500013268,
+        "errors": {}
+      },
+      "session_current": {
+        "calls": 117,
+        "seconds": 17.44904530000713,
+        "errors": {}
+      },
+      "signatures": {
+        "calls": 2,
+        "seconds": 0.018710799999098526,
+        "errors": {}
+      },
+      "callback": 20.455329199998232,
+      "endpoint_dispatch": {
+        "calls": 1,
+        "seconds": 8.398256299999048,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "endpoint_watch": {
+        "calls": 1,
+        "seconds": 8.380192699998588,
+        "errors": {
+          "ipc_identity_denied": 1
+        }
+      },
+      "registered_reader": {
+        "calls": 3,
+        "seconds": 2.1110924999957206,
+        "errors": {}
+      },
+      "local_connection_checks": {
+        "calls": 86,
+        "seconds": 3.8229928000037035,
+        "errors": {
+          "ipc_identity_denied": 1
+        }
+      },
+      "sql_watch": {
+        "calls": 1,
+        "seconds": 7.722034900001745,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "composite_current": {
+        "calls": 3,
+        "seconds": 10.061774499994499,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "root_source": {
+        "calls": 10,
+        "seconds": 3.079741399997147,
+        "errors": {}
+      },
+      "runner_execute": {
+        "calls": 1,
+        "seconds": 6.739948700000241,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "runner_current": {
+        "calls": 1,
+        "seconds": 6.108151899999939,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "read_exchanges": [
+        60.33690750000096
+      ]
+    },
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    },
+    "unknown_resent": false,
+    "composite_watch_deadlines_equal": true,
+    "actual_sources": "SQL/Web/Windows/dual keys/two processes",
+    "controlled_metadata": "native confirmation, approval decision, model provider",
+    "deadline_extended": false,
+    "passed": false
+  },
+  "concurrent_authority_waits_verified": true,
+  "actual_advisory_lock_available_during_external_wait": true,
+  "cancel_during_wait_commits_and_denies": true,
+  "shorter_caller_deadline_rechecked": true,
+  "request_decide_write_serialization_kept": true,
+  "flags_changed": false,
+  "checked_metadata_production_enabled": false,
+  "deadline_extended": false,
+  "product_milestone_accepted": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_confirmation_acceptance": false,
+  "static": {
+    "mypy_source_files": 212,
+    "ruff": "passed",
+    "format_files": 2,
+    "receipts": {
+      "a19-ruff.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a19-format.log": "9d8d67f4862b5376784e5984632fb841ff2feae9775c896cf11d04df15a5ab7c",
+      "a19-mypy.log": "b71ecc16564f0c3b2479c81772f7dea47c002f3130ea244070ac6c65277e70e8"
+    }
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a18.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}

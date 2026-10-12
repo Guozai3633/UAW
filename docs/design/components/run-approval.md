@@ -1,5 +1,16 @@
 # 审批与用户控制：开发设计
 
+## 2026-10-12 实际手动审批复查
+
+`ApprovalService.request/decide/get/recheck` 已实现持久手动审批。下方通用模式与控制目标是
+原设计范围，不能据此认定 assisted/automatic 或全部控制分支已交付。
+当前只读 `recheck` 先持会话锁验证原审批、binding、grant、Run/配置/政策/权限，再释放锁执行
+实际工具/本机 authority；之后新事务持锁复查并比较完整来源及版本，最后检查调用方期限。
+等待期间取消或撤销能提交，复查不能返回旧许可。request/decide 的原写事务、CAS 和事件不变。
+这不是 SQL/OS 原子快照，不能替代 Runner 效果边界的独立复核，也不缓存批准结果。
+[具体算法与实跑限制](../../coordination/requests/A/MS-I2l-A19-approval-waits.md)；
+首次 Windows 文件整链仍失败，组件验证不等于产品完成。
+
 节点 `run.approval` · UAW v0.10 · 2026-10-07 · 状态：待实现/待任务验证。
 
 [开发设计索引](../README.md) · [公共契约](../COMMON_CONTRACTS.md) · [关系图谱](../../../ARCHITECTURE_ATLAS.md)

@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A18 61 targeted distinct passing; 373 historical union not all rerun. Native reads same, fewer role worker waits; actual default/candidate chains separately retained.",
+  "scope": "A19 63 distinct targeted passing; 411 historical union not all rerun. Approval external wait no conversation lock; actual first chain failure separate.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 373,
+    "tests": 411,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "91d0b32f41880be0be21e5dae0331df9c81db2a21bf0cbfed949343a75420c03",
+  "test_evidence_sha256": "d592c4cf6d10b695b9e52e1cfe8ed5a134f091d9a3e144718fd970ff2da3d213",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -340,7 +340,7 @@
     "src/uaw/resources/prompts/agent-root-v1.txt": "873ab6d0a770755e7eee416cb6a7eecee601fb9712fb3f4596c3eaa93f1a1352",
     "src/uaw/resources/prompts/intent-understand-v1.txt": "a61a99f44b40e05c9452d9cdccf0d54ee7421d8cdc4d1b976e95335095d2e01a",
     "src/uaw/run/__init__.py": "a422b2894ffd8197f6426969e000187361fe9c79df7a0eaad7e381f6636b8b7e",
-    "src/uaw/run/approval.py": "13bc732c310d8982a50abdf406b91e0155d8979915fc0a58957d5f062fe4f9fb",
+    "src/uaw/run/approval.py": "8f09598409efefce55fc7e492b6a69c1256f09810954db7a7eaf687a08f329b2",
     "src/uaw/run/approval_router.py": "756719f18828b2d16a0f590489a35d0d78caf1a23bdedf83ff590252de9b2ead",
     "src/uaw/run/background.py": "edc1ad1d1d18068aeab1d215b324d07f9cc3a9baa0e76b9bd76f4bdbe47d8f39",
     "src/uaw/run/budget.py": "ef1e6782be5810c1c5453908158f80a777b38562df4e56d01b71a97e478c9e7f",
@@ -435,6 +435,7 @@
     "tests/integration/agent/metadata_candidate_child.py": "0afc1e4a4bd0db59649d94f6ad9a711c5ce6b187fb3a2ed0d1d8bc59d26ecbe1",
     "tests/integration/agent/profiled_installed_child.py": "c77ad863640820dabad2d51a32d7abe708d96e4495488871d6404a092b4fdf22",
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
+    "tests/integration/agent/test_approval_recheck_waits.py": "83e09e9b979a89e0dbba93d818c5fe189b8b9408afb4530cd462fbb0cbd4ff32",
     "tests/integration/agent/test_approval_router.py": "59768ec636bda8fbab91bf663d8c48c7940cadbfeff5fea9c6d6e5497e2d1661",
     "tests/integration/agent/test_background_postgres.py": "cf02ef04f1e8efe4a00b12e75ee1e1a1fb386bd3f4c2aaa87cd3eb362a51f257",
     "tests/integration/agent/test_checked_record_batch.py": "7e65d9c0a3b2b6f25ed6224d6aaf23488dd43e0f44b7724d9471ec4290e63e29",
@@ -650,8 +651,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a18.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a17.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a19.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a18.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

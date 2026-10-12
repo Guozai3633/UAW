@@ -62,9 +62,11 @@ class ApprovalService(ApprovalPort):
             return "stale"
         return None
 
-    async def _authorize(self, tx: RecordTransaction, binding: Payload) -> None:
+    async def _authorization_records(self, tx: RecordTransaction, binding: Payload) -> Payload:
+        """Fresh SQL predicates and their complete inputs, without external action waits."""
         ctx = TrustedExecutionContext.model_validate_json(json.dumps(binding["context"]))
-        run = (await tx.load("runs", ctx.run_id or "")).payload
+        run_row = await tx.load("runs", ctx.run_id or "")
+        run = run_row.payload
         if (
             ctx.principal.id != tx.owner
             or ctx.scope.conversation_id != run["conversation_id"]
@@ -77,7 +79,8 @@ class ApprovalService(ApprovalPort):
         invalid = await self._expiry(tx, binding)
         if invalid:
             raise reject("approval_" + invalid, "Approval is no longer actionable", 412)
-        admission = (await tx.load("run.bindings", ctx.run_id or "")).payload
+        admission_row = await tx.load("run.bindings", ctx.run_id or "")
+        admission = admission_row.payload
         if admission["configuration_ref"] != binding["configuration_ref"]:
             raise reject("approval_binding_stale", "Run configuration binding changed", 412)
         fixed = await self.configuration.snapshot(binding["configuration_ref"])
@@ -95,7 +98,8 @@ class ApprovalService(ApprovalPort):
         validate_contract("ApprovalPolicy", policy.payload)
         if policy.payload["rules"]:
             raise CapabilityUnavailable("approval.rule_evaluation")
-        conversation = (await tx.load("conversations", run["conversation_id"])).payload
+        conversation_row = await tx.load("conversations", run["conversation_id"])
+        conversation = conversation_row.payload
         if (
             conversation["approval_mode"] != "manual"
             or "manual" not in policy.payload["allowed_modes"]
@@ -117,6 +121,30 @@ class ApprovalService(ApprovalPort):
             raise reject(
                 "approval_permission_stale", "Current permission does not allow the action", 412
             )
+        if self.authority is None:
+            raise CapabilityUnavailable("approval.action_authority")
+        ledger_row = await tx.load("budget.ledgers", ctx.run_id or "")
+        result: Payload = json.loads(
+            json.dumps(
+                {
+                    "rows": [
+                        [row.schema_name, row.revision, row.payload]
+                        for row in (run_row, ledger_row, admission_row, conversation_row)
+                    ],
+                    "fixed_configuration": fixed,
+                    "current_configuration": current,
+                    "approval_policy": [policy.schema_name, policy.revision, policy.payload],
+                    "permission": snapshot,
+                },
+                allow_nan=False,
+            )
+        )
+        return result
+
+    async def _authorize(self, tx: RecordTransaction, binding: Payload) -> None:
+        # Request/decision writes keep their existing serialized authority checks.
+        await self._authorization_records(tx, binding)
+        ctx = TrustedExecutionContext.model_validate_json(json.dumps(binding["context"]))
         if self.authority is None:
             raise CapabilityUnavailable("approval.action_authority")
         await self.authority.check(binding["request"], ctx)
@@ -262,9 +290,8 @@ class ApprovalService(ApprovalPort):
         validate_contract("ApprovalCreateRequest", request)
         request = json.loads(json.dumps(request, allow_nan=False))
         approval = await self.get(ctx.principal, approval_ref.id)
-        binding = (
-            await self.store.get(ctx.principal, "approval.bindings", approval_ref.id)
-        ).payload
+        binding_row = await self.store.get(ctx.principal, "approval.bindings", approval_ref.id)
+        binding = binding_row.payload
         previous = TrustedExecutionContext.model_validate_json(json.dumps(binding["context"]))
         # Attempts may change; the action, operation, policy and scope may not.
         omitted = {"attempt_id", "trace_id", "deadline"}
@@ -284,9 +311,34 @@ class ApprovalService(ApprovalPort):
 
         async def read(tx: RecordTransaction) -> Payload:
             current = await tx.load("approvals", approval_ref.id)
-            if current.revision != approval["revision"] or current.payload["status"] != "approved":
+            current_binding = await tx.load("approval.bindings", approval_ref.id)
+            if (
+                current.revision != approval["revision"]
+                or current.payload != approval
+                or current_binding.revision != binding_row.revision
+                or current_binding.payload != binding
+            ):
                 raise reject("approval_action_stale", "Approval changed before recheck", 412)
-            await self._authorize(tx, binding)
-            return dict((await tx.load("approval.grants", approval_ref.id)).payload)
+            sources = await self._authorization_records(tx, binding)
+            grant = await tx.load("approval.grants", approval_ref.id)
+            return {
+                "sources": sources,
+                "grant": json.loads(json.dumps(grant.payload, allow_nan=False)),
+                "grant_revision": grant.revision,
+            }
 
-        return await self.transactions.inspect(ctx.principal, aggregate, read)
+        # Monitoring and execution must not serialize slow native/tool awaits behind
+        # the conversation lock. Both locked reads are fresh, in separate transactions.
+        before = await self.transactions.inspect(ctx.principal, aggregate, read)
+        authority = self.authority
+        if authority is None:
+            raise CapabilityUnavailable("approval.action_authority")
+        await authority.check(binding["request"], previous)
+        after = await self.transactions.inspect(ctx.principal, aggregate, read)
+        if (
+            before != after
+            or self.authority is not authority
+            or instant(ctx.deadline) <= datetime.now(UTC)
+        ):
+            raise reject("approval_action_stale", "Approval sources changed during recheck", 412)
+        return dict(after["grant"])
