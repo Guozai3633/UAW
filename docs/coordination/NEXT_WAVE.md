@@ -1,3 +1,14 @@
+# 当前续项：D 原只读预算修复消费，非重新启动四个旧包
+
+准确执行来源 ms-i2l-a13-source / 69fae72742a8a64b55a240cb735066aeef78240f。
+fetch后从origin/integration读取DISPATCH正式记录，与远端标签核对；
+source内准备状态不作为新停止条件，不合并浮动integration。
+D读requests/A/MS-I2l-A13-current-source.md及MS-I2l-A13-D-current-consumer.md。
+先交M1检查点表、原deadline与显式消费参数/阶段源码，再继续M2。
+A继续生产装配与注册/发送预算；B/C保持已交付点。实际首次读/本人交付/全量仍pending。
+
+## 以下四份开工提示词是原 MS-I2l 历史启动说明
+
 # 当前可转发开工消息：MS-I2l
 
 [四份完整提示词](MS-I2l-messages.md)；[分包四里程碑](requests/A/MS-I2l-parallel-packages.md)；[A/D固定必需接口](requests/A/MS-I2l-AD-contract.md)。准确开工SHA **`8781da56fb0d9de8b1f6d39e2325c5fac6c74ea0`**；远端标签须匹配后启动。A/D先固定接口，B/C可先用已实现port独立推进；不需要重建worktree。

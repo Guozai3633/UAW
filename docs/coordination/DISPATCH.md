@@ -1,3 +1,26 @@
+# 正式发布：MS-I2l A13 来源与 D 原预算修复续项
+
+准确执行来源 **69fae72742a8a64b55a240cb735066aeef78240f** /
+`ms-i2l-a13-source`。本正式记录由随后元数据提交发布，不改源码或移动旧标签。
+fetch 后用 `git show origin/integration:docs/coordination/DISPATCH.md` 读取本记录；
+source 标签内“等待发布”是当时准备状态，不据此再次停工。
+D 自行核对远端标签准确 SHA 后，继续原预算修复；仅合入固定来源，不合并浮动 integration。
+B/C保留原交付点，不自动扩包或同步。没有新共同 start 或 MS-I2m。
+
+D任务：[消费统一当前来源](requests/A/MS-I2l-A13-D-current-consumer.md)。
+M1先交检查点表、deadline/显式消费参数和阶段源码；A据阶段SHA接 factory，
+D继续M2执行/监控/恢复与原测试。不得用完整 current 轮询当廉价变化通知，
+不得缓存允许结论或删除 native/key/OS/等待后/CAS检查来满足耗时；缺来源仍pending。
+A对原来源、注册/发送及生产装配负责，D对原执行端负责，不相互改写业务源码。
+
+本阶段101真实SQL/权威节点＋1真实Windows装配节点通过；102不同节点，
+260历史组件并集不是当前全量。210源码Mypy、Ruff/格式、1362schemas/288接口检查通过。
+Docker原中断保留；装配command0/open0，4凭据/2keys/child/proof清理通过。
+同对象 current_source holder 已绑定，D runtime/endpoint尚未消费；首次文件链仍未通过。
+production输入优化默认关闭，flags不变；无新模型、用户材料或本人确认/接受操作。
+[具体接口/限制](requests/A/MS-I2l-A13-current-source.md)、
+[实际验收回执](../implementation/evidence/ms-i2l-a13.json)。
+
 # MS-I2l A13 来源准备：统一 current，等待准确来源发布
 
 2026-10-12。继续原 MS-I2l-A9，不移动旧标签或建立新共同 start。

@@ -1,3 +1,9 @@
+# A13 准确来源已固定
+
+ms-i2l-a13-source / 69fae72742a8a64b55a240cb735066aeef78240f。
+DISPATCH正式发布D原修复消费续项；B/C保持交付点。A接D阶段接口/源码后继续自身装配，
+不等待D最终全包，不操作worker分支或业务源码。未通过首次读与本人交付不标accepted。
+
 # A/MS-I2l-A13：统一当前来源与 D 消费准备
 
 继续自身 d72bd7c A12 后的 integration，不回退 worker 基线。
