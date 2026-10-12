@@ -65,6 +65,14 @@ class PeerRegistrationPort(Protocol):
         ...
 
 
+class PairedPeerRegistrationPort(Protocol):
+    async def current_pair(
+        self, control: OsIdentity, device: OsIdentity
+    ) -> tuple[RegisteredPeer, RegisteredPeer]:
+        """Fresh owning relationship for the original actual role process instances."""
+        ...
+
+
 @dataclass(frozen=True)
 class IpcSigningBinding:
     device_id: str
@@ -203,8 +211,37 @@ class AuthenticatedPipeSession:
         if self.registration is None:
             raise CapabilityUnavailable("runner.ipc.peer_registration")
         result = await self.registration.current(identity, role=role)
-        if not isinstance(result, RegisteredPeer):
+        return await self.checked_peer(result, identity, role)
+
+    async def checked_peer(self, result: object, identity: OsIdentity, role: str) -> RegisteredPeer:
+        """Validate a fresh independent registry result, never convert frame claims."""
+        if (
+            not isinstance(result, RegisteredPeer)
+            or not isinstance(result.identity, OsIdentity)
+            or not isinstance(result.owner, Principal)
+            or not isinstance(result.actor, Principal)
+            or not isinstance(result.key_ref, Ref)
+            or not isinstance(result.pairing_ref, Ref)
+            or type(result.expires_at) is not datetime
+        ):
             raise reject("dependency_protocol_invalid", "IPC registry type invalid", 503)
+        try:
+            # Detach nested models before the independent directory await.
+            result = RegisteredPeer(
+                result.identity,
+                Principal.model_validate_json(canonical(result.owner.wire())),
+                Principal.model_validate_json(canonical(result.actor.wire())),
+                result.device_id,
+                result.role,
+                result.key_id,
+                Ref.model_validate_json(canonical(result.key_ref.wire())),
+                Ref.model_validate_json(canonical(result.pairing_ref.wire())),
+                result.expires_at,
+            )
+            validate_contract("ID", result.device_id)
+            validate_contract("ID", result.key_id)
+        except ValueError, TypeError:
+            raise reject("dependency_protocol_invalid", "IPC peer schema invalid", 503) from None
         if (
             result.identity != identity
             or result.role != role
@@ -243,6 +280,8 @@ class AuthenticatedPipeSession:
             raise reject(
                 "ipc_signature_denied", "Registered current key rejected", 403, "permission"
             )
+        if result.expires_at <= datetime.now(UTC):
+            raise reject("ipc_timeout", "Registration expired during key await", 410)
         return result
 
     async def _check(self) -> None:
@@ -254,12 +293,61 @@ class AuthenticatedPipeSession:
         try:
             if not await asyncio.to_thread(self.pipe.live_sync):
                 raise reject("ipc_closed", "Connection is no longer live", 410, "dependency")
-            for saved in (self.peer, self.local):
-                current = await self.registered(saved.identity, saved.role)
-                if current.wire() != saved.wire():
+            saved_peers = (self.peer, self.local)
+            saved_wires = tuple(canonical(peer.wire()) for peer in saved_peers)
+            channel_wire = canonical(self.channel_ref.wire())
+            # Optional method discovery is explicit: a present invalid source is
+            # a denial, never an excuse to seek permission through old current().
+            if self.registration is not None and hasattr(self.registration, "current_pair"):
+                control = self.local if self.local.role == "control" else self.peer
+                device = self.local if self.local.role == "device" else self.peer
+                if control.role != "control" or device.role != "device":
+                    raise reject("ipc_identity_denied", "Original peer roles differ", 403)
+                paired = self.registration.current_pair
+                if not callable(paired):
                     raise reject(
-                        "ipc_identity_denied", "Current IPC registration changed", 403, "permission"
+                        "dependency_protocol_invalid", "Paired registry is not callable", 503
                     )
+                result = await paired(control.identity, device.identity)
+                if type(result) is not tuple or len(result) != 2:
+                    raise reject(
+                        "dependency_protocol_invalid", "Paired registry requires tuple2", 503
+                    )
+                currents = (
+                    await self.checked_peer(result[0], control.identity, "control"),
+                    await self.checked_peer(result[1], device.identity, "device"),
+                )
+                for current, saved in zip(currents, (control, device), strict=True):
+                    if current.wire() != saved.wire():
+                        raise reject("ipc_identity_denied", "Current IPC pair changed", 403)
+                if (
+                    currents[0].owner != currents[1].owner
+                    or currents[0].device_id != currents[1].device_id
+                    or currents[0].pairing_ref != currents[1].pairing_ref
+                ):
+                    raise reject("ipc_identity_denied", "Current pair relationship differs", 403)
+                if (self.peer, self.local) != saved_peers or not await asyncio.to_thread(
+                    self.pipe.live_sync
+                ):
+                    raise reject("ipc_identity_denied", "Pipe changed during paired await", 403)
+            else:
+                for saved in saved_peers:
+                    current = await self.registered(saved.identity, saved.role)
+                    if current.wire() != saved.wire():
+                        raise reject(
+                            "ipc_identity_denied",
+                            "Current IPC registration changed",
+                            403,
+                            "permission",
+                        )
+            if (
+                self.peer is None
+                or self.local is None
+                or self.channel_ref is None
+                or saved_wires != tuple(canonical(peer.wire()) for peer in (self.peer, self.local))
+                or channel_wire != canonical(self.channel_ref.wire())
+            ):
+                raise reject("ipc_identity_denied", "Original channel changed during check", 403)
             if datetime.now(UTC) >= self.expires_at or time.monotonic() >= self.monotonic_expiry:
                 raise reject(
                     "ipc_timeout", "Connection expired during source await", 410, "timeout"
