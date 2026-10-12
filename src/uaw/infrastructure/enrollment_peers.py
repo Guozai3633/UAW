@@ -36,6 +36,32 @@ async def observe_windows_process(pid: int) -> OsIdentity:
     return await asyncio.to_thread(read)
 
 
+async def observe_windows_role(
+    directory: CurrentKeyDirectory, *, pid: int, key_id: str, device_id: str
+) -> tuple[OsIdentity, VerificationKey]:
+    """Fresh ordered OS then key reads in one worker; no snapshot reuse/grant.
+
+    The caller compares both originals and repeats after its owning source await.
+    OS handles close before the key read, including any key lookup failure.
+    """
+
+    def read() -> tuple[OsIdentity, VerificationKey]:
+        api = WindowsApi()
+        try:
+            handle, identity = api.process(pid)
+        except OSError:
+            raise reject(
+                "enrolled_os_instance_unavailable", "Registered OS process no longer available", 403
+            ) from None
+        try:
+            observed = identity
+        finally:
+            api.k.CloseHandle(handle)
+        return observed, directory.lookup(key_id, device_id=device_id)
+
+    return await asyncio.to_thread(read)
+
+
 class EnrolledPeerRegistry:
     """One explicitly composed current enrollment, shared by handshake and mapping.
 
@@ -57,6 +83,23 @@ class EnrolledPeerRegistry:
         # Immutable comparison bytes, not a cached grant/outcome. Every use
         # still reads current owner/candidate/OS keys/journal/enrollment/expiry.
         self.original_enrollment: bytes | None = None
+
+    async def _role_observation(
+        self, peer: Payload, *, device_id: str
+    ) -> tuple[OsIdentity, VerificationKey]:
+        if self.directory is None:
+            raise CapabilityUnavailable("enrollment.current_role_key_directory")
+        if self.observe is observe_windows_process:
+            return await observe_windows_role(
+                self.directory,
+                pid=peer["identity"]["pid"],
+                key_id=peer["key_id"],
+                device_id=device_id,
+            )
+        # Custom async providers keep their awaited observation/lookup semantics.
+        identity = await self.observe(peer["identity"]["pid"])
+        key = await asyncio.to_thread(self.directory.lookup, peer["key_id"], device_id=device_id)
+        return identity, key
 
     async def current(self, identity: OsIdentity, *, role: str) -> RegisteredPeer:
         # One metadata-only source pass, fresh by default. Optional repeated
@@ -86,11 +129,11 @@ class EnrolledPeerRegistry:
                 peer["identity"]["user_sid"],
                 peer["identity"]["logon_sid"],
             )
-            if await self.observe(expected_identity.pid) != expected_identity:
-                raise reject("enrolled_os_instance_changed", "Original role process changed", 403)
-            key = await asyncio.to_thread(
-                self.directory.lookup, peer["key_id"], device_id=document["device_id"]
+            observed_identity, key = await self._role_observation(
+                peer, device_id=document["device_id"]
             )
+            if observed_identity != expected_identity:
+                raise reject("enrolled_os_instance_changed", "Original role process changed", 403)
             expected_key = VerificationKey(
                 peer["key_id"],
                 document["device_id"],
@@ -158,11 +201,11 @@ class EnrolledPeerRegistry:
             peer["identity"]["user_sid"],
             peer["identity"]["logon_sid"],
         )
-        if registered != identity or await self.observe(identity.pid) != registered:
+        if registered != identity:
             raise reject("enrolled_os_instance_changed", "Actual OS process instance differs", 403)
-        key = await asyncio.to_thread(
-            self.directory.lookup, peer["key_id"], device_id=doc["device_id"]
-        )
+        observed_identity, key = await self._role_observation(peer, device_id=doc["device_id"])
+        if observed_identity != registered:
+            raise reject("enrolled_os_instance_changed", "Actual OS process instance differs", 403)
         expected = VerificationKey(
             peer["key_id"],
             doc["device_id"],
@@ -174,14 +217,12 @@ class EnrolledPeerRegistry:
                 "enrolled_current_key_denied", "Current role key is revoked or differs", 403
             )
         final = await self.enrollments.recheck_owned(self.user, value)
-        if final != value or await self.observe(identity.pid) != registered:
+        if final != value:
             raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
-        if (
-            await asyncio.to_thread(
-                self.directory.lookup, peer["key_id"], device_id=doc["device_id"]
-            )
-            != key
-        ):
+        final_identity, final_key = await self._role_observation(peer, device_id=doc["device_id"])
+        if final_identity != registered:
+            raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
+        if final_key != key:
             raise reject("enrolled_current_key_denied", "Current role key changed", 403)
         return RegisteredPeer(
             identity,
@@ -241,15 +282,11 @@ class EnrolledPeerRegistry:
                     peer["identity"]["user_sid"],
                     peer["identity"]["logon_sid"],
                 )
-                if await self.observe(role_identity.pid) != role_identity:
+                observed_identity, key = await self._role_observation(peer, device_id=device_id)
+                if observed_identity != role_identity:
                     raise reject(
                         "enrolled_os_instance_changed", "Current role process differs", 403
                     )
-                if self.directory is None:
-                    raise CapabilityUnavailable("enrollment.current_role_key_directory")
-                key = await asyncio.to_thread(
-                    self.directory.lookup, peer["key_id"], device_id=device_id
-                )
                 if key != VerificationKey(
                     peer["key_id"],
                     device_id,

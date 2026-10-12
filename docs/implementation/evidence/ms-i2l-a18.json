@@ -1,0 +1,535 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "6159bb4860c445f60ca641b94d651514d7753d6a",
+  "scope": "A native OS/key reads ordered in one worker; no live read/predicate reduction, checked-input candidates stay disposable",
+  "targeted_distinct_passing": 61,
+  "historical_union_not_all_rerun": 373,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a18-role-unit.xml",
+      "sha256": "2956673e25ce2f9905cbf5b50e71c8b27650f52fef22fbd7f5199d8e5edf13cd",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a18-role-sql.xml",
+      "sha256": "14640658601e654cc89a5565bbcc6bb6dde5e5bb6c83a22a8d8910d4abfedf63",
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a18-role-measure.xml",
+      "sha256": "97e0fc4a47fbc0234f1ba06f843d2417de45303d41c9e5487e11a36d1072b20c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "same_actual_installed_role_measurement": {
+    "same_projection_and_live_reads": true,
+    "old_registry_role_waits": {
+      "process": 8,
+      "key": 8,
+      "sql": 22,
+      "role_waits": 8,
+      "seconds": 0.08337150000079419
+    },
+    "grouped_registry_role_waits": {
+      "process": 8,
+      "key": 8,
+      "sql": 22,
+      "role_waits": 4,
+      "seconds": 0.07691649999833317
+    },
+    "scope": "actual Windows peers/SQL/keys; native/approval controlled",
+    "candidate_observation_grouped_in_both_samples": true,
+    "single_sample_not_production_ratio": true
+  },
+  "actual_measurement_cleanup": {
+    "credential_handles_absent": 4,
+    "role_keys_revoked": 2,
+    "child_exited": true,
+    "proof_pipe_closed": true
+  },
+  "actual_chain_receipts": [
+    {
+      "scope": "before native grouping, existing checked-input plus shape candidate",
+      "candidate": true,
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a18-combined-candidate.xml",
+        "sha256": "a2db3059633151ce0d13e5fbfe185d731b826278bf23db5edf9ff2e53b96ad4f",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command_sends": 1,
+      "opens": 0,
+      "attempts": [],
+      "phases": {
+        "fixture_new_run_setup": 1.606504399998812,
+        "web_launch_to_callback_ready": 26.96504620000269,
+        "a8_assembly": 0.5588444999993953,
+        "approval_query": 3.0718845999981568,
+        "controlled_sql_decision": 1.553926100001263,
+        "approved_facade_to_signed_result": 51.473767999999836,
+        "cleanup": 2.0487908000031894
+      },
+      "operations": {
+        "budget_reserve": {
+          "calls": 1,
+          "seconds": 0.0658210000001418
+        },
+        "budget_dispatch": {
+          "calls": 1,
+          "seconds": 0.05777689999740687
+        },
+        "bridge_source_checks": {
+          "calls": 2,
+          "seconds": 5.576698299999407
+        },
+        "lease_acquire": {
+          "calls": 1,
+          "seconds": 0.07472620000044117
+        },
+        "command_collect": {
+          "calls": 1,
+          "seconds": 1.7567391999982647
+        },
+        "command_register": {
+          "calls": 1,
+          "seconds": 3.8534551999982796
+        },
+        "signed_pipe_exchange": {
+          "calls": 1,
+          "seconds": 10.0557258000008
+        }
+      },
+      "child_phases": {
+        "factory_create": 3.626741799998854,
+        "owner_mapping": {
+          "calls": 108,
+          "seconds": 6.05081769998651,
+          "errors": {}
+        },
+        "session_current": {
+          "calls": 119,
+          "seconds": 14.244125199995324,
+          "errors": {}
+        },
+        "signatures": {
+          "calls": 2,
+          "seconds": 0.02002139999603969,
+          "errors": {}
+        },
+        "callback": 15.507530400001997,
+        "endpoint_dispatch": {
+          "calls": 1,
+          "seconds": 8.63014540000222,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "endpoint_watch": {
+          "calls": 1,
+          "seconds": 8.621275599998626,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "registered_reader": {
+          "calls": 3,
+          "seconds": 2.204643199998827,
+          "errors": {}
+        },
+        "local_connection_checks": {
+          "calls": 79,
+          "seconds": 4.436230900002556,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "sql_watch": {
+          "calls": 1,
+          "seconds": 7.889759200003027,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "composite_current": {
+          "calls": 4,
+          "seconds": 8.970653200001834,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "root_source": {
+          "calls": 15,
+          "seconds": 3.5168542999927013,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_execute": {
+          "calls": 1,
+          "seconds": 7.145705799997813,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_current": {
+          "calls": 2,
+          "seconds": 6.325819699999556,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "read_exchanges": [
+          57.649664100001246
+        ]
+      },
+      "composite_watch_deadlines_equal": true,
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "native_approval_model_metadata": "controlled",
+      "actual_sources": "Web/SQL/Windows/dual keys/two processes",
+      "candidate_default_restored": true
+    },
+    {
+      "scope": "after native grouping, default checked_metadata=False",
+      "candidate": false,
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a18-first-chain.xml",
+        "sha256": "369feb4e44b161de38d07d745685a637b3e8e71b1d80ac3290e272934a28d961",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command_sends": 1,
+      "opens": 1,
+      "attempts": [
+        {
+          "has_signed_data": false,
+          "has_published_ref": false
+        }
+      ],
+      "phases": {
+        "fixture_new_run_setup": 0.807903200002329,
+        "web_launch_to_callback_ready": 17.08544940000138,
+        "a8_assembly": 0.4152837000001455,
+        "approval_query": 1.6623434000030102,
+        "controlled_sql_decision": 0.7325576999974146,
+        "approved_facade_to_signed_result": 31.991096999998263,
+        "cleanup": 0.6299518999985594
+      },
+      "operations": {
+        "budget_reserve": {
+          "calls": 1,
+          "seconds": 0.028569999998580897
+        },
+        "budget_dispatch": {
+          "calls": 1,
+          "seconds": 0.022311400000035064
+        },
+        "bridge_source_checks": {
+          "calls": 2,
+          "seconds": 3.152564200001507
+        },
+        "lease_acquire": {
+          "calls": 1,
+          "seconds": 0.03170779999709339
+        },
+        "command_collect": {
+          "calls": 1,
+          "seconds": 1.425666099999944
+        },
+        "command_register": {
+          "calls": 1,
+          "seconds": 3.0320635000025504
+        },
+        "signed_pipe_exchange": {
+          "calls": 1,
+          "seconds": 10.019336500001373
+        }
+      },
+      "child_phases": {
+        "factory_create": 1.8393654999999853,
+        "owner_mapping": {
+          "calls": 125,
+          "seconds": 4.930081600010453,
+          "errors": {}
+        },
+        "session_current": {
+          "calls": 123,
+          "seconds": 9.625991700017039,
+          "errors": {}
+        },
+        "signatures": {
+          "calls": 2,
+          "seconds": 0.008197099996323232,
+          "errors": {}
+        },
+        "callback": 11.120730799997546,
+        "endpoint_dispatch": {
+          "calls": 1,
+          "seconds": 9.166009700002178,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "endpoint_watch": {
+          "calls": 1,
+          "seconds": 9.148309399999562,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "registered_reader": {
+          "calls": 3,
+          "seconds": 0.9427591000021494,
+          "errors": {}
+        },
+        "local_connection_checks": {
+          "calls": 128,
+          "seconds": 2.5535030999708397,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "sql_watch": {
+          "calls": 1,
+          "seconds": 8.7720201000011,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "composite_current": {
+          "calls": 6,
+          "seconds": 10.014178000001266,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_execute": {
+          "calls": 1,
+          "seconds": 8.484975200000918,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "root_source": {
+          "calls": 23,
+          "seconds": 2.984003700010362,
+          "errors": {}
+        },
+        "runner_current": {
+          "calls": 3,
+          "seconds": 8.1395964000003,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "read_exchanges": [
+          35.38733449999927
+        ]
+      },
+      "composite_watch_deadlines_equal": true,
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "native_approval_model_metadata": "controlled",
+      "actual_sources": "Web/SQL/Windows/dual keys/two processes"
+    },
+    {
+      "scope": "after native grouping, existing checked-input plus shape candidate",
+      "candidate": true,
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a18-grouped-candidate.xml",
+        "sha256": "5c3aa3aa92086c607c62eb0e63fc70c8205e7795f68e9d7e4d3dc3df19bf915f",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command_sends": 1,
+      "opens": 0,
+      "attempts": [],
+      "phases": {
+        "fixture_new_run_setup": 0.7570073000024422,
+        "web_launch_to_callback_ready": 14.502215199998318,
+        "a8_assembly": 0.2861754000005021,
+        "approval_query": 1.5829536999990523,
+        "controlled_sql_decision": 0.7008464999998978,
+        "approved_facade_to_signed_result": 33.36814719999893,
+        "cleanup": 1.3724273000007088
+      },
+      "operations": {
+        "budget_reserve": {
+          "calls": 1,
+          "seconds": 0.029634900001838105
+        },
+        "budget_dispatch": {
+          "calls": 1,
+          "seconds": 0.025042999997822335
+        },
+        "bridge_source_checks": {
+          "calls": 2,
+          "seconds": 4.198612000003777
+        },
+        "lease_acquire": {
+          "calls": 1,
+          "seconds": 0.04107629999998608
+        },
+        "command_collect": {
+          "calls": 1,
+          "seconds": 0.9015234999969834
+        },
+        "command_register": {
+          "calls": 1,
+          "seconds": 2.0711851000014576
+        },
+        "signed_pipe_exchange": {
+          "calls": 1,
+          "seconds": 10.017241500001546
+        }
+      },
+      "child_phases": {
+        "factory_create": 1.9761995000008028,
+        "owner_mapping": {
+          "calls": 103,
+          "seconds": 3.682681100021,
+          "errors": {}
+        },
+        "session_current": {
+          "calls": 117,
+          "seconds": 9.058057700000063,
+          "errors": {}
+        },
+        "signatures": {
+          "calls": 2,
+          "seconds": 0.009409300004335819,
+          "errors": {}
+        },
+        "callback": 8.362669099999039,
+        "endpoint_dispatch": {
+          "calls": 1,
+          "seconds": 8.187390200000664,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "endpoint_watch": {
+          "calls": 1,
+          "seconds": 8.177029800001037,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "registered_reader": {
+          "calls": 3,
+          "seconds": 2.641228600001341,
+          "errors": {}
+        },
+        "local_connection_checks": {
+          "calls": 92,
+          "seconds": 3.2562222000051406,
+          "errors": {
+            "ipc_identity_denied": 1
+          }
+        },
+        "sql_watch": {
+          "calls": 1,
+          "seconds": 7.247884100001102,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "composite_current": {
+          "calls": 3,
+          "seconds": 9.437867200002074,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "runner_execute": {
+          "calls": 1,
+          "seconds": 6.461135300000024,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "root_source": {
+          "calls": 12,
+          "seconds": 2.7052873999964504,
+          "errors": {}
+        },
+        "runner_current": {
+          "calls": 1,
+          "seconds": 5.550749800000631,
+          "errors": {
+            "CancelledError": 1
+          }
+        },
+        "read_exchanges": [
+          36.70276169999852
+        ]
+      },
+      "composite_watch_deadlines_equal": true,
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "native_approval_model_metadata": "controlled",
+      "actual_sources": "Web/SQL/Windows/dual keys/two processes",
+      "candidate_default_restored": true
+    }
+  ],
+  "default_first_file_chain_passed": false,
+  "candidate_after_grouping_passed": false,
+  "checked_metadata_production_enabled": false,
+  "flags_changed": false,
+  "deadline_extended": false,
+  "live_os_key_reads_reduced": false,
+  "custom_async_provider_semantics_kept": true,
+  "product_milestone_accepted": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_confirmation_acceptance": false,
+  "static": {
+    "mypy_source_files": 212,
+    "ruff": "passed",
+    "format_files": 6,
+    "receipts": {
+      "a18-mypy.log": "b71ecc16564f0c3b2479c81772f7dea47c002f3130ea244070ac6c65277e70e8",
+      "a18-ruff.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a18-format.log": "771744bf77b40dacce2b51ccee68c2e15c1ccc057465174b08fa0698c8f5200b"
+    }
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a17.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}

@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A17 80 distinct targeted passing; 368 historical union not all rerun. Pure shape work reduced, full-chain and diagnostic failures separately retained.",
+  "scope": "A18 61 targeted distinct passing; 373 historical union not all rerun. Native reads same, fewer role worker waits; actual default/candidate chains separately retained.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 368,
+    "tests": 373,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "cf2a616c472948a10df127e207113919c1d75bfa25549b62ef889a3857dd93a9",
+  "test_evidence_sha256": "91d0b32f41880be0be21e5dae0331df9c81db2a21bf0cbfed949343a75420c03",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -301,11 +301,11 @@
     "src/uaw/infrastructure/db/session.py": "240f161dc6f7c814df254ebadc5495d23ec157cf3bf4c4cd8ceea2d1f64ac421",
     "src/uaw/infrastructure/db/transactions.py": "c4d699dbb9e08d42a2657fb4cf776956d919c3d452ef59b05fff777ec0789c82",
     "src/uaw/infrastructure/enrollment_bootstrap.py": "0d8b39b75094980289653d2f2bc03192e9e89e4d72dfa69f66e0a19be414b42c",
-    "src/uaw/infrastructure/enrollment_candidates.py": "387ae80d8ffe71c836021e531f609baff411fa6cf2c443327d26292eb9c66e25",
+    "src/uaw/infrastructure/enrollment_candidates.py": "f9febabe7b5895d95c31fe87100e953f3b9511fe9abc361392e5e9fa366769be",
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
     "src/uaw/infrastructure/enrollment_launch.py": "22af6318ddfce078046818c7311f4a293d89e904cd4027f1f00401cda7da41ca",
     "src/uaw/infrastructure/enrollment_native.py": "eecf9515f81c809fdc882bb988b3866c564fef6dc3ae0fb9da2042d87b5f63b0",
-    "src/uaw/infrastructure/enrollment_peers.py": "0e021bfeef2361536fef097e1f14d54c7847ffaf00cf6492dbf1d235efba6feb",
+    "src/uaw/infrastructure/enrollment_peers.py": "84904a62e229254e52d3a408a5233df3ccec3caabb75cf6a2e35de3d52b4c4b0",
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
@@ -431,6 +431,8 @@
     "tests/integration/agent/conftest.py": "71da2af8764acbf341aa27dab6f9be0d8e0801de088fd3584ccf49bf27397ecc",
     "tests/integration/agent/installed_child_profile.py": "8855ed3c0656b836cdec626e14d01c5478ae52f4099a27a0bc6ef8a683fb5cf7",
     "tests/integration/agent/installed_diagnostic_fixture.py": "2092c07547ce9697ba99164372c5ed10055258896849101cdb4adc053759c4a1",
+    "tests/integration/agent/installed_metadata_candidate.py": "bb08221e0cb718d7d7af78423bad1c2f4e7f8ad0e46780ed56a55c4d06ebb210",
+    "tests/integration/agent/metadata_candidate_child.py": "0afc1e4a4bd0db59649d94f6ad9a711c5ce6b187fb3a2ed0d1d8bc59d26ecbe1",
     "tests/integration/agent/profiled_installed_child.py": "c77ad863640820dabad2d51a32d7abe708d96e4495488871d6404a092b4fdf22",
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
     "tests/integration/agent/test_approval_router.py": "59768ec636bda8fbab91bf663d8c48c7940cadbfeff5fea9c6d6e5497e2d1661",
@@ -466,6 +468,7 @@
     "tests/integration/agent/test_limits_postgres.py": "8943e0885ec058547f58d8c5a90829ee1218d42c1f5442666d644dada1321544",
     "tests/integration/agent/test_loop_postgres.py": "770d59fdb09d03741df0437fa9bd29c07196cd2a3425a55e9684d85fdafddb46",
     "tests/integration/agent/test_native_late_authority.py": "341186813e19a7c43ebf131719f0c7ef02798027794cc2ad7b35263ca0ebeeea",
+    "tests/integration/agent/test_native_role_measurement.py": "65fad1ce54250cca660cf860f129c06f3cc4773de567cb81ba928f28b4832d60",
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
     "tests/integration/agent/test_registered_runner_recheck.py": "1fbe9cd663c3b31eb9be6a2af8b0059985e039397d4d129cc3c1fbde8ad3847d",
     "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
@@ -621,6 +624,7 @@
     "tests/unit/shared/test_browser_settings.py": "2536912dbe09e3eb1809d7845eccc025f88d98962abfbf6a3b6d45bd3ac36c4b",
     "tests/unit/shared/test_contracts.py": "d5f425f620daf0ed62add6b2700c700b4d04b42bf9e77253e74f5c1321d15a89",
     "tests/unit/shared/test_shape_validation_scope.py": "4a11a293cafce0b2ee78a6e633bf862cb40faf11d86731868ed195b0e12885be",
+    "tests/unit/shared/test_windows_role_observation.py": "33a3ac2310e2b17e5373baee5f53cd2df57681c13ed3370f66f0d0ef6a272f94",
     "tests/unit/test_development_boundary.py": "1ef0630afd806645dce974dc8a5159df9efb7f8a1ee78e56c96695ed37274481",
     "tests/unit/test_intent_grounding.py": "53e62a8be2c16e3b82c6cfd42fcbe5a134a461545e767b30bdbbb798d7cd859d",
     "tests/unit/test_runner_signatures.py": "4cb10d356edcede702dadf3b0b17dbdfd4b63703ba8cb7594db8aa94ef6df42f",
@@ -646,8 +650,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a17.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a16.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a18.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a17.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

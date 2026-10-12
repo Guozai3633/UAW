@@ -9,10 +9,11 @@ from uuid import uuid4
 from uaw_runner.helper_process import HelperProcess
 from uaw_runner.ipc.windows_pipe import OsIdentity, WindowsApi
 
-from uaw.infrastructure.enrollment_peers import observe_windows_process
+from uaw.infrastructure.enrollment_peers import observe_windows_process, observe_windows_role
 from uaw.run.enrollment import Payload, RunnerEnrollments, frozen
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import reject
+from uaw.shared.runner_signatures import VerificationKey
 from uaw.shared.schema import validate_contract
 from uaw.workspace.ports import CurrentKeyDirectory
 
@@ -48,6 +49,21 @@ class OwnedEnrollmentCandidates:
         if actor.kind != "runner":
             raise reject("enrollment_launcher_actor_denied", "Explicit Runner role required", 403)
         key = await asyncio.to_thread(self.directory.lookup, key_id, device_id=device_id)
+        return self._peer(identity, actor, device_id=device_id, key_id=key_id, role=role, key=key)
+
+    def _peer(
+        self,
+        identity: OsIdentity,
+        actor: Principal,
+        *,
+        device_id: str,
+        key_id: str,
+        role: str,
+        key: VerificationKey,
+    ) -> Payload:
+        # Pure comparison of just-observed inputs, never permission or a key cache.
+        if actor.kind != "runner":
+            raise reject("enrollment_launcher_actor_denied", "Explicit Runner role required", 403)
         if key.revoked or key.role != role or key.key_id != key_id or key.device_id != device_id:
             raise reject("enrollment_launcher_key_denied", "Current role key differs", 403)
         value = {
@@ -153,13 +169,19 @@ class OwnedEnrollmentCandidates:
             )
         for role in ("control", "device"):
             original = value[role]
-            actual = await observe_windows_process(original["identity"]["pid"])
-            current = await self.peer(
+            actual, key = await observe_windows_role(
+                self.directory,
+                pid=original["identity"]["pid"],
+                device_id=value["device_id"],
+                key_id=original["key_id"],
+            )
+            current = self._peer(
                 actual,
                 Principal.model_validate(original["actor"]),
                 device_id=value["device_id"],
                 key_id=original["key_id"],
                 role=role,
+                key=key,
             )
             if current != original:
                 raise reject("enrollment_launcher_source_changed", "Original OS/key changed", 412)
