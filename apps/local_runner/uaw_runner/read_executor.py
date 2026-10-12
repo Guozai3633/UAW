@@ -286,6 +286,8 @@ class ReadOnlyRunner:
         if handle is not None:
             handle.check()
         self.admission.deadline(command, current)
+        if response_deadline is not None and time.monotonic() >= response_deadline:
+            raise reject("ipc_timeout", "Original execution reply deadline expired", 410, "timeout")
 
     async def restore(
         self, attempt: ReadAttempt, source: RegisteredReceiptCommand, actor: Principal
@@ -413,28 +415,39 @@ class ReadOnlyRunner:
         handle: WindowsReadHandle | None = None
         started = time.perf_counter_ns()
         try:
-            first, channel = await checkpoint()
             assert self.signer is not None and self.device_key is not None
+            first: RunnerAuthoritySnapshot | None = None
+            channel: RunnerChannelSnapshot | None = None
+            if self.current_source is None:
+                first, channel = await checkpoint()
+            # Private-key possession is a local check, not file execution. For
+            # composite calls do it before the first owning read; admission's
+            # refresh brackets native/key work afterwards and checks the CAS.
             await self.signer.check_private(
                 device_id=self.protocol.device_id,
                 key_id=self.device_key.key_id,
                 credential_handle=self.device_key.credential_handle,
             )
             self.admission.deadline(command, first)
-            # Admission itself rereads owner and full authority around current
-            # external key/root checks. The following current() compares against
-            # the original root/channel/authority before the execution CAS. No
-            # additional identical full pass is needed immediately before admit.
             if self.current_source is None:
                 admitted = await self.protocol.admit_async(
                     canonical(command.wire()), authenticated_principal=actor
                 )
             else:
+
+                async def admission_current() -> tuple[
+                    RunnerAuthoritySnapshot, RunnerChannelSnapshot
+                ]:
+                    nonlocal first, channel
+                    first, channel = await checkpoint()
+                    return first, channel
+
                 admitted = await self.admission.admit_current(
                     command,
-                    refresh=lambda: checkpoint(first, channel),
+                    refresh=admission_current,
                     response_deadline=response_deadline,
                 )
+            assert first is not None and channel is not None
             self.admission.deadline(command, first)
             if (
                 admitted.state != "admitted"

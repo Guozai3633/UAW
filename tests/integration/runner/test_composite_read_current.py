@@ -275,3 +275,123 @@ async def test_composite_reply_expiry_after_source_await_no_open(read_case, monk
             case["command"], authenticated_principal=case["owners"].value, response_deadline=until
         )
     assert set(source.deadlines) == {until}
+
+
+async def test_composite_cooperative_cancel_during_source_wait_no_open(read_case, monkeypatch):
+    case = read_case
+    source = inject(case, monkeypatch)
+    entered = asyncio.Event()
+    finalized = asyncio.Event()
+
+    async def waiting(value, calls):
+        entered.set()
+        try:
+            await asyncio.Event().wait()
+        finally:
+            finalized.set()
+
+    source.hook = waiting
+    monkeypatch.setattr(
+        "uaw_runner.read_executor.WindowsReadHandle",
+        lambda *a: pytest.fail("cancelled source cannot open"),
+    )
+    work = asyncio.create_task(
+        case["runner"].execute(
+            case["command"],
+            authenticated_principal=case["owners"].value,
+            response_deadline=asyncio.get_running_loop().time() + 10,
+        )
+    )
+    await entered.wait()
+    work.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await work
+    assert finalized.is_set()
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "cancel",
+        "fence",
+        "lease",
+        "flags",
+        "policy",
+        "root",
+        "owner",
+        "channel",
+        "control_key",
+        "device_key",
+    ],
+)
+async def test_composite_after_actual_signature_rechecks_no_published_allowance(
+    read_case, monkeypatch, change
+):
+    case = read_case
+    inject(case, monkeypatch)
+    signer = case["runner"].signer
+    original = signer.sign_document
+
+    async def signed(*args, **kwargs):
+        result = await original(*args, **kwargs)
+        await asyncio.sleep(0)
+        value = case["authority"].value
+        if change == "cancel":
+            value["cancelled"] = True
+        elif change == "fence":
+            value["fencing_token"] += 1
+        elif change == "lease":
+            value["lease_expires_at"] = case["clock"][0].isoformat()
+        elif change == "flags":
+            value["feature_enabled"] = False
+        elif change == "policy":
+            value["policy_ref"]["version"] = "2"
+        elif change == "root":
+            case["grants"].revoke("native-root1", expected_revision=0)
+        elif change == "owner":
+            case["owners"].revoked = True
+        elif change == "channel":
+            case["channel"].value["connected"] = False
+        else:
+            case["state"].revoke_key(
+                "control1" if change == "control_key" else "device1", expected_revision=0
+            )
+        return result
+
+    monkeypatch.setattr(signer, "sign_document", signed)
+    with pytest.raises(DomainError):
+        await case["runner"].execute(
+            case["command"],
+            authenticated_principal=case["owners"].value,
+            response_deadline=asyncio.get_running_loop().time() + 10,
+        )
+    from tests.integration.runner.test_read_executor import saved_attempt
+
+    _, attempt = await saved_attempt(case) if change not in {"owner", "root"} else (None, None)
+    if attempt is not None:
+        assert attempt.receipt_data is None and attempt.receipt_ref is None
+
+
+async def test_original_reply_expiry_inside_execution_cas_no_open(read_case, monkeypatch):
+    case = read_case
+    inject(case, monkeypatch)
+    original = case["executions"].claim
+    until = asyncio.get_running_loop().time() + 0.8
+
+    def late_claim(*args, **kwargs):
+        import time
+
+        # Controlled once-store lock wait, not a production sleep or deadline change.
+        time.sleep(max(0, until - time.monotonic()) + 0.01)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(case["executions"], "claim", late_claim)
+    monkeypatch.setattr(
+        "uaw_runner.read_executor.WindowsReadHandle",
+        lambda *a: pytest.fail("expired CAS must not open"),
+    )
+    with pytest.raises(DomainError) as error:
+        await case["runner"].execute(
+            case["command"], authenticated_principal=case["owners"].value, response_deadline=until
+        )
+    assert error.value.failure.code == "ipc_timeout"
