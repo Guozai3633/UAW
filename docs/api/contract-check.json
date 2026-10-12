@@ -18,7 +18,7 @@
   "reviewed_implementation_evidence": {
     "operations": 44,
     "existing_test_counts": {
-      "tests": 321,
+      "tests": 346,
       "failures": 0,
       "errors": 0,
       "skipped": 0

@@ -1,3 +1,10 @@
+# 2026-10-12：MS-U3b 已交付，当前无新包
+
+源码394d78579bb6841bd936b11af557bc401d0b2dba、handoff1b0fe02440d6f1929f42a797f30c51b39953d7c3保留。
+78单元/36受控Chromium及构建已交付；原拥有者同Page/同launch认证正向实连仍pending，
+不把A的SQL/OS或受控页面当B本人链验收。当前停在交付点，不自动扩包/同步。
+模块与产品剩余范围见2026-10-12实际进度；下方开工状态为历史。
+
 # B/MS-U3b 同轮续包已正式派发
 
 本机启动/状态/停止页面，原身份与launch刷新/未知请求恢复，受控与实际只读联调。A7 HTTP已固定，可立即开工；仅apps/web及B测试/文档，暂停Context。准确执行版本、文档标签与消费步骤按DISPATCH及MS-I2l-A8-continuation-packages.md的B章，不因A9文件交付未完成而等待。

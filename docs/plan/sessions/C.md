@@ -1,3 +1,9 @@
+# 2026-10-12：MS-T2i-b 已交付，当前无新包
+
+源码223c9a9963414bdc1ae71d3e723224d0958ab63c、handoff730a419c7b6558d239a701e3206b48a9cb353043保留。
+121单元/48真实SQL不同节点通过，组件已交付；生产native/固定模型/Artifact/Task整链仍待A/D接线验收。
+当前停在交付点，不自动扩包、同步或开flags；下方开工状态为历史。
+
 # C/MS-T2i-b 同轮续包已正式派发
 
 office/file原独立Invocation与结果/恢复的严格路由；A注入同一有效Agent access，原ledger/spec/provider绑定。仅Tool/C测试文档，private接口按续包C章；自己的55434受影响SQL实跑，先阶段后最终，不重做多材料包。准确版本和固定文档消费按DISPATCH。

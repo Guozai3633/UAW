@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A15 163 distinct targeted nodes; 321 historical union not all rerun. Exact D composite merged; full first file chain and watch consumption pending.",
+  "scope": "A16 34 targeted distinct; 346 historical union not all rerun. D monitoring accepted as component only; actual first chain separate report.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 321,
+    "tests": 346,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "73cf68aa61b0debbd897a7a14a4ab75573c73f8c467bbbe8c4469de32309e288",
+  "test_evidence_sha256": "46ab0032a1f231f802b84599d090e07b68c8c03e6660bb7e68c7749e39c24544",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -198,8 +198,8 @@
     "apps/local_runner/uaw_runner/ipc/__init__.py": "69e9fe62782d844331cdc16cd0e2465f2f524930513a7da21c46a54251a6981c",
     "apps/local_runner/uaw_runner/ipc/channel_source.py": "4e29281237f59e8601e6ce48daeb18edc7d288a4b6024d1fe3a5b187b5b1c672",
     "apps/local_runner/uaw_runner/ipc/frames.py": "bb53a6a4209ab30a60384ad77bcac9d7849ce89d592bbc4057cd18280dc00e31",
-    "apps/local_runner/uaw_runner/ipc/read_endpoint.py": "31b4c2e677f82fad0b9a242759155b0b4f1b03ab95d472425884cc1b8a57999f",
-    "apps/local_runner/uaw_runner/ipc/sessions.py": "b7be591d32e1f41ad980caa0981eb1ef967c8591d81b0d102aa0d602040f1fce",
+    "apps/local_runner/uaw_runner/ipc/read_endpoint.py": "918fc9e47e260cd4bf5a4bf6bd4c8e3121306077cff0ea954123425610fa4423",
+    "apps/local_runner/uaw_runner/ipc/sessions.py": "4add692a9e418a43af2730e12d6830c7423ac019ecd737af4d42c3563dbbcf46",
     "apps/local_runner/uaw_runner/ipc/windows_pipe.py": "10073b998208e0c18393f5c3a6b57cfe4c9d89cd1f8f4f3d600857add1916e9e",
     "apps/local_runner/uaw_runner/keys.py": "666d094de8279d98a6d09c972dce170e734a0868837e7ba5a025cb32f7a3e43d",
     "apps/local_runner/uaw_runner/native_authorization.py": "e96ca8ec61b8f0ba51c030b9d03915384608b06ecb12ad082d4de4b77610f394",
@@ -210,9 +210,10 @@
     "apps/local_runner/uaw_runner/read_current.py": "26c67c49b3b47af2229b2653fca3c425c2ecc34f3c8635486dfb0cd9e9f74fad",
     "apps/local_runner/uaw_runner/read_executor.py": "14f676b2296948dd5a8f22855223b8a76098408ee67580164d81dd7b858e3c94",
     "apps/local_runner/uaw_runner/read_state.py": "6b173385aa8bbef182bd5226449a2d2f62170b108769ffa10941c10d8634d951",
+    "apps/local_runner/uaw_runner/read_watch.py": "6c082df6958376fc32f6b3eb890260438ed3188717bd15de7444ab992a3db2d6",
     "apps/local_runner/uaw_runner/receipts.py": "ba6913e1764f86d687ad2daa091fdd4cdd215bd9135013edca93b56cc0afba8a",
     "apps/local_runner/uaw_runner/root_source.py": "9d69aaab3e8a4df807de42521dfc3366262d5bb217b88c38f3da1ab738cd9158",
-    "apps/local_runner/uaw_runner/runtime.py": "adb8807e976fd990b794f230ecc9da54f7eea584d85b5f1ed27c77ad0a45f9d1",
+    "apps/local_runner/uaw_runner/runtime.py": "8644dce883667f4416cda6f1c416aea317b29e5d63ed4d3b3ddcfe3eb7b41652",
     "apps/local_runner/uaw_runner/state.py": "a6c2bb6fca3e23ae150f6dabcdd5634e5ea75289eccb573a003fd868066a91aa",
     "contracts/build_interfaces.py": "5c34b81198739d96d0eb61310bed922027895b0158e5d93ed9508c8e74295f14",
     "contracts/check_interfaces.py": "4b17f0a7c00a7bb78d15f8fcbfdca4a27070855ff9e6de44551002d632562132",
@@ -493,8 +494,8 @@
     "tests/integration/runner/helper_fixture.py": "6addad8e31c4a9e59201633b33551d919a4f111986a3e92fa5d6c793409efd74",
     "tests/integration/runner/helper_manual.py": "a9eb79d287fdf9cdc7fc0f328d91a63bde141d16d7343cad2cadf8fe4e6fe461",
     "tests/integration/runner/helper_start_fixture.py": "b8022d53df60384efe85f52c5523b7f4cf08e06948cd3c3e2d1a6ff17d73d4b2",
-    "tests/integration/runner/installed_file_child.py": "e9cfd81655270e7394a39247b6bfe71b8d876bf28f46916ffb06ed5a7a62f410",
-    "tests/integration/runner/installed_file_fixture.py": "78a2b0c0104e8763769d573760f576452e6753505733ad902da5e975de9e0f8d",
+    "tests/integration/runner/installed_file_child.py": "189dc66d79b8e30d6ac4160b8a63f675565edf655af6b8cc40c3899f29db3caf",
+    "tests/integration/runner/installed_file_fixture.py": "f16b0d93288a091d4aa3c496b8fd821b1e160ec14021042ef860de51c5254ce4",
     "tests/integration/runner/ipc_child.py": "5d1132660a9d0f827374042a8daae3bf578ca623aee08b07a353bffa0b87c49e",
     "tests/integration/runner/ipc_fixture.py": "0e7a5cab0294fa08a37746d3e168e0259548cc9b4115f8597ab33a00e5495bf9",
     "tests/integration/runner/native_manual.py": "0c866333b0c44f22d8fde63377d91eb552e8fa10f530e50a9b6b3967eb3d6fda",
@@ -512,7 +513,10 @@
     "tests/integration/runner/test_installed_file_chain.py": "bc338778ff0d6e204141b0086260e2b0ab106fb981a30e7013d0c65ef841d09e",
     "tests/integration/runner/test_installed_file_sources.py": "5d344f7cc20aa1fc3daa596377a82b1e8438f846b667e7b8d74e2b75b2fad4a8",
     "tests/integration/runner/test_installed_first_start.py": "f0a2517ced0b97ea308eef577731098db3df262fd063898c45c2547f1df05d03",
+    "tests/integration/runner/test_installed_watch_boundaries.py": "218f213b072819202502aaf7d181846a20f41b1d9cb4b712af39ddd933632a86",
     "tests/integration/runner/test_local_paths.py": "391be8d02b7b0c3c219606912a7695eeade0c39eaeceb54c3ed9991d4a4d8dbc",
+    "tests/integration/runner/test_local_read_watch.py": "dfc615646ceac116762dc70ecf409d933e1bbb7c2e24e04ff2f5c4d1beabb4aa",
+    "tests/integration/runner/test_monitored_read_ipc.py": "613c643ecd5660f1977b9789b4acd75f20748218694932fb707c436c2fca05c1",
     "tests/integration/runner/test_native_authorization.py": "2bebe1ae190340c178cf6c0999e736a9211147c9bca053e81ec7cc9e3d1bc65b",
     "tests/integration/runner/test_native_current_boundaries.py": "397ecacef846904489a022365fcfe6a8ac092c6ba40f5d45ec464bd5a73fe760",
     "tests/integration/runner/test_native_dialog_windows.py": "24cf94291d5dae63ad208846bad63199ab48340b3b07e76903c6056aacae0ccb",
@@ -522,6 +526,7 @@
     "tests/integration/runner/test_persistent_pairing.py": "5df2e3e54a9b5fec3525e01be9a9da738400481915c6b284dfdc8ecdddfe4bff",
     "tests/integration/runner/test_read_executor.py": "435661a5969e7e3adf133ddf09ad34ccde7382e8170b9f232499492a3283d05a",
     "tests/integration/runner/test_receipt_journal_processes.py": "dbb33c07466081f22bcf9624f28d328b6d99354f26de27c1a28de2b0f36dfa01",
+    "tests/integration/runner/test_sql_read_watch.py": "dc66a8b909b5ff7fe141ab9573aa83abcc437499927c16d2e06d7158c67d7f20",
     "tests/integration/runner/test_windows_control_keys.py": "0ebb250bb17e0987c3e0ec721be13f1fc0a82d5028c4d7e3fc9676128d03bef9",
     "tests/integration/runner/test_windows_ipc.py": "52401a1b7eadd739cb1650d3d7f94678d5d0f9946be5c395e3f1ad3eab6d0157",
     "tests/integration/runner/test_windows_read_ipc.py": "8afcd8f3b045c645e42eea43cd15891b57c8f7862a08419c4fc1c8ce8bf32b68",
@@ -607,6 +612,7 @@
     "tests/unit/runner/test_native_visibility.py": "85e120f58284b694d99dbaf841474821786bd339f4168e128cd09b3cedcb90f8",
     "tests/unit/runner/test_pipe_idle.py": "5c9dfcff733ed362862a767e67815ba47d195047df76847c77d9ec9417447957",
     "tests/unit/runner/test_protocol.py": "bdbae93ef4c1c73369c5944a80ff3eb0fbff09480a1630ba466901ee35ab7996",
+    "tests/unit/runner/test_read_watch.py": "0bda6a3a89c5b735dabd01c99b6e1d948f3d4bb409137f6ce36f3537c19b82d4",
     "tests/unit/runner/test_real_keys.py": "06ed92b580a66ee7b698e5f13fd93bdd2f48094eec863588e0a44e66807248f7",
     "tests/unit/runner/test_receipts.py": "5915b676e0be13db46db7686e7c46b9566aca15964f41503cdcb86cfe4e16e08",
     "tests/unit/shared/test_browser_settings.py": "2536912dbe09e3eb1809d7845eccc025f88d98962abfbf6a3b6d45bd3ac36c4b",
@@ -636,8 +642,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a15.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a14.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a16.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a15.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }
