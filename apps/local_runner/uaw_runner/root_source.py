@@ -6,7 +6,7 @@ No incoming command or path establishes ownership; current channel mapping is in
 import asyncio
 import hashlib
 import json
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from dataclasses import asdict, replace
 from datetime import UTC, datetime
 from pathlib import Path
@@ -322,6 +322,34 @@ class NativeRootSource:
     async def current(
         self, device_id: str, workspace_ref: Ref, ctx: TrustedExecutionContext
     ) -> JsonObject:
+        return await self._current(device_id, workspace_ref, ctx, check=None)
+
+    async def checked_current(
+        self,
+        device_id: str,
+        workspace_ref: Ref,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[JsonObject], Awaitable[None]],
+    ) -> JsonObject:
+        """Bracket one metadata check with the original independent owner/native reads.
+
+        The detached observation grants no permission and is never reused across calls.
+        Failure, mutation, cancellation or an invalid callback result never falls back.
+        """
+        if not callable(check):
+            raise reject("dependency_protocol_invalid", "Root metadata check unavailable", 503)
+        return await self._current(device_id, workspace_ref, ctx, check=check)
+
+    async def _current(
+        self,
+        device_id: str,
+        workspace_ref: Ref,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[JsonObject], Awaitable[None]] | None,
+    ) -> JsonObject:
+        original_workspace, original_context = workspace_ref.wire(), ctx.wire()
         validate_contract("ID", device_id)
         workspace = Ref.model_validate_json(json.dumps(workspace_ref.wire()))
         context = TrustedExecutionContext.model_validate_json(json.dumps(ctx.wire()))
@@ -333,6 +361,8 @@ class NativeRootSource:
             )
 
         def deadline() -> None:
+            if workspace_ref.wire() != original_workspace or ctx.wire() != original_context:
+                raise reject("revision_conflict", "Root request changed during observation", 409)
             if timestamp(context.deadline) <= aware(self.clock()):
                 raise reject("deadline_exceeded", "Root source request expired", 410, "timeout")
 
@@ -341,6 +371,24 @@ class NativeRootSource:
         deadline()
         first = await asyncio.to_thread(self._read, device_id, workspace, owner)
         deadline()
+        if check is not None:
+            # Clone nested fields before handing them to independent SQL metadata approval.
+            observed = json.loads(json.dumps(first, allow_nan=False))
+
+            async def require_none(operation: Awaitable[object]) -> None:
+                if await operation is not None:
+                    raise reject(
+                        "dependency_protocol_invalid", "Root metadata check must return None", 503
+                    )
+
+            await require_none(check(observed))
+            deadline()
+            if observed != first:
+                raise reject("revision_conflict", "Root metadata observation was mutated", 409)
+            if timestamp(str(first["expires_at"])) <= aware(self.clock()):
+                raise reject(
+                    "deadline_exceeded", "Root metadata observation expired", 410, "timeout"
+                )
         second_owner = await self._owner(context.principal, device_id)
         deadline()
         if second_owner.wire() != owner.wire():
