@@ -1,4 +1,16 @@
-# A18：本机角色等待合并已固定，继续结构重复
+# A19：审批只读等待释放锁，继续重复来源结构
+
+ms-i2l-a19-source / 115b46207863fa271385c3e4d3cc88fbbdefc471。
+审批锁内完整检查→锁外原工具/native authority→新事务锁内完整检查与比较，
+等待期间真实取消能提交，撤销/版本/模式/账本变化和调用方短期限均拒绝旧授权。
+request/decide原写事务/CAS/事件保持，不缓存allowed，不延长期限。
+63不同定向SQL通过、411历史并集未全部重跑，212类型/2文件静态/契约通过，467摘要固定。
+真实首次链103.49秒失败，command1/open0，无signed journal，cleanup完成，unknown不重发。
+B/C/D保留交付点，无新包、不代写worker或同步其分支；A继续同次current重复节点定位/收敛。
+默认flags/checked_metadata不开放，固定用户模型，材料成果/本人接受/汇合全量pending。
+详见 ../../coordination/requests/A/MS-I2l-A19-approval-waits.md 与DISPATCH。
+
+# A18：本机角色等待合并已固定，继续结构重复（历史）
 
 ms-i2l-a18-source / 684b50a863b1d480cc46da4aa6d9df156d0159c3。
 同角色OS/key一次worker读取，真实数据读取/原权限/SQL/journal/外部等待后检查保持。

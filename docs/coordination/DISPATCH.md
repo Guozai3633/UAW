@@ -1,4 +1,32 @@
-# A18 正式来源：本机角色等待合并，首次链仍未通过
+# A19 正式来源：审批外部等待释放会话锁，首次链仍未通过
+
+准确源码 **115b46207863fa271385c3e4d3cc88fbbdefc471** / `ms-i2l-a19-source`。
+本正式记录由随后元数据提交发布；旧 start/标签不移动，没有新 worker 包或自动同步。
+只改 A 的 ApprovalService 和 A 验证，不改 B/C/D 业务源码或分支。
+
+只读审批复查采用持锁完整来源检查→锁外原 authority 等待→新事务持锁完整复查，
+比较 Run/预算/binding/会话/配置/政策/权限和原 approval/grant 的完整内容及版本。
+实际两个复查可并行等待，外部等待期间取消可提交且等待后拒绝旧授权；调用方短期限保留。
+request/decide 原写事务、CAS、人工决定与事件保持，不缓存 allowed、不延长任何期限。
+
+63 不同定向 SQL 节点通过（审批/权限40＋原来源/短期限23）；初次39通过/1测试枚举失败保留，
+修为既有 automatic 后复跑通过。411历史并集未全部重跑；212类型、2文件静态/格式、
+1362 schema/288接口/320否定例通过，467源码摘要固定。
+
+原真实Windows首次链独立新Run **103.49秒失败，command1/open0、无签名journal**。
+原10秒reply结束，unknown不重发；4随机凭据/2keys/child/proof清理完成。
+3 composite 累计10.062秒含监控与执行并行，不与墙钟相加；跨轮负载不同，不报通用提速比例。
+本次只接受审批锁外等待及等待后拒绝，不标首次读取/恢复/整轮产品accepted。
+
+B/C/D继续保留交付点无新包。A接下来直接定位同次current中的重复SQL/native节点，
+再收敛有界单次来源观察与等待后失效检查，保留原撤销/取消/key/账号/目录/签名/效果CAS。
+默认checked_metadata/flags不自动开放；固定用户模型，子Agent/DAG/写入安装exec关闭。
+材料到模型/准确引用/核验/本人页面和接受/汇合全量仍pending；旧1691全量与所有失败/费用/标签保持。
+[实际算法与范围](requests/A/MS-I2l-A19-approval-waits.md)、
+[定向与首次链回执](../implementation/evidence/ms-i2l-a19.json)、
+[项目实际进度](../implementation/PROGRESS-2026-10-12.md)。
+
+# A18 正式来源：本机角色等待合并，首次链仍未通过（历史）
 
 准确源码 **684b50a863b1d480cc46da4aa6d9df156d0159c3** / `ms-i2l-a18-source`。
 本正式记录由随后元数据提交发布，旧标签/start不移动，无新worker包或自动同步。
