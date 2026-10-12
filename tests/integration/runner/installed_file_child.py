@@ -156,6 +156,14 @@ class MeasuredInstalledAssembly:
 
         application.helper.current_source.wait_changed = watched
         measure(AuthenticatedPipeSession, "check_local", "local_connection_checks")
+        # Transparent actual A20 registry wrappers; do not manufacture paired peers.
+        measure(application.helper.bootstrap.registration, "current_pair", "paired_registration")
+        measure(application.helper.bootstrap.registration, "current", "single_registration")
+        measure(
+            application.helper.bootstrap.registration.enrollments,
+            "recheck_owned",
+            "owning_enrollment",
+        )
         measure(application.helper.bootstrap.signer, "sign_document", "signatures")
         measure(application.helper.journal, "publish", "receipt_publish")
         measure(application.helper.commands, "resolve", "registered_reader")
