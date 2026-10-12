@@ -1,4 +1,32 @@
-# A16 正式来源：D 监控组件已接受，原首次文件链仍失败
+# A17 正式来源：纯格式计算复用，原首次链仍未通过
+
+准确源码 **4f4680a0522cee4574d74067e40f271313adfc79** / `ms-i2l-a17-source`。
+本记录由随后元数据提交发布；旧标签/start不移动，无新worker包、不要求同步浮动integration。
+
+A只修改内部schema/原命令collect/registered current/peer入口，新增短owning-task纯格式scope。
+同schema、同实际validator、同完整JSON digest成功时复用；256项/16KiB/2048节点/32深度，
+无raw值或allowed缓存，child/thread/后续pass不借用；失败每次重新生成原错误路径。
+SQL/权限/签名/双方key/OS/native/目录和效果CAS仍原样，production checked_metadata=False与flags保持。
+
+80不同定向节点通过（21单元＋58SQL＋1同来源测量），368历史并集未全部重跑，462源码摘要固定。
+同一registered current完整projection相同，fresh SELECT43→43，实际格式计算221→50，171次纯计算命中。
+组件墙钟样本0.400→0.244秒，不能推整链比例。212源码Mypy、8文件Ruff/格式、1362schema/288接口通过。
+
+原源码带child profiler诊断65.77秒失败，command1/open0；优化后不带profiler首次链104.73秒仍失败，
+独立新Run command1/open0，无签名journal。3composite累计11.223秒含监控与执行并行；
+原所有reply deadline相同，不与墙钟相加或按跨轮单样本宣称通用退化比例。
+两次4随机凭据/2keys/child/proof清理通过；unknown不重发，原成功断言未改。
+上次受限单元中断未计通过；自动审批审核额度失败未执行的同来源测量已在用户继续后正常重试完成，未绕审核。
+
+B/C/D保留已交付点，无新包；A继续处理重复账号/登记来源展开、原登记/发送和生产接线。
+这次仅证明纯格式计算减量，首次材料读取/签名journal/原恢复、固定模型材料成果、原本人接受与汇合全量仍pending。
+默认固定用户模型，子Agent/DAG/写入安装exec未开放，无新模型/用户正文/本人操作。
+旧1691全量和所有旧标签/失败/费用保持。
+[实现/边界](requests/A/MS-I2l-A17-pure-shape-reuse.md)、
+[全部回执/诊断/首次链失败](../implementation/evidence/ms-i2l-a17.json)、
+[当前实际进度](../implementation/PROGRESS-2026-10-12.md)。
+
+# A16 正式来源：D 监控组件已接受，原首次文件链仍失败（历史）
 
 准确源码 **02033c0831d1a5e56580136a392f69ee753cca9f** / `ms-i2l-a16-source`。
 本正式记录由随后元数据提交发布，不移动旧标签、不建立新共同start或worker包。

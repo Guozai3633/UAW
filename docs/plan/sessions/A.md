@@ -1,4 +1,15 @@
-# A16：D 监控续项已合入接受，A处理自身来源成本
+# A17：同次来源纯格式计算复用已固定，继续递归读取成本
+
+ms-i2l-a17-source / 4f4680a0522cee4574d74067e40f271313adfc79。
+80不同定向节点通过，368历史并集非当前全量，462源码摘要；212类型/8文件静态/契约通过。
+同registered current projection相同，fresh SQL43→43，格式计算221→50。scope只缓存格式成功digest，
+当前权限/SQL/key/native/OS仍fresh，child/thread/后续pass隔离；原期限/CAS/unknown不重发保持。
+优化后真实新Run104.73秒仍失败，command1/open0无signed journal，原失败/cleanup保留；不能报整链改善。
+B/C/D没有新包，A继续自己的账号/登记重复来源图、原注册/发送和真实接线，不改worker业务/分支。
+flags与checked_metadata默认关闭，固定用户模型/本人接受/汇合全量仍pending。
+详见 ../../coordination/requests/A/MS-I2l-A17-pure-shape-reuse.md 与DISPATCH。
+
+# A16：D 监控续项已合入接受，A处理自身来源成本（历史）
 
 ms-i2l-a16-source / 02033c0831d1a5e56580136a392f69ee753cca9f。
 D源码c315352/handoff9225919通过精确merge71a0d31合入，按组件接受；A另实跑34定向节点通过。
