@@ -169,6 +169,8 @@ class MeasuredInstalledAssembly:
         measure(application.helper.commands, "resolve", "registered_reader")
         measure(application.helper.protocol.principal_mapping, "owner", "owner_mapping")
         measure(application.helper.roots, "current", "root_source")
+        measure(application.helper.roots, "checked_current", "joint_root_source")
+        measure(application.helper.current_source.commands.gate, "check_root", "joint_root_gate")
         measure(AuthenticatedPipeSession, "check", "session_current")
         measure(ReadOnlyPipeEndpoint, "dispatch", "endpoint_dispatch")
         measure(ReadOnlyPipeEndpoint, "watch", "endpoint_watch")

@@ -372,6 +372,10 @@ class NativeRootSource:
         first = await asyncio.to_thread(self._read, device_id, workspace, owner)
         deadline()
         if check is not None:
+            if timestamp(str(first["expires_at"])) <= aware(self.clock()):
+                raise reject(
+                    "deadline_exceeded", "Root metadata observation expired", 410, "timeout"
+                )
             # Clone nested fields before handing them to independent SQL metadata approval.
             observed = json.loads(json.dumps(first, allow_nan=False))
 

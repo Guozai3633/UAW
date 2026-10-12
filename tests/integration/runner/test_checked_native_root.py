@@ -174,3 +174,54 @@ async def test_non_callable_callback_rejected_before_owner(native_case):
     with pytest.raises(DomainError):
         await checked(c, None)
     assert c["owners"].calls == 0
+
+
+async def test_complete_root_revision_change_is_refused_after_valid_re_read(native_case):
+    c = native_case
+    await bind(c)
+    original = await current(c)
+
+    async def metadata(root):
+        assert root == original
+        alter_grant(c, revision=1)
+
+    with pytest.raises(DomainError) as error:
+        await checked(c, metadata)
+    assert error.value.failure.code == "revision_conflict"
+    assert (await current(c))["binding_revision"] == 1
+
+
+async def test_non_awaitable_callback_is_not_retried(native_case):
+    c = native_case
+    await bind(c)
+    calls = 0
+
+    def invalid(root):
+        nonlocal calls
+        calls += 1
+        return None
+
+    with pytest.raises(TypeError):
+        await checked(c, invalid)
+    assert calls == 1
+
+
+async def test_expiry_after_first_native_read_prevents_metadata_callback(native_case):
+    c = native_case
+    await bind(c)
+    read = c["source"]._read
+    calls = 0
+
+    def expiry_after_read(*args):
+        result = read(*args)
+        c["clock"][0] = NOW + timedelta(minutes=5)
+        return result
+
+    async def check(root):
+        nonlocal calls
+        calls += 1
+
+    c["source"]._read = expiry_after_read
+    with pytest.raises(DomainError) as error:
+        await checked(c, check)
+    assert error.value.failure.code == "deadline_exceeded" and calls == 0
