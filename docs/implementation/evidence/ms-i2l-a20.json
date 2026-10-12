@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "8ebdb3620437d19c82beb4ba994ca1bbfb9f8c9d",
+  "scope": "A current_pair source, one owning enrollment graph bracketed by BOTH actual OS/key reads and final SQL witness; D consumer not yet integrated",
+  "targeted_distinct_passing": 33,
+  "historical_union_not_all_rerun": 427,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a20-pair-sql.xml",
+      "sha256": "97db16c1c126438058d1283ed998d1a2de004e47e1b7be8402aa6dfed1a2ad1b",
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a20-pair-cancel.xml",
+      "sha256": "3087c7af33a10789c8ebd5ed87f5de7df29425633832f8d6e7ce3a89a98b7a59",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a20-installed-pair.xml",
+      "sha256": "72f390d8fa8044f8531d7b4588cc4222e1f2a478eb54e7aaa6d5af97ba78c9ed",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a20-pair-final-waits.xml",
+      "sha256": "b53a1f466b05d88465d2d7e8b8931784bea0539bdfad08439376c7cc0b9ef9d5",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_installed_pair_measurement": {
+    "same_results": true,
+    "singles": {
+      "owning_checks": 2,
+      "os": 8,
+      "key": 8,
+      "sql": 22,
+      "seconds": 0.11506620000000112
+    },
+    "pair": {
+      "owning_checks": 1,
+      "os": 8,
+      "key": 8,
+      "sql": 14,
+      "seconds": 0.08381370000279276
+    },
+    "actual": "SQL/Windows/dual current keys/two processes",
+    "controlled": "native confirmation/initial flags/model metadata",
+    "single_sample_not_production_ratio": true
+  },
+  "controlled_os_pair_sql_measurement": {
+    "same_complete_results": true,
+    "single": {
+      "owning_rechecks": 2,
+      "record_selects": 14
+    },
+    "pair": {
+      "owning_rechecks": 1,
+      "record_selects": 10
+    },
+    "os_native": "controlled",
+    "sql_signatures": "actual",
+    "not_production_ratio": true
+  },
+  "command_sends": 0,
+  "opens": 0,
+  "actual_cleanup": {
+    "credential_handles_absent": 4,
+    "role_keys_revoked": 2,
+    "child_exited": true,
+    "proof_pipe_closed": true
+  },
+  "latest_first_file_chain_report": "docs/implementation/evidence/ms-i2l-a19.json",
+  "first_file_chain_rerun_this_source_stage": false,
+  "first_file_chain_accepted": false,
+  "paired_ipc_consumer_integrated": false,
+  "paired_ipc_consumer_task": "docs/coordination/requests/A/MS-I2l-A20-D-paired-registration.md",
+  "same_full_role_results": true,
+  "live_os_key_reads_reduced": false,
+  "owning_rechecks": {
+    "singles": 2,
+    "pair": 1
+  },
+  "cancel_and_wait_changes_rejected": true,
+  "checked_metadata_production_enabled": false,
+  "flags_changed": false,
+  "deadline_extended": false,
+  "product_milestone_accepted": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_confirmation_acceptance": false,
+  "initial_static_failure_retained": {
+    "path": "tests/.artifacts/A/MS-I2l/a20-ruff-import-failure.log",
+    "sha256": "550656513ba28e4e78dc37539c9a2d1b0ad64cdd5c35e3b0406c2a4fec9510d6",
+    "reason": "test import order corrected"
+  },
+  "static": {
+    "mypy_source_files": 212,
+    "ruff": "passed",
+    "format_files": 3,
+    "receipts": {
+      "a20-ruff.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a20-format.log": "cdaf31392a20ec31ced30a9fb7e418d730386f1f8e6357f9394755b2b9b3c0bc",
+      "a20-mypy.log": "b71ecc16564f0c3b2479c81772f7dea47c002f3130ea244070ac6c65277e70e8"
+    }
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a19.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}

@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A19 63 distinct targeted passing; 411 historical union not all rerun. Approval external wait no conversation lock; actual first chain failure separate.",
+  "scope": "A20 33 distinct targeted passing; 427 historical union not all rerun. Paired owning source reduces duplicate SQL graph, D consumer and first chain pending.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 411,
+    "tests": 427,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "d592c4cf6d10b695b9e52e1cfe8ed5a134f091d9a3e144718fd970ff2da3d213",
+  "test_evidence_sha256": "1a3d54d9ec63e5f5504899c1599887b2692bdd0d8a61825e6cb743d5b64d8a44",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -305,7 +305,7 @@
     "src/uaw/infrastructure/enrollment_control.py": "07303df708c143a4d4fe1edaee6894a4439ac9079f6fcba5bd6583b2b429587b",
     "src/uaw/infrastructure/enrollment_launch.py": "22af6318ddfce078046818c7311f4a293d89e904cd4027f1f00401cda7da41ca",
     "src/uaw/infrastructure/enrollment_native.py": "eecf9515f81c809fdc882bb988b3866c564fef6dc3ae0fb9da2042d87b5f63b0",
-    "src/uaw/infrastructure/enrollment_peers.py": "84904a62e229254e52d3a408a5233df3ccec3caabb75cf6a2e35de3d52b4c4b0",
+    "src/uaw/infrastructure/enrollment_peers.py": "8de234c8565324e4dac4b985ade27e0c46661117f79ba41505f9d277861a0092",
     "src/uaw/infrastructure/enrollment_pipe.py": "025980c9422e93991e71ff2ece4c377d56bee280fd617055b4eca435a865a6cc",
     "src/uaw/infrastructure/event_loop.py": "fbedcadf3916ca6d5edfa8d8c15aaae7c57da09b4633af5515942bc3f80dd997",
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
@@ -446,6 +446,7 @@
     "tests/integration/agent/test_current_read_watch.py": "8dd9bafd817fe69b6ef49decf884e4240b305c196a9aa1eb2158f3df095a34fd",
     "tests/integration/agent/test_current_read_witness.py": "546edd4a1d74355e0098e1cf2d4730bdbe73c536ca9a4a53521642b818bab2fe",
     "tests/integration/agent/test_current_record_reads.py": "2a719df5638227bd227cd6311e1bc971bf43dd0654bfe3d0b093030772c56331",
+    "tests/integration/agent/test_enrolled_pair_current.py": "9f935c171e61988ab246054f7c4c7d7afdb053a5acc07a213259e5a139d30629",
     "tests/integration/agent/test_enrolled_peer_current.py": "0ed98622193757c1e61373ca826eb26b3225a321f6b7d1e9d53ba8c3fc7bcb6f",
     "tests/integration/agent/test_enrolled_root_owner.py": "1a4dcdbd4b7cc4d8b51641e5bf0ba014a33cc0e1272817d1ce88387293106367",
     "tests/integration/agent/test_enrollment_pipe.py": "8563167947a52b9f9bbe94f36f62b74a8c2bc3d9f7c0168521b796ea095e85ae",
@@ -462,6 +463,7 @@
     "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
     "tests/integration/agent/test_installed_lifecycle.py": "e7cc921898e558f6fc803d8275802f08090de3792fc83884e1b62520929e1f6f",
     "tests/integration/agent/test_installed_lifecycle_native.py": "dad09bbdd6b733ae7422a1dabdcc3d7f02325fca1718b60312dfb67169344976",
+    "tests/integration/agent/test_installed_pair_measurement.py": "d090bf060d980a64cfaaefc540804f040e8548739e92586330a32d51fd54ea0c",
     "tests/integration/agent/test_installed_peer_sql_watch.py": "774b8776ff24f4a234aae648d80a3d0d5e427017ef90d3d343a3ea14e4f43bb9",
     "tests/integration/agent/test_installed_pre_ui.py": "419cd3e06d89db4f786872f78e524db8d6bce3f06450f9e324c2e159f6d5611f",
     "tests/integration/agent/test_installed_root_binding.py": "fa1f57590b615a8bead8266a33ec81e53ab02ba5593d673a3f248b37096c72de",
@@ -651,8 +653,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a19.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a18.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a20.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a19.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

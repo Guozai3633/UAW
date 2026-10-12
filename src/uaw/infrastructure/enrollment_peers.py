@@ -184,8 +184,64 @@ class EnrolledPeerRegistry:
     async def _checked_peer(
         self, value: Payload, identity: OsIdentity, *, role: str
     ) -> RegisteredPeer:
-        # Snapshot is comparison data only. Full current enrollment authority is
-        # established below, after role observation and before returning a peer.
+        result = await self._observed_peer(value, identity, role=role)
+        final = await self.enrollments.recheck_owned(self.user, value)
+        if final != value:
+            raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
+        peer = value["proof_document"][role]
+        final_identity, final_key = await self._role_observation(peer, device_id=result.device_id)
+        if final_identity != identity:
+            raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
+        expected = VerificationKey(
+            result.key_id,
+            result.device_id,
+            base64.b64decode(peer["public_key"], validate=True),
+            result.role,
+        )
+        if final_key != expected:
+            raise reject("enrolled_current_key_denied", "Current role key changed", 403)
+        return result
+
+    async def current_pair(
+        self, control: OsIdentity, device: OsIdentity
+    ) -> tuple[RegisteredPeer, RegisteredPeer]:
+        """One owning enrollment check bracketed by fresh observations of BOTH roles.
+
+        Explicit control/device order, no frame input or previous peer allowance.
+        SQL inputs receive a fresh final witness; both role observations repeat
+        after its cleanup await. Every call performs its own owning check.
+        """
+        if not isinstance(control, OsIdentity) or not isinstance(device, OsIdentity):
+            raise reject("enrolled_role_denied", "Actual role OS identities required", 403)
+        async with asyncio.timeout(10), contract_validation_scope():
+            async with self.enrollments.records.current_witness():
+                value = await self._snapshot()
+                first = (
+                    await self._observed_peer(value, control, role="control"),
+                    await self._observed_peer(value, device, role="device"),
+                )
+                if await self.enrollments.recheck_owned(self.user, value) != value:
+                    raise reject(
+                        "enrolled_source_changed", "Current enrollment/OS source changed", 412
+                    )
+                final = (
+                    await self._observed_peer(value, control, role="control"),
+                    await self._observed_peer(value, device, role="device"),
+                )
+                if final != first or await self._snapshot() != value:
+                    raise reject("enrolled_source_changed", "Original role pair changed", 412)
+                encoded = json.dumps(value, sort_keys=True, allow_nan=False).encode()
+                if self.original_enrollment is not None and self.original_enrollment != encoded:
+                    raise reject("enrolled_source_changed", "Original role pair changed", 412)
+                self.original_enrollment = encoded
+            await self._external_original()
+            return final
+
+    async def _observed_peer(
+        self, value: Payload, identity: OsIdentity, *, role: str
+    ) -> RegisteredPeer:
+        # This helper only observes/computes role comparison data. Its callers
+        # must bracket the owning enrollment/journal check before returning it.
         if role not in ("control", "device"):
             raise reject("enrolled_role_denied", "Exact registered peer role required", 403)
         role_name: Literal["control", "device"] = "control" if role == "control" else "device"
@@ -216,14 +272,6 @@ class EnrolledPeerRegistry:
             raise reject(
                 "enrolled_current_key_denied", "Current role key is revoked or differs", 403
             )
-        final = await self.enrollments.recheck_owned(self.user, value)
-        if final != value:
-            raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
-        final_identity, final_key = await self._role_observation(peer, device_id=doc["device_id"])
-        if final_identity != registered:
-            raise reject("enrolled_source_changed", "Current enrollment/OS source changed", 412)
-        if final_key != key:
-            raise reject("enrolled_current_key_denied", "Current role key changed", 403)
         return RegisteredPeer(
             identity,
             self.user,
