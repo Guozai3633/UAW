@@ -1,3 +1,34 @@
+# A24 正式状态：封闭登记检查点已固定，首次回执仍pending
+
+2026-10-13，准确源码 **fc544a1fe302415172bd6f5db8adca0d85a21f01** / `ms-i2l-a24-source`。
+A继续自己integration阶段HEAD，不回退start，不移动旧标签，不操作worker源码/分支。
+
+RegisteredRunnerRechecks.current只对实际同源installed file.read装配使用collect_registered。
+完整审批一次→实际通道/根/签名与budget/lease再次完整检查→末尾native/key额外复查→fresh完整SQL witness。
+custom/非同源/checked_metadata模式保留原collect两遍；失败不fallback。D效果前后current及OS handle guards保持。
+预算joined rows含absence已登记observer，最后会计/tombstone变化不能被漏掉；不缓存allowance或跨checkpoint输入。
+原批准/拒绝、Run/model/provider/角色/账号/取消/版本/fence/期限都核对，公开DTO/ports/schema/wire不变。
+
+实际同一命令完整结果一致：SQL360→231，Gate2→1；root4→5，OS48→48，key82→89，owning6→6。
+样本秒数不作为生产通用提速。38不同定向通过（28原current/watch/witness/同图＋8实际变更＋2旧入口/预算）。
+578历史并集未全部重跑；214源码类型、4文件静态格式、1362schema/288接口/320否定例通过，481源码摘要。
+原测试停止断言/类型失败、一次自动审批超时及成功重试均保留，原1691全量与费用不改写。
+
+原完整成功断言仍失败：48.33秒，command1/open调用1/占位1，signed_data0/ref0。
+child签名总调用3含native启动2，额外调用符合receipt签名路径但无持久签名，不能标签名回执成功或恢复通过。
+原10秒reply终止，unknown未重发，不造journal/假not_applied/零费用。19独立installed实例清理核对通过。
+无用户文件/新模型/真人确认接受；flags/checked_metadata/子Agent/DAG/写入安装exec保持关闭。
+
+| Session | 当前状态 | 安排 |
+| --- | --- | --- |
+| A | A24封闭登记来源收敛已交付，首次链仍未通过 | 继续原登记发送、检查点成本及签名后持久/恢复链；有具体来源接口再派消费 |
+| B | MS-U3b交付保留 | 394d785/1b0fe02，无新包 |
+| C | MS-T2i-b交付保留 | 223c9a9/730a419，无新包 |
+| D | A21组件已接受并停止 | 7157883/317549c保留，无新续项，不自动同步 |
+
+[详细算法/边界](requests/A/MS-I2l-A24-registered-collection.md)、[全部回执](../implementation/evidence/ms-i2l-a24.json)。
+以下派发是历史，不据此重复开工；模型材料/准确引用/核验/本人交付接受/汇合全量继续pending。
+
 # A23 正式状态：只读审批共同来源图已固定
 
 2026-10-13，准确源码 **1c4f680a00852f89452fa5fb4c03aaa2065a30e2** / `ms-i2l-a23-source`。

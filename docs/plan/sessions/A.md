@@ -1,3 +1,14 @@
+# A24 当前：封闭登记读取来源
+
+准确source ms-i2l-a24-source / fc544a1fe302415172bd6f5db8adca0d85a21f01。
+实际同源file装配完整审批一次，budget/lease/通道/根/签名复查和final完整SQL witness保持；
+旧/custom装配原两遍不变，budget joined缺失/会计输入被观察，原较早期限和D关键操作前后fresh不删。
+同命令SQL360→231、Gate2→1，root/key增加末尾复查；38定向通过，578历史并集非当前全量。
+214类型/4静态格式/契约通过。完整链48.33秒仍失败，command1/open调用1/占位1，无signed/ref；
+签名wrapper3含native2，不能当真实持久receipt。原unknown不重发，19实例清理核对。
+A继续自身原图/注册发送/签名持久恢复，BCD没有新包；不代用户操作或开放flags。
+详细../../coordination/requests/A/MS-I2l-A24-registered-collection.md。
+
 # A23 当前：只读审批共同来源图
 
 准确source ms-i2l-a23-source / 1c4f680a00852f89452fa5fb4c03aaa2065a30e2。
