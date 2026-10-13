@@ -42,7 +42,12 @@ INSTRUCTION = (
     "assumptions, false equivalences or mere requests for information as a delivered "
     "answer. Explicit source-only restrictions and claims of live facts, references, "
     "file reads, tests or actions still require real evidence. Semantic review is a "
-    "quality assessment, not independent external verification of general knowledge."
+    "quality assessment, not independent external verification of general knowledge. "
+    "Also check that the answer separates conceptual layers, keeps hypothetical "
+    "implementations hypothetical, and does not replace the user's ambiguity with "
+    "invented common product behavior or unsupported universal guarantees. Qualifiers "
+    "must be meaningful; a disclaimer cannot rescue a materially false explanation. "
+    "A concise useful comparison is preferable to an unnecessary speculative catalogue."
 )
 SCHEMA: Payload = {
     "type": "object",

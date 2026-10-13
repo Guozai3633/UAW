@@ -49,3 +49,20 @@ passed和blocked由实际语义结果决定，未核验网页来源仍不通过�
 
 当前为A续项开发，source/实际测试/固定体验版本完成后另追加准确回执。
 同Run内澄清仍未实现，本项不把waiting强制转respond，也不复活本人旧任务。
+
+## 第一组真实样例与额外质量修正
+
+固定初始source `36ff4e10deb2bd0497b556ad273aff9d3fa13f61`：原比较3次实际DeepSeek调用，
+action=respond，得到实际Artifact和passed报告；原unresolved仍保留，说明机械拦截已解除。
+缺论文原文样例2次调用，action=wait且问题实际可见，没有编造论文。
+这5次调用行为链通过，不代表普通样例文字都准确：人工检查发现假设性方案被表述为常见实现，
+并出现过于绝对的锁、性能/可用性概括；固定模型自身passed没有充分发现这些问题。
+
+原样例和1.25 USD pending预留保留，不能覆写为最终质量通过。
+根提示词再增加简明核心解释、少量已知候选、保持概念层次、假设实现不当产品事实、依赖实现的保证须限定；
+语义核验同样检查这些问题，不设置TCC/ZK专用答案或关键词分支。
+修改固定为新的refined source后仅复跑原普通问题，用新测试身份/原固定用户模型。
+
+人工技术核对参考[Apache ZooKeeper internals](https://zookeeper.apache.org/doc/current/zookeeperInternals.html)
+与[Apache Seata TCC mode](https://seata.apache.org/docs/user/mode/tcc/)。它们用于A核对样例概念，
+不是UAW工具读取的来源，不能作为UAW已联网/有真实文档引用的证据。
