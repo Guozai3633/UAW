@@ -79,7 +79,7 @@ async def agent_case(understanding, case, domain, tmp_path):
         record_batch=PostgresContextRecordBatch(run.store),
         batch_required=True,
     )
-    text = files("uaw.resources.prompts").joinpath("agent-root-v1.txt").read_text(encoding="utf-8")
+    text = files("uaw.resources.prompts").joinpath("agent-root-v2.txt").read_text(encoding="utf-8")
     method = await contexts.inputs.register_rule(
         InstructionRule(
             id="root-method",

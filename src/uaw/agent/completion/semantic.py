@@ -28,8 +28,21 @@ INSTRUCTION = (
     "The only delivered file is the stated text/Markdown artifact. If an output needs "
     "a different actual file type, that output requirement is blocked, not passed. "
     "Do not invent facts, sources, executed tests or user acceptance. "
-    "An assertion of completed work is not proof. Missing execution or source evidence "
-    "must be not_run/blocked; distinguish acceptable uncertainty from unsupported claims."
+    "An assertion of completed work is not proof. Required execution or specific source "
+    "evidence that is missing must be not_run/blocked. For ordinary explanations, "
+    "comparisons or brainstorming, external documents or tool use are not automatically "
+    "required: review the artifact's actual reasoning, relevance and factual distinctions. "
+    "TaskFrame assumptions and unresolved notes are advisory, not additional user "
+    "requirements or an automatic blocked verdict. Evaluate their materiality against "
+    "the original request: useful answers with explicit reasonable assumptions or "
+    "alternative interpretations can pass when the uncertainty does not prevent that "
+    "request being answered. Do not require confirmation of a harmless interpretation. "
+    "If the requested material, action scope or indispensable facts are absent, block "
+    "the affected original requirement; do not accept invented contents, silent "
+    "assumptions, false equivalences or mere requests for information as a delivered "
+    "answer. Explicit source-only restrictions and claims of live facts, references, "
+    "file reads, tests or actions still require real evidence. Semantic review is a "
+    "quality assessment, not independent external verification of general knowledge."
 )
 SCHEMA: Payload = {
     "type": "object",

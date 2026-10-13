@@ -369,7 +369,7 @@ class BackgroundAgent:
                     level="platform",
                     scope=ScopeSelector(conversation_id=run["conversation_id"]),
                     text=files("uaw.resources.prompts")
-                    .joinpath("agent-root-v1.txt")
+                    .joinpath("agent-root-v2.txt")
                     .read_text(encoding="utf-8")
                     + (
                         "\nFor file.read, use the exact admitted_workspaces Ref and a relative "
@@ -390,7 +390,7 @@ class BackgroundAgent:
                 {
                     "id": "web-role-" + key,
                     "version": "1",
-                    "description": "Single general office and academic Agent; evidence required",
+                    "description": "General assistant for discussion, exploration and actual work",
                     "instructions_ref": method.wire(),
                     "tool_categories": [
                         "text",
@@ -400,7 +400,7 @@ class BackgroundAgent:
                     ],
                     "skill_refs": [],
                     "output_contract": {
-                        "goal": "Deliver the original user task using actual evidence",
+                        "goal": "Help with the original task; state assumptions and verify actions",
                         "version": "1",
                         "requirements": [],
                         "outputs": [],

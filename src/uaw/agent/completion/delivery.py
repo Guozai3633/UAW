@@ -253,17 +253,11 @@ class CompletionCoordinator:
                     "Live web link validation is unavailable",
                 )
             )
-        if view.frame["unresolved"]:
-            checks.append(
-                check(
-                    "unresolved-task",
-                    "semantic",
-                    "blocked",
-                    artifact,
-                    (),
-                    "Task still contains unresolved questions",
-                )
-            )
+        # Understanding notes are advisory. The fixed-model semantic review
+        # receives the pinned full TaskFrame and evaluates whether an uncertainty
+        # actually prevents the original requested result; a nonempty list alone
+        # cannot deny useful explanations under explicit assumptions. Required
+        # sources, execution, outputs and final authority checks remain intact.
         for spec in contract["outputs"]:
             # OutputSpec.kind is free text, not a file-format enum. Content and
             # requested deliverable compatibility are reviewed per requirement.

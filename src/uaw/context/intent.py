@@ -26,13 +26,14 @@ from uaw.run.inputs import InputSet, RunInputReader
 from uaw.shared.contracts import Ref, ScopeSelector, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 
+UNDERSTANDING_RULE = "intent-understand-v2"
+UNDERSTANDING_RULES = frozenset({"intent-understand-v1", UNDERSTANDING_RULE})
 
-def understanding_template() -> str:
-    return (
-        files("uaw.resources")
-        .joinpath("prompts/intent-understand-v1.txt")
-        .read_text(encoding="utf-8")
-    )
+
+def understanding_template(rule_id: str = UNDERSTANDING_RULE) -> str:
+    if rule_id not in UNDERSTANDING_RULES:
+        raise CapabilityUnavailable("context.registered_platform_rule")
+    return files("uaw.resources").joinpath(f"prompts/{rule_id}.txt").read_text(encoding="utf-8")
 
 
 def user_message(index: int, text: str) -> str:
@@ -47,16 +48,17 @@ class UnderstandingRules:
 
     async def check(self, ref: Ref, ctx: TrustedExecutionContext) -> None:
         await self.authority.authorize(ctx)
-        if (ref.kind, ref.id, ref.version) != (
-            "rule",
-            "intent-understand-v1",
-            "1",
-        ) or ref.location is not None:
+        if (
+            ref.kind != "rule"
+            or ref.id not in UNDERSTANDING_RULES
+            or ref.version != "1"
+            or ref.location is not None
+        ):
             raise CapabilityUnavailable("context.registered_platform_rule")
         if (
             ref.content_hash is not None
             and ref.content_hash
-            != hashlib.sha256(understanding_template().encode("utf-8")).hexdigest()
+            != hashlib.sha256(understanding_template(ref.id).encode("utf-8")).hexdigest()
         ):
             raise reject("source_changed", "Packaged instruction changed", 410)
 
@@ -64,11 +66,11 @@ class UnderstandingRules:
         if revision_policy != "pinned":
             raise CapabilityUnavailable("context.platform_rule_latest")
         await self.check(ref, ctx)
-        template = understanding_template()
+        template = understanding_template(ref.id)
         actual = from_wire(
             Ref,
             {
-                **reference("rule", "intent-understand-v1"),
+                **reference("rule", ref.id),
                 "content_hash": hashlib.sha256(template.encode("utf-8")).hexdigest(),
             },
         )
@@ -79,10 +81,10 @@ class UnderstandingRules:
         if request.scope_paths or request.user_instruction_refs or request.activated_skill_refs:
             raise CapabilityUnavailable("context.project_skill_user_rule_inheritance")
         reading = await self.read(
-            Ref(kind="rule", id="intent-understand-v1", version="1"), "pinned", ctx
+            Ref(kind="rule", id=UNDERSTANDING_RULE, version="1"), "pinned", ctx
         )
         rule = InstructionRule(
-            id="intent-understand-v1",
+            id=UNDERSTANDING_RULE,
             source_ref=reading.ref,
             level="platform",
             scope=ScopeSelector(conversation_id=ctx.scope.conversation_id),
