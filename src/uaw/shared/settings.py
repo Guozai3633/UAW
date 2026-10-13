@@ -18,7 +18,7 @@ class ConfigurationError(ValueError):
 class Settings(BaseModel):
     model_config = ConfigDict(strict=True, extra="forbid", frozen=True, hide_input_in_errors=True)
     profile: Literal["development"]
-    host: Literal["127.0.0.1", "::1"] = "127.0.0.1"
+    host: Literal["127.0.0.1", "127.0.0.2", "::1"] = "127.0.0.1"
     port: int = Field(default=8000, ge=1024, le=65535)
     development_principal_id: ID
     development_admin_id: ID = "development-admin"

@@ -49,3 +49,16 @@ def test_web_key_cannot_share_auth_or_cursor_secret():
     with pytest.raises(ValidationError):
         Settings(**{**values(), "browser_session_signing_key": SecretStr("c" * 40)})
     assert Settings(**values()).browser_session_seconds == 3600
+
+
+def test_independent_human_cookie_host_requires_matching_origin():
+    assert (
+        Settings(
+            **{**values(), "host": "127.0.0.2", "browser_origin": "http://127.0.0.2:5181"}
+        ).host
+        == "127.0.0.2"
+    )
+    with pytest.raises(ValidationError):
+        Settings(**{**values(), "host": "127.0.0.2"})
+    with pytest.raises(ValidationError):
+        Settings(**{**values(), "host": "0.0.0.0", "browser_origin": "http://0.0.0.0:5181"})
