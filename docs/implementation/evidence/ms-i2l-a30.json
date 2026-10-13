@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-13",
+  "source_commit": "ad11ce70c50684ef304b4c137f7ea52eecb5f4ae",
+  "source_tag": "ms-i2l-a30-source",
+  "base_commit": "1a47aeb245a8833f65e5aa625a3fa17f4da8c470",
+  "dispatch_commit": "08352c774ed6a46930935e7218443e913d5dab46",
+  "targeted_distinct_passing": 8,
+  "historical_union_not_all_rerun": 652,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a30-profile-final.xml",
+      "sha256": "6e8cbb010eadae0db7b7aff2e858436929fbb6a5f299c013db95eb42d2e8e840",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a30-boundaries.xml",
+      "sha256": "c2c07a75d354351a1db4b93f8ca726f5f06d6237f66b39c3a93e6073554f6107",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a30-regression-final.xml",
+      "sha256": "12f9b9e27a91bdaad5c3f517c237c525172e8cce27417651eb7369b2070a35e0",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "test_scope": {
+    "real_SQL_Context_and_persisted_controlled_model_queue": 2,
+    "original_delivery_with_test_protocol_acceptance": 1,
+    "real_transaction_with_explicit_controlled_Model_reader_fault_cases": 5,
+    "actions": [
+      "wait",
+      "blocked"
+    ],
+    "faults": [
+      "cancel",
+      "frame",
+      "operation",
+      "model",
+      "blank"
+    ],
+    "proves": [
+      "original exact text visible with3 refs",
+      "one understanding Item",
+      "Item before Run event in same transaction",
+      "restart no duplicate Item or new model call",
+      "changed/cancelled/mismatched/blank source cannot publish",
+      "original delivery and required acceptance remain working"
+    ],
+    "does_not_prove": [
+      "live LLM clarification quality",
+      "current deployed H01 UI repaired",
+      "same Run clarification/steer support",
+      "native first file publication/recovery"
+    ]
+  },
+  "static": {
+    "mypy_source_files": 215,
+    "ruff_format_files": 3,
+    "receipts": {
+      "a30-mypy-final.log": "51fabbbd1fb527d5627152c7a27f6fc9cb065c8b58596e757827a8a86bc7ca46",
+      "a30-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a30-format-final.log": "cdaf31392a20ec31ced30a9fb7e418d730386f1f8e6357f9394755b2b9b3c0bc"
+    }
+  },
+  "preparation_failures_and_interruptions_retained": [
+    "Initial 11-node attempt interrupted in preparation; no XML result, not counted as 11 passes. Original empty log retained.",
+    "One-node faulthandler diagnostic interrupted after timeout dump; no passing XML result, original diagnostic log retained.",
+    "Profile harness initially omitted repository root from sys.path and exited4 with tests import error; final exact node passed after harness correction.",
+    "Initial Ruff import sorting/redundant import and later test helper E501 fixed; source constraints unchanged.",
+    "Final direct mypy.exe invocation failed uv trampoline path canonicalization in sandbox; python -m mypy passed in215 files.",
+    "Four cleanup preparation guards stopped before any mutation: candidate count included an already-cleaned fixture, title/input namespace assumption, additional builtin providers, ProviderBinding versus ProviderDraft fields. Final exact two fixtures validated and cleaned with private snapshot first."
+  ],
+  "diagnostic_receipts": {
+    "a30-pause-initial.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "a30-pause-diagnostic.log": "f8300bf5de64b55b0f3b2e79519d082bb28c7aa0004546ff73181372027a62c9",
+    "a30-profile.log": "5bf3abce30a64caa52db2d7c7a49500a959d8a220f18dae2aa1e7d5c7a1c73aa",
+    "a30-profile-stack.jsonl": "658cb4ef6be53dc7f78b93ae7e39808590eeb51dc8d8f0dfada0b92532c831e9"
+  },
+  "interrupted_fixture_cleanup": {
+    "count": 2,
+    "receipt_sha256": "ca4ac173d690c22839e9fbae1966993d936f4a1d18d5fd576703fef550348d0c",
+    "private_snapshot_retained": true,
+    "OS_fixture_credentials_absent": true,
+    "records_absent_after_commit": true,
+    "user_or_other_worker_records_touched": false
+  },
+  "actual_original_feedback": {
+    "private_original_sha256": "be926465538174b8a9b2a653cfcd28a057b845b105a738e469e6312c5941253a",
+    "human_record": "docs/implementation/human-tests/H01-I01.md",
+    "fixed_human_source": "c905ec26e4d25c11b0af991f1e725a279cceb439",
+    "model_successful_calls": 2,
+    "input_tokens": 2649,
+    "output_tokens": 357,
+    "held_money_USD": "0.500000000",
+    "actual_money": null,
+    "billing_state": "pending",
+    "original_model_action": "wait",
+    "no_tool_approval_or_artifact": true,
+    "actual_user_stopped": true,
+    "current_original_Run_status": "cancelled",
+    "original_reissued_or_revived": false
+  },
+  "B_dispatch": {
+    "human_authorization": "User explicitly allowed direct message to existing Session B",
+    "thread_title": "UAW Session B 上下文组件",
+    "request": "docs/coordination/requests/A/H01-I01-B-waiting-feedback.md",
+    "source_commit": "ad11ce70c50684ef304b4c137f7ea52eecb5f4ae",
+    "sent_via_app_tool": true,
+    "status": "worker_active",
+    "B_business_source_changed_by_A": false
+  },
+  "new_actual_model_calls": 0,
+  "new_actual_money": null,
+  "H01_v1_snapshot_hot_changed": false,
+  "new_H01_version_and_human_retest": "pending B delivery and new fixed experience version",
+  "public_DTO_ports_schema_changed": false,
+  "flags_changed": false,
+  "cancelled_user_task_changed": false,
+  "file_first_chain_status_unchanged": true,
+  "whole_MS_I2l_accepted": false,
+  "last_full_unchanged": true,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a29.json"
+}

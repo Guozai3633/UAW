@@ -1,3 +1,22 @@
+# A30 最终后端状态：8 项通过，B 定向页面修复已直接派发
+
+准确source **ad11ce70c50684ef304b4c137f7ea52eecb5f4ae** / `ms-i2l-a30-source`；B正式开工dispatch为08352c774ed6a46930935e7218443e913d5dab46。
+2026-10-13按本人明确授权，已通过App直接发给现有「UAW Session B 上下文组件」，B已开工。
+准确source不变；B按[H01-I01请求](requests/A/H01-I01-B-waiting-feedback.md)继续原允许路径，不合浮动integration。
+
+A后端8不同实际SQL节点通过：wait/blocked完整受控Model队列2、原成果及测试协议接受1、事务故障边界5。
+补充原text可见、原理解唯一、Item先于Run事件且同事务、恢复不重复/无新调用；取消/版本/错误模型/空text拒绝。
+215源码类型、3文件静态格式通过。两次中断的准确随机fixture/测试凭据清理已复核，私有快照与失败历史保留。
+652历史通过并集未全部重跑，旧last_full保持；不把测试协议接受当本人点击。
+
+本人原H01问题仍cancelled，不复活/回填/重发；原2649/357 Token与0.50 USD pending预留保留，本续项新真实LLM调用0。
+H01-v1保持原A29固定快照，当前页面尚未升级。B阶段到即审阅，交付后固定新体验版本复测。
+B仅修UI及对应B验证；C/D无新包，不自动同步；A不操作worker源码/工作区。
+原A28首次本机文件发布/恢复仍失败，本轮未重跑；权限/flags/原期限/固定模型及子Agent/DAG/写入安装exec不变。
+
+[A实际回执](../implementation/evidence/ms-i2l-a30.json) · [本人反馈](../implementation/human-tests/H01-I01.md)。
+以下记录保留为原阶段历史，最新准确source及B范围仍如上。
+
 # A30 正式派发：H01-I01 后端修复与 B 页面定向修复
 
 2026-10-13，准确源码 **ad11ce70c50684ef304b4c137f7ea52eecb5f4ae** / `ms-i2l-a30-source`。

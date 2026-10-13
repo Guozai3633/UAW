@@ -1,3 +1,13 @@
+# A30 最终后端回执：8 定向通过，B 页面修复已直接派发
+
+准确source ad11ce70c50684ef304b4c137f7ea52eecb5f4ae / ms-i2l-a30-source，B原允许范围不变，已按本人授权直接发送并开工。
+8实际SQL定向/215源码类型/3静态格式通过：wait/blocked2＋原成果/测试协议接受1＋5事务故障。
+两次中断随机fixture/OS测试凭据清理完成，私有快照/全部中断与准备失败保留。
+652历史并集非当前全量，旧last_full与A28原文件门槛不变，无新增真实LLM调用。
+本人原任务cancelled不复活，原2调用2649/357 Token、0.50 USD pending保留。
+A阶段到即审阅B，合入后固定新H01复体验；当前H01-v1旧快照未升级，B交付/真实页面复验仍pending。
+详见../../implementation/evidence/ms-i2l-a30.json。
+
 # A30 当前：H01-I01 原问题可见与 B 定向 UI 修复
 
 准确source ms-i2l-a30-source / ad11ce70c50684ef304b4c137f7ea52eecb5f4ae，已允许直接发给现有B。
