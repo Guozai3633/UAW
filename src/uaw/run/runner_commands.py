@@ -398,6 +398,181 @@ class RunnerCommands:
             raise reject("runner_authority_changed", "Authority changed during checks", 412)
         return second
 
+    def supports_registered_collection(self) -> bool:
+        """Only the actual closed installed-file assembly has observed SQL sources."""
+        from uaw_runner.control_signing import ControlCommandSigner
+        from uaw_runner.root_source import NativeRootSource
+
+        from uaw.infrastructure.installed_files import OriginalFileApprovalGate
+        from uaw.infrastructure.installed_tool_authority import (
+            InstalledControlVerifier,
+            InstalledFileResources,
+            InstalledToolApprovalGate,
+        )
+        from uaw.run.budget import BudgetService
+        from uaw.run.leases import ExecutionLeaseService
+        from uaw.run.permissions import ExecutionPolicyResolver
+
+        if (
+            type(self.store) is not PostgresRecordStore
+            or self.store.checked_metadata
+            or type(self.devices) is not RunnerDevices
+            or self.devices.store is not self.store
+            or type(self.configuration) is not ConfigurationService
+            or self.configuration.store is not self.store
+            or type(self.permissions) is not ExecutionPolicyResolver
+            or self.permissions.store is not self.store
+            or type(self.budgets) is not BudgetService
+            or self.budgets.store is not self.store
+            or type(self.leases) is not ExecutionLeaseService
+            or self.leases.store is not self.store
+            or type(self.roots) is not NativeRootSource
+            or not isinstance(self.signer, (ControlCommandSigner, InstalledControlVerifier))
+            or type(self.signer) not in (ControlCommandSigner, InstalledControlVerifier)
+            or self.signer.directory is not self.roots.directory
+        ):
+            return False
+        if type(self.gate) is OriginalFileApprovalGate:
+            adapter = self.gate.approvals
+            resources = adapter.authority.resources if adapter is not None else None
+            return (
+                self.gate.ledger.store is self.store
+                and type(resources) is InstalledFileResources
+                and resources.roots is self.roots
+            )
+        if type(self.gate) is InstalledToolApprovalGate:
+            c = self.gate.container
+            return (
+                self.gate.roots is self.roots
+                and c.records is self.store
+                and c.configuration is self.configuration
+                and c.execution_permissions is self.permissions
+            )
+        return False
+
+    async def collect_registered(self, record: Payload, actor: Principal) -> Payload:
+        """Full approval once, fresh external/state checks and complete SQL witness.
+
+        No input cache or permission reuse. Budget/lease are checked twice too:
+        their joined SQL/counter reads cannot be replaced by a record observer.
+        Nested owning witnesses close before any enclosing authority returns.
+        The legacy two full passes remain for custom/non-installed sources.
+        """
+        if not self.supports_registered_collection() or "signature" not in record["command"]:
+            raise CapabilityUnavailable("runner.original_registered_collection")
+        assert self.roots is not None and self.signer is not None
+        fixed_record, fixed_actor = copy(record), actor.wire()
+        components = (
+            self.store,
+            self.devices,
+            self.configuration,
+            self.permissions,
+            self.budgets,
+            self.leases,
+            self.roots,
+            self.gate,
+            self.signer,
+        )
+        deadline = instant(record["command"]["expires_at"])
+        seconds = max(0, (deadline - self.devices.now()).total_seconds())
+        async with (
+            asyncio.timeout(seconds),
+            self.store.current_reads(),
+            self.store.current_witness(),
+        ):
+            if await self.record(record["command"]["command_id"]) != fixed_record:
+                raise reject("runner_command_changed", "Original registered command changed", 412)
+            actual = await self._collect(record, actor)
+            ctx = TrustedExecutionContext.model_validate_json(
+                json.dumps(actual["request"]["context"])
+            )
+            device_id = actual["device"]["device_id"]
+            device = await self.devices.current(device_id, authenticated_principal=actor)
+            root = copy(await self.roots.current(device_id, self.workspace(actual["request"]), ctx))
+            validate_contract("RunnerRootSnapshot", root)
+            budget = copy(
+                await self.budgets.execution_state(actual["budget"]["reservation"]["id"], ctx)
+            )
+            validate_contract("BudgetExecutionSnapshot", budget)
+            lease = copy(
+                await self.leases.current(
+                    Ref.model_validate(record["lease_ref"]),
+                    record["command"]["fencing_token"],
+                    ctx,
+                    holder=Principal.model_validate(record["holder"]),
+                )
+            )
+            validate_contract("ExecutionLease", lease)
+            configuration = await self.configuration.current()
+            await require_none(
+                self.signer.verify(copy(record["command"]), device_id=device_id),
+                "runner_signature_protocol_invalid",
+            )
+            # Native root/key/OS proof follows the signing await too. No new
+            # mapping is inferred: owner/workspace are the original checked
+            # sources and SQL ownership is compared at the closing witness.
+            from uaw_runner.root_source import NativeRootSource
+
+            assert type(self.roots) is NativeRootSource
+            local_root = await asyncio.to_thread(
+                self.roots._read,
+                device_id,
+                self.workspace(actual["request"]),
+                Principal.model_validate(root["owner"]),
+            )
+            # Key revocation during the final native await cannot be hidden by
+            # an unchanged SQL witness. Verify the current control key again.
+            await require_none(
+                self.signer.verify(copy(record["command"]), device_id=device_id),
+                "runner_signature_protocol_invalid",
+            )
+            if (
+                device != actual["device"]
+                or root != actual["root"]
+                or local_root != actual["root"]
+                or budget != actual["budget"]
+                or lease != actual["lease"]
+                or configuration != actual["configuration"]
+                or record != fixed_record
+                or actor.wire() != fixed_actor
+                or not self.supports_registered_collection()
+                or any(
+                    before is not after
+                    for before, after in zip(
+                        components,
+                        (
+                            self.store,
+                            self.devices,
+                            self.configuration,
+                            self.permissions,
+                            self.budgets,
+                            self.leases,
+                            self.roots,
+                            self.gate,
+                            self.signer,
+                        ),
+                        strict=True,
+                    )
+                )
+            ):
+                raise reject("runner_authority_changed", "Actual owning sources changed", 412)
+            if (
+                not self.devices.now()
+                < deadline
+                <= min(
+                    instant(ctx.deadline),
+                    instant(root["expires_at"]),
+                    instant(device["source"]["expires_at"]),
+                    instant(lease["expires_at"]),
+                    instant(budget["ledger"]["deadline"]),
+                    instant(budget["attempt"]["deadline"]),
+                )
+            ):
+                raise reject("runner_deadline_denied", "Original registered sources expired", 409)
+        if self.devices.now() >= deadline:
+            raise reject("runner_deadline_denied", "Original command expired after cleanup", 409)
+        return actual
+
     async def register(
         self, request: Payload, meta: RequestMeta, *, authenticated_service: Principal
     ) -> Payload:

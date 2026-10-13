@@ -92,6 +92,14 @@ class BudgetService(BudgetPort, BudgetStatePort, BudgetExecutionStatePort):
                 )
             )
         records = {(row.namespace, row.resource_id): self.store._record(row) for row in rows}
+        # Joined state reads must participate in the same owning metadata
+        # witness as ordinary get/transactional load, including absent rows.
+        for namespace, identifier in keys:
+            self.store.database.observe_record(
+                (ctx.principal.id, namespace, identifier),
+                None,
+                records.get((namespace, identifier)),
+            )
         if any(key not in records for key in keys):
             raise StoreMissing()
         run = records[("runs", ctx.run_id)].payload

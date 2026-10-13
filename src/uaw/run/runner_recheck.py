@@ -113,7 +113,10 @@ class RegisteredRunnerRechecks:
                     raise reject(
                         "runner_recheck_command_denied", "Original active command required", 412
                     )
-                actual = await self.commands.collect(record, actor)
+                if self.commands.supports_registered_collection():
+                    actual = await self.commands.collect_registered(record, actor)
+                else:
+                    actual = await self.commands.collect(record, actor)
                 if actual["device"]["source"]["channel_ref"] != channel.wire():
                     raise reject(
                         "runner_recheck_channel_denied", "Original current channel required", 403
