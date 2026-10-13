@@ -1,3 +1,14 @@
+# A30 当前：H01-I01 原问题可见与 B 定向 UI 修复
+
+准确source ms-i2l-a30-source / ad11ce70c50684ef304b4c137f7ea52eecb5f4ae，已允许直接发给现有B。
+实际wait问题漏显示和重复理解已定位；原本人Run已cancelled，不重发/复活。
+A问题Item与waiting同事务，原operation/Model owning Reader复核、版本/取消/期限及恢复去重。
+6不同SQL节点通过（1完整受控持久模型队列＋5受控读取故障边界），215类型/3静态格式通过。
+B修页面等待文案、原问题显示及真实草稿/补充指引；A继续回执/清理与接线，不代改B源码。
+H01-v1原固定快照保持；B交付后再验证新固定体验版本，不把源码提交当当前页面已升级。
+原0.50 USD pending预留和中断/失败保留，无新真实LLM调用，旧last_full/原文件门槛不变。
+详见../../coordination/requests/A/H01-I01-B-waiting-feedback.md及../../implementation/human-tests/H01-I01.md。
+
 # A29 当前：H01 已启动并登录，等待本人体验
 
 准确源码ms-i2l-a29-source / c905ec26e4d25c11b0af991f1e725a279cceb439，固定human-h01-v1；独立快照、端口/DB/密钥/依赖/数据。

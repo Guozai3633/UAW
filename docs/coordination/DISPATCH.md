@@ -1,3 +1,31 @@
+# A30 正式派发：H01-I01 后端修复与 B 页面定向修复
+
+2026-10-13，准确源码 **ad11ce70c50684ef304b4c137f7ea52eecb5f4ae** / `ms-i2l-a30-source`。
+用户已明确授权直接发给现有「UAW Session B 上下文组件」。本项为具体反馈修复，不是新大轮或整轮accepted。
+B fetch后核对远端该标签与本SHA，再读origin/integration最新DISPATCH和下方具体请求；
+固定source内的“待发布/待授权”是旧准备状态，以本正式派发为准，不合浮动integration。
+
+已查原H01真实数据库：模型两次成功、原决定wait并有具体问题，后台只显示等待漏text；理解Item重复。
+本人已停止原Run，当前cancelled，不能复活或重发；原0.50 USD待结算预留与全部回执保存。
+A固定原operation/Model owning Reader复核，问题Item与waiting状态同事务，取消/版本/期限拒绝与恢复去重。
+6不同SQL节点通过：1实际队列/Context/持久Model受控回复整链＋5事务边界故障；无新增真实LLM调用。
+已通过215源码类型、3文件静态/格式；剩余定向回归/失败清理由A继续，旧last_full不变。
+
+| Session | 当前安排 | 允许范围 |
+| --- | --- | --- |
+| A | A30后端固定，继续定向回执/清理、逐阶段审阅B，后续新固定体验版本 | A保留源码/测试/说明 |
+| B | H01-I01-B-waiting-feedback，按上述准确source开工 | 原B apps/web、B测试与B交接/说明 |
+| C | MS-T2i-b原交付保留，无新包 | 不自动同步或扩包 |
+| D | A21原交付保留，无新包 | 不自动同步或扩包 |
+
+B只修中性waiting文案、原agent_message显示、草稿与真实手动补充指引；具体任务和验收见
+[定向请求](requests/A/H01-I01-B-waiting-feedback.md)。不自定原Run澄清恢复接口，不自动停止或提交。
+A不操作worker分支/工作区；B应核对自己当前实际工作区，保留原提交/handoff。
+当前H01-v1仍固定A29，不热改旧快照/dist；页面修复及新本人复体验尚未完成。
+原首次本机文件链保持A28失败，flags/权限/期限/固定模型/子Agent/DAG/写入安装exec不变。
+
+[本人反馈](../implementation/human-tests/H01-I01.md)。以下历史不是当前派发。
+
 # A29 正式状态：H01 已启动，等待本人体验
 
 2026-10-13，准确源码 **c905ec26e4d25c11b0af991f1e725a279cceb439** / `ms-i2l-a29-source`；H01标签human-h01-v1指向同一源码。

@@ -36,3 +36,13 @@ A合入后再固定H01新版本；原H01-v1源码与回执不热改，不把受�
 完整原Run澄清/steer后续需单独闭合输入版本、模型调用、取消和成本协议，不在本定向UI请求中自定。
 
 **状态：待A准确source发布及用户授权直接发送给现有B。当前不算正式派发，不自动同步或扩包。**
+
+## 正式开工来源与授权
+
+用户2026-10-13明确答复“允许直接发给B”。
+固定源码ms-i2l-a30-source / ad11ce70c50684ef304b4c137f7ea52eecb5f4ae。fetch后核对远端准确标签；
+本source内原“待发布/待授权”段落仅为准备历史，最新origin/integration:docs/coordination/DISPATCH.md的A30正式派发为准。
+不合浮动integration；先核对自己当前实际B工作区/分支并保留原提交及handoff。
+A已验证6不同SQL节点（1完整受控持久Model队列＋5受控读取故障边界）；A后续证据与B工作并行。
+InteractionItem/Run现有schema不变；模型补充问题使用agent_message，resource_refs保持3个原来源。
+当前H01-v1仍固定旧快照，B真实只读联调须等待A提供新固定入口/原会话上下文。
