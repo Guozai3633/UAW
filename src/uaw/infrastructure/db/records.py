@@ -378,6 +378,7 @@ class PostgresRecordStore:
             )
             self.database.observe_record(batch_key, revision, result)
             return result
+
         if batch is not None and len(batch) >= 256:
             raise StoreConflict("current_read_capacity_exceeded")
         async with self._read_session() as session:
@@ -417,6 +418,35 @@ class PostgresRecordStore:
                 batch[batch_key] = self._record(row)
             self.database.observe_record(batch_key, revision, result)
             return result
+
+    async def get_current_many(
+        self, principal: Principal, addresses: tuple[tuple[str, str], ...]
+    ) -> tuple[Record, ...]:
+        """One fresh SELECT for explicit current inputs, never a cached permission.
+
+        Same owner only, bounded to 32 distinct locators; no historical lookup,
+        retained plan or checked_metadata dependency. Every returned/missing
+        row participates in the owning witness. Repeated calls always query
+        SQL again, including within an existing comparison-input batch.
+        """
+        if (
+            type(addresses) is not tuple
+            or not 1 <= len(addresses) <= 32
+            or any(type(a) is not tuple or len(a) != 2 for a in addresses)
+            or any(type(part) is not str for a in addresses for part in a)
+            or len(set(addresses)) != len(addresses)
+        ):
+            raise ValueError("A bounded distinct tuple of current locators is required")
+        keys = []
+        for namespace, resource_id in addresses:
+            self._identity(principal, namespace, resource_id)
+            keys.append((principal.id, namespace, resource_id))
+        rows = await self._current_rows(tuple(keys))
+        for key in keys:
+            self.database.observe_record(key, None, rows.get(key))
+        if any(key not in rows for key in keys):
+            raise StoreMissing()
+        return tuple(rows[key] for key in keys)
 
     @staticmethod
     def _record(row: RecordRow | RecordVersionRow) -> Record:

@@ -1,0 +1,331 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "f7211a9871e09e6738b0fd85d62500d86323e8d7",
+  "D_handoff": "317549c1d0add6e1a2efa6d5ffda7283e9b40dda",
+  "D_merge_commit": "9210a92e9be1932d825daf599b06d6d114203169",
+  "worker_reported_distinct_passing": 265,
+  "worker_count_not_added_to_A": true,
+  "targeted_distinct_passing": 107,
+  "historical_union_not_all_rerun": 549,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a22-root-component.xml",
+      "sha256": "2d4b270d48e7045f9afd6a3b0776b22bc666347c7c453ae025afcb559fe9d786",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a22-fresh-sql.xml",
+      "sha256": "ceef04a3486bd3ffe287dd681dd820fac6d8d3670f44d8965887ac80bfc89299",
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a22-before-joint.xml",
+      "sha256": "54b9caf1cef36cd2f6005a99ea0d0c1037f6aea92bfdd2ef085135b6db04ae0c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a22-after-joint.xml",
+      "sha256": "25bbcec1379cb56538ce4861bb659e9b647f10c80a1b8eab9599f57d7c2115c4",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_metadata_measurements": {
+    "before": {
+      "control": {
+        "legacy": {
+          "root": 4,
+          "owner": 4,
+          "owning": 4,
+          "sql": 276,
+          "os": 32,
+          "key": 56,
+          "seconds": 1.5105402000044705
+        },
+        "joint": {
+          "root": 2,
+          "owner": 2,
+          "owning": 2,
+          "sql": 244,
+          "os": 16,
+          "key": 28,
+          "seconds": 1.2333612000002177
+        }
+      },
+      "child_class_in_parent_graph": {
+        "legacy": {
+          "root": 4,
+          "owner": 4,
+          "owning": 4,
+          "sql": 276,
+          "os": 32,
+          "key": 56,
+          "seconds": 1.4753108000004431
+        },
+        "joint": {
+          "root": 2,
+          "owner": 2,
+          "owning": 2,
+          "sql": 244,
+          "os": 16,
+          "key": 28,
+          "seconds": 1.3040906000023824
+        }
+      }
+    },
+    "after": {
+      "control": {
+        "legacy": {
+          "root": 4,
+          "owner": 4,
+          "owning": 4,
+          "sql": 244,
+          "os": 32,
+          "key": 56,
+          "seconds": 1.2480697999999393
+        },
+        "joint": {
+          "root": 2,
+          "owner": 2,
+          "owning": 2,
+          "sql": 212,
+          "os": 16,
+          "key": 28,
+          "seconds": 1.032910499998252
+        }
+      },
+      "child_class_in_parent_graph": {
+        "legacy": {
+          "root": 4,
+          "owner": 4,
+          "owning": 4,
+          "sql": 244,
+          "os": 32,
+          "key": 56,
+          "seconds": 1.3230375999992248
+        },
+        "joint": {
+          "root": 2,
+          "owner": 2,
+          "owning": 2,
+          "sql": 212,
+          "os": 16,
+          "key": 28,
+          "seconds": 0.9788040999992518
+        }
+      }
+    }
+  },
+  "measurement_note": "Separate installed before/after instances; complete-root agreement within each legacy/joint trial. Query count improves structurally, sample seconds not a general latency claim. OS/key/root retained within joint path. Nested/parallel phase durations must not be summed.",
+  "first_file_chain": {
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a22-first-chain.xml",
+      "sha256": "306790b8b204fa36c19e0d369d6aaa7f6d8992ec741add455905d5b5981947e6",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "command_sends": 1,
+    "opens": 0,
+    "claimed_attempts": 1,
+    "attempts": [
+      {
+        "signed_data": false,
+        "published_ref": false
+      }
+    ],
+    "parent_phases": {
+      "fixture_new_run_setup": 0.9069598999994923,
+      "web_launch_to_callback_ready": 20.75720220000221,
+      "a8_assembly": 0.4168264000036288,
+      "approval_query": 2.008570600002713,
+      "controlled_sql_decision": 0.8684152999994694,
+      "approved_facade_to_signed_result": 36.42622570000094,
+      "cleanup": 1.1579779000021517
+    },
+    "parent_operations": {
+      "budget_reserve": {
+        "calls": 1,
+        "seconds": 0.034953100002894644
+      },
+      "budget_dispatch": {
+        "calls": 1,
+        "seconds": 0.03593379999801982
+      },
+      "bridge_source_checks": {
+        "calls": 2,
+        "seconds": 3.413095100004284
+      },
+      "lease_acquire": {
+        "calls": 1,
+        "seconds": 0.04402870000194525
+      },
+      "command_collect": {
+        "calls": 1,
+        "seconds": 1.5023128000029828
+      },
+      "command_register": {
+        "calls": 1,
+        "seconds": 3.2903512999982922
+      },
+      "signed_pipe_exchange": {
+        "calls": 1,
+        "seconds": 10.016395200000261
+      }
+    },
+    "child_phases": {
+      "factory_create": 2.5680714000045555,
+      "single_registration": {
+        "calls": 43,
+        "seconds": 1.9660854999892763,
+        "errors": {}
+      },
+      "owning_enrollment": {
+        "calls": 263,
+        "seconds": 8.195949700035271,
+        "errors": {}
+      },
+      "owner_mapping": {
+        "calls": 99,
+        "seconds": 5.19232620006369,
+        "errors": {}
+      },
+      "session_current": {
+        "calls": 121,
+        "seconds": 10.844109999998182,
+        "errors": {}
+      },
+      "paired_registration": {
+        "calls": 121,
+        "seconds": 9.325564299979305,
+        "errors": {}
+      },
+      "signatures": {
+        "calls": 2,
+        "seconds": 0.014316300002974458,
+        "errors": {}
+      },
+      "callback": 13.049400599993533,
+      "endpoint_dispatch": {
+        "calls": 1,
+        "seconds": 8.951895000005607,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "endpoint_watch": {
+        "calls": 1,
+        "seconds": 8.963951399993675,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "registered_reader": {
+        "calls": 3,
+        "seconds": 1.5418836999961059,
+        "errors": {}
+      },
+      "local_connection_checks": {
+        "calls": 100,
+        "seconds": 3.7630177000100957,
+        "errors": {
+          "ipc_identity_denied": 1
+        }
+      },
+      "sql_watch": {
+        "calls": 1,
+        "seconds": 8.461826000006113,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "composite_current": {
+        "calls": 5,
+        "seconds": 9.542849000004935,
+        "errors": {}
+      },
+      "joint_root_gate": {
+        "calls": 10,
+        "seconds": 6.778157299981103,
+        "errors": {}
+      },
+      "joint_root_source": {
+        "calls": 10,
+        "seconds": 6.775154300012218,
+        "errors": {}
+      },
+      "runner_execute": {
+        "calls": 1,
+        "seconds": 7.8682993999973405,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "runner_current": {
+        "calls": 2,
+        "seconds": 7.226011799990374,
+        "errors": {}
+      },
+      "read_exchanges": [
+        40.49950060000265
+      ]
+    },
+    "reply_and_watch_deadlines_equal": true,
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    },
+    "unknown_resent": false,
+    "passed": false,
+    "wall_seconds": 65.8,
+    "controlled_native_and_approval_and_model_metadata": true,
+    "actual_SQL_OS_keys_IPC": true
+  },
+  "D_component_accepted": true,
+  "first_file_chain_accepted": false,
+  "retained_static_failure": {
+    "format_initial_sha256": "6562deb6055d94afeb68f5409813fb88d7d1e188bab6d4486321031b8539f333",
+    "initial_ruff": "two long test lines; tool output retained, formatter corrected"
+  },
+  "static": {
+    "mypy_files": 213,
+    "format_files": 4,
+    "receipts": {
+      "a22-mypy.log": "aad6fe7c6ae49e250b481a7f614453d2b0147565255ed373dd37d30579f60e89",
+      "a22-ruff.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a22-format.log": "cc582f997774eb74a1edb248a8a1dca8a90b9985269c3e6ecd100a39876dff12"
+    }
+  },
+  "flags_changed": false,
+  "checked_metadata_enabled": false,
+  "deadlines_extended": false,
+  "product_accepted": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_actions": 0,
+  "cleanup_physical_installed_instances": 3,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a21.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  },
+  "publication_date": "2026-10-13"
+}

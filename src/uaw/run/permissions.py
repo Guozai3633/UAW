@@ -53,7 +53,10 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
     async def _run(self, ctx: TrustedExecutionContext) -> None:
         if not ctx.run_id:
             raise CapabilityUnavailable("execution.admitted_run")
-        run = (await self.store.get(ctx.principal, "runs", ctx.run_id)).payload
+        run_row, ledger_row = await self.store.get_current_many(
+            ctx.principal, (("runs", ctx.run_id), ("budget.ledgers", ctx.run_id))
+        )
+        run = run_row.payload
         if (
             ctx.principal.id != ctx.scope.principal_id
             or ctx.scope.conversation_id != run["conversation_id"]
@@ -70,7 +73,7 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
                 403,
                 "authorization",
             )
-        ledger = (await self.store.get(ctx.principal, "budget.ledgers", ctx.run_id)).payload
+        ledger = ledger_row.payload
         if ledger["cancel_requested"] or run["status"] == "cancelled":
             raise reject("execution_cancelled", "Run has been cancelled", 409, "cancelled")
         if run["status"] not in ("preparing", "running", "verifying", "waiting_for_user"):

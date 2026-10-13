@@ -73,7 +73,10 @@ class RunExecutionSources:
         validate_contract("TrustedExecutionContext", ctx.wire())
         if ctx.principal.kind != "user" or not ctx.principal.auth_session_id:
             raise reject("run_principal_denied", "Authenticated user session required", 403)
-        run = (await self.store.get(ctx.principal, "runs", ctx.run_id or "")).payload
+        run_row, admission_row = await self.store.get_current_many(
+            ctx.principal, (("runs", ctx.run_id or ""), ("run.bindings", ctx.run_id or ""))
+        )
+        run = run_row.payload
         if (
             ctx.scope.principal_id != ctx.principal.id
             or ctx.conversation_id not in (None, run["conversation_id"])
@@ -83,7 +86,8 @@ class RunExecutionSources:
             or ctx.scope.project_id is not None
         ):
             raise reject("run_source_scope_denied", "Context differs from the owned Run", 403)
-        admission_row = await self.store.get(ctx.principal, "run.bindings", run["id"])
+        if run["id"] != run_row.resource_id:
+            raise reject("run_source_scope_denied", "Run identity differs from its record", 403)
         admission = admission_row.payload
         validate_contract("RunAdmissionBinding", admission)
         pin = admission["model_policy_ref"]
@@ -118,8 +122,9 @@ class RunExecutionSources:
         await self.configuration.require_model(policy["fixed_model_id"], fixed)
         current = await self.configuration.current()
         # Re-read after awaits: these snapshots are observations, never a send lease.
-        if (await self.store.get(ctx.principal, "run.bindings", run["id"])) != admission_row or (
-            await self.store.get(ctx.principal, "model.policies", pin["id"])
-        ) != row:
+        again_admission, again_model = await self.store.get_current_many(
+            ctx.principal, (("run.bindings", run["id"]), ("model.policies", pin["id"]))
+        )
+        if again_admission != admission_row or again_model != row:
             raise reject("run_source_changed", "Run or fixed-model source changed", 412)
         return RunDataSnapshot(admission, fixed, current)
