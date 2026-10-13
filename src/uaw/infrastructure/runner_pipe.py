@@ -177,35 +177,69 @@ class RunnerPipeClient:
             raise CapabilityUnavailable("runner.ipc.handshake")
         self.busy = True
         try:
-            async with asyncio.timeout(self.session.pipe.timeout):
-                device = self.session.local.device_id
-                actor = await self.registry.authenticated_principal(channel, device_id=device)
-                source = await self.commands.resolve(ref, authenticated_principal=actor)
-                if source.device_id != device or ref.content_hash != digest(source.command.wire()):
-                    raise reject(
-                        "runner_pipe_source_denied", "Independent command/device differs", 403
-                    )
-                await self.session.check()
-                if recover and self.recovery is not None:
-                    body = await self.recovery.read(ref, actor=actor)
-                else:
-                    await self.session.send(
-                        "recover" if recover else "command", {"command_ref": ref.wire()}
-                    )
-                    frame = await self.session.receive()
-                    if frame["kind"] != "receipt":
-                        raise reject(
-                            "runner_pipe_response_invalid", "Actual signed receipt required", 412
-                        )
-                    body = frame["body"]
-                actual = verify_receipt_body(body, source, ref, self.signatures)
-                if await self.commands.resolve(ref, authenticated_principal=actor) != source:
-                    raise reject("runner_pipe_source_changed", "Recovery source changed", 412)
-                await self.session.check()
-                return actual
+            deadline = asyncio.get_running_loop().time() + self.session.pipe.timeout
+            async with asyncio.timeout_at(deadline):
+                result = await self._exchange(ref, channel, recover=recover, deadline=deadline)
+                self._reply_current(deadline)
+                return result
         except BaseException:
             # No transparent reconnect or resend of an unknown original command.
             await self.session.close()
             raise
         finally:
             self.busy = False
+
+    @staticmethod
+    def _reply_current(deadline: float) -> None:
+        task = asyncio.current_task()
+        if task is not None and task.cancelling():
+            raise asyncio.CancelledError()
+        if asyncio.get_running_loop().time() >= deadline:
+            raise reject(
+                "runner_pipe_reply_expired",
+                "Original control reply deadline passed",
+                410,
+                "timeout",
+            )
+
+    async def _exchange(
+        self, ref: Ref, channel: Ref, *, recover: bool, deadline: float
+    ) -> CheckedPipeReceipt:
+        """One original absolute response window, including source checks.
+
+        Internal boundary for observing that window; no new wire field, timer
+        reset or timeout increase. Transport still uses its own bounded windows
+        inside the caller's earlier cancellation scope. Unknown never resends.
+        """
+        assert self.session.local is not None and self.commands is not None
+        assert self.signatures is not None
+        self._reply_current(deadline)
+        device = self.session.local.device_id
+        actor = await self.registry.authenticated_principal(channel, device_id=device)
+        self._reply_current(deadline)
+        source = await self.commands.resolve(ref, authenticated_principal=actor)
+        self._reply_current(deadline)
+        if source.device_id != device or ref.content_hash != digest(source.command.wire()):
+            raise reject("runner_pipe_source_denied", "Independent command/device differs", 403)
+        await self.session.check()
+        self._reply_current(deadline)
+        if recover and self.recovery is not None:
+            body = await self.recovery.read(ref, actor=actor)
+            self._reply_current(deadline)
+        else:
+            await self.session.send(
+                "recover" if recover else "command", {"command_ref": ref.wire()}
+            )
+            self._reply_current(deadline)
+            frame = await self.session.receive()
+            self._reply_current(deadline)
+            if frame["kind"] != "receipt":
+                raise reject("runner_pipe_response_invalid", "Actual signed receipt required", 412)
+            body = frame["body"]
+        actual = verify_receipt_body(body, source, ref, self.signatures)
+        self._reply_current(deadline)
+        if await self.commands.resolve(ref, authenticated_principal=actor) != source:
+            raise reject("runner_pipe_source_changed", "Recovery source changed", 412)
+        await self.session.check()
+        self._reply_current(deadline)
+        return actual

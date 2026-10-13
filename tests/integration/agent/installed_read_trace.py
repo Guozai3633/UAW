@@ -23,6 +23,7 @@ class TracedAssembly:
         application = await original_assembly.create(identity)
         helper = application.helper
         started = time.perf_counter()
+        zero = float(os.environ.get("UAW_A_READ_CLOCK_ZERO", time.monotonic()))
         rows = []
         checkpoint = ContextVar("a_read_checkpoint", default="startup")
         sequence = 0
@@ -33,6 +34,8 @@ class TracedAssembly:
                 "operation": label,
                 "checkpoint": checkpoint.get(),
                 "start_seconds": now - started,
+                "shared_start_seconds": time.monotonic() - zero,
+                "deadline_since_zero": deadline - zero if deadline is not None else None,
                 "remaining_seconds": (
                     deadline - asyncio.get_running_loop().time() if deadline is not None else None
                 ),

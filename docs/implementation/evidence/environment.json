@@ -2,7 +2,7 @@
   "date": "2026-10-13",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A26 53 targeted components passing; 603 historical union NOT all rerun. Original first-chain final passed=False; complete product/model/human delivery not accepted.",
+  "scope": "A27 12 reply-window guards passing; 610 historical union NOT all rerun. Parent/child shared-clock diagnosis; original first chain final passed=False, product not accepted.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 603,
+    "tests": 610,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "856410560b11a88319907d8decbc3fc6347673dbfec679863918a70f0a8443fc",
+  "test_evidence_sha256": "bcef9008d10310fc88e99d05ff79c5c69336dbaa6a774a185a4fb442a80490a4",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -321,7 +321,7 @@
     "src/uaw/infrastructure/installed_root_check.py": "feb00a30173585faed898c31f01063c248b468ab4fa73fe9af58b5264aca8741",
     "src/uaw/infrastructure/installed_roots.py": "720627c0ae75589649ed572c4da4bbcd3efcdfca6bf6bc9b0b09845705fa7ff7",
     "src/uaw/infrastructure/installed_tool_authority.py": "da64d07c726d99762715a4726bf37658439d2bb9670196672b0aa1ae5413eb05",
-    "src/uaw/infrastructure/runner_pipe.py": "d2cab040c4476bcf93af0daa6478a0c71ea75fbd6ca661462a70bb1630bbf3d0",
+    "src/uaw/infrastructure/runner_pipe.py": "d34d8c746bdb072a5d8f045f9c3adf7f81920812b3b71fa842dec761e739d690",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
     "src/uaw/intent/frame.py": "4459d533d5f80c152a5e470c4c26224122bacad6a382bcc38c4c8a236a2946dd",
@@ -435,7 +435,7 @@
     "tests/integration/agent/installed_child_profile.py": "8855ed3c0656b836cdec626e14d01c5478ae52f4099a27a0bc6ef8a683fb5cf7",
     "tests/integration/agent/installed_diagnostic_fixture.py": "2092c07547ce9697ba99164372c5ed10055258896849101cdb4adc053759c4a1",
     "tests/integration/agent/installed_metadata_candidate.py": "bb08221e0cb718d7d7af78423bad1c2f4e7f8ad0e46780ed56a55c4d06ebb210",
-    "tests/integration/agent/installed_read_trace.py": "22241b13c237c345a4d4888d1943a709f68c02ec0deed08f131a8dd6a27b6765",
+    "tests/integration/agent/installed_read_trace.py": "f8a0325dcc9efc4fd577e5af35cee3acba3bf2da2d682316d243a4e50c63706f",
     "tests/integration/agent/metadata_candidate_child.py": "0afc1e4a4bd0db59649d94f6ad9a711c5ce6b187fb3a2ed0d1d8bc59d26ecbe1",
     "tests/integration/agent/profiled_installed_child.py": "c77ad863640820dabad2d51a32d7abe708d96e4495488871d6404a092b4fdf22",
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
@@ -475,7 +475,7 @@
     "tests/integration/agent/test_installed_pair_measurement.py": "d090bf060d980a64cfaaefc540804f040e8548739e92586330a32d51fd54ea0c",
     "tests/integration/agent/test_installed_peer_sql_watch.py": "774b8776ff24f4a234aae648d80a3d0d5e427017ef90d3d343a3ea14e4f43bb9",
     "tests/integration/agent/test_installed_pre_ui.py": "419cd3e06d89db4f786872f78e524db8d6bce3f06450f9e324c2e159f6d5611f",
-    "tests/integration/agent/test_installed_read_trace.py": "5ce399a785c5b1d6e97e342adc63edeb7f56f0430dd4435e0d17e32121929676",
+    "tests/integration/agent/test_installed_read_trace.py": "0e8c09f7e0b22c258396d75a499cf3c6e1868b5c3294369676fe4b0331e4a73f",
     "tests/integration/agent/test_installed_root_binding.py": "fa1f57590b615a8bead8266a33ec81e53ab02ba5593d673a3f248b37096c72de",
     "tests/integration/agent/test_installed_root_check.py": "cff8e32fdfb404d2a7a896e0a61a0cf2e4d7293777f2a2453a0fb64086147f7a",
     "tests/integration/agent/test_installed_source_profile.py": "c8dca268fcb8136196b49f29635b669e80bd8742bdc34d6670cbe4e0ccbd6ed1",
@@ -490,6 +490,7 @@
     "tests/integration/agent/test_runner_batch_measurement.py": "2366a6ff6254d9f6cc36d73dc051b5dda16e476d1afc66b071b4b9fa828d231d",
     "tests/integration/agent/test_runner_current_scope.py": "9444ed1ce4a185cceb44ea4cdaf018b188f7893d273c27b51c3a63757c7fa86f",
     "tests/integration/agent/test_runner_pipe_wiring.py": "c2f72576c1977377e006f33c84321ef3b10990a02d0fe131fc4ec82affb80a2f",
+    "tests/integration/agent/test_runner_reply_window.py": "5fed2b061e445e4c243debe0ac8f05d662eb8ca93769767a993d6c431728ad9c",
     "tests/integration/agent/test_shape_source_measurement.py": "1b21d713377fed81df043c75d83b2f8de28817845819b8f6fa494092d73139b6",
     "tests/integration/agent/test_steer_postgres.py": "6d4d3a9c486e5a0ff39db4b0d3867768e0d100f9787e05e8008b8ed83b180377",
     "tests/integration/agent/test_transactional_read_witness.py": "d559b62ee9eef9a199685752bbb1acedd784db3d72ff6d6d2e977ffc078bc5ab",
@@ -670,8 +671,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a26.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a25.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a27.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a26.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

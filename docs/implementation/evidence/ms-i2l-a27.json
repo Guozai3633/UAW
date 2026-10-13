@@ -1,0 +1,482 @@
+{
+  "date": "2026-10-13",
+  "base_commit": "f0cb1804d43f277b7fba737067d583adbcde5529",
+  "targeted_distinct_passing": 12,
+  "historical_union_not_all_rerun": 610,
+  "passing_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a27-reply-window-closed-final.xml",
+    "sha256": "d1473c1f1a0167c6db30a322cd629548686eaa04f08f6e501809e5c222083d22",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_receipt_retained": {
+    "path": "tests/.artifacts/A/MS-I2l/a27-reply-window-initial.xml",
+    "sha256": "3398dac6dd5a4e55c088f6f79e3585795c7307e09d144ca61f26418c3aa8b563",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "first_file_chains": [
+    {
+      "label": "a27-first-chain-initial",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a27-first-chain-initial.xml",
+        "sha256": "dc81b597dd1ad9305ffc0ef882acf058ad790f7dc35e64cb6e673d6bab58eefe",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "parent_trace_sha256": "6da980503661ea8bfc87d9ccc13e95bb045ac9d6f19d5f5f516bb36d579799b8",
+      "child_trace_sha256": "2cfcdc3ac41e30c79a3bba578a4b7f4ef3d1d3800b93af4bcaa8d41d8d7dabb3",
+      "same_machine_monotonic_clock": true,
+      "parent_total_window_seconds": 9.999978600000759,
+      "child_deadline_later_than_parent_seconds": 0.44545710000056715,
+      "send_started_after_parent_seconds": 0.37192480000157957,
+      "parent_close_minus_original_deadline_seconds": 0.02666280000084953,
+      "parent_trace": [
+        {
+          "operation": "parent.exchange",
+          "shared_start_seconds": 41.36371220000001,
+          "remaining_seconds": 9.999978600000759,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "CancelledError",
+          "seconds": 10.026831500001208
+        },
+        {
+          "operation": "parent.actor",
+          "shared_start_seconds": 41.36371990000043,
+          "remaining_seconds": 9.999970900000335,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.06344370000078925
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.36395530000118,
+          "remaining_seconds": 9.999735499999588,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.06297169999925245
+        },
+        {
+          "operation": "parent.command_source",
+          "shared_start_seconds": 41.42716940000173,
+          "remaining_seconds": 9.936521399999037,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.2464522999998735
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.49671800000033,
+          "remaining_seconds": 9.86697280000044,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.053977000001395936
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.597183400001086,
+          "remaining_seconds": 9.766507399999682,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.059060999999928754
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.67372350000005,
+          "remaining_seconds": 9.689967300000717,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.06190400000014051
+        },
+        {
+          "operation": "parent.send",
+          "shared_start_seconds": 41.73563700000159,
+          "remaining_seconds": 9.62805379999918,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.14222909999989497
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.73566410000058,
+          "remaining_seconds": 9.628026700000191,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.06560759999956645
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.8064157000008,
+          "remaining_seconds": 9.55727509999997,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.07144359999983863
+        },
+        {
+          "operation": "parent.receive",
+          "shared_start_seconds": 41.877871000000596,
+          "remaining_seconds": 9.485819800000172,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "CancelledError",
+          "seconds": 9.512668200000917
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 41.87789460000022,
+          "remaining_seconds": 9.48579620000055,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.08941570000024512
+        },
+        {
+          "operation": "parent.close",
+          "shared_start_seconds": 51.39035360000162,
+          "remaining_seconds": -0.02666280000084953,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.00017099999968195334
+        },
+        {
+          "operation": "parent.close",
+          "shared_start_seconds": 51.390555800000584,
+          "remaining_seconds": -0.026864999999816064,
+          "deadline_since_zero": 51.36369080000077,
+          "status": "ok",
+          "seconds": 0.0002519999998185085
+        }
+      ],
+      "child_effect_trace": [
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 38.97675160000108,
+          "shared_start_seconds": 43.55188840000119,
+          "deadline_since_zero": 51.809147900001335,
+          "remaining_seconds": 8.257257299999765,
+          "status": "ok",
+          "seconds": 2.1226019999994605
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 41.113152800000535,
+          "shared_start_seconds": 45.68828940000094,
+          "deadline_since_zero": 51.809147900001335,
+          "remaining_seconds": 6.120857400001114,
+          "status": "ok",
+          "seconds": 2.1954031999994186
+        },
+        {
+          "operation": "file.open",
+          "checkpoint": "startup",
+          "start_seconds": 43.3766384999999,
+          "shared_start_seconds": 47.951775600000474,
+          "deadline_since_zero": null,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.00755120000030729
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 43.39988910000102,
+          "shared_start_seconds": 47.975025700001424,
+          "deadline_since_zero": 51.809147900001335,
+          "remaining_seconds": 3.834121199999572,
+          "status": "ok",
+          "seconds": 2.0471894000002067
+        },
+        {
+          "operation": "file.read",
+          "checkpoint": "startup",
+          "start_seconds": 45.462853500001074,
+          "shared_start_seconds": 50.037990400000126,
+          "deadline_since_zero": null,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.0049046999993151985
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 45.485281700000996,
+          "shared_start_seconds": 50.0604183000014,
+          "deadline_since_zero": 51.809147900001335,
+          "remaining_seconds": 1.7487287000003562,
+          "status": "CancelledError",
+          "seconds": 1.3861464999990858
+        }
+      ],
+      "command_sends": 1,
+      "open_completed": 1,
+      "read_completed": 1,
+      "receipt_sign_completed": 0,
+      "claimed_attempts": 1,
+      "attempts": [
+        {
+          "signed_data": false,
+          "published_ref": false
+        }
+      ],
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "passed": false,
+      "original_bytes_and_recovery_assertions_reached": false,
+      "controlled_native_SQL_approval_model_metadata": true,
+      "actual_SQL_OS_keys_IPC": true
+    },
+    {
+      "label": "a27-first-chain-final",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a27-first-chain-final.xml",
+        "sha256": "37bd373f697d2bb745706957e6393be9fc5a3395b47b62e2eb23b9a0a6f3427b",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "parent_trace_sha256": "a118810e4b573302cee7c4f065302cf3b15890996169c16b60903b09cffee992",
+      "child_trace_sha256": "42740de61f27ac7ec8ab29efa6b37faf8379abb27f40aa844e1206e4eeec34c2",
+      "same_machine_monotonic_clock": true,
+      "parent_total_window_seconds": 9.999978699999701,
+      "child_deadline_later_than_parent_seconds": 0.5509079999992537,
+      "send_started_after_parent_seconds": 0.448949999999968,
+      "parent_close_minus_original_deadline_seconds": 0.01036980000026233,
+      "parent_trace": [
+        {
+          "operation": "parent.exchange",
+          "shared_start_seconds": 42.649036400000114,
+          "remaining_seconds": 9.999978699999701,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "CancelledError",
+          "seconds": 10.01065329999983
+        },
+        {
+          "operation": "parent.actor",
+          "shared_start_seconds": 42.64904729999944,
+          "remaining_seconds": 9.999967800000377,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.08156460000100196
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 42.649288599999636,
+          "remaining_seconds": 9.999726500000179,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.08105620000060298
+        },
+        {
+          "operation": "parent.command_source",
+          "shared_start_seconds": 42.73062240000036,
+          "remaining_seconds": 9.918392699999458,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.29111789999842586
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 42.81313090000003,
+          "remaining_seconds": 9.835884199999782,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.07061509999948612
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 42.92965699999877,
+          "remaining_seconds": 9.719358100001045,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.07002160000047297
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 43.021884699999646,
+          "remaining_seconds": 9.62713040000017,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.07608760000039183
+        },
+        {
+          "operation": "parent.send",
+          "shared_start_seconds": 43.09798640000008,
+          "remaining_seconds": 9.551028699999733,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.1487464000001637
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 43.098016500000085,
+          "remaining_seconds": 9.55099859999973,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.06759739999870362
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 43.17075599999953,
+          "remaining_seconds": 9.478259100000287,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.07596990000092774
+        },
+        {
+          "operation": "parent.receive",
+          "shared_start_seconds": 43.24674059999961,
+          "remaining_seconds": 9.402274500000203,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "CancelledError",
+          "seconds": 9.412942599999951
+        },
+        {
+          "operation": "parent.session_check",
+          "shared_start_seconds": 43.24676139999974,
+          "remaining_seconds": 9.402253700000074,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.059873300000617746
+        },
+        {
+          "operation": "parent.close",
+          "shared_start_seconds": 52.65938490000008,
+          "remaining_seconds": -0.01036980000026233,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.00027409999893279746
+        },
+        {
+          "operation": "parent.close",
+          "shared_start_seconds": 52.65970650000054,
+          "remaining_seconds": -0.010691400000723661,
+          "deadline_since_zero": 52.649015099999815,
+          "status": "ok",
+          "seconds": 0.0002696999999898253
+        }
+      ],
+      "child_effect_trace": [
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 40.34988229999908,
+          "shared_start_seconds": 45.192842599999494,
+          "deadline_since_zero": 53.19992309999907,
+          "remaining_seconds": 8.007077999998728,
+          "status": "ok",
+          "seconds": 1.8332487999996374
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 42.21137179999823,
+          "shared_start_seconds": 47.05433730000004,
+          "deadline_since_zero": 53.19992309999907,
+          "remaining_seconds": 6.145584799998687,
+          "status": "ok",
+          "seconds": 2.795985100001417
+        },
+        {
+          "operation": "file.open",
+          "checkpoint": "startup",
+          "start_seconds": 45.10324279999986,
+          "shared_start_seconds": 49.946204699999726,
+          "deadline_since_zero": null,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.01293959999929939
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 45.13441259999854,
+          "shared_start_seconds": 49.97737310000048,
+          "deadline_since_zero": 53.19992309999907,
+          "remaining_seconds": 3.2225478000000294,
+          "status": "CancelledError",
+          "seconds": 2.7580013000006147
+        }
+      ],
+      "command_sends": 1,
+      "open_completed": 1,
+      "read_completed": 0,
+      "receipt_sign_completed": 0,
+      "claimed_attempts": 1,
+      "attempts": [
+        {
+          "signed_data": false,
+          "published_ref": false
+        }
+      ],
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "passed": false,
+      "original_bytes_and_recovery_assertions_reached": false,
+      "controlled_native_SQL_approval_model_metadata": true,
+      "actual_SQL_OS_keys_IPC": true
+    }
+  ],
+  "first_file_chain_accepted": false,
+  "cleanup_distinct_installed_instances": 2,
+  "static": {
+    "mypy_files": 215,
+    "format_files": 4,
+    "receipts": {
+      "a27-mypy-final.log": "51fabbbd1fb527d5627152c7a27f6fc9cb065c8b58596e757827a8a86bc7ca46",
+      "a27-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a27-format-final.log": "cc582f997774eb74a1edb248a8a1dca8a90b9985269c3e6ecd100a39876dff12"
+    }
+  },
+  "preparation_failures": [
+    "Unused asyncio/import ordering preparation check corrected before tests; final lint/format pass."
+  ],
+  "diagnosis_notes": [
+    "Parent original total window begins before source/auth/send; child original frame window begins later. Actual first trace parent expired about0.445s before child deadline, closed and caused child cancellation.",
+    "Late-cancel guard is a correctness fix, not a performance claim. No timer reset, response window increase, execution permission cache or resend.",
+    "SQL/crypto controlled transport tests do not prove native user approval; actual Windows/IPC chains retained separately."
+  ],
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a26.json",
+  "public_DTO_ports_schema_wire_changed": false,
+  "C_D_business_changed": false,
+  "flags_changed": false,
+  "checked_metadata_enabled": false,
+  "deadlines_extended": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_actions": 0,
+  "product_accepted": false,
+  "last_full_unchanged": true,
+  "intermediate_11_nodes_retained": {
+    "path": "tests/.artifacts/A/MS-I2l/a27-reply-window-final.xml",
+    "sha256": "3d633ebb63a1922c15f879c998adeab9c69aeb9fcdcd56e3e246faeb17e476a7",
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}
