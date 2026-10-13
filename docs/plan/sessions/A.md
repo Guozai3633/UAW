@@ -1,3 +1,14 @@
+# A28 当前：有效设备来源与原签名候选
+
+准确source ms-i2l-a28-source / 3c783d21d096d46dda103d39340ba6cb92418365。
+有效设备前后fresh读保留原通道/版本/完整状态；到期仍原事务封存，custom仍原两次_load。
+同command记录189→189、锁16→4，OS/key/root/Gate不减，期限和D effects guards不变。
+61去重定向、215类型/3静态格式/契约通过；618历史并集非当前全量，旧1691 full保持。
+原首次链仍失败，但read/签名和第六checkpoint完成，signed_data已持久；publish取消/ref0，原恢复未到。
+unknown未重发，5临时实例清理核对，flags不改，无用户材料/LLM/本人动作。
+A继续原签名候选发布/恢复；H01只读准备已查端口不可达/dist未选，独立文本体验不等文件链全部完成。
+BCD保留原交付无新包，不自动同步。详细../../coordination/requests/A/MS-I2l-A28-active-device-source.md。
+
 # A27 当前：原总回复期限与父/child关闭
 
 准确source ms-i2l-a27-source / 77a4e01913fbb02b5fb970a848b1964ba017be69。

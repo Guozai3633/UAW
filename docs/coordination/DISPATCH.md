@@ -1,3 +1,37 @@
+# A28 正式状态：有效设备只读来源固定，首次签名候选已持久
+
+2026-10-13，准确源码 **3c783d21d096d46dda103d39340ba6cb92418365** / `ms-i2l-a28-source`。
+A继续integration自己的发布HEAD，不回退start，不操作worker源码/分支，不移动旧标签。
+
+RunnerDevices.current有效状态前后fresh store.get，记录/通道完整比较与版本/actor/owner/expiry保持。
+active到期仍走原_load事务封存，bind/revoke/CAS/锁及写入语义不改；custom仓储仍_load两次。
+记录读取不缓存，参与外层完整witness，不删除D效果前后current/native/key/OS/handle guards。
+独立设备record2→2/source1→1、锁SELECT2→0；同原登记command record189→189、聚合锁16→4。
+root5/owning6/OS48/key89/Gate1不减，完整结果相同；样本不证明生产通用速度。
+
+61不同定向通过：56原控制＋设备首次节点、8设备复跑（去重新增custom1）、4实际installed。
+215类型/3静态格式/契约通过，488摘要固定；618历史并集未全部重跑，旧1691 full/费用保持。
+原首次成功断言43.65秒仍失败：command1/open/read/receipt签名各完成1，第六checkpoint完成。
+原一次使用记录中receipt_data已持久，receipt.publish等待期间取消，正式receipt_ref0。
+这是原签名候选持久，不等于发布/可交付/恢复通过；原字节和journal恢复断言未到，unknown未重发。
+parent原10秒先关闭，child截止约晚0.290秒；不重置窗口或扩大原deadline。
+5独立临时installed实例凭据/key/child/proof清理核对，无用户文件、新LLM或本人确认接受。
+flags/checked_metadata/子Agent/DAG/写入安装exec关闭，MS-I2l与完整首次链未accepted。
+
+H01人工体验已开始只读准备：现有8000/5173均不可达，默认apps/web/dist不存在，未启动新环境。
+[准备记录](../implementation/human-tests/H01-preparation.md)列出准确dist/版本、独立服务/数据、认证/固定模型/文本成果预跑。
+办公/学术文本体验可以先准备，不把本机文件链设为共同前置，也不以历史接受/全量冒充本版就绪。
+
+| Session | 当前状态 | 安排 |
+| --- | --- | --- |
+| A | A28有效设备来源固定，原签名候选已持久 | 继续原候选发布/恢复来源与成本；并行H01文本体验准备 |
+| B | MS-U3b 394d785/1b0fe02保留 | 无新包，不自动同步 |
+| C | MS-T2i-b 223c9a9/730a419保留 | 无新包，不自动同步 |
+| D | A21 7157883/317549c已接受 | 停在交付点，无新续项，不自动同步 |
+
+[具体策略与未完成边界](requests/A/MS-I2l-A28-active-device-source.md)、[实际回执](../implementation/evidence/ms-i2l-a28.json)。
+以下为历史，不能据旧派发重复开工；原模型文件/准确引用/本人接受/汇合全量pending。
+
 # A27 正式状态：原回复窗口与父先关闭已固定
 
 2026-10-13，准确源码 **77a4e01913fbb02b5fb970a848b1964ba017be69** / `ms-i2l-a27-source`。
