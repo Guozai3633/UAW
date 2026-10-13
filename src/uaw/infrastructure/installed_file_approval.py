@@ -1,6 +1,8 @@
 """Closed file.read approval checks within the owning Run/role source bracket."""
 
 import json
+from collections.abc import Awaitable, Callable
+from copy import deepcopy
 
 from uaw.run.execution_sources import RunExecutionSources, RunSourceSnapshot
 from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
@@ -23,7 +25,25 @@ class InstalledFileApprovalAuthority(ToolApprovalAuthority):
     """
 
     async def current(self, action_id: str, ctx: TrustedExecutionContext) -> JsonObject:
+        return await self.checked_action(action_id, ctx)
+
+    async def checked_action(
+        self,
+        action_id: str,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[JsonObject, RunSourceSnapshot], Awaitable[object]] | None = None,
+    ) -> JsonObject:
+        """Check original action metadata inside the existing fresh Run bracket."""
         access, resources = self.access, self.resources
+        components = (
+            self.ledger,
+            self.registry,
+            self.configuration,
+            self.policies,
+            access,
+            resources,
+        )
         if (
             type(access) is not RunToolAccessSources
             or type(access.runs) is not RunExecutionSources
@@ -52,9 +72,22 @@ class InstalledFileApprovalAuthority(ToolApprovalAuthority):
                 "file_original_approval_denied", "Exact original file action required", 403
             )
         refs: tuple[Ref, ...] | None = None
+        result: JsonObject | None = None
+
+        def request(resolved: tuple[Ref, ...]) -> JsonObject:
+            value: JsonObject = {
+                "action_id": call["action_id"],
+                "arguments_hash": call["arguments_hash"],
+                "resource_refs": [ref.wire() for ref in resolved],
+                "effect": spec["effect"],
+                "summary": spec["description"],
+                "expires_at": pinned.deadline,
+            }
+            validate_contract("ApprovalCreateRequest", value)
+            return value
 
         async def metadata(tool_access: ToolAccess, sources: RunSourceSnapshot) -> None:
-            nonlocal refs
+            nonlocal refs, result
             assert ctx.model_policy_ref is not None
             permission = require_snapshot(sources.permissions, ctx)
             if (
@@ -74,17 +107,24 @@ class InstalledFileApprovalAuthority(ToolApprovalAuthority):
             refs = await resources.resolve(call, spec, ctx)
             if len(refs) > 256 or any(ref not in ctx.scope.resource_refs for ref in refs):
                 raise reject("file_original_approval_denied", "Resource scope differs", 403)
+            result = request(refs)
+            if check is not None and await check(deepcopy(result), deepcopy(sources)) is not None:
+                raise reject("file_check_protocol_invalid", "Metadata check must return None", 503)
 
         await access.checked_snapshot(ctx, check=metadata)
-        if refs is None or entry.spec() != spec:
+        current_components = (
+            self.ledger,
+            self.registry,
+            self.configuration,
+            self.policies,
+            self.access,
+            self.resources,
+        )
+        if (
+            refs is None
+            or result is None
+            or entry.spec() != spec
+            or any(a is not b for a, b in zip(components, current_components, strict=True))
+        ):
             raise reject("file_original_approval_denied", "Original registry/Reader changed", 412)
-        result: JsonObject = {
-            "action_id": call["action_id"],
-            "arguments_hash": call["arguments_hash"],
-            "resource_refs": [ref.wire() for ref in refs],
-            "effect": spec["effect"],
-            "summary": spec["description"],
-            "expires_at": pinned.deadline,
-        }
-        validate_contract("ApprovalCreateRequest", result)
         return result

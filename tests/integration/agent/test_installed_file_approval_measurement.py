@@ -10,7 +10,9 @@ from sqlalchemy import event
 from tests.integration.runner.installed_file_fixture import installed_file_case
 from tests.integration.test_browser_sessions import web as web
 from uaw.infrastructure import enrollment_peers, installed_files, installed_tool_authority
+from uaw.infrastructure.installed_file_decision import InstalledFileDecision
 from uaw.infrastructure.installed_tool_authority import InstalledToolApprovalGate
+from uaw.run.approval import ApprovalService
 from uaw.tool.authority import ToolApprovalAuthority
 
 
@@ -80,13 +82,15 @@ async def test_actual_same_installed_roots_generic_and_joint_source_approval_gra
                     else InstalledToolApprovalGate(p.container, roots, p.grant.device_id)
                 )
                 samples = {}
-                for strategy in ("generic", "joint_sources"):
+                for strategy in ("generic", "joint_sources", "flat_decision"):
                     for field in counts:
                         counts[field] = 0
                     started = time.perf_counter()
                     # Baseline consumes the existing generic authority in the exact
                     # same root bracket. Only this test's parent owning task runs it.
                     with monkeypatch.context() as scope:
+                        if strategy != "flat_decision":
+                            scope.setattr(InstalledFileDecision, "recheck", ApprovalService.recheck)
                         if strategy == "generic":
                             scope.setattr(
                                 installed_files,
@@ -113,7 +117,9 @@ async def test_actual_same_installed_roots_generic_and_joint_source_approval_gra
                     assert authority.resources is resource_reader
                 for field in ("root", "owner", "owning", "os", "key"):
                     assert samples["generic"][field] == samples["joint_sources"][field] > 0
+                    assert samples["flat_decision"][field] == samples["joint_sources"][field]
                 assert 0 < samples["joint_sources"]["sql"] < samples["generic"]["sql"]
+                assert 0 < samples["flat_decision"]["sql"] < samples["joint_sources"]["sql"]
                 trials[name] = samples
             p.metrics["joint_source_measurement"] = trials
             (tmp_path / "joint-source-measurement.json").write_text(

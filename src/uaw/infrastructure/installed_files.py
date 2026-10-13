@@ -215,7 +215,9 @@ class OriginalFileApprovalGate:
                 InstalledFileResources(roots, device_id, observed=observed),
                 policies=original.policies,
             )
-            joint = ApprovalService(
+            from uaw.infrastructure.installed_file_decision import InstalledFileDecision
+
+            joint = InstalledFileDecision(
                 service.store, service.configuration, authority, permissions=service.permissions
             )
             await self._check(request, ctx, joint)

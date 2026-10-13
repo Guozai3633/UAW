@@ -2,7 +2,7 @@
   "date": "2026-10-13",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A25 54 targeted passing; 586 historical union NOT all rerun. Closed Run metadata bracket; original first chain FAILED after completed memory receipt signing, no persisted journal or resend.",
+  "scope": "A26 53 targeted components passing; 603 historical union NOT all rerun. Original first-chain final passed=False; complete product/model/human delivery not accepted.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 586,
+    "tests": 603,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "bdac5021b48df68fbe9f9d331b323ad13910e9500e89908301cd235703b4c78d",
+  "test_evidence_sha256": "856410560b11a88319907d8decbc3fc6347673dbfec679863918a70f0a8443fc",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -311,15 +311,16 @@
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
     "src/uaw/infrastructure/installed_channels.py": "6a822244f375706de5e761f0c3b8add19f55a7e9ec472aba8910713e720e6232",
     "src/uaw/infrastructure/installed_control.py": "a568cba6bf555871f9fc77b367771ba623b7cfe9b28b6c605e225c55f78df212",
-    "src/uaw/infrastructure/installed_file_approval.py": "c1504cc268d8d67517ca154d3913a1b519ab93d9d38c13861ce49f16346ffb94",
-    "src/uaw/infrastructure/installed_files.py": "7fc36bc5eb27b42a195910707a10f5378b82c70f896464954db448be70f8b002",
+    "src/uaw/infrastructure/installed_file_approval.py": "b41e72799563e87e266d367fc05caccba8fa3f0f0e640c5c281e1705b29827f5",
+    "src/uaw/infrastructure/installed_file_decision.py": "f2d47545b86139fd1300b3cf1ff14dd8da9468859b291b1c2de0de20f8166b42",
+    "src/uaw/infrastructure/installed_files.py": "4f3e09f777b64a4539a55945112cd9ccaa7bc7e94e50f0e4a5237f6750389d81",
     "src/uaw/infrastructure/installed_helper.py": "a79c2b182deed2c0a8a197d2141cfa676302b39f46438b660649da5e49f94dd1",
     "src/uaw/infrastructure/installed_journal.py": "4a42c405d9359580aea664d5b6a30063ed6ac122061f9553d5c6f2a2ae3fa13e",
     "src/uaw/infrastructure/installed_lifecycle.py": "4c9bbe44be315d3610fe1f6519abfb7ac7e84b3c7ebb6cc7eb021a68bf446636",
     "src/uaw/infrastructure/installed_receipt.py": "90435e6e4bcb56d12b8f9167c7535b28ea9a322aa995626de93c94cb7831ab54",
     "src/uaw/infrastructure/installed_root_check.py": "feb00a30173585faed898c31f01063c248b468ab4fa73fe9af58b5264aca8741",
     "src/uaw/infrastructure/installed_roots.py": "720627c0ae75589649ed572c4da4bbcd3efcdfca6bf6bc9b0b09845705fa7ff7",
-    "src/uaw/infrastructure/installed_tool_authority.py": "bd662e99a6462a58e00c84d7c8f181a836f428d7ccd2b6570ee5429b840e4eca",
+    "src/uaw/infrastructure/installed_tool_authority.py": "da64d07c726d99762715a4726bf37658439d2bb9670196672b0aa1ae5413eb05",
     "src/uaw/infrastructure/runner_pipe.py": "d2cab040c4476bcf93af0daa6478a0c71ea75fbd6ca661462a70bb1630bbf3d0",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
@@ -464,8 +465,9 @@
     "tests/integration/agent/test_file_run_admission.py": "97cf47288459945c355593b1e20ae6f2e71e814a0699cbe030f02410c9d022bd",
     "tests/integration/agent/test_fresh_record_many.py": "c18790617e769a7c4b8c3f635efaf772ab0d03bd9f83b26feec552610fe00780",
     "tests/integration/agent/test_installed_file_approval.py": "10c8ebb5cb53f887171f587d01f6c4911dcadaae0321475c951ce4f08c5aa598",
-    "tests/integration/agent/test_installed_file_approval_measurement.py": "3d2c2ab6a70317ee623d4189c38dd0763362f7ee8b80d85eccc4de52d467008a",
+    "tests/integration/agent/test_installed_file_approval_measurement.py": "cb771cda770433b01fc061c0325ee71898855e5930b377280e3684ecffd0cf1d",
     "tests/integration/agent/test_installed_file_authority.py": "9bccb571dd17a424996da20ee8628a3530a50204fea3e75fb1fecf7e1bed6bcc",
+    "tests/integration/agent/test_installed_file_decision.py": "76a706591cfc548baf870659ef9d0b9283c94f441e751bda3da1f3e3b8466851",
     "tests/integration/agent/test_installed_journal_recovery.py": "af2e7b42366d28992126fd068e1d055f6348488cb180ea07672ff643cb73ce72",
     "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
     "tests/integration/agent/test_installed_lifecycle.py": "e7cc921898e558f6fc803d8275802f08090de3792fc83884e1b62520929e1f6f",
@@ -482,7 +484,7 @@
     "tests/integration/agent/test_native_late_authority.py": "341186813e19a7c43ebf131719f0c7ef02798027794cc2ad7b35263ca0ebeeea",
     "tests/integration/agent/test_native_role_measurement.py": "65fad1ce54250cca660cf860f129c06f3cc4773de567cb81ba928f28b4832d60",
     "tests/integration/agent/test_office_assembly_postgres.py": "b84045bbb321145965f47cc9a73c103108dc1d63f671057e3459d771f8a9cc53",
-    "tests/integration/agent/test_registered_collection.py": "c99efb655243c8b2e440dc8aa2b338a922336d096efab7fddabb6e7b05b1179b",
+    "tests/integration/agent/test_registered_collection.py": "6a7d1138ebd1b3c106daf0d6b670fab4b06c3706adc0752beb2253bb4eb8ad2a",
     "tests/integration/agent/test_registered_runner_recheck.py": "1fbe9cd663c3b31eb9be6a2af8b0059985e039397d4d129cc3c1fbde8ad3847d",
     "tests/integration/agent/test_root_postgres.py": "28819d784b29a35831703100ef9c19a38dd99c11eebd33eb63b77ca9ef202d52",
     "tests/integration/agent/test_runner_batch_measurement.py": "2366a6ff6254d9f6cc36d73dc051b5dda16e476d1afc66b071b4b9fa828d231d",
@@ -668,8 +670,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a25.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a24.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a26.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a25.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

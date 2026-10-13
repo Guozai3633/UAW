@@ -195,7 +195,10 @@ class InstalledToolApprovalGate:
             resources,
             policies=c.execution_permissions,
         )
-        service = ApprovalService(
+        from uaw.infrastructure.installed_file_decision import InstalledFileDecision
+
+        service_type = InstalledFileDecision if resources.observed is not None else ApprovalService
+        service = service_type(
             c.records, c.configuration, authority, permissions=c.execution_permissions
         )
         approval_id = "approval-" + parameter_hash({"run": ctx.run_id, "action": call["action_id"]})
