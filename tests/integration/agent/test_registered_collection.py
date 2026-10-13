@@ -16,6 +16,7 @@ from tests.integration.test_runner_control import case as case
 from uaw.infrastructure import enrollment_peers
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.run.runner_recheck import RegisteredRunnerRechecks
+from uaw.run.tool_sources import RunToolAccessSources
 from uaw.shared.contracts import Principal, Ref
 from uaw.shared.errors import DomainError
 from uaw.shared.stores import StoreConflict
@@ -102,20 +103,31 @@ async def test_actual_registered_collection_same_result_and_bounded_sql(web, tmp
             )
             assert commands.supports_registered_collection()
             samples, results = {}, []
+
+            async def legacy_checked(access, context, *, check):
+                return await access._snapshot(context, check=check)
+
             for name, operation in (
                 ("legacy", commands.collect),
                 ("registered", commands.collect_registered),
+                ("registered_legacy_role", commands.collect_registered),
             ):
                 for field in counts:
                     counts[field] = 0
                 started = time.perf_counter()
-                results.append(await operation(record, actor))
+                with monkeypatch.context() as scope:
+                    if name == "registered_legacy_role":
+                        scope.setattr(RunToolAccessSources, "checked_snapshot", legacy_checked)
+                    results.append(await operation(record, actor))
                 samples[name] = {**counts, "seconds": time.perf_counter() - started}
-            assert results[0] == results[1]
+            assert results[0] == results[1] == results[2]
             assert samples["legacy"]["gate"] == 2 and samples["registered"]["gate"] == 1
             assert 0 < samples["registered"]["sql"] < samples["legacy"]["sql"]
             assert samples["registered"]["root"] >= samples["legacy"]["root"]
             assert samples["registered"]["owning"] > 0 and samples["registered"]["os"] > 0
+            assert samples["registered"]["sql"] < samples["registered_legacy_role"]["sql"]
+            for field in ("root", "owning", "os", "key", "gate"):
+                assert samples["registered"][field] == samples["registered_legacy_role"][field]
             p.metrics["registered_collection_measurement"] = samples
             (tmp_path / "registered-collection-measurement.json").write_text(
                 json.dumps(samples), encoding="utf-8"

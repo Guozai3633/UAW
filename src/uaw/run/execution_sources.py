@@ -1,6 +1,9 @@
 """Current Run, policy and authenticated fixed-model sources for internal adapters."""
 
+from collections.abc import Awaitable, Callable
+from copy import deepcopy
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 from uaw.context.seed import revision
@@ -8,7 +11,7 @@ from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
 from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import TrustedExecutionContext
-from uaw.shared.errors import reject
+from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import parse_json, validate_contract
 
 Payload = dict[str, Any]
@@ -49,6 +52,63 @@ class RunExecutionSources:
         # scope is released before any model/tool/native/user operation.
         async with self.store.current_reads():
             return await self._current(ctx)
+
+    async def checked_current(
+        self,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[RunSourceSnapshot], Awaitable[object]],
+    ) -> RunSourceSnapshot:
+        """Bracket one metadata callback with fresh policy and fixed-model data.
+
+        Closed actual sources only. This replaces nested policy brackets with
+        one outer bracket; it does not reuse reads or authorize effects. Current,
+        historical and absent SQL inputs have a closing full-row witness. The
+        callback receives a detached observation; it must return None.
+        """
+        store, configuration, permissions = self.store, self.configuration, self.permissions
+        if (
+            type(self) is not RunExecutionSources
+            or type(store) is not PostgresRecordStore
+            or type(configuration) is not ConfigurationService
+            or type(permissions) is not ExecutionPolicyResolver
+            or configuration.store is not store
+            or permissions.store is not store
+            or not callable(check)
+        ):
+            raise CapabilityUnavailable("run.original_checked_metadata_sources")
+        original_ctx = ctx.wire()
+        original_authentication = permissions.authentication_check
+
+        def unchanged() -> None:
+            if (
+                original_ctx != ctx.wire()
+                or self.store is not store
+                or self.configuration is not configuration
+                or self.permissions is not permissions
+                or configuration.store is not store
+                or permissions.store is not store
+                or permissions.authentication_check is not original_authentication
+            ):
+                raise reject("run_source_changed", "Original sources changed during check", 412)
+
+        async with store.current_reads(), store.current_witness():
+            before = require_snapshot(await permissions.resolve(ctx), ctx)
+            data = await self.data(ctx)
+            result = RunSourceSnapshot(
+                data.admission, data.fixed_configuration, data.current_configuration, before
+            )
+            if await check(deepcopy(result)) is not None:
+                raise reject("run_check_protocol_invalid", "Metadata check must return None", 503)
+            again_data = await self.data(ctx)
+            after = require_snapshot(await permissions.resolve(ctx), ctx)
+            if again_data != data or after != before:
+                raise reject("run_source_changed", "Original sources changed during check", 412)
+            unchanged()
+        unchanged()  # Closing witness/connection cleanup may also await.
+        if datetime.fromisoformat(ctx.deadline.replace("Z", "+00:00")) <= datetime.now(UTC):
+            raise reject("execution_deadline_expired", "Original Run deadline passed", 409)
+        return result
 
     async def _current(self, ctx: TrustedExecutionContext) -> RunSourceSnapshot:
         access = require_snapshot(await self.permissions.resolve(ctx), ctx)

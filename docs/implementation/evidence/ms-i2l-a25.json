@@ -1,0 +1,630 @@
+{
+  "date": "2026-10-13",
+  "base_commit": "3a95d4e8a5a03ccaf80ad85025bce9905f9c4f5f",
+  "targeted_distinct_passing": 54,
+  "historical_union_not_all_rerun": 586,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a25-source-closed-final.xml",
+      "sha256": "376bf48881e0b23c5dc16f560915383d6e1565d00a3e3ce774cdbf95f76991c0",
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a25-installed-final.xml",
+      "sha256": "aad7875d2dfd9f17cc735086a30ac08727281bfed588a7924f4651fb8c7379d8",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "prior_final_receipts_retained": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a25-source-final.xml",
+      "sha256": "f7e045dad154bdb6cc4b47eaa98c2452c39e245f0dd0bbc8af7345c8aa8814a1",
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "initial_failures_retained": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a25-source-initial.xml",
+      "sha256": "16725a4b978645f891b79d15004e44d11562b5215da02c0e42084c14a7184b08",
+      "tests": 48,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a25-close-final.xml",
+      "sha256": "24e9667a9389aa8c2836eda7ea93fbed7e79a3b97dc1b208ffb200f60521bdbb",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "initial_failure_reasons": [
+    "Test fixture Container.database is None; test SQL observer changed to actual store.database.",
+    "Late memory-source mutation after nested current returned but during outer witness was not rejected. Outer source identity/authentication checks added; 50 affected SQL nodes rerun.",
+    "Initial None callback type declaration failed mypy; strict runtime None protocol retained with Awaitable[object] type.",
+    "Initial observer formatting check failed; formatted."
+  ],
+  "actual_registered_command_measurement": {
+    "legacy": {
+      "root": 4,
+      "owning": 6,
+      "sql": 342,
+      "os": 48,
+      "key": 82,
+      "gate": 2,
+      "seconds": 0.8969108999999662
+    },
+    "registered": {
+      "root": 5,
+      "owning": 6,
+      "sql": 221,
+      "os": 48,
+      "key": 89,
+      "gate": 1,
+      "seconds": 0.9998070999999982
+    },
+    "registered_legacy_role": {
+      "root": 5,
+      "owning": 6,
+      "sql": 231,
+      "os": 48,
+      "key": 89,
+      "gate": 1,
+      "seconds": 0.9854376999992382
+    }
+  },
+  "actual_run_role_measurement": {
+    "legacy": {
+      "sql": 43,
+      "permission": 4,
+      "callback": 1
+    },
+    "outer": {
+      "sql": 36,
+      "permission": 2,
+      "callback": 1
+    }
+  },
+  "latency_claim": "SQL 231->221 with OS/key/native counts unchanged; 0.985->0.999 seconds sample does not show latency improvement. Queries cannot prove full-chain improvement.",
+  "first_file_chains": [
+    {
+      "label": "a25-trace-initial",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a25-trace-initial.xml",
+        "sha256": "66f58cf1f726030b2c4aaebadc0e22c4ade2fe5e31ccd44c8829586e6ced8ecb",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "trace_sha256": "587c4e5e4d5725bdc5118a91eb53b2436f209928e5b821c80754939f240eaa2c",
+      "command_sends": 1,
+      "open_completed": 1,
+      "read_completed": 1,
+      "receipt_sign_completed": 0,
+      "claimed_attempts": 1,
+      "attempts": [
+        {
+          "signed_data": false,
+          "published_ref": false
+        }
+      ],
+      "checkpoint_trace": [
+        {
+          "operation": "source.current",
+          "checkpoint": "watch",
+          "start_seconds": 36.29310970000006,
+          "remaining_seconds": 9.24800520000008,
+          "status": "ok",
+          "seconds": 1.5455353999996078
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 37.09412539999994,
+          "remaining_seconds": 8.446988600000623,
+          "status": "ok",
+          "seconds": 1.8158814999997048
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 37.0943400999995,
+          "remaining_seconds": 8.446774699999878,
+          "status": "ok",
+          "seconds": 1.0669598000004044
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 38.201898999999685,
+          "remaining_seconds": 7.339215900000454,
+          "status": "ok",
+          "seconds": 0.6952365999995891
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 38.927292399999715,
+          "remaining_seconds": 6.613822500000424,
+          "status": "ok",
+          "seconds": 2.3059839999996257
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 38.92744169999969,
+          "remaining_seconds": 6.613673500000004,
+          "status": "ok",
+          "seconds": 1.2521194000000833
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 40.23339169999963,
+          "remaining_seconds": 5.3077225000006365,
+          "status": "ok",
+          "seconds": 0.9901530999995884
+        },
+        {
+          "operation": "file.open",
+          "checkpoint": "startup",
+          "start_seconds": 41.29860759999974,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.016320200000336627
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 41.327258999999685,
+          "remaining_seconds": 4.213855500000136,
+          "status": "ok",
+          "seconds": 2.072896800000308
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 41.32747879999988,
+          "remaining_seconds": 4.213636000000406,
+          "status": "ok",
+          "seconds": 1.077544400000079
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 42.47901759999968,
+          "remaining_seconds": 3.062096499999825,
+          "status": "ok",
+          "seconds": 0.9151873000000705
+        },
+        {
+          "operation": "file.read",
+          "checkpoint": "startup",
+          "start_seconds": 43.40492819999963,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.0013171999999030959
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 43.4115727999997,
+          "remaining_seconds": 2.1295421000004353,
+          "status": "CancelledError",
+          "seconds": 1.899022800000239
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 43.411702599999444,
+          "remaining_seconds": 2.1294124000005468,
+          "status": "ok",
+          "seconds": 0.8965102000001934
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 44.35203419999925,
+          "remaining_seconds": 1.1890800999999556,
+          "status": "CancelledError",
+          "seconds": 0.9585510000006252
+        }
+      ],
+      "nested_source_seconds_not_additive": {
+        "runner.current": {
+          "calls": 4,
+          "seconds": 8.093785099999877,
+          "errors": 1
+        },
+        "source.current": {
+          "calls": 8,
+          "seconds": 7.852261800000633,
+          "errors": 1
+        },
+        "source.collect": {
+          "calls": 8,
+          "seconds": 7.647363699999914,
+          "errors": 1
+        },
+        "source.full_pass": {
+          "calls": 8,
+          "seconds": 5.320370300001741,
+          "errors": 0
+        },
+        "source.request": {
+          "calls": 8,
+          "seconds": 0.4969104999991032,
+          "errors": 0
+        },
+        "source.device": {
+          "calls": 16,
+          "seconds": 1.2527584000008574,
+          "errors": 0
+        },
+        "native.paired": {
+          "calls": 16,
+          "seconds": 0.8512600999983988,
+          "errors": 0
+        },
+        "source.run": {
+          "calls": 8,
+          "seconds": 0.11518560000149591,
+          "errors": 0
+        },
+        "source.gate_root": {
+          "calls": 8,
+          "seconds": 3.5564111000003322,
+          "errors": 0
+        },
+        "source.budget": {
+          "calls": 16,
+          "seconds": 0.17054600000028586,
+          "errors": 0
+        },
+        "source.lease": {
+          "calls": 16,
+          "seconds": 0.26789049999842973,
+          "errors": 1
+        },
+        "source.signature": {
+          "calls": 22,
+          "seconds": 0.27658839999912743,
+          "errors": 0
+        },
+        "native.root": {
+          "calls": 8,
+          "seconds": 1.160463800000798,
+          "errors": 0
+        },
+        "source.witness": {
+          "calls": 7,
+          "seconds": 0.05100650000076712,
+          "errors": 0
+        }
+      },
+      "parent_phases": {
+        "fixture_new_run_setup": 0.9610409999995682,
+        "web_launch_to_callback_ready": 16.876506999999947,
+        "a8_assembly": 0.1959382999993977,
+        "approval_query": 1.0765315999997256,
+        "controlled_sql_decision": 0.4991305999992619,
+        "approved_facade_to_signed_result": 31.21376650000002,
+        "cleanup": 0.643639500000063
+      },
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "original_raw_bytes_and_recovery_assertions_reached": false,
+      "passed": false,
+      "actual_SQL_OS_keys_IPC": true,
+      "controlled_native_SQL_approval_model_metadata": true
+    },
+    {
+      "label": "a25-trace-final",
+      "receipt": {
+        "path": "tests/.artifacts/A/MS-I2l/a25-trace-final.xml",
+        "sha256": "741297ba610ef5f1571c09efbf0362fafaf40a06e0addcd00e420e96d9527c8b",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "trace_sha256": "182723792f69e625a6ce64f588871dd80369314c4ce2640f6f864e75f73e6f5d",
+      "command_sends": 1,
+      "open_completed": 1,
+      "read_completed": 1,
+      "receipt_sign_completed": 1,
+      "claimed_attempts": 1,
+      "attempts": [
+        {
+          "signed_data": false,
+          "published_ref": false
+        }
+      ],
+      "checkpoint_trace": [
+        {
+          "operation": "source.current",
+          "checkpoint": "watch",
+          "start_seconds": 31.877655700000105,
+          "remaining_seconds": 9.169745200000762,
+          "status": "ok",
+          "seconds": 1.1711358000011387
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 32.566698099999485,
+          "remaining_seconds": 8.480701700000282,
+          "status": "ok",
+          "seconds": 1.9188147000004392
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 32.56690920000074,
+          "remaining_seconds": 8.48049230000106,
+          "status": "ok",
+          "seconds": 0.9767759999995178
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-1",
+          "start_seconds": 33.582720399999744,
+          "remaining_seconds": 7.464680600000065,
+          "status": "ok",
+          "seconds": 0.8899276000011014
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 34.51427400000102,
+          "remaining_seconds": 6.533127200000308,
+          "status": "ok",
+          "seconds": 2.2796232999990025
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 34.51448479999999,
+          "remaining_seconds": 6.532916600001045,
+          "status": "ok",
+          "seconds": 1.1261138999998366
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-2",
+          "start_seconds": 35.70497810000052,
+          "remaining_seconds": 5.342422900001111,
+          "status": "ok",
+          "seconds": 1.076077699999587
+        },
+        {
+          "operation": "file.open",
+          "checkpoint": "startup",
+          "start_seconds": 36.85876009999993,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.00823359999958484
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 36.87931519999984,
+          "remaining_seconds": 4.168085600000268,
+          "status": "ok",
+          "seconds": 1.8170769999996992
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 36.87956380000105,
+          "remaining_seconds": 4.167837700000746,
+          "status": "ok",
+          "seconds": 0.909948099999383
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-3",
+          "start_seconds": 37.834711600000446,
+          "remaining_seconds": 3.2126889000010124,
+          "status": "ok",
+          "seconds": 0.8449240999998437
+        },
+        {
+          "operation": "file.read",
+          "checkpoint": "startup",
+          "start_seconds": 38.715808599999946,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.0038158999996085186
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 38.74031360000117,
+          "remaining_seconds": 2.3070872999996936,
+          "status": "ok",
+          "seconds": 1.481847299999572
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 38.74053120000099,
+          "remaining_seconds": 2.306870100001106,
+          "status": "ok",
+          "seconds": 0.7219637999987754
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-4",
+          "start_seconds": 39.511197199999515,
+          "remaining_seconds": 1.5362039000010554,
+          "status": "ok",
+          "seconds": 0.6973196000017197
+        },
+        {
+          "operation": "receipt.sign",
+          "checkpoint": "startup",
+          "start_seconds": 40.222198200001,
+          "remaining_seconds": null,
+          "status": "ok",
+          "seconds": 0.00975289999951201
+        },
+        {
+          "operation": "runner.current",
+          "checkpoint": "effect-5",
+          "start_seconds": 40.23195730000043,
+          "remaining_seconds": 0.8154439999998431,
+          "status": "CancelledError",
+          "seconds": 0.5963661000005231
+        },
+        {
+          "operation": "source.current",
+          "checkpoint": "effect-5",
+          "start_seconds": 40.23216560000037,
+          "remaining_seconds": 0.8152358999996068,
+          "status": "CancelledError",
+          "seconds": 0.5961523999994824
+        }
+      ],
+      "nested_source_seconds_not_additive": {
+        "runner.current": {
+          "calls": 5,
+          "seconds": 8.093728399999236,
+          "errors": 1
+        },
+        "source.current": {
+          "calls": 9,
+          "seconds": 7.839203199999247,
+          "errors": 1
+        },
+        "source.collect": {
+          "calls": 9,
+          "seconds": 7.570034300000771,
+          "errors": 1
+        },
+        "source.full_pass": {
+          "calls": 9,
+          "seconds": 5.37172350000219,
+          "errors": 0
+        },
+        "source.request": {
+          "calls": 9,
+          "seconds": 0.48451270000259683,
+          "errors": 0
+        },
+        "source.device": {
+          "calls": 18,
+          "seconds": 1.3570788000051834,
+          "errors": 0
+        },
+        "native.paired": {
+          "calls": 18,
+          "seconds": 0.8542194000037853,
+          "errors": 0
+        },
+        "source.run": {
+          "calls": 9,
+          "seconds": 0.09638919999997597,
+          "errors": 0
+        },
+        "source.gate_root": {
+          "calls": 9,
+          "seconds": 3.5871014000003925,
+          "errors": 0
+        },
+        "source.budget": {
+          "calls": 17,
+          "seconds": 0.1606195000003936,
+          "errors": 0
+        },
+        "source.lease": {
+          "calls": 17,
+          "seconds": 0.20590529999935825,
+          "errors": 0
+        },
+        "source.signature": {
+          "calls": 25,
+          "seconds": 0.289566499999637,
+          "errors": 0
+        },
+        "native.root": {
+          "calls": 9,
+          "seconds": 1.0196882000018377,
+          "errors": 1
+        },
+        "source.witness": {
+          "calls": 8,
+          "seconds": 0.0665497999980289,
+          "errors": 0
+        }
+      },
+      "parent_phases": {
+        "fixture_new_run_setup": 1.1357050000005984,
+        "web_launch_to_callback_ready": 12.311808600001314,
+        "a8_assembly": 0.3650623000012274,
+        "approval_query": 2.1356722000000445,
+        "controlled_sql_decision": 0.7435504999994009,
+        "approved_facade_to_signed_result": 28.559045300000435,
+        "cleanup": 0.5152333000005456
+      },
+      "cleanup": {
+        "credential_handles_absent": 4,
+        "role_keys_revoked": 2,
+        "child_exited": true,
+        "proof_pipe_closed": true
+      },
+      "unknown_resent": false,
+      "original_raw_bytes_and_recovery_assertions_reached": false,
+      "passed": false,
+      "actual_SQL_OS_keys_IPC": true,
+      "controlled_native_SQL_approval_model_metadata": true
+    }
+  ],
+  "first_file_chain_accepted": false,
+  "cleanup_distinct_installed_instances": 6,
+  "static": {
+    "mypy_files": 214,
+    "format_files": 6,
+    "receipts": {
+      "a25-mypy-final.log": "5d4ddeb556c430d1e378f9201938b80a06d14aae9f50da7cedf2f3f5355d4661",
+      "a25-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a25-format-final.log": "771744bf77b40dacce2b51ccee68c2e15c1ccc057465174b08fa0698c8f5200b"
+    }
+  },
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a24.json",
+  "public_DTO_ports_schema_wire_changed": false,
+  "C_D_business_changed": false,
+  "flags_changed": false,
+  "checked_metadata_enabled": false,
+  "deadlines_extended": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_actions": 0,
+  "product_accepted": false,
+  "last_full_unchanged": true,
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}

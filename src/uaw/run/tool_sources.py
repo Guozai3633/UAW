@@ -7,6 +7,7 @@ from typing import Any
 from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore
 from uaw.run.execution_sources import RunExecutionSources, RunSourceSnapshot
+from uaw.run.permissions import ExecutionPolicyResolver
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import JsonObject, Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
@@ -243,7 +244,59 @@ class RunToolAccessSources:
         """
         if not callable(check):
             raise reject("tool_check_protocol_invalid", "Metadata check unavailable", 503)
-        return await self._snapshot(ctx, check=check)
+        if (
+            type(self) is not RunToolAccessSources
+            or type(self.runs) is not RunExecutionSources
+            or type(self.runs.permissions) is not ExecutionPolicyResolver
+            or type(self.store) is not PostgresRecordStore
+            or type(self.configuration) is not ConfigurationService
+            or self.runs.store is not self.store
+            or self.runs.configuration is not self.configuration
+            or self.runs.permissions.store is not self.store
+            or self.configuration.store is not self.store
+        ):
+            return await self._snapshot(ctx, check=check)
+        store, runs, configuration = self.store, self.runs, self.configuration
+        permissions, authentication = runs.permissions, runs.permissions.authentication_check
+        original_ctx = ctx.wire()
+        settings = (self.controller.wire(), self.environment, self.implemented_flags)
+        result: ToolAccess | None = None
+
+        def unchanged() -> None:
+            if (
+                result is None
+                or self.store is not store
+                or self.runs is not runs
+                or self.configuration is not configuration
+                or runs.store is not store
+                or runs.configuration is not configuration
+                or runs.permissions is not permissions
+                or permissions.store is not store
+                or permissions.authentication_check is not authentication
+                or configuration.store is not store
+                or ctx.wire() != original_ctx
+                or settings != (self.controller.wire(), self.environment, self.implemented_flags)
+            ):
+                raise reject("tool_source_changed", "Original Tool source changed", 412)
+
+        async with store.current_reads(), store.current_witness():
+            fixed = await self._binding(ctx)
+            role_ref = Ref.model_validate(fixed["role_ref"])
+            role = await self._role(role_ref)
+
+            async def metadata(sources: RunSourceSnapshot) -> None:
+                nonlocal result
+                result = await self._access(ctx, role, sources)
+                await require_check_none(check(deepcopy(result), deepcopy(sources)))
+                if ctx.wire() != original_ctx:
+                    raise reject("tool_binding_stale", "Trusted context changed during check", 412)
+                await self._close_access(ctx, fixed, role_ref, role, result)
+
+            await runs.checked_current(ctx, check=metadata)
+            unchanged()
+        unchanged()
+        assert result is not None
+        return result
 
     async def _snapshot(
         self,
@@ -256,6 +309,22 @@ class RunToolAccessSources:
         role_ref = Ref.model_validate(fixed["role_ref"])
         role = await self._role(role_ref)
         sources = await self.runs.current(ctx)
+        result = await self._access(ctx, role, sources)
+        if check is not None:
+            await require_check_none(check(deepcopy(result), deepcopy(sources)))
+        if ctx.wire() != original_ctx:
+            raise reject("tool_binding_stale", "Trusted context changed during check", 412)
+        if await self._binding(ctx) != fixed or await self._role(role_ref) != role:
+            raise reject("tool_binding_stale", "Tool authorization changed while resolving", 412)
+        again = await self.runs.current(ctx)
+        if again != sources:
+            raise reject("tool_source_changed", "Current Run/configuration sources changed", 412)
+        await self._close_access(ctx, fixed, role_ref, role, result, check_binding=False)
+        return result
+
+    async def _access(
+        self, ctx: TrustedExecutionContext, role: Payload, sources: RunSourceSnapshot
+    ) -> ToolAccess:
         fixed_config, current_config = sources.fixed_configuration, sources.current_configuration
         providers = []
         for pin in fixed_config["provider_refs"]:
@@ -301,21 +370,27 @@ class RunToolAccessSources:
             active_provider_refs=tuple(providers),
         )
         check_access(result, ctx)
-        if check is not None:
-            await require_check_none(check(deepcopy(result), deepcopy(sources)))
-        if ctx.wire() != original_ctx:
-            raise reject("tool_binding_stale", "Trusted context changed during check", 412)
-        if await self._binding(ctx) != fixed or await self._role(role_ref) != role:
+        return result
+
+    async def _close_access(
+        self,
+        ctx: TrustedExecutionContext,
+        fixed: Payload,
+        role_ref: Ref,
+        role: Payload,
+        result: ToolAccess,
+        *,
+        check_binding: bool = True,
+    ) -> None:
+        if check_binding and (
+            await self._binding(ctx) != fixed or await self._role(role_ref) != role
+        ):
             raise reject("tool_binding_stale", "Tool authorization changed while resolving", 412)
-        again = await self.runs.current(ctx)
-        if again != sources:
-            raise reject("tool_source_changed", "Current Run/configuration sources changed", 412)
-        for pin in providers:
+        for pin in result.active_provider_refs:
             row = await self.store.get(self.controller, "providers", pin.id)
             if row.payload["state"] != "active" or str(row.revision) != pin.version:
                 raise reject("tool_provider_changed", "Provider changed while resolving", 412)
         check_access(result, ctx)
-        return result
 
 
 class PureTextResourceReader:
