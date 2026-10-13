@@ -2,7 +2,7 @@
   "date": "2026-10-13",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A30 8 targeted real SQL nodes with controlled model replies; original human feedback retained/cancelled; B UI repair dispatched. 652 historical union NOT all rerun; A28 file gate unchanged.",
+  "scope": "A31 exact B component merge:82 units/43 controlled browser; A30 backend8 not rerun. H01-v2 actual same-identity TCP/browser refresh ready for human retest. Python652 historical union NOT all rerun; A28 file gate unchanged.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -674,8 +674,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a30.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a29.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a31.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a30.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

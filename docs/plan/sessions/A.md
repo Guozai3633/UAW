@@ -1,3 +1,13 @@
+# A31 当前：已合入 B 页面修复，H01-v2真实交付
+
+source b43f3d06d2fbcb1595de4d1fe23f4e9a7580a4bf / ms-i2l-a31-source，B db0a698/c13232b精确合入；82单元/43受控Chromium组件接受。
+A30原8 SQL/215类型未重跑；实际localhost Agent ready/dist hash/匿名拒绝及本人原身份登录刷新cancelled v8核对。
+H01-v2新源码/dist快照、沿用原数据/身份/OS auth/锁一致依赖；旧v1不热改，旧任务不复活/重发/回填。
+新真实LLM调用0，原pending0.50 USD与全部失败保持；同Run澄清尚不可用，原审批/成果链不变。
+当前页供本人新任务/补充问题可见性复体验；A记录反馈，原文件发布恢复与整轮accepted仍pending。
+BCD停在交付点没有新包，不自动同步；652历史并集/旧last_full不冒充本轮全量。
+详见../../implementation/human-tests/H01-v2.md及../../implementation/evidence/ms-i2l-a31.json。
+
 # A30 最终后端回执：8 定向通过，B 页面修复已直接派发
 
 准确source ad11ce70c50684ef304b4c137f7ea52eecb5f4ae / ms-i2l-a30-source，B原允许范围不变，已按本人授权直接发送并开工。

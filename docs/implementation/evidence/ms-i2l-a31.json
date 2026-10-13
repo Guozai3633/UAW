@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-13",
+  "source_commit": "b43f3d06d2fbcb1595de4d1fe23f4e9a7580a4bf",
+  "source_tag": "ms-i2l-a31-source",
+  "base_commit": "deec012563f73cfec5b02ba5a1720c212ad14dec",
+  "worker": {
+    "owner": "B",
+    "source_commit": "db0a6981c1c925ad46283c765cef5a08d2c8cfcf",
+    "handoff_commit": "c13232bd8b8af813e448c14b8d39b8e4789662ba",
+    "stage_commit": "170bac1086b5124653c593bef6f7542d0cd32540",
+    "merged_exact_handoff": true,
+    "source_scope": "5 apps/web source/test files +3 B documents",
+    "A_modified_worker_business_source_or_branch": false,
+    "handoff_retained_before_worker_usage_error": true,
+    "receipts": {
+      "unit": {
+        "path": "docs/implementation/evidence/ms-i2l-a31-B-unit.xml",
+        "sha256": "16c92675de2f72a15ee8f7e05922b008d2d79b1ae9ffbfb42a8cf6e91312d7c8",
+        "tests": 82,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "browser": {
+        "path": "docs/implementation/evidence/ms-i2l-a31-B-browser.xml",
+        "sha256": "d6a8140b3064516ccb341ac1ca0fc5e939c0a2db8fe05df10e850071e1b0639a",
+        "tests": 43,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "private_receipt_sha256": "ba924fd857791e3de00fb2c7ad061cad6ad32fa276de1c091e7937e87c8a8a82",
+    "type_build_frozen_install_passed": true,
+    "controlled_browser_only": true,
+    "actual_B_authenticated_H01_test": "pending; A performed actual new entry read/refresh instead"
+  },
+  "A_backend_validation": {
+    "record": "docs/implementation/evidence/ms-i2l-a30.json",
+    "source_commit": "ad11ce70c50684ef304b4c137f7ea52eecb5f4ae",
+    "8_targeted_nodes_passed_on_original_backend": true,
+    "215_source_files_mypy_passed": true,
+    "not_repeated_in_A31": true,
+    "B_merge_changes_backend": false
+  },
+  "human_environment": {
+    "version": "H01-v2",
+    "origin": "http://127.0.0.2:5181",
+    "backend_origin": "http://127.0.0.2:8011",
+    "source_commit": "b43f3d06d2fbcb1595de4d1fe23f4e9a7580a4bf",
+    "frontend_source_commit": "db0a6981c1c925ad46283c765cef5a08d2c8cfcf",
+    "dist_hashes": {
+      "index.html": "5489e365723a9b16e9aabbcfe29161b224e3f17635c8c555139a56352b73b9df",
+      "assets/index-B45RsHQP.js": "cc29c0d6f9e518fc1a4926279b5b304e7e9b79e756c48fc4f9523eddec5f1c57",
+      "assets/index-CrD7HuLW.css": "9338a965fbd284799b9337881ec1444ad0a61ad455ed9128567a56499b6bd7bb"
+    },
+    "settings_sha256": "bc792549057c83c19fc632acbd20014e8a74cd951579fae18de99a5540767522",
+    "lock_sha256": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+    "old_snapshot_hot_changed": false,
+    "same_database_identity_OS_auth_and_original_history": true,
+    "dependencies": "Read-only reuse of original isolated H01-v1 dependency environment; lock unchanged",
+    "actual_TCP_ready_and_dist_hash_passed": true,
+    "anonymous_denied": true,
+    "actual_original_user_login_via_one_use_local_launch": true,
+    "actual_original_conversation_and_fixed_model_retained": true,
+    "actual_refresh_retained_original_conversation_and_cancelled_v8": true,
+    "new_cancelled_guidance_observed": true,
+    "new_message_or_fake_answer_backfilled": false,
+    "old_duplicate_understanding_items_preserved_as_history": true,
+    "actual_acceptance_stop_native_or_new_submit_clicked": false,
+    "actual_human_retest_status": "awaiting_user",
+    "screenshot": "docs/implementation/human-tests/H01-v2-ready.png",
+    "screenshot_sha256": "e9288d5311bde1ef506a4ba7aaa694da1da33e8db7458a7cea7b75a6b2bdf028"
+  },
+  "preparation_failures_retained": [
+    "Initial H01-v2 preparation database ConnectionTimeout: original A PostgreSQL container was exited0; only existing A container started, no databases or volumes removed.",
+    "Preparation initially expected chromium receipt key; actual B receipt uses controlled_browser. It failed before snapshot creation, then exact field/count checked and preparation passed.",
+    "First immediately-after-reload screenshot captured initialization state. Waited for known original conversation to finish loading; actual original same-identity conversation and cancelled v8 verified. Initial observation is not a failed persistence proof."
+  ],
+  "new_actual_model_calls": 0,
+  "original_human_two_calls_pending_held_money_USD": "0.500000000",
+  "actual_money": null,
+  "original_cancelled_task_reissued_or_revived": false,
+  "flags_changed": false,
+  "public_schema_ports_locks_changed": false,
+  "same_Run_clarification_support_added": false,
+  "B_component_and_build_accepted": true,
+  "human_feedback_issue_retested_by_human": false,
+  "file_gate_A28_unchanged": true,
+  "whole_MS_I2l_accepted": false,
+  "last_full_unchanged": true,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a30.json"
+}
