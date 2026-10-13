@@ -1,0 +1,174 @@
+{
+  "date": "2026-10-13",
+  "source_commit": "c905ec26e4d25c11b0af991f1e725a279cceb439",
+  "base_commit": "594c21decfd2eab898975e06d1245f5da2de67ad",
+  "targeted_distinct_passing": 27,
+  "historical_union_not_all_rerun": 645,
+  "passing_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a29-proxy-independent.xml",
+    "sha256": "b2d376f112b54dcc0524d14fc9a89eebcb0287b93f1e748e0402daf60b422bf2",
+    "tests": 27,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_proxy_environment_error_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a29-proxy.xml",
+    "sha256": "cdbdd18dfce3ccb4343fc843dea742bd0da1a5eff71ec8e2a8e25f53aa4942de",
+    "tests": 7,
+    "failures": 0,
+    "errors": 7,
+    "skipped": 0
+  },
+  "initial_ipv6_failure_receipt": {
+    "path": "tests/.artifacts/A/MS-I2l/a29-proxy-ipv6.xml",
+    "sha256": "39c9acb15653087087e33fe8c812f3879790e721a1f9e49c9db073f54ab1faa5",
+    "tests": 12,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "preparation_failures": [
+    "Initial sandbox default temporary directory preparation failed, retained 7 setup errors; project-local scoped rerun passed.",
+    "IPv6 TCP connect was denied by Windows; original failure retained, no firewall changes; explicit independent IPv4 loopback tested instead.",
+    "Initial mypy invocation omitted local_runner source root (70 import-derived errors); final two-root check passed in215 files.",
+    "Preflight script tried to parse proxy HTML403 as JSON; fixed harness before tasks.",
+    "Preflight script expected200 on actual accepted202 submission; original accepted office Run was read back by its request key, never resubmitted."
+  ],
+  "static": {
+    "mypy_source_files": 215,
+    "ruff_format_files": 4,
+    "receipts": {
+      "a29-mypy-final.log": "51fabbbd1fb527d5627152c7a27f6fc9cb065c8b58596e757827a8a86bc7ca46",
+      "a29-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a29-format-final.log": "cc582f997774eb74a1edb248a8a1dca8a90b9985269c3e6ecd100a39876dff12"
+    }
+  },
+  "human_environment": {
+    "record": "docs/implementation/human-tests/H01-v1.md",
+    "origin": "http://127.0.0.2:5181",
+    "backend_origin": "http://127.0.0.2:8011",
+    "source_commit": "c905ec26e4d25c11b0af991f1e725a279cceb439",
+    "frontend_source": "394d78579bb6841bd936b11af557bc401d0b2dba",
+    "dist_hashes": {
+      "index.html": "b4cdd8fa390aaa4dd13abeae3db08d1ba9cf8cb45be411d7c8b22dc4e8dc2309",
+      "assets/index-BUbKOXkF.js": "3835e36ca28637c7ac9a1b8c616c32d34257ccd6ca2d57da5a9b293d82508ee2",
+      "assets/index-6xmg8RKr.css": "d5e8fd0de31fc2425cc287db863e06022dc9e3fcfac4bffef6e115b8fac43e4f"
+    },
+    "lock_sha256": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+    "settings_sha256": "bc792549057c83c19fc632acbd20014e8a74cd951579fae18de99a5540767522",
+    "configuration_ref": {
+      "kind": "configuration",
+      "id": "configuration-3631bc37c560474ebe6ef6330cd32dd8",
+      "version": "3"
+    },
+    "copied_platform_records": 10,
+    "copied_platform_versions": 19,
+    "copied_user_records": 0,
+    "copied_browser_sessions": 0,
+    "copied_native_authorizations": 0,
+    "independent_dependency_packages": 91,
+    "dependency_inventory_sha256": "4f5312e6709191f87ba9e2278bc38f58874d749fd16632f92c010b5727b1f86d",
+    "shared_readonly_base_interpreter": "Existing CPython3.14.6 cache home; independent site-packages",
+    "preflight_history_retained_under_separate_identity": true,
+    "human_user_records_before_restart": 0,
+    "actual_page_logged_in": true,
+    "page_refresh_identity_retained": true,
+    "model_dialog_observed": "DeepSeek-V4.1-Flash",
+    "screenshot_sha256": "67656aa47e4007940d07de5f9e7d007fedc829238e31b4cb204b61a4d0ebe075",
+    "status": "awaiting_user",
+    "native_confirmation_triggered": false,
+    "user_acceptances": 0
+  },
+  "live_preflight": {
+    "private_receipt": ".data/human/H01-v1/h01-preflight-8fa9fa4a38d9443cb8715cd4d5069c43.json",
+    "sha256": "4dafa964a6ed510765d65519b77ac6ca366eebff836dacfa7ca97c1e7f22dc7e",
+    "initial_receipts": [
+      {
+        "sha256": "dcabee811078867294b00eaf6a64ed855a21b648d4a88ba25cd90717780c8021",
+        "path": ".data/human/H01-v1/h01-preflight-05c65ad9aeda47fbad82d80e02c61948.json"
+      },
+      {
+        "sha256": "f71b76c7b04c6db1661d8fdcdb5ed6ae5e593397baedd3629d1cef27f92c3e2d",
+        "path": ".data/human/H01-v1/h01-preflight-8f1ad088695640b1b4f85834f11ed4f0.json"
+      }
+    ],
+    "actual_localhost_TCP_SQL_and_DeepSeek": true,
+    "controlled_dependencies": false,
+    "scenarios": [
+      {
+        "name": "office",
+        "ready": true,
+        "run_status": "running",
+        "job_state": "waiting",
+        "job_stage": "delivery",
+        "attempts": 3,
+        "model_id": "deepseek-flash",
+        "usage_totals": {
+          "input_tokens": 6350,
+          "output_tokens": 1056,
+          "model_calls": 3
+        },
+        "pending_money": "0.75",
+        "actual_money": null,
+        "artifact_content_hash": "9401192d169db9bf012ff56190c35bdd07a2eb380a481b9728baa69107e17634",
+        "report_outcome": "succeeded",
+        "structure_reference_checks": 2,
+        "semantic_verdicts": 6,
+        "acceptance_posted": false,
+        "original_request_lookup": true,
+        "resumed_original_without_resend": true,
+        "submission_to_artifact_seconds": 139.564,
+        "preflight_observation_seconds_not_total_if_resumed": 89.927,
+        "provider_model_time_ms": 7824
+      },
+      {
+        "name": "academic",
+        "ready": true,
+        "run_status": "running",
+        "job_state": "waiting",
+        "job_stage": "delivery",
+        "attempts": 3,
+        "model_id": "deepseek-flash",
+        "usage_totals": {
+          "input_tokens": 7393,
+          "output_tokens": 1853,
+          "model_calls": 3
+        },
+        "pending_money": "0.75",
+        "actual_money": null,
+        "artifact_content_hash": "94f3cfc12193266befd3c8915bd573ce7f2b32091e7c967a4ba14a5da47dced4",
+        "report_outcome": "succeeded",
+        "structure_reference_checks": 2,
+        "semantic_verdicts": 7,
+        "acceptance_posted": false,
+        "original_request_lookup": true,
+        "resumed_original_without_resend": false,
+        "submission_to_artifact_seconds": 133.248,
+        "preflight_observation_seconds_not_total_if_resumed": 152.188,
+        "provider_model_time_ms": 11604
+      }
+    ],
+    "distinct_model_attempts": 6,
+    "input_tokens": 13743,
+    "output_tokens": 2909,
+    "held_money_USD": "1.50",
+    "actual_money": null,
+    "billing_state": "pending",
+    "unknown_resends": 0,
+    "logout_old_session_denied": true,
+    "wrong_origin_denied": true,
+    "human_actions": 0
+  },
+  "known_issues": [
+    "Two small text samples needed139.564/133.248 seconds from admission to artifact generation; this excludes later verification/user acceptance and cannot establish general latency.",
+    "Current UI human feedback not received. File first publication/recovery gate remains failing as A28; local files/search/subAgent/DAG/installation/write/exec not enabled."
+  ],
+  "flags_changed": false,
+  "public_DTO_ports_schema_changed": false,
+  "BCD_business_changed": false,
+  "file_first_chain_status_unchanged": true,
+  "whole_MS_I2l_accepted": false,
+  "last_full_unchanged": true,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a28.json"
+}
