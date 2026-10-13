@@ -54,6 +54,7 @@
 | [plan/SEQUENCE.md](plan/SEQUENCE.md) | 全局依赖、阶段门槛和可并行开发部分 | 生成；模块分组不等于依次写完模块 |
 | [plan/DECISIONS.md](plan/DECISIONS.md) | 技术主选待验证项、产品/部署待定项与最晚轮 | 生成；技术主选见技术栈，实际权威/供应商/范围另行确定 |
 | [plan/COVERAGE.md](plan/COVERAGE.md) | 节点到实施轮、详细设计、接口、代码目标 | 生成；计划覆盖不是实现覆盖 |
+| [plan/HUMAN_TESTING.md](plan/HUMAN_TESTING.md) | 可操作里程碑的本人体验、固定版本、启动与反馈闭环 | 人工维护；具体体验回执在implementation/human-tests中，未测试不记通过 |
 | [plan/INTERFACE_ASSIGNMENTS.md](plan/INTERFACE_ASSIGNMENTS.md) | 接口反查关联工作包 | 生成；关联轮次不等于接口已经就绪 |
 | [planning/catalog.py](../planning/catalog.py) | 开发任务/门槛/依赖/范围的唯一计划源 | 人工维护；调整计划后重建，实际验收需附证据 |
 | [planning/plan-map.json](../planning/plan-map.json) | 节点到开发轮次的机器映射 | 生成；不产生implemented=true |

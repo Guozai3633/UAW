@@ -49,6 +49,7 @@
 | [节点开发覆盖](COVERAGE.md) | 115节点→实施轮→策略/接口/代码位置；覆盖不等于已实现 |
 | [接口关联工作包](INTERFACE_ASSIGNMENTS.md) | 272接口→相关轮次；精确字段复用接口字典 |
 | [每轮执行记录模板](ROUND_TEMPLATE.md) | 从计划开始到真实验收如何记录 |
+| [人工体验测试](HUMAN_TESTING.md) | 可操作里程碑固定版本、启动、本人体验、反馈修复与复体验；与开发并行 |
 | [多session分工](PARALLEL.md) | 3个开发＋1个集成；子包、目录归属与依赖 |
 | [并行开工和合并流程](PARALLEL_WORKFLOW.md) | 共同基线、worktree、接口提案、交接和回归 |
 | [项目目录设计](../PROJECT_STRUCTURE.md) | 代码目录/依赖方向 |

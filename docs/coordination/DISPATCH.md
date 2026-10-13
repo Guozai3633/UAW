@@ -1,3 +1,35 @@
+# A27 正式状态：原回复窗口与父先关闭已固定
+
+2026-10-13，准确源码 **77a4e01913fbb02b5fb970a848b1964ba017be69** / `ms-i2l-a27-source`。
+A继续integration自身发布HEAD，不回退start、不操作worker源码/分支或移动旧标签。
+
+用户新要求已加入[人工体验测试计划](../plan/HUMAN_TESTING.md)：可操作里程碑固定版本、独立启动、本人体验、原owner修复和复体验，与开发并行。
+H01准备尚未执行，办公/学术文本和控制可先准备，首次文件链未通过不进入成功体验范围；短体验固定标签/worktree，长期维护才体验分支。
+
+原总回复10秒在source前开始，明确一次absolute deadline，原actor/command/session/send/receive/journal/验签/收尾保持同窗口。
+新增内部_exchange观察边界；等待后/发送前/返回前显式Task取消及原截止检查。
+依赖吞timeout/caller取消，甚至uncancel，都不得越过原截止继续发送或返回成功；期限拒绝分类timeout。
+原close/busy和unknown不重发保持，无wire/body期限、新公开接口、窗口重置或10/15/90/30/120秒放宽。
+
+12不同SQL/crypto＋受控pipe定向通过，215类型/4静态格式/契约通过；487源码摘要固定。
+610历史并集未全部重跑，旧1691 full/费用/失败保持。受控pipe通过不证明native产品链。
+两次实际同钟测量parent先到期关闭，child截止晚约0.445/0.551秒；不是child自身deadline到零解释所有ipc_closed。
+首次54.06秒失败：open/read完成、第四检查点取消、未签名；最终56.16秒失败：open完成、第三检查点取消、未read/签名。
+原command各1，占位各1，signed_data/ref0，字节与journal恢复断言未到，unknown未重发、不造journal/not_applied/零费用。
+总来源成本与时延波动仍超整体回复预算；显式取消检查是正确性修复，不是整链性能通过。
+2临时installed实例凭据/key/child/proof清理核对，无用户文件、新模型或本人确认/接受。
+flags/checked_metadata/子Agent/DAG/写入安装exec关闭，完整首次链与MS-I2l未accepted。
+
+| Session | 当前状态 | 安排 |
+| --- | --- | --- |
+| A | A27截止/取消与父子诊断固定 | 继续实际来源复查累计成本与原持久恢复链，不重设已发送命令窗口 |
+| B | MS-U3b 394d785/1b0fe02保留 | 无新包，不自动同步 |
+| C | MS-T2i-b 223c9a9/730a419保留 | 无新包，不自动同步 |
+| D | A21 7157883/317549c已接受 | 停在交付点，无新续项，不自动同步 |
+
+[实际因果时间和修复](requests/A/MS-I2l-A27-original-reply-window.md)、[全部回执](../implementation/evidence/ms-i2l-a27.json)。
+以下为历史，不能据旧派发重复开工；原模型文件/准确引用/本人接受/汇合全量pending。
+
 # A26 正式状态：审批决定共同来源已固定，首次持久链仍pending
 
 2026-10-13，准确源码 **178b67b3751b697275b121057e4f3f6833beb219** / `ms-i2l-a26-source`。

@@ -1,3 +1,15 @@
+# A27 当前：原总回复期限与父/child关闭
+
+准确source ms-i2l-a27-source / 77a4e01913fbb02b5fb970a848b1964ba017be69。
+实际同钟验证parent原10秒先到期关闭，child截止晚0.445/0.551秒；父窗口先包含source/auth/send等待。
+同一absolute deadline不重置；发送前和等待后/返回前显式取消/截止，依赖吞取消甚至uncancel也不能继续。
+12定向、215类型/4静态格式/契约通过；610历史并集非当前全量，旧1691 full保持。
+两次Windows首次链仍失败，最终open后current取消，未read/签名/持久ref，unknown未重发。
+2临时实例清理核对，无用户材料/LLM/本人动作，flags及期限不改。
+A继续实际同源复查累计成本与原持久恢复链；BCD保留原交付无新包或同步。
+另按../../plan/HUMAN_TESTING.md准备可体验里程碑，固定版本并实际启动，工程验收/本人反馈/成果接受分开；H01未启动。
+详细../../coordination/requests/A/MS-I2l-A27-original-reply-window.md。
+
 # A26 当前：原审批决定共同来源与完整复查
 
 准确source ms-i2l-a26-source / 178b67b3751b697275b121057e4f3f6833beb219。
