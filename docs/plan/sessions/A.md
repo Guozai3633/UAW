@@ -1,3 +1,13 @@
+# A23 当前：只读审批共同来源图
+
+准确source ms-i2l-a23-source / 1c4f680a00852f89452fa5fb4c03aaa2065a30e2。
+同源Run/角色/固定模型/配置/权限的前后观察包住资源元数据检查，原SQL审批决定不变。
+实际同一installed两Gate SQL212→137，原root/OS/key不减；53定向通过，567历史并集非当前全量。
+214类型/6静态格式/契约通过。首次链57.56秒失败，command1/open调用1/占位1，无signed/ref。
+原期限及unknown不重发保持，所有失败与五实例清理保留；没有新BCD包。
+A继续重复检查点/原登记发送和真实内容签名恢复，不改worker业务或代用户操作。
+详细../../coordination/requests/A/MS-I2l-A23-joint-file-policy.md。
+
 # A22 当前：原来源 fresh组读，继续实际首次链
 
 准确source ms-i2l-a22-source / aa5d0ba3e2479defb397674844f4406b6eeedeaa，2026-10-13发布。

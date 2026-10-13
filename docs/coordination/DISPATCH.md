@@ -1,3 +1,33 @@
+# A23 正式状态：只读审批共同来源图已固定
+
+2026-10-13，准确源码 **1c4f680a00852f89452fa5fb4c03aaa2065a30e2** / `ms-i2l-a23-source`。
+当前integration由A继续，不回退start，不移动旧标签，不操作worker分支或C/D业务源码。
+
+两实际file Gate在原native根括号内消费A InstalledFileApprovalAuthority：原固定file call/spec/provider，
+同源Run/角色/模型/配置/权限观察→元数据资源检查→完整fresh来源后复查；原ApprovalService及已存决定保持。
+RunToolAccessSources.checked_snapshot的callback只做元数据，不缓存allowed或修改共享authority/resources。
+实际同一个installed实例：两Gate SQL212→137，root2/owner2/owning2/OS16/key28保持。
+样本秒数不报通用提速，child类parent测量不替代子进程效果链。
+
+53不同定向通过（46SQL＋3原字段＋3实际来源撤销＋1同图测量）；567历史并集未全部重跑。
+214源码类型、6文件静态格式、1362schema/288接口/320否定例通过，480源码摘要。旧1691全量保持。
+首次Docker管道缺失/SQL超时及类型/格式准备失败保留，恢复仅A自有55432后实跑通过。
+
+原首次完整成功断言仍失败：57.56秒，command1，读取句柄open调用1，占位1，signed0/ref0。
+open计数在构造开始前递增，不证明正文读取完成；原10秒reply终止、IPC关闭/执行current取消。
+unknown未重发，不造journal，不推not_applied/零费用。五实际临时installed实例清理核对通过。
+无用户文件/新模型/本人确认或接受；原flags/checked_metadata/子Agent/DAG/写入安装exec关闭。
+
+| Session | 当前状态 | 安排 |
+| --- | --- | --- |
+| A | A23共同来源图交付，原首次链仍pending | 继续同一次检查点的重复图/登记发送及读取至签名恢复链，阶段来源具体后再派消费 |
+| B | MS-U3b交付保留 | 394d785/1b0fe02，无新包，不自动同步 |
+| C | MS-T2i-b交付保留 | 223c9a9/730a419，无新包，不自动同步 |
+| D | A21组件已接受并停止 | 7157883/317549c保留，无新续项，不重跑已接受包 |
+
+[实际算法/内部接口与边界](requests/A/MS-I2l-A23-joint-file-policy.md)、
+[全部通过与失败回执](../implementation/evidence/ms-i2l-a23.json)。以下旧派发为历史，不能重复据此开工。
+
 # A22 正式状态：真实目录消费已合入，首次链仍失败
 
 2026-10-13发布；准确源码 **aa5d0ba3e2479defb397674844f4406b6eeedeaa** / `ms-i2l-a22-source`。
