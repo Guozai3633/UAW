@@ -12,3 +12,5 @@
 .dialog{max-height:90dvh;overflow:auto}.installed-panel{font-size:12px;line-height:1.7;overflow-wrap:anywhere}.installed-panel ol{padding-left:22px}.installed-panel .dialog-actions{flex-wrap:wrap}.installed-panel button{border:1px solid #e1e4ec;border-radius:7px;background:#f7f8fc;padding:8px 10px}
 
 .installed-panel ol{list-style:decimal}
+
+.request-guidance{display:block;font-size:11px;line-height:1.8}.request-guidance p{margin:4px 0}

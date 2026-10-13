@@ -923,3 +923,16 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 真实匿名较早1节点（19:20:28+08）通过，最新localhost不可达exit2/pending；旧XML时点保留，不当当前服务pass。真实认证/SQL没有本包通过声明，A来源未提供，pending不算完成。
 - 根据用户最新约束，认证不再使用新launch创建新session；verifyOwnedInstalledPage(originalOwnerPage,originalId)仅原Page GET/reload、完整principal/expiry和原ID/request/version复查，阻止写入、不导出cookie/不创建context或关闭A page。可选CLI只接A明确提供的UAW_U3B_WEB_URL/OWNER_CDP_URL/LOCAL_LAUNCH_ID，三项当前缺，exit2；trace/screenshot/video/自动失败DOM快照关闭，认证不读取A配置、不代点native/连接/停止/成果接受。受控复用验证器1节点仅证明测试路径，不是本人真实源。
 - 最终只读构建 `apps/web/.test-results/u3b-final-dist/` 与完整hash已交付，A只读复制，不执行B环境。A负责实际owning lifecycle/当前配置、部署、认证原上下文及真人授权、A9 file来源/Run与整链。SQL/native/文件/接受与汇合全量仍pending；不标P1/MS-I2l整轮accepted，默认模型/flags不变。本续包源码/handoff分开clean交付，之后停止。
+
+
+## H01-I01-B-waiting-feedback 定向页面反馈（2026-10-13）
+
+- 实际原B worktree `E:/UAW/.worktrees/context` / `dev/context` 干净，原HEAD `1b0fe02440d6f1929f42a797f30c51b39953d7c3`。当前app checkout为另一个干净detached `70f2fcccb88650c616920a5630d2caa45d94ad45`，已先报告关系，不修改它/其他session。原B全部提交/handoff/失败回执保留。
+- fetch后核对远端正式A30 dispatch、source tag `ms-i2l-a30-source / ad11ce70c50684ef304b4c137f7ea52eecb5f4ae`、dispatch tag `ms-i2l-a30-dispatch / 08352c774ed6a46930935e7218443e913d5dab46`；只快进准确source，HEAD相等。旧待发布段落不阻塞正式派发，不合浮动integration/reset/rebase/stash。uv frozen/pnpm原锁离线通过。
+- 阶段源码 `170bac1086b5124653c593bef6f7542d0cd32540` / 阶段说明 `cc3076c4a84717f551832ce37623807d57dfe3f7` 已交A并获范围审阅无阻塞。最终源码 `db0a6981c1c925ad46283c765cef5a08d2c8cfcf`，本独立handoff为随后docs提交，准确SHA见最终回报。
+- 相对A30 source仅5个apps/web文件：RequestGuidance.tsx、Workspace.tsx、styles.css、waiting-feedback单元及Chromium。既有公开签名/Controller/Review/API/schema/锁不变。waiting_for_user默认“任务等待处理”，完整原agent_message/Item版本/Ref版本hash/location保留，空正文明确缺源；不词典解析正文成权限或动作。ApprovalRequest/RunDeliveryView原实际校验与操作卡保持，无实际来源不制造确认/成果。
+- 草稿仍可编辑保存，发送受原Recovery限制有说明；没有同Run内澄清/补充输入，指引本人手动停止、读到实际cancelled终态后用原问题及补充发送新请求。不是继续原Run，不自动取消、拼接或重发；停止Ack/unknown先GET不当终态，原真人Run保持cancelled。
+- 最终82单元＋43受控Chromium各0失败/错误/跳过（新增4/7，其余原回归），冻结安装/类型/build/diff-check与相关A30 schema不变核对通过。本项无测试失败；原U3/U3b全部失败回执保存，不将重复跑或A另报8 SQL节点计为B覆盖。定向body/文字全受控，不是新真实LLM/SQL/本人满意。
+- 精确文件、接口/样例、命令/回执、三文件dist/hash、未通过和接线要求见[最终接线](../requests/B/H01-I01-B-waiting-feedback-final.md)。自身ignored h01-i01-unit-final.log/.xml、browser-final.log/.xml、receipts.json和受控waiting.png；截图已目视核对。准确构建在本worktree apps/web/.test-results/h01-i01-dist，A只读复制，不执行B环境。
+- H01-v1仍A29固定旧快照，A30/B修复未热部署；真实只读认证pending A新固定入口/原Page/可见会话，不操作本人旧任务停止/提交、审批/native/成果接受，不读取A配置/key。旧Run和费用不变，无真实模型/文件调用。
+- A负责原问题Item/唯一理解事务、后台回执、合入和新版本实际部署/本人体验。无新Context/多Run/澄清协议/flags/default model或D01/D03/D06设定，不标H01/MS-I2l/P1整轮accepted。源码与handoff分开clean交付，完成后停止，不自动扩包。
