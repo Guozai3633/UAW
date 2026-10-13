@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A22 107 targeted passing; 549 historical union NOT all rerun. Native joint root integrated and fresh SQL group reads; first chain FAILED, unknown not resent.",
+  "scope": "A23 53 targeted passing; 567 historical union NOT all rerun. Actual file approval joint source bracket; first chain FAILED, unknown not resent.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 549,
+    "tests": 567,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "ba4f4338aa3ad7ebef768f24e38a72fe9ea12a4200fc2319948aa11f602b0db2",
+  "test_evidence_sha256": "1689734abedde30ffe1fc116c6f0cce596dc1f57f56c73cf2c33b67747dee8de",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -311,14 +311,15 @@
     "src/uaw/infrastructure/file_availability.py": "0c2c4aeaa66687eceda8b95f37c0b178a6d797f2d0a758b3d17115931451fe86",
     "src/uaw/infrastructure/installed_channels.py": "6a822244f375706de5e761f0c3b8add19f55a7e9ec472aba8910713e720e6232",
     "src/uaw/infrastructure/installed_control.py": "a568cba6bf555871f9fc77b367771ba623b7cfe9b28b6c605e225c55f78df212",
-    "src/uaw/infrastructure/installed_files.py": "88f50bd82386ff413d1e91d3e2e9d4de172c66690c3ec1c7fddb7958496fde0f",
+    "src/uaw/infrastructure/installed_file_approval.py": "c1504cc268d8d67517ca154d3913a1b519ab93d9d38c13861ce49f16346ffb94",
+    "src/uaw/infrastructure/installed_files.py": "7fc36bc5eb27b42a195910707a10f5378b82c70f896464954db448be70f8b002",
     "src/uaw/infrastructure/installed_helper.py": "a79c2b182deed2c0a8a197d2141cfa676302b39f46438b660649da5e49f94dd1",
     "src/uaw/infrastructure/installed_journal.py": "4a42c405d9359580aea664d5b6a30063ed6ac122061f9553d5c6f2a2ae3fa13e",
     "src/uaw/infrastructure/installed_lifecycle.py": "4c9bbe44be315d3610fe1f6519abfb7ac7e84b3c7ebb6cc7eb021a68bf446636",
     "src/uaw/infrastructure/installed_receipt.py": "90435e6e4bcb56d12b8f9167c7535b28ea9a322aa995626de93c94cb7831ab54",
     "src/uaw/infrastructure/installed_root_check.py": "feb00a30173585faed898c31f01063c248b468ab4fa73fe9af58b5264aca8741",
     "src/uaw/infrastructure/installed_roots.py": "720627c0ae75589649ed572c4da4bbcd3efcdfca6bf6bc9b0b09845705fa7ff7",
-    "src/uaw/infrastructure/installed_tool_authority.py": "99dd36dea878ab90674b7e596911c3f8aa00347947de1ba85e8452b3c91c1fd1",
+    "src/uaw/infrastructure/installed_tool_authority.py": "bd662e99a6462a58e00c84d7c8f181a836f428d7ccd2b6570ee5429b840e4eca",
     "src/uaw/infrastructure/runner_pipe.py": "d2cab040c4476bcf93af0daa6478a0c71ea75fbd6ca661462a70bb1630bbf3d0",
     "src/uaw/intent/__init__.py": "bd5a0348a66ff6990d89b0620568bdfc70b4bf152dab28047a5397df04c71cf2",
     "src/uaw/intent/facade.py": "e0e6d999a3537928b9f0c30f6b6ac6da8d5c1fac69a77e6d4f5f1048cc567423",
@@ -372,7 +373,7 @@
     "src/uaw/run/service_router.py": "fba0985027de5d54438988840dcf085bfdd305bdf3aa750a979e60b3ea8e715e",
     "src/uaw/run/state.py": "fe32289e58b2b171da6522d3a814db33aad411ae5cf7722aa8723e6df764f23a",
     "src/uaw/run/termination.py": "e0cc24e61cd7a3789a4fcceb2589556901ee94823d1ca753ba28e1047d218504",
-    "src/uaw/run/tool_sources.py": "f093d3ad6355d764320f190d27f806d802c0e2eb27944f285195f439224a6030",
+    "src/uaw/run/tool_sources.py": "ff75839b9e4fe91280d11775477da06f7c0b2c45ae5e848b8d3dec325eb6055b",
     "src/uaw/shared/__init__.py": "1283eb8e79ae3de55f83e2275103dfa565386ff251fcb66099764778684b0d18",
     "src/uaw/shared/builtin_tools.py": "7f7b687082cb67e5b49b5c55d208fbbe15fa1e6d755af731423cf02a5c93e510",
     "src/uaw/shared/configuration.py": "4648cd321bc9c8d8e19601bab256788dfcb42797962572469be5349f6e2ddba0",
@@ -460,6 +461,8 @@
     "tests/integration/agent/test_file_provider_http.py": "57dacb08d2cfb8c0c55d8278f3534f26dc8a2ad4ccfaa7675d8c8007851ff111",
     "tests/integration/agent/test_file_run_admission.py": "97cf47288459945c355593b1e20ae6f2e71e814a0699cbe030f02410c9d022bd",
     "tests/integration/agent/test_fresh_record_many.py": "c18790617e769a7c4b8c3f635efaf772ab0d03bd9f83b26feec552610fe00780",
+    "tests/integration/agent/test_installed_file_approval.py": "10c8ebb5cb53f887171f587d01f6c4911dcadaae0321475c951ce4f08c5aa598",
+    "tests/integration/agent/test_installed_file_approval_measurement.py": "3d2c2ab6a70317ee623d4189c38dd0763362f7ee8b80d85eccc4de52d467008a",
     "tests/integration/agent/test_installed_file_authority.py": "9bccb571dd17a424996da20ee8628a3530a50204fea3e75fb1fecf7e1bed6bcc",
     "tests/integration/agent/test_installed_journal_recovery.py": "af2e7b42366d28992126fd068e1d055f6348488cb180ea07672ff643cb73ce72",
     "tests/integration/agent/test_installed_launch.py": "ac87ea66c17c418eeec113dbf6200d83af90fcd7c4fd582a36fc06a51b4fa55e",
@@ -661,8 +664,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a22.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a21.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a23.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a22.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

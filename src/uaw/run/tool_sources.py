@@ -1,10 +1,12 @@
 """Run-owned Tool authorization. Registration is internal and controller-authenticated."""
 
+from collections.abc import Awaitable, Callable
+from copy import deepcopy
 from typing import Any
 
 from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore
-from uaw.run.execution_sources import RunExecutionSources
+from uaw.run.execution_sources import RunExecutionSources, RunSourceSnapshot
 from uaw.shared.configuration import ConfigurationService
 from uaw.shared.contracts import JsonObject, Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
@@ -20,6 +22,11 @@ from uaw.tool.registry import RegistryEntry, ToolRegistry
 Payload = dict[str, Any]
 ROLES = "run.tool.roles"
 BINDINGS = "run.tool.bindings"
+
+
+async def require_check_none(operation: Awaitable[object]) -> None:
+    if await operation is not None:
+        raise reject("tool_check_protocol_invalid", "Metadata check must return None", 503)
 
 
 def binding_key(ctx: TrustedExecutionContext) -> str:
@@ -221,6 +228,30 @@ class RunToolAccessSources:
         return value
 
     async def snapshot(self, ctx: TrustedExecutionContext) -> ToolAccess:
+        return await self._snapshot(ctx)
+
+    async def checked_snapshot(
+        self,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[ToolAccess, RunSourceSnapshot], Awaitable[None]],
+    ) -> ToolAccess:
+        """Own one metadata check between the existing fresh source observations.
+
+        The detached observations are call-local inputs, never a cached grant.
+        All role/Run/config/provider checks after the callback still execute.
+        """
+        if not callable(check):
+            raise reject("tool_check_protocol_invalid", "Metadata check unavailable", 503)
+        return await self._snapshot(ctx, check=check)
+
+    async def _snapshot(
+        self,
+        ctx: TrustedExecutionContext,
+        *,
+        check: Callable[[ToolAccess, RunSourceSnapshot], Awaitable[None]] | None = None,
+    ) -> ToolAccess:
+        original_ctx = ctx.wire()
         fixed = await self._binding(ctx)
         role_ref = Ref.model_validate(fixed["role_ref"])
         role = await self._role(role_ref)
@@ -259,15 +290,6 @@ class RunToolAccessSources:
                     raise
             else:
                 flags.add(flag)
-        if await self._binding(ctx) != fixed or await self._role(role_ref) != role:
-            raise reject("tool_binding_stale", "Tool authorization changed while resolving", 412)
-        again = await self.runs.current(ctx)
-        if again != sources:
-            raise reject("tool_source_changed", "Current Run/configuration sources changed", 412)
-        for pin in providers:
-            row = await self.store.get(self.controller, "providers", pin.id)
-            if row.payload["state"] != "active" or str(row.revision) != pin.version:
-                raise reject("tool_provider_changed", "Provider changed while resolving", 412)
         result = ToolAccess(
             policy_ref=ctx.capability_policy_ref,
             scope=ctx.scope,
@@ -278,6 +300,20 @@ class RunToolAccessSources:
             environment=self.environment,
             active_provider_refs=tuple(providers),
         )
+        check_access(result, ctx)
+        if check is not None:
+            await require_check_none(check(deepcopy(result), deepcopy(sources)))
+        if ctx.wire() != original_ctx:
+            raise reject("tool_binding_stale", "Trusted context changed during check", 412)
+        if await self._binding(ctx) != fixed or await self._role(role_ref) != role:
+            raise reject("tool_binding_stale", "Tool authorization changed while resolving", 412)
+        again = await self.runs.current(ctx)
+        if again != sources:
+            raise reject("tool_source_changed", "Current Run/configuration sources changed", 412)
+        for pin in providers:
+            row = await self.store.get(self.controller, "providers", pin.id)
+            if row.payload["state"] != "active" or str(row.revision) != pin.version:
+                raise reject("tool_provider_changed", "Provider changed while resolving", 412)
         check_access(result, ctx)
         return result
 

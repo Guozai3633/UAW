@@ -26,6 +26,7 @@ from uaw.composition import (
     assemble_runner_control,
 )
 from uaw.infrastructure.db.records import parameter_hash
+from uaw.infrastructure.installed_file_approval import InstalledFileApprovalAuthority
 from uaw.infrastructure.installed_journal import InstalledJournalRecovery
 from uaw.infrastructure.installed_lifecycle import InstalledLifecycle
 from uaw.infrastructure.installed_receipt import current_root
@@ -40,7 +41,6 @@ from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.ports import RunnerRootSourcePort
 from uaw.shared.schema import validate_contract
 from uaw.tool.approval import ToolApprovalAdapter
-from uaw.tool.authority import ToolApprovalAuthority
 from uaw.tool.invocation.schema import normalize
 from uaw.tool.ledger import ToolLedger, action_key
 from uaw.tool.providers.file_read import file_arguments
@@ -207,7 +207,7 @@ class OriginalFileApprovalGate:
             if type(service) is not ApprovalService or service.authority is not original:
                 raise CapabilityUnavailable("file.original_joint_approval")
             # A call-local Reader/service, never mutation of shared authority.
-            authority = ToolApprovalAuthority(
+            authority = InstalledFileApprovalAuthority(
                 original.ledger,
                 original.registry,
                 original.configuration,

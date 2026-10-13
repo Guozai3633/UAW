@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from uaw_runner.keys import Ed25519SignatureAdapter, signature_key_id
 
 from uaw.infrastructure.db.records import parameter_hash
+from uaw.infrastructure.installed_file_approval import InstalledFileApprovalAuthority
 from uaw.infrastructure.installed_root_check import checked_file_root
 from uaw.run.approval import ApprovalService
 from uaw.run.tool_sources import RunToolAccessSources
@@ -181,7 +182,12 @@ class InstalledToolApprovalGate:
             expected_revision=0,
             binding=AdapterBinding(pin, frozenset({access.environment}), implemented=True),
         )
-        authority = ToolApprovalAuthority(
+        authority_type = (
+            InstalledFileApprovalAuthority
+            if resources.observed is not None
+            else ToolApprovalAuthority
+        )
+        authority = authority_type(
             ledger,
             registry,
             c.configuration,

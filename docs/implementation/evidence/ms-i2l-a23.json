@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-13",
+  "base_commit": "d2dbdb14bee5738da09ff8a14d57c22cd85788e5",
+  "targeted_distinct_passing": 53,
+  "historical_union_not_all_rerun": 567,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a23-source-sql.xml",
+      "sha256": "345ec93808ead8bc48b5a25cb68c9e2c53e5850f4e66d744c3bb5d54967297c7",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a23-original-fields.xml",
+      "sha256": "7270135c6dd55b5f1121f9cae834c0041af544d2e9e0c120bb169f5e9dc55d5d",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a23-native-denial.xml",
+      "sha256": "b07aa299ea6924829055873a1105756109941cd4fde8097e2c0e80781a704fb9",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a23-same-graph.xml",
+      "sha256": "8b17bbc8c40fd794c8ccfd1ec023f4d6312cdb50dffa40d98195f60ae1e789f5",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_same_installed_source_graph_measurement": {
+    "control": {
+      "generic": {
+        "root": 2,
+        "owner": 2,
+        "owning": 2,
+        "sql": 212,
+        "os": 16,
+        "key": 28,
+        "seconds": 0.563407499999812
+      },
+      "joint_sources": {
+        "root": 2,
+        "owner": 2,
+        "owning": 2,
+        "sql": 137,
+        "os": 16,
+        "key": 28,
+        "seconds": 0.35289289999991524
+      }
+    },
+    "child_class_in_parent": {
+      "generic": {
+        "root": 2,
+        "owner": 2,
+        "owning": 2,
+        "sql": 212,
+        "os": 16,
+        "key": 28,
+        "seconds": 0.5560599000000366
+      },
+      "joint_sources": {
+        "root": 2,
+        "owner": 2,
+        "owning": 2,
+        "sql": 137,
+        "os": 16,
+        "key": 28,
+        "seconds": 0.36466569999993226
+      }
+    }
+  },
+  "measurement_note": "Same original root and stored approval in one installed instance; generic and joint source paths use identical remaining native/OS/key/root counts. Seconds are samples, not production/general speed claim. Child class comparison in parent does not substitute for actual child execution.",
+  "first_file_chain": {
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a23-first-chain.xml",
+      "sha256": "f2be2f1d12a0a6686a5e95f16f6e7a74fe61109b3323afed74f42514554ee697",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "wall_seconds": 57.56,
+    "command_sends": 1,
+    "handle_open_calls": 1,
+    "open_counter_definition": "Incremented before WindowsReadHandle.__init__; not proof that content was read or signature published",
+    "claimed_attempts": 1,
+    "attempts": [
+      {
+        "signed_data": false,
+        "published_ref": false
+      }
+    ],
+    "parent_phases": {
+      "fixture_new_run_setup": 1.051044499999989,
+      "web_launch_to_callback_ready": 13.223461900000075,
+      "a8_assembly": 0.36508450000019366,
+      "approval_query": 2.2039276999998947,
+      "controlled_sql_decision": 1.0962943000004088,
+      "approved_facade_to_signed_result": 36.85665190000009,
+      "cleanup": 0.5369427999999061
+    },
+    "parent_operations": {
+      "budget_reserve": {
+        "calls": 1,
+        "seconds": 0.03747239999984231
+      },
+      "budget_dispatch": {
+        "calls": 1,
+        "seconds": 0.08140560000038022
+      },
+      "bridge_source_checks": {
+        "calls": 2,
+        "seconds": 3.213557000000037
+      },
+      "lease_acquire": {
+        "calls": 1,
+        "seconds": 0.061644199999591365
+      },
+      "command_collect": {
+        "calls": 1,
+        "seconds": 1.3172004999996716
+      },
+      "command_register": {
+        "calls": 1,
+        "seconds": 2.702085200000056
+      },
+      "signed_pipe_exchange": {
+        "calls": 1,
+        "seconds": 10.021432300000015
+      }
+    },
+    "child_phases": {
+      "factory_create": 1.629988499999854,
+      "single_registration": {
+        "calls": 43,
+        "seconds": 1.3714185999974688,
+        "errors": {}
+      },
+      "owning_enrollment": {
+        "calls": 275,
+        "seconds": 6.060758699999951,
+        "errors": {}
+      },
+      "owner_mapping": {
+        "calls": 107,
+        "seconds": 4.00198630000159,
+        "errors": {}
+      },
+      "session_current": {
+        "calls": 125,
+        "seconds": 6.472140300000319,
+        "errors": {}
+      },
+      "paired_registration": {
+        "calls": 125,
+        "seconds": 5.831230100001903,
+        "errors": {}
+      },
+      "signatures": {
+        "calls": 2,
+        "seconds": 0.005042900000262307,
+        "errors": {}
+      },
+      "callback": 7.996509699999933,
+      "endpoint_dispatch": {
+        "calls": 1,
+        "seconds": 9.2087633000001,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "endpoint_watch": {
+        "calls": 1,
+        "seconds": 9.199932699999863,
+        "errors": {
+          "ipc_identity_denied": 1
+        }
+      },
+      "registered_reader": {
+        "calls": 3,
+        "seconds": 1.2475272000001496,
+        "errors": {}
+      },
+      "local_connection_checks": {
+        "calls": 128,
+        "seconds": 2.4188981999986936,
+        "errors": {
+          "ipc_identity_denied": 1
+        }
+      },
+      "sql_watch": {
+        "calls": 1,
+        "seconds": 8.792492699999912,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "composite_current": {
+        "calls": 7,
+        "seconds": 9.480206299999281,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "joint_root_gate": {
+        "calls": 14,
+        "seconds": 6.507740100000319,
+        "errors": {}
+      },
+      "joint_root_source": {
+        "calls": 14,
+        "seconds": 6.504783299999417,
+        "errors": {}
+      },
+      "runner_execute": {
+        "calls": 1,
+        "seconds": 8.394056000000091,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "runner_current": {
+        "calls": 3,
+        "seconds": 7.90839890000052,
+        "errors": {
+          "CancelledError": 1
+        }
+      },
+      "read_exchanges": [
+        41.35800479999989
+      ]
+    },
+    "reply_and_watch_deadlines_equal": true,
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    },
+    "unknown_resent": false,
+    "passed": false,
+    "controlled_native_approval_model_metadata": true,
+    "actual_SQL_OS_keys_IPC": true
+  },
+  "first_file_chain_accepted": false,
+  "initial_database_failure_retained": {
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a23-before-joint.xml",
+      "sha256": "adc01f8710925f3b7110dfff6d5cd6c05b896763174a22ac7e137b3dd78431a0",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "reason": "Docker Linux engine named pipe absent; database connection timeout; Docker Desktop and ONLY A55432 restored before SQL regressions",
+    "baseline_from_failed_instance_used": false
+  },
+  "initial_type_failure": "Callback Awaitable[None] non-None runtime validation typed through Awaitable[object]; original tool output retained, final 214 source files pass",
+  "initial_ruff_logs": {
+    "a23-ruff-initial.log": "383d07fd36bff2754269ff9f3f5c1e7297a1cc7f6bee0bcaaa355dc8cc1c020a",
+    "a23-measure-ruff-initial.log": "68735ba77a34bdcd1fc98b3aaa054af8ab68d492ebeaf9edc150d17c2d1c8f3a"
+  },
+  "static": {
+    "mypy_files": 214,
+    "format_files": 6,
+    "receipts": {
+      "a23-mypy-final.log": "327890ecfbf1d86468c9ebe7d8233308537d24f2e4e8eb84db5f3509e60624fb",
+      "a23-ruff-final.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "a23-format.log": "f57152af69ed696672a20f7a07dc500ce85005053092505a680768f611957e48"
+    }
+  },
+  "public_DTO_ports_schema_wire_changed": false,
+  "C_D_business_changed": false,
+  "flags_changed": false,
+  "checked_metadata_enabled": false,
+  "deadlines_extended": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_actions": 0,
+  "product_accepted": false,
+  "cleanup_installed_instances": 5,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a22.json",
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}
