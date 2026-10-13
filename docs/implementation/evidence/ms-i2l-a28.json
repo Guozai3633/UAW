@@ -1,0 +1,415 @@
+{
+  "date": "2026-10-13",
+  "base_commit": "6758b3c489a357fc3f5acf9305f01bb899ad6aa7",
+  "targeted_distinct_passing": 61,
+  "historical_union_not_all_rerun": 618,
+  "passing_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a28-device-initial.xml",
+      "sha256": "93228bfec38adc999689e4d042f9019f88ea6907988ea3dd366911fe7a3c9321",
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a28-device-final.xml",
+      "sha256": "10af82f151d2c28e1d82658f8edbc49383711fa4b1766ad3474f615f02592df9",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a28-installed-final.xml",
+      "sha256": "29540c3d6f181d5d8e803d1561b1f67788aed51d705077db9cc07a69663bfdd4",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "measurements": {
+    "device-read-measurement.json": {
+      "sha256": "745aa5d077bb52fcd906aab9a4bbb658f99686625562328041820fb8a741a4c0",
+      "values": {
+        "serialized": {
+          "records": 2,
+          "locks": 2,
+          "source": 1
+        },
+        "fresh_read": {
+          "records": 2,
+          "locks": 0,
+          "source": 1
+        }
+      }
+    },
+    "registered-collection-measurement.json": {
+      "sha256": "afef740fbf84b31ca610f01d07ca396056af02d1a27e87af235b04c251a726b5",
+      "values": {
+        "legacy": {
+          "root": 4,
+          "owning": 6,
+          "sql": 278,
+          "locks": 6,
+          "os": 48,
+          "key": 82,
+          "gate": 2,
+          "seconds": 0.7455348000003141
+        },
+        "registered": {
+          "root": 5,
+          "owning": 6,
+          "sql": 189,
+          "locks": 4,
+          "os": 48,
+          "key": 89,
+          "gate": 1,
+          "seconds": 0.5518822000012733
+        },
+        "registered_legacy_role": {
+          "root": 5,
+          "owning": 6,
+          "sql": 199,
+          "locks": 4,
+          "os": 48,
+          "key": 89,
+          "gate": 1,
+          "seconds": 0.6109969000026467
+        },
+        "registered_legacy_decision": {
+          "root": 5,
+          "owning": 6,
+          "sql": 221,
+          "locks": 6,
+          "os": 48,
+          "key": 89,
+          "gate": 1,
+          "seconds": 0.5620797000010498
+        },
+        "registered_legacy_device": {
+          "root": 5,
+          "owning": 6,
+          "sql": 189,
+          "locks": 16,
+          "os": 48,
+          "key": 89,
+          "gate": 1,
+          "seconds": 0.705062100001669
+        }
+      }
+    }
+  },
+  "measurement_notes": [
+    "Fresh active device source retains two current row reads and original full source check, removes write-oriented advisory locks/transactions only; actual expiry still sealed by original serialized _load.",
+    "Record SELECT count in registered comparison must stay equal; lock SELECTs decrease. OS/key/root/full Gate checks stay equal. Time samples are not production latency proof."
+  ],
+  "first_file_chain": {
+    "receipt": {
+      "path": "tests/.artifacts/A/MS-I2l/a28-first-chain.xml",
+      "sha256": "c27f39c0fff12b2445503b2a9008e965b3373115df13bf06fca9a8c42e502d20",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "parent_trace_sha256": "fa41946697ab841e42ca29bc74242557cb66134f52d6147a952af158d59ee7ae",
+    "child_trace_sha256": "aecdaf5e1c2abe9572e05202338f71254eca708b9ad8423fd1eccb358367c032",
+    "parent_trace": [
+      {
+        "operation": "parent.exchange",
+        "shared_start_seconds": 31.31515489999947,
+        "remaining_seconds": 9.999986400001944,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "CancelledError",
+        "seconds": 10.00829960000192
+      },
+      {
+        "operation": "parent.actor",
+        "shared_start_seconds": 31.315162999999302,
+        "remaining_seconds": 9.999978300002113,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.04655780000030063
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.315260399998806,
+        "remaining_seconds": 9.999880900002609,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.046290800000861054
+      },
+      {
+        "operation": "parent.command_source",
+        "shared_start_seconds": 31.36172969999825,
+        "remaining_seconds": 9.953411600003164,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.14552050000202144
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.40266100000008,
+        "remaining_seconds": 9.912480300001334,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.03836279999813996
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.468796199998906,
+        "remaining_seconds": 9.846345100002509,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.031933199999912176
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.5073052000007,
+        "remaining_seconds": 9.807836100000713,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.03488369999831775
+      },
+      {
+        "operation": "parent.send",
+        "shared_start_seconds": 31.542196599999443,
+        "remaining_seconds": 9.772944700001972,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.0747393000019656
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.54220979999809,
+        "remaining_seconds": 9.772931500003324,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.03713420000349288
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.58212149999963,
+        "remaining_seconds": 9.733019800001784,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.03481100000135484
+      },
+      {
+        "operation": "parent.receive",
+        "shared_start_seconds": 31.616941100000986,
+        "remaining_seconds": 9.698200200000429,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "CancelledError",
+        "seconds": 9.706509199997527
+      },
+      {
+        "operation": "parent.session_check",
+        "shared_start_seconds": 31.616952799999126,
+        "remaining_seconds": 9.698188500002288,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.05694700000094599
+      },
+      {
+        "operation": "parent.close",
+        "shared_start_seconds": 41.32324879999942,
+        "remaining_seconds": -0.008107499998004641,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.00018790000103763305
+      },
+      {
+        "operation": "parent.close",
+        "shared_start_seconds": 41.32346619999953,
+        "remaining_seconds": -0.008324899998115143,
+        "deadline_since_zero": 41.315141300001414,
+        "status": "ok",
+        "seconds": 0.00014179999925545417
+      }
+    ],
+    "child_effect_trace": [
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-1",
+        "start_seconds": 27.167446799998288,
+        "shared_start_seconds": 32.568369299999176,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 9.036737900001754,
+        "status": "ok",
+        "seconds": 1.1876032000000123
+      },
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-2",
+        "start_seconds": 28.380853199996636,
+        "shared_start_seconds": 33.781775799998286,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 7.823331399999006,
+        "status": "ok",
+        "seconds": 1.219326700000238
+      },
+      {
+        "operation": "file.open",
+        "checkpoint": "startup",
+        "start_seconds": 29.621826799997507,
+        "shared_start_seconds": 35.022749299998395,
+        "deadline_since_zero": null,
+        "remaining_seconds": null,
+        "status": "ok",
+        "seconds": 0.007649999999557622
+      },
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-3",
+        "start_seconds": 29.635245499997836,
+        "shared_start_seconds": 35.0361679000016,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 6.568939299999329,
+        "status": "ok",
+        "seconds": 1.1796013999992283
+      },
+      {
+        "operation": "file.read",
+        "checkpoint": "startup",
+        "start_seconds": 30.82113979999849,
+        "shared_start_seconds": 36.2220625000009,
+        "deadline_since_zero": null,
+        "remaining_seconds": null,
+        "status": "ok",
+        "seconds": 0.000947600001381943
+      },
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-4",
+        "start_seconds": 30.828081299998303,
+        "shared_start_seconds": 36.22900379999919,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 5.376103700000385,
+        "status": "ok",
+        "seconds": 1.0274822999999742
+      },
+      {
+        "operation": "receipt.sign",
+        "checkpoint": "startup",
+        "start_seconds": 31.85557759999938,
+        "shared_start_seconds": 37.25650020000103,
+        "deadline_since_zero": null,
+        "remaining_seconds": null,
+        "status": "ok",
+        "seconds": 0.0034869999981310684
+      },
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-5",
+        "start_seconds": 31.859069099999033,
+        "shared_start_seconds": 37.25999149999916,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 4.3451160000004165,
+        "status": "ok",
+        "seconds": 1.4260205999999016
+      },
+      {
+        "operation": "runner.current",
+        "checkpoint": "effect-6",
+        "start_seconds": 33.297770299999684,
+        "shared_start_seconds": 38.69869290000133,
+        "deadline_since_zero": 41.60510810000051,
+        "remaining_seconds": 2.9064137999994273,
+        "status": "ok",
+        "seconds": 1.6755161999972188
+      },
+      {
+        "operation": "receipt.publish",
+        "checkpoint": "startup",
+        "start_seconds": 35.01687149999998,
+        "shared_start_seconds": 40.417794400000275,
+        "deadline_since_zero": null,
+        "remaining_seconds": null,
+        "status": "CancelledError",
+        "seconds": 0.9400623999972595
+      }
+    ],
+    "command_sends": 1,
+    "claimed_attempts": 1,
+    "attempts": [
+      {
+        "signed_data": true,
+        "published_ref": false
+      }
+    ],
+    "open_completed": 1,
+    "read_completed": 1,
+    "sign_completed": 1,
+    "cleanup": {
+      "credential_handles_absent": 4,
+      "role_keys_revoked": 2,
+      "child_exited": true,
+      "proof_pipe_closed": true
+    },
+    "unknown_resent": false,
+    "passed": false,
+    "original_bytes_and_recovery_assertions_reached": false,
+    "actual_SQL_OS_keys_IPC": true,
+    "controlled_native_SQL_approval_model_metadata": true
+  },
+  "first_file_chain_accepted": false,
+  "cleanup_distinct_installed_instances": 5,
+  "human_testing_preparation": {
+    "sha256": "8403e057ebd2c03eae0f6e7751492e60db26eafe9bee4740bedb1bcf9347e587",
+    "result": {
+      "scope": "H01 read-only preparation; no launch exchange or user action",
+      "ports": {
+        "backend": {
+          "reachable": false,
+          "error_type": "ConnectError"
+        },
+        "frontend": {
+          "reachable": false,
+          "error_type": "ConnectError"
+        }
+      },
+      "dist_present": false,
+      "ready_for_user": false,
+      "remaining": [
+        "Fixed version/process/dist identity verification",
+        "Independent test ports/state/database",
+        "Current authentication/model/office-academic-output preflight",
+        "Human session/feedback not performed"
+      ]
+    },
+    "public_record": "docs/implementation/human-tests/H01-preparation.md",
+    "human_testing_performed": false
+  },
+  "static": {
+    "mypy_files": 215,
+    "format_files": 3,
+    "receipts": {
+      "a28-mypy-final.log": "51fabbbd1fb527d5627152c7a27f6fc9cb065c8b58596e757827a8a86bc7ca46",
+      "a28-ruff-final.log": "382b04118e4dc8530d37b8ed712a40523fe1eb409c96d5fc2bf70bd7aa2ee49e",
+      "a28-format-final.log": "cdaf31392a20ec31ced30a9fb7e418d730386f1f8e6357f9394755b2b9b3c0bc"
+    }
+  },
+  "preparation_failures": [],
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a27.json",
+  "public_DTO_ports_schema_wire_changed": false,
+  "C_D_business_changed": false,
+  "flags_changed": false,
+  "checked_metadata_enabled": false,
+  "deadlines_extended": false,
+  "new_model_calls": 0,
+  "user_file_reads": 0,
+  "human_actions": 0,
+  "product_accepted": false,
+  "last_full_unchanged": true,
+  "contract_check": {
+    "named_schemas": 1362,
+    "positive_examples": 1362,
+    "negative_cases": 320,
+    "negative_rejections": 320,
+    "interfaces": 288,
+    "errors": []
+  }
+}

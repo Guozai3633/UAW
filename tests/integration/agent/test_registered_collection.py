@@ -56,7 +56,7 @@ async def test_actual_registered_collection_same_result_and_bounded_sql(web, tmp
         await p.approve()
         commands = p.bindings.control.commands
         roots, peers = commands.roots, p.bindings.bridge.pipe.session.registration
-        counts = dict.fromkeys(("root", "owning", "sql", "os", "key", "gate"), 0)
+        counts = dict.fromkeys(("root", "owning", "sql", "locks", "os", "key", "gate"), 0)
         originals, lock = [], threading.Lock()
         owning_task = asyncio.current_task()
 
@@ -78,12 +78,13 @@ async def test_actual_registered_collection_same_result_and_bounded_sql(web, tmp
             setattr(obj, method, measured)
 
         def sql(conn, cursor, statement, parameters, context, many):
-            if (
-                asyncio.current_task() is owning_task
-                and statement.lstrip().upper().startswith("SELECT")
-                and "uaw_records" in statement
+            if asyncio.current_task() is owning_task and statement.lstrip().upper().startswith(
+                "SELECT"
             ):
-                counts["sql"] += 1
+                if "uaw_records" in statement:
+                    counts["sql"] += 1
+                if "pg_advisory_xact_lock" in statement:
+                    counts["locks"] += 1
 
         api = enrollment_peers.WindowsApi
 
@@ -114,6 +115,7 @@ async def test_actual_registered_collection_same_result_and_bounded_sql(web, tmp
                 ("registered", commands.collect_registered),
                 ("registered_legacy_role", commands.collect_registered),
                 ("registered_legacy_decision", commands.collect_registered),
+                ("registered_legacy_device", commands.collect_registered),
             ):
                 for field in counts:
                     counts[field] = 0
@@ -123,18 +125,23 @@ async def test_actual_registered_collection_same_result_and_bounded_sql(web, tmp
                         scope.setattr(RunToolAccessSources, "checked_snapshot", legacy_checked)
                     if name == "registered_legacy_decision":
                         scope.setattr(InstalledFileDecision, "recheck", ApprovalService.recheck)
+                    if name == "registered_legacy_device":
+                        scope.setattr(commands.devices, "_current_binding", commands.devices._load)
                     results.append(await operation(record, actor))
                 samples[name] = {**counts, "seconds": time.perf_counter() - started}
-            assert results[0] == results[1] == results[2] == results[3]
+            assert all(result == results[0] for result in results)
             assert samples["legacy"]["gate"] == 2 and samples["registered"]["gate"] == 1
             assert 0 < samples["registered"]["sql"] < samples["legacy"]["sql"]
             assert samples["registered"]["root"] >= samples["legacy"]["root"]
             assert samples["registered"]["owning"] > 0 and samples["registered"]["os"] > 0
             assert samples["registered"]["sql"] < samples["registered_legacy_role"]["sql"]
             assert samples["registered"]["sql"] < samples["registered_legacy_decision"]["sql"]
+            assert samples["registered"]["sql"] == samples["registered_legacy_device"]["sql"]
+            assert samples["registered"]["locks"] < samples["registered_legacy_device"]["locks"]
             for field in ("root", "owning", "os", "key", "gate"):
                 assert samples["registered"][field] == samples["registered_legacy_role"][field]
                 assert samples["registered"][field] == samples["registered_legacy_decision"][field]
+                assert samples["registered"][field] == samples["registered_legacy_device"][field]
             p.metrics["registered_collection_measurement"] = samples
             (tmp_path / "registered-collection-measurement.json").write_text(
                 json.dumps(samples), encoding="utf-8"

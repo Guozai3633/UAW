@@ -90,19 +90,38 @@ class RunnerDevices:
 
     async def current(self, device_id: str, *, authenticated_principal: Principal) -> Payload:
         validate_contract("Principal", authenticated_principal.wire())
-        binding = await self._load(device_id)
+        binding = await self._current_binding(device_id)
         source = binding["source"]
         if authenticated_principal.wire() not in (source["actor"], source["owner"]):
             raise reject("runner_actor_denied", "Current device principal differs", 403)
         if binding["state"] != "active":
             raise reject("runner_device_inactive", "Device binding is inactive", 409)
         current = await self.source(device_id, Ref.model_validate(source["channel_ref"]))
-        again = await self._load(device_id)
+        again = await self._current_binding(device_id)
         if current != source or again != binding:
             raise reject("runner_device_changed", "Current channel or binding changed", 412)
         if instant(source["expires_at"]) <= self.now():
             await self._load(device_id)
             raise reject("runner_device_inactive", "Device binding expired", 409)
+        return binding
+
+    async def _current_binding(self, device_id: str) -> Payload:
+        """Fresh read of an active binding; expiry still uses serialized sealing.
+
+        Two independent current reads bracket the actual channel source in
+        current(). No lock spanned that source wait in the original path either.
+        This read never updates a device, caches allowance or treats expiry as
+        active. Custom stores retain the original transactional source.
+        """
+        if type(self.store) is not PostgresRecordStore:
+            return await self._load(device_id)
+        row = await self.store.get(self.controller, DEVICES, device_id)
+        binding: Payload = json.loads(json.dumps(row.payload, allow_nan=False))
+        validate_contract("RunnerDeviceBinding", binding)
+        if binding["device_id"] != device_id or binding["revision"] != row.revision:
+            raise StoreConflict()
+        if binding["state"] == "active" and instant(binding["source"]["expires_at"]) <= self.now():
+            return await self._load(device_id)
         return binding
 
     async def owner(self, actor: Principal, device_id: str) -> Principal:
