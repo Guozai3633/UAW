@@ -9,14 +9,15 @@ from importlib.resources import files
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlsplit
 
-from uaw.agent.assembly import assemble_agent_runtime
+from uaw.agent.assembly import AgentAssembly, assemble_agent_runtime
 from uaw.agent.completion.assembly import assemble_completion_runtime
-from uaw.agent.contracts import LoopOperation
+from uaw.agent.contracts import LoopOperation, validate_decision
 from uaw.agent.contracts import identifier as stable_id
 from uaw.agent.repository import pin
+from uaw.agent.sources import check_pin
 from uaw.context.contracts import InstructionRule
 from uaw.infrastructure.db.context_batch import PostgresContextRecordBatch
-from uaw.infrastructure.db.transactions import reference
+from uaw.infrastructure.db.transactions import RecordTransaction, reference, timestamp
 from uaw.run.approval_router import RoutedApprovals, ToolApprovalRoute
 from uaw.run.completion import RunCompletionController
 from uaw.run.file_admission import NAMESPACE as FILE_SOURCES
@@ -24,6 +25,7 @@ from uaw.run.file_runtime import FileRunRuntime, assemble_file_run
 from uaw.run.inputs import RunInputReader
 from uaw.run.jobs import RunJobs
 from uaw.run.service_router import RunApprovalRouter, RunCompletionRouter
+from uaw.run.state import validate_worker_transition
 from uaw.shared.contracts import (
     Principal,
     Ref,
@@ -34,6 +36,7 @@ from uaw.shared.contracts import (
 )
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
 from uaw.shared.ports import ApprovalPort
+from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreMissing
 from uaw.tool.ledger import ToolLedger
 from uaw.tool.providers.arithmetic import arithmetic_spec
@@ -354,13 +357,8 @@ class BackgroundAgent:
             )
             if result["kind"] != "ok":
                 return await self.failure(base, result)
-            await self.message(
-                actor,
-                run,
-                "understanding",
-                result["payload"]["summary"],
-                "web-understanding-" + key,
-            )
+            # FrameRepository already commits the stable understanding Item and
+            # its event. A second driver Item repeats the same task summary.
             return {**base, "stage": "understood", "frame_ref": result["output_refs"][0]}
         if job["stage"] == "understood":
             method_id = "web-method-" + key
@@ -491,7 +489,7 @@ class BackgroundAgent:
                 step = job["step"] + 1
                 return {**base, "step": step, "step_context": self.step_context(ctx, step).wire()}
             if result["payload"]["action"] in ("wait", "blocked"):
-                await self.waiting(actor, run)
+                await self.publish_pause(agent, operation_id, step_ctx, result)
                 return {**base, "state": "blocked"}
             operation = await agent.repository.operation(operation_id, step_ctx)
             proposal = (
@@ -597,6 +595,127 @@ class BackgroundAgent:
             }
         )
 
+    async def publish_pause(
+        self, agent: AgentAssembly, operation_id: str, ctx: TrustedExecutionContext, result: Payload
+    ) -> None:
+        """Display the original model question/limitation, without re-running it.
+
+        A generic waiting status is insufficient. The saved decision is read
+        through its owning model domain, then Item + waiting Run commit together
+        under the original conversation lock and cancellation/version checks.
+        """
+        c = self.control
+        assert c.records and c.run_service and ctx.run_id and ctx.conversation_id
+        operation = await agent.repository.operation(operation_id, ctx)
+        if (
+            operation.phase != "finished"
+            or operation.result != result
+            or operation.model_result is None
+            or operation.model_result["kind"] != "ok"
+            or operation.proposal is None
+        ):
+            raise reject(
+                "background_pause_source_invalid", "Original finished decision required", 412
+            )
+        output = await agent.runtime.loop.models.read(operation.model_result, ctx)
+        proposal = validate_decision(operation.proposal)
+        if (
+            output["finish_reason"] != "stop"
+            or output["tool_calls"]
+            or validate_decision(output["structured_data"]) != proposal
+            or proposal["action"] not in ("wait", "blocked")
+            or result["payload"]["action"] != proposal["action"]
+            or not proposal["text"].strip()
+        ):
+            raise reject(
+                "background_pause_source_invalid",
+                "A complete original question or limitation required",
+                412,
+            )
+        await agent.runtime.loop.verify(operation, ctx)
+        model_result = operation.model_result
+        item_id = stable_id("agent-pause-", {"operation": operation.id})
+
+        async def write(tx: RecordTransaction) -> Payload:
+            actual = await tx.load("agent.loop.operations", operation.id)
+            run = await tx.load("runs", ctx.run_id or "")
+            ledger = await tx.load("budget.ledgers", ctx.run_id or "")
+            frame = await tx.load("intent.frames", ctx.task_id or "")
+            inputs = await tx.load("run.input_sets", ctx.run_id or "")
+            check_pin(
+                Ref.model_validate(operation.request["current_frame_ref"]),
+                "task_frame",
+                frame.resource_id,
+                frame.revision,
+                frame.payload,
+            )
+            if (
+                actual.payload != operation.wire()
+                or actual.revision != operation.revision
+                or actual.schema_name != "AgentLoopOperation"
+                or run.payload["conversation_id"] != ctx.conversation_id
+                or run.payload["task_id"] != ctx.task_id
+                or run.payload.get("root_agent_ref", {}).get("id") != operation.instance_id
+                or ledger.payload["cancel_requested"]
+                or run.payload["status"] in ("completed", "failed", "cancelled")
+                or frame.payload["input_revision"] != inputs.revision
+                or str(frame.revision) != operation.request["current_frame_ref"]["version"]
+                or min(
+                    datetime.fromisoformat(x.replace("Z", "+00:00"))
+                    for x in (ctx.deadline, run.payload["budget"]["deadline"])
+                )
+                <= datetime.now(UTC)
+            ):
+                raise reject(
+                    "background_pause_stale", "Original task changed before question commit", 412
+                )
+            now = timestamp()
+            item = {
+                "id": item_id,
+                "conversation_id": ctx.conversation_id,
+                "run_id": ctx.run_id,
+                "type": "agent_message",
+                "status": "completed",
+                "revision": 1,
+                "text": proposal["text"],
+                "resource_refs": [
+                    pin("content", operation.wire()).wire(),
+                    model_result["output_refs"][0],
+                    operation.request["current_frame_ref"],
+                ],
+                "created_at": now,
+                "updated_at": now,
+            }
+            validate_contract("InteractionItem", item)
+            await tx.write("items", item_id, "InteractionItem", item)
+            await tx.emit(
+                ctx.conversation_id or "", "item.updated", item, item_ref=reference("item", item_id)
+            )
+            if run.payload["status"] != "waiting_for_user":
+                validate_worker_transition(run.payload["status"], "waiting_for_user")
+                changed = {
+                    **run.payload,
+                    "revision": run.revision + 1,
+                    "status": "waiting_for_user",
+                }
+                await tx.write("runs", run.resource_id, "RunRecord", changed, run.revision)
+                await tx.emit(
+                    ctx.conversation_id or "",
+                    "run.updated",
+                    changed,
+                    base_revision=run.revision,
+                    result_revision=run.revision + 1,
+                )
+            return item
+
+        await c.run_service.transactions.execute(
+            ctx.principal,
+            "conversation:" + ctx.conversation_id,
+            meta(item_id),
+            {"action": "publish.agent.pause", "operation": operation.wire(), "proposal": proposal},
+            write,
+        )
+
     async def waiting(self, actor: Principal, run: Payload) -> None:
         assert self.control.run_service
         current = await self.control.run_service.get_run(actor, run["id"])
@@ -641,7 +760,6 @@ class BackgroundAgent:
         return {**job, "state": "blocked", "failure": failure}
 
     async def publish_preview(self, actor: Principal, run: Payload, proposal: Ref) -> None:
-        from uaw.infrastructure.db.transactions import RecordTransaction
         from uaw.run.deliveries import DeliveryReader
 
         c = self.control

@@ -93,6 +93,23 @@ async def test_real_queue_pipeline_recovers_original_step_and_delivers(
     assert await queue.tick()  # actual policy + preparing
     assert await queue.tick()  # actual understanding
     frame = await control.intent_service.frames.current(actor, original["task_id"])
+    from sqlalchemy import select
+
+    from uaw.infrastructure.db.models import RecordRow
+
+    async with runs.store.database.sessions() as sql:
+        understandings = (
+            await sql.scalars(
+                select(RecordRow).where(
+                    RecordRow.principal_id == actor.id,
+                    RecordRow.namespace == "items",
+                    RecordRow.payload["run_id"].astext == original["id"],
+                    RecordRow.payload["type"].astext == "understanding",
+                    RecordRow.deleted.is_(False),
+                )
+            )
+        ).all()
+    assert len(understandings) == 1
     case.responses[:] = [
         decision("propose_completion", "Actual queued answer"),
         review(contract_from_frame(frame)["requirements"]),
