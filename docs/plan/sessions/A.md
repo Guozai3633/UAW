@@ -1,3 +1,13 @@
+# A22 当前：原来源 fresh组读，继续实际首次链
+
+准确source ms-i2l-a22-source / aa5d0ba3e2479defb397674844f4406b6eeedeaa，2026-10-13发布。
+D A21真实根source已精确合入并按组件接受。107定向通过、549历史并集不是当前全量。
+原Run/账本、Run/admission及await后admission/model用新鲜组合SQL，每次实际查询，不缓存权限；
+实际joint图244→212 SQL，OS/key/root不减。213类型/4静态格式/契约通过。
+新首次链65.80秒失败command1/open0，占位1无signed/ref；unknown不重发、清理完成。
+A继续自身打开前与来源图成本，不修改worker业务或操作其分支。BCD当前无新包。
+原模型材料/准确引用/本人接受/汇合全量pending；详细../../coordination/requests/A/MS-I2l-A22-fresh-source-reads.md。
+
 # A21 当前：联合目录与原审批接线
 
 固定source ms-i2l-a21-source / 88e7078cc0b7aee66136ebd44ec0d057e184b209。

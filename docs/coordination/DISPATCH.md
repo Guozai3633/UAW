@@ -1,3 +1,28 @@
+# A22 正式状态：真实目录消费已合入，首次链仍失败
+
+2026-10-13发布；准确源码 **aa5d0ba3e2479defb397674844f4406b6eeedeaa** / `ms-i2l-a22-source`。
+实跑为2026-10-12原回执；旧标签/历史失败/费用不移动或覆盖，不要求worker同步浮动integration。
+
+D A21最终handoff317549c精确合入9210a92，按组件接受。A另实跑36 D根边界＋10协议及实际两Gate消费。
+A新鲜组合SQL输入已接原权限/Run固定模型源，每次fresh SELECT，关键await前后复查和最终witness保留。
+实际joint图SQL244→212，root2/owner2/OS16/key28仍相同，无allowed缓存或公开DTO/wire变更。
+107不同定向通过，549历史并集未全部重跑；213类型/4文件静态与格式/1362schema/288接口/320否定例通过。
+477源码摘要固定；原1691全量保留；前后测量秒数不作为生产通用速度比例。
+
+首次完整成功断言实际仍失败：65.80秒，command1/open0，file_read_attempts1，signed0/ref0。
+占位不证明正文读取；原10秒reply终止，无unknown重发或假journal，不推not_applied/零费用。
+三个临时installed实例随机凭据/key/child/proof清理全核对；无用户文件、新模型或本人操作。
+
+| Session | 当前状态 | 下一步 |
+| --- | --- | --- |
+| A | A22来源组读与D目录消费已固定 | 自己integration继续原来源重复成本与打开前停止点；实际签名后才材料/模型/本人链 |
+| B | MS-U3b原组件已交付 | 保留394d785/1b0fe02，没有新包 |
+| C | MS-T2i-b原组件已交付 | 保留223c9a9/730a419，没有新包 |
+| D | A21原目录消费组件已接受 | 保留7157883/317549c与全部失败/清理；停在交付点，无新续项 |
+
+以下A21派发是历史，不能据此重复开工。flags/checked_metadata/子Agent/DAG/写入安装exec关闭，原期限/CAS保持。
+[算法和接受范围](requests/A/MS-I2l-A22-fresh-source-reads.md)、[实跑证据](../implementation/evidence/ms-i2l-a22.json)。
+
 # A21 正式来源：D A20组件已接受，联合目录续项
 
 准确源码 **88e7078cc0b7aee66136ebd44ec0d057e184b209** / `ms-i2l-a21-source`。

@@ -1,3 +1,12 @@
+# A22 当前接受记录：A21组件已合入，本续项停止
+
+2026-10-13，A source ms-i2l-a22-source / aa5d0ba3e2479defb397674844f4406b6eeedeaa。
+D最终7157883/handoff317549c精确合入9210a92，原NativeRootSource.checked_current已实际消费，按组件接受。
+D265去重worker回执与原89.37秒command1/open0失败保留。A另验证46边界/协议及实际两Gate。
+A22首次链65.80秒仍失败，占位1/open0/signed0/ref0；不是整个MS-R2完成。
+保留dev/runner原提交与所有回执，停在当前交付点，不自动同步或扩包；没有新D任务。
+下方A21派发为历史。原期限/权限/撤销/取消/CAS与flags保持。
+
 # A21 当前：原读取预算修复联合目录续项
 
 固定source ms-i2l-a21-source / **88e7078cc0b7aee66136ebd44ec0d057e184b209**。
