@@ -1,3 +1,14 @@
+# A32 当前：普通交流按影响澄清，实际新入口交付
+
+准确最终source bc9458c3fd93d62290cae3ab6cce4c04f968f065 / ms-i2l-a32-refined-source，初稿36ff4e1保留。
+理解/根Agent/完成核验区分一般讨论与实际来源操作；unresolved列表不再机械阻断，原资料/动作证据仍核验。
+23定向/215类型/7静态格式通过；8实际DeepSeek15744/4417Token，2.00 USD pending非账单。
+行为样例通过；人工仍发现概念对立/过度概括且自核验漏判，技术质量和本人满意未accepted。
+H01-v4实际localhost原身份登录刷新，原两条cancelled任务/旧答不重发回填，旧快照不热改。
+同Run澄清/原文件门槛未完成；675历史并集非当前全量，旧last_full/权限/flags/模型/期限保持。
+BCD无新包，不自动同步。下一项记录本人复测并闭合真实质量缺口，不以passed自评掩盖。
+详见../../implementation/human-tests/H01-I02.md及../../implementation/evidence/ms-i2l-a32.json。
+
 # A31 当前：已合入 B 页面修复，H01-v2真实交付
 
 source b43f3d06d2fbcb1595de4d1fe23f4e9a7580a4bf / ms-i2l-a31-source，B db0a698/c13232b精确合入；82单元/43受控Chromium组件接受。

@@ -2,7 +2,7 @@
   "date": "2026-10-13",
   "platform": "Windows",
   "machine": "AMD64",
-  "scope": "A31 exact B component merge:82 units/43 controlled browser; A30 backend8 not rerun. H01-v2 actual same-identity TCP/browser refresh ready for human retest. Python652 historical union NOT all rerun; A28 file gate unchanged.",
+  "scope": "A32 ordinary conversation policy:23 targeted/8 actual fixed-model calls with all costs retained; behavior passes, manual technical quality remains open. H01-v4 actual ready/identity. Python675 historical union NOT all rerun.",
   "components": {
     "fastapi": {
       "installed": true,
@@ -172,7 +172,7 @@
     "checked_metadata_witness_components": true
   },
   "test_counts": {
-    "tests": 652,
+    "tests": 675,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
   "engine_metadata": {
     "observed_live": true
   },
-  "test_evidence_sha256": "703837d26976913e2133d8c4ee51bf2a375218f969007d81515abc233bd84c87",
+  "test_evidence_sha256": "90f05dd3a350cd870a79671f3a9e188ed3891fa11407ce6f0d13a414c74a2514",
   "runtime_implementation": "development_control_plane_with_scoped_A9_file_admission_and_original_routes_with_original_journal_recovery_with_current_authority_scope_with_original_owner_and_recheck_components",
   "source_hashes": {
     ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
@@ -251,9 +251,9 @@
     "src/uaw/agent/completion/activity.py": "0d9f9ae4792837878bf436af73b735b72ffe373354045e1941e4f3bffc39fa3d",
     "src/uaw/agent/completion/assembly.py": "0788e65d865343892df909de1e49dc028f3bccc57941201f8dfa3c6e209a5e16",
     "src/uaw/agent/completion/contracts.py": "ba326c60b24076083674937f12d41b6010c7b4d5ac79d21a9da65d74b3e11694",
-    "src/uaw/agent/completion/delivery.py": "198f61f27c1d03a70de667e05835d98b29790a851f1063192b9d73191f9a6dcb",
+    "src/uaw/agent/completion/delivery.py": "78a70ad30627b6f0e0e3cf1c07781f2d79c7da70756343f2bd42ed135ffbd2ce",
     "src/uaw/agent/completion/evidence.py": "e8a2a2d810408e516739534a203f0ed47633b17f3344ce36dec4c3bcb8cb2ac4",
-    "src/uaw/agent/completion/semantic.py": "509d92c9bc743ff1f5c56bd152c9b619e70a90578d6b1b00af3dd20f9c39dc45",
+    "src/uaw/agent/completion/semantic.py": "d66527e7257aaddefcab5d08a65c00b7ec9262d9b0456a2dbfdf4c068e081ae9",
     "src/uaw/agent/contracts.py": "63bd73d5ff0c5431fa08015b853794670e1a1636fe9748e83587a484863fb4b3",
     "src/uaw/agent/engines/__init__.py": "5cd3281b59aa20d4fd454d7a3042015262603210b098e9335e573c236d28fa36",
     "src/uaw/agent/engines/checkpoints.py": "fce5c27bbc38eb8d4c83fb5ab96fffd8713aa34c3a6bbde5d1c0c80a9e989d1a",
@@ -278,7 +278,7 @@
     "src/uaw/context/composer.py": "bc8a706f13d800cc95b29db837dbff257aa67d176f415c26dd39a151282482cd",
     "src/uaw/context/contracts.py": "a024bcfd96ab491c7aacd5e72b062dc146faeb769ba30e990342f2716368dcef",
     "src/uaw/context/facade.py": "46cc5a868db2ef40b1deb7d20d4a486cc1ad50d6c0c02cf4d3bc0bd1e5ac6658",
-    "src/uaw/context/intent.py": "733c6658868a221105ce88cc51adb621df6e1143c11185cdd7b7295bd42dc1c2",
+    "src/uaw/context/intent.py": "2b1c9dc851b58a17e821686ac8e497b3bb0b66668986b3afc21127a9b4b47480",
     "src/uaw/context/model_input.py": "debd1be7d72902da349748082e1822e5ba9a0a2514712a6938a6d9e07bec7b80",
     "src/uaw/context/ports.py": "9168de89e47ee8087a320d315020d7aec1aaeea6eaa78c8d1d0e3f7800582b88",
     "src/uaw/context/read_batch.py": "e19a44be0a0ad69e4b243f5f36ba3b0ec39685b190ef45b3b4db55aa0d3dbc9f",
@@ -341,11 +341,13 @@
     "src/uaw/model/ports.py": "fed6d8a541a68c4eb93ef07a9317020b8764d70d9b2beb6f343449f66b28a30e",
     "src/uaw/resources/__init__.py": "422f351371d1d70179a616b510b9e55b8ede11a0ad02395d656531147f6b0009",
     "src/uaw/resources/prompts/agent-root-v1.txt": "873ab6d0a770755e7eee416cb6a7eecee601fb9712fb3f4596c3eaa93f1a1352",
+    "src/uaw/resources/prompts/agent-root-v2.txt": "991e466d5bd0e02ba8e4fdc40577848ab392651a516667d28e0f1b27f61694b7",
     "src/uaw/resources/prompts/intent-understand-v1.txt": "a61a99f44b40e05c9452d9cdccf0d54ee7421d8cdc4d1b976e95335095d2e01a",
+    "src/uaw/resources/prompts/intent-understand-v2.txt": "c92da6d2604f7b78c7af238ca2a18b8730aaf07ac78809aa0b107d8fe518ff9a",
     "src/uaw/run/__init__.py": "a422b2894ffd8197f6426969e000187361fe9c79df7a0eaad7e381f6636b8b7e",
     "src/uaw/run/approval.py": "8f09598409efefce55fc7e492b6a69c1256f09810954db7a7eaf687a08f329b2",
     "src/uaw/run/approval_router.py": "756719f18828b2d16a0f590489a35d0d78caf1a23bdedf83ff590252de9b2ead",
-    "src/uaw/run/background.py": "64dd20044129608cdfc92b5556705aadf2d49abdb8c4214cbefbbb96e14e41c1",
+    "src/uaw/run/background.py": "311ec993d78d01e60a8f296f8654eb9a77c56120024dc10bd5fbf8c3284a86b6",
     "src/uaw/run/budget.py": "b67b93fb2b5cf53b8f5dfa2f3f380f99e703c9c9acfe38d54ff827d5f8acc1ec",
     "src/uaw/run/completion.py": "61a19a64b841b6791bc0970ad3a2e7bf61c5eeebedebfd3732f11dd9a5c46047",
     "src/uaw/run/context.py": "398849d0f56499b06dedbc582fb7c19729f7a48b73d121d0a401700d8d9e9913",
@@ -431,7 +433,7 @@
     "src/uaw/workspace/ports.py": "8e099b56b0ff5a8e21a5d18c59dd931bf63f3cfab88775ac60d27ab209678828",
     "src/uaw/workspace/repository.py": "0207c7767aee2b24a99efbbdc00fefdc42f3861887e04368374838e09c356967",
     "tests/conftest.py": "077b4b8e8db58f6532514d0d50504aca255e7fa6636fa551681bd27165e9dd4c",
-    "tests/integration/agent/conftest.py": "71da2af8764acbf341aa27dab6f9be0d8e0801de088fd3584ccf49bf27397ecc",
+    "tests/integration/agent/conftest.py": "5cf41e285dd9844102eb9e98d3ac3cadef97cc6aa45b66fd6fe194a436c84494",
     "tests/integration/agent/installed_child_profile.py": "8855ed3c0656b836cdec626e14d01c5478ae52f4099a27a0bc6ef8a683fb5cf7",
     "tests/integration/agent/installed_diagnostic_fixture.py": "2092c07547ce9697ba99164372c5ed10055258896849101cdb4adc053759c4a1",
     "tests/integration/agent/installed_metadata_candidate.py": "bb08221e0cb718d7d7af78423bad1c2f4e7f8ad0e46780ed56a55c4d06ebb210",
@@ -439,6 +441,7 @@
     "tests/integration/agent/metadata_candidate_child.py": "0afc1e4a4bd0db59649d94f6ad9a711c5ce6b187fb3a2ed0d1d8bc59d26ecbe1",
     "tests/integration/agent/profiled_installed_child.py": "c77ad863640820dabad2d51a32d7abe708d96e4495488871d6404a092b4fdf22",
     "tests/integration/agent/runner_control_peer.py": "a5e74d4c69a18fe5969f72ee79d76f30d3aa44ac2fa9c578e59a5c451cd7856e",
+    "tests/integration/agent/test_advisory_uncertainty.py": "71cd7e7cedfe85f8053a149de31792c556b4ca2bd292889a9479e33836b200fa",
     "tests/integration/agent/test_approval_recheck_waits.py": "83e09e9b979a89e0dbba93d818c5fe189b8b9408afb4530cd462fbb0cbd4ff32",
     "tests/integration/agent/test_approval_router.py": "59768ec636bda8fbab91bf663d8c48c7940cadbfeff5fea9c6d6e5497e2d1661",
     "tests/integration/agent/test_background_pause.py": "e89751b4780a0bb77dfeada97d3a30e4a49295bfda2a2322adc8c51749e619e0",
@@ -618,6 +621,7 @@
     "tests/unit/agent/test_pinned_web_server.py": "c4073362ac906e2a995bfd8299e366b0def6b53e41634966a8f6a966bf3e5072",
     "tests/unit/agent/test_routed_agent_binding.py": "8022e04b49e1d6fca6c7ef39bcd509ef51fc82a1cbac9b28835af1963159e76f",
     "tests/unit/agent/test_semantic_evidence.py": "9f7f7188d19c1e17c4e0559a60fbf2a6c50c9b19bd08a06d63842474e2b8dba8",
+    "tests/unit/agent/test_understanding_rule_versions.py": "b4b63350777f4bd3dab8b24b99d4a38d4b63b4ce8025716f8e578970dd0bb30b",
     "tests/unit/context/test_assessment.py": "3bf5fde48a66e4aafb95bf9183458e3333dfdc1658eb32dc05034c89cac412c3",
     "tests/unit/context/test_cache.py": "748354cac1d0784803d050a2530b2e9fb2d37f41d444e4fae772ba07cd1cce4c",
     "tests/unit/context/test_components.py": "beb412007cb1c12c597abbd048e76fb2d72b0007b26fb683beb70a5c1ae1e06a",
@@ -674,8 +678,8 @@
     "tests/unit/tool/test_vector_index.py": "af1507eed7ab5a1382f722c5966a3159273296e190c5b25750a7bc7dd1f09fb8",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
   },
-  "stage_report": "docs/implementation/evidence/ms-i2l-a31.json",
-  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a30.json",
+  "stage_report": "docs/implementation/evidence/ms-i2l-a32.json",
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a31.json",
   "previous_environment": "docs/implementation/evidence/ms-i2l-a8-environment-preserved.json",
   "previous_tests": "docs/implementation/evidence/ms-i2l-a8-tests-preserved.xml"
 }

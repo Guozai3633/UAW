@@ -66,3 +66,12 @@ action=respond，得到实际Artifact和passed报告；原unresolved仍保留，
 人工技术核对参考[Apache ZooKeeper internals](https://zookeeper.apache.org/doc/current/zookeeperInternals.html)
 与[Apache Seata TCC mode](https://seata.apache.org/docs/user/mode/tcc/)。它们用于A核对样例概念，
 不是UAW工具读取的来源，不能作为UAW已联网/有真实文档引用的证据。
+
+## 最终固定与实际边界
+
+最终source bc9458c3fd93d62290cae3ab6cce4c04f968f065 / ms-i2l-a32-refined-source。23定向通过、215类型/7静态格式通过。
+8次真实Model行为样例：一般比较给正文、指定材料缺失提问；15744/4417Token，2.00 USD pending预留，原失败与用量保留。
+细化复测仍有概念过度对立/TCC无中心裁决的错误，自核验仍passed；人工技术质量不接受，后续真实质量门槛明确保留。
+H01-v4实际原用户入口ready/登录刷新，原两cancelled旧任务不变；H01-v3未启动，旧答/快照保持。
+两临时测试服务清理完成，数据库与费用记录保留，不操作BCD或代点本人。
+[实际反馈与体验](../../../implementation/human-tests/H01-I02.md) · [回执](../../../implementation/evidence/ms-i2l-a32.json)。

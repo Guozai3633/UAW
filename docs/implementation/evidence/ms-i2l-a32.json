@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-13",
+  "source_commit": "bc9458c3fd93d62290cae3ab6cce4c04f968f065",
+  "source_tag": "ms-i2l-a32-refined-source",
+  "initial_source": "36ff4e10deb2bd0497b556ad273aff9d3fa13f61",
+  "base_commit": "4651d456900c076c25e72ce274cb0ec0d6215b50",
+  "targeted_distinct_passing": 23,
+  "scope": "19 units +4 SQL on initial policy logic; final refinement only changes Agent/semantic instructions, retested actual fixed LLM. Not a whole-platform or human quality acceptance.",
+  "historical_union_not_all_rerun": 675,
+  "test_receipts": [
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a32-policy-unit-final.xml",
+      "sha256": "35ddf53943837b6328f32369af26676928bd27bb3e5e5e7c498631495abc1467",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passing_nodes_counted": 19
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a32-policy-sql.xml",
+      "sha256": "7c381bfbfae8d4ec237457ab5f8c82377255d559d90b8b1a5d5bd0b8d10f2c48",
+      "tests": 4,
+      "failures": 0,
+      "errors": 2,
+      "skipped": 0,
+      "passing_nodes_counted": 2
+    },
+    {
+      "path": "tests/.artifacts/A/MS-I2l/a32-policy-sql-final.xml",
+      "sha256": "44c6d4f9b0e4ab111718fdc2a7276d19fa02bfa14e2305858b50f04620a7a29b",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passing_nodes_counted": 2
+    }
+  ],
+  "static": {
+    "mypy_source_files": 215,
+    "ruff_format_files": 7,
+    "receipts": {
+      "a32-mypy-final.log": "51fabbbd1fb527d5627152c7a27f6fc9cb065c8b58596e757827a8a86bc7ca46",
+      "a32-ruff-final.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "a32-format-final.log": "9fa2e30088122b883ebbf1c300359d4a0c9d09c988b20631e8625a40425a9723"
+    }
+  },
+  "old_prompt_bytes_unchanged": [
+    "intent-understand-v1.txt",
+    "agent-root-v1.txt"
+  ],
+  "understanding_rule_versions": [
+    "intent-understand-v1@1",
+    "intent-understand-v2@1"
+  ],
+  "mechanical_unresolved_list_block_removed": true,
+  "original_unresolved_assumptions_goal_and_current_verification_retained": true,
+  "no_dictionary_or_TCC_specific_execution_branch": true,
+  "live_records": [
+    {
+      "version": "H01-I02-live",
+      "source_commit": "36ff4e10deb2bd0497b556ad273aff9d3fa13f61",
+      "private_receipt_sha256": "b872cdeee3a6f3b042513e37a66afb06ada6693d302fd2ae75259fce3bc39e0c",
+      "scenarios": [
+        {
+          "name": "ordinary_comparison",
+          "behavior_result": "passed",
+          "fixed_model_id": "deepseek-flash",
+          "actions": [
+            "respond"
+          ],
+          "attempts": 3,
+          "usage": {
+            "input_tokens": 6316,
+            "output_tokens": 1976,
+            "model_calls": 3
+          },
+          "held_money_USD": "0.75",
+          "actual_money": null,
+          "billing_state": "pending",
+          "unresolved_count": 1,
+          "unresolved_notes_preserved": true,
+          "actual_artifact": true,
+          "artifact_hash": "3806c14dd3af0f01a1826556b611d0e8e3d2cfc5c63f49437a98ec2c62c796e7",
+          "semantic_self_report_outcome": "succeeded",
+          "user_acceptance_posted": false,
+          "sample_seconds_to_delivery_or_visible_question": 120.92,
+          "manual_quality": "needs_improvement",
+          "content_bytes": 4256
+        },
+        {
+          "name": "missing_specific_material",
+          "behavior_result": "passed",
+          "fixed_model_id": "deepseek-flash",
+          "actions": [
+            "wait"
+          ],
+          "attempts": 2,
+          "usage": {
+            "input_tokens": 3221,
+            "output_tokens": 661,
+            "model_calls": 2
+          },
+          "held_money_USD": "0.50",
+          "actual_money": null,
+          "billing_state": "pending",
+          "unresolved_count": 3,
+          "unresolved_notes_preserved": true,
+          "actual_artifact": false,
+          "artifact_hash": null,
+          "semantic_self_report_outcome": null,
+          "user_acceptance_posted": false,
+          "sample_seconds_to_delivery_or_visible_question": 98.414,
+          "manual_quality": "honest_missing_material_request",
+          "content_bytes": 0
+        }
+      ]
+    },
+    {
+      "version": "H01-I02-live-refined",
+      "source_commit": "bc9458c3fd93d62290cae3ab6cce4c04f968f065",
+      "private_receipt_sha256": "2160ee036a99d06f9209cf04b1d478a05c3471740c5464ae20c5745e6a275428",
+      "scenarios": [
+        {
+          "name": "ordinary_comparison",
+          "behavior_result": "passed",
+          "fixed_model_id": "deepseek-flash",
+          "actions": [
+            "propose_completion"
+          ],
+          "attempts": 3,
+          "usage": {
+            "input_tokens": 6207,
+            "output_tokens": 1780,
+            "model_calls": 3
+          },
+          "held_money_USD": "0.75",
+          "actual_money": null,
+          "billing_state": "pending",
+          "unresolved_count": 1,
+          "unresolved_notes_preserved": true,
+          "actual_artifact": true,
+          "artifact_hash": "19c555be54aba45e2909fee582632481306e289a5760b53e184ae694a563e68f",
+          "semantic_self_report_outcome": "succeeded",
+          "user_acceptance_posted": false,
+          "sample_seconds_to_delivery_or_visible_question": 108.489,
+          "manual_quality": "needs_improvement",
+          "content_bytes": 3574
+        }
+      ]
+    }
+  ],
+  "actual_live_model_calls": 8,
+  "live_input_tokens": 15744,
+  "live_output_tokens": 4417,
+  "held_money_USD": "2.00",
+  "actual_money": null,
+  "billing_state": "pending",
+  "manual_quality_findings": [
+    "First actual response progressed rather than stopping, but gave speculative common implementation claims and overly absolute locking/performance descriptions. Original response and model self-pass retained; not accepted as technically reliable reference.",
+    "Refined actual response explains alternatives and qualifies implementation differences, but still creates a false conceptual dichotomy and incorrectly states TCC lacks a central decision. Model self-review again passed. Behaviour gate passes; technical answer quality remains an open issue, not masked by the passed report.",
+    "The original question is ambiguous; discussing assumptions is legitimate. An authoritative correction must distinguish TCC business resource actions, transaction coordination and ZooKeeper replicated state. No topic-specific hardcoded answer was added."
+  ],
+  "manual_review_primary_sources_not_UAW_tool_evidence": [
+    "https://seata.apache.org/docs/user/mode/tcc/",
+    "https://zookeeper.apache.org/doc/current/zookeeperInternals.html"
+  ],
+  "failure_history_retained": [
+    "Initial controlled SQL fixture alias unavailable:2 setup errors, two other nodes passed; same-name parent fixture corrected and both new nodes passed.",
+    "Initial sandbox unit preparation stalled without XML, interrupted; escalated exact19 unit nodes passed, original log retained.",
+    "Initial Ruff sorting/line-length issues fixed without changing policy constraints.",
+    "Final refined live backend connection attempted before ready, ConnectError with zero POST/model sends. Original no-post report/log retained; ready GET checked before the actual once-only test.",
+    "Temporary cleanup rejected conhost child lacking source config before mutation; read-only process audit then stopped only exact test Python parents/children. User service remains ready."
+  ],
+  "test_services_cleaned_and_all_results_cost_records_retained": {
+    "receipt_sha256": "cde5b1e2adcef6dc68ec07bb902bcb069929a03174dab7f5fe080449876945f8",
+    "test_ports": [
+      8013,
+      8014
+    ],
+    "user_service_touched": false
+  },
+  "human_environment": {
+    "version": "H01-v4",
+    "source_commit": "bc9458c3fd93d62290cae3ab6cce4c04f968f065",
+    "frontend_source": "db0a6981c1c925ad46283c765cef5a08d2c8cfcf",
+    "origin": "http://127.0.0.2:5181",
+    "dist_hashes": {
+      "index.html": "5489e365723a9b16e9aabbcfe29161b224e3f17635c8c555139a56352b73b9df",
+      "assets/index-B45RsHQP.js": "cc29c0d6f9e518fc1a4926279b5b304e7e9b79e756c48fc4f9523eddec5f1c57",
+      "assets/index-CrD7HuLW.css": "9338a965fbd284799b9337881ec1444ad0a61ad455ed9128567a56499b6bd7bb"
+    },
+    "settings_sha256": "bc792549057c83c19fc632acbd20014e8a74cd951579fae18de99a5540767522",
+    "lock_sha256": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+    "actual_ready_and_dist_match": true,
+    "actual_original_identity_login_refresh_and_two_cancelled_runs_observed": true,
+    "original_user_tasks_unchanged": true,
+    "old_snapshots_and_answers_retained": true,
+    "prepared_H01_v3_never_started_after_refinement": true,
+    "hidden_background_start": "Start-Process -WindowStyle Hidden; original same identity/data/auth/dependency lock",
+    "new_human_submit_native_stop_accept_clicked": false,
+    "human_retest": "awaiting_user",
+    "screenshot_sha256": "42c45a960fd09577042fe253d44ae733d583034568e6685fe5dfbf1bfc0532bb"
+  },
+  "original_feedback_private_sha256": "1c7444bd4de443670a42087718908e4d9d81db3519746a5d88cf961c93b8f405",
+  "user_runs_resubmitted": 0,
+  "unknown_effect_resends": 0,
+  "same_Run_clarification_support_added": false,
+  "flags_permissions_models_timeouts_public_schema_changed": false,
+  "BCD_business_changed": false,
+  "file_gate_A28_unchanged": true,
+  "whole_MS_I2l_accepted": false,
+  "technical_answer_quality_accepted": false,
+  "human_satisfaction_claimed": false,
+  "last_full_unchanged": true,
+  "previous_stage_report": "docs/implementation/evidence/ms-i2l-a31.json"
+}
