@@ -1,3 +1,36 @@
+# A26 正式状态：审批决定共同来源已固定，首次持久链仍pending
+
+2026-10-13，准确源码 **178b67b3751b697275b121057e4f3f6833beb219** / `ms-i2l-a26-source`。
+A继续integration自身发布HEAD；不回退start、不操作worker源码/分支、不移动旧标签。
+
+实际同源原file Gate在已有Run/角色前后括号内校验原存储approval/binding/grant/Run/budget/admission/conversation。
+两次fresh组读、approval policy、原scope/status/version/cancel/期限与完整SQL witness保持。
+原get到期封存和request/decide写事务/事件/锁/CAS不改；无root观察/custom继续旧入口。
+不缓存allowance、复用跨checkpoint数据或打开checked_metadata，D关键操作前后current/OS/key/handle保持。
+结束等待后原authority/认证/ledger/registry仍须一致。SQL比较点不宣称跨native原子授权。
+
+53不同定向通过：47 SQL＋2 metadata installed对照＋4原审批/账号/native/key实际撤销。
+215源码类型/7文件静态格式/契约通过；486源码摘要固定。603历史并集未全部重跑，旧1691 full/费用保持。
+原存储grant相同：SQL83→51。实际两Gate SQL128→96，root2/owner2/owning2/OS16/key28不减；
+同原登记command SQL221→189，Gate1/root5/owning6/OS48/key89不减，metadata样本不证明通用耗时。
+
+原成功断言初次46.80秒、最终单独53.83秒均失败。command各1，open/read/receipt内存签名各完成1；
+初次第六检查点取消；最终第五检查点second fresh current返回ipc_closed，parent invocation_interrupted。
+最终child第五检查点开始仍剩约2.013秒，不能一律解释成child自身deadline到零；A继续核对父/child窗口及关闭传播。
+两次signed_data/ref0，原字节和journal恢复断言未到，unknown未重发，不造journal/not_applied/零费用。
+8独立临时实例凭据/key/child/proof清理核对，无用户文件、新模型或本人确认接受。
+原reply/启动/lease/root较早期限、flags/子Agent/DAG/写入安装exec不放宽，整轮MS-I2l未accepted。
+
+| Session | 当前交付 | 安排 |
+| --- | --- | --- |
+| A | A26原审批来源图已固定 | 继续原控制端截止与IPC关闭传播、复查至持久恢复链 |
+| B | MS-U3b 394d785/1b0fe02保留 | 无新包、不自动同步 |
+| C | MS-T2i-b 223c9a9/730a419保留 | 无新包、不自动同步 |
+| D | A21 7157883/317549c已接受 | 停在交付点，无新续项、不自动同步 |
+
+[具体算法/真实失败边界](requests/A/MS-I2l-A26-file-decision-source.md)、[实际回执](../implementation/evidence/ms-i2l-a26.json)。
+以下为历史，不能据旧派发重复开工；模型文件/准确引用/本人接受及汇合全量pending。
+
 # A25 正式状态：来源括号已固定，签名后持久链仍未通过
 
 2026-10-13，准确源码 **d7ebef93380d6b209864c1ed31f16daa86e2c529** / `ms-i2l-a25-source`。

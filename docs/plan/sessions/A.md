@@ -1,3 +1,14 @@
+# A26 当前：原审批决定共同来源与完整复查
+
+准确source ms-i2l-a26-source / 178b67b3751b697275b121057e4f3f6833beb219。
+原file Gate在Run/角色括号内接存储decision/grant；两次fresh组读/最终SQL witness及所有scope/版本/取消/期限保留。
+通用request/decide/get及无root观察入口不变，callback仅metadata，不缓存授权或打开flags。
+53不同定向通过，215类型/7静态格式/契约通过；603历史并集不是当前全量，旧1691 full保持。
+同命令SQL221→189，原OS/key/root次数不减，不宣称生产通用提速。
+最终首次链仍失败：读取/签名完成，签名后fresh current IPC关闭，无持久signed/ref和原恢复；未知不重发。
+A继续父/child原截止与关闭传播、持久恢复链。8实例清理核对，BCD保留原交付无新包或同步。
+详细../../coordination/requests/A/MS-I2l-A26-file-decision-source.md。
+
 # A25 当前：Run来源外层括号与真实检查点诊断
 
 准确source ms-i2l-a25-source / d7ebef93380d6b209864c1ed31f16daa86e2c529。
