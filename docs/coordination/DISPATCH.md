@@ -1,3 +1,34 @@
+# A25 正式状态：来源括号已固定，签名后持久链仍未通过
+
+2026-10-13，准确源码 **d7ebef93380d6b209864c1ed31f16daa86e2c529** / `ms-i2l-a25-source`。
+A继续自己的integration发布HEAD，不回退start，不操作worker源码/分支或移动旧标签。
+
+本轮固定逐检查点的真实耗时/剩余deadline、open/read完成和receipt-domain签名完成诊断。
+实际同源Run/角色metadata合为一个前后权限括号，完整权限4→2，模型数据仍两次fresh读取；
+最终完整SQL witness、角色/provider/flags/审批、原取消/版本/期限及D效果前后guards保持。
+custom/非同源路径保持旧方式，checked_metadata不启用，不缓存allowance或跨checkpoint来源。
+关闭期间替换嵌套policy漏拒绝的补测失败已修，最外层source/认证身份复查后50 SQL重跑通过。
+
+54不同定向通过（50 SQL＋4实际installed），214源码类型/6静态格式/契约通过；484来源摘要固定。
+586历史并集未全部重跑，旧1691全量、费用与初次失败全部保留。
+同原命令SQL231→221，Gate1/root5/owning6/OS48/key89保持；角色图SQL43→36。
+0.985→0.999秒样本没有耗时改善，不宣称已提速。
+
+原成功断言两次均失败。最终47.53秒：command1，open/read各完成1，receipt签名完成1；
+第五检查点开始仅剩约0.815秒，签名后的fresh current取消，持久receipt_data/ref0，恢复断言未到。
+unknown不重发，不造journal/not_applied/零费用。6独立临时installed实例凭据/key/child/proof清理全部核对。
+无用户文件、新模型或本人确认接受；flags/子Agent/DAG/写入安装exec关闭，MS-I2l未整轮accepted。
+
+| Session | 状态 | 当前安排 |
+| --- | --- | --- |
+| A | A25来源及诊断已固定，首次链仍pending | 继续原审批来源图展开、签名后持久与原恢复链 |
+| B | MS-U3b交付保留 | 394d785/1b0fe02，无新包、不自动同步 |
+| C | MS-T2i-b交付保留 | 223c9a9/730a419，无新包、不自动同步 |
+| D | A21已接受并停止 | 7157883/317549c，无新续项、不自动同步 |
+
+[算法与失败边界](requests/A/MS-I2l-A25-checked-run-source.md)、[实际回执](../implementation/evidence/ms-i2l-a25.json)。
+以下是历史状态，不据旧派发重复开工。原模型材料/准确引用/本人交付接受/汇合全量继续pending。
+
 # A24 正式状态：封闭登记检查点已固定，首次回执仍pending
 
 2026-10-13，准确源码 **fc544a1fe302415172bd6f5db8adca0d85a21f01** / `ms-i2l-a24-source`。

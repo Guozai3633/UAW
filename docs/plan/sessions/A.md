@@ -1,3 +1,14 @@
+# A25 当前：Run来源外层括号与真实检查点诊断
+
+准确source ms-i2l-a25-source / d7ebef93380d6b209864c1ed31f16daa86e2c529。
+同原命令SQL231→221，原OS/key/root次数不减；完整权限4→2、固定模型仍两次fresh。
+最外层完整SQL witness、回调/来源身份、较早期限和D效果guards保持；late替换补测缺口已修。
+54不同定向通过，214类型/6格式静态/契约通过；586历史并集非当前全量，旧1691 full保持。
+原成功断言最终仍失败：open/read完成、receipt内存签名完成，签名后current取消，无持久signed/ref。
+unknown未重发、6实例清理核对，不宣称查询减少是耗时改善；没有用户文件/新模型/本人动作。
+A继续原审批来源/持久恢复链，BCD保留交付无新包、不自动同步，flags保持关闭。
+详细../../coordination/requests/A/MS-I2l-A25-checked-run-source.md。
+
 # A24 当前：封闭登记读取来源
 
 准确source ms-i2l-a24-source / fc544a1fe302415172bd6f5db8adca0d85a21f01。
