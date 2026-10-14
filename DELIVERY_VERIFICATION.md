@@ -1,6 +1,14 @@
 # UAW 任务完成校验、引用与代码工作区
 
-状态：v0.2 讨论稿，配套架构 v0.8。用户纠正为首版支持授权本地项目访问与测试；联网搜索、模型和第三方服务配置由管理员提供。三种审批与语义核验详见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)。本文协议尚未实现或通过真实任务验证。
+## 0. 普通消息与正式成果的边界
+
+普通解释、比较和发散默认直接形成消息/历史，Run核对模型来源、当前输入版本、取消、费用和相关未知效果后提交终态。无需Artifact、VerificationReport或“接受成果”。首次调用同时理解并回答/选工具/提问，不固定额外自评。
+
+下文DeliveryContract、四层验证、Artifact和用户接受适用于正式交付。用户明确要求报告/文件/代码变更时使用相应契约；必需证据缺失不能passed。单Agent粘贴文本办公/学术成果可独立验收，无子Agent/Join/本机执行硬依赖。语义评审按任务需要；模型passed不证明事实正确，相关版本必须通过人工事实样本与反例。
+
+[分流与同Run接续策略](docs/design/CONVERSATION_EXECUTION.md) · [H02开发与体验门槛](docs/plan/H02_CONVERSATION.md)。
+
+状态：v0.3目标设计，配套架构v0.11（2026-10-14）。用户纠正为首版支持授权本地项目访问与测试；联网搜索、模型和第三方服务配置由管理员提供。三种审批与语义核验详见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)。本文是完整目标；部分文本/Markdown链已实现，新增分流/接续仍待实现，实际范围见实施回执。
 
 ## 1. 首版资源边界
 

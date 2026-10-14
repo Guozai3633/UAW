@@ -1,6 +1,6 @@
 # 工作区 · Workspace：模块开发设计
 
-节点 `workspace` · UAW v0.10 · 2026-10-07 · 状态：目标设计，Runtime 未实现。
+节点 `workspace` · UAW v0.11 · 2026-10-14 · 状态：目标策略；实际分支与回执见实施记录。
 
 [开发设计索引](../README.md) · [目录设计](../../PROJECT_STRUCTURE.md) · [公共契约](../COMMON_CONTRACTS.md)
 

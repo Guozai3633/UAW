@@ -1,3 +1,10 @@
+# v0.11新增职责映射（待开发）
+
+[对话执行设计](design/CONVERSATION_EXECUTION.md)和[H02计划](plan/H02_CONVERSATION.md)明确新分支，保持七Runtime目录，不新建万能对话服务。
+Agent负责首次决策；Run负责输入追加、时钟、状态/租约；Intent/Context消费摘要与补充；现有workspace/artifacts与agent/completion负责正式文本成果；B维护apps/web问题答复和审阅。
+独立人工质量样本目标tests/fixtures/evaluation/，实际运行与报告在ops/、docs/implementation/evaluation/；尚未建设，不以目录名称推断可用性。
+公共DTO/迁移先由contracts维护源发布；本文下面的历史代码清单不是新功能验收。
+
 # MS-I2j本轮开发目录调整
 
 新增 `apps/web/` 由Session B独占（含前端依赖锁、客户端和测试），原worktree仍为context/dev/context。A维护后台API/认证/公共契约及文件桥接；C维护Tool文件provider；D维护本机native确认/只读Runner。

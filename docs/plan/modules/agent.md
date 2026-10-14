@@ -6,7 +6,7 @@
 
 根循环、会话角色、子实例、技能、规划、调度和完成。
 
-本分组主责11轮，另关联4轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责13轮，另关联5轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -16,6 +16,9 @@
 | --- | --- | --- | --- |
 | [P1-07 根实例、单Agent循环与工具接线](../rounds/P1-07.md) | 由主Agent动态决定下一步并完成实际工作。 | [P1-01](../rounds/P1-01.md)、[P1-02](../rounds/P1-02.md)、[P1-03](../rounds/P1-03.md)、[P1-05](../rounds/P1-05.md)、[P1-06](../rounds/P1-06.md) | 本组主责；核心开发范围 / 待开发 |
 | [P1-08 交付契约、证据和完成提交](../rounds/P1-08.md) | 以真实要求、实际检查和版本决定是否完成。 | [P1-07](../rounds/P1-07.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-12 对话与续跑公共协议](../rounds/P1-12.md) | 先固定首次动作、消息完成、问题答复/纠正和执行计时边界。 | [P0-04](../rounds/P0-04.md)、[P0-05](../rounds/P0-05.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P1-13 普通交流首次调用与消息完成](../rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | [P1-12](../rounds/P1-12.md)、[P1-02](../rounds/P1-02.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-16 单Agent粘贴文本成果独立验收](../rounds/P1-16.md) | 把办公和学术材料完整交付，不等待本机/子Agent设施。 | [P1-13](../rounds/P1-13.md)、[P1-02](../rounds/P1-02.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P2 · 角色、子Agent与工作成果
 
@@ -25,7 +28,7 @@
 | [P2-04 会话子Agent定义的设计和版本管理](../rounds/P2-04.md) | 用户可用自然语言创建、修改和撤销角色。 | [P2-03](../rounds/P2-03.md)、[P0-05](../rounds/P0-05.md) | 本组主责；核心开发范围 / 待开发 |
 | [P2-05 首次有界子Agent调用](../rounds/P2-05.md) | 把定义转换为独立上下文和受限执行实例。 | [P2-04](../rounds/P2-04.md)、[P1-09](../rounds/P1-09.md) | 本组主责；核心开发范围 / 待开发 |
 | [P2-06 共享结果板与Join](../rounds/P2-06.md) | 父Agent可靠收集结果并保留最终交付责任。 | [P2-05](../rounds/P2-05.md) | 本组主责；核心开发范围 / 待开发 |
-| [P2-07 办公与学术方法和成果验收](../rounds/P2-07.md) | 在通用架构上实现两个可复用工作场景。 | [P2-02](../rounds/P2-02.md)、[P2-03](../rounds/P2-03.md)、[P2-06](../rounds/P2-06.md) | 本组主责；核心开发范围 / 待开发 |
+| [P2-07 办公与学术方法和成果验收](../rounds/P2-07.md) | 在通用架构上实现两个可复用工作场景。 | [P1-17](../rounds/P1-17.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P3 · 语义规划与并行协作
 
@@ -64,6 +67,14 @@
 | `agent.completion.version` | [版本与硬条件校验](../../design/components/agent-completion-version.md) | [逐接口定义](../../api/nodes/agent.completion.version.md) |
 | `agent.completion.delivery` | [提交交付](../../design/components/agent-completion-delivery.md) | [逐接口定义](../../api/nodes/agent.completion.delivery.md) |
 | `agent.completion.acceptance` | [用户接受与迭代](../../design/components/agent-completion-acceptance.md) | [逐接口定义](../../api/nodes/agent.completion.acceptance.md) |
+| `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
+| `run.history` | [历史与输入权威](../../design/components/run-history.md) | [逐接口定义](../../api/nodes/run.history.md) |
+| `run.budget` | [预算与准入](../../design/components/run-budget.md) | [逐接口定义](../../api/nodes/run.budget.md) |
+| `intent.semantic` | [语义解析](../../design/components/intent-semantic.md) | [逐接口定义](../../api/nodes/intent.semantic.md) |
+| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
+| `model.gateway` | [调用网关](../../design/components/model-gateway.md) | [逐接口定义](../../api/nodes/model.gateway.md) |
+| `context.references` | [引用登记与解析](../../design/components/context-references.md) | [逐接口定义](../../api/nodes/context.references.md) |
 | `agent.skills` | [技能与任务模板](../../design/components/agent-skills.md) | [逐接口定义](../../api/nodes/agent.skills.md) |
 | `context.rules` | [规则与信任装配](../../design/components/context-rules.md) | [逐接口定义](../../api/nodes/context.rules.md) |
 | `agent.definitions` | [子Agent定义与发现](../../design/components/agent-definitions.md) | [逐接口定义](../../api/nodes/agent.definitions.md) |
@@ -80,20 +91,16 @@
 | `agent.collaboration.cancel` | [生命周期与取消](../../design/components/agent-collaboration-cancel.md) | [逐接口定义](../../api/nodes/agent.collaboration.cancel.md) |
 | `agent.board` | [共享任务板](../../design/components/agent-board.md) | [逐接口定义](../../api/nodes/agent.board.md) |
 | `agent.collaboration.join` | [结果核验与汇总](../../design/components/agent-collaboration-join.md) | [逐接口定义](../../api/nodes/agent.collaboration.join.md) |
-| `context.references` | [引用登记与解析](../../design/components/context-references.md) | [逐接口定义](../../api/nodes/context.references.md) |
 | `agent.assessment` | [按需执行评估](../../design/components/agent-assessment.md) | [逐接口定义](../../api/nodes/agent.assessment.md) |
 | `agent.planning` | [规划与依赖校验](../../design/components/agent-planning.md) | [逐接口定义](../../api/nodes/agent.planning.md) |
 | `intent.references` | [指代解析](../../design/components/intent-references.md) | [逐接口定义](../../api/nodes/intent.references.md) |
 | `intent.probe` | [必要信息探查](../../design/components/intent-probe.md) | [逐接口定义](../../api/nodes/intent.probe.md) |
-| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
 | `agent.scheduler` | [节点与资源调度](../../design/components/agent-scheduler.md) | [逐接口定义](../../api/nodes/agent.scheduler.md) |
 | `workspace.review` | [审阅与局部接受](../../design/components/workspace-review.md) | [逐接口定义](../../api/nodes/workspace.review.md) |
 | `workspace.changes` | [变更与冲突合并](../../design/components/workspace-changes.md) | [逐接口定义](../../api/nodes/workspace.changes.md) |
 | `workspace.artifacts` | [产物与格式适配](../../design/components/workspace-artifacts.md) | [逐接口定义](../../api/nodes/workspace.artifacts.md) |
 | `run.approval` | [审批与用户控制](../../design/components/run-approval.md) | [逐接口定义](../../api/nodes/run.approval.md) |
 | `run.cancel` | [取消传播](../../design/components/run-cancel.md) | [逐接口定义](../../api/nodes/run.cancel.md) |
-| `run.history` | [历史与输入权威](../../design/components/run-history.md) | [逐接口定义](../../api/nodes/run.history.md) |
-| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
 | `tool.registry` | [工具注册与版本](../../design/components/tool-registry.md) | [逐接口定义](../../api/nodes/tool.registry.md) |
 | `tool.discovery` | [工具发现与筛选](../../design/components/tool-discovery.md) | [逐接口定义](../../api/nodes/tool.discovery.md) |
 | `context.retrieval` | [资料检索与证据](../../design/components/context-retrieval.md) | [逐接口定义](../../api/nodes/context.retrieval.md) |
@@ -121,6 +128,25 @@
 - `src/uaw/agent/completion/delivery.py`
 - `src/uaw/agent/completion/acceptance.py`
 - `tests/integration/completion/`
+- `src/uaw/api/ingress.py`
+- `src/uaw/run/state.py`
+- `src/uaw/run/history.py`
+- `src/uaw/run/budget.py`
+- `contracts/`
+- `src/uaw/shared/`
+- `src/uaw/api/`
+- `docs/api/`
+- `src/uaw/intent/semantic.py`
+- `src/uaw/intent/ambiguity.py`
+- `src/uaw/model/gateway.py`
+- `src/uaw/agent/`
+- `src/uaw/intent/`
+- `src/uaw/run/`
+- `src/uaw/resources/prompts/`
+- `src/uaw/context/references.py`
+- `src/uaw/workspace/`
+- `src/uaw/agent/completion/`
+- `apps/web/src/`
 - `src/uaw/agent/skills.py`
 - `src/uaw/context/rules.py`
 - `capabilities/builtin/`
@@ -144,7 +170,6 @@
 - `src/uaw/agent/board.py`
 - `src/uaw/agent/collaboration/join.py`
 - `tests/integration/join/`
-- `src/uaw/context/references.py`
 - `capabilities/builtin/office_report/`
 - `capabilities/builtin/academic_discussion/`
 - `tests/fixtures/scenarios/`
@@ -152,7 +177,6 @@
 - `src/uaw/agent/planning.py`
 - `src/uaw/intent/references.py`
 - `src/uaw/intent/probe.py`
-- `src/uaw/intent/ambiguity.py`
 - `tests/fixtures/assessments/`
 - `src/uaw/agent/scheduler.py`
 - `tests/integration/scheduler/`
@@ -164,8 +188,6 @@
 - `tests/integration/partial_review/`
 - `src/uaw/run/approval.py`
 - `src/uaw/run/cancel.py`
-- `src/uaw/run/history.py`
-- `src/uaw/run/state.py`
 - `apps/web/src/features/run_controls/`
 - `tests/integration/multi_conversation/`
 - `src/uaw/tool/registry.py`
@@ -189,4 +211,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

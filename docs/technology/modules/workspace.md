@@ -68,7 +68,7 @@ Binding元数据、BaseState、Environment、ChangeSet、Artifact和ReviewSet在
 
 | 工作包 | 本轮职责 | 当前状态 |
 | --- | --- | --- |
-| [P1-04 Runner配对与项目授权](../../plan/rounds/P1-04.md) | 让本机项目访问来自真实用户选择和设备授权。 | planned |
+| [P1-04 Runner配对与项目授权](../../plan/rounds/P1-04.md) | 让本机项目访问来自真实用户选择和设备授权。 | in_progress |
 | [P1-05 输入快照、隔离、环境和真实进程](../../plan/rounds/P1-05.md) | 运行真实项目检查并保留用户已有修改。 | planned |
 | [P1-06 实际变更、成果与基础审阅](../../plan/rounds/P1-06.md) | 用户能看见这次工作改了什么并恢复文件。 | planned |
 | [P3-05 并行写隔离与三方合并](../../plan/rounds/P3-05.md) | 把子工作区修改安全纳入用户项目。 | planned |

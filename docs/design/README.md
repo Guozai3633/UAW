@@ -1,10 +1,12 @@
 # UAW 开发设计总索引
 
-状态：v0.10 · 2026-10-07。每个图节点有单独文档与计划代码位置；所有代码目标均待实现，文档覆盖不代表实现或已完成任务验证。
+状态：v0.11 · 2026-10-14。每个图节点有单独文档与计划代码位置；代码位置是职责映射，已有实现和新待开发分支并存；文档覆盖不代表任务验证。
 
 [全局指引](../../README.md) · [项目目录](../PROJECT_STRUCTURE.md) · [文档作用地图](../DOCUMENT_MAP.md) · [公共契约](COMMON_CONTRACTS.md) · [子Agent完整链路](SUBAGENT_LIFECYCLE.md)
 
 ## 从哪里开始
+
+对话/澄清/单Agent文本的v0.11策略见 [CONVERSATION_EXECUTION](CONVERSATION_EXECUTION.md)，拟新增接口见 [协议修订](../api/CONVERSATION_REVISION.md)；新增行为待实现。
 
 1. 先看 SUBAGENT_LIFECYCLE 和 PROJECT_STRUCTURE，确认端到端行为与开发组织。
 2. 再看 modules/ 下对应大模块，进入其 components/ 子节点文档。

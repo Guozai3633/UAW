@@ -12,7 +12,7 @@ from catalog import DECISIONS, MODULES, PHASES, ROUNDS
 from parallel_catalog import PACKAGES
 
 ROOT = Path(__file__).resolve().parents[1]
-DATE = "2026-10-08"
+DATE = "2026-10-14"
 GRAPH = json.loads((ROOT / "architecture/graph.json").read_text(encoding="utf-8"))
 NODES = GRAPH["nodes"]
 DESIGNS = json.loads((ROOT / "design/design-map.json").read_text(encoding="utf-8"))["nodes"]
@@ -39,7 +39,7 @@ def link(from_path, to_path, label):
 def write(path, lines):
     target = ROOT / path
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    target.write_text("\n".join(lines).rstrip("\n") + "\n", encoding="utf-8")
     GENERATED.append(path)
 
 
@@ -77,8 +77,11 @@ def code_target(node):
 def effective_dependencies(r):
     deps = list(r["depends_on"])
     index = list(PHASES).index(r["phase"])
-    if index:
+    gate = r.get("phase_gate", "auto")
+    if gate == "auto" and index:
         deps.append(PHASE_GATES[list(PHASES)[index - 1]])
+    elif gate not in ("auto", None):
+        deps.append(gate)
     return unique(deps)
 
 
@@ -123,9 +126,13 @@ def build_round(r):
              "## 1. 本轮目标", "", r["goal"], "", "## 2. 开始条件与依赖", ""]
     lines += [f"- 前置工作包：{round_link(path, d, True)}。" for d in r["depends_on"]] or ["- 无前置实现轮；先核对当前产品约束和接口契约。"]
     phase_index = list(PHASES).index(r["phase"])
-    if phase_index:
+    gate = r.get("phase_gate", "auto")
+    if gate == "auto" and phase_index:
         gate = PHASE_GATES[list(PHASES)[phase_index - 1]]
+    if gate not in ("auto", None):
         lines += [f"- 整轮联调/正式验收门槛：{round_link(path, gate, True)} 已验收。独立组件可按并行子包提前开发，不能因此跳过正式门槛。"]
+    if gate is None:
+        lines += ["- 本轮按显式能力依赖独立验收，不自动补入前阶段全部门槛。见" + link(path, "docs/plan/H02_CONVERSATION.md", "H02安排") + "；不因此改变本机/协作完整门槛。"]
     parallel = [p for p in PACKAGES if r["id"] in p["rounds"]]
     if parallel:
         lines += ["- 多session子包：" + "、".join(f"{p['id']}（Session {p['session']}）" for p in parallel) + "；开始条件与允许修改路径见" + link(path, "docs/plan/PARALLEL.md", "并行开发计划") + "，不是整轮无依赖声明。"]
@@ -187,7 +194,7 @@ def build_module(id):
     primary_count = sum(r["module"] == id for r in rounds)
     dirs = unique(target for r in rounds for target in round_record(r)["planned_code_targets"])
     lines = [f"# {name} · 开发计划", "", link(path, "docs/plan/README.md", "计划总索引") + " · " + link(path, "docs/plan/SEQUENCE.md", "全局顺序与并行条件"), "", "## 职责与边界", "", description, "",
-             f"本分组主责{primary_count}轮，另关联{len(rounds)-primary_count}轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。", "", "## 阶段与工作包", ""]
+             f"本分组主责{primary_count}轮，另关联{len(rounds)-primary_count}轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。", "", "## 阶段与工作包", ""]
     for phase, info in PHASES.items():
         group = [r for r in rounds if r["phase"] == phase]
         if group:
@@ -206,7 +213,7 @@ def build_module(id):
 def build_readme():
     path = "docs/plan/README.md"
     core = sum(r["scope"] == "required" for r in ROUNDS)
-    lines = ["# UAW 开发计划总索引", "", f"计划v0.1 · {DATE} · 对齐架构{GRAPH['architecture_version']}。当前仅有设计/接口/蓝图，Runtime实现尚未开始。", "",
+    lines = ["# UAW 开发计划总索引", "", f"计划v0.2 · {DATE} · 对齐架构{GRAPH['architecture_version']}。已有Runtime和真实页面实现；新快通路/同Run接续/暂停计时待开发，实际能力以实施回执为准。", "",
              f"按 **模块 → 阶段 → 每轮任务** 组织，共{len(MODULES)}个职责分组、{len(PHASES)}个阶段、{len(ROUNDS)}轮：{core}轮核心开发与验收，1轮实现后默认关闭的扩展，1轮后续推特适配设计。", "",
              "每轮都有目标、前置依赖、待定项、逐项任务、详细设计/接口/对象入口、目标代码目录、交付物和验收条件。轮次是可验收工作包；工期、负责人和每轮大小根据实际团队填写，不虚构完成日期。", "",
              "## 1. 先按职责找到自己的模块", "", "| 模块分组 | 主责轮数 | 负责什么 |", "| --- | --- | --- |"]
@@ -216,8 +223,8 @@ def build_readme():
     lines += ["", "模块页也列出该模块参与的协同轮，例如Intent预览在页面轮接线、工作区测试在完成验收轮核对；这些都链接到同一份轮文档，不重复计数。", "", "## 2. 再看所在阶段与每轮", "", "| 阶段 | 目标 | 轮数 | 核心门槛轮 |", "| --- | --- | --- | --- |"]
     for id, phase in PHASES.items():
         lines.append(f"| {id} · {phase['name']} | {phase['goal']} | {len(phase_rounds(id))} | {round_link(path, PHASE_GATES[id])} |")
-    lines += ["", link(path, "docs/plan/STAGES.md", "阶段门槛与真实样例") + " · " + link(path, "docs/plan/SEQUENCE.md", "50轮全局实施顺序与依赖") + " · " + link(path, "docs/plan/STATUS.md", "当前状态"), "",
-              "先贯通单Agent真实任务；再增加角色/单子任务、办公/学术；随后按真实收益补规划、并行、缓存和恢复。开完整模块接口并不意味着请求每次必经全部模块，也不要求先实现全部设计schema。", "",
+    lines += ["", link(path, "docs/plan/STAGES.md", "阶段门槛与真实样例") + " · " + link(path, "docs/plan/SEQUENCE.md", "全局实施顺序与有效依赖") + " · " + link(path, "docs/plan/STATUS.md", "当前状态"), "",
+              "优先完成P1-12～P1-17的普通对话、澄清/纠正和单Agent文本体验；本机代码链与协作设施独立推进，按真实收益补规划、并行、缓存和恢复。开完整模块接口并不意味着请求每次必经全部模块，也不要求先实现全部设计schema。", "",
               "## 3. 配套入口", "", "| 文档 | 用途 |", "| --- | --- |",
               f"| {link(path, 'docs/plan/DECISIONS.md', '待定项与决策轮次')} | 历史权威、提供方、审批与首批格式的待定项，以及技术组合的兼容门槛 |",
               f"| {link(path, 'docs/plan/COVERAGE.md', '节点开发覆盖')} | 115节点→实施轮→策略/接口/代码位置；覆盖不等于已实现 |",
@@ -231,7 +238,7 @@ def build_readme():
               f"| {link(path, 'planning/plan.json', '机器可读计划')} | 消费全部任务与输入/输出接口关联 |",
               f"| {link(path, 'planning/plan-map.json', '节点到轮次映射')} | 反查节点由哪些轮逐步实现 |",
               f"| {link(path, 'docs/plan/plan-check.json', '计划检查结果')} | 依赖无环、节点/接口关联、文档链接检查；不是Runtime测试 |", "",
-              "## 4. 当前接续入口", "", "P0工程/受理基础已经实施；真实模型仍待配置。" + round_link(path, "P1-01", True) + "协议及MS-I2f2集成范围通过841项全量检查，语义质量仍待实际模型验证。B/C/D的MS-C4/MS-T2c/MS-R2c已接受，ms-i2f2提供登记命令Reader与缓存可选组装；B/C/D已同步ms-i2f2；新包MS-C5/MS-T2d/MS-R2d以完整能力发布，固定准备标签ms-i2g-start，A并行处理接口和接线；见" + link(path, "docs/plan/PARALLEL.md", "多session分工") + "，完整轮验收仍遵守原依赖。", "",
+              "## 4. 当前接续入口", "", "用户已接受Q1-Q8，见" + link(path, "docs/decisions/ADR-001-conversation-and-delivery.md", "ADR-001") + "。当前A32/H01-v4已有固定模型与文本成果、问题展示，仍无真正快通路/同Run澄清/暂停计时；两技术样本自评passed但人工事实质量未过。新六轮见" + link(path, "docs/plan/H02_CONVERSATION.md", "H02开发安排") + "，全部待开发，尚未派发新的worker基线。真实当前来源/历史失败见" + link(path, "docs/coordination/DISPATCH.md", "DISPATCH") + "。旧1691全量仅属MS-I2i，不覆盖新设计。", "",
               "## 5. 计划维护规则", "",
               "- 修改planning/catalog.py后运行 `python planning/build_plan.py`；逐轮/模块/阶段/映射是生成文件。",
               "- 开发报告保存在 `docs/implementation/<轮次>.md`，实际选型保存在 `docs/decisions/`，实施时才创建。",
@@ -244,12 +251,12 @@ def build_readme():
 def build_stages():
     path = "docs/plan/STAGES.md"
     lines = ["# 阶段目标、门槛与能力开关", "", link(path, "docs/plan/README.md", "计划总索引"), "",
-             "这是开发交付顺序，运行时仍由当前LLM按任务选择所需能力。阶段之间以真实验收作为门槛；在前阶段未过时可以准备后阶段资料/隔离原型，但不能把后阶段标为已交付。", "",
-             "```mermaid", "flowchart LR", '  P0["P0 工程与固定模型"] --> P1["P1 单Agent真实闭环"]', '  P1 --> P2["P2 角色与三类成果"]', '  P2 --> P3["P3 规划与并行"]', '  P3 --> P4["P4 效率与能力治理"]', '  P4 --> P5["P5 恢复与受控试用"]', "```", ""]
+             "阶段表示完整能力目标，不是每个请求的流水线。默认整阶段依赖仍保留；P1-12～17与P2-07明确按自身能力依赖独立验收，不被本机执行或Join硬阻断。各轮真实通过仍须有证据。", "",
+             "```mermaid", "flowchart LR", '  P0["P0 工程与固定模型"] --> H02["H02 对话、续跑、单Agent文本"]', '  P0 --> P1["P1 本机代码完整闭环"]', '  H02 --> Text["P2-07 办公学术独立验收"]', '  P1 --> P2["P2 角色与三类成果"]', '  P2 --> P3["P3 规划与并行"]', '  P3 --> P4["P4 效率与能力治理"]', '  P4 --> P5["P5 恢复与受控试用"]', "```", ""]
     for id, phase in PHASES.items():
         lines += [f"## {id} · {phase['name']}", "", f"**目标：**{phase['goal']}", "", f"**真实样例：**{phase['sample']}", "", f"**退出门槛：**{phase['gate']}", "", f"**门槛工作包：**{round_link(path, PHASE_GATES[id], True)}。", "", *table_rounds(path, phase_rounds(id)), ""]
     lines += ["## 每阶段都能交出可检查的版本", "",
-              "P1先交付本机开发演示；P2交付三类样例和会话角色的小范围体验版本，并开始收集接受/返工/成本记录；P3/P4逐步增加能力。它们不必等P5才让用户检查成果。", "",
+              "下一次先按H02交付对话/澄清/纠正/单Agent文本，见" + link(path, "docs/plan/H02_CONVERSATION.md", "H02安排") + "。P1本机代码、P2协作三类完整样例仍各自验收；P3/P4逐步增加能力。它们不必等P5才让用户检查成果。", "",
               "每个可操作里程碑按 " + link(path, "docs/plan/HUMAN_TESTING.md", "人工体验测试计划") + " 固定版本、实际启动并交由本人体验；记录反馈、原owner修复和新版本复体验，与独立开发并行。", "",
               "前置体验仍使用D02确定的可靠主体与部署范围，本机开发身份不能直接用于公网服务。P5补齐账号/设备部署、恢复评测和完整受控试用资料；实际对外发布另按届时用户授权执行。", "",
               "## 上线范围与实现范围分开", "", "| 能力 | 开发时安排 | 默认开放条件 |", "| --- | --- | --- |",
@@ -272,17 +279,17 @@ def build_stages():
 def build_sequence():
     path = "docs/plan/SEQUENCE.md"
     lines = ["# 全局实施顺序与并行条件", "", link(path, "docs/plan/README.md", "模块索引") + " · " + link(path, "docs/plan/STAGES.md", "阶段门槛"), "",
-             "模块页按职责查找，实际开工按本页依赖交替推进。轮号是推荐阅读顺序，开工取决于前置证据；同阶段满足依赖的独立任务可以并行开发。下一阶段的正式验收以先前核心阶段门槛通过为前提。", "",
-             "当前已增加" + link(path, "docs/plan/PARALLEL.md", "4个session的组件分工") + "与" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工/合并规则") + "。组件开发依赖和整轮验收依赖分开记录，原50轮完整门槛保持有效。", "",
+             "模块页按职责查找，实际开工按本页依赖交替推进。轮号是推荐阅读顺序，开工取决于前置证据；同阶段满足依赖的独立任务可以并行开发。完整阶段沿用阶段门槛；明确phase_gate=None的能力轮按自己的显式依赖正式验收。", "",
+             "当前已增加" + link(path, "docs/plan/PARALLEL.md", "4个session的组件分工") + "与" + link(path, "docs/plan/PARALLEL_WORKFLOW.md", "开工/合并规则") + "。组件开发依赖和整轮验收依赖分开记录，原完整目标保留；新增六轮H02，P2-07解除本机与Join硬依赖。", "",
              "## 关键依赖与可并行部分", "", "| 范围 | 执行建议 |", "| --- | --- |",
              "| P0 | 工程→存储→配置→受理/账本→真实模型；先让开发环境和授权身份可靠 |",
-             "| P1 | 理解/上下文/工具→Runner/实际环境/变更→单循环/核验→用户控制/真实页面→闭环验收；页面草图和fixture准备可提前 |",
-             "| P2 | 文件→搜索与技能/定义→单子调用/Join；搜索P2-02与技能P2-03在P2-01后可独立推进，办公/学术汇合后验收 |",
+             "| P1 | P1-12契约→P1-13快通路→P1-14接续与P1-16文本；P1-15评测并行，汇合P1-17体验。本机代码链单独验收 |",
+             "| P2 | P2-07从H02单Agent成果独立扩展；搜索/上传/Skills按需。子Agent/Board/Join另外汇合协作门槛，不阻挡文本 |",
              "| P3 | steps→DAG校验/调度后，工具并发P3-03与子Agent并发P3-04可分开开发；写合并/审阅/多会话仍按依赖继续 |",
              "| P4 | 内容依赖/检索/缓存/连接治理先接稳；P4-06后环境P4-07与Auto P4-08可独立推进，完整页面汇合 |",
              "| P5 | 检查点→恢复→评测/试用资料；P5-04可与评测准备独立推进但不挡首次试用，推特设计继续后置 |", "",
              "这里的并行是团队实施安排，不强制运行中多Agent。共同修改schema/配置/公共契约时要协调版本，不能因开发可并行就跳过Runtime资源隔离。", "", "## 所有轮次与有效前置", "",
-             "有效前置包含显式工作包依赖和上一阶段核心门槛。", "", "| 轮次/模块 | 本轮目标 | 有效前置 |", "| --- | --- | --- |"]
+             "有效前置包含显式依赖，以及该轮声明的阶段门槛；独立能力轮不自动继承上一阶段门槛。", "", "| 轮次/模块 | 本轮目标 | 有效前置 |", "| --- | --- | --- |"]
     for r in ROUNDS:
         deps = "、".join(round_link(path, id) for id in effective_dependencies(r)) or "无"
         lines.append(f"| {round_link(path, r['id'], True)} / {MODULES[r['module']][0]} | {r['goal']} | {deps} |")
@@ -356,7 +363,7 @@ def build_template_and_status():
     path = "docs/plan/STATUS.md"
     counts = Counter(r["status"] for r in ROUNDS)
     lines = ["# 开发计划当前状态", "", link(path, "docs/plan/README.md", "总索引"), "", f"计划记录日期{DATE}：" + "、".join(f"{STATUS_LABELS[k]}{v}轮" for k, v in counts.items()) + f"。已验收轮数：{counts.get('accepted', 0)}。", "",
-             "MS-C4/MS-T2c/MS-R2c及MS-I2f2集成已接受；仍处后端基础与组件接线阶段，Agent业务循环、apps/web与真实Runner配对/执行未贯通。新包按完整能力并行推进；当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
+             "当前以DISPATCH页首和A32/H01-v4回执为准：单Agent文本/页面已实现，事实质量仍有错误与漏判；快通路/同Run接续/暂停计时未完成，本机首次签名发布链仍未过。下表旧轮状态未据后续组件重新裁决，不能算当前完成百分比；新六轮均planned。当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
     for r in ROUNDS:
         evidence = "、".join(link(path, ref, ref) for ref in r["implementation_evidence"]) or "为空；没有实现完成声明"
         lines.append(f"| {round_link(path, r['id'], True)} | {STATUS_LABELS[r['status']]} | {SCOPE_LABELS[r['scope']]} | {evidence} |")
@@ -379,6 +386,9 @@ def source_checks():
             errors.append(f"incomplete work package: {r['id']}")
         if r["status"] == "accepted" and not r["implementation_evidence"]:
             errors.append(f"accepted without evidence: {r['id']}")
+        gate = r.get("phase_gate", "auto")
+        if gate not in ("auto", None) and gate not in ROUND_BY_ID:
+            errors.append(f"unknown phase gate: {r['id']}->{gate}")
         for d in r["depends_on"]:
             if d not in ROUND_BY_ID:
                 errors.append(f"unknown dependency: {r['id']}->{d}")
@@ -417,6 +427,26 @@ def source_checks():
 
     for id in ROUND_BY_ID:
         visit(id)
+
+    # Text/conversation acceptance must stay independent of local execution and collaboration.
+    def transitive_dependencies(id):
+        found = set()
+        pending = list(effective_dependencies(ROUND_BY_ID[id]))
+        while pending:
+            dep = pending.pop()
+            if dep in found:
+                continue
+            found.add(dep)
+            if dep in ROUND_BY_ID:
+                pending.extend(effective_dependencies(ROUND_BY_ID[dep]))
+        return found
+
+    independent_rounds = ["P1-13", "P1-14", "P1-15", "P1-16", "P1-17", "P2-07"]
+    forbidden = {"P1-04", "P1-05", "P1-06", "P1-11", "P2-05", "P2-06"}
+    for id in independent_rounds:
+        blocked_by = transitive_dependencies(id) & forbidden
+        if blocked_by:
+            errors.append(f"independent conversation/text round blocked: {id}->{sorted(blocked_by)}")
     reachable = set()
 
     def collect(id):
@@ -464,8 +494,8 @@ def main():
     if errors:
         raise SystemExit("\n".join(errors))
     node_map = {id: {"rounds": [r["id"] for r in ROUNDS if id in r["nodes"]], "plan_documents": [round_path(r["id"]) for r in ROUNDS if id in r["nodes"]], "design_doc": DESIGNS[id]["design_doc"], "interface_doc": INTERFACES[id]["interface_doc"], "code_target": code_target(id), "implementation_evidence": []} for id in NODES}
-    write_json("planning/plan.json", {"plan_version": "0.1", "architecture_version": GRAPH["architecture_version"], "date": DATE, "status": "development_plan_only", "module_groups_are_services": False, "interface_associations_are_readiness": False, "modules": {id: {"name": v[0], "responsibility": v[1]} for id, v in MODULES.items()}, "phases": PHASES, "phase_gates": PHASE_GATES, "decisions": DECISIONS, "rounds": [round_record(r) for r in ROUNDS]})
-    write_json("planning/plan-map.json", {"plan_version": "0.1", "date": DATE, "status": "planned_coverage_only", "nodes": node_map})
+    write_json("planning/plan.json", {"plan_version": "0.2", "architecture_version": GRAPH["architecture_version"], "date": DATE, "status": "development_plan_only", "module_groups_are_services": False, "interface_associations_are_readiness": False, "modules": {id: {"name": v[0], "responsibility": v[1]} for id, v in MODULES.items()}, "phases": PHASES, "phase_gates": PHASE_GATES, "decisions": DECISIONS, "rounds": [round_record(r) for r in ROUNDS]})
+    write_json("planning/plan-map.json", {"plan_version": "0.2", "date": DATE, "status": "planned_coverage_only", "nodes": node_map})
     for r in ROUNDS:
         build_round(r)
     for module in MODULES:
@@ -482,7 +512,7 @@ def main():
     extra = ["DEVELOPMENT_PLAN.md", "README.md", "docs/DOCUMENT_MAP.md", "docs/PROJECT_STRUCTURE.md"]
     link_errors, link_count = check_links(GENERATED + extra)
     errors += link_errors
-    report = {"status": "passed" if not errors else "failed", "date": DATE, "plan_rounds": len(ROUNDS), "phase_counts": dict(Counter(r["phase"] for r in ROUNDS)), "module_groups": len(MODULES), "scope_counts": dict(Counter(r["scope"] for r in ROUNDS)), "status_counts": dict(Counter(r["status"] for r in ROUNDS)), "planned_node_coverage": {"covered": len(node_map), "total": len(NODES)}, "interface_associations": len(OPERATIONS), "dependency_graph_acyclic": not any("cycle" in e for e in errors), "final_core_gate_covers_required_rounds": not any("core round missing" in e for e in errors), "optional_rounds_do_not_block_first_core_trial": not any("non-core round blocks" in e for e in errors), "local_document_links_checked": link_count, "generated_files": len(GENERATED) + 1, "errors": errors, "runtime_implementation": "not_started" if not (ROOT / "src/uaw/application.py").is_file() else "not_inferred_from_plan_checks", "runtime_behavior_tests": "not_run_by_plan_generator", "limitations": ["coverage means planned association, not implementation or interface readiness", "code paths are planned and intentionally not validated as existing implementations", "no schedule/team capacity estimate or provider availability is inferred", "local link checks validate file existence, not Markdown anchor validity"]}
+    report = {"status": "passed" if not errors else "failed", "date": DATE, "plan_rounds": len(ROUNDS), "phase_counts": dict(Counter(r["phase"] for r in ROUNDS)), "module_groups": len(MODULES), "scope_counts": dict(Counter(r["scope"] for r in ROUNDS)), "status_counts": dict(Counter(r["status"] for r in ROUNDS)), "planned_node_coverage": {"covered": len(node_map), "total": len(NODES)}, "interface_associations": len(OPERATIONS), "dependency_graph_acyclic": not any("cycle" in e for e in errors), "final_core_gate_covers_required_rounds": not any("core round missing" in e for e in errors), "optional_rounds_do_not_block_first_core_trial": not any("non-core round blocks" in e for e in errors), "conversation_text_independent_of_local_and_join": not any("independent conversation/text round blocked" in e for e in errors), "local_document_links_checked": link_count, "generated_files": len(GENERATED) + 1, "errors": errors, "runtime_implementation": "not_started" if not (ROOT / "src/uaw/application.py").is_file() else "not_inferred_from_plan_checks", "runtime_behavior_tests": "not_run_by_plan_generator", "limitations": ["coverage means planned association, not implementation or interface readiness", "code paths are planned and intentionally not validated as existing implementations", "no schedule/team capacity estimate or provider availability is inferred", "local link checks validate file existence, not Markdown anchor validity"]}
     write_json(report_path, report)
     print(json.dumps({k: report[k] for k in ["status", "plan_rounds", "phase_counts", "planned_node_coverage", "interface_associations", "local_document_links_checked", "errors"]}, ensure_ascii=False))
     if errors:
@@ -490,6 +520,4 @@ def main():
 
 
 if __name__ == "__main__":
-    from build_parallel import main as build_parallel
-    build_parallel()
-    main()
+    main()  # Parallel/session dispatch is rebuilt explicitly via build_parallel.py.

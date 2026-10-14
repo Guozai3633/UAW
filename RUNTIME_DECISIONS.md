@@ -1,6 +1,12 @@
 # UAW 执行决策、会话 Agent、模型与历史记录
 
-状态：配套 v0.8 的详细讨论稿。用户明确要求的部分：工具创建会话子 Agent、用户模型继承、查看与撤销变更、首版授权本地项目访问与测试、平台服务由管理员配置。本文对执行决策与历史权威存储给出建议，部署选型仍待讨论。控制工具见 [CONTROL_TOOLS.md](CONTROL_TOOLS.md)，完成校验与引用见 [DELIVERY_VERIFICATION.md](DELIVERY_VERIFICATION.md)，本地与审批见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)。
+## 本次已经确认的默认行为
+
+普通交流首次调用直接答复、用工具或提出具体问题；理解摘要可同次消费，普通reply只提交消息/历史，不固定Artifact、成果接受或额外语义核验。正式成果仍按交付契约核验。澄清回答和纠正在同一未结束Run追加，等待用户暂停主动执行计时，原调用和授权期限不延长。事实质量主要由人工样本/反例的独立发布评测判断。
+
+[详细执行与时钟设计](docs/design/CONVERSATION_EXECUTION.md) · [接口修订（尚未实现）](docs/api/CONVERSATION_REVISION.md) · [已确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)。下文执行评估示意是按需能力，不要求每条聊天生成完整ExecutionAssessment。
+
+状态：配套 v0.11，2026-10-14已确认对话/接续修订；历史权威存储仍待讨论。用户明确要求的部分：工具创建会话子 Agent、用户模型继承、查看与撤销变更、首版授权本地项目访问与测试、平台服务由管理员配置。本文对执行决策与历史权威存储给出建议，部署选型仍待讨论。控制工具见 [CONTROL_TOOLS.md](CONTROL_TOOLS.md)，完成校验与引用见 [DELIVERY_VERIFICATION.md](DELIVERY_VERIFICATION.md)，本地与审批见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)。
 
 ## 1. 执行方式由哪些决策组成
 

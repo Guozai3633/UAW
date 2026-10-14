@@ -15,7 +15,7 @@ def node(id, label, description, entry, inputs, outputs, guard, parent=None, kin
     assert id not in NODES, id
     NODES[id] = dict(id=id, label=label, description=description, entry=entry,
                      inputs=inputs, outputs=outputs, guard=guard, parent=parent,
-                     kind=kind, status="设计目标，未实现 Runtime")
+                     kind=kind, status="目标职责；实际实现范围见实施回执")
 
 
 def edge(source, target, label, kind="call"):
@@ -48,7 +48,9 @@ view("overview", "UAW 总体关系", "这是职责关系图，可以有反馈与
      ["ui", "ingress", "intent", "agent", "context", "tool", "workspace", "model", "run", "support"], [
          ("ui", "ingress", "发送原文/干预/审阅"),
          ("ingress", "run", "创建与控制执行"),
-         ("run", "intent", "发起理解或修订"),
+         ("run", "agent", "原文与最小上下文直接起步"),
+         ("agent", "intent", "同次理解消费或按需深入"),
+         ("run", "intent", "按需理解或修订"),
          ("intent", "agent", "目标、约束、未知项", "data"),
          ("intent", "context", "按需补充理解材料"),
          ("intent", "model", "需要语义理解生成时"),
@@ -70,7 +72,7 @@ view("overview", "UAW 总体关系", "这是职责关系图，可以有反馈与
          ("support", "model", "模型目录与发布配置", "policy"),
          ("support", "agent", "技能/能力包与flag", "policy"),
          ("support", "context", "资料/记忆与保留政策", "policy"),
-         ("run", "support", "关联诊断与评测输入", "data"),
+         ("run", "support", "脱敏回执用于独立发布评测", "data"),
      ])
 
 
@@ -294,6 +296,27 @@ parts("run.resume", [
     ("workspace", "continue", "版本/环境允许继续")], "恢复有明确核对边界；未决效果无法核实的依赖不能当成已成功继续。")
 
 
+
+# v0.11：横跨已有职责的执行视图，不新增Runtime或强制步骤。
+view("conversation", "对话、澄清与正式交付", "首次调用决定回答/工具/问题；普通消息不必Artifact或模型自评。澄清接续同Run，等待与执行分计时；独立事实评测属于发布门槛。新增行为待实现。",
+ ["ui", "ingress", "run.history", "run.state", "run.budget", "agent.loop", "intent.semantic", "context.composer", "model.gateway", "tool", "agent.completion", "support.evaluation"], [
+  ("ui", "ingress", "原文/原问题答复/纠正"),
+  ("ingress", "run.history", "幂等/CAS追加原文"),
+  ("run.history", "context.composer", "原文和有效补充", "data"),
+  ("context.composer", "agent.loop", "最小上下文", "data"),
+  ("agent.loop", "model.gateway", "首次理解与下一步同次调用"),
+  ("agent.loop", "intent.semantic", "摘要消费/按需深入"),
+  ("agent.loop", "tool", "按需发现与执行"),
+  ("tool", "agent.loop", "真实观察", "data"),
+  ("agent.loop", "run.state", "消息完成或具体问题等待", "state"),
+  ("run.state", "run.budget", "合法等待暂停/剩余执行段", "state"),
+  ("run.state", "ui", "具体问题/消息与状态", "state"),
+  ("agent.loop", "agent.completion", "正式成果才走交付契约"),
+  ("agent.completion", "run.state", "逐项证据与版本/接受条件", "state"),
+  ("run.history", "support.evaluation", "授权脱敏固定样本", "data"),
+  ("support.evaluation", "agent.loop", "候选版本独立质量门槛", "policy"),
+ ])
+
 def validate():
     for id, n in NODES.items():
         if n["parent"]:
@@ -339,10 +362,10 @@ def build():
         interface_map=json.loads(interface_map_path.read_text(encoding="utf-8"))["nodes"]
         for id,n in NODES.items():
             if id in interface_map:n.update(interface_doc=interface_map[id]["interface_doc"],interface_count=len(interface_map[id]["interfaces"]))
-    graph = dict(schema_version="0.2", architecture_version="0.10", date="2026-10-07",
+    graph = dict(schema_version="0.2", architecture_version="0.11", date="2026-10-14",
                  status="设计稿，非已实现运行系统", types=TYPES, nodes=NODES, views=VIEWS)
     (ROOT / "architecture" / "graph.json").write_text(json.dumps(graph, ensure_ascii=False, indent=2), encoding="utf-8")
-    out = ["# UAW 分层架构图谱", "", "状态：v0.10 目标设计。七个 Runtime 是逻辑边界，不是七个独立服务；图中所有执行能力均未因画图而成为已实现功能。", "",
+    out = ["# UAW 分层架构图谱", "", "状态：v0.11 目标设计。七个 Runtime 是逻辑边界，不是七个独立服务；图中所有执行能力均未因画图而成为已实现功能。", "",
            "[打开交互图](demo/uaw-architecture-map.html) · [主架构](ARCHITECTURE.md) · [本轮题集参考](NOTION_ARCHITECTURE_REVIEW.md) · [细节契约](ENGINEERING_COMPLETENESS.md)", "",
            "## 如何阅读", "", "- 第一层：大模块调用与反馈。第二层：每个 Runtime 内部职责。第三层：易出错部分的细化链路。", "- 箭头标清调用、数据/引用、状态/事件、权限/配置或生命周期。职责图允许反馈环，只有某一版任务依赖 DAG 必须无环。", "- 统一入口代表状态所有权与契约；面向模型的控制工具通过 Tool 入口分发，不把全部业务逻辑挤进 Tool。", "- 交互图点击节点看入口/输入/输出/约束，双击或点击“展开内部”进入下一层；关系筛选只隐藏显示，不改变设计。", "- 节点 ID、归属与联系来自 [graph.json](architecture/graph.json)，由 [build_atlas.py](architecture/build_atlas.py) 生成本文与交互页面，更新图应修改生成源后重建。", ""]
     for i, (id, v) in enumerate(VIEWS.items()):
@@ -353,7 +376,7 @@ def build():
             if d.get("interface_doc"):design+=f" · [接口契约]({d['interface_doc']})"
             out.append(f"| {d['label']} | `{d['entry']}` | {d['inputs']} → {d['outputs']} | {d['guard']} | {design} |")
         out.append("")
-    out += ["## 变更、失败和等待如何回流", "", "- 用户纠正：UI → Ingress → Run 原文/ControlRequest → Intent 新理解 → Agent 使相关计划/结果失效；未受影响成果继续保留。", "- 工具失败：Tool 分类与允许恢复 → Agent 观察缺口；改变能力或目标时由 Agent 再决策。", "- 审批等待：Tool 预检 → Run 持久审批 → Tool 再核验 → 真正执行，拒绝回到 Agent 选已允许方案。", "- 上下文不足：Context 分页/筛选/压缩保护 → Agent 按缺口补资料；不能用摘要证明工具已执行。", "- 用户改文件：Workspace 检测实际版本变化 → ChangeSet 冲突/报告失效 → Agent 重验或修订，保留用户编辑。", "- 执行恢复：Run 租约/兼容检查 → 当前授权 → Tool 未决效果对账 → Workspace 实际版本 → Agent 可运行节点。", "", "## 跨模块引用契约", "", "每条联系的概念载荷必须携带 scope、关联 IDs、实际版本与类型化失败。返回的引用由原领域保管，消费方检查当前可访问性；Trace 只串联诊断，不作为第二份权威状态。具体字段按首条真实任务细化，不宣称永久协议已稳定。", ""]
+    out += ["## 变更、失败和等待如何回流", "", "- 用户纠正或澄清答复：UI → Ingress → 原Run追加输入/CAS → 当前权限/费用复查 → Context与必要Intent更新 → Agent只失效相关结果；等待暂停不延长已发调用或授权。", "- 工具失败：Tool 分类与允许恢复 → Agent 观察缺口；改变能力或目标时由 Agent 再决策。", "- 审批等待：Tool 预检 → Run 持久审批 → Tool 再核验 → 真正执行，拒绝回到 Agent 选已允许方案。", "- 上下文不足：Context 分页/筛选/压缩保护 → Agent 按缺口补资料；不能用摘要证明工具已执行。", "- 用户改文件：Workspace 检测实际版本变化 → ChangeSet 冲突/报告失效 → Agent 重验或修订，保留用户编辑。", "- 执行恢复：Run 租约/兼容检查 → 当前授权 → Tool 未决效果对账 → Workspace 实际版本 → Agent 可运行节点。", "", "## 跨模块引用契约", "", "每条联系的概念载荷必须携带 scope、关联 IDs、实际版本与类型化失败。返回的引用由原领域保管，消费方检查当前可访问性；Trace 只串联诊断，不作为第二份权威状态。具体字段按首条真实任务细化，不宣称永久协议已稳定。", ""]
     (ROOT / "ARCHITECTURE_ATLAS.md").write_text("\n".join(out), encoding="utf-8")
     template = (ROOT / "architecture" / "explorer.template.html").read_text(encoding="utf-8")
     payload = json.dumps(graph, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")

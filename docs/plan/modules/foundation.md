@@ -6,7 +6,7 @@
 
 composition/application、公共契约与跨模块联调；不是新的Runtime。
 
-本分组主责6轮，另关联0轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责8轮，另关联0轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -21,12 +21,14 @@ composition/application、公共契约与跨模块联调；不是新的Runtime�
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P1-11 第一条真实任务阶段验收](../rounds/P1-11.md) | 证明从用户输入到检查、变更和接受完整可用。 | [P1-10](../rounds/P1-10.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-12 对话与续跑公共协议](../rounds/P1-12.md) | 先固定首次动作、消息完成、问题答复/纠正和执行计时边界。 | [P0-04](../rounds/P0-04.md)、[P0-05](../rounds/P0-05.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-17 H02对话与文本成果真人体验](../rounds/P1-17.md) | 固定版本交给用户完成对话、澄清、纠正和成果审阅。 | [P1-13](../rounds/P1-13.md)、[P1-14](../rounds/P1-14.md)、[P1-15](../rounds/P1-15.md)、[P1-16](../rounds/P1-16.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P2 · 角色、子Agent与工作成果
 
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
-| [P2-09 三类工作与单子任务验收](../rounds/P2-09.md) | 形成独立UAW的基础产品证据。 | [P2-08](../rounds/P2-08.md) | 本组主责；核心开发范围 / 待开发 |
+| [P2-09 三类工作与单子任务验收](../rounds/P2-09.md) | 形成独立UAW的基础产品证据。 | [P2-08](../rounds/P2-08.md)、[P2-02](../rounds/P2-02.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P3 · 语义规划与并行协作
 
@@ -51,6 +53,11 @@ composition/application、公共契约与跨模块联调；不是新的Runtime�
 | 节点 | 详细设计 | 接口与对象入口 |
 | --- | --- | --- |
 | `support` | [共享支撑与控制层](../../design/modules/support.md) | [逐接口定义](../../api/nodes/support.md) |
+| `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
+| `run.history` | [历史与输入权威](../../design/components/run-history.md) | [逐接口定义](../../api/nodes/run.history.md) |
+| `run.budget` | [预算与准入](../../design/components/run-budget.md) | [逐接口定义](../../api/nodes/run.budget.md) |
+| `agent.loop` | [Agent 决策循环](../../design/components/agent-loop.md) | [逐接口定义](../../api/nodes/agent.loop.md) |
 
 ## 目标代码/验证目录
 
@@ -62,6 +69,15 @@ composition/application、公共契约与跨模块联调；不是新的Runtime�
 - `ops/`
 - `tests/integration/scenarios/`
 - `docs/implementation/`
+- `src/uaw/api/ingress.py`
+- `src/uaw/run/state.py`
+- `src/uaw/run/history.py`
+- `src/uaw/run/budget.py`
+- `src/uaw/agent/loop.py`
+- `contracts/`
+- `src/uaw/api/`
+- `docs/api/`
+- `docs/implementation/human-tests/`
 - `tests/evaluation/`
 
 目录均为开发目标。每轮新增文件保持所属facade/port边界；共享设施分组不成为处理所有请求的统一业务Runtime。
@@ -69,4 +85,3 @@ composition/application、公共契约与跨模块联调；不是新的Runtime�
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

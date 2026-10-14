@@ -6,7 +6,7 @@
 
 用户原文加工、正式理解、未知项与只读草稿提示。
 
-本分组主责1轮，另关联2轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责1轮，另关联3轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -15,6 +15,7 @@
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P1-01 正式任务理解与原文溯源](../rounds/P1-01.md) | 得到有版本、可纠正的TaskFrame。 | [P0-04](../rounds/P0-04.md)、[P0-05](../rounds/P0-05.md) | 本组主责；核心开发范围 / 开发中 |
+| [P1-13 普通交流首次调用与消息完成](../rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | [P1-12](../rounds/P1-12.md)、[P1-02](../rounds/P1-02.md) | 跨模块协同；核心开发范围 / 待开发 |
 
 ### P3 · 语义规划与并行协作
 
@@ -36,11 +37,14 @@
 | `intent.original` | [原文读取](../../design/components/intent-original.md) | [逐接口定义](../../api/nodes/intent.original.md) |
 | `intent.semantic` | [语义解析](../../design/components/intent-semantic.md) | [逐接口定义](../../api/nodes/intent.semantic.md) |
 | `intent.frame` | [任务框架](../../design/components/intent-frame.md) | [逐接口定义](../../api/nodes/intent.frame.md) |
+| `agent.loop` | [Agent 决策循环](../../design/components/agent-loop.md) | [逐接口定义](../../api/nodes/agent.loop.md) |
+| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
+| `model.gateway` | [调用网关](../../design/components/model-gateway.md) | [逐接口定义](../../api/nodes/model.gateway.md) |
 | `agent.assessment` | [按需执行评估](../../design/components/agent-assessment.md) | [逐接口定义](../../api/nodes/agent.assessment.md) |
 | `agent.planning` | [规划与依赖校验](../../design/components/agent-planning.md) | [逐接口定义](../../api/nodes/agent.planning.md) |
 | `intent.references` | [指代解析](../../design/components/intent-references.md) | [逐接口定义](../../api/nodes/intent.references.md) |
 | `intent.probe` | [必要信息探查](../../design/components/intent-probe.md) | [逐接口定义](../../api/nodes/intent.probe.md) |
-| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
 | `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
 | `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
 | `intent.preview` | [草稿理解预览](../../design/components/intent-preview.md) | [逐接口定义](../../api/nodes/intent.preview.md) |
@@ -54,11 +58,18 @@
 - `src/uaw/intent/frame.py`
 - `prompts/`
 - `tests/integration/intent/`
+- `src/uaw/agent/loop.py`
+- `src/uaw/intent/ambiguity.py`
+- `src/uaw/run/state.py`
+- `src/uaw/model/gateway.py`
+- `src/uaw/agent/`
+- `src/uaw/intent/`
+- `src/uaw/run/`
+- `src/uaw/resources/prompts/`
 - `src/uaw/agent/assessment.py`
 - `src/uaw/agent/planning.py`
 - `src/uaw/intent/references.py`
 - `src/uaw/intent/probe.py`
-- `src/uaw/intent/ambiguity.py`
 - `tests/fixtures/assessments/`
 - `apps/web/src/features/workspace/`
 - `src/uaw/api/ingress.py`
@@ -73,4 +84,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

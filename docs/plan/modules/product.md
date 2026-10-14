@@ -6,7 +6,7 @@
 
 身份入口、聊天、真实状态、用户控制、审阅和管理页面。
 
-本分组主责4轮，另关联0轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责4轮，另关联2轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -15,12 +15,14 @@
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P1-10 最小API与真实聊天工作区](../rounds/P1-10.md) | 让用户从页面完成第一条任务和审阅。 | [P1-09](../rounds/P1-09.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-12 对话与续跑公共协议](../rounds/P1-12.md) | 先固定首次动作、消息完成、问题答复/纠正和执行计时边界。 | [P0-04](../rounds/P0-04.md)、[P0-05](../rounds/P0-05.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P1-14 同Run澄清纠正与等待暂停](../rounds/P1-14.md) | 用户直接答复原问题，按剩余资源接续原任务。 | [P1-12](../rounds/P1-12.md)、[P1-13](../rounds/P1-13.md) | 跨模块协同；核心开发范围 / 待开发 |
 
 ### P2 · 角色、子Agent与工作成果
 
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
-| [P2-08 角色与子任务页面](../rounds/P2-08.md) | 用户可查角色、修改配置并了解子任务结果。 | [P2-07](../rounds/P2-07.md)、[P1-10](../rounds/P1-10.md) | 本组主责；核心开发范围 / 待开发 |
+| [P2-08 角色与子任务页面](../rounds/P2-08.md) | 用户可查角色、修改配置并了解子任务结果。 | [P2-07](../rounds/P2-07.md)、[P2-06](../rounds/P2-06.md)、[P1-10](../rounds/P1-10.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P4 · 上下文、缓存与能力治理
 
@@ -40,8 +42,14 @@
 | --- | --- | --- |
 | `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
 | `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
-| `intent.preview` | [草稿理解预览](../../design/components/intent-preview.md) | [逐接口定义](../../api/nodes/intent.preview.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
+| `run.history` | [历史与输入权威](../../design/components/run-history.md) | [逐接口定义](../../api/nodes/run.history.md) |
+| `run.budget` | [预算与准入](../../design/components/run-budget.md) | [逐接口定义](../../api/nodes/run.budget.md) |
+| `agent.loop` | [Agent 决策循环](../../design/components/agent-loop.md) | [逐接口定义](../../api/nodes/agent.loop.md) |
+| `run.cancel` | [取消传播](../../design/components/run-cancel.md) | [逐接口定义](../../api/nodes/run.cancel.md) |
 | `run.approval` | [审批与用户控制](../../design/components/run-approval.md) | [逐接口定义](../../api/nodes/run.approval.md) |
+| `context.composer` | [装配与快照](../../design/components/context-composer.md) | [逐接口定义](../../api/nodes/context.composer.md) |
+| `intent.preview` | [草稿理解预览](../../design/components/intent-preview.md) | [逐接口定义](../../api/nodes/intent.preview.md) |
 | `workspace.binding` | [项目绑定与本地授权](../../design/components/workspace-binding.md) | [逐接口定义](../../api/nodes/workspace.binding.md) |
 | `support.configuration` | [配置与账号控制层](../../design/components/support-configuration.md) | [逐接口定义](../../api/nodes/support.configuration.md) |
 
@@ -53,10 +61,21 @@
 - `apps/web/src/features/chat/`
 - `apps/web/src/features/review/`
 - `apps/web/src/features/approvals/`
+- `src/uaw/run/state.py`
+- `src/uaw/run/history.py`
+- `src/uaw/run/budget.py`
+- `src/uaw/agent/loop.py`
+- `contracts/`
+- `src/uaw/shared/`
+- `docs/api/`
+- `src/uaw/run/cancel.py`
+- `src/uaw/run/approval.py`
+- `src/uaw/context/composer.py`
+- `src/uaw/run/`
+- `apps/web/src/`
 - `apps/web/src/features/agent_definitions/`
 - `apps/web/src/features/run_controls/`
 - `src/uaw/intent/preview.py`
-- `src/uaw/run/approval.py`
 - `apps/web/src/features/references/`
 - `apps/web/src/features/admin/`
 - `src/uaw/workspace/binding.py`
@@ -70,4 +89,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

@@ -20,7 +20,7 @@
 
 ### 技术怎样串起来
 
-原文从Run读取 → 按目的向Context取资料 → 通过ModelGateway请求当前继承模型 → jsonschema验证结构 → 原文含义/引用/修订核验 → Repository按CAS提交TaskFrame。
+原文从Run读取 → 按目的向Context取资料 → 消费Agent首次调用中的理解摘要 → jsonschema/原文含义/引用/修订核验 → 按需要CAS提交TaskFrame。需要独立深入理解时才通过ModelGateway请求当前继承模型；不为普通回复固定增加一次理解调用。
 
 模型输出只能作为理解提案。TaskFrame持久化与原文追加存储分别归Intent/Run；不引入另一个LangChain会话历史。语义解析、指代和歧义用当前模型，路径/版本/字段检查用Python。探查材料通过Tool facade。
 
@@ -60,6 +60,7 @@
 | 工作包 | 本轮职责 | 当前状态 |
 | --- | --- | --- |
 | [P1-01 正式任务理解与原文溯源](../../plan/rounds/P1-01.md) | 得到有版本、可纠正的TaskFrame。 | in_progress |
+| [P1-13 普通交流首次调用与消息完成](../../plan/rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | planned |
 | [P3-01 语义执行评估与步骤计划](../../plan/rounds/P3-01.md) | 独立判断规划、委派、并发和信息缺口。 | planned |
 | [P4-09 草稿提示、用户控制与完整管理页面](../../plan/rounds/P4-09.md) | 完成实际能力的可理解交互，区分用户和管理员。 | planned |
 

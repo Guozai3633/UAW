@@ -58,4 +58,3 @@
 - 用户接受结果（与AI完成判断分开）：
 
 只有实际证据齐全才将planning/catalog.py中的本轮状态改为accepted并填implementation_evidence；随后重建计划。不能把编写文档、空目录、Mock或flag关闭记作实现。
-

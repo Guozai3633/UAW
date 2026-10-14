@@ -213,7 +213,7 @@ def main():
     errors = source_checks()
     if errors:
         raise SystemExit("\n".join(errors))
-    mapping = {n: {**BINDINGS[n], "module": node_module(n), "technology_doc": module_doc(node_module(n)), "design_doc": DESIGN[n]["design_doc"], "interface_doc": API[n]["interface_doc"], "code_target": DESIGN[n]["code_target"], "rounds": PLAN[n]["rounds"], "implemented": False} for n in GRAPH["nodes"]}
+    mapping = {n: {**BINDINGS[n], "module": node_module(n), "technology_doc": module_doc(node_module(n)), "design_doc": DESIGN[n]["design_doc"], "interface_doc": API[n]["interface_doc"], "code_target": DESIGN[n]["code_target"], "rounds": PLAN[n]["rounds"], "implemented": None, "implementation_status": "see_actual_receipts"} for n in GRAPH["nodes"]}
     write("technology/node-map.json", [json.dumps({"version": "0.1", "date": DATE, "status": "technology_design_only", "nodes": mapping}, ensure_ascii=False, indent=2)])
     write("technology/components.json", [json.dumps({"version": "0.1", "date": DATE, "dependency_lock": (ROOT / "uv.lock").is_file(), "dependency_lock_scope": "python_core_and_agent_engine_candidate", "components": COMPONENTS, "modules": MODULES}, ensure_ascii=False, indent=2)])
     for id in MODULES:

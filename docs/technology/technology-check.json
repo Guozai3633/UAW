@@ -7,14 +7,14 @@
     "covered": 115,
     "total": 115
   },
-  "mapped_rounds": 50,
-  "local_document_links_checked": 1175,
+  "mapped_rounds": 56,
+  "local_document_links_checked": 1315,
   "errors": [],
   "dependencies_installed": true,
-  "installed_components": 20,
+  "installed_components": 21,
   "dependency_compatibility_tested": true,
   "runtime_behavior_tests_run": true,
-  "runtime_evidence_scope": "P0 foundation/control plane/model protocol and P1-01 source-bound understanding, using real PostgreSQL and controlled HTTP replies; no external LLM, Agent or Runner task",
+  "runtime_evidence_scope": "A32 ordinary conversation policy:23 targeted/8 actual fixed-model calls with all costs retained; behavior passes, manual technical quality remains open. H01-v4 actual ready/identity. Python675 historical union NOT all rerun.",
   "runtime_facts_are_imported_from_evidence": true,
   "limitations": [
     "this checks authored IDs and existing file links, not runtime/library compatibility",

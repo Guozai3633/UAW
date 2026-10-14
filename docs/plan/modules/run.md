@@ -6,7 +6,7 @@
 
 原文与历史、执行状态、审批、预算、取消、检查点和恢复。
 
-本分组主责5轮，另关联3轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责6轮，另关联5轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -21,6 +21,9 @@
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P1-09 人工审批、基础干预与取消](../rounds/P1-09.md) | 用户可停止或修正当前单Agent任务。 | [P1-07](../rounds/P1-07.md)、[P1-08](../rounds/P1-08.md) | 本组主责；核心开发范围 / 待开发 |
+| [P1-12 对话与续跑公共协议](../rounds/P1-12.md) | 先固定首次动作、消息完成、问题答复/纠正和执行计时边界。 | [P0-04](../rounds/P0-04.md)、[P0-05](../rounds/P0-05.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P1-13 普通交流首次调用与消息完成](../rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | [P1-12](../rounds/P1-12.md)、[P1-02](../rounds/P1-02.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P1-14 同Run澄清纠正与等待暂停](../rounds/P1-14.md) | 用户直接答复原问题，按剩余资源接续原任务。 | [P1-12](../rounds/P1-12.md)、[P1-13](../rounds/P1-13.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P3 · 语义规划与并行协作
 
@@ -55,12 +58,17 @@
 | `support.observability` | [运行观测](../../design/components/support-observability.md) | [逐接口定义](../../api/nodes/support.observability.md) |
 | `run.approval` | [审批与用户控制](../../design/components/run-approval.md) | [逐接口定义](../../api/nodes/run.approval.md) |
 | `run.cancel` | [取消传播](../../design/components/run-cancel.md) | [逐接口定义](../../api/nodes/run.cancel.md) |
+| `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
+| `agent.loop` | [Agent 决策循环](../../design/components/agent-loop.md) | [逐接口定义](../../api/nodes/agent.loop.md) |
+| `intent.semantic` | [语义解析](../../design/components/intent-semantic.md) | [逐接口定义](../../api/nodes/intent.semantic.md) |
+| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
+| `model.gateway` | [调用网关](../../design/components/model-gateway.md) | [逐接口定义](../../api/nodes/model.gateway.md) |
+| `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
+| `context.composer` | [装配与快照](../../design/components/context-composer.md) | [逐接口定义](../../api/nodes/context.composer.md) |
 | `tool.invocation` | [调用闸门与派发](../../design/components/tool-invocation.md) | [逐接口定义](../../api/nodes/tool.invocation.md) |
 | `tool.effects` | [调用与副作用账本](../../design/components/tool-effects.md) | [逐接口定义](../../api/nodes/tool.effects.md) |
 | `agent.planning` | [规划与依赖校验](../../design/components/agent-planning.md) | [逐接口定义](../../api/nodes/agent.planning.md) |
 | `agent.board` | [共享任务板](../../design/components/agent-board.md) | [逐接口定义](../../api/nodes/agent.board.md) |
-| `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
-| `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
 | `intent.preview` | [草稿理解预览](../../design/components/intent-preview.md) | [逐接口定义](../../api/nodes/intent.preview.md) |
 | `run.checkpoint` | [恢复边界与版本](../../design/components/run-checkpoint.md) | [逐接口定义](../../api/nodes/run.checkpoint.md) |
 | `run.resume` | [租约与执行恢复](../../design/components/run-resume.md) | [逐接口定义](../../api/nodes/run.resume.md) |
@@ -85,6 +93,22 @@
 - `src/uaw/run/approval.py`
 - `src/uaw/run/cancel.py`
 - `tests/integration/control/`
+- `src/uaw/api/ingress.py`
+- `src/uaw/agent/loop.py`
+- `contracts/`
+- `src/uaw/shared/`
+- `src/uaw/api/`
+- `docs/api/`
+- `src/uaw/intent/semantic.py`
+- `src/uaw/intent/ambiguity.py`
+- `src/uaw/model/gateway.py`
+- `src/uaw/agent/`
+- `src/uaw/intent/`
+- `src/uaw/run/`
+- `src/uaw/resources/prompts/`
+- `apps/web/src/features/workspace/`
+- `src/uaw/context/composer.py`
+- `apps/web/src/`
 - `src/uaw/tool/invocation/facade.py`
 - `src/uaw/tool/effects.py`
 - `tests/integration/tool_parallel/`
@@ -92,8 +116,6 @@
 - `src/uaw/agent/board.py`
 - `apps/web/src/features/run_controls/`
 - `tests/integration/multi_conversation/`
-- `apps/web/src/features/workspace/`
-- `src/uaw/api/ingress.py`
 - `src/uaw/intent/preview.py`
 - `apps/web/src/features/approvals/`
 - `apps/web/src/features/references/`
@@ -119,4 +141,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

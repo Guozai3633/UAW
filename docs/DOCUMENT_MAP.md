@@ -1,3 +1,18 @@
+# 当前文档修订：v0.11对话与单Agent文本体验
+
+2026-10-14，Q1–Q8已由用户接受，新增行为待实现。历史派发不作为本次新包开工依据；准确运行进度仍见[DISPATCH](coordination/DISPATCH.md)。
+
+| 文档 | 作用与维护位置 |
+| --- | --- |
+| [ADR-001](decisions/ADR-001-conversation-and-delivery.md) | 记录已确认八项决策、原因、范围及未实现状态；人工维护 |
+| [CONVERSATION_EXECUTION](design/CONVERSATION_EXECUTION.md) | 大模块联系、细分策略、消息/成果分流、澄清CAS、四种时钟与评测；节点策略由design/catalog.py同步 |
+| [CONVERSATION_REVISION](api/CONVERSATION_REVISION.md) | 拟新增对象/接口的信息需求、约束、迁移；实际发布仍由contracts维护源生成 |
+| [H02开发安排](plan/H02_CONVERSATION.md) | 模块—阶段—轮次—任务—目录与依赖；精确工作包权威为planning/catalog.py |
+| [主架构](../ARCHITECTURE.md)、[图谱](../ARCHITECTURE_ATLAS.md) | 默认执行与条件分支；architecture/build_atlas.py生成关系图及HTML |
+| [开发计划](../DEVELOPMENT_PLAN.md)、[阶段/轮次](plan/README.md) | 56工作包；显式phase_gate解除文本对本机/Join的误依赖，不改变真实完成状态 |
+
+下面保留原各轮入口与文档职责；旧“当前开工”应按DISPATCH页首和实际基线核对。
+
 # 当前开工入口：MS-I2l
 
 - [准确派发状态/SHA](coordination/DISPATCH.md)、[四份会话提示词](coordination/MS-I2l-messages.md)。
@@ -50,7 +65,7 @@
 | [technology/catalog.py](../technology/catalog.py) | 技术主选与子节点绑定源 | 人工维护；组件更换同步边界/验证与计划 |
 | [technology/node-map.json](../technology/node-map.json) | 节点的技术落点机器映射 | 生成；implemented=false，供定位与检查 |
 | [DEVELOPMENT_PLAN.md](../DEVELOPMENT_PLAN.md) | 开发计划总览与第一轮入口 | 人工维护；说明实施顺序，不自行改产品约束 |
-| [plan/README.md](plan/README.md) | 模块→阶段→50轮独立工作包 | 从planning/catalog.py生成；每轮任务/目录/验收完整列出 |
+| [plan/README.md](plan/README.md) | 模块→阶段→56轮独立工作包 | 从planning/catalog.py生成；每轮任务/目录/验收完整列出 |
 | [plan/SEQUENCE.md](plan/SEQUENCE.md) | 全局依赖、阶段门槛和可并行开发部分 | 生成；模块分组不等于依次写完模块 |
 | [plan/DECISIONS.md](plan/DECISIONS.md) | 技术主选待验证项、产品/部署待定项与最晚轮 | 生成；技术主选见技术栈，实际权威/供应商/范围另行确定 |
 | [plan/COVERAGE.md](plan/COVERAGE.md) | 节点到实施轮、详细设计、接口、代码目标 | 生成；计划覆盖不是实现覆盖 |

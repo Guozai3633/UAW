@@ -6,7 +6,7 @@
 
 配置、仓储、凭据边界、缓存、观测、评测及能力包。
 
-本分组主责5轮，另关联4轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责6轮，另关联4轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -18,6 +18,12 @@
 | [P0-02 持久化、CAS、blob与事件提交边界](../rounds/P0-02.md) | 让受理/版本冲突和大内容存取有唯一权威。 | [P0-01](../rounds/P0-01.md) | 本组主责；核心开发范围 / 开发中 |
 | [P0-03 最小管理配置、凭据与功能旗标](../rounds/P0-03.md) | 从控制层向Runtime提供固定配置和当前撤销状态。 | [P0-02](../rounds/P0-02.md) | 本组主责；核心开发范围 / 已验收 |
 | [P0-04 受理、原文、状态、事件与资源账本](../rounds/P0-04.md) | 保存原文并以真实状态和用量驱动后续执行。 | [P0-02](../rounds/P0-02.md)、[P0-03](../rounds/P0-03.md) | 跨模块协同；核心开发范围 / 已验收 |
+
+### P1 · 单Agent完整闭环
+
+| 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
+| --- | --- | --- | --- |
+| [P1-15 人工正确性样本与发布评测](../rounds/P1-15.md) | 独立发现关键事实错误、自核验漏判和不必要阻断。 | [P1-12](../rounds/P1-12.md)、[P0-05](../rounds/P0-05.md) | 本组主责；核心开发范围 / 待开发 |
 
 ### P4 · 上下文、缓存与能力治理
 
@@ -47,6 +53,7 @@
 | `run.events` | [事件与重连](../../design/components/run-events.md) | [逐接口定义](../../api/nodes/run.events.md) |
 | `run.budget` | [预算与准入](../../design/components/run-budget.md) | [逐接口定义](../../api/nodes/run.budget.md) |
 | `support.observability` | [运行观测](../../design/components/support-observability.md) | [逐接口定义](../../api/nodes/support.observability.md) |
+| `support.evaluation` | [离线质量评测](../../design/components/support-evaluation.md) | [逐接口定义](../../api/nodes/support.evaluation.md) |
 | `support.cache` | [共享缓存设施](../../design/components/support-cache.md) | [逐接口定义](../../api/nodes/support.cache.md) |
 | `context.sources` | [来源解析](../../design/components/context-sources.md) | [逐接口定义](../../api/nodes/context.sources.md) |
 | `context.retrieval` | [资料检索与证据](../../design/components/context-retrieval.md) | [逐接口定义](../../api/nodes/context.retrieval.md) |
@@ -59,7 +66,6 @@
 | `tool.mcp.invalidate` | [变化与撤销](../../design/components/tool-mcp-invalidate.md) | [逐接口定义](../../api/nodes/tool.mcp.invalidate.md) |
 | `tool.failure` | [失败恢复与等价切换](../../design/components/tool-failure.md) | [逐接口定义](../../api/nodes/tool.failure.md) |
 | `support.extensions` | [扩展包与版本发布](../../design/components/support-extensions.md) | [逐接口定义](../../api/nodes/support.extensions.md) |
-| `support.evaluation` | [离线质量评测](../../design/components/support-evaluation.md) | [逐接口定义](../../api/nodes/support.evaluation.md) |
 | `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
 | `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
 | `workspace.binding` | [项目绑定与本地授权](../../design/components/workspace-binding.md) | [逐接口定义](../../api/nodes/workspace.binding.md) |
@@ -84,6 +90,9 @@
 - `src/uaw/run/budget.py`
 - `src/uaw/shared/observability.py`
 - `tests/integration/run/`
+- `src/uaw/shared/evaluation.py`
+- `tests/fixtures/evaluation/`
+- `docs/implementation/evaluation/`
 - `src/uaw/shared/cache.py`
 - `src/uaw/context/sources.py`
 - `src/uaw/context/retrieval.py`
@@ -102,7 +111,6 @@
 - `src/uaw/shared/extensions.py`
 - `capabilities/`
 - `tests/integration/extensions/`
-- `src/uaw/shared/evaluation.py`
 - `tests/evaluation/`
 - `docs/implementation/`
 - `src/uaw/api/ingress.py`
@@ -115,4 +123,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

@@ -1,17 +1,19 @@
 {
-  "plan_version": "0.1",
-  "date": "2026-10-08",
+  "plan_version": "0.2",
+  "date": "2026-10-14",
   "status": "planned_coverage_only",
   "nodes": {
     "ui": {
       "rounds": [
         "P1-10",
+        "P1-14",
         "P2-08",
         "P4-09",
         "P5-05"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-10.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P2-08.md",
         "docs/plan/rounds/P4-09.md",
         "docs/plan/rounds/P5-05.md"
@@ -24,12 +26,16 @@
     "ingress": {
       "rounds": [
         "P1-10",
+        "P1-12",
+        "P1-14",
         "P2-08",
         "P4-09",
         "P5-05"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-10.md",
+        "docs/plan/rounds/P1-12.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P2-08.md",
         "docs/plan/rounds/P4-09.md",
         "docs/plan/rounds/P5-05.md"
@@ -161,10 +167,12 @@
     },
     "intent.semantic": {
       "rounds": [
-        "P1-01"
+        "P1-01",
+        "P1-13"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P1-01.md"
+        "docs/plan/rounds/P1-01.md",
+        "docs/plan/rounds/P1-13.md"
       ],
       "design_doc": "docs/design/components/intent-semantic.md",
       "interface_doc": "docs/api/nodes/intent.semantic.md",
@@ -197,9 +205,11 @@
     },
     "intent.ambiguity": {
       "rounds": [
+        "P1-13",
         "P3-01"
       ],
       "plan_documents": [
+        "docs/plan/rounds/P1-13.md",
         "docs/plan/rounds/P3-01.md"
       ],
       "design_doc": "docs/design/components/intent-ambiguity.md",
@@ -233,10 +243,14 @@
     },
     "agent.loop": {
       "rounds": [
-        "P1-07"
+        "P1-07",
+        "P1-12",
+        "P1-13"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P1-07.md"
+        "docs/plan/rounds/P1-07.md",
+        "docs/plan/rounds/P1-12.md",
+        "docs/plan/rounds/P1-13.md"
       ],
       "design_doc": "docs/design/components/agent-loop.md",
       "interface_doc": "docs/api/nodes/agent.loop.md",
@@ -313,10 +327,12 @@
     },
     "agent.completion": {
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P1-08.md"
+        "docs/plan/rounds/P1-08.md",
+        "docs/plan/rounds/P1-16.md"
       ],
       "design_doc": "docs/design/components/agent-completion.md",
       "interface_doc": "docs/api/nodes/agent.completion.md",
@@ -530,10 +546,12 @@
     "context.composer": {
       "rounds": [
         "P1-02",
+        "P1-14",
         "P4-02"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-02.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P4-02.md"
       ],
       "design_doc": "docs/design/components/context-composer.md",
@@ -544,11 +562,13 @@
     "context.references": {
       "rounds": [
         "P1-02",
+        "P1-16",
         "P2-02",
         "P2-07"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-02.md",
+        "docs/plan/rounds/P1-16.md",
         "docs/plan/rounds/P2-02.md",
         "docs/plan/rounds/P2-07.md"
       ],
@@ -841,10 +861,12 @@
     },
     "model.gateway": {
       "rounds": [
-        "P0-05"
+        "P0-05",
+        "P1-13"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P0-05.md"
+        "docs/plan/rounds/P0-05.md",
+        "docs/plan/rounds/P1-13.md"
       ],
       "design_doc": "docs/design/components/model-gateway.md",
       "interface_doc": "docs/api/nodes/model.gateway.md",
@@ -896,10 +918,14 @@
     "run.history": {
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-14",
         "P3-07"
       ],
       "plan_documents": [
         "docs/plan/rounds/P0-04.md",
+        "docs/plan/rounds/P1-12.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P3-07.md"
       ],
       "design_doc": "docs/design/components/run-history.md",
@@ -910,11 +936,17 @@
     "run.state": {
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-13",
+        "P1-14",
         "P3-07",
         "P5-01"
       ],
       "plan_documents": [
         "docs/plan/rounds/P0-04.md",
+        "docs/plan/rounds/P1-12.md",
+        "docs/plan/rounds/P1-13.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P3-07.md",
         "docs/plan/rounds/P5-01.md"
       ],
@@ -940,11 +972,15 @@
     "run.budget": {
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-14",
         "P3-03",
         "P5-01"
       ],
       "plan_documents": [
         "docs/plan/rounds/P0-04.md",
+        "docs/plan/rounds/P1-12.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P3-03.md",
         "docs/plan/rounds/P5-01.md"
       ],
@@ -956,11 +992,13 @@
     "run.approval": {
       "rounds": [
         "P1-09",
+        "P1-14",
         "P3-07",
         "P4-09"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-09.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P3-07.md",
         "docs/plan/rounds/P4-09.md"
       ],
@@ -996,11 +1034,13 @@
     "run.cancel": {
       "rounds": [
         "P1-09",
+        "P1-14",
         "P3-07",
         "P5-02"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-09.md",
+        "docs/plan/rounds/P1-14.md",
         "docs/plan/rounds/P3-07.md",
         "docs/plan/rounds/P5-02.md"
       ],
@@ -1068,10 +1108,12 @@
     "support.observability": {
       "rounds": [
         "P0-04",
+        "P1-15",
         "P5-03"
       ],
       "plan_documents": [
         "docs/plan/rounds/P0-04.md",
+        "docs/plan/rounds/P1-15.md",
         "docs/plan/rounds/P5-03.md"
       ],
       "design_doc": "docs/design/components/support-observability.md",
@@ -1081,9 +1123,11 @@
     },
     "support.evaluation": {
       "rounds": [
+        "P1-15",
         "P5-03"
       ],
       "plan_documents": [
+        "docs/plan/rounds/P1-15.md",
         "docs/plan/rounds/P5-03.md"
       ],
       "design_doc": "docs/design/components/support-evaluation.md",
@@ -1269,10 +1313,12 @@
     },
     "agent.completion.evidence": {
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P1-08.md"
+        "docs/plan/rounds/P1-08.md",
+        "docs/plan/rounds/P1-16.md"
       ],
       "design_doc": "docs/design/components/agent-completion-evidence.md",
       "interface_doc": "docs/api/nodes/agent.completion.evidence.md",
@@ -1282,10 +1328,12 @@
     "agent.completion.semantic": {
       "rounds": [
         "P1-08",
+        "P1-16",
         "P2-07"
       ],
       "plan_documents": [
         "docs/plan/rounds/P1-08.md",
+        "docs/plan/rounds/P1-16.md",
         "docs/plan/rounds/P2-07.md"
       ],
       "design_doc": "docs/design/components/agent-completion-semantic.md",
@@ -1321,10 +1369,12 @@
     },
     "agent.completion.acceptance": {
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
       "plan_documents": [
-        "docs/plan/rounds/P1-08.md"
+        "docs/plan/rounds/P1-08.md",
+        "docs/plan/rounds/P1-16.md"
       ],
       "design_doc": "docs/design/components/agent-completion-acceptance.md",
       "interface_doc": "docs/api/nodes/agent.completion.acceptance.md",

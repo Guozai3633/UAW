@@ -68,7 +68,7 @@ PyInstaller按Windows/Linux/macOS分别构建和签发包；不把一次Windows�
 
 | 工作包 | 本轮职责 | 当前状态 |
 | --- | --- | --- |
-| [P1-04 Runner配对与项目授权](../../plan/rounds/P1-04.md) | 让本机项目访问来自真实用户选择和设备授权。 | planned |
+| [P1-04 Runner配对与项目授权](../../plan/rounds/P1-04.md) | 让本机项目访问来自真实用户选择和设备授权。 | in_progress |
 | [P1-05 输入快照、隔离、环境和真实进程](../../plan/rounds/P1-05.md) | 运行真实项目检查并保留用户已有修改。 | planned |
 | [P3-05 并行写隔离与三方合并](../../plan/rounds/P3-05.md) | 把子工作区修改安全纳入用户项目。 | planned |
 | [P4-07 多语言环境、进程回收与可选云后端](../../plan/rounds/P4-07.md) | 增加真实环境能力并保持安装和执行范围受控。 | planned |

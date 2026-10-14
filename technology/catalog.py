@@ -87,7 +87,7 @@ def m(id, name, roots, components, paths, rounds, text):
 m("intent", "Intent：用户问题加工", "intent", "python pydantic jsonschema sqlalchemy postgres", ["src/uaw/intent/", "prompts/"], "", """
 ### 技术怎样串起来
 
-原文从Run读取 → 按目的向Context取资料 → 通过ModelGateway请求当前继承模型 → jsonschema验证结构 → 原文含义/引用/修订核验 → Repository按CAS提交TaskFrame。
+原文从Run读取 → 按目的向Context取资料 → 消费Agent首次调用中的理解摘要 → jsonschema/原文含义/引用/修订核验 → 按需要CAS提交TaskFrame。需要独立深入理解时才通过ModelGateway请求当前继承模型；不为普通回复固定增加一次理解调用。
 
 模型输出只能作为理解提案。TaskFrame持久化与原文追加存储分别归Intent/Run；不引入另一个LangChain会话历史。语义解析、指代和歧义用当前模型，路径/版本/字段检查用Python。探查材料通过Tool facade。
 
@@ -351,7 +351,7 @@ Linux执行模板用进程组/容器退出回执；任务代码与Runner账本/�
 PyInstaller按Windows/Linux/macOS分别构建和签发包；不把一次Windows构建称为支持所有平台。初期Windows优先，Linux执行模板验证，macOS再做平台验收。升级保留设备身份/账本兼容，任务目录清理先处理后台进程并保留成果。
 """)
 
-m("engineering", "工程、验证与部署", "", "python uv fastapi uvicorn sqlalchemy alembic postgres docker node pnpm pytest ruff mypy playwright nginx structlog otel", ["src/uaw/composition.py", "src/uaw/application.py", "src/uaw/infrastructure/", "tests/", "ops/", "docs/decisions/"], "P0-01 P1-11 P2-09 P3-08 P4-10 P5-03 P5-07", """
+m("engineering", "工程、验证与部署", "", "python uv fastapi uvicorn sqlalchemy alembic postgres docker node pnpm pytest ruff mypy playwright nginx structlog otel", ["src/uaw/composition.py", "src/uaw/application.py", "src/uaw/infrastructure/", "tests/", "ops/", "docs/decisions/"], "P0-01 P1-11 P1-17 P2-09 P3-08 P4-10 P5-03 P5-07", """
 ### 组装和依赖
 
 composition.py是唯一组装根，注入facade需要的ports和批准adapter；domain/public contracts不导入FastAPI、LangGraph或ORM实体。新增infrastructure只装外部组件，不管理任务业务状态。

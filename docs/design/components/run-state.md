@@ -1,6 +1,6 @@
 # Run 与交互项：开发设计
 
-节点 `run.state` · UAW v0.10 · 2026-10-07 · 状态：待实现/待任务验证。
+节点 `run.state` · UAW v0.11 · 2026-10-14 · 状态：目标策略；实际分支与回执见实施记录。
 
 [开发设计索引](../README.md) · [公共契约](../COMMON_CONTRACTS.md) · [关系图谱](../../../ARCHITECTURE_ATLAS.md)
 
@@ -27,12 +27,11 @@ run_id: ID; expected_revision: int; transition: Transition; item_patch: ItemPatc
 
 ## 详细处理策略
 
-1. 校验请求主体/版本与允许转换。
-2. 领域动作实际确认后写对应Item。
-3. running/verifying/waiting等并非必经。
-4. 完成时核验提案、必需检查、未决效果和成果revision。
-5. 分别提交completed状态及succeeded/partial/blocked等outcome。
-6. Delivery用户接受另由Workspace记录。
+1. 合法状态转换与主体/版本/租约校验归Run。
+2. 普通消息检查来源/输入版本/取消/费用后事务提交Item与终态。
+3. 正式交付检查契约、实际成果/证据/未知效果及接受条件。
+4. 具体问题Item与waiting状态/计时暂停同事务提交。
+5. 同Run回答用幂等CAS追加输入并复查当前来源后续跑，取消/终态不能复活。
 
 ### 模型参与方式
 
@@ -55,17 +54,17 @@ run_id: ID; expected_revision: int; transition: Transition; item_patch: ItemPatc
 
 ## 缓存、成本与取消
 
-最小轻量Run不物化DAG/TaskBoard；未知Item可通用传输。
+轻量Run不物化DAG/Board；用户等待与执行分计时。
 
-使用原Run总预算和剩余deadline。取消先停止新动作，再等待执行器实际回执；已经发生的副作用不随文档/聊天回退撤销。引用读取始终复核当前授权/删除。
+使用原Run总费用预算与剩余主动执行预算；合法等待用户暂停执行计时，已派发调用deadline与授权期限不变，续跑重新核对。取消先停止新动作，再等待执行器实际回执；已经发生的副作用不随文档/聊天回退撤销。引用读取始终复核当前授权/删除。
 
 ## 开发验收案例
 
-- 模型finish不会直接success。
-- 部分交付不会装完整。
-- 终态保留未决状态入口。
+- 消息无需Artifact硬依赖但模型不能直接completed。
+- 原问题答复不新建Run。
+- 重启/取消竞态不重复输入或执行。
 
-这些是待实现的验收要求，本轮未运行 Runtime 行为测试。首个场景用真实输入/输出/环境建立fixture；权限、版本、取消与副作用用可重复硬检查，语义标准按人工样本校准。
+这些是目标验收要求，本次文档生成没有运行 Runtime 行为测试；已实现范围以实际实施记录为准。首个场景用真实输入/输出/环境建立fixture；权限、版本、取消与副作用用可重复硬检查，语义标准按人工样本校准。
 
 ## 逐字段接口与对象定义
 
@@ -85,6 +84,10 @@ run_id: ID; expected_revision: int; transition: Transition; item_patch: ItemPatc
 | 上游 → 本节点 | 生命周期：核对后继续 | [租约与执行恢复](run-resume.md) |
 | 上游 → 本节点 | 状态/事件：取消回执与未决动作 | [取消传播](run-cancel.md) |
 | 上游 → 本节点 | 生命周期：授权触发 | [未来触发器](run-trigger.md) |
+| 上游 → 本节点 | 状态/事件：消息完成或具体问题等待 | [Agent 决策循环](agent-loop.md) |
+| 本节点 → 下游 | 状态/事件：合法等待暂停/剩余执行段 | [预算与准入](run-budget.md) |
+| 本节点 → 下游 | 状态/事件：具体问题/消息与状态 | [交互页面](ui.md) |
+| 上游 → 本节点 | 状态/事件：逐项证据与版本/接受条件 | [完成核验协调](agent-completion.md) |
 
 ## 参考与需要验证的选择
 

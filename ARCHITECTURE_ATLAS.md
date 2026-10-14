@@ -1,6 +1,6 @@
 # UAW 分层架构图谱
 
-状态：v0.10 目标设计。七个 Runtime 是逻辑边界，不是七个独立服务；图中所有执行能力均未因画图而成为已实现功能。
+状态：v0.11 目标设计。七个 Runtime 是逻辑边界，不是七个独立服务；图中所有执行能力均未因画图而成为已实现功能。
 
 [打开交互图](demo/uaw-architecture-map.html) · [主架构](ARCHITECTURE.md) · [本轮题集参考](NOTION_ARCHITECTURE_REVIEW.md) · [细节契约](ENGINEERING_COMPLETENESS.md)
 
@@ -30,7 +30,9 @@ flowchart LR
   n9["共享支撑与控制层"]
   n0 -->|"调用：发送原文/干预/审阅"| n1
   n1 -->|"调用：创建与控制执行"| n8
-  n8 -->|"调用：发起理解或修订"| n2
+  n8 -->|"调用：原文与最小上下文直接起步"| n3
+  n3 -->|"调用：同次理解消费或按需深入"| n2
+  n8 -->|"调用：按需理解或修订"| n2
   n2 -->|"数据/引用：目标、约束、未知项"| n3
   n2 -->|"调用：按需补充理解材料"| n4
   n2 -->|"调用：需要语义理解生成时"| n7
@@ -52,7 +54,7 @@ flowchart LR
   n9 -.->|"权限/配置：模型目录与发布配置"| n7
   n9 -.->|"权限/配置：技能/能力包与flag"| n3
   n9 -.->|"权限/配置：资料/记忆与保留政策"| n4
-  n8 -->|"数据/引用：关联诊断与评测输入"| n9
+  n8 -->|"数据/引用：脱敏回执用于独立发布评测"| n9
 ```
 
 | 子模块 | 统一入口 | 输入 → 输出 | 关键约束 | 详细开发策略 |
@@ -565,9 +567,59 @@ flowchart LR
 | 工作区实际版本 | `check_workspace` | 保存的版本与当前Runner状态 → 可继续/冲突/缺失 | 不把旧快照冒充当前磁盘。 | [开发设计](docs/design/components/run-resume-workspace.md) · [接口契约](docs/api/nodes/run.resume.workspace.md) |
 | 恢复可运行工作 | `resume_nodes` | 核对后的领域状态 → Run进展或明确受阻 | replay不执行；rerun是新尝试。 | [开发设计](docs/design/components/run-resume-continue.md) · [接口契约](docs/api/nodes/run.resume.continue.md) |
 
+## 17. 对话、澄清与正式交付
+
+首次调用决定回答/工具/问题；普通消息不必Artifact或模型自评。澄清接续同Run，等待与执行分计时；独立事实评测属于发布门槛。新增行为待实现。
+
+```mermaid
+flowchart LR
+  n0["交互页面"]
+  n1["产品入口"]
+  n2["历史与输入权威"]
+  n3["Run 与交互项"]
+  n4["预算与准入"]
+  n5["Agent 决策循环"]
+  n6["语义解析"]
+  n7["装配与快照"]
+  n8["调用网关"]
+  n9["工具执行 · Tool"]
+  n10["完成核验协调"]
+  n11["离线质量评测"]
+  n0 -->|"调用：原文/原问题答复/纠正"| n1
+  n1 -->|"调用：幂等/CAS追加原文"| n2
+  n2 -->|"数据/引用：原文和有效补充"| n7
+  n7 -->|"数据/引用：最小上下文"| n5
+  n5 -->|"调用：首次理解与下一步同次调用"| n8
+  n5 -->|"调用：摘要消费/按需深入"| n6
+  n5 -->|"调用：按需发现与执行"| n9
+  n9 -->|"数据/引用：真实观察"| n5
+  n5 -->|"状态/事件：消息完成或具体问题等待"| n3
+  n3 -->|"状态/事件：合法等待暂停/剩余执行段"| n4
+  n3 -->|"状态/事件：具体问题/消息与状态"| n0
+  n5 -->|"调用：正式成果才走交付契约"| n10
+  n10 -->|"状态/事件：逐项证据与版本/接受条件"| n3
+  n2 -->|"数据/引用：授权脱敏固定样本"| n11
+  n11 -.->|"权限/配置：候选版本独立质量门槛"| n5
+```
+
+| 子模块 | 统一入口 | 输入 → 输出 | 关键约束 | 详细开发策略 |
+| --- | --- | --- | --- | --- |
+| 交互页面 | `send/control/review` | 用户输入与选择 → 请求与可见反馈 | 任务理解是提示，原文是执行基准。 | [开发设计](docs/design/components/ui.md) · [接口契约](docs/api/nodes/ui.md) |
+| 产品入口 | `submit/stream` | 原文、附件引用、会话配置 → AgentExecutionRequest | 输入路径不自动赋予本地权限。 | [开发设计](docs/design/components/ingress.md) · [接口契约](docs/api/nodes/ingress.md) |
+| 历史与输入权威 | `append/read` | 原文与用户控制 → InputRef / History | 云/本地权威尚待选定，执行位置不决定存储位置。 | [开发设计](docs/design/components/run-history.md) · [接口契约](docs/api/nodes/run.history.md) |
+| Run 与交互项 | `transition/emit_item` | 预期版本与领域确认 → RunState / InteractionItem | 模型finish不能跳过必需的证据核验。 | [开发设计](docs/design/components/run-state.md) · [接口契约](docs/api/nodes/run.state.md) |
+| 预算与准入 | `reserve/settle/release` | 动作估算、已用额、deadline → 预留凭据或限额结果 | 重试/子Agent/汇总都计入总额，队列有界。 | [开发设计](docs/design/components/run-budget.md) · [接口契约](docs/api/nodes/run.budget.md) |
+| Agent 决策循环 | `step` | TaskFrame、ContextSnapshot、预算 → 动作提案或答复 | 失败回到决策，不强制固定业务流水线。 | [开发设计](docs/design/components/agent-loop.md) · [接口契约](docs/api/nodes/agent.loop.md) |
+| 语义解析 | `parse` | 原文与必要上下文 → 目标/约束/候选解释 | 不用词典判复杂度，推断不伪装用户事实。 | [开发设计](docs/design/components/intent-semantic.md) · [接口契约](docs/api/nodes/intent.semantic.md) |
+| 装配与快照 | `compose` | 选中块、指令、压缩状态 → ContextSnapshot / Manifest | 缓存不能改变用户目标、时间或有效工具权限。 | [开发设计](docs/design/components/context-composer.md) · [接口契约](docs/api/nodes/context.composer.md) |
+| 调用网关 | `generate` | ContextSnapshot与调用配置 → 带关联ID的模型尝试 | 供应商差异明确呈现，统一接口不伪装全兼容。 | [开发设计](docs/design/components/model-gateway.md) · [接口契约](docs/api/nodes/model.gateway.md) |
+| 工具执行 · Tool | `discover/invoke/reconcile` | 工具参数与可信 ToolRuntimeContext → ToolResult、效果状态、原始结果引用 | 未知写结果先核对；只有登记等价契约才自动切换。 | [开发设计](docs/design/modules/tool.md) · [接口契约](docs/api/nodes/tool.md) |
+| 完成核验协调 | `verify/propose_completion` | 契约、成果版本、检查证据 → VerificationReport / Proposal | 真实测试、语义满足、用户接受分别记录。 | [开发设计](docs/design/components/agent-completion.md) · [接口契约](docs/api/nodes/agent.completion.md) |
+| 离线质量评测 | `evaluate/compare` | candidate/baseline/dataset/environment → 切片对比与ReleaseGate | 不为每个用户请求执行；防止评测重放外部写入。 | [开发设计](docs/design/components/support-evaluation.md) · [接口契约](docs/api/nodes/support.evaluation.md) |
+
 ## 变更、失败和等待如何回流
 
-- 用户纠正：UI → Ingress → Run 原文/ControlRequest → Intent 新理解 → Agent 使相关计划/结果失效；未受影响成果继续保留。
+- 用户纠正或澄清答复：UI → Ingress → 原Run追加输入/CAS → 当前权限/费用复查 → Context与必要Intent更新 → Agent只失效相关结果；等待暂停不延长已发调用或授权。
 - 工具失败：Tool 分类与允许恢复 → Agent 观察缺口；改变能力或目标时由 Agent 再决策。
 - 审批等待：Tool 预检 → Run 持久审批 → Tool 再核验 → 真正执行，拒绝回到 Agent 选已允许方案。
 - 上下文不足：Context 分页/筛选/压缩保护 → Agent 按缺口补资料；不能用摘要证明工具已执行。

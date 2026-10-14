@@ -1,6 +1,6 @@
 # 调用网关：开发设计
 
-节点 `model.gateway` · UAW v0.10 · 2026-10-07 · 状态：待实现/待任务验证。
+节点 `model.gateway` · UAW v0.11 · 2026-10-14 · 状态：目标策略；实际分支与回执见实施记录。
 
 [开发设计索引](../README.md) · [公共契约](../COMMON_CONTRACTS.md) · [关系图谱](../../../ARCHITECTURE_ATLAS.md)
 
@@ -56,7 +56,7 @@ context_snapshot_ref: Ref; model_config: ResolvedModelConfig; output_protocol: P
 
 按provider限流/排队有界；稳定前缀缓存只通过供应商支持接口。
 
-使用原Run总预算和剩余deadline。取消先停止新动作，再等待执行器实际回执；已经发生的副作用不随文档/聊天回退撤销。引用读取始终复核当前授权/删除。
+使用原Run总费用预算与剩余主动执行预算；合法等待用户暂停执行计时，已派发调用deadline与授权期限不变，续跑重新核对。取消先停止新动作，再等待执行器实际回执；已经发生的副作用不随文档/聊天回退撤销。引用读取始终复核当前授权/删除。
 
 ## 开发验收案例
 
@@ -64,7 +64,7 @@ context_snapshot_ref: Ref; model_config: ResolvedModelConfig; output_protocol: P
 - provider错误能追溯。
 - 未经支持参数不被悄悄忽略。
 
-这些是待实现的验收要求，本轮未运行 Runtime 行为测试。首个场景用真实输入/输出/环境建立fixture；权限、版本、取消与副作用用可重复硬检查，语义标准按人工样本校准。
+这些是目标验收要求，本次文档生成没有运行 Runtime 行为测试；已实现范围以实际实施记录为准。首个场景用真实输入/输出/环境建立fixture；权限、版本、取消与副作用用可重复硬检查，语义标准按人工样本校准。
 
 ## 逐字段接口与对象定义
 
@@ -79,6 +79,7 @@ context_snapshot_ref: Ref; model_config: ResolvedModelConfig; output_protocol: P
 | 上游 → 本节点 | 数据/引用：获准兼容配置 | [兼容与Auto选择](model-capability.md) |
 | 本节点 → 下游 | 调用：实际请求 | [供应商协议适配](model-adapters.md) |
 | 上游 → 本节点 | 调用：有限新尝试 | [调用恢复](model-recovery.md) |
+| 上游 → 本节点 | 调用：首次理解与下一步同次调用 | [Agent 决策循环](agent-loop.md) |
 
 ## 参考与需要验证的选择
 

@@ -1,3 +1,13 @@
+# 2026-10-14文档决策更新：H02待开发，尚未派发新包
+
+用户已接受Q1–Q8，架构v0.11/计划v0.2同步：[确认决策](../decisions/ADR-001-conversation-and-delivery.md)、[H02六轮计划](../plan/H02_CONVERSATION.md)、[拟新增公共协议](../api/CONVERSATION_REVISION.md)。
+
+此轮只改设计/计划与生成源，没有运行代码、现行schema、flags或权限变更。P1-12～17全部planned，无新worker开工标签/SHA；先由A完成精确协议与消费源，再正式发包。B/C/D保留原交付，不据文档自动同步/扩包。
+
+实际当前仍是A32/H01-v4：respond走成果与核验，同Run澄清/暂停计时未完成；技术比较出现人工事实错误与模型passed漏判，本机首次签名发布链未通过。旧last_full/费用/失败/取消/固定标签不变；文档检查不计Runtime验收。
+
+下方A32与各轮记录保留其原始历史，不能用旧派发启动新工作包。
+
 # A32 正式状态：普通交流策略已更新，H01-v4启动／技术质量仍有缺口
 
 2026-10-13，最终准确source **bc9458c3fd93d62290cae3ab6cce4c04f968f065** / `ms-i2l-a32-refined-source`。

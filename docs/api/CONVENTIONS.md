@@ -1,5 +1,7 @@
 # 接口共同规则
 
+2026-10-14架构v0.11修订：[对话快通路/同Run接续协议设计](CONVERSATION_REVISION.md)。本文状态/预算规则是目标约束；现行准确DTO/schema不因文档修订改变，新字段/动作须由公共维护源正式发布。等待用户暂停主动执行计时，原调用deadline与审批/目录授权期限独立不变，续跑复核。
+
 版本：0.1，2026-10-07。这里规定所有接口的共同执行约束；[接口总入口](README.md)列出具体功能。**这是拟实现契约，不是已上线接口说明。**
 
 ## 1. 五类入口和信任边界
@@ -104,7 +106,7 @@ SSE连接先验证会话权限，按提交seq有序传递；网络重连可能�
 
 ## 7. 状态机与事件项目
 
-Run主链：queued → preparing → running → verifying → completed。按当前状态可进入waiting_for_user、waiting_for_merge、failed、cancelled；等待后回到对应工作阶段。仅Completion Controller在当前成果/要求/证据/副作用版本一致时提出终态提交。completed之后新要求创建新Run，不重写旧结果。
+目标状态允许按需路径：普通消息running→completed，正式成果按需要verifying；waiting_for_user/merge、failed、cancelled按合法转换进入。消息终态由Run Controller核对来源/版本/取消/费用和相关效果；正式成果由Completion Controller提出经契约/证据/成果版本核对的提案，Run提交。原问题答复CAS追加输入，在同一未结束Run继续；取消/终态不能复活，终态后新要求创建新Run。新分流与接续接口尚未实现。
 
 Node/Agent的completed只表示该节点/实例结束；结果可以partial或failed，不等于整个Task成功。子失败由父收集后决定重试、改计划或交付partial。stale结果不能继续喂给Join当有效证据。状态转移由代码执行白名单，模型只提出行动/结果候选。
 

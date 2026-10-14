@@ -99,6 +99,9 @@ P1使用LangGraph PostgreSQL checkpointer保存局部执行位置，因为interr
 | --- | --- | --- |
 | [P1-07 根实例、单Agent循环与工具接线](../../plan/rounds/P1-07.md) | 由主Agent动态决定下一步并完成实际工作。 | planned |
 | [P1-08 交付契约、证据和完成提交](../../plan/rounds/P1-08.md) | 以真实要求、实际检查和版本决定是否完成。 | planned |
+| [P1-12 对话与续跑公共协议](../../plan/rounds/P1-12.md) | 先固定首次动作、消息完成、问题答复/纠正和执行计时边界。 | planned |
+| [P1-13 普通交流首次调用与消息完成](../../plan/rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | planned |
+| [P1-16 单Agent粘贴文本成果独立验收](../../plan/rounds/P1-16.md) | 把办公和学术材料完整交付，不等待本机/子Agent设施。 | planned |
 | [P2-03 技能加载与可复用任务模板](../../plan/rounds/P2-03.md) | 让操作方法按需复用而不靠长主提示词。 | planned |
 | [P2-04 会话子Agent定义的设计和版本管理](../../plan/rounds/P2-04.md) | 用户可用自然语言创建、修改和撤销角色。 | planned |
 | [P2-05 首次有界子Agent调用](../../plan/rounds/P2-05.md) | 把定义转换为独立上下文和受限执行实例。 | planned |

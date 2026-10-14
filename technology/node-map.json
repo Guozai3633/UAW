@@ -23,11 +23,13 @@
       "code_target": "apps/web/src/features/workspace/",
       "rounds": [
         "P1-10",
+        "P1-14",
         "P2-08",
         "P4-09",
         "P5-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "ingress": {
       "components": [
@@ -45,11 +47,14 @@
       "code_target": "src/uaw/api/ingress.py",
       "rounds": [
         "P1-10",
+        "P1-12",
+        "P1-14",
         "P2-08",
         "P4-09",
         "P5-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent": {
       "components": [
@@ -68,7 +73,8 @@
       "rounds": [
         "P1-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent": {
       "components": [
@@ -86,7 +92,8 @@
       "rounds": [
         "P1-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context": {
       "components": [
@@ -104,7 +111,8 @@
       "rounds": [
         "P1-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool": {
       "components": [
@@ -124,7 +132,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace": {
       "components": [
@@ -142,7 +151,8 @@
       "rounds": [
         "P1-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model": {
       "components": [
@@ -161,7 +171,8 @@
       "rounds": [
         "P0-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run": {
       "components": [
@@ -179,7 +190,8 @@
       "rounds": [
         "P0-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support": {
       "components": [
@@ -195,7 +207,8 @@
       "rounds": [
         "P0-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.preview": {
       "components": [
@@ -212,7 +225,8 @@
       "rounds": [
         "P4-09"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.original": {
       "components": [
@@ -231,7 +245,8 @@
       "rounds": [
         "P1-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.semantic": {
       "components": [
@@ -246,9 +261,11 @@
       "interface_doc": "docs/api/nodes/intent.semantic.md",
       "code_target": "src/uaw/intent/semantic.py",
       "rounds": [
-        "P1-01"
+        "P1-01",
+        "P1-13"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.references": {
       "components": [
@@ -265,7 +282,8 @@
       "rounds": [
         "P3-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.probe": {
       "components": [
@@ -281,7 +299,8 @@
       "rounds": [
         "P3-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.ambiguity": {
       "components": [
@@ -296,9 +315,11 @@
       "interface_doc": "docs/api/nodes/intent.ambiguity.md",
       "code_target": "src/uaw/intent/ambiguity.py",
       "rounds": [
+        "P1-13",
         "P3-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "intent.frame": {
       "components": [
@@ -317,7 +338,8 @@
       "rounds": [
         "P1-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions": {
       "components": [
@@ -336,7 +358,8 @@
       "rounds": [
         "P2-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.loop": {
       "components": [
@@ -350,9 +373,12 @@
       "interface_doc": "docs/api/nodes/agent.loop.md",
       "code_target": "src/uaw/agent/loop.py",
       "rounds": [
-        "P1-07"
+        "P1-07",
+        "P1-12",
+        "P1-13"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.assessment": {
       "components": [
@@ -369,7 +395,8 @@
       "rounds": [
         "P3-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.planning": {
       "components": [
@@ -388,7 +415,8 @@
         "P3-02",
         "P3-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.scheduler": {
       "components": [
@@ -405,7 +433,8 @@
       "rounds": [
         "P3-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration": {
       "components": [
@@ -424,7 +453,8 @@
         "P2-05",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.skills": {
       "components": [
@@ -442,7 +472,8 @@
         "P2-03",
         "P2-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion": {
       "components": [
@@ -459,9 +490,11 @@
       "interface_doc": "docs/api/nodes/agent.completion.md",
       "code_target": "src/uaw/agent/completion/facade.py",
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.board": {
       "components": [
@@ -481,7 +514,8 @@
         "P3-04",
         "P3-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.factory": {
       "components": [
@@ -501,7 +535,8 @@
         "P2-05",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.designer": {
       "components": [
@@ -518,7 +553,8 @@
       "rounds": [
         "P2-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.validator": {
       "components": [
@@ -537,7 +573,8 @@
       "rounds": [
         "P2-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.model_intent": {
       "components": [
@@ -555,7 +592,8 @@
         "P2-04",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.repository": {
       "components": [
@@ -574,7 +612,8 @@
       "rounds": [
         "P2-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.discovery": {
       "components": [
@@ -593,7 +632,8 @@
         "P2-04",
         "P4-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.definitions.change_service": {
       "components": [
@@ -613,7 +653,8 @@
         "P2-04",
         "P3-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.sources": {
       "components": [
@@ -632,7 +673,8 @@
         "P1-02",
         "P4-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.rules": {
       "components": [
@@ -651,7 +693,8 @@
         "P1-02",
         "P2-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.ingestion": {
       "components": [
@@ -671,7 +714,8 @@
       "rounds": [
         "P2-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.retrieval": {
       "components": [
@@ -691,7 +735,8 @@
         "P4-03",
         "P4-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory": {
       "components": [
@@ -710,7 +755,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.selection": {
       "components": [
@@ -729,7 +775,8 @@
         "P1-02",
         "P4-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.compression": {
       "components": [
@@ -746,7 +793,8 @@
       "rounds": [
         "P4-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.composer": {
       "components": [
@@ -763,9 +811,11 @@
       "code_target": "src/uaw/context/composer.py",
       "rounds": [
         "P1-02",
+        "P1-14",
         "P4-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.references": {
       "components": [
@@ -782,10 +832,12 @@
       "code_target": "src/uaw/context/references.py",
       "rounds": [
         "P1-02",
+        "P1-16",
         "P2-02",
         "P2-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.registry": {
       "components": [
@@ -806,7 +858,8 @@
         "P1-03",
         "P4-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.discovery": {
       "components": [
@@ -827,7 +880,8 @@
         "P1-03",
         "P4-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation": {
       "components": [
@@ -845,7 +899,8 @@
         "P1-03",
         "P3-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.effects": {
       "components": [
@@ -866,7 +921,8 @@
         "P3-03",
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.failure": {
       "components": [
@@ -883,7 +939,8 @@
         "P1-03",
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp": {
       "components": [
@@ -901,7 +958,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.adapters": {
       "components": [
@@ -918,7 +976,8 @@
         "P1-03",
         "P2-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.results": {
       "components": [
@@ -938,7 +997,8 @@
         "P1-03",
         "P2-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.audit": {
       "components": [
@@ -957,7 +1017,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.binding": {
       "components": [
@@ -976,7 +1037,8 @@
         "P1-04",
         "P5-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.base": {
       "components": [
@@ -996,7 +1058,8 @@
         "P1-05",
         "P3-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.isolation": {
       "components": [
@@ -1017,7 +1080,8 @@
         "P3-05",
         "P4-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.environment": {
       "components": [
@@ -1035,7 +1099,8 @@
         "P1-05",
         "P4-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.process": {
       "components": [
@@ -1053,7 +1118,8 @@
         "P1-05",
         "P4-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.changes": {
       "components": [
@@ -1072,7 +1138,8 @@
         "P3-05",
         "P3-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.artifacts": {
       "components": [
@@ -1092,7 +1159,8 @@
         "P1-06",
         "P3-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "workspace.review": {
       "components": [
@@ -1110,7 +1178,8 @@
         "P1-06",
         "P3-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.catalog": {
       "components": [
@@ -1130,7 +1199,8 @@
         "P0-05",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.policy": {
       "components": [
@@ -1150,7 +1220,8 @@
         "P0-05",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.capability": {
       "components": [
@@ -1170,7 +1241,8 @@
         "P0-05",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.gateway": {
       "components": [
@@ -1186,9 +1258,11 @@
       "interface_doc": "docs/api/nodes/model.gateway.md",
       "code_target": "src/uaw/model/gateway.py",
       "rounds": [
-        "P0-05"
+        "P0-05",
+        "P1-13"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.adapters": {
       "components": [
@@ -1206,7 +1280,8 @@
       "rounds": [
         "P0-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.recovery": {
       "components": [
@@ -1223,7 +1298,8 @@
         "P0-05",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "model.usage": {
       "components": [
@@ -1244,7 +1320,8 @@
         "P4-04",
         "P4-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.history": {
       "components": [
@@ -1261,9 +1338,12 @@
       "code_target": "src/uaw/run/history.py",
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-14",
         "P3-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.state": {
       "components": [
@@ -1280,10 +1360,14 @@
       "code_target": "src/uaw/run/state.py",
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-13",
+        "P1-14",
         "P3-07",
         "P5-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.events": {
       "components": [
@@ -1302,7 +1386,8 @@
         "P0-04",
         "P5-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.budget": {
       "components": [
@@ -1319,10 +1404,13 @@
       "code_target": "src/uaw/run/budget.py",
       "rounds": [
         "P0-04",
+        "P1-12",
+        "P1-14",
         "P3-03",
         "P5-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.approval": {
       "components": [
@@ -1339,10 +1427,12 @@
       "code_target": "src/uaw/run/approval.py",
       "rounds": [
         "P1-09",
+        "P1-14",
         "P3-07",
         "P4-09"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.checkpoint": {
       "components": [
@@ -1359,7 +1449,8 @@
       "rounds": [
         "P5-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume": {
       "components": [
@@ -1377,7 +1468,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.cancel": {
       "components": [
@@ -1394,10 +1486,12 @@
       "code_target": "src/uaw/run/cancel.py",
       "rounds": [
         "P1-09",
+        "P1-14",
         "P3-07",
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.trigger": {
       "components": [
@@ -1415,7 +1509,8 @@
       "rounds": [
         "P5-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.configuration": {
       "components": [
@@ -1439,7 +1534,8 @@
         "P5-03",
         "P5-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.extensions": {
       "components": [
@@ -1457,7 +1553,8 @@
       "rounds": [
         "P4-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.cache": {
       "components": [
@@ -1475,7 +1572,8 @@
       "rounds": [
         "P4-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.observability": {
       "components": [
@@ -1491,9 +1589,11 @@
       "code_target": "src/uaw/shared/observability.py",
       "rounds": [
         "P0-04",
+        "P1-15",
         "P5-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.evaluation": {
       "components": [
@@ -1508,9 +1608,11 @@
       "interface_doc": "docs/api/nodes/support.evaluation.md",
       "code_target": "src/uaw/shared/evaluation.py",
       "rounds": [
+        "P1-15",
         "P5-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "support.stores": {
       "components": [
@@ -1531,7 +1633,8 @@
       "rounds": [
         "P0-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.schema": {
       "components": [
@@ -1548,7 +1651,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.precheck": {
       "components": [
@@ -1565,7 +1669,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.approval": {
       "components": [
@@ -1582,7 +1687,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.recheck": {
       "components": [
@@ -1599,7 +1705,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.dispatch": {
       "components": [
@@ -1616,7 +1723,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.invocation.result": {
       "components": [
@@ -1635,7 +1743,8 @@
       "rounds": [
         "P1-03"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.contract": {
       "components": [
@@ -1653,7 +1762,8 @@
       "rounds": [
         "P2-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.instance": {
       "components": [
@@ -1672,7 +1782,8 @@
         "P2-05",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.channel": {
       "components": [
@@ -1691,7 +1802,8 @@
         "P2-05",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.join": {
       "components": [
@@ -1710,7 +1822,8 @@
         "P2-06",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.handoff": {
       "components": [
@@ -1728,7 +1841,8 @@
       "rounds": [
         "P5-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.collaboration.cancel": {
       "components": [
@@ -1747,7 +1861,8 @@
         "P2-05",
         "P3-04"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.contract": {
       "components": [
@@ -1766,7 +1881,8 @@
       "rounds": [
         "P1-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.evidence": {
       "components": [
@@ -1783,9 +1899,11 @@
       "interface_doc": "docs/api/nodes/agent.completion.evidence.md",
       "code_target": "src/uaw/agent/completion/evidence.py",
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.semantic": {
       "components": [
@@ -1801,9 +1919,11 @@
       "code_target": "src/uaw/agent/completion/semantic.py",
       "rounds": [
         "P1-08",
+        "P1-16",
         "P2-07"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.version": {
       "components": [
@@ -1823,7 +1943,8 @@
         "P1-08",
         "P3-06"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.delivery": {
       "components": [
@@ -1842,7 +1963,8 @@
       "rounds": [
         "P1-08"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "agent.completion.acceptance": {
       "components": [
@@ -1859,9 +1981,11 @@
       "interface_doc": "docs/api/nodes/agent.completion.acceptance.md",
       "code_target": "src/uaw/agent/completion/acceptance.py",
       "rounds": [
-        "P1-08"
+        "P1-08",
+        "P1-16"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory.candidate": {
       "components": [
@@ -1878,7 +2002,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory.policy": {
       "components": [
@@ -1897,7 +2022,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory.conflict": {
       "components": [
@@ -1916,7 +2042,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory.store": {
       "components": [
@@ -1935,7 +2062,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "context.memory.forget": {
       "components": [
@@ -1954,7 +2082,8 @@
       "rounds": [
         "P4-01"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp.provider": {
       "components": [
@@ -1972,7 +2101,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp.session": {
       "components": [
@@ -1990,7 +2120,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp.capabilities": {
       "components": [
@@ -2008,7 +2139,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp.invoke": {
       "components": [
@@ -2026,7 +2158,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "tool.mcp.invalidate": {
       "components": [
@@ -2044,7 +2177,8 @@
       "rounds": [
         "P4-05"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.lease": {
       "components": [
@@ -2062,7 +2196,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.versions": {
       "components": [
@@ -2080,7 +2215,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.access": {
       "components": [
@@ -2098,7 +2234,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.effects": {
       "components": [
@@ -2116,7 +2253,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.workspace": {
       "components": [
@@ -2134,7 +2272,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     },
     "run.resume.continue": {
       "components": [
@@ -2152,7 +2291,8 @@
       "rounds": [
         "P5-02"
       ],
-      "implemented": false
+      "implemented": null,
+      "implementation_status": "see_actual_receipts"
     }
   }
 }

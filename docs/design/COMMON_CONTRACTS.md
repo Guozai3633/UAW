@@ -1,6 +1,8 @@
 # 公共开发契约
 
-状态：v0.10 实验设计，2026-10-07。以下是Python Runtime的目标接口，不是已发布协议。各节点专属字段见组件文档；技术主选见[技术栈](../../TECHNOLOGY_STACK.md)，当前已实施范围见[实施记录](../implementation/README.md)。
+新增消息完成/原问题答复/执行时钟的信息需求见 [协议修订](../api/CONVERSATION_REVISION.md) 与 [执行细则](CONVERSATION_EXECUTION.md)。尚未合入现行schema的字段是待实现设计，不能直接调用或自报可信权限。
+
+状态：v0.11目标设计，2026-10-14。以下是Python Runtime的目标接口，不是已发布协议。各节点专属字段见组件文档；技术主选见[技术栈](../../TECHNOLOGY_STACK.md)，当前已实施范围见[实施记录](../implementation/README.md)。
 
 逐字段的准确结构现在统一在[接口规则](../api/CONVENTIONS.md)、[对象字典](../api/OBJECTS.md)与[JSON Schema](../../contracts/uaw.schema.json)。本文保留概念协议和状态所有权；展示的概念类型不作为第二份可独立变化的schema。
 
@@ -65,7 +67,7 @@ Failure 字段：code、category、failed_phase、retryable、recover_hint、evi
 
 单进程先以本地事务/锁/CAS维护唯一写入。跨执行器分配使用持久意图和回执，补偿与恢复步骤明确；不靠一把进程锁假称跨外部系统原子。lease保护执行权，fencing版本阻止过期执行者提交；权限仍独立检查。
 
-deadline向下传剩余时间；模型、工具、子Agent和评审预算共用父Run账本。等待不自动更新完整时限；延长是用户或已授权策略的明确修订。取消先阻止新动作，再查询执行器实际停止，不能把结束等待当作外部动作已停止。
+费用预算共用父Run账本，失败/重试/pending费用保留。主动执行与用户等待分计时：合法持久等待暂停主动耗时，续跑使用剩余主动预算；已派发调用deadline与授权有效期不暂停、不自动延长。恢复重新核对取消、预算和当前访问；不能重领完整时限。取消先阻止新动作，再查询执行器实际停止，不能把结束等待当作外部动作已停止。
 
 checkpoint保存领域版本/游标，恢复读取当前撤销、核对Tool效果和Workspace实际版本。replay不执行工具；resume继续旧Run；rerun建立新Run。变化只使实际依赖失效，保留用户修改与未受影响成果。
 

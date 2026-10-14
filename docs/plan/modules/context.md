@@ -6,7 +6,7 @@
 
 规则、资料、引用、预算装配、记忆和压缩。
 
-本分组主责4轮，另关联5轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责4轮，另关联7轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -15,6 +15,8 @@
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P1-02 最小上下文、规则和引用](../rounds/P1-02.md) | 为当前调用提供必要且有来源的输入。 | [P0-02](../rounds/P0-02.md)、[P0-05](../rounds/P0-05.md)、[P1-01](../rounds/P1-01.md) | 本组主责；核心开发范围 / 开发中 |
+| [P1-14 同Run澄清纠正与等待暂停](../rounds/P1-14.md) | 用户直接答复原问题，按剩余资源接续原任务。 | [P1-12](../rounds/P1-12.md)、[P1-13](../rounds/P1-13.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P1-16 单Agent粘贴文本成果独立验收](../rounds/P1-16.md) | 把办公和学术材料完整交付，不等待本机/子Agent设施。 | [P1-13](../rounds/P1-13.md)、[P1-02](../rounds/P1-02.md) | 跨模块协同；核心开发范围 / 待开发 |
 
 ### P2 · 角色、子Agent与工作成果
 
@@ -23,7 +25,7 @@
 | [P2-01 文件上传、摄取与索引发布](../rounds/P2-01.md) | 把用户办公材料和论文变成可定位、可删除的资料。 | [P1-11](../rounds/P1-11.md) | 本组主责；核心开发范围 / 待开发 |
 | [P2-02 联网搜索与网页读取](../rounds/P2-02.md) | 通过管理员提供方获取可核验外部资料。 | [P2-01](../rounds/P2-01.md)、[P0-03](../rounds/P0-03.md) | 跨模块协同；核心开发范围 / 待开发 |
 | [P2-03 技能加载与可复用任务模板](../rounds/P2-03.md) | 让操作方法按需复用而不靠长主提示词。 | [P2-01](../rounds/P2-01.md) | 跨模块协同；核心开发范围 / 待开发 |
-| [P2-07 办公与学术方法和成果验收](../rounds/P2-07.md) | 在通用架构上实现两个可复用工作场景。 | [P2-02](../rounds/P2-02.md)、[P2-03](../rounds/P2-03.md)、[P2-06](../rounds/P2-06.md) | 跨模块协同；核心开发范围 / 待开发 |
+| [P2-07 办公与学术方法和成果验收](../rounds/P2-07.md) | 在通用架构上实现两个可复用工作场景。 | [P1-17](../rounds/P1-17.md) | 跨模块协同；核心开发范围 / 待开发 |
 
 ### P4 · 上下文、缓存与能力治理
 
@@ -44,12 +46,22 @@
 | `context.selection` | [选择与上下文预算](../../design/components/context-selection.md) | [逐接口定义](../../api/nodes/context.selection.md) |
 | `context.composer` | [装配与快照](../../design/components/context-composer.md) | [逐接口定义](../../api/nodes/context.composer.md) |
 | `context.references` | [引用登记与解析](../../design/components/context-references.md) | [逐接口定义](../../api/nodes/context.references.md) |
+| `run.history` | [历史与输入权威](../../design/components/run-history.md) | [逐接口定义](../../api/nodes/run.history.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
+| `run.budget` | [预算与准入](../../design/components/run-budget.md) | [逐接口定义](../../api/nodes/run.budget.md) |
+| `run.cancel` | [取消传播](../../design/components/run-cancel.md) | [逐接口定义](../../api/nodes/run.cancel.md) |
+| `run.approval` | [审批与用户控制](../../design/components/run-approval.md) | [逐接口定义](../../api/nodes/run.approval.md) |
+| `ui` | [交互页面](../../design/components/ui.md) | [逐接口定义](../../api/nodes/ui.md) |
+| `ingress` | [产品入口](../../design/components/ingress.md) | [逐接口定义](../../api/nodes/ingress.md) |
+| `agent.completion` | [完成核验协调](../../design/components/agent-completion.md) | [逐接口定义](../../api/nodes/agent.completion.md) |
+| `agent.completion.evidence` | [真实证据收集](../../design/components/agent-completion-evidence.md) | [逐接口定义](../../api/nodes/agent.completion.evidence.md) |
+| `agent.completion.semantic` | [语义核对](../../design/components/agent-completion-semantic.md) | [逐接口定义](../../api/nodes/agent.completion.semantic.md) |
+| `agent.completion.acceptance` | [用户接受与迭代](../../design/components/agent-completion-acceptance.md) | [逐接口定义](../../api/nodes/agent.completion.acceptance.md) |
 | `context.ingestion` | [摄取与索引发布](../../design/components/context-ingestion.md) | [逐接口定义](../../api/nodes/context.ingestion.md) |
 | `context.retrieval` | [资料检索与证据](../../design/components/context-retrieval.md) | [逐接口定义](../../api/nodes/context.retrieval.md) |
 | `tool.adapters` | [领域与外部适配器](../../design/components/tool-adapters.md) | [逐接口定义](../../api/nodes/tool.adapters.md) |
 | `tool.results` | [结果规范化与分页](../../design/components/tool-results.md) | [逐接口定义](../../api/nodes/tool.results.md) |
 | `agent.skills` | [技能与任务模板](../../design/components/agent-skills.md) | [逐接口定义](../../api/nodes/agent.skills.md) |
-| `agent.completion.semantic` | [语义核对](../../design/components/agent-completion-semantic.md) | [逐接口定义](../../api/nodes/agent.completion.semantic.md) |
 | `context.memory` | [记忆生命周期](../../design/components/context-memory.md) | [逐接口定义](../../api/nodes/context.memory.md) |
 | `context.memory.candidate` | [记忆候选](../../design/components/context-memory-candidate.md) | [逐接口定义](../../api/nodes/context.memory.candidate.md) |
 | `context.memory.policy` | [范围与写入政策](../../design/components/context-memory-policy.md) | [逐接口定义](../../api/nodes/context.memory.policy.md) |
@@ -72,6 +84,22 @@
 - `src/uaw/context/composer.py`
 - `src/uaw/context/references.py`
 - `tests/integration/context/`
+- `src/uaw/run/history.py`
+- `src/uaw/run/state.py`
+- `src/uaw/run/budget.py`
+- `src/uaw/run/cancel.py`
+- `src/uaw/run/approval.py`
+- `apps/web/src/features/workspace/`
+- `src/uaw/api/ingress.py`
+- `src/uaw/run/`
+- `src/uaw/api/`
+- `apps/web/src/`
+- `src/uaw/agent/completion/facade.py`
+- `src/uaw/agent/completion/evidence.py`
+- `src/uaw/agent/completion/semantic.py`
+- `src/uaw/agent/completion/acceptance.py`
+- `src/uaw/workspace/`
+- `src/uaw/agent/completion/`
 - `src/uaw/context/ingestion.py`
 - `src/uaw/context/retrieval.py`
 - `src/uaw/context/`
@@ -82,7 +110,6 @@
 - `src/uaw/agent/skills.py`
 - `capabilities/builtin/`
 - `tests/integration/skills/`
-- `src/uaw/agent/completion/semantic.py`
 - `capabilities/builtin/office_report/`
 - `capabilities/builtin/academic_discussion/`
 - `tests/fixtures/scenarios/`
@@ -92,7 +119,6 @@
 - `src/uaw/context/memory/conflict.py`
 - `src/uaw/context/memory/store.py`
 - `src/uaw/context/memory/forget.py`
-- `apps/web/src/features/workspace/`
 - `tests/integration/memory/`
 - `src/uaw/context/compression.py`
 - `tests/fixtures/long_context/`
@@ -111,4 +137,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

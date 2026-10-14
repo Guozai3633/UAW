@@ -1,6 +1,6 @@
 # UAW 通用 Agent 系统架构
 
-状态：v0.10 开发设计稿。2026-10-07 补齐 [全局指引](README.md)、[项目目录](docs/PROJECT_STRUCTURE.md)、[每节点开发策略索引](docs/design/README.md) 和 [子Agent创建/调用完整链路](docs/design/SUBAGENT_LIFECYCLE.md)。[分层图谱](ARCHITECTURE_ATLAS.md) 与 [交互图](demo/uaw-architecture-map.html) 可定位对应策略文档和计划代码位置。Notion阅读落点见 [NOTION_ARCHITECTURE_REVIEW.md](NOTION_ARCHITECTURE_REVIEW.md)，工程边界见 [ENGINEERING_COMPLETENESS.md](ENGINEERING_COMPLETENESS.md)。本地/审批/语义完成见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)；页面见 [FRONTEND_BLUEPRINT.md](FRONTEND_BLUEPRINT.md)；交付与引用见 [DELIVERY_VERIFICATION.md](DELIVERY_VERIFICATION.md)；管理配置见 [ADMIN_CONFIGURATION.md](ADMIN_CONFIGURATION.md)；缓存见 [CACHE_DESIGN.md](CACHE_DESIGN.md)；工具见 [CONTROL_TOOLS.md](CONTROL_TOOLS.md)；模型/撤销/历史见 [RUNTIME_DECISIONS.md](RUNTIME_DECISIONS.md)。Python用于新Runtime；各模块技术主选见 [TECHNOLOGY_STACK.md](TECHNOLOGY_STACK.md)，精确版本与部署配置待实际验证。目标群体及真实任务见 [PRODUCT_VALIDATION.md](PRODUCT_VALIDATION.md)。图谱与接口仍是完整目标设计；当前工程实现和真实验证见 [实施记录](docs/implementation/README.md)，业务能力不能由文档或包安装推断已完成。
+状态：v0.11 开发设计稿，2026-10-14按已确认Q1–Q8修订。2026-10-07 补齐 [全局指引](README.md)、[项目目录](docs/PROJECT_STRUCTURE.md)、[每节点开发策略索引](docs/design/README.md) 和 [子Agent创建/调用完整链路](docs/design/SUBAGENT_LIFECYCLE.md)。[分层图谱](ARCHITECTURE_ATLAS.md) 与 [交互图](demo/uaw-architecture-map.html) 可定位对应策略文档和计划代码位置。Notion阅读落点见 [NOTION_ARCHITECTURE_REVIEW.md](NOTION_ARCHITECTURE_REVIEW.md)，工程边界见 [ENGINEERING_COMPLETENESS.md](ENGINEERING_COMPLETENESS.md)。本地/审批/语义完成见 [LOCAL_APPROVAL_SEMANTIC.md](LOCAL_APPROVAL_SEMANTIC.md)；页面见 [FRONTEND_BLUEPRINT.md](FRONTEND_BLUEPRINT.md)；交付与引用见 [DELIVERY_VERIFICATION.md](DELIVERY_VERIFICATION.md)；管理配置见 [ADMIN_CONFIGURATION.md](ADMIN_CONFIGURATION.md)；缓存见 [CACHE_DESIGN.md](CACHE_DESIGN.md)；工具见 [CONTROL_TOOLS.md](CONTROL_TOOLS.md)；模型/撤销/历史见 [RUNTIME_DECISIONS.md](RUNTIME_DECISIONS.md)。Python用于新Runtime；各模块技术主选见 [TECHNOLOGY_STACK.md](TECHNOLOGY_STACK.md)，精确版本与部署配置待实际验证。目标群体及真实任务见 [PRODUCT_VALIDATION.md](PRODUCT_VALIDATION.md)。图谱与接口仍是完整目标设计；当前工程实现和真实验证见 [实施记录](docs/implementation/README.md)，业务能力不能由文档或包安装推断已完成。
 
 ## 0. 已确认的产品决策
 
@@ -22,7 +22,15 @@
 16. 提供帮我审批、自己审批、不需要审批三种模式；暂按 AI 代审、用户手动、授权范围内自动执行映射，具体含义待用户确认。审批方式与实际能力/沙箱边界分别管理，选择自动不扩大权限。
 17. 完成判断按任务语义、成果与真实证据进行，不沿用固定推特业务字段。必需目标来自用户/政策，LLM 可动态发现缺口、选择验证与补救；Runtime 检查引用、版本、真实执行和合法状态。
 
-新增建议（待讨论）：采用 LLM 语义判断、单 Agent 起步与按需规划/委派；首阶段网页历史以账号关联的云端记录为权威、本地为缓存，未来以存储适配器支持本地项目历史。细则见 RUNTIME_DECISIONS.md，不将存储建议写成用户已选方案。
+18. 普通交流首次调用同时理解并决定答复、工具或提问，默认只保存消息与历史；深入理解和运行中语义评审按需，正式成果使用对应交付契约。
+19. 澄清答复与运行中纠正在同一未结束 Run 追加保存；原文、有效补充和未受影响成果保留，取消/终态不能复活。
+20. 等待用户暂停主动执行计时，费用继续统一限额；原工具调用deadline与审批/目录授权期限独立不延长，续跑复核。
+21. 独立人工事实样本和反例作为相关版本发布门槛，分别统计答案错误、评审漏判与不必要阻断；不以模型自评passed证明正确。
+22. 单Agent办公/学术文本成果独立于子Agent、共享板、Join与本机完整执行验收；下一次本人体验聚焦对话、澄清、纠正和粘贴文本成果。
+
+以上新增行为待实现。完整依据见 [ADR-001](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行细则](docs/design/CONVERSATION_EXECUTION.md)、[H02计划](docs/plan/H02_CONVERSATION.md)。
+
+存储建议（待讨论）：首阶段网页历史以账号关联的云端记录为权威、本地为缓存，未来以存储适配器支持本地项目历史。细则见 RUNTIME_DECISIONS.md，不将存储建议写成用户已选方案。
 
 ## 1. 三种关系、七个统一入口
 
@@ -37,8 +45,9 @@
 ```mermaid
 flowchart LR
   FE[Interaction Surface] --> IN[Ingress & Run Runtime]
-  IN --> IR[Intent Runtime]
-  IR --> AR[Agent Runtime]
+  IN --> AR[Agent Runtime：首次理解与下一步]
+  AR -->|同次摘要消费或按需深入| IR[Intent Runtime]
+  IR --> AR
   AR --> CR[Context Runtime]
   AR --> TR[Tool Runtime]
   AR --> WR[Workspace Runtime]
@@ -46,7 +55,10 @@ flowchart LR
   AR --> RR[Run Runtime]
   CR --> KR[Knowledge & Memory Store]
   TR --> WR
-  WR --> AT[Artifact Registry]
+  WR -->|正式成果| AT[Artifact Registry]
+  AR -->|普通消息或具体问题| RR
+  RR -->|原Run回答与当前来源复查| AR
+  RR -.回执用于独立发布评测.-> EV[Support Evaluation]
   RR --> FE
 ```
 
@@ -78,20 +90,18 @@ Ingress 内部按 `Transport Adapter → Admission → Resource Resolver → Req
   → UI 展示「AI 理解的任务」；草稿和预览版本绑定
 
 用户发送原文
-  → Ingress 校验并保存不可变原文/附件引用
-  → Run Runtime 创建 run_id 与事件流
-  → Model Runtime 解析并固定本 Run 的会话模型政策
-  → Intent Runtime.understand
-       ↳ Context Runtime 按需找最近会话、相关文件/记忆
-       ↳ 必要时通过 Tool Runtime 做有预算的只读探查
-  → Agent Runtime 选择起始执行方式和 Agent 角色
-  → Agent 循环：获取上下文 → 模型提出动作 → Runtime 执行动作 → 观察结果
-       ↳ 动作可以是答复、请求上下文、检索工具、调用工具、制定计划、委派、澄清
-       ↳ 复杂任务按需生成并修订 TaskGraph；Scheduler 并行执行可并行节点
-  → Workspace Runtime 验证并登记文件/代码/其他产物
-  → 按 DeliveryContract 校验目标、真实成果版本与引用，形成 VerificationReport
-  → 完成核验与版本提交、事件流与最终交付（完整/部分/受阻分别展示）
-  → 异步形成记忆候选，经写入策略后保存
+  → Ingress校验；Run保存不可变输入/最小状态
+  → 固定用户模型政策；Context装配最小历史/规则/材料
+  → 单Agent首次调用同时理解并提出下一步
+       ↳ 直接答复：消息/历史/用量与版本检查 → Run合法终态
+       ↳ 工具：Tool统一准入/执行/真实观察 → Agent继续
+       ↳ 提问：具体问题Item/原Run等待/暂停执行计时
+                → 用户回答或纠正 → CAS追加输入/当前权限费用复查 → 原Run继续
+       ↳ 正式交付：按原文DeliveryContract → 实际Artifact/引用
+                → 必需证据/按需语义核验 → 当前版本/效果检查 → 交付/合同所需本人接受
+  → Intent深入理解、Skills、Planning、子Agent与DAG仅按需要启用
+  → 授权脱敏的固定样本进入独立事实/质量发布评测，不固定追加到每条消息
+
 ```
 
 起始执行方式只是资源分配：简单任务先单 Agent，复杂任务可先规划，需要文件修改时分配沙箱。运行中发现信息缺口，可以扩大检索、调用新能力、委派或重规划。不存在“聊天请求永远不能用工具”之类的固定链路。
@@ -299,7 +309,7 @@ Run 与 Task 的关系：Task 可长期存在并跨多个会话修订；每个 R
 
 目标用户为办公、开发和学术探讨人员，各群体的任务样本在 [PRODUCT_VALIDATION.md](PRODUCT_VALIDATION.md) 中确认。七个模块保留逻辑入口，内部协议先标记实验版本；不要求全部未来对象和适配器稳定后才能验证用户价值。一个群体表现良好不自动说明另外两类已通过验证。
 
-1. 选一个真实任务，贯通原文/附件入口、单 Agent、必要工具、沙箱、真实成果、预览/修改/导出与基本取消；同时保存必要的 Item、来源、权限决策和成本。实际材料摄取和成果质量进入首个阶段。
+1. 下一次先按 [H02](docs/plan/H02_CONVERSATION.md) 验证普通交流快通路、原Run澄清/纠正、独立事实样本和单Agent粘贴文本成果；固定版本实际启动给本人体验。本机文件/代码链继续单独推进，不阻挡这条文本体验链。必要Item、来源、权限和全成本仍保存。
 2. 将第二个真实任务接入相同边界，抽取 Skill 和 DeliveryContract；再将一次成功任务保存成经用户确认的模板。验证重复使用时是否减少返工和成本。
 3. 实现已确认的工具向量索引，和小工具集的直接候选策略比较召回质量、遗漏、延迟与成本；工具数量小的时候可以走精确/类别筛选，不要求每次都做向量检索。
 4. 保持单 Agent 基线，对确有并行收益的任务实现父子委派、TaskGraph 和局部工作区隔离；用同等预算和同一验收口径验证收益，再扩展跨会话协调、长期记忆和自动模型路由。

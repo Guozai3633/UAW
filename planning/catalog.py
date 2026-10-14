@@ -39,11 +39,11 @@ DECISIONS=[
 ]
 
 ROUNDS=[]
-def r(id,module,title,goal,deps,nodes,tasks,acceptance,dirs=(),deliverables=(),status="planned",scope="required",decisions=()):
+def r(id,module,title,goal,deps,nodes,tasks,acceptance,dirs=(),deliverables=(),status="planned",scope="required",decisions=(),phase_gate="auto"):
     ROUNDS.append(dict(id=id,phase=id.split("-")[0],module=module,title=title,goal=goal,
       depends_on=deps.split(),nodes=nodes.split(),tasks=list(tasks),acceptance=list(acceptance),
       extra_code_dirs=list(dirs),deliverables=list(deliverables),status=status,scope=scope,
-      decision_dependencies=list(decisions),implementation_evidence=[]))
+      decision_dependencies=list(decisions),implementation_evidence=[],phase_gate=phase_gate))
 
 r("P0-01","foundation","工程启动与最小契约","建立能启动的Python应用和依赖组装，避免先实现全部未来DTO。","","support",[
  "按技术主选建立uv/pyproject、composition/application，冻结核心兼容版本并定义启动/关闭流程。",
@@ -246,16 +246,16 @@ r("P2-06","agent","共享结果板与Join","父Agent可靠收集结果并保留�
  "并发提交同板条目出现明确冲突，来源可追溯。",
  "子失败及证据不足不会被父汇总改写成全部成功。"],
  ["tests/integration/join/"],["共享板与Join演示"])
-r("P2-07","agent","办公与学术方法和成果验收","在通用架构上实现两个可复用工作场景。","P2-02 P2-03 P2-06","agent.skills agent.completion.semantic context.references",[
+r("P2-07","agent","办公与学术方法和成果验收","在通用架构上实现两个可复用工作场景。","P1-17","agent.skills agent.completion.semantic context.references",[
  "实现文档比较/报告方法和学术主张、证据、假设、冲突整理方法。",
- "以RoleProfile/SkillSpec配置职责与工具上限，不按行业词典强制派发。",
- "普通报告与论文讨论输出带定位引用、推断标记和缺口，只有需要时用子Agent。",
+ "采用有版本的领域方法与职责/工具上限，可复用已有RoleProfile/SkillSpec；本轮不要求先验完整技能生命周期，不按行业词典强制派发。",
+ "先验单Agent粘贴文本成果；报告与论文讨论输出带定位引用、推断标记和缺口。搜索/上传/Skills按实际需要增补，不以Join/子Agent或本机执行作为本轮必需来源。",
  "核对builtin配置与当前invoke契约；未覆盖字段先修契约，不私加工具参数或自动保存用户角色。"],[
  "办公样例形成可编辑报告，用户能核对来源并提出修改。",
  "学术样例区分原文主张/模型推断/未验证假设，不虚构文献或实验。",
- "同一模型政策作用于理解、子任务和评审，领域方法可关闭/替换。"],
- ["capabilities/builtin/office_report/","capabilities/builtin/academic_discussion/","tests/fixtures/scenarios/"],["两种builtin方法与样例成果","领域验收表"])
-r("P2-08","product","角色与子任务页面","用户可查角色、修改配置并了解子任务结果。","P2-07 P1-10","ui ingress",[
+ "默认固定用户模型；单Agent办公/学术验收不需要创建子Agent、Board或Join。领域方法可关闭/替换，协作另外验收。"],
+ ["capabilities/builtin/office_report/","capabilities/builtin/academic_discussion/","tests/fixtures/scenarios/"],["两种builtin方法与样例成果","领域验收表"],phase_gate=None)
+r("P2-08","product","角色与子任务页面","用户可查角色、修改配置并了解子任务结果。","P2-07 P2-06 P1-10","ui ingress",[
  "展示会话角色摘要、版本、模型继承/明确覆盖和实际可用状态。",
  "接创建/变更/恢复角色的结果，缺模型/权限时提供明确纠正路径。",
  "展示子任务目标、等待/失败和成果，不把内部私密思维全文放进页面。",
@@ -264,7 +264,7 @@ r("P2-08","product","角色与子任务页面","用户可查角色、修改配�
  "指定子模型可查真实配置；修改定义不改变在跑实例。",
  "子失败/受阻易发现且可停止，普通用户无需理解内部节点才能使用。"],
  ["apps/web/src/features/agent_definitions/","apps/web/src/features/run_controls/"],["会话角色/子任务可用页面"])
-r("P2-09","foundation","三类工作与单子任务验收","形成独立UAW的基础产品证据。","P2-08","",[
+r("P2-09","foundation","三类工作与单子任务验收","形成独立UAW的基础产品证据。","P2-08 P2-02","",[
  "通过真实页面运行代码、文档报告、论文比较及有界子任务。",
  "记录用户接受/反馈/修订和包括所有失败尝试的费用。",
  "建立单Agent基线与有子任务方案的同材料比较，暂不宣称多Agent收益。",
@@ -548,3 +548,61 @@ IMPLEMENTATION_STATUS = {
 for work_package in ROUNDS:
     if work_package["id"] in IMPLEMENTATION_STATUS:
         work_package.update(IMPLEMENTATION_STATUS[work_package["id"]])
+
+
+# v0.11 用户已接受 Q1-Q8：独立的对话/文本体验链；不继承完整本机阶段门槛。
+r("P1-12","foundation","对话与续跑公共协议","先固定首次动作、消息完成、问题答复/纠正和执行计时边界。","P0-04 P0-05","ingress run.state run.history run.budget agent.loop",[
+ "按docs/api/CONVERSATION_REVISION.md更新公共维护源，发布精确DTO、动作分支、幂等/CAS和错误契约；没有新字段不能私加参数。",
+ "定义消息完成与成果完成的不同要求、原问题关联及同Run追加输入；审批不是澄清答复。",
+ "定义持久主动执行段/用户等待和旧Run兼容；已派发deadline与授权有效期不变。",
+ "固定API/页面消费示例、最小来源、实际版本和目录归属；随后才正式发布worker基线。"],[
+ "动作/字段/返回/事件/状态机及迁移可审阅，现行旧客户端与旧记录有明确兼容或拒绝行为。",
+ "消息提交无Artifact硬依赖，缺真实授权的动作仍拒绝；取消/终态不会被续跑复活。",
+ "生成对象/接口一致，工人用准确发布版本消费；文档修订不能算新运行能力验收。"],
+ ["contracts/","src/uaw/shared/","src/uaw/api/","docs/api/"],["正式协议与迁移设计","固定消费示例与阶段SHA"],phase_gate=None)
+r("P1-13","agent","普通交流首次调用与消息完成","普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。","P1-12 P1-02","agent.loop intent.semantic intent.ambiguity run.state model.gateway",[
+ "从原文和最小Context启动同一次固定模型调用，产生答复/工具/具体问题及必要理解摘要，Intent消费摘要不额外固定调用。",
+ "拆开respond消息-only提交与正式成果流程；版本、取消、模型来源、消息持久化及账本仍由Runtime核对。",
+ "按后果处理歧义：条件性解释或少量候选先回答；缺必需材料/权限才问，不能声称未执行的搜索/测试。",
+ "工具回合或正式交付按真实需要升级，不使用词典分类、额外判断Agent或最高规格兜底。"],[
+ "固定用户模型的真实普通无工具样本一次成功调用直接形成消息/历史，不生成Artifact/成果接受卡或强制模型自评。",
+ "必须材料缺失时问题可见；工具调用仍受权限/预算/效果治理，未知动作拒绝。",
+ "记录全部调用/重试/失败、执行与总等待、usage/pending费用；不以提示词改动冒充快通路已实现。"],
+ ["src/uaw/agent/","src/uaw/intent/","src/uaw/run/","src/uaw/resources/prompts/"],["真实快通路与正式交付分流回执"] ,phase_gate=None)
+r("P1-14","run","同Run澄清纠正与等待暂停","用户直接答复原问题，按剩余资源接续原任务。","P1-12 P1-13","run.history run.state run.budget run.cancel run.approval ui ingress context.composer",[
+ "原子保存具体question Item、waiting状态与暂停检查点；API按主体/问题/Run版本CAS追加不可变补充，不覆盖原文。",
+ "在安全边界消费纠正，按真实依赖局部失效；保留原材料与未受影响成果；受理回执与生效反馈分别展示。",
+ "用户等待不耗主动执行时间；续跑复核实际剩余额度、原模型、授权/资料访问、取消和未知效果；原调用deadline不延长。",
+ "B接原问题回答/纠正与刷新恢复；幂等、并发答复、取消竞态、租约丢失/重启和旧客户端兼容由A/B分别验证。"],[
+ "真实页面答复后run_id不变，输入历史可追溯，无需停止/复制原问题；重复提交无新Run或重复执行。",
+ "等待超过主动执行预算的墙钟长度仍可按剩余额度继续；费用/审批有效期独立检查，取消和过期授权不能绕过。",
+ "刷新/重启不丢问题或重复计时；在途不可取消调用按原deadline/效果账本处理，纠正不撤销已经发生的动作。"],
+ ["src/uaw/run/","src/uaw/api/","apps/web/src/"],["问答/纠正/计时/恢复整链证据"],phase_gate=None)
+r("P1-15","support","人工正确性样本与发布评测","独立发现关键事实错误、自核验漏判和不必要阻断。","P1-12 P0-05","support.evaluation support.observability",[
+ "建立人工查证的小样本与反例，记录原材料、正确事实、允许假设、必要澄清条件和参考依据；H01错误进入回归。",
+ "固定候选/基线源码、提示词、模型配置和样本版本；区分修订集/保留集，按场景审阅而非匹配固定答案措辞。",
+ "报告答案关键错误率、Reviewer漏判率及其分母、不必要阻断/缺材料错误执行，Reviewer未启用记N/A。",
+ "建立相关prompt/策略改动的发布复测命令，计入全部attempt、成本/未知账单与主动/总等待；非关键阈值跑前记录。"],[
+ "关键概念错误、虚构执行证据和澄清丢要求可被独立基准发现；模型passed不替代人工事实依据。",
+ "报告包括失败、重试和pending费用，答案错误/核验漏判/阻断可分别统计，未用Reviewer不伪造零漏判。",
+ "旧新实际固定模型结果可比较；当前普通交流不用固定追加模型自评；正式发布候选按已记录门槛复测。"],
+ ["tests/fixtures/evaluation/","ops/","docs/implementation/evaluation/"],["人工样本与反例集","版本发布质量报告与运行说明"],phase_gate=None)
+r("P1-16","agent","单Agent粘贴文本成果独立验收","把办公和学术材料完整交付，不等待本机/子Agent设施。","P1-13 P1-02","agent.completion agent.completion.evidence agent.completion.semantic agent.completion.acceptance context.references",[
+ "复用现有文本/Markdown Artifact与Completion接线，原粘贴材料进入低信任Context，固定用户模型生成成果与准确引用。",
+ "按原文契约逐项核验实际成果/证据/版本和未决效果；语义评审按需要，事实质量由P1-15独立发布门槛校准。",
+ "B接成果阅读、引用定位、补充修改和合同要求的本人接受；普通消息不出现成果接受步骤。",
+ "各跑办公和学术真实单Agent样例，缺证据/测试不写passed，保留全部模型失败和费用。"],[
+ "两种样例有原材料、可读实际Artifact、定位引用和逐项核验；用户修改与接受绑定版本。",
+ "不启用子Agent/DAG/Board/Join或本机读写也能独立验本轮文本能力，权限flags不因此开放。",
+ "本人接受、模型判断、工程回执各自记录；本机失败仍另列，文本通过不把整项目标accepted。"],
+ ["src/uaw/workspace/","src/uaw/agent/completion/","apps/web/src/"],["办公/学术单Agent文本成果与验收回执"],phase_gate=None)
+r("P1-17","foundation","H02对话与文本成果真人体验","固定版本交给用户完成对话、澄清、纠正和成果审阅。","P1-13 P1-14 P1-15 P1-16","",[
+ "汇合逐包接受后的准确源码/dist/模型配置，跑受影响整链和独立事实评测；保留原失败和费用。",
+ "准备固定体验版本与隔离服务/数据，实际启动和登录预跑；旧H01历史/取消状态不重写，旧快照不热改。",
+ "用户本人体验正常提问→回答澄清→补充纠正→粘贴材料成果，含刷新/取消/拒绝与合同需要的接受。",
+ "反馈交原owner修复，复体验；本机材料链及协作设施另行验收，不等待它们再开启文本体验。"],[
+ "相关工程和独立正确性门槛通过，给出实际入口及已知范围；模型自评/受控点击不替代本人满意或成果接受。",
+ "本人能在原Run自然继续，无强制停止重发；普通无工具样例一次成功调用，真实失败另计。",
+ "工程、事实质量、本人体验、接受/返工和全部费用分开记录，任何未过核心项保持未通过。"],
+ ["docs/implementation/human-tests/","tests/integration/scenarios/"],["H02固定版本和人工反馈闭环","独立于本机/协作的文本里程碑结论"],phase_gate=None)
+ROUNDS.sort(key=lambda package: package["id"])

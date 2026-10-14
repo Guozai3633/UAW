@@ -6,7 +6,7 @@
 
 用户模型政策、实际调用、协议能力、恢复和真实用量。
 
-本分组主责2轮，另关联1轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算50轮总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
+本分组主责2轮，另关联2轮跨模块协同。按阶段逐步完善，并与其他模块轮次交替接线；协同任务引用同一个工作包，不重复计算工作包总数。七Runtime是运行职责，11个计划分组包含工程、页面和后续适配，不是11个服务。
 
 ## 阶段与工作包
 
@@ -15,6 +15,12 @@
 | 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
 | --- | --- | --- | --- |
 | [P0-05 固定模型真实调用与协议恢复](../rounds/P0-05.md) | 完整执行用户选择的模型，不做静默模型替换。 | [P0-03](../rounds/P0-03.md)、[P0-04](../rounds/P0-04.md) | 本组主责；核心开发范围 / 开发中 |
+
+### P1 · 单Agent完整闭环
+
+| 轮次与任务 | 目标 | 直接前置 | 范围/当前状态 |
+| --- | --- | --- | --- |
+| [P1-13 普通交流首次调用与消息完成](../rounds/P1-13.md) | 普通解释/比较/发散直接回复，复杂动作按需进入工具或交付。 | [P1-12](../rounds/P1-12.md)、[P1-02](../rounds/P1-02.md) | 跨模块协同；核心开发范围 / 待开发 |
 
 ### P4 · 上下文、缓存与能力治理
 
@@ -35,6 +41,10 @@
 | `model.adapters` | [供应商协议适配](../../design/components/model-adapters.md) | [逐接口定义](../../api/nodes/model.adapters.md) |
 | `model.recovery` | [调用恢复](../../design/components/model-recovery.md) | [逐接口定义](../../api/nodes/model.recovery.md) |
 | `model.usage` | [计量与版本记录](../../design/components/model-usage.md) | [逐接口定义](../../api/nodes/model.usage.md) |
+| `agent.loop` | [Agent 决策循环](../../design/components/agent-loop.md) | [逐接口定义](../../api/nodes/agent.loop.md) |
+| `intent.semantic` | [语义解析](../../design/components/intent-semantic.md) | [逐接口定义](../../api/nodes/intent.semantic.md) |
+| `intent.ambiguity` | [歧义处理](../../design/components/intent-ambiguity.md) | [逐接口定义](../../api/nodes/intent.ambiguity.md) |
+| `run.state` | [Run 与交互项](../../design/components/run-state.md) | [逐接口定义](../../api/nodes/run.state.md) |
 | `support.cache` | [共享缓存设施](../../design/components/support-cache.md) | [逐接口定义](../../api/nodes/support.cache.md) |
 | `context.sources` | [来源解析](../../design/components/context-sources.md) | [逐接口定义](../../api/nodes/context.sources.md) |
 | `context.retrieval` | [资料检索与证据](../../design/components/context-retrieval.md) | [逐接口定义](../../api/nodes/context.retrieval.md) |
@@ -51,6 +61,14 @@
 - `src/uaw/model/recovery.py`
 - `src/uaw/model/usage.py`
 - `tests/integration/model/`
+- `src/uaw/agent/loop.py`
+- `src/uaw/intent/semantic.py`
+- `src/uaw/intent/ambiguity.py`
+- `src/uaw/run/state.py`
+- `src/uaw/agent/`
+- `src/uaw/intent/`
+- `src/uaw/run/`
+- `src/uaw/resources/prompts/`
 - `src/uaw/shared/cache.py`
 - `src/uaw/context/sources.py`
 - `src/uaw/context/retrieval.py`
@@ -65,4 +83,3 @@
 ## 本模块验收怎样汇总
 
 按本页各轮验收与对应阶段真实场景确认。一个根节点关联到多轮，早期有最小实现不表示其记忆、并行、恢复等后续分支已完成；各能力要分别附代码/回执/版本。
-

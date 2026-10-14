@@ -79,7 +79,9 @@ MemoryCandidate经当前模型提议，policy/conflict/version由Python与SQL落
 
 | 工作包 | 本轮职责 | 当前状态 |
 | --- | --- | --- |
-| [P1-02 最小上下文、规则和引用](../../plan/rounds/P1-02.md) | 为当前调用提供必要且有来源的输入。 | planned |
+| [P1-02 最小上下文、规则和引用](../../plan/rounds/P1-02.md) | 为当前调用提供必要且有来源的输入。 | in_progress |
+| [P1-14 同Run澄清纠正与等待暂停](../../plan/rounds/P1-14.md) | 用户直接答复原问题，按剩余资源接续原任务。 | planned |
+| [P1-16 单Agent粘贴文本成果独立验收](../../plan/rounds/P1-16.md) | 把办公和学术材料完整交付，不等待本机/子Agent设施。 | planned |
 | [P2-01 文件上传、摄取与索引发布](../../plan/rounds/P2-01.md) | 把用户办公材料和论文变成可定位、可删除的资料。 | planned |
 | [P2-02 联网搜索与网页读取](../../plan/rounds/P2-02.md) | 通过管理员提供方获取可核验外部资料。 | planned |
 | [P2-03 技能加载与可复用任务模板](../../plan/rounds/P2-03.md) | 让操作方法按需复用而不靠长主提示词。 | planned |
