@@ -3,8 +3,8 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "UAW功能接口设计",
-    "version": "0.1.0",
-    "description": "设计目标；无已部署后端。云/本地权威存储方案待确认。"
+    "version": "0.2.0",
+    "description": "已有部分开发实现；新conversation-v1仅发布契约、handler未装配。原0.1 DTO/期限保留，新对话控制meta为0.2。"
   },
   "paths": {
     "/v1/conversations": {
@@ -30499,6 +30499,1473 @@
         "x-uaw-implemented": true,
         "x-uaw-implementation-scope": "development_control_plane"
       }
+    },
+    "/v1/runs/{run_id}/clarifications/{question_item_id}": {
+      "get": {
+        "operationId": "http_runs_clarification_get",
+        "summary": "读取原Run特定问题，不猜最新问题。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径原Run"
+            }
+          },
+          {
+            "name": "question_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径原问题"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.2"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "新handler或当前可信来源未装配，明确不可用；不续跑旧Run。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "webCookie": []
+          },
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "run.history",
+          "run.state",
+          "run.budget"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      }
+    },
+    "/v1/runs/{run_id}/clarifications/{question_item_id}/answers": {
+      "post": {
+        "operationId": "http_runs_clarification_answer",
+        "summary": "原Run回答；身份和expected_run_revision来自meta。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径中的原Run"
+            }
+          },
+          {
+            "name": "question_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径中原问题稳定Item"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"
+          },
+          {
+            "name": "X-UAW-CSRF",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            },
+            "description": "使用cookie会话写请求时必需；缺失不得执行。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "新handler或当前可信来源未装配，明确不可用；不续跑旧Run。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsClarificationAnswerResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "webCookie": []
+          },
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "run.history",
+          "run.state",
+          "run.budget"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/ConversationRequestMeta"
+                      },
+                      {
+                        "required": [
+                          "expected_revision"
+                        ],
+                        "properties": {
+                          "expected_revision": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "原Run回答；身份和expected_run_revision来自meta。",
+                    "properties": {
+                      "expected_question_revision": {
+                        "$ref": "#/components/schemas/Revision",
+                        "description": "问题预期CAS版本",
+                        "minimum": 1
+                      },
+                      "expected_input_revision": {
+                        "$ref": "#/components/schemas/Revision",
+                        "description": "原有效输入版本",
+                        "minimum": 1
+                      },
+                      "text": {
+                        "$ref": "#/components/schemas/Text",
+                        "description": "用户真实回答"
+                      },
+                      "attachment_refs": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Ref"
+                        },
+                        "minItems": 0,
+                        "maxItems": 16,
+                        "description": "本人获准材料，真实权限另查",
+                        "uniqueItems": true
+                      }
+                    },
+                    "required": [
+                      "expected_question_revision",
+                      "expected_input_revision",
+                      "text",
+                      "attachment_refs"
+                    ],
+                    "additionalProperties": false,
+                    "anyOf": [
+                      {
+                        "properties": {
+                          "text": {
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ]
+                      },
+                      {
+                        "properties": {
+                          "attachment_refs": {
+                            "minItems": 1
+                          }
+                        },
+                        "required": [
+                          "attachment_refs"
+                        ]
+                      }
+                    ],
+                    "x-uaw-protocol": "conversation-v1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": true
+      }
+    },
+    "/v1/runs/{run_id}/corrections": {
+      "post": {
+        "operationId": "http_runs_correction_create",
+        "summary": "当前Run纠正，不让客户端指定任意执行节点或权限。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径中的原Run"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"
+          },
+          {
+            "name": "X-UAW-CSRF",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            },
+            "description": "使用cookie会话写请求时必需；缺失不得执行。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "新handler或当前可信来源未装配，明确不可用；不续跑旧Run。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsCorrectionCreateResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "webCookie": []
+          },
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "internal_write",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "run.history",
+          "run.state",
+          "run.budget"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/ConversationRequestMeta"
+                      },
+                      {
+                        "required": [
+                          "expected_revision"
+                        ],
+                        "properties": {
+                          "expected_revision": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "payload": {
+                    "type": "object",
+                    "description": "当前Run纠正，不让客户端指定任意执行节点或权限。",
+                    "properties": {
+                      "expected_input_revision": {
+                        "$ref": "#/components/schemas/Revision",
+                        "description": "原有效输入版本",
+                        "minimum": 1
+                      },
+                      "text": {
+                        "$ref": "#/components/schemas/Text",
+                        "description": "明确用户纠正"
+                      },
+                      "attachment_refs": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Ref"
+                        },
+                        "minItems": 0,
+                        "maxItems": 16,
+                        "description": "本人获准材料",
+                        "uniqueItems": true
+                      }
+                    },
+                    "required": [
+                      "expected_input_revision",
+                      "text",
+                      "attachment_refs"
+                    ],
+                    "additionalProperties": false,
+                    "anyOf": [
+                      {
+                        "properties": {
+                          "text": {
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ]
+                      },
+                      {
+                        "properties": {
+                          "attachment_refs": {
+                            "minItems": 1
+                          }
+                        },
+                        "required": [
+                          "attachment_refs"
+                        ]
+                      }
+                    ],
+                    "x-uaw-protocol": "conversation-v1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": true
+      }
+    },
+    "/v1/runs/{run_id}/continuations/{request_id}": {
+      "get": {
+        "operationId": "http_runs_continuation_get",
+        "summary": "原提交响应丢失或刷新后的受理/生效查询。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径原Run"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "路径原逻辑提交ID"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.2"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "新handler或当前可信来源未装配，明确不可用；不续跑旧Run。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsContinuationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "webCookie": []
+          },
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "run.history",
+          "run.state",
+          "run.budget"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      }
     }
   },
   "components": {
@@ -56530,6 +57997,1297 @@
           "resumable_nodes"
         ],
         "additionalProperties": false
+      },
+      "ConversationRunRef": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Ref"
+          },
+          {
+            "properties": {
+              "kind": {
+                "const": "run"
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationItemRef": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Ref"
+          },
+          {
+            "properties": {
+              "kind": {
+                "const": "item"
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationClockRef": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Ref"
+          },
+          {
+            "properties": {
+              "kind": {
+                "const": "checkpoint"
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationRequestMeta": {
+        "type": "object",
+        "description": "新对话控制专用元信息；不能提交给旧0.1入口。",
+        "properties": {
+          "request_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "同一逻辑补充提交保持不变"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "0.2",
+            "description": "新控制HTTP版本"
+          },
+          "expected_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原Run预期修订，必需且从1开始",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "request_id",
+          "schema_version",
+          "expected_revision"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationUnderstanding": {
+        "type": "object",
+        "description": "首次调用中的可选理解提示，不是额外调用或权限。",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "理解摘要",
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NonEmptyText"
+            },
+            "minItems": 0,
+            "maxItems": 8,
+            "description": "明确的少量假设"
+          }
+        },
+        "required": [
+          "summary",
+          "assumptions"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ClarificationPrompt": {
+        "type": "object",
+        "description": "模型的必要补充问题；不是审批请求。",
+        "properties": {
+          "text": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "自包含问题",
+            "pattern": "\\S"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "缺什么和为什么需要",
+            "pattern": "\\S"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NonEmptyText"
+            },
+            "minItems": 0,
+            "maxItems": 5,
+            "description": "可选候选，空数组表示自由答复",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "text",
+          "reason",
+          "options"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ClarificationProposal": {
+        "type": "object",
+        "description": "服务从实际ask动作创建的问题提交候选，不是用户授权。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_ref": {
+            "$ref": "#/components/schemas/ConversationRunRef",
+            "description": "原Run预期版本"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原有效输入版本",
+            "minimum": 1
+          },
+          "decision_record_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "服务登记的原ask模型回执"
+          },
+          "prompt": {
+            "$ref": "#/components/schemas/ClarificationPrompt",
+            "description": "须与实际ask输出一致"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_ref",
+          "input_revision",
+          "decision_record_ref",
+          "prompt"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstReplyDecision": {
+        "type": "object",
+        "description": "同次首次决策的reply分支，无执行或授权字段。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "首次决策版本"
+          },
+          "understanding": {
+            "$ref": "#/components/schemas/ConversationUnderstanding",
+            "description": "可选同次理解摘要"
+          },
+          "action": {
+            "type": "string",
+            "const": "reply",
+            "description": "唯一动作"
+          },
+          "text": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "直接答复，无Artifact硬要求",
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "protocol",
+          "action",
+          "text"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstToolDecision": {
+        "type": "object",
+        "description": "同次首次决策的tool分支，无执行或授权字段。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "首次决策版本"
+          },
+          "understanding": {
+            "$ref": "#/components/schemas/ConversationUnderstanding",
+            "description": "可选同次理解摘要"
+          },
+          "action": {
+            "type": "string",
+            "const": "tool",
+            "description": "唯一动作"
+          },
+          "calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolCall"
+            },
+            "minItems": 1,
+            "maxItems": 1,
+            "description": "首版一个工具提案，调用仍经Tool治理"
+          }
+        },
+        "required": [
+          "protocol",
+          "action",
+          "calls"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstAskDecision": {
+        "type": "object",
+        "description": "同次首次决策的ask分支，无执行或授权字段。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "首次决策版本"
+          },
+          "understanding": {
+            "$ref": "#/components/schemas/ConversationUnderstanding",
+            "description": "可选同次理解摘要"
+          },
+          "action": {
+            "type": "string",
+            "const": "ask",
+            "description": "唯一动作"
+          },
+          "question": {
+            "$ref": "#/components/schemas/ClarificationPrompt",
+            "description": "必要问题"
+          }
+        },
+        "required": [
+          "protocol",
+          "action",
+          "question"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstDeliverDecision": {
+        "type": "object",
+        "description": "同次首次决策的deliver分支，无执行或授权字段。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "首次决策版本"
+          },
+          "understanding": {
+            "$ref": "#/components/schemas/ConversationUnderstanding",
+            "description": "可选同次理解摘要"
+          },
+          "action": {
+            "type": "string",
+            "const": "deliver",
+            "description": "唯一动作"
+          },
+          "text": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "正式文本成果候选，不证明交付成功",
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "protocol",
+          "action",
+          "text"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstDecision": {
+        "description": "首次模型输出；精确互斥分支，不接收真实模型/主体/授权元数据。",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/FirstReplyDecision"
+          },
+          {
+            "$ref": "#/components/schemas/FirstToolDecision"
+          },
+          {
+            "$ref": "#/components/schemas/FirstAskDecision"
+          },
+          {
+            "$ref": "#/components/schemas/FirstDeliverDecision"
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstDecisionRequest": {
+        "type": "object",
+        "description": "首次调用不要求独立TaskFrame；Context仅最小必要来源。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_ref": {
+            "$ref": "#/components/schemas/ConversationRunRef",
+            "description": "原Run版本"
+          },
+          "original_input_ref": {
+            "$ref": "#/components/schemas/UserInputRef",
+            "description": "原文来源"
+          },
+          "patch_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInputRef"
+            },
+            "minItems": 0,
+            "maxItems": 32,
+            "description": "已受理的有效补充",
+            "uniqueItems": true
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "输入集合版本",
+            "minimum": 1
+          },
+          "context_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "有界ContextSnapshot"
+          },
+          "remaining_budget": {
+            "$ref": "#/components/schemas/Budget",
+            "description": "本次有效调用预算，不复制原完整时限"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_ref",
+          "original_input_ref",
+          "patch_refs",
+          "input_revision",
+          "context_ref",
+          "remaining_budget"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "FirstDecisionRecord": {
+        "type": "object",
+        "description": "服务写入的实际模型来源；不能由模型自报。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_ref": {
+            "$ref": "#/components/schemas/ConversationRunRef",
+            "description": "原Run版本"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "决策使用的输入集合版本",
+            "minimum": 1
+          },
+          "decision": {
+            "$ref": "#/components/schemas/FirstDecision",
+            "description": "原模型动作"
+          },
+          "model_output_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "Model owning reader固定回执"
+          },
+          "model_policy_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原用户固定模型政策"
+          },
+          "attempt_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "实际ModelOutput尝试，必须与来源一致"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "实际用量，pending保留"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_ref",
+          "input_revision",
+          "decision",
+          "model_output_ref",
+          "model_policy_ref",
+          "attempt_id",
+          "usage_ref"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationProtocolBinding": {
+        "type": "object",
+        "description": "新Run专用版本绑定；不转换旧Run或改写旧Budget语义。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "实际准入的版本"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "新Run"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "服务从原会话核实的用户"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "绑定CAS修订",
+            "minimum": 1
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前有效输入集合版本",
+            "minimum": 1
+          },
+          "completion_mode": {
+            "type": "string",
+            "enum": [
+              "message",
+              "delivery"
+            ],
+            "description": "消息或正式交付"
+          },
+          "clock_ref": {
+            "$ref": "#/components/schemas/ConversationClockRef",
+            "description": "新Run专属计时检查点"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_id",
+          "owner_id",
+          "revision",
+          "input_revision",
+          "completion_mode",
+          "clock_ref"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ReplyProposal": {
+        "type": "object",
+        "description": "消息完成候选，无Artifact/VerificationReport或用户接受字段。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_ref": {
+            "$ref": "#/components/schemas/ConversationRunRef",
+            "description": "提议结束的原Run版本"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "有效原文/补充版本",
+            "minimum": 1
+          },
+          "decision_record_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "已登记FirstDecisionRecord"
+          },
+          "text": {
+            "$ref": "#/components/schemas/NonEmptyText",
+            "description": "实际原模型reply文本",
+            "pattern": "\\S"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 32,
+            "description": "已实际读取的用户材料/工具引用"
+          },
+          "unresolved_effect_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 0,
+            "description": "消息终态依赖未决效果必须为空"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_ref",
+          "input_revision",
+          "decision_record_ref",
+          "text",
+          "source_refs",
+          "unresolved_effect_refs"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ReplyCommitReceipt": {
+        "type": "object",
+        "description": "消息与Run/Event原子提交的服务回执。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run": {
+            "description": "实际completed Run",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunRecord"
+              },
+              {
+                "properties": {
+                  "status": {
+                    "const": "completed"
+                  },
+                  "outcome": {
+                    "const": "succeeded"
+                  }
+                },
+                "required": [
+                  "outcome"
+                ]
+              }
+            ]
+          },
+          "item": {
+            "description": "实际消息Item",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InteractionItem"
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "agent_message"
+                  },
+                  "status": {
+                    "const": "completed"
+                  }
+                },
+                "required": [
+                  "run_id"
+                ]
+              }
+            ]
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "提交时输入版本",
+            "minimum": 1
+          },
+          "event_seq": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "最后持久事件位置",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "protocol",
+          "run",
+          "item",
+          "input_revision",
+          "event_seq"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ClarificationQuestion": {
+        "type": "object",
+        "description": "原问题的持久权威关联，用稳定Item表达，无新RefKind。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "conversation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "所属会话"
+          },
+          "item_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "agent_message问题Item"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "问题CAS版本",
+            "minimum": 1
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "提问时有效原文版本",
+            "minimum": 1
+          },
+          "prompt": {
+            "$ref": "#/components/schemas/ClarificationPrompt",
+            "description": "用户看到的问题"
+          },
+          "decision_record_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原ask动作的实际模型记录"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "answered",
+              "stale",
+              "cancelled"
+            ],
+            "description": "问题状态"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "问题提交时间"
+          },
+          "answer_input_ref": {
+            "$ref": "#/components/schemas/UserInputRef",
+            "description": "实际受理答复，answered时必需"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_id",
+          "conversation_id",
+          "item_id",
+          "revision",
+          "input_revision",
+          "prompt",
+          "decision_record_ref",
+          "state",
+          "created_at"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "answered"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "required": [
+                "answer_input_ref"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "answer_input_ref"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "ClarificationView": {
+        "type": "object",
+        "description": "UI同源读取原问题与Run，刷新不创建新launch或会话。",
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/ClarificationQuestion",
+            "description": "当前实际问题"
+          },
+          "run_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前Run版本，用于提交CAS",
+            "minimum": 1
+          },
+          "run_status": {
+            "$ref": "#/components/schemas/RunStatus",
+            "description": "当前Run真实状态"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前有效输入版本",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "question",
+          "run_revision",
+          "run_status",
+          "input_revision"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "question": {
+                  "properties": {
+                    "state": {
+                      "const": "open"
+                    }
+                  },
+                  "required": [
+                    "state"
+                  ]
+                }
+              },
+              "required": [
+                "question"
+              ]
+            },
+            "then": {
+              "properties": {
+                "run_status": {
+                  "const": "waiting_for_user"
+                }
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunClarificationAnswerRequest": {
+        "type": "object",
+        "description": "原Run回答；身份和expected_run_revision来自meta。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径中的原Run"
+          },
+          "question_item_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径中原问题稳定Item"
+          },
+          "expected_question_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "问题预期CAS版本",
+            "minimum": 1
+          },
+          "expected_input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原有效输入版本",
+            "minimum": 1
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text",
+            "description": "用户真实回答"
+          },
+          "attachment_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 16,
+            "description": "本人获准材料，真实权限另查",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "run_id",
+          "question_item_id",
+          "expected_question_revision",
+          "expected_input_revision",
+          "text",
+          "attachment_refs"
+        ],
+        "additionalProperties": false,
+        "anyOf": [
+          {
+            "properties": {
+              "text": {
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "properties": {
+              "attachment_refs": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "attachment_refs"
+            ]
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunCorrectionRequest": {
+        "type": "object",
+        "description": "当前Run纠正，不让客户端指定任意执行节点或权限。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径中的原Run"
+          },
+          "expected_input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原有效输入版本",
+            "minimum": 1
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text",
+            "description": "明确用户纠正"
+          },
+          "attachment_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 16,
+            "description": "本人获准材料",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "run_id",
+          "expected_input_revision",
+          "text",
+          "attachment_refs"
+        ],
+        "additionalProperties": false,
+        "anyOf": [
+          {
+            "properties": {
+              "text": {
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "properties": {
+              "attachment_refs": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "attachment_refs"
+            ]
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunInputPatch": {
+        "type": "object",
+        "description": "追加输入关联，InputRecord结构不变；受理与生效区分。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "conversation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "会话"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原用户逻辑请求"
+          },
+          "input_ref": {
+            "$ref": "#/components/schemas/UserInputRef",
+            "description": "原子追加的实际InputRecord"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "clarification_answer",
+              "correction"
+            ],
+            "description": "来源类型"
+          },
+          "base_input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原有效输入版本",
+            "minimum": 1
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "受理后有效输入版本",
+            "minimum": 1
+          },
+          "question_item_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "澄清时必需；纠正时不允许"
+          },
+          "question_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原提问版本，与Item关联",
+            "minimum": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "applied",
+              "superseded",
+              "cancelled"
+            ],
+            "description": "受理/真实生效"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "受理时间"
+          },
+          "applied_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "实际安全边界生效时刻"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_id",
+          "conversation_id",
+          "request_id",
+          "input_ref",
+          "kind",
+          "base_input_revision",
+          "input_revision",
+          "state",
+          "created_at"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "clarification_answer"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "question_item_id",
+                "question_revision"
+              ]
+            },
+            "else": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "question_item_id"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "question_revision"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "applied"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "required": [
+                "applied_at"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "applied_at"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunContinuationReceipt": {
+        "type": "object",
+        "description": "补充受理和实际生效回执，不等于最终成果完成。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run": {
+            "$ref": "#/components/schemas/RunRecord",
+            "description": "当前原Run；允许受理后又取消的查询结果"
+          },
+          "patch": {
+            "$ref": "#/components/schemas/RunInputPatch",
+            "description": "原请求受理及生效状态"
+          },
+          "event_seq": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "最后可续持久事件序号",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "protocol",
+          "run",
+          "patch",
+          "event_seq"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunExecutionClock": {
+        "type": "object",
+        "description": "新Run有版本主动执行时钟；旧调用/授权独立到期。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "持久CAS修订",
+            "minimum": 1
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "active",
+              "waiting_for_user",
+              "stopped"
+            ],
+            "description": "执行段状态"
+          },
+          "active_limit_ms": {
+            "$ref": "#/components/schemas/Duration",
+            "description": "最大主动执行时间",
+            "minimum": 1
+          },
+          "active_elapsed_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "description": "已经结束的主动段实际耗时，允许真实超额但不能再执行"
+          },
+          "wait_elapsed_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "description": "已经结束的等待耗时，与主动时间上限分别计量"
+          },
+          "captured_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "可信服务采集时间"
+          },
+          "active_since": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "active时必需，最近主动段起点"
+          },
+          "waiting_since": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "等待时必需，当前等待起点"
+          },
+          "waiting_item_ref": {
+            "$ref": "#/components/schemas/ConversationItemRef",
+            "description": "等待问题或人工审批的稳定Item"
+          },
+          "in_flight_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 64,
+            "description": "原已派发且未结束调用；不能当免费暂停"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_id",
+          "revision",
+          "mode",
+          "active_limit_ms",
+          "active_elapsed_ms",
+          "wait_elapsed_ms",
+          "captured_at",
+          "in_flight_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "mode": {
+                  "const": "active"
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            },
+            "then": {
+              "required": [
+                "active_since"
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "waiting_since"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "waiting_item_ref"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "mode": {
+                  "const": "waiting_for_user"
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            },
+            "then": {
+              "required": [
+                "waiting_since",
+                "waiting_item_ref"
+              ],
+              "not": {
+                "required": [
+                  "active_since"
+                ]
+              },
+              "properties": {
+                "in_flight_refs": {
+                  "maxItems": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "mode": {
+                  "const": "stopped"
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "active_since"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "waiting_since"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "waiting_item_ref"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunClarificationGetRequest": {
+        "type": "object",
+        "description": "读取原Run特定问题，不猜最新问题。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径原Run"
+          },
+          "question_item_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径原问题"
+          }
+        },
+        "required": [
+          "run_id",
+          "question_item_id"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunContinuationGetRequest": {
+        "type": "object",
+        "description": "原提交响应丢失或刷新后的受理/生效查询。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径原Run"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "路径原逻辑提交ID"
+          }
+        },
+        "required": [
+          "run_id",
+          "request_id"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
       },
       "HttpConversationsCreateResult": {
         "type": "object",
@@ -95563,13 +98321,1003 @@
             }
           }
         ]
+      },
+      "HttpRunsClarificationGetResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ClarificationView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsClarificationGetEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ConversationRequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunClarificationGetRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsClarificationAnswerResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunContinuationReceipt",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsClarificationAnswerEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ConversationRequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunClarificationAnswerRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsCorrectionCreateResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunContinuationReceipt",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsCorrectionCreateEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ConversationRequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunCorrectionRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsContinuationGetResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunContinuationReceipt",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsContinuationGetEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ConversationRequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunContinuationGetRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RuntimeAgentruntimeFirstDecisionResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/FirstDecisionRecord",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RuntimeRunruntimeCommitReplyResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ReplyCommitReceipt",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RuntimeRunruntimeCommitQuestionResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ClarificationView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
       }
     },
     "securitySchemes": {
       "sessionAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "部署时由账号会话适配器签发；Cookie方案尚待产品决定。"
+        "description": "已配置账号会话适配器；不接受请求体自报身份。"
       },
       "adminAuth": {
         "type": "http",
@@ -95580,7 +99328,7 @@
         "type": "apiKey",
         "in": "cookie",
         "name": "uaw_web_session",
-        "description": "Localhost HttpOnly host-only user session; writes also require exact Origin and X-UAW-CSRF."
+        "description": "HttpOnly会话；cookie写请求同时要求精确Origin与X-UAW-CSRF。"
       }
     }
   },

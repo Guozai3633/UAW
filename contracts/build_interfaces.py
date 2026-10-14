@@ -15,6 +15,8 @@ OWNERNAMES={"common":"公共协议","intent":"任务理解","agent":"Agent执行
 
 def write(path,data):
     path.parent.mkdir(parents=True,exist_ok=True)
+    if isinstance(data, str) and path.suffix == ".md":
+        data = data.rstrip("\n") + "\n"
     path.write_text(data if isinstance(data,str) else json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 
 def rewrite_refs(value,prefix):
@@ -161,12 +163,12 @@ def http_parameters(op):
             if k in pathkeys:continue
             parameters.append({"name":k,"in":"query","required":k in s.get("required",[]),"schema":rewrite_refs(value,"#/components/schemas/")})
         parameters += [{"name":"X-Request-Id","in":"header","required":op["method"]=="DELETE","schema":{"$ref":"#/components/schemas/ID"}},
-                       {"name":"X-UAW-Schema-Version","in":"header","required":False,"schema":{"type":"string","const":"0.1"}}]
+                       {"name":"X-UAW-Schema-Version","in":"header","required":False,"schema":{"type":"string","const":op.get("wire_version", "0.1")}}]
         if op["method"]=="DELETE":parameters.append({"name":"If-Match","in":"header","required":True,"schema":{"type":"string","pattern":"^\"[0-9]+\"$"}})
     if op["id"]=="events.stream":parameters.append({"name":"Last-Event-ID","in":"header","required":False,"schema":{"$ref":"#/components/schemas/Cursor"}})
     return parameters
 
-schema={"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:uaw:contracts:0.1","title":"UAW接口对象0.1（实现范围按接口记录）","$defs":TYPES}
+schema={"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:uaw:contracts:0.2","title":"UAW契约目录0.2（原0.1对象保持，新对话控制0.2未接线）","$defs":TYPES}
 write(ROOT/"contracts/uaw.schema.json",schema)
 legacy=ROOT/"contracts/legacy/execution_assessment.v0.1.schema.json"
 old=ROOT/"contracts/execution_assessment.schema.json"
@@ -176,10 +178,10 @@ if not legacy.exists() and old.exists():
     old_data["description"]="Historical experiment; current contract is uaw.schema.json#/$defs/ExecutionAssessment."
     write(legacy,old_data)
 write(old,{"$schema":schema["$schema"],"title":"UAW 当前ExecutionAssessment契约入口","description":"与统一对象字典相同，不维护第二套字段。旧实验见legacy/execution_assessment.v0.1.schema.json。","$ref":"uaw.schema.json#/$defs/ExecutionAssessment"})
-write(ROOT/"contracts/interfaces.json",{"contract_version":"0.1","architecture_version":GRAPH["architecture_version"],"status":"partial_development_implementation","operations":OPERATIONS})
+write(ROOT/"contracts/interfaces.json",{"contract_version":"0.2","wire_versions":["0.1","0.2"],"architecture_version":GRAPH["architecture_version"],"status":"partial_development_implementation","operations":OPERATIONS})
 write(ROOT/"contracts/examples.json",{"status":"shape_examples_not_executable_requests","examples":EXAMPLES})
 
-openapi={"openapi":"3.1.1","jsonSchemaDialect":"https://json-schema.org/draft/2020-12/schema","info":{"title":"UAW功能接口设计","version":"0.1.0","description":"设计目标；无已部署后端。云/本地权威存储方案待确认。"},"paths":{},"components":{"schemas":rewrite_refs(TYPES,"#/components/schemas/"),"securitySchemes":{"sessionAuth":{"type":"http","scheme":"bearer","description":"部署时由账号会话适配器签发；Cookie方案尚待产品决定。"},"adminAuth":{"type":"http","scheme":"bearer","description":"服务端核验admin角色，不接受请求体自报。"}}},"security":[{"sessionAuth":[]}]}
+openapi={"openapi":"3.1.1","jsonSchemaDialect":"https://json-schema.org/draft/2020-12/schema","info":{"title":"UAW功能接口设计","version":"0.2.0","description":"已有部分开发实现；新conversation-v1仅发布契约、handler未装配。原0.1 DTO/期限保留，新对话控制meta为0.2。"},"paths":{},"components":{"schemas":rewrite_refs(TYPES,"#/components/schemas/"),"securitySchemes":{"sessionAuth":{"type":"http","scheme":"bearer","description":"已配置账号会话适配器；不接受请求体自报身份。"},"adminAuth":{"type":"http","scheme":"bearer","description":"服务端核验admin角色，不接受请求体自报。"}}},"security":[{"sessionAuth":[]}]}
 
 status_map={"202":"waiting","403":"denied","404":"missing","409":"conflict","412":"stale","422":"failed","429":"failed","500":"failed","502":"failed","504":"failed"}
 for op in OPERATIONS:
@@ -191,10 +193,18 @@ for op in OPERATIONS:
         wire["security"]=[] if op["id"]=="web.session.exchange" else [{"webCookie":[]}]
         openapi["components"]["securitySchemes"]["webCookie"]={"type":"apiKey","in":"cookie","name":"uaw_web_session","description":"Localhost HttpOnly host-only user session; writes also require exact Origin and X-UAW-CSRF."}
     if op["method"] not in ["GET","DELETE"] or op["id"]=="web.session.logout":
-        cas=op["method"]=="PATCH" or op["id"] in ["runs.control","runs.checkpoint","runs.resume","approvals.decide","definitions.revert","workspaces.merge","workspaces.revert","reviews.decide","admin.configuration.activate","admin.extensions.activate","admin.extensions.rollback","tasks.attach_conversation"]
-        meta={"allOf":[{"$ref":"#/components/schemas/RequestMeta"},{"required":["expected_revision"],"properties":{"expected_revision":{"type":"integer","minimum":1}}}]} if cas else {"$ref":"#/components/schemas/RequestMeta"}
+        cas=op.get("requires_cas", False) or op["method"]=="PATCH" or op["id"] in ["runs.control","runs.checkpoint","runs.resume","approvals.decide","definitions.revert","workspaces.merge","workspaces.revert","reviews.decide","admin.configuration.activate","admin.extensions.activate","admin.extensions.rollback","tasks.attach_conversation"]
+        meta_ref={"$ref":"#/components/schemas/"+op.get("request_meta", "RequestMeta")}
+        meta={"allOf":[meta_ref,{"required":["expected_revision"],"properties":{"expected_revision":{"type":"integer","minimum":1}}}]} if cas else meta_ref
         wire["requestBody"]={"required":True,"content":{"application/json":{"schema":{"type":"object","additionalProperties":False,"required":["meta","payload"],"properties":{"meta":meta,"payload":rewrite_refs(body_schema(op),"#/components/schemas/")}}}}}
         wire["x-uaw-cas-required"]=cas
+    if op.get("browser_session"):
+        openapi["components"]["securitySchemes"]["webCookie"]={"type":"apiKey","in":"cookie","name":"uaw_web_session","description":"HttpOnly会话；cookie写请求同时要求精确Origin与X-UAW-CSRF。"}
+        wire["security"]=[{"webCookie":[]},{"sessionAuth":[]}]
+        wire["parameters"].append({"name":"Origin","in":"header","required":False,"schema":{"type":"string"},"description":"cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"})
+        if op["method"]!="GET":
+            wire["parameters"].append({"name":"X-UAW-CSRF","in":"header","required":False,"schema":{"$ref":"#/components/schemas/Hash"},"description":"使用cookie会话写请求时必需；缺失不得执行。"})
+        wire["responses"]["503"]={"description":"新handler或当前可信来源未装配，明确不可用；不续跑旧Run。","content":{"application/json":{"schema":resultref}}}
     for code,kind in status_map.items():
         wire["responses"][code]={"description":kind+"；failure.code区分原因，waiting含wait_ref。","content":{"application/json":{"schema":{"allOf":[resultref,{"properties":{"kind":{"const":kind}}}]}}}}
     if op["id"].startswith("runner.local."):
@@ -219,7 +229,8 @@ write(ROOT/"contracts/tools.json",{"version":"0.1","status":"design_only","trust
 def fenced(data):return "```json\n"+json.dumps(data,ensure_ascii=False,indent=2)+"\n```"
 
 for name,s in TYPES.items():
-    text=f"# {name}\n\n状态：对象契约0.1；可用范围见具体接口与实施记录。所属：{OWNERNAMES[OWNERS[name]]}。\n\n{s.get('description','')}\n\n[对象总索引](../OBJECTS.md) · [接口总入口](../README.md)\n\n"
+    version="0.2 / conversation-v1" if s.get("x-uaw-protocol") else "0.1"
+    text=f"# {name}\n\n状态：对象契约{version}；可用范围见具体接口与实施记录。所属：{OWNERNAMES[OWNERS[name]]}。\n\n{s.get('description','')}\n\n[对象总索引](../OBJECTS.md) · [接口总入口](../README.md)\n\n"
     if "properties" in s:
         text+="## 字段\n\n| 字段 | 类型 | 必填 | 含义 | 结构约束 |\n| --- | --- | --- | --- | --- |\n"
         for k,v in s["properties"].items():text+=f"| `{k}` | {type_label(v,'./')} | {'是' if k in s.get('required',[]) else '否'} | {v.get('description','见类型说明').replace('|','／')} | {constraints(v).replace('|','／')} |\n"
@@ -244,7 +255,7 @@ for op in OPERATIONS:
     scopes={"development_model_protocol":"模型网关/协议已实现；真实LLM提供方验收待配置",
             "development_loopback_browser_identity":"本机浏览器身份已实现；后台执行与真实页面整链另验收",
             "development_intent_protocol":"有来源的理解协议已实现；真实模型语义质量待验收"}
-    status=scopes.get(op.get("implementation",{}).get("scope"),"已实现本机开发控制层；Agent执行尚未接入") if op["implemented"] else "契约0.1，待实现"
+    status=scopes.get(op.get("implementation",{}).get("scope"),"已实现本机开发控制层；Agent执行尚未接入") if op["implemented"] else "契约"+op.get("wire_version","0.1")+"，待实现"
     inp=TYPES[op["request"]]; text=f"# {op['id']}\n\n状态：{status}。类别：{CHANNELS[op['channel']]}。所属：{OWNERNAMES[op['owner']]}。\n\n{inp.get('description','')}\n\n[分类索引](../{op['channel'].upper()}.md) · [统一规则](../CONVENTIONS.md) · [实际范围](../../implementation/README.md)\n\n## 调用入口\n\n"
     if op["channel"]=="http":
         text+=f"`{op['method']} {op['path']}`；认证：`{op['auth']}`。\n\n"
@@ -279,7 +290,7 @@ for op in OPERATIONS:
         payload=copy.deepcopy(sample)
         for k in re.findall(r"{([^}]+)}",op["path"]):payload.pop(k,None)
         cas=openapi["paths"][op["path"]][op["method"].lower()].get("x-uaw-cas-required",False)
-        sample={"meta":{"request_id":"request_001","schema_version":"0.1","expected_revision":3 if cas else 0},"payload":payload}
+        sample={"meta":{"request_id":"request_001","schema_version":op.get("wire_version", "0.1"),"expected_revision":3 if cas else 0},"payload":payload}
     text+=fenced(sample)+"\n\n## 成功结构示例\n\n"+fenced({"kind":"ok","payload":EXAMPLES[op["response"]],"output_refs":[]})+"\n"
     text+="\n## 拒绝结构示例\n\n"+fenced({"kind":"denied","output_refs":[],"failure":{"code":"permission_denied","category":"authorization","message":"当前主体没有本动作所需权限。","retryable":False,"failed_phase":"policy_gate","recover_hint":"取得真实授权后重新检查；不能通过换工具绕过。"}})+"\n"
     text+="\n## 模块与目录\n\n| 节点 | 详细策略 | 计划代码位置 |\n| --- | --- | --- |\n"
@@ -289,10 +300,10 @@ for op in OPERATIONS:
     text+="\n[接口机器目录](../../../contracts/interfaces.json) · [统一对象schema](../../../contracts/uaw.schema.json)\n"
     write(OUT/"interfaces"/(slug(op)+".md"),text)
 
-write(ROOT/"contracts/interface-map.json",{"version":"0.1","nodes":node_map})
+write(ROOT/"contracts/interface-map.json",{"version":"0.2","nodes":node_map})
 
 for channel,label in CHANNELS.items():
-    text=f"# {label}\n\n[接口总入口](README.md)。状态：设计契约0.1。\n\n| 接口 | 输入 | 成功payload | 效果 |\n| --- | --- | --- | --- |\n"
+    text=f"# {label}\n\n[接口总入口](README.md)。目录0.2：旧对象/入口保持0.1，新conversation-v1控制使用0.2且尚未接线。\n\n| 接口 | 输入 | 成功payload | 效果 |\n| --- | --- | --- | --- |\n"
     for op in OPERATIONS:
         if op["channel"]!=channel:continue
         text+=f"| [{op['id']}](interfaces/{slug(op)}.md) | {schema_link(op['request'],'objects/')} | {schema_link(op['response'],'objects/')} | `{op['effect']}` |\n"
@@ -316,7 +327,7 @@ for node,info in node_map.items():
 write(OUT/"COVERAGE.md",text)
 
 counts={ch:sum(o["channel"]==ch for o in OPERATIONS) for ch in CHANNELS}
-text="# UAW 功能接口总入口\n\n版本：0.1；日期：2026-10-07；对齐架构 "+GRAPH["architecture_version"]+"。**实现范围逐接口记录；开发协议验证不等于产品闭环或生产部署。**\n\n## 从这里开始\n\n1. [统一规则](CONVENTIONS.md)：信任边界、HTTP状态、幂等、CAS、等待/取消、分页/SSE、字段单位。\n2. [关键调用链与实例](FLOWS.md)：创建/调用子Agent、运行代码测试、审批、撤销、完成核验、缓存与恢复。\n3. 按类别找到接口；每页均含入口、字段表、返回结构、约束、错误、示例和代码位置。\n4. [对象总字典](OBJECTS.md)：所有对象、请求、返回和动作分支逐字段定义。\n5. [架构→接口→设计→代码](COVERAGE.md)：核对自己负责模块的契约范围。\n6. [Runner消息协议](RUNNER_PROTOCOL.md)与[早期字段迁移](MIGRATION.md)：执行信封、断线对账和旧schema对齐。\n\n## 五类契约\n\n| 类别 | 条目数 | 访问方式 |\n| --- | --- | --- |\n"
+text="# UAW 功能接口总入口\n\n契约目录版本：0.2；日期：2026-10-14；对齐架构 "+GRAPH["architecture_version"]+"。**实现范围逐接口记录；开发协议验证不等于产品闭环或生产部署。** 原RequestMeta/RunRecord/AgentDecision与旧入口保持0.1；conversation-v1新控制使用meta 0.2，端点尚未装配。\n\n## 从这里开始\n\n1. [统一规则](CONVENTIONS.md)：信任边界、HTTP状态、幂等、CAS、等待/取消、分页/SSE、字段单位。\n2. [对话公共协议与迁移](CONVERSATION_REVISION.md)：首次决策、消息完成、原问题答复/纠正、执行时钟与当前可用性。\n3. [关键调用链与实例](FLOWS.md)：创建/调用子Agent、运行代码测试、审批、撤销、完成核验、缓存与恢复。\n4. 按类别找到接口；每页均含入口、字段表、返回结构、约束、错误、示例和代码位置。\n5. [对象总字典](OBJECTS.md)：所有对象、请求、返回和动作分支逐字段定义。\n6. [架构→接口→设计→代码](COVERAGE.md)、[Runner消息协议](RUNNER_PROTOCOL.md)与[早期字段迁移](MIGRATION.md)。\n\n## 五类契约\n\n| 类别 | 条目数 | 访问方式 |\n| --- | --- | --- |\n"
 for ch,label in CHANNELS.items():text+=f"| [{label}]({ch.upper()}.md) | {counts[ch]} | {'用户/管理员认证' if ch=='http' else '可信协议/内部调用' if ch in ['runner','runtime','component'] else '仅暴露业务参数给LLM'} |\n"
 text+=f"""\n共 {len(OPERATIONS)} 条接口契约，{len(TYPES)} 个命名schema（含自动生成DTO/互斥分支/严格返回类型），覆盖 {len(node_map)} 个当前架构节点。图中的每个小模块是内部组件，不会都变成公网HTTP接口或模型工具。\n\n## 机器文件与维护\n\n| 文件 | 作用 |\n| --- | --- |\n| [uaw.schema.json](../../contracts/uaw.schema.json) | JSON Schema 2020-12统一对象字典 |
 | [openapi.json](../../contracts/openapi.json) | OpenAPI 3.1.1 HTTP路径/参数/响应/认证 |

@@ -151,6 +151,46 @@
       "rejected": true
     },
     {
+      "case": "conversation controls cannot use legacy meta",
+      "schema": "ConversationRequestMeta",
+      "rejected": true
+    },
+    {
+      "case": "continuation requires positive original Run CAS",
+      "schema": "ConversationRequestMeta",
+      "rejected": true
+    },
+    {
+      "case": "reply cannot mix a tool branch",
+      "schema": "FirstDecision",
+      "rejected": true
+    },
+    {
+      "case": "first decision cannot create runtime approval",
+      "schema": "FirstDecision",
+      "rejected": true
+    },
+    {
+      "case": "message completion cannot omit unknown effect reconciliation",
+      "schema": "ReplyProposal",
+      "rejected": true
+    },
+    {
+      "case": "empty clarification answer is not an input",
+      "schema": "RunClarificationAnswerRequest",
+      "rejected": true
+    },
+    {
+      "case": "answered question requires actual input source",
+      "schema": "ClarificationQuestion",
+      "rejected": true
+    },
+    {
+      "case": "pause requires original waiting item and cannot retain an active segment",
+      "schema": "RunExecutionClock",
+      "rejected": true
+    },
+    {
       "case": "serial assessment cannot request agent parallelism",
       "schema": "ExecutionAssessment",
       "rejected": true
@@ -1598,6 +1638,41 @@
     {
       "case": "component:run.resume.continue cannot succeed without payload",
       "schema": "ComponentRunResumeContinueResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.clarification.get cannot succeed without payload",
+      "schema": "HttpRunsClarificationGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.clarification.answer cannot succeed without payload",
+      "schema": "HttpRunsClarificationAnswerResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.correction.create cannot succeed without payload",
+      "schema": "HttpRunsCorrectionCreateResult",
+      "rejected": true
+    },
+    {
+      "case": "http:runs.continuation.get cannot succeed without payload",
+      "schema": "HttpRunsContinuationGetResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:AgentRuntime.first_decision cannot succeed without payload",
+      "schema": "RuntimeAgentruntimeFirstDecisionResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.commit_reply cannot succeed without payload",
+      "schema": "RuntimeRunruntimeCommitReplyResult",
+      "rejected": true
+    },
+    {
+      "case": "runtime:RunRuntime.commit_question cannot succeed without payload",
+      "schema": "RuntimeRunruntimeCommitQuestionResult",
       "rejected": true
     }
   ]

@@ -5,7 +5,7 @@
   "node_design_documents": 115,
   "views": 17,
   "mapping_coverage": "100%",
-  "local_document_links_checked": 1253,
+  "local_document_links_checked": 1255,
   "issues": [],
   "status": "passed",
   "runtime_tests": "not_run_by_document_generator"

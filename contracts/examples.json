@@ -11668,6 +11668,371 @@
       "expected_run_revision": 0,
       "resumable_nodes": []
     },
+    "ConversationRunRef": {
+      "kind": "run",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "ConversationItemRef": {
+      "kind": "item",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "ConversationClockRef": {
+      "kind": "checkpoint",
+      "id": "example_001",
+      "version": "example_001"
+    },
+    "ConversationRequestMeta": {
+      "request_id": "example_001",
+      "schema_version": "0.2",
+      "expected_revision": 1
+    },
+    "ConversationUnderstanding": {
+      "summary": "example_001",
+      "assumptions": []
+    },
+    "ClarificationPrompt": {
+      "text": "example_001",
+      "reason": "example_001",
+      "options": []
+    },
+    "ClarificationProposal": {
+      "protocol": "conversation-v1",
+      "run_ref": {
+        "kind": "run",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "input_revision": 1,
+      "decision_record_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "prompt": {
+        "text": "example_001",
+        "reason": "example_001",
+        "options": []
+      }
+    },
+    "FirstReplyDecision": {
+      "protocol": "conversation-v1",
+      "action": "reply",
+      "text": "example_001"
+    },
+    "FirstToolDecision": {
+      "protocol": "conversation-v1",
+      "action": "tool",
+      "calls": [
+        {
+          "tool_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "arguments": {},
+          "action_id": "example_001"
+        }
+      ]
+    },
+    "FirstAskDecision": {
+      "protocol": "conversation-v1",
+      "action": "ask",
+      "question": {
+        "text": "example_001",
+        "reason": "example_001",
+        "options": []
+      }
+    },
+    "FirstDeliverDecision": {
+      "protocol": "conversation-v1",
+      "action": "deliver",
+      "text": "example_001"
+    },
+    "FirstDecision": {
+      "protocol": "conversation-v1",
+      "action": "reply",
+      "text": "example_001"
+    },
+    "FirstDecisionRequest": {
+      "protocol": "conversation-v1",
+      "run_ref": {
+        "kind": "run",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "original_input_ref": {
+        "kind": "input",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "patch_refs": [],
+      "input_revision": 1,
+      "context_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "remaining_budget": {
+        "limits": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "child_agents": 0,
+          "wall_time_ms": 0,
+          "money": "0",
+          "currency": "CNY"
+        },
+        "max_steps": 0,
+        "max_depth": 0,
+        "deadline": "2026-10-07T02:00:00Z"
+      }
+    },
+    "FirstDecisionRecord": {
+      "protocol": "conversation-v1",
+      "run_ref": {
+        "kind": "run",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "input_revision": 1,
+      "decision": {
+        "protocol": "conversation-v1",
+        "action": "reply",
+        "text": "example_001"
+      },
+      "model_output_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "model_policy_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "attempt_id": "example_001",
+      "usage_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      }
+    },
+    "ConversationProtocolBinding": {
+      "protocol": "conversation-v1",
+      "run_id": "example_001",
+      "owner_id": "example_001",
+      "revision": 1,
+      "input_revision": 1,
+      "completion_mode": "message",
+      "clock_ref": {
+        "kind": "checkpoint",
+        "id": "example_001",
+        "version": "example_001"
+      }
+    },
+    "ReplyProposal": {
+      "protocol": "conversation-v1",
+      "run_ref": {
+        "kind": "run",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "input_revision": 1,
+      "decision_record_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "text": "example_001",
+      "source_refs": [],
+      "unresolved_effect_refs": []
+    },
+    "ReplyCommitReceipt": {
+      "protocol": "conversation-v1",
+      "run": {
+        "id": "example_001",
+        "task_id": "example_001",
+        "conversation_id": "example_001",
+        "revision": 0,
+        "status": "completed",
+        "budget": {
+          "limits": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "child_agents": 0,
+            "wall_time_ms": 0,
+            "money": "0",
+            "currency": "CNY"
+          },
+          "max_steps": 0,
+          "max_depth": 0,
+          "deadline": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z",
+        "outcome": "succeeded"
+      },
+      "item": {
+        "id": "example_001",
+        "conversation_id": "example_001",
+        "type": "agent_message",
+        "status": "completed",
+        "revision": 0,
+        "text": "example_001",
+        "resource_refs": [],
+        "created_at": "2026-10-07T02:00:00Z",
+        "updated_at": "2026-10-07T02:00:00Z",
+        "run_id": "example_001"
+      },
+      "input_revision": 1,
+      "event_seq": 1
+    },
+    "ClarificationQuestion": {
+      "protocol": "conversation-v1",
+      "run_id": "example_001",
+      "conversation_id": "example_001",
+      "item_id": "example_001",
+      "revision": 1,
+      "input_revision": 1,
+      "prompt": {
+        "text": "example_001",
+        "reason": "example_001",
+        "options": []
+      },
+      "decision_record_ref": {
+        "kind": "web",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "state": "open",
+      "created_at": "2026-10-07T02:00:00Z"
+    },
+    "ClarificationView": {
+      "question": {
+        "protocol": "conversation-v1",
+        "run_id": "example_001",
+        "conversation_id": "example_001",
+        "item_id": "example_001",
+        "revision": 1,
+        "input_revision": 1,
+        "prompt": {
+          "text": "example_001",
+          "reason": "example_001",
+          "options": []
+        },
+        "decision_record_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "state": "open",
+        "created_at": "2026-10-07T02:00:00Z"
+      },
+      "run_revision": 1,
+      "run_status": "waiting_for_user",
+      "input_revision": 1
+    },
+    "RunClarificationAnswerRequest": {
+      "run_id": "example_001",
+      "question_item_id": "example_001",
+      "expected_question_revision": 1,
+      "expected_input_revision": 1,
+      "text": "example_001",
+      "attachment_refs": []
+    },
+    "RunCorrectionRequest": {
+      "run_id": "example_001",
+      "expected_input_revision": 1,
+      "text": "example_001",
+      "attachment_refs": []
+    },
+    "RunInputPatch": {
+      "protocol": "conversation-v1",
+      "run_id": "example_001",
+      "conversation_id": "example_001",
+      "request_id": "example_001",
+      "input_ref": {
+        "kind": "input",
+        "id": "example_001",
+        "version": "example_001"
+      },
+      "kind": "clarification_answer",
+      "base_input_revision": 1,
+      "input_revision": 1,
+      "state": "accepted",
+      "created_at": "2026-10-07T02:00:00Z",
+      "question_item_id": "example_001",
+      "question_revision": 1
+    },
+    "RunContinuationReceipt": {
+      "protocol": "conversation-v1",
+      "run": {
+        "id": "example_001",
+        "task_id": "example_001",
+        "conversation_id": "example_001",
+        "revision": 0,
+        "status": "queued",
+        "budget": {
+          "limits": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "child_agents": 0,
+            "wall_time_ms": 0,
+            "money": "0",
+            "currency": "CNY"
+          },
+          "max_steps": 0,
+          "max_depth": 0,
+          "deadline": "2026-10-07T02:00:00Z"
+        },
+        "created_at": "2026-10-07T02:00:00Z"
+      },
+      "patch": {
+        "protocol": "conversation-v1",
+        "run_id": "example_001",
+        "conversation_id": "example_001",
+        "request_id": "example_001",
+        "input_ref": {
+          "kind": "input",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "kind": "clarification_answer",
+        "base_input_revision": 1,
+        "input_revision": 1,
+        "state": "accepted",
+        "created_at": "2026-10-07T02:00:00Z",
+        "question_item_id": "example_001",
+        "question_revision": 1
+      },
+      "event_seq": 1
+    },
+    "RunExecutionClock": {
+      "protocol": "conversation-v1",
+      "run_id": "example_001",
+      "revision": 1,
+      "mode": "active",
+      "active_limit_ms": 1,
+      "active_elapsed_ms": 0,
+      "wait_elapsed_ms": 0,
+      "captured_at": "2026-10-07T02:00:00Z",
+      "in_flight_refs": [],
+      "active_since": "2026-10-07T02:00:00Z"
+    },
+    "RunClarificationGetRequest": {
+      "run_id": "example_001",
+      "question_item_id": "example_001"
+    },
+    "RunContinuationGetRequest": {
+      "run_id": "example_001",
+      "request_id": "example_001"
+    },
     "HttpConversationsCreateResult": {
       "kind": "ok",
       "output_refs": [],
@@ -18336,6 +18701,340 @@
           "deadline": "2026-10-07T02:00:00Z"
         },
         "created_at": "2026-10-07T02:00:00Z"
+      }
+    },
+    "HttpRunsClarificationGetResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "question": {
+          "protocol": "conversation-v1",
+          "run_id": "example_001",
+          "conversation_id": "example_001",
+          "item_id": "example_001",
+          "revision": 1,
+          "input_revision": 1,
+          "prompt": {
+            "text": "example_001",
+            "reason": "example_001",
+            "options": []
+          },
+          "decision_record_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "state": "open",
+          "created_at": "2026-10-07T02:00:00Z"
+        },
+        "run_revision": 1,
+        "run_status": "waiting_for_user",
+        "input_revision": 1
+      }
+    },
+    "HttpRunsClarificationGetEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.2",
+        "expected_revision": 1
+      },
+      "payload": {
+        "run_id": "example_001",
+        "question_item_id": "example_001"
+      }
+    },
+    "HttpRunsClarificationAnswerResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "protocol": "conversation-v1",
+        "run": {
+          "id": "example_001",
+          "task_id": "example_001",
+          "conversation_id": "example_001",
+          "revision": 0,
+          "status": "queued",
+          "budget": {
+            "limits": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "child_agents": 0,
+              "wall_time_ms": 0,
+              "money": "0",
+              "currency": "CNY"
+            },
+            "max_steps": 0,
+            "max_depth": 0,
+            "deadline": "2026-10-07T02:00:00Z"
+          },
+          "created_at": "2026-10-07T02:00:00Z"
+        },
+        "patch": {
+          "protocol": "conversation-v1",
+          "run_id": "example_001",
+          "conversation_id": "example_001",
+          "request_id": "example_001",
+          "input_ref": {
+            "kind": "input",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "kind": "clarification_answer",
+          "base_input_revision": 1,
+          "input_revision": 1,
+          "state": "accepted",
+          "created_at": "2026-10-07T02:00:00Z",
+          "question_item_id": "example_001",
+          "question_revision": 1
+        },
+        "event_seq": 1
+      }
+    },
+    "HttpRunsClarificationAnswerEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.2",
+        "expected_revision": 1
+      },
+      "payload": {
+        "run_id": "example_001",
+        "question_item_id": "example_001",
+        "expected_question_revision": 1,
+        "expected_input_revision": 1,
+        "text": "example_001",
+        "attachment_refs": []
+      }
+    },
+    "HttpRunsCorrectionCreateResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "protocol": "conversation-v1",
+        "run": {
+          "id": "example_001",
+          "task_id": "example_001",
+          "conversation_id": "example_001",
+          "revision": 0,
+          "status": "queued",
+          "budget": {
+            "limits": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "child_agents": 0,
+              "wall_time_ms": 0,
+              "money": "0",
+              "currency": "CNY"
+            },
+            "max_steps": 0,
+            "max_depth": 0,
+            "deadline": "2026-10-07T02:00:00Z"
+          },
+          "created_at": "2026-10-07T02:00:00Z"
+        },
+        "patch": {
+          "protocol": "conversation-v1",
+          "run_id": "example_001",
+          "conversation_id": "example_001",
+          "request_id": "example_001",
+          "input_ref": {
+            "kind": "input",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "kind": "clarification_answer",
+          "base_input_revision": 1,
+          "input_revision": 1,
+          "state": "accepted",
+          "created_at": "2026-10-07T02:00:00Z",
+          "question_item_id": "example_001",
+          "question_revision": 1
+        },
+        "event_seq": 1
+      }
+    },
+    "HttpRunsCorrectionCreateEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.2",
+        "expected_revision": 1
+      },
+      "payload": {
+        "run_id": "example_001",
+        "expected_input_revision": 1,
+        "text": "example_001",
+        "attachment_refs": []
+      }
+    },
+    "HttpRunsContinuationGetResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "protocol": "conversation-v1",
+        "run": {
+          "id": "example_001",
+          "task_id": "example_001",
+          "conversation_id": "example_001",
+          "revision": 0,
+          "status": "queued",
+          "budget": {
+            "limits": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "child_agents": 0,
+              "wall_time_ms": 0,
+              "money": "0",
+              "currency": "CNY"
+            },
+            "max_steps": 0,
+            "max_depth": 0,
+            "deadline": "2026-10-07T02:00:00Z"
+          },
+          "created_at": "2026-10-07T02:00:00Z"
+        },
+        "patch": {
+          "protocol": "conversation-v1",
+          "run_id": "example_001",
+          "conversation_id": "example_001",
+          "request_id": "example_001",
+          "input_ref": {
+            "kind": "input",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "kind": "clarification_answer",
+          "base_input_revision": 1,
+          "input_revision": 1,
+          "state": "accepted",
+          "created_at": "2026-10-07T02:00:00Z",
+          "question_item_id": "example_001",
+          "question_revision": 1
+        },
+        "event_seq": 1
+      }
+    },
+    "HttpRunsContinuationGetEnvelope": {
+      "meta": {
+        "request_id": "example_001",
+        "schema_version": "0.2",
+        "expected_revision": 1
+      },
+      "payload": {
+        "run_id": "example_001",
+        "request_id": "example_001"
+      }
+    },
+    "RuntimeAgentruntimeFirstDecisionResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "protocol": "conversation-v1",
+        "run_ref": {
+          "kind": "run",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "input_revision": 1,
+        "decision": {
+          "protocol": "conversation-v1",
+          "action": "reply",
+          "text": "example_001"
+        },
+        "model_output_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "model_policy_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        },
+        "attempt_id": "example_001",
+        "usage_ref": {
+          "kind": "web",
+          "id": "example_001",
+          "version": "example_001"
+        }
+      }
+    },
+    "RuntimeRunruntimeCommitReplyResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "protocol": "conversation-v1",
+        "run": {
+          "id": "example_001",
+          "task_id": "example_001",
+          "conversation_id": "example_001",
+          "revision": 0,
+          "status": "completed",
+          "budget": {
+            "limits": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "child_agents": 0,
+              "wall_time_ms": 0,
+              "money": "0",
+              "currency": "CNY"
+            },
+            "max_steps": 0,
+            "max_depth": 0,
+            "deadline": "2026-10-07T02:00:00Z"
+          },
+          "created_at": "2026-10-07T02:00:00Z",
+          "outcome": "succeeded"
+        },
+        "item": {
+          "id": "example_001",
+          "conversation_id": "example_001",
+          "type": "agent_message",
+          "status": "completed",
+          "revision": 0,
+          "text": "example_001",
+          "resource_refs": [],
+          "created_at": "2026-10-07T02:00:00Z",
+          "updated_at": "2026-10-07T02:00:00Z",
+          "run_id": "example_001"
+        },
+        "input_revision": 1,
+        "event_seq": 1
+      }
+    },
+    "RuntimeRunruntimeCommitQuestionResult": {
+      "kind": "ok",
+      "output_refs": [],
+      "payload": {
+        "question": {
+          "protocol": "conversation-v1",
+          "run_id": "example_001",
+          "conversation_id": "example_001",
+          "item_id": "example_001",
+          "revision": 1,
+          "input_revision": 1,
+          "prompt": {
+            "text": "example_001",
+            "reason": "example_001",
+            "options": []
+          },
+          "decision_record_ref": {
+            "kind": "web",
+            "id": "example_001",
+            "version": "example_001"
+          },
+          "state": "open",
+          "created_at": "2026-10-07T02:00:00Z"
+        },
+        "run_revision": 1,
+        "run_status": "waiting_for_user",
+        "input_revision": 1
       }
     }
   }

@@ -1,14 +1,14 @@
 # 对话快通路与原任务续跑：接口修订设计
 
-2026-10-14，架构 v0.11。**拟修订协议，尚未加入现行 schema/OpenAPI，不能作为已可调用接口。** 现行精确字段仍以 contracts 维护源和生成字典为准。依据：[ADR-001](../decisions/ADR-001-conversation-and-delivery.md)、[详细执行设计](../design/CONVERSATION_EXECUTION.md)。
+2026-10-14，架构v0.11。**P1-12已加入契约目录0.2/schema/OpenAPI及Python严格消费者；新HTTP与运行流程仍未装配，不能当已可调用接口。** 原0.1对象/动作/期限保持，新对话控制meta为0.2。精确消费与可用性见 [P1-12固定协议](../coordination/requests/A/H02-P1-12-ports.md) 和 [本轮回执](../implementation/P1-12.md)。依据：[ADR-001](../decisions/ADR-001-conversation-and-delivery.md)、[详细执行设计](../design/CONVERSATION_EXECUTION.md)。
 
 ## 1. 先固定什么，再开发什么
 
-A 先发布动作/对象/状态机及兼容版本，B/C/D 消费准确阶段 SHA。新增 HTTP route、动作枚举、数据库迁移和事件只有共同契约合入后才生效。此次不预设 URL 或绕过已有 Tool/Runner 准入；不把概念字段悄悄写进现行 DTO。
+A已发布精确字段与URL，准确源码在DISPATCH页首。新handler/事务/迁移/事件尚未安装，旧Run不自动转换；B/C/D仍需正式新包才开工，不据schema存在宣称实际来源已准备。已有Tool/Runner准入不变。
 
 ## 2. 对象与输入输出
 
-以下是所需信息和归属，字段名供接口实现轮统一定稿。
+下表说明信息归属；精确请求/结果以生成对象为准。ContinueRun对应RunClarificationAnswerRequest/RunContinuationReceipt，CorrectRun对应RunCorrectionRequest/RunContinuationReceipt，ExecutionClock对应RunExecutionClock。补充对象另有ConversationProtocolBinding、ClarificationProposal/Question/View、RunInputPatch；后续EvaluationCase/Report仍由P1-15独立建设。
 
 | 对象/入口 | 输入 | 输出 | 约束 |
 | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ A 先发布动作/对象/状态机及兼容版本，B/C/D 消费准确阶段 SHA
 | ExecutionClock（Run 内部） | 累计主动耗时、当前段开始、pause 原因/开始、预算/策略版本 | 剩余主动时间、等待耗时、恢复检查点 | 持久化及租约保护；恢复不重领全额；已派发调用 deadline 与授权期限不变 |
 | EvaluationCase/Report（Support） | 样本版本、人工事实依据/反例、候选/基线源码+提示词+模型配置、全部 attempt | 答案错误/漏判/阻断指标、调用/等待/费用与结论 | 无 Reviewer 记 N/A；完整失败/pending 不删；不写用户接受 |
 
-实际实现优先复用现有 InputRecord、InteractionItem、Run/Control/Usage 类型，避免两份历史或独立万能 JSON。涉及新增枚举/关联字段按 contracts/schema_catalog.py 和 interface_catalog.py 同步，生成对象、接口文档和兼容样例。
+复用现有InputRecord、InteractionItem、Run/Usage，新输入关系单独由RunInputPatch表达，原对象不新增必填字段。契约唯一入口为contracts/interface_catalog.py，conversation_catalog.py被finalize注册；不使用不存在的schema_catalog.py，不维护第二份JSON schema。
 
 ## 3. 等待与续跑状态约束
 

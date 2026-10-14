@@ -720,6 +720,42 @@
           "id": "support.observability",
           "request": "InternalSupportObservabilityRequest",
           "response": "InternalSupportObservabilityOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -1048,6 +1084,12 @@
           "id": "intent.frame",
           "request": "InternalIntentFrameRequest",
           "response": "TaskFrame"
+        },
+        {
+          "channel": "runtime",
+          "id": "AgentRuntime.first_decision",
+          "request": "FirstDecisionRequest",
+          "response": "FirstDecisionRecord"
         }
       ],
       "planned_code_targets": [
@@ -2409,6 +2451,18 @@
           "id": "agent.factory",
           "request": "InternalAgentFactoryRequest",
           "response": "AgentInstance"
+        },
+        {
+          "channel": "runtime",
+          "id": "AgentRuntime.first_decision",
+          "request": "FirstDecisionRequest",
+          "response": "FirstDecisionRecord"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
         }
       ],
       "planned_code_targets": [
@@ -3122,6 +3176,30 @@
           "id": "ingress",
           "request": "InternalIngressRequest",
           "response": "InternalIngressOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
         }
       ],
       "planned_code_targets": [
@@ -3235,10 +3313,14 @@
         "正式协议与迁移设计",
         "固定消费示例与阶段SHA"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/P1-12.md",
+        "docs/implementation/evidence/h02-p1-12.json",
+        "docs/implementation/evidence/h02-p1-12-tests.xml"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P0-04",
@@ -3439,6 +3521,48 @@
           "id": "run.budget",
           "request": "InternalRunBudgetRequest",
           "response": "InternalRunBudgetOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "AgentRuntime.first_decision",
+          "request": "FirstDecisionRequest",
+          "response": "FirstDecisionRecord"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -3473,6 +3597,7 @@
         "model.gateway"
       ],
       "tasks": [
+        "P1-12严格契约组件与消费示例已发布，可按准确阶段SHA实现本轮；P1-12整链门槛随消息/续跑服务接线另验，不以其in_progress阻止独立组件开发。",
         "从原文和最小Context启动同一次固定模型调用，产生答复/工具/具体问题及必要理解摘要，Intent消费摘要不额外固定调用。",
         "拆开respond消息-only提交与正式成果流程；版本、取消、模型来源、消息持久化及账本仍由Runtime核对。",
         "按后果处理歧义：条件性解释或少量候选先回答；缺必需材料/权限才问，不能声称未执行的搜索/测试。",
@@ -3612,6 +3737,48 @@
           "id": "run.state",
           "request": "InternalRunStateRequest",
           "response": "RunRecord"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "AgentRuntime.first_decision",
+          "request": "FirstDecisionRequest",
+          "response": "FirstDecisionRecord"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -4104,6 +4271,42 @@
           "id": "run.cancel",
           "request": "CancelInternalRequest",
           "response": "CancellationResult"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -5784,6 +5987,30 @@
           "id": "ingress",
           "request": "InternalIngressRequest",
           "response": "InternalIngressOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
         }
       ],
       "planned_code_targets": [
@@ -5976,6 +6203,12 @@
           "id": "agent.planning",
           "request": "InternalAgentPlanningRequest",
           "response": "InternalAgentPlanningOutput"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -6166,6 +6399,36 @@
           "id": "run.budget",
           "request": "InternalRunBudgetRequest",
           "response": "InternalRunBudgetOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -7110,6 +7373,42 @@
           "id": "run.cancel",
           "request": "CancelInternalRequest",
           "response": "CancellationResult"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -8959,6 +9258,30 @@
           "id": "run.approval",
           "request": "InternalRunApprovalRequest",
           "response": "InternalRunApprovalOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
         }
       ],
       "planned_code_targets": [
@@ -9172,6 +9495,42 @@
           "id": "run.checkpoint",
           "request": "CheckpointCaptureRequest",
           "response": "Checkpoint"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_reply",
+          "request": "ReplyProposal",
+          "response": "ReplyCommitReceipt"
+        },
+        {
+          "channel": "runtime",
+          "id": "RunRuntime.commit_question",
+          "request": "ClarificationProposal",
+          "response": "ClarificationView"
         }
       ],
       "planned_code_targets": [
@@ -10161,6 +10520,30 @@
           "id": "support.configuration",
           "request": "InternalSupportConfigurationRequest",
           "response": "InternalSupportConfigurationOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.get",
+          "request": "RunClarificationGetRequest",
+          "response": "ClarificationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.clarification.answer",
+          "request": "RunClarificationAnswerRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.correction.create",
+          "request": "RunCorrectionRequest",
+          "response": "RunContinuationReceipt"
+        },
+        {
+          "channel": "http",
+          "id": "runs.continuation.get",
+          "request": "RunContinuationGetRequest",
+          "response": "RunContinuationReceipt"
         }
       ],
       "planned_code_targets": [

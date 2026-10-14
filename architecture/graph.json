@@ -25,7 +25,7 @@
       "design_doc": "docs/design/components/ui.md",
       "code_target": "apps/web/src/features/workspace/",
       "interface_doc": "docs/api/nodes/ui.md",
-      "interface_count": 50
+      "interface_count": 54
     },
     "ingress": {
       "id": "ingress",
@@ -41,7 +41,7 @@
       "design_doc": "docs/design/components/ingress.md",
       "code_target": "src/uaw/api/ingress.py",
       "interface_doc": "docs/api/nodes/ingress.md",
-      "interface_count": 13
+      "interface_count": 17
     },
     "intent": {
       "id": "intent",
@@ -225,7 +225,7 @@
       "design_doc": "docs/design/components/intent-semantic.md",
       "code_target": "src/uaw/intent/semantic.py",
       "interface_doc": "docs/api/nodes/intent.semantic.md",
-      "interface_count": 3
+      "interface_count": 4
     },
     "intent.references": {
       "id": "intent.references",
@@ -273,7 +273,7 @@
       "design_doc": "docs/design/components/intent-ambiguity.md",
       "code_target": "src/uaw/intent/ambiguity.py",
       "interface_doc": "docs/api/nodes/intent.ambiguity.md",
-      "interface_count": 2
+      "interface_count": 3
     },
     "intent.frame": {
       "id": "intent.frame",
@@ -322,7 +322,7 @@
       "design_doc": "docs/design/components/agent-loop.md",
       "code_target": "src/uaw/agent/loop.py",
       "interface_doc": "docs/api/nodes/agent.loop.md",
-      "interface_count": 4
+      "interface_count": 6
     },
     "agent.assessment": {
       "id": "agent.assessment",
@@ -1095,7 +1095,7 @@
       "design_doc": "docs/design/components/run-history.md",
       "code_target": "src/uaw/run/history.py",
       "interface_doc": "docs/api/nodes/run.history.md",
-      "interface_count": 16
+      "interface_count": 22
     },
     "run.state": {
       "id": "run.state",
@@ -1111,7 +1111,7 @@
       "design_doc": "docs/design/components/run-state.md",
       "code_target": "src/uaw/run/state.py",
       "interface_doc": "docs/api/nodes/run.state.md",
-      "interface_count": 6
+      "interface_count": 12
     },
     "run.events": {
       "id": "run.events",
@@ -1143,7 +1143,7 @@
       "design_doc": "docs/design/components/run-budget.md",
       "code_target": "src/uaw/run/budget.py",
       "interface_doc": "docs/api/nodes/run.budget.md",
-      "interface_count": 1
+      "interface_count": 6
     },
     "run.approval": {
       "id": "run.approval",

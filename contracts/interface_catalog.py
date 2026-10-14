@@ -2102,15 +2102,15 @@ def finalize(graph,strategies):
     endpoint("admin.providers.revoke","DELETE","/v1/admin/providers/{provider_id}","support","support.configuration","撤销提供方，固定旧配置不能绕过当前撤销。","provider_id|ID|提供方","ProviderBinding","internal_write",["管理员认证与expected_revision必需；不撤销已发生的外部动作。"],auth="admin")
     endpoint("admin.providers.accept", "POST", "/v1/admin/providers/{provider_id}/installed-readonly-acceptance", "support", "support.configuration", "管理员显式复核当前原installed来源并接受闭合只读提供方；不打开开关或授予Run权限。", "provider_id|ID|原配置只读提供方", "ProviderBinding", "internal_write", ["管理员认证和原provider expected_revision必需；无connected、approved、路径或proof输入。当前原native/root/设备不可用返回503；不启动本人确认。"], auth="admin")
     endpoint("events.payload","GET","/v1/events/{event_id}/payload","run","run.events","读取同主体持久事件的严格分支载荷。","event_id|ID|事件","EventPayload")
-    for operation in OPERATIONS:
-        if operation["id"]=="admin.configuration.validate":
-            operation["effect"]="internal_write"
-            operation["rules"].append("expected_revision必需；结构与引用校验成功后提交validated修订，不执行网络探测。")
+    for declared_operation in OPERATIONS:
+        if declared_operation["id"]=="admin.configuration.validate":
+            declared_operation["effect"]="internal_write"
+            declared_operation["rules"].append("expected_revision必需；结构与引用校验成功后提交validated修订，不执行网络探测。")
     from implementation_catalog import IMPLEMENTATIONS
-    for operation in OPERATIONS:
-        if operation["id"] in IMPLEMENTATIONS:
-            operation["implemented"]=True
-            operation["implementation"]=IMPLEMENTATIONS[operation["id"]]
+    for declared_operation in OPERATIONS:
+        if declared_operation["id"] in IMPLEMENTATIONS:
+            declared_operation["implemented"]=True
+            declared_operation["implementation"]=IMPLEMENTATIONS[declared_operation["id"]]
     # Internal persisted bindings; they do not open an HTTP or model-tool entry.
     record("EvaluationSourcePin", "model", "评估器实际读取的对象版本与命名空间。",
            "namespace|ID|实际存储命名空间\nref|Ref|固定版本和完整行摘要\nschema_name|ID|对象结构名称")
@@ -2161,6 +2161,9 @@ def finalize(graph,strategies):
         for key,value in schema.get("properties",{}).items():
             if key in ["top_k","max_candidates","max_calls","target_tokens","lease_ttl"]:
                 value.pop("$ref",None); value.update(type="integer",minimum=1,maximum=64 if key in ["top_k","max_candidates","max_calls"] else 604800000)
+    # Additive conversation-v1 objects do not change any legacy 0.1 DTO or action.
+    from contracts.conversation_catalog import register as register_conversation
+    register_conversation(TYPES, OWNERS, RULES, OPERATIONS, obj, field, ref, arr, operation)
     # Each operation receives a strict discriminated result object and HTTP envelope.
     for op in OPERATIONS:
         stem="".join(x.capitalize() for x in (op["channel"]+"."+op["id"]).replace("_",".").split("."))
@@ -2180,9 +2183,13 @@ def finalize(graph,strategies):
           {"if":{"properties":{"kind":{"enum":["missing","denied","conflict","stale","failed","cancelled"]}},"required":["kind"]},"then":{"required":["failure"],"not":{"required":["payload"]}}},
         ]
         op["result"]=result
+        if op.get("protocol"):
+            TYPES[result]["x-uaw-protocol"] = op["protocol"]
         if op["channel"]=="http":
             envelope=stem+"Envelope"
             obj(envelope,op["owner"],"HTTP请求meta和业务参数；路径/查询另由API合成。",{
-                "meta":field("RequestMeta","幂等与版本元信息"),"payload":field(op["request"],"业务参数")})
+                "meta":field(op.get("request_meta", "RequestMeta"),"幂等与版本元信息"),"payload":field(op["request"],"业务参数")})
             op["envelope"]=envelope
+            if op.get("protocol"):
+                TYPES[envelope]["x-uaw-protocol"] = op["protocol"]
     return TYPES,OPERATIONS

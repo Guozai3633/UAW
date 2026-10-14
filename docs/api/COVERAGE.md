@@ -56,6 +56,10 @@
 - [http · runner.local.get](interfaces/http--runner-local-get.md)
 - [http · runner.local.stop](interfaces/http--runner-local-stop.md)
 - [component · ui](interfaces/component--ui.md)
+- [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](interfaces/http--runs-continuation-get.md)
 
 ## ingress · 产品入口
 
@@ -74,6 +78,10 @@
 - [http · runner.enrollments.begin](interfaces/http--runner-enrollments-begin.md)
 - [http · runner.local.begin](interfaces/http--runner-local-begin.md)
 - [component · ingress](interfaces/component--ingress.md)
+- [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](interfaces/http--runs-continuation-get.md)
 
 ## intent · 任务理解 · Intent
 
@@ -197,6 +205,7 @@
 - [http · turns.submit](interfaces/http--turns-submit.md)
 - [runtime · IntentRuntime.understand](interfaces/runtime--IntentRuntime-understand.md)
 - [component · intent.semantic](interfaces/component--intent-semantic.md)
+- [runtime · AgentRuntime.first_decision](interfaces/runtime--AgentRuntime-first-decision.md)
 
 ## intent.references · 指代解析
 
@@ -216,6 +225,7 @@
 
 - [tool · interaction.ask_user](interfaces/tool--interaction-ask-user.md)
 - [component · intent.ambiguity](interfaces/component--intent-ambiguity.md)
+- [runtime · RunRuntime.commit_question](interfaces/runtime--RunRuntime-commit-question.md)
 
 ## intent.frame · 任务框架
 
@@ -245,6 +255,8 @@
 - [http · agents.get](interfaces/http--agents-get.md)
 - [runtime · AgentRuntime.step](interfaces/runtime--AgentRuntime-step.md)
 - [component · agent.loop](interfaces/component--agent-loop.md)
+- [runtime · AgentRuntime.first_decision](interfaces/runtime--AgentRuntime-first-decision.md)
+- [runtime · RunRuntime.commit_reply](interfaces/runtime--RunRuntime-commit-reply.md)
 
 ## agent.assessment · 按需执行评估
 
@@ -687,6 +699,12 @@
 - [http · web.session.logout](interfaces/http--web-session-logout.md)
 - [http · tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md)
 - [component · run.history](interfaces/component--run-history.md)
+- [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](interfaces/http--runs-continuation-get.md)
+- [runtime · RunRuntime.commit_reply](interfaces/runtime--RunRuntime-commit-reply.md)
+- [runtime · RunRuntime.commit_question](interfaces/runtime--RunRuntime-commit-question.md)
 
 ## run.state · Run 与交互项
 
@@ -698,6 +716,12 @@
 - [http · runs.delivery.accept](interfaces/http--runs-delivery-accept.md)
 - [http · tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md)
 - [component · run.state](interfaces/component--run-state.md)
+- [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](interfaces/http--runs-continuation-get.md)
+- [runtime · RunRuntime.commit_reply](interfaces/runtime--RunRuntime-commit-reply.md)
+- [runtime · RunRuntime.commit_question](interfaces/runtime--RunRuntime-commit-question.md)
 
 ## run.events · 事件与重连
 
@@ -714,6 +738,11 @@
 [详细开发设计](../../docs/design/components/run-budget.md) · 计划位置：`src/uaw/run/budget.py`。
 
 - [component · run.budget](interfaces/component--run-budget.md)
+- [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](interfaces/http--runs-continuation-get.md)
+- [runtime · RunRuntime.commit_question](interfaces/runtime--RunRuntime-commit-question.md)
 
 ## run.approval · 审批与用户控制
 

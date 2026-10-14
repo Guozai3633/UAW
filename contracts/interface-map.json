@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "nodes": {
     "ui": {
       "interfaces": [
@@ -252,6 +252,26 @@
           "id": "ui",
           "channel": "component",
           "doc": "docs/api/interfaces/component--ui.md"
+        },
+        {
+          "id": "runs.clarification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-get.md"
+        },
+        {
+          "id": "runs.clarification.answer",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-answer.md"
+        },
+        {
+          "id": "runs.correction.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-correction-create.md"
+        },
+        {
+          "id": "runs.continuation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-continuation-get.md"
         }
       ],
       "design_doc": "docs/design/components/ui.md",
@@ -324,6 +344,26 @@
           "id": "ingress",
           "channel": "component",
           "doc": "docs/api/interfaces/component--ingress.md"
+        },
+        {
+          "id": "runs.clarification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-get.md"
+        },
+        {
+          "id": "runs.clarification.answer",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-answer.md"
+        },
+        {
+          "id": "runs.correction.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-correction-create.md"
+        },
+        {
+          "id": "runs.continuation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-continuation-get.md"
         }
       ],
       "design_doc": "docs/design/components/ingress.md",
@@ -742,6 +782,11 @@
           "id": "intent.semantic",
           "channel": "component",
           "doc": "docs/api/interfaces/component--intent-semantic.md"
+        },
+        {
+          "id": "AgentRuntime.first_decision",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-first-decision.md"
         }
       ],
       "design_doc": "docs/design/components/intent-semantic.md",
@@ -783,6 +828,11 @@
           "id": "intent.ambiguity",
           "channel": "component",
           "doc": "docs/api/interfaces/component--intent-ambiguity.md"
+        },
+        {
+          "id": "RunRuntime.commit_question",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-question.md"
         }
       ],
       "design_doc": "docs/design/components/intent-ambiguity.md",
@@ -874,6 +924,16 @@
           "id": "agent.loop",
           "channel": "component",
           "doc": "docs/api/interfaces/component--agent-loop.md"
+        },
+        {
+          "id": "AgentRuntime.first_decision",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--AgentRuntime-first-decision.md"
+        },
+        {
+          "id": "RunRuntime.commit_reply",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-reply.md"
         }
       ],
       "design_doc": "docs/design/components/agent-loop.md",
@@ -2220,6 +2280,36 @@
           "id": "run.history",
           "channel": "component",
           "doc": "docs/api/interfaces/component--run-history.md"
+        },
+        {
+          "id": "runs.clarification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-get.md"
+        },
+        {
+          "id": "runs.clarification.answer",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-answer.md"
+        },
+        {
+          "id": "runs.correction.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-correction-create.md"
+        },
+        {
+          "id": "runs.continuation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-continuation-get.md"
+        },
+        {
+          "id": "RunRuntime.commit_reply",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-reply.md"
+        },
+        {
+          "id": "RunRuntime.commit_question",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-question.md"
         }
       ],
       "design_doc": "docs/design/components/run-history.md",
@@ -2257,6 +2347,36 @@
           "id": "run.state",
           "channel": "component",
           "doc": "docs/api/interfaces/component--run-state.md"
+        },
+        {
+          "id": "runs.clarification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-get.md"
+        },
+        {
+          "id": "runs.clarification.answer",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-answer.md"
+        },
+        {
+          "id": "runs.correction.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-correction-create.md"
+        },
+        {
+          "id": "runs.continuation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-continuation-get.md"
+        },
+        {
+          "id": "RunRuntime.commit_reply",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-reply.md"
+        },
+        {
+          "id": "RunRuntime.commit_question",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-question.md"
         }
       ],
       "design_doc": "docs/design/components/run-state.md",
@@ -2301,6 +2421,31 @@
           "id": "run.budget",
           "channel": "component",
           "doc": "docs/api/interfaces/component--run-budget.md"
+        },
+        {
+          "id": "runs.clarification.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-get.md"
+        },
+        {
+          "id": "runs.clarification.answer",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-clarification-answer.md"
+        },
+        {
+          "id": "runs.correction.create",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-correction-create.md"
+        },
+        {
+          "id": "runs.continuation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-continuation-get.md"
+        },
+        {
+          "id": "RunRuntime.commit_question",
+          "channel": "runtime",
+          "doc": "docs/api/interfaces/runtime--RunRuntime-commit-question.md"
         }
       ],
       "design_doc": "docs/design/components/run-budget.md",

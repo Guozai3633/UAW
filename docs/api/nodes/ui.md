@@ -54,3 +54,7 @@
 - [http · runner.local.get](../interfaces/http--runner-local-get.md)
 - [http · runner.local.stop](../interfaces/http--runner-local-stop.md)
 - [component · ui](../interfaces/component--ui.md)
+- [http · runs.clarification.get](../interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](../interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](../interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](../interfaces/http--runs-continuation-get.md)

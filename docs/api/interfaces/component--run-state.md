@@ -47,12 +47,11 @@ Run 与交互项的私有阶段输入。
 - 认证/上下文：`service`；范围及权限由服务端或Runner取得。
 - 请求/动作ID去重与CAS按[统一规则](../CONVENTIONS.md)执行，重复ID不同参数必须冲突。
 - 本地RunState+关键Event事务提交；外部效果通过Tool账本关联不假定分布式原子。
-- 校验请求主体/版本与允许转换
-- 领域动作实际确认后写对应Item
-- running/verifying/waiting等并非必经
-- 完成时核验提案、必需检查、未决效果和成果revision
-- 分别提交completed状态及succeeded/partial/blocked等outcome
-- Delivery用户接受另由Workspace记录
+- 合法状态转换与主体/版本/租约校验归Run
+- 普通消息检查来源/输入版本/取消/费用后事务提交Item与终态
+- 正式交付检查契约、实际成果/证据/未知效果及接受条件
+- 具体问题Item与waiting状态/计时暂停同事务提交
+- 同Run回答用幂等CAS追加输入并复查当前来源后续跑，取消/终态不能复活
 - 取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。
 
 ## 错误、等待、取消

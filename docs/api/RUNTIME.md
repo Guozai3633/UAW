@@ -1,6 +1,6 @@
 # Runtime 公共入口
 
-[接口总入口](README.md)。状态：设计契约0.1。
+[接口总入口](README.md)。目录0.2：旧对象/入口保持0.1，新conversation-v1控制使用0.2且尚未接线。
 
 | 接口 | 输入 | 成功payload | 效果 |
 | --- | --- | --- | --- |
@@ -33,3 +33,6 @@
 | [RunRuntime.control](interfaces/runtime--RunRuntime-control.md) | [RunControlRequest](objects/RunControlRequest.md) | [Acknowledgement](objects/Acknowledgement.md) | `internal_write` |
 | [RunRuntime.checkpoint](interfaces/runtime--RunRuntime-checkpoint.md) | [RunsCheckpointRequest](objects/RunsCheckpointRequest.md) | [Checkpoint](objects/Checkpoint.md) | `internal_write` |
 | [RunRuntime.resume](interfaces/runtime--RunRuntime-resume.md) | [RunsResumeRequest](objects/RunsResumeRequest.md) | [RunRecord](objects/RunRecord.md) | `internal_write` |
+| [AgentRuntime.first_decision](interfaces/runtime--AgentRuntime-first-decision.md) | [FirstDecisionRequest](objects/FirstDecisionRequest.md) | [FirstDecisionRecord](objects/FirstDecisionRecord.md) | `internal_write` |
+| [RunRuntime.commit_reply](interfaces/runtime--RunRuntime-commit-reply.md) | [ReplyProposal](objects/ReplyProposal.md) | [ReplyCommitReceipt](objects/ReplyCommitReceipt.md) | `internal_write` |
+| [RunRuntime.commit_question](interfaces/runtime--RunRuntime-commit-question.md) | [ClarificationProposal](objects/ClarificationProposal.md) | [ClarificationView](objects/ClarificationView.md) | `internal_write` |

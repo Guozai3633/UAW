@@ -45,7 +45,7 @@
 | --- | --- |
 | [待定项与决策轮次](DECISIONS.md) | 历史权威、提供方、审批与首批格式的待定项，以及技术组合的兼容门槛 |
 | [节点开发覆盖](COVERAGE.md) | 115节点→实施轮→策略/接口/代码位置；覆盖不等于已实现 |
-| [接口关联工作包](INTERFACE_ASSIGNMENTS.md) | 288接口→相关轮次；精确字段复用接口字典 |
+| [接口关联工作包](INTERFACE_ASSIGNMENTS.md) | 295接口→相关轮次；精确字段复用接口字典 |
 | [每轮执行记录模板](ROUND_TEMPLATE.md) | 从计划开始到真实验收如何记录 |
 | [人工体验测试](HUMAN_TESTING.md) | 可操作里程碑固定版本、启动、本人体验、反馈修复与复体验；与开发并行 |
 | [多session分工](PARALLEL.md) | 3个开发＋1个集成；子包、目录归属与依赖 |
@@ -58,7 +58,7 @@
 
 ## 4. 当前接续入口
 
-用户已接受Q1-Q8，见[ADR-001](../decisions/ADR-001-conversation-and-delivery.md)。当前A32/H01-v4已有固定模型与文本成果、问题展示，仍无真正快通路/同Run澄清/暂停计时；两技术样本自评passed但人工事实质量未过。新六轮见[H02开发安排](H02_CONVERSATION.md)，全部待开发，尚未派发新的worker基线。真实当前来源/历史失败见[DISPATCH](../coordination/DISPATCH.md)。旧1691全量仅属MS-I2i，不覆盖新设计。
+用户已接受Q1-Q8，见[ADR-001](../decisions/ADR-001-conversation-and-delivery.md)。P1-12契约/严格消费者已交付，整轮in_progress；P1-13可消费准确阶段源独立实现。当前A32/H01-v4仍无真实快通路/同Run接续/暂停计时，两技术样本自评passed但人工事实质量未过。六轮见[H02开发安排](H02_CONVERSATION.md)，P1-13～17待验收，尚未派发新的worker基线。真实来源/历史失败见[DISPATCH](../coordination/DISPATCH.md)。旧1691全量仅属MS-I2i，不覆盖新设计。
 
 ## 5. 计划维护规则
 

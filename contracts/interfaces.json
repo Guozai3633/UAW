@@ -1,6 +1,10 @@
 {
-  "contract_version": "0.1",
-  "architecture_version": "0.10",
+  "contract_version": "0.2",
+  "wire_versions": [
+    "0.1",
+    "0.2"
+  ],
+  "architecture_version": "0.11",
   "status": "partial_development_implementation",
   "operations": [
     {
@@ -4270,11 +4274,11 @@
       "effect": "read",
       "rules": [
         "草稿可短期本地保存；Run/审批/成果以服务端或已明确的历史权威为准，缓存不提交执行状态。",
-        "输入保持用户原文，预览请求另带draft_revision",
-        "发送使用稳定turn_request_id，反馈丢失先查询发送状态",
-        "按Item ID/revision更新消息，工具、审批和变更用结构化卡片",
-        "重连先续事件，缺序或revision不匹配拉取权威快照",
-        "用户评论和局部接受绑定实际产物版本，不把当前屏幕文本当资源版本",
+        "输入保留原文，普通交流显示消息，不强制成果接受卡",
+        "具体问题显示等待原因和回答后继续，提交原Run/问题/版本及幂等键",
+        "运行中纠正区分受理和实际生效，安全边界说明真实状态",
+        "稳定Item/revision与cursor恢复刷新，不自动停止重发或代点接受",
+        "正式成果才展示引用/核验/版本与合同所需审阅",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -4391,11 +4395,10 @@
       "effect": "read",
       "rules": [
         "解析结果提交新理解版本；原文不变，重大目标变化向用户显示。",
-        "让当前模型提取目标、约束、交付物与未知项",
-        "每个硬要求绑定用户来源，推断标记assumption",
-        "通过结构schema验证，再核对未被遗漏的显式要求",
-        "信息不足返回所需材料或候选解释",
-        "已有充分理解时合并首次Agent调用，避免固定额外分类模型",
+        "读取原文和有效补充，不用AI预览替代用户指令",
+        "简单任务消费首次主调用中的理解摘要，不强制先独立理解再回答",
+        "复杂指代/关键缺口需要时才深入理解，明确假设与事实来源",
+        "将必要理解绑定输入版本并CAS保存，不能为保存摘要追加固定模型调用",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -4484,11 +4487,10 @@
       "effect": "read",
       "rules": [
         "澄清进入Run InteractionItem，用户回答是新输入；假设保持显式版本。",
-        "逐项区分非关键表达与影响动作后果的歧义",
-        "已有来源能够排除候选时回填依据",
-        "低影响可逆行动带假设开始",
-        "无法安全选择的关键条件提出一组简短澄清",
-        "决策随新材料和用户输入复评",
+        "用语义和实际后果判断歧义，而非词典/字数",
+        "普通交流允许标明假设、少量候选和有用的条件解释",
+        "缺必需原文、关键操作目标/权限时提出最小具体问题",
+        "问题绑定原Run及输入版本，用户回答后局部更新而不停止重发",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -4577,12 +4579,11 @@
       "effect": "read",
       "rules": [
         "每个实例只提交自己的版本化状态；关键观察引用保留，Run存checkpoint引用。",
-        "读取当前用户修订与实例状态",
-        "Context按agent_step装配实际可用定义/工具摘要",
-        "当前继承模型提出答复、发现、调用、规划或委派",
-        "对动作进行生命周期/预算检查，工具动作统一交Tool",
-        "消费实际ToolResult或子结果而非模拟成功文本",
-        "有新约束先失效受影响状态，再决定下一步或申请完成",
+        "读取原文、有效补充、最小Context和固定模型政策",
+        "首次同次调用理解并选择答复/工具/具体问题或正式交付",
+        "消息答复走消息与历史提交，不强制Artifact/自评/接受",
+        "工具经统一治理后回到观察，复杂理解/规划/委派按需",
+        "等待问题持久到原Run，回答或纠正后按剩余资源和当前来源继续",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -4766,12 +4767,11 @@
       "effect": "read",
       "rules": [
         "Agent拥有验证协调报告与提案；Run拥有终态，Workspace拥有真实产物与ReviewSet。",
-        "从原文和用户修订确认必需目标",
-        "按当前证据动态选择真实检查，不运行固定Twitter字段校验",
-        "语义评审区分满足/缺口/未验证",
-        "Runtime核对真实成果、检查版本、硬条件和未决效果",
-        "用CAS提交CompletionProposal到Run",
-        "Workspace交付并独立追踪用户接受",
+        "先区分消息完成和正式交付，普通消息不强制成果登记",
+        "正式成果从原文与有效补充解析契约，单Agent办公/学术独立验收",
+        "按每项目标选择真实证据和必要语义审阅",
+        "核对当前成果/要求/检查/取消与未知效果，由Run提交合法终态",
+        "合同要求的本人接受独立记录，模型自评不保证事实正确",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6076,11 +6076,11 @@
       "effect": "internal_write",
       "rules": [
         "History为用户原文权威；云/本地存储权威选择独立于本地执行位置，适配器接口一致。",
-        "验证消息归属并追加不可变Turn",
-        "原文、附件引用、显式用户配置一起登记",
-        "steer/审批答复以新输入和关联Item记录，不改过去原文",
-        "按授权读取顺序和版本",
-        "删除按保留政策标不可再读取并传播派生依赖",
+        "追加保存用户原文，理解和预览不得覆盖",
+        "澄清/纠正记录所属Run、问题Item、原输入与提交者",
+        "原问题答复按CAS/幂等同事务受理，取消/终态拒绝续跑",
+        "重读有效补充与来源版本，只失效受影响结果",
+        "终态后的新问题创建新Run并关联历史",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6107,12 +6107,11 @@
       "effect": "internal_write",
       "rules": [
         "本地RunState+关键Event事务提交；外部效果通过Tool账本关联不假定分布式原子。",
-        "校验请求主体/版本与允许转换",
-        "领域动作实际确认后写对应Item",
-        "running/verifying/waiting等并非必经",
-        "完成时核验提案、必需检查、未决效果和成果revision",
-        "分别提交completed状态及succeeded/partial/blocked等outcome",
-        "Delivery用户接受另由Workspace记录",
+        "合法状态转换与主体/版本/租约校验归Run",
+        "普通消息检查来源/输入版本/取消/费用后事务提交Item与终态",
+        "正式交付检查契约、实际成果/证据/未知效果及接受条件",
+        "具体问题Item与waiting状态/计时暂停同事务提交",
+        "同Run回答用幂等CAS追加输入并复查当前来源后续跑，取消/终态不能复活",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6171,12 +6170,11 @@
       "effect": "internal_write",
       "rules": [
         "账本预留/结算幂等且CAS/事务保护；时间策略记录审批等待如何计入。",
-        "准入核对活跃Run与总额",
-        "按模型/工具/子实例/评审预留资源向量",
-        "子额度来自父额度不另造余额",
-        "执行实际用量结算并释放剩余，unknown待核对",
-        "超额/到期停止新调度，允许明确用户预算修订",
-        "队列满返回受控等待/拒绝",
+        "同一Run预留/结算模型工具子任务和评审费用，所有失败与pending保留",
+        "持久主动执行段累计，合法无在途调用等待用户时暂停，不累计等待耗时",
+        "恢复用剩余主动时间，不重新领取全额",
+        "已发送调用deadline和授权有效期不暂停不延长",
+        "续跑重新核对取消/预算/权限/未知效果，新调用按当前剩余约束派发",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6488,12 +6486,11 @@
       "effect": "read",
       "rules": [
         "评测输入、评分器和报告版本不可变；一次运行验收不替代离线系统比较。",
-        "固定真实输入、初态、权限与工具fixture",
-        "开发/回归/隐藏集分开并查近重复",
-        "隔离跑新旧版本，外部写禁用或模拟",
-        "先真实状态与硬约束，再事实/语义评分和人工校准",
-        "按办公/开发/学术与失败类型报告接受、返工、全成本/延迟",
-        "用证据决定发布门槛，不只看总分",
+        "建立人工核对的小样本/反例，记录原材料、必要事实、允许假设和需澄清情况",
+        "固定样本与候选/基线prompt/模型/源码版本，保留集与修订集区分",
+        "真实结果分别计算答案错误、Reviewer漏判和不必要阻断，未启用Reviewer记N/A",
+        "包括全部失败重试费用和主动/总等待，未知账单保留pending",
+        "相关策略改动发布前复测，关键事实/证据/续跑丢要求阻断，非关键阈值跑前登记",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6904,10 +6901,10 @@
       "effect": "read",
       "rules": [
         "DeliveryContract追加版本并绑定用户/政策来源。",
-        "提取原文和用户纠正的必需目标",
-        "分开硬约束与开放质量标准",
-        "LLM可提出补充验证但不能删必需要求",
-        "为每项确定可接受成果/证据或明确待澄清",
+        "仅正式交付生成DeliveryContract，普通回复使用消息完成约束",
+        "从原文与有效纠正提取必需目标，模型不能删除或扩展成未授权任务",
+        "按材料和任务说明硬要求/开放标准与证据类型",
+        "关键标准缺失提出具体问题，问题答复在原Run追加并修订相关要求",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -6963,10 +6960,11 @@
       "effect": "read",
       "rules": [
         "VerificationReport记录判别方法版本与限制，不直接结束Run。",
-        "让当前模型对照每项目标与证据",
-        "区分支持/反驳/未覆盖并列依据",
-        "缺口可触发获准补查或修订",
-        "必要独立Reviewer使用隔离上下文且继承模型政策",
+        "仅按正式成果契约或实际查证需要审阅，不给每条普通消息固定模型自评",
+        "按每项目标核对原材料与实际证据，分别记录支持/反驳/未覆盖",
+        "缺口触发获准补查/修订，必要Reviewer仍继承固定用户模型",
+        "VerificationReport保留方法/来源/限制，passed不构成独立事实正确性结论",
+        "事实发布门槛使用人工核对样本与反例",
         "取消/超时遵从COMMON_CONTRACTS；所有引用必须当前权限内、版本可访问。"
       ],
       "method": null,
@@ -7538,6 +7536,224 @@
       "feature": null,
       "implemented": false,
       "result": "ComponentRunResumeContinueResult"
+    },
+    {
+      "id": "runs.clarification.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "run.budget"
+      ],
+      "request": "RunClarificationGetRequest",
+      "response": "ClarificationView",
+      "effect": "read",
+      "rules": [
+        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
+        "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
+      ],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/clarifications/{question_item_id}",
+      "auth": "user",
+      "errors": [
+        "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
+      ],
+      "feature": null,
+      "implemented": false,
+      "wire_version": "0.2",
+      "request_meta": "ConversationRequestMeta",
+      "requires_cas": false,
+      "protocol": "conversation-v1",
+      "browser_session": true,
+      "result": "HttpRunsClarificationGetResult",
+      "envelope": "HttpRunsClarificationGetEnvelope"
+    },
+    {
+      "id": "runs.clarification.answer",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "run.budget"
+      ],
+      "request": "RunClarificationAnswerRequest",
+      "response": "RunContinuationReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
+        "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/clarifications/{question_item_id}/answers",
+      "auth": "user",
+      "errors": [
+        "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
+      ],
+      "feature": null,
+      "implemented": false,
+      "wire_version": "0.2",
+      "request_meta": "ConversationRequestMeta",
+      "requires_cas": true,
+      "protocol": "conversation-v1",
+      "browser_session": true,
+      "result": "HttpRunsClarificationAnswerResult",
+      "envelope": "HttpRunsClarificationAnswerEnvelope"
+    },
+    {
+      "id": "runs.correction.create",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "run.budget"
+      ],
+      "request": "RunCorrectionRequest",
+      "response": "RunContinuationReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
+        "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/corrections",
+      "auth": "user",
+      "errors": [
+        "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
+      ],
+      "feature": null,
+      "implemented": false,
+      "wire_version": "0.2",
+      "request_meta": "ConversationRequestMeta",
+      "requires_cas": true,
+      "protocol": "conversation-v1",
+      "browser_session": true,
+      "result": "HttpRunsCorrectionCreateResult",
+      "envelope": "HttpRunsCorrectionCreateEnvelope"
+    },
+    {
+      "id": "runs.continuation.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "run.budget"
+      ],
+      "request": "RunContinuationGetRequest",
+      "response": "RunContinuationReceipt",
+      "effect": "read",
+      "rules": [
+        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
+        "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
+      ],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/continuations/{request_id}",
+      "auth": "user",
+      "errors": [
+        "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
+      ],
+      "feature": null,
+      "implemented": false,
+      "wire_version": "0.2",
+      "request_meta": "ConversationRequestMeta",
+      "requires_cas": false,
+      "protocol": "conversation-v1",
+      "browser_session": true,
+      "result": "HttpRunsContinuationGetResult",
+      "envelope": "HttpRunsContinuationGetEnvelope"
+    },
+    {
+      "id": "AgentRuntime.first_decision",
+      "channel": "runtime",
+      "owner": "agent",
+      "nodes": [
+        "agent.loop",
+        "intent.semantic"
+      ],
+      "request": "FirstDecisionRequest",
+      "response": "FirstDecisionRecord",
+      "effect": "internal_write",
+      "rules": [
+        "仅可信服务port；未装配时明确不可用。模型来源与当前Run/输入/权限/预算/取消由服务复核。",
+        "首次动作不能直接结束Run；消息完成不要求Artifact，但原Tool效果账本不能仅信任空候选列表。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "protocol": "conversation-v1",
+      "wire_version": "0.2",
+      "result": "RuntimeAgentruntimeFirstDecisionResult"
+    },
+    {
+      "id": "RunRuntime.commit_reply",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run.state",
+        "run.history",
+        "agent.loop"
+      ],
+      "request": "ReplyProposal",
+      "response": "ReplyCommitReceipt",
+      "effect": "internal_write",
+      "rules": [
+        "仅可信服务port；未装配时明确不可用。模型来源与当前Run/输入/权限/预算/取消由服务复核。",
+        "首次动作不能直接结束Run；消息完成不要求Artifact，但原Tool效果账本不能仅信任空候选列表。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "protocol": "conversation-v1",
+      "wire_version": "0.2",
+      "result": "RuntimeRunruntimeCommitReplyResult"
+    },
+    {
+      "id": "RunRuntime.commit_question",
+      "channel": "runtime",
+      "owner": "run",
+      "nodes": [
+        "run.state",
+        "run.history",
+        "run.budget",
+        "intent.ambiguity"
+      ],
+      "request": "ClarificationProposal",
+      "response": "ClarificationView",
+      "effect": "internal_write",
+      "rules": [
+        "仅可信服务port；未装配时明确不可用。模型来源与当前Run/输入/权限/预算/取消由服务复核。",
+        "首次动作不能直接结束Run；消息完成不要求Artifact，但原Tool效果账本不能仅信任空候选列表。"
+      ],
+      "method": null,
+      "path": null,
+      "auth": "service",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "protocol": "conversation-v1",
+      "wire_version": "0.2",
+      "result": "RuntimeRunruntimeCommitQuestionResult"
     }
   ]
 }

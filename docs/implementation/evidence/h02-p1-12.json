@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-14",
+  "status": "protocol_components_passed_runtime_wiring_pending",
+  "baseline": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+  "scope": "P1-12 public contract/strict consumers/pure boundary only",
+  "unit_counts": {
+    "tests": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_protocol_cases": 41,
+  "existing_shared_cases": 15,
+  "legacy_named_schemas_unchanged": 1362,
+  "changed_legacy_shapes": [],
+  "new_named_schemas": 37,
+  "new_http_contracts": 4,
+  "new_runtime_contracts": 3,
+  "new_handlers_installed": false,
+  "new_operations_implemented": false,
+  "packaged_schema_equal": true,
+  "legacy_runtime_loop_state_routes_unchanged": true,
+  "type_check": {
+    "source_files": 217,
+    "status": "passed",
+    "command": "python -m mypy src/uaw apps/local_runner/uaw_runner"
+  },
+  "static_format": "passed for 3 new/modified source files and one new test file",
+  "runtime_model_calls": 0,
+  "sql_behavior_tests": "not_run",
+  "human_test": "not_started",
+  "new_billable_attempts": 0,
+  "historical_costs_and_user_runs": "preserved",
+  "source_hashes": {
+    "contracts/interface_catalog.py": "5e2c1ee94f617a3171502323e936924ffa65c78e5520d4bdd247e9370265357b",
+    "contracts/conversation_catalog.py": "ad50d8de669e529f66022eb9f157ecd9e37ac0e8a49c0912b7f42b64f7c951c1",
+    "contracts/build_interfaces.py": "3e31a50bcad542c8a2f7d6d2bdc4cda425802233be11d2f2feeb36604afda86f",
+    "contracts/check_interfaces.py": "9fbe0483b8edf5b494ce729481f673ed4469071fb218d9e6b86d80e4b0818dc6",
+    "contracts/uaw.schema.json": "d8971ae299a3ab5130e501559e877ce0695bceba899dcb10001f611f293971a8",
+    "src/uaw/shared/conversation.py": "89a0179fb995fd4df4e924781b9b0e0b81da34ed345357c9bc7ccc9fb38a9477",
+    "src/uaw/shared/ports.py": "4c80e4666c2c7cfe3bf8befec48e8d7a6d864f5ae94abef0b1d729720567aa21",
+    "src/uaw/run/conversation_protocol.py": "b06549ac2dd5ecb33b13c3f36a11747e7854041e1eddd2e612bff93af5b67acf",
+    "src/uaw/resources/uaw.schema.json": "d8971ae299a3ab5130e501559e877ce0695bceba899dcb10001f611f293971a8",
+    "tests/unit/shared/test_conversation_contracts.py": "129c137853da46ee7e9770590403ee93d7c5b86b38567387e02ac1a1d3a489cc",
+    "ops/demo_conversation_contracts.py": "ee0d3a4a0d9e3ee7223b26af1a9de0be2aa23f68834315c44a9127099826956b"
+  },
+  "junit_sha256": "3c895bb3e7b1ded6f42826ee861bd1d7fae7b8fcfe48f20359137adfc21627e1",
+  "failures_retained": [
+    "first unit 43 passed/2 failed, then 45 and 56 passed",
+    "initial generator operation variable shadowing fixed before publication",
+    "ruff length findings fixed by formatting",
+    "src-only mypy 70 import errors: corrected to original joint src/Runner command",
+    "default contract checker found historical source drift: exact immutable snapshot validation added"
+  ],
+  "remaining": [
+    "P1-13 real first decision and message-only completion",
+    "P1-14 transaction/clock/resume/HTTP/page",
+    "P1-15 independent human-correctness baseline",
+    "H02 actual user experience"
+  ]
+}

@@ -606,3 +606,11 @@ r("P1-17","foundation","H02对话与文本成果真人体验","固定版本交�
  "工程、事实质量、本人体验、接受/返工和全部费用分开记录，任何未过核心项保持未通过。"],
  ["docs/implementation/human-tests/","tests/integration/scenarios/"],["H02固定版本和人工反馈闭环","独立于本机/协作的文本里程碑结论"],phase_gate=None)
 ROUNDS.sort(key=lambda package: package["id"])
+for package in ROUNDS:
+    if package["id"] == "P1-12":
+        package.update(status="in_progress", implementation_evidence=[
+            "docs/implementation/P1-12.md", "docs/implementation/evidence/h02-p1-12.json",
+            "docs/implementation/evidence/h02-p1-12-tests.xml",
+        ])
+    if package["id"] == "P1-13":
+        package["tasks"].insert(0, "P1-12严格契约组件与消费示例已发布，可按准确阶段SHA实现本轮；P1-12整链门槛随消息/续跑服务接线另验，不以其in_progress阻止独立组件开发。")

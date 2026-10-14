@@ -85,6 +85,7 @@
 | [ComponentIntentProbeResult](objects/ComponentIntentProbeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentIntentReferencesResult](objects/ComponentIntentReferencesResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentIntentSemanticResult](objects/ComponentIntentSemanticResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [ConversationUnderstanding](objects/ConversationUnderstanding.md) | 首次调用中的可选理解提示，不是额外调用或权限。 |
 | [DraftPreview](objects/DraftPreview.md) | 发送前只读理解提示；发送后不得冒充已执行。 |
 | [FramePatchRequest](objects/FramePatchRequest.md) | 用户修订后的新理解。 |
 | [HttpIntentPreviewEnvelope](objects/HttpIntentPreviewEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -197,6 +198,13 @@
 | [DeliveryProposal](objects/DeliveryProposal.md) | 候选完成提案，不能由模型直接置Run为completed。 |
 | [Draft](objects/Draft.md) | 命名兼容别名，结构以 AgentDefinitionDraft 为准。 |
 | [ExecutionAssessment](objects/ExecutionAssessment.md) | 四个独立执行选择，属于可修改建议，不授予权限。 |
+| [FirstAskDecision](objects/FirstAskDecision.md) | 同次首次决策的ask分支，无执行或授权字段。 |
+| [FirstDecision](objects/FirstDecision.md) | 首次模型输出；精确互斥分支，不接收真实模型/主体/授权元数据。 |
+| [FirstDecisionRecord](objects/FirstDecisionRecord.md) | 服务写入的实际模型来源；不能由模型自报。 |
+| [FirstDecisionRequest](objects/FirstDecisionRequest.md) | 首次调用不要求独立TaskFrame；Context仅最小必要来源。 |
+| [FirstDeliverDecision](objects/FirstDeliverDecision.md) | 同次首次决策的deliver分支，无执行或授权字段。 |
+| [FirstReplyDecision](objects/FirstReplyDecision.md) | 同次首次决策的reply分支，无执行或授权字段。 |
+| [FirstToolDecision](objects/FirstToolDecision.md) | 同次首次决策的tool分支，无执行或授权字段。 |
 | [GraphPlanningLevel](objects/GraphPlanningLevel.md) | 取值含义见字段及协议约束。 |
 | [GraphValidateRequest](objects/GraphValidateRequest.md) | 校验结构、依赖和计划边界，不提交执行。 |
 | [HttpAgentsCancelEnvelope](objects/HttpAgentsCancelEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -300,6 +308,7 @@
 | [RoleProfile](objects/RoleProfile.md) | 平台角色能力上限，可与用户子Agent定义组合。 |
 | [RuntimeAgentruntimeDefineAgentResult](objects/RuntimeAgentruntimeDefineAgentResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeAgentruntimeDelegateResult](objects/RuntimeAgentruntimeDelegateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [RuntimeAgentruntimeFirstDecisionResult](objects/RuntimeAgentruntimeFirstDecisionResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeAgentruntimeStartResult](objects/RuntimeAgentruntimeStartResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeAgentruntimeStepResult](objects/RuntimeAgentruntimeStepResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeAgentruntimeVerifyResult](objects/RuntimeAgentruntimeVerifyResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -972,6 +981,10 @@
 | [CapabilityPolicy](objects/CapabilityPolicy.md) | 有效权限交集上限，配置不等于新用户授权。 |
 | [Checkpoint](objects/Checkpoint.md) | 引用跨模块已提交版本，不能声称撤销外部动作。 |
 | [CheckpointCaptureRequest](objects/CheckpointCaptureRequest.md) | 只从各域已提交仓储取得版本，pending游标可缺省。 |
+| [ClarificationPrompt](objects/ClarificationPrompt.md) | 模型的必要补充问题；不是审批请求。 |
+| [ClarificationProposal](objects/ClarificationProposal.md) | 服务从实际ask动作创建的问题提交候选，不是用户授权。 |
+| [ClarificationQuestion](objects/ClarificationQuestion.md) | 原问题的持久权威关联，用稳定Item表达，无新RefKind。 |
+| [ClarificationView](objects/ClarificationView.md) | UI同源读取原问题与Run，刷新不创建新launch或会话。 |
 | [CompatibilityReport](objects/CompatibilityReport.md) | 恢复前兼容性与版本缺口。 |
 | [CompletionAcceptance](objects/CompletionAcceptance.md) | 独立认证用户对确切成果版本的审阅记录。 |
 | [ComponentIngressResult](objects/ComponentIngressResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
@@ -992,10 +1005,15 @@
 | [ComponentRunTriggerResult](objects/ComponentRunTriggerResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [ComponentUiResult](objects/ComponentUiResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [Conversation](objects/Conversation.md) | 会话不等于Task；首期单用户仍有独立主体。 |
+| [ConversationClockRef](objects/ConversationClockRef.md) |  |
+| [ConversationItemRef](objects/ConversationItemRef.md) |  |
 | [ConversationListSnapshot](objects/ConversationListSnapshot.md) | 内部持久分页快照；一小时失效，最多4096会话，超容量明确不可用。 |
 | [ConversationListVersion](objects/ConversationListVersion.md) | 同用户会话列表固定版本，不是授权凭据。 |
 | [ConversationPage](objects/ConversationPage.md) | 稳定筛选条件的分页结果。 |
 | [ConversationPatch](objects/ConversationPatch.md) | 至少一个字段，删除项目用显式detach。 |
+| [ConversationProtocolBinding](objects/ConversationProtocolBinding.md) | 新Run专用版本绑定；不转换旧Run或改写旧Budget语义。 |
+| [ConversationRequestMeta](objects/ConversationRequestMeta.md) | 新对话控制专用元信息；不能提交给旧0.1入口。 |
+| [ConversationRunRef](objects/ConversationRunRef.md) |  |
 | [ConversationsConfigureRequest](objects/ConversationsConfigureRequest.md) | 修改会话设置。 |
 | [ConversationsCreateRequest](objects/ConversationsCreateRequest.md) | 创建会话。 |
 | [ConversationsGetRequest](objects/ConversationsGetRequest.md) | 读取会话。 |
@@ -1078,8 +1096,16 @@
 | [HttpRunnerLocalStopResult](objects/HttpRunnerLocalStopResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsCheckpointEnvelope](objects/HttpRunsCheckpointEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsCheckpointResult](objects/HttpRunsCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsClarificationAnswerEnvelope](objects/HttpRunsClarificationAnswerEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsClarificationAnswerResult](objects/HttpRunsClarificationAnswerResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsClarificationGetEnvelope](objects/HttpRunsClarificationGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsClarificationGetResult](objects/HttpRunsClarificationGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsContinuationGetEnvelope](objects/HttpRunsContinuationGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsContinuationGetResult](objects/HttpRunsContinuationGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsControlEnvelope](objects/HttpRunsControlEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsControlResult](objects/HttpRunsControlResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsCorrectionCreateEnvelope](objects/HttpRunsCorrectionCreateEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsCorrectionCreateResult](objects/HttpRunsCorrectionCreateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsDeliveryAcceptEnvelope](objects/HttpRunsDeliveryAcceptEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsDeliveryAcceptResult](objects/HttpRunsDeliveryAcceptResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsDeliveryEnvelope](objects/HttpRunsDeliveryEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1175,6 +1201,8 @@
 | [MeasuredResources](objects/MeasuredResources.md) | 已观察用量；pending时所有未知维度均省略，币种必需，不能用0代替未知。 |
 | [OverlapPolicy](objects/OverlapPolicy.md) | 取值含义见字段及协议约束。 |
 | [RecoveryMode](objects/RecoveryMode.md) | 取值含义见字段及协议约束。 |
+| [ReplyCommitReceipt](objects/ReplyCommitReceipt.md) | 消息与Run/Event原子提交的服务回执。 |
+| [ReplyProposal](objects/ReplyProposal.md) | 消息完成候选，无Artifact/VerificationReport或用户接受字段。 |
 | [ReservationAccounting](objects/ReservationAccounting.md) | 每个attempt独占预留；发出调用意图后保留未知用量。 |
 | [ReservationState](objects/ReservationState.md) | 取值含义见字段及协议约束。 |
 | [ResourceVector](objects/ResourceVector.md) | 多维资源额度/估计/已用量；字段单位不混用。 |
@@ -1182,9 +1210,16 @@
 | [ResumeEffectsResult](objects/ResumeEffectsResult.md) | 未确定效果阻止相关节点重放。 |
 | [RootBudgetLedger](objects/RootBudgetLedger.md) | 根预算的事务权威；所有attempt与待核对额度保留。 |
 | [RunAdmissionBinding](objects/RunAdmissionBinding.md) | 受理时固定实际来源、用户模型政策和配置。 |
+| [RunClarificationAnswerRequest](objects/RunClarificationAnswerRequest.md) | 原Run回答；身份和expected_run_revision来自meta。 |
+| [RunClarificationGetRequest](objects/RunClarificationGetRequest.md) | 读取原Run特定问题，不猜最新问题。 |
+| [RunContinuationGetRequest](objects/RunContinuationGetRequest.md) | 原提交响应丢失或刷新后的受理/生效查询。 |
+| [RunContinuationReceipt](objects/RunContinuationReceipt.md) | 补充受理和实际生效回执，不等于最终成果完成。 |
 | [RunControlRequest](objects/RunControlRequest.md) | 内部控制入口。 |
+| [RunCorrectionRequest](objects/RunCorrectionRequest.md) | 当前Run纠正，不让客户端指定任意执行节点或权限。 |
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
 | [RunDeliveryView](objects/RunDeliveryView.md) | 真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。 |
+| [RunExecutionClock](objects/RunExecutionClock.md) | 新Run有版本主动执行时钟；旧调用/授权独立到期。 |
+| [RunInputPatch](objects/RunInputPatch.md) | 追加输入关联，InputRecord结构不变；受理与生效区分。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |
 | [RunToolAccessBinding](objects/RunToolAccessBinding.md) | 可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。 |
@@ -1220,6 +1255,8 @@
 | [RunsGetRequest](objects/RunsGetRequest.md) | 运行状态。 |
 | [RunsResumeRequest](objects/RunsResumeRequest.md) | 从检查点恢复。 |
 | [RuntimeRunruntimeCheckpointResult](objects/RuntimeRunruntimeCheckpointResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [RuntimeRunruntimeCommitQuestionResult](objects/RuntimeRunruntimeCommitQuestionResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [RuntimeRunruntimeCommitReplyResult](objects/RuntimeRunruntimeCommitReplyResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeRunruntimeControlResult](objects/RuntimeRunruntimeControlResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeRunruntimeCreateResult](objects/RuntimeRunruntimeCreateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [RuntimeRunruntimeResumeResult](objects/RuntimeRunruntimeResumeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |

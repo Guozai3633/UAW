@@ -1,28 +1,36 @@
 {
-  "date": "2026-10-08",
-  "contract_version": "0.1",
+  "date": "2026-10-14",
+  "contract_version": "0.2",
   "schema_validator": "jsonschema Draft202012Validator with FormatChecker",
   "schema_meta_validation": "passed",
-  "named_schemas": 1362,
-  "positive_examples": 1362,
-  "negative_cases": 320,
-  "negative_rejections": 320,
-  "interfaces": 288,
+  "named_schemas": 1399,
+  "positive_examples": 1399,
+  "negative_cases": 335,
+  "negative_rejections": 335,
+  "interfaces": 295,
   "nodes_covered": 115,
   "nodes_total": 115,
   "openapi_checks": "structural_refs_parameters_wire_examples_only_not_full_OpenAPI_meta_validation",
-  "local_links_checked": 17822,
+  "local_links_checked": 18354,
   "errors": [],
   "runtime_integration_tests": "not_executed_by_contract_checker_see_implementation_evidence",
   "semantic_authorization_version_effect_checks": "not_executed_by_contract_checker",
   "reviewed_implementation_evidence": {
     "operations": 44,
     "existing_test_counts": {
-      "tests": 618,
+      "tests": 675,
       "failures": 0,
       "errors": 0,
       "skipped": 0
     },
-    "checks": "manifest, literal HTTP route table, evidence paths and source/test hashes"
+    "source_snapshot_ref": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+    "current_source_differences": [
+      "contracts/build_interfaces.py",
+      "contracts/check_interfaces.py",
+      "contracts/interface_catalog.py",
+      "contracts/uaw.schema.json",
+      "src/uaw/shared/ports.py"
+    ],
+    "checks": "manifest, literal HTTP route table, preserved test hashes and exact source snapshot; not current full-runtime verification"
   }
 }

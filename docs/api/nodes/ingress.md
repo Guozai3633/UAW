@@ -17,3 +17,7 @@
 - [http · runner.enrollments.begin](../interfaces/http--runner-enrollments-begin.md)
 - [http · runner.local.begin](../interfaces/http--runner-local-begin.md)
 - [component · ingress](../interfaces/component--ingress.md)
+- [http · runs.clarification.get](../interfaces/http--runs-clarification-get.md)
+- [http · runs.clarification.answer](../interfaces/http--runs-clarification-answer.md)
+- [http · runs.correction.create](../interfaces/http--runs-correction-create.md)
+- [http · runs.continuation.get](../interfaces/http--runs-continuation-get.md)

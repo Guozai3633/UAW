@@ -2,7 +2,7 @@
 
 UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。已有单Agent动态循环、固定用户模型、文本/Markdown成果与页面实现。A32/H01-v4的人工作业发现等待偏长、澄清不能接续及事实错误/核验漏判；本机首次签名发布链仍未通过。
 
-2026-10-14架构v0.11采纳用户已确认的Q1–Q8：[确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行详细设计](docs/design/CONVERSATION_EXECUTION.md)、[H02六轮安排](docs/plan/H02_CONVERSATION.md)。**快通路、同Run接续、暂停计时及独立正确性发布门槛待实现；文档不是功能已上线。**
+2026-10-14架构v0.11采纳用户已确认的Q1–Q8：[确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行详细设计](docs/design/CONVERSATION_EXECUTION.md)、[H02六轮安排](docs/plan/H02_CONVERSATION.md)。P1-12已交付[公共契约与严格消费者](docs/coordination/requests/A/H02-P1-12-ports.md)，56定向/217源码类型通过；旧1362命名结构不变。**新handler、真实快通路/同Run接续/暂停计时及独立质量门槛待接线验收。**
 
 仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支integration。实际源码、会话交付与开工版本以[DISPATCH](docs/coordination/DISPATCH.md)页首为准；本次没有新worker正式基线，B/C/D保留原提交。旧MS-I2i的1691全量及原失败保留，不能覆盖后续设计。
 

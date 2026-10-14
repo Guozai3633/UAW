@@ -238,7 +238,7 @@ def build_readme():
               f"| {link(path, 'planning/plan.json', '机器可读计划')} | 消费全部任务与输入/输出接口关联 |",
               f"| {link(path, 'planning/plan-map.json', '节点到轮次映射')} | 反查节点由哪些轮逐步实现 |",
               f"| {link(path, 'docs/plan/plan-check.json', '计划检查结果')} | 依赖无环、节点/接口关联、文档链接检查；不是Runtime测试 |", "",
-              "## 4. 当前接续入口", "", "用户已接受Q1-Q8，见" + link(path, "docs/decisions/ADR-001-conversation-and-delivery.md", "ADR-001") + "。当前A32/H01-v4已有固定模型与文本成果、问题展示，仍无真正快通路/同Run澄清/暂停计时；两技术样本自评passed但人工事实质量未过。新六轮见" + link(path, "docs/plan/H02_CONVERSATION.md", "H02开发安排") + "，全部待开发，尚未派发新的worker基线。真实当前来源/历史失败见" + link(path, "docs/coordination/DISPATCH.md", "DISPATCH") + "。旧1691全量仅属MS-I2i，不覆盖新设计。", "",
+              "## 4. 当前接续入口", "", "用户已接受Q1-Q8，见" + link(path, "docs/decisions/ADR-001-conversation-and-delivery.md", "ADR-001") + "。P1-12契约/严格消费者已交付，整轮in_progress；P1-13可消费准确阶段源独立实现。当前A32/H01-v4仍无真实快通路/同Run接续/暂停计时，两技术样本自评passed但人工事实质量未过。六轮见" + link(path, "docs/plan/H02_CONVERSATION.md", "H02开发安排") + "，P1-13～17待验收，尚未派发新的worker基线。真实来源/历史失败见" + link(path, "docs/coordination/DISPATCH.md", "DISPATCH") + "。旧1691全量仅属MS-I2i，不覆盖新设计。", "",
               "## 5. 计划维护规则", "",
               "- 修改planning/catalog.py后运行 `python planning/build_plan.py`；逐轮/模块/阶段/映射是生成文件。",
               "- 开发报告保存在 `docs/implementation/<轮次>.md`，实际选型保存在 `docs/decisions/`，实施时才创建。",
@@ -363,7 +363,7 @@ def build_template_and_status():
     path = "docs/plan/STATUS.md"
     counts = Counter(r["status"] for r in ROUNDS)
     lines = ["# 开发计划当前状态", "", link(path, "docs/plan/README.md", "总索引"), "", f"计划记录日期{DATE}：" + "、".join(f"{STATUS_LABELS[k]}{v}轮" for k, v in counts.items()) + f"。已验收轮数：{counts.get('accepted', 0)}。", "",
-             "当前以DISPATCH页首和A32/H01-v4回执为准：单Agent文本/页面已实现，事实质量仍有错误与漏判；快通路/同Run接续/暂停计时未完成，本机首次签名发布链仍未过。下表旧轮状态未据后续组件重新裁决，不能算当前完成百分比；新六轮均planned。当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
+             "当前以DISPATCH页首和A32/H01-v4回执为准：单Agent文本/页面已实现，事实质量仍有错误与漏判；P1-12契约组件交付/in_progress，快通路/同Run接续/暂停计时实际服务未完成，本机首次签名发布链仍未过。下表旧轮状态未据后续组件重新裁决，不能算当前完成百分比；P1-13～17仍planned。当前能力与启动方式见" + link(path, "docs/implementation/README.md", "实际实施入口") + "。文档检查只核对引用/覆盖/依赖，不能替代运行证据。", "", "| 轮次 | 当前状态 | 范围 | 实现证据 |", "| --- | --- | --- | --- |"]
     for r in ROUNDS:
         evidence = "、".join(link(path, ref, ref) for ref in r["implementation_evidence"]) or "为空；没有实现完成声明"
         lines.append(f"| {round_link(path, r['id'], True)} | {STATUS_LABELS[r['status']]} | {SCOPE_LABELS[r['scope']]} | {evidence} |")

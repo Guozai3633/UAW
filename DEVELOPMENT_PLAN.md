@@ -70,4 +70,4 @@ A32/H01-v4已有真实固定模型、文本成果、等待问题展示与页面�
 python planning/build_plan.py
 ```
 
-[节点覆盖表](docs/plan/COVERAGE.md) 已关联115个架构节点；[接口关联表](docs/plan/INTERFACE_ASSIGNMENTS.md) 已关联288个现有接口。新对话接口仍待P1-12发布。映射说明工作已排入计划，不说明已经实现。当前状态见 [进度表](docs/plan/STATUS.md)，文档依赖与链接检查见 [检查报告](docs/plan/plan-check.json)。
+[节点覆盖表](docs/plan/COVERAGE.md) 已关联115个架构节点；[接口关联表](docs/plan/INTERFACE_ASSIGNMENTS.md) 已关联295个接口。P1-12的新4 HTTP/3 Runtime接口只发布契约/消费者，handler尚未装配；下一步P1-13可消费准确阶段源独立实现。映射不说明已完成。当前状态见 [进度表](docs/plan/STATUS.md)，文档依赖与链接检查见 [检查报告](docs/plan/plan-check.json)。

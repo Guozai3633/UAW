@@ -8,3 +8,5 @@
 - [http · agents.get](../interfaces/http--agents-get.md)
 - [runtime · AgentRuntime.step](../interfaces/runtime--AgentRuntime-step.md)
 - [component · agent.loop](../interfaces/component--agent-loop.md)
+- [runtime · AgentRuntime.first_decision](../interfaces/runtime--AgentRuntime-first-decision.md)
+- [runtime · RunRuntime.commit_reply](../interfaces/runtime--RunRuntime-commit-reply.md)

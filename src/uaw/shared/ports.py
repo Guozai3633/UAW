@@ -3,6 +3,75 @@
 from typing import Protocol
 
 from uaw.shared.contracts import JsonObject, Principal, Ref, RequestMeta, TrustedExecutionContext
+from uaw.shared.conversation import (
+    ClarificationProposal,
+    ClarificationView,
+    ConversationRequestMeta,
+    FirstDecisionRecord,
+    FirstDecisionRequest,
+    ReplyCommitReceipt,
+    ReplyProposal,
+    RunClarificationAnswerRequest,
+    RunContinuationReceipt,
+    RunCorrectionRequest,
+    RunExecutionClock,
+)
+
+
+class FirstDecisionPort(Protocol):
+    """Optional conversation-v1 entry; does not replace the legacy AgentPort."""
+
+    async def decide(
+        self, request: FirstDecisionRequest, ctx: TrustedExecutionContext
+    ) -> FirstDecisionRecord: ...
+
+
+class ConversationControlPort(Protocol):
+    """Run-owned atomic input/CAS protocol; never trusts an LLM as user approval."""
+
+    async def question(
+        self, actor: Principal, run_id: str, question_item_id: str
+    ) -> ClarificationView: ...
+
+    async def answer(
+        self,
+        actor: Principal,
+        request: RunClarificationAnswerRequest,
+        meta: ConversationRequestMeta,
+    ) -> RunContinuationReceipt: ...
+
+    async def correct(
+        self,
+        actor: Principal,
+        request: RunCorrectionRequest,
+        meta: ConversationRequestMeta,
+    ) -> RunContinuationReceipt: ...
+
+    async def lookup(
+        self, actor: Principal, run_id: str, request_id: str
+    ) -> RunContinuationReceipt: ...
+
+
+class ReplyCommitPort(Protocol):
+    """Service rechecks original sources and all effect ledgers before committing."""
+
+    async def commit(
+        self, request: ReplyProposal, ctx: TrustedExecutionContext
+    ) -> ReplyCommitReceipt: ...
+
+
+class QuestionCommitPort(Protocol):
+    """Run atomically publishes a concrete question, idle pause and corresponding events."""
+
+    async def commit(
+        self, request: ClarificationProposal, ctx: TrustedExecutionContext
+    ) -> ClarificationView: ...
+
+
+class ExecutionClockPort(Protocol):
+    """Read committed owned clock; mutation stays inside the Run transaction."""
+
+    async def current(self, actor: Principal, run_id: str) -> RunExecutionClock: ...
 
 
 class IntentPort(Protocol):

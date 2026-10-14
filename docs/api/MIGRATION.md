@@ -1,6 +1,10 @@
-# 接口0.1与早期实验字段对齐
+# 契约目录0.2与原0.1接口兼容
 
-当前准确字段入口：[统一对象字典](OBJECTS.md)、[uaw.schema.json](../../contracts/uaw.schema.json)。架构仍为v0.10，接口契约单独从0.1开始编号。这里不承诺兼容已有生产客户端，因为尚无后端实现。
+当前准确字段入口：[统一对象字典](OBJECTS.md)、[uaw.schema.json](../../contracts/uaw.schema.json)，架构v0.11。原0.1命名结构/RequestMeta/AgentDecision/Run/Input/Budget完全保留；conversation-v1新增独立meta 0.2、新HTTP/Runtime对象，handler尚未装配。
+
+新Run必须登记服务端ConversationProtocolBinding与RunExecutionClock才能使用新模式；缺绑定的旧Run保持原绝对deadline，不能从旧记录猜免费等待、复活取消或转换历史成果。新URL与字段见 [固定消费说明](../coordination/requests/A/H02-P1-12-ports.md)。本次不需要数据库DDL：新领域记录/事务尚未创建；P1-14按新命名记录、version与租约实施，不批量改旧记录。
+
+以下早期实验迁移记录保留；不据此认为新控制已在线可用。
 
 ## 1. 执行评估统一
 

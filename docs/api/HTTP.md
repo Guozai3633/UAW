@@ -1,6 +1,6 @@
 # 用户与管理端 HTTP API
 
-[接口总入口](README.md)。状态：设计契约0.1。
+[接口总入口](README.md)。目录0.2：旧对象/入口保持0.1，新conversation-v1控制使用0.2且尚未接线。
 
 | 接口 | 输入 | 成功payload | 效果 |
 | --- | --- | --- | --- |
@@ -103,3 +103,7 @@
 | [admin.providers.revoke](interfaces/http--admin-providers-revoke.md) | [AdminProvidersRevokeRequest](objects/AdminProvidersRevokeRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [admin.providers.accept](interfaces/http--admin-providers-accept.md) | [AdminProvidersAcceptRequest](objects/AdminProvidersAcceptRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [events.payload](interfaces/http--events-payload.md) | [EventsPayloadRequest](objects/EventsPayloadRequest.md) | [EventPayload](objects/EventPayload.md) | `read` |
+| [runs.clarification.get](interfaces/http--runs-clarification-get.md) | [RunClarificationGetRequest](objects/RunClarificationGetRequest.md) | [ClarificationView](objects/ClarificationView.md) | `read` |
+| [runs.clarification.answer](interfaces/http--runs-clarification-answer.md) | [RunClarificationAnswerRequest](objects/RunClarificationAnswerRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |
+| [runs.correction.create](interfaces/http--runs-correction-create.md) | [RunCorrectionRequest](objects/RunCorrectionRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |
+| [runs.continuation.get](interfaces/http--runs-continuation-get.md) | [RunContinuationGetRequest](objects/RunContinuationGetRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `read` |

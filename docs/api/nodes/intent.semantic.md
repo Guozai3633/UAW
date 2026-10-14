@@ -7,3 +7,4 @@
 - [http · turns.submit](../interfaces/http--turns-submit.md)
 - [runtime · IntentRuntime.understand](../interfaces/runtime--IntentRuntime-understand.md)
 - [component · intent.semantic](../interfaces/component--intent-semantic.md)
+- [runtime · AgentRuntime.first_decision](../interfaces/runtime--AgentRuntime-first-decision.md)

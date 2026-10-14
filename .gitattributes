@@ -3,3 +3,5 @@
 *.png binary
 *.jpg binary
 *.webp binary
+# Preserve the original failure transcript inside this JUnit receipt.
+docs/implementation/evidence/h02-p1-12-first-tests.xml -whitespace

@@ -6,3 +6,4 @@
 
 - [tool · interaction.ask_user](../interfaces/tool--interaction-ask-user.md)
 - [component · intent.ambiguity](../interfaces/component--intent-ambiguity.md)
+- [runtime · RunRuntime.commit_question](../interfaces/runtime--RunRuntime-commit-question.md)
