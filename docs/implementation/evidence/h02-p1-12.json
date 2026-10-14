@@ -57,5 +57,15 @@
     "P1-14 transaction/clock/resume/HTTP/page",
     "P1-15 independent human-correctness baseline",
     "H02 actual user experience"
-  ]
+  ],
+  "source_commit": "b13d8d9612b45f8833cebd29b603a940e0b815e9",
+  "source_tag": "h02-p1-12-source",
+  "contract_checks": {
+    "named_schemas": 1399,
+    "positive_examples": 1399,
+    "negative_rejections": 335,
+    "interfaces": 295,
+    "historical_implementation_source": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+    "not_current_full_runtime_tests": true
+  }
 }

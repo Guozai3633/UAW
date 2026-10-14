@@ -1,3 +1,17 @@
+# H02 P1-12协议阶段：准确源码已固定，运行接线待开发
+
+2026-10-14，Session A / integration。准确source **b13d8d9612b45f8833cebd29b603a940e0b815e9**，固定标签 **h02-p1-12-source**；仅公共协议/严格消费者/纯边界，不是worker正式开工基线或产品整轮验收。
+
+契约目录0.2新增4 HTTP＋3 Runtime及37命名结构；原1362结构、旧0.1请求/动作/期限、旧route/manifest保持。新handlers均未安装。56定向通过，217源码类型通过，1399正例/335拒绝例及链接检查通过；原失败/类型命令准备错误保留。
+
+[固定输入输出/来源/消费例](requests/A/H02-P1-12-ports.md) · [实际范围和未过门槛](../implementation/P1-12.md) · [机器回执](../implementation/evidence/h02-p1-12.json)。原失败JUnit原字节保留，其文件级whitespace属性不改源代码规则。
+
+A下一步P1-13可按此固定组件源独立实现首次真实模型决策和消息-only完成；P1-12整链仍in_progress，P1-14的事务/时钟/原Run续跑另验。公开handler与B服务消费源到达后再正式分包；B/C/D保留原交付，不自动同步/扩包。
+
+本次未运行新真实LLM/SQL/页面、无新增模型费用；H01-v4/本人旧任务、原native/审批/权限/flags、历史失败/pending费用和last_full不变。没有开启子Agent/DAG/本机写入安装exec，旧标签不移动。
+
+以下为原文档修订/A32及更早记录，不能据旧派发自动开新包。
+
 # 2026-10-14文档决策更新：H02待开发，尚未派发新包
 
 用户已接受Q1–Q8，架构v0.11/计划v0.2同步：[确认决策](../decisions/ADR-001-conversation-and-delivery.md)、[H02六轮计划](../plan/H02_CONVERSATION.md)、[拟新增公共协议](../api/CONVERSATION_REVISION.md)。

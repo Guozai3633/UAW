@@ -1,3 +1,8 @@
+# P1-12公共协议已发布（2026-10-14）
+
+准确source b13d8d9612b45f8833cebd29b603a940e0b815e9 / h02-p1-12-source；不是新的worker正式基线。输入输出与组装见[固定消费说明](coordination/requests/A/H02-P1-12-ports.md)，actual/pending见[实施报告](implementation/P1-12.md)，[源码消费者](../src/uaw/shared/conversation.py)及[纯Run边界](../src/uaw/run/conversation_protocol.py)已实现。
+新HTTP、事务、实际模型快通路和页面续跑仍待接线；原用户历史/模型/权限/原失败保留。下一步A执行P1-13。
+
 # 当前文档修订：v0.11对话与单Agent文本体验
 
 2026-10-14，Q1–Q8已由用户接受，新增行为待实现。历史派发不作为本次新包开工依据；准确运行进度仍见[DISPATCH](coordination/DISPATCH.md)。
