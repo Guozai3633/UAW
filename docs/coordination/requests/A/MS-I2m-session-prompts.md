@@ -1,3 +1,9 @@
+# 共同正式开工基线
+
+`ms-i2m-start` / `1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe`
+
+fetch后核对远端DISPATCH页首与tag的准确SHA一致；B/C/D合固定tag，不合浮动integration。A在自己的已发布HEAD继续。下面四段按会话分别复制；无需创建新worktree。
+
 # MS-I2m：四个会话的开工提示词
 
 共同固定标签ms-i2m-start；准确40位SHA在正式发布后置于本页页首及远端DISPATCH。这里的包名是本轮明确分工；四里程碑连续开发，不在M1后自动等待新派发。

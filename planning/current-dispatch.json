@@ -1,0 +1,81 @@
+{
+  "round": "MS-I2m",
+  "fixed_ref": "ms-i2m-start",
+  "exact_sha_authority": "origin/integration:docs/coordination/DISPATCH.md",
+  "package_document": "docs/coordination/requests/A/MS-I2m-parallel-packages.md",
+  "contract_document": "docs/coordination/requests/A/MS-I2m-AD-contract.md",
+  "prompts_document": "docs/coordination/requests/A/MS-I2m-session-prompts.md",
+  "sessions": {
+    "A": {
+      "package": "MS-I2m",
+      "role": "run_control_and_integration",
+      "excluded_paths": [
+        "apps/web/",
+        "src/uaw/evaluation/",
+        "ops/evaluate_conversation.py",
+        "src/uaw/run/execution_clock.py",
+        "tests/unit/evaluation/",
+        "tests/fixtures/evaluation/",
+        "tests/unit/run_clock/",
+        "tests/integration/run_clock/",
+        "docs/implementation/evaluation/"
+      ]
+    },
+    "B": {
+      "package": "MS-U4",
+      "role": "web_conversation_control",
+      "allowed_paths": [
+        "apps/web/",
+        "docs/coordination/requests/B/",
+        "docs/coordination/handoffs/B.md",
+        "tests/.artifacts/B/"
+      ]
+    },
+    "C": {
+      "package": "MS-E1",
+      "role": "offline_quality_evaluation",
+      "allowed_paths": [
+        "src/uaw/evaluation/",
+        "ops/evaluate_conversation.py",
+        "tests/unit/evaluation/",
+        "tests/fixtures/evaluation/",
+        "docs/implementation/evaluation/",
+        "docs/coordination/requests/C/",
+        "docs/coordination/handoffs/C.md",
+        "tests/.artifacts/C/"
+      ]
+    },
+    "D": {
+      "package": "MS-K1",
+      "role": "durable_execution_clock",
+      "allowed_paths": [
+        "src/uaw/run/execution_clock.py",
+        "tests/unit/run_clock/",
+        "tests/integration/run_clock/",
+        "docs/coordination/requests/D/",
+        "docs/coordination/handoffs/D.md",
+        "tests/.artifacts/D/"
+      ]
+    }
+  },
+  "milestones_per_package": 4,
+  "integrate_on_stage_sha": true,
+  "current_human_runtime": "H01-v5",
+  "replace_human_runtime": false,
+  "runtime_subagents_enabled": false,
+  "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
+  "published": true,
+  "status": "packages_released_worker_start_not_yet_reported",
+  "remote_repository": "https://github.com/Guozai3633/UAW.git",
+  "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
+  "source_sha256": {
+    "contracts/uaw.schema.json": "5cf32a6fa9ae227a4b91e6cedc63e4db98e4d045b73bfacdcbf33d381895721c",
+    "contracts/conversation_catalog.py": "d108c3e23c9ae19a846e063eb5b1517842a738e53ded05748120ae5a8760d9d1",
+    "src/uaw/shared/contracts.py": "08ac0c164c56c6142f3f4397bcd2c3a544e2abacc3432bf4a10d180fcb5fce7b",
+    "src/uaw/shared/ports.py": "4c80e4666c2c7cfe3bf8befec48e8d7a6d864f5ae94abef0b1d729720567aa21",
+    "src/uaw/shared/conversation.py": "bff466f64f2fc37692dc9f60f3d97146a9b3815510898b272cafb53259eb3e00",
+    "src/uaw/run/clock_ports.py": "6c924e0859f7304e0f5960835e113968ae2a28ae3f6dbce0d50bd97b3ae56461",
+    "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+    "src/uaw/resources/prompts/conversation-v1.txt": "fa6ee17b82bfadfd2c514acc893265df2e987f612f08eeaf7267d50d7f70ed47"
+  }
+}

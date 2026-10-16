@@ -511,3 +511,5 @@ for session, package_id, rounds, title in [
         tasks=["按CURRENT_DISPATCH固定基线与正式分包M1–M4连续开发；阶段SHA到即审。"],
         acceptance=["组件、真实整链、事实评测、本人体验分别记录，完整门槛不因提前分包降低。"],
         fixed_base_ref="ms-i2m-start", package_document=CURRENT_DISPATCH["package_document"]))
+
+CURRENT_DISPATCH["fixed_commit"] = "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe"

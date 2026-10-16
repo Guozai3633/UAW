@@ -1,3 +1,24 @@
+# MS-I2m正式发布：四会话固定基线与任务包
+
+2026-10-16，A / integration。共同固定开工标签 **ms-i2m-start**，准确源码 **1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe**。本条为正式发布回执；固定tag指向源码提交，发布元数据在其后的integration提交中。worker fetch后只读远端本页核对本条，随后合固定tag；不因tag内旧准备状态再次停工，也不合浮动integration。
+
+| Session | 本轮包 | 当前正式任务 |
+| --- | --- | --- |
+| A | MS-I2m | 原Run回答/纠正与API、真实账本/时钟/模型/文本成果接线、逐阶段接受；从自己发布HEAD继续 |
+| B | MS-U4 | apps/web问题发现/原Run回答、纠正受理与生效、刷新及成果审阅 |
+| C | MS-E1 | 本包临时独立质量评测：新evaluation目录/离线CLI/样本/报告，原Tool交付保留 |
+| D | MS-K1 | 本包临时持久执行时钟：新execution_clock.py/专属测试，原Runner交付保留 |
+
+[正式分包：允许目录及连续M1–M4](requests/A/MS-I2m-parallel-packages.md) · [固定接口与真实来源边界](requests/A/MS-I2m-AD-contract.md) · [四份可复制提示词](requests/A/MS-I2m-session-prompts.md) · [准确基线/摘要与同步步骤](requests/A/MS-I2m-publication.md) · [机器派发记录](../../planning/current-dispatch.json)。
+
+三个worker分支在发布前只读核对可快进；由各session自行同步、保留原提交与handoff。每包M1/M2阶段到即交A并继续M3/M4，不等新的小包或三个最终交付齐备。组件业务错误回原worker；A不操作worker工作区或代写它们新归属业务文件。本次发布任务文档与提示词，未直接向其他聊天发送消息，未替worker启动运行。
+
+54个相关用例最终通过，原6失败及修复回执保留；221源码类型/Ruff/格式通过，旧1399 schema逐项一致，新增读图及2封装。1402正例/336反例通过，296接口、115节点、56轮计划检查通过；这是接口/计划门槛，**没有新HTTP handler、SQL续跑或H02整轮通过声明**。历史675/1691不计本轮全量。
+
+H01-v5本人“可以了”仅记录普通问答复体验认可。现有服务/快照不热改，原Run/失败/费用/last_full/标签保留。固定用户模型，运行时子Agent/DAG/本机写入安装exec关闭，unknown先对账不重发；本机原首次链和事实质量仍待独立验收。
+
+以下是固定标签内准备与更早历史，当前状态以本正式记录为准。
+
 # MS-I2m准备：接口与四包已固定，正式SHA发布见页首后续记录
 
 2026-10-16，A / integration。固定共同标签将为ms-i2m-start；准确40位SHA必须由本次提交后正式发布回执给出，不能把历史标签或此准备行当开工回执。
