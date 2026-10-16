@@ -92,6 +92,9 @@ class ConversationContexts:
             source_reference("item", r.resource_id, r.revision, r.payload).wire()
             for r in reversed(history)
         ]
+        from uaw.agent.conversation_questions import ConversationQuestions
+
+        question_refs = await ConversationQuestions(self.records).items(inputs, ctx)
         access = await self.legacy.access.snapshot(ctx)
         revision, entries = self.legacy.registry.snapshot()
         tools = []
@@ -111,7 +114,12 @@ class ConversationContexts:
             "revision": 1,
             "request": {
                 "purpose": "agent_step",
-                "source_refs": [*inputs.refs, *history_refs, *[r.wire() for r in observations]],
+                "source_refs": [
+                    *inputs.refs,
+                    *history_refs,
+                    *[r.wire() for r in question_refs],
+                    *[r.wire() for r in observations],
+                ],
                 "model_policy_ref": ctx.model_policy_ref.wire() if ctx.model_policy_ref else {},
                 "output_reserve": self.legacy.output_reserve,
                 "tool_reserve": 0,
@@ -256,12 +264,22 @@ class ConversationContexts:
             "observations": [],
             "available_tools": available,
         }
+        question_dependencies: list[Ref] = []
         for raw in recipe["request"]["source_refs"]:
             ref = Ref.model_validate(raw)
             if ref.kind == "item":
                 row = await self.records.get(ctx.principal, "items", ref.id)
                 check_pin(ref, "item", row.resource_id, row.revision, row.payload)
                 value = row.payload
+                if value.get("run_id") == ctx.run_id:
+                    from uaw.agent.conversation_questions import ConversationQuestions
+
+                    question_data, dependencies = await ConversationQuestions(self.records).read(
+                        ref, inputs, ctx
+                    )
+                    data.setdefault("clarifications", []).append(question_data)
+                    question_dependencies.extend(dependencies)
+                    continue
                 if (
                     value["conversation_id"] != ctx.conversation_id
                     or value.get("run_id") == ctx.run_id
@@ -295,7 +313,12 @@ class ConversationContexts:
             raise reject(
                 "conversation_context_stale", "Current task changed during Context read", 412
             )
-        return prompt, [rule.wire(), before.role_ref.wire(), *[e["tool_ref"] for e in available]]
+        return prompt, [
+            rule.wire(),
+            before.role_ref.wire(),
+            *[e["tool_ref"] for e in available],
+            *[pin.wire() for pin in question_dependencies],
+        ]
 
     async def resolve(self, raw: Payload, ctx: TrustedExecutionContext) -> ModelPrompt:
         async with self.records.current_reads(), contract_validation_scope():

@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-16",
+  "package": "MS-I2m",
+  "stage": "A2 continuation input preparation",
+  "status": "component_verified_not_execution_resume",
+  "parent": "613548ad4ac1606405cbc02bcec7950946f73be3",
+  "source_sha256": {
+    "src/uaw/agent/conversation_context.py": "8c2e5b7b6a269130c9bdace5aaa4b8e01ccee2e0ba96e85c4cce862cf7838726",
+    "src/uaw/agent/conversation_questions.py": "c27cdfb9a674658dcdae1921dd222405919d25641fcf00ca065dde5f16151de9",
+    "src/uaw/run/conversation_entry.py": "4832ef42da1e800a0f6469586ea452373865f8332e3844c881233a039e5ff6fb",
+    "tests/integration/agent/test_conversation_preparation.py": "daabfca39412b2fd7f03038b758b510990eea1fc1ac66f728351b31dfe9b78f4"
+  },
+  "real_sql_nodes": 4,
+  "passed": 4,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "receipt": "docs/implementation/evidence/ms-i2m-a2-second-sql.xml",
+  "initial_collection_failure": {
+    "receipt": "docs/implementation/evidence/ms-i2m-a2-first-sql.xml",
+    "cause": "Incorrect existing compatibility node name; no tests ran in that command; original receipt retained."
+  },
+  "tested_behaviour": [
+    "new input produces next TaskFrame revision and exact binding",
+    "repeating preparation does not create another revision",
+    "old immutable frame revision and original input remain readable",
+    "original complete question and admitted exact answer relation enter the same ModelPrompt",
+    "changed original question fails before using the snapshot",
+    "original one-call message and restart compatibility"
+  ],
+  "static": {
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_source_files": 225,
+    "mypy": "passed"
+  },
+  "real_provider_calls": 0,
+  "new_live_model_cost": "0",
+  "previous_stage": "M1 74 scoped nodes retained separately, not current repository full regression",
+  "runtime_control": {
+    "queue_wake_installed": false,
+    "patch_applied_claimed": false,
+    "old_deadlines_or_authorization_renewed": false,
+    "D_clock_reimplemented": false,
+    "human_runtime_or_data_changed": false,
+    "worker_branches_modified": false
+  },
+  "pending": [
+    "D exact ExecutionClocks stage and current source composition",
+    "A remaining-active-segment admission with untouched original invocations/authorizations",
+    "safe queue wake/lease fencing and applied receipt consumption",
+    "B actual new service/UI",
+    "C independent quality gate",
+    "actual model/text artifacts/H02 human workflow"
+  ]
+}

@@ -105,31 +105,63 @@ async def source_frame(records: PostgresRecordStore, ctx: TrustedExecutionContex
             raise reject(
                 "conversation_frame_stale", "Original task cannot accept its source frame", 412
             )
-        await tx.write("intent.frames", key, "TaskFrame", frame, 0)
+        try:
+            previous = await tx.load("intent.frames", key)
+        except StoreMissing:
+            expected = 0
+        else:
+            expected = previous.revision
+            if previous.payload["input_revision"] == current.revision:
+                actual_binding = await tx.load("intent.frame_bindings", f"{key}.{expected}")
+                task = await tx.load("tasks", key)
+                existing_ref = reference("task_frame", key, expected)
+                if (
+                    previous.payload["original_input_ref"] == inputs.refs[0]
+                    and previous.payload["patch_refs"] == list(inputs.refs[1:])
+                    and previous.payload["goal"] == goal
+                    and actual_binding.payload == inputs.state
+                    and run.payload.get("frame_ref") == existing_ref
+                    and task.payload.get("frame_ref") == existing_ref
+                ):
+                    return existing_ref
+            if (
+                previous.payload["task_id"] != key
+                or previous.payload["original_input_ref"] != inputs.refs[0]
+                or previous.payload["input_revision"] >= current.revision
+            ):
+                raise reject("conversation_frame_stale", "Prior frame sources differ", 412)
+        next_frame = {**frame, "revision": expected + 1}
+        await tx.write("intent.frames", key, "TaskFrame", next_frame, expected)
         # This is a copy of the actual RunInputState, explicitly not an
         # IntentSemanticRecord or a claimed model understanding.
-        await tx.write("intent.frame_bindings", key + ".1", "RunInputState", inputs.state)
-        ref = reference("task_frame", key)
+        await tx.write(
+            "intent.frame_bindings", f"{key}.{expected + 1}", "RunInputState", inputs.state
+        )
+        ref = reference("task_frame", key, expected + 1)
         for namespace, row, schema in (
             ("runs", run, "RunRecord"),
             ("tasks", await tx.load("tasks", key), "TaskRecord"),
         ):
-            value = {**row.payload, "revision": row.revision + 1, "frame_ref": ref}
+            base_revision = row.revision
+            value = {**row.payload, "revision": base_revision + 1, "frame_ref": ref}
             await tx.write(namespace, row.resource_id, schema, value, row.revision)
             if namespace == "runs":
                 await tx.emit(
                     inputs.run["conversation_id"],
                     "run.updated",
                     value,
-                    base_revision=row.revision,
-                    result_revision=row.revision + 1,
+                    base_revision=base_revision,
+                    result_revision=base_revision + 1,
                 )
         return ref
 
     return await TransactionalStore(records.database).execute(
         ctx.principal,
         "conversation:" + inputs.run["conversation_id"],
-        RequestMeta(request_id="conversation-source-" + inputs.run["id"], schema_version="0.1"),
+        RequestMeta(
+            request_id=f"conversation-source-{inputs.run['id']}-{inputs.state['revision']}",
+            schema_version="0.1",
+        ),
         {"input_state": inputs.state},
         write,
     )
