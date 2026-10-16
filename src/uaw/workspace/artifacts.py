@@ -2,7 +2,8 @@
 
 import hashlib
 
-from uaw.agent.contracts import identifier, validate_decision
+from uaw.agent.contracts import identifier
+from uaw.agent.conversation import enabled, execution_decision
 from uaw.agent.ports import AgentSourcePort
 from uaw.agent.sources import check_pin
 from uaw.infrastructure.db.records import parameter_hash
@@ -54,7 +55,11 @@ class TextArtifacts:
             raise reject(
                 "artifact_model_unowned", "Output is not a finished invocation of this Run", 403
             )
-        decision = validate_decision(model["structured_data"])
+        if await enabled(self.repository.records, ctx):
+            from uaw.shared.schema import validate_contract
+
+            validate_contract("FirstDeliverDecision", model["structured_data"])
+        decision = execution_decision(model["structured_data"])
         if (
             decision["action"] not in ("respond", "propose_completion")
             or not decision["text"].strip()

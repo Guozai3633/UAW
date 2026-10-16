@@ -1,0 +1,212 @@
+{
+  "recorded_at": "2026-10-16T08:26:47.241039+00:00",
+  "package": "P1-13",
+  "status": "engineering_component_verified_human_version_not_yet_started",
+  "unique_affected_tests_final_passed": 103,
+  "test_evidence": [
+    "h02-p1-13-final-tests.xml",
+    "h02-p1-13-rerun-tests.xml"
+  ],
+  "historical_failures_preserved": [
+    "h02-p1-13-first-sql.xml",
+    "h02-p1-13-branches-first.xml",
+    "h02-p1-13-final-tests.xml"
+  ],
+  "mypy_source_files": 220,
+  "live_samples": [
+    {
+      "sample": "comparison-first",
+      "private_receipt": ".data\\h02-p1-13\\comparison-first.json",
+      "receipt_sha256": "6e15be5992eeeddba611717337613fad179cde9f4992e2bc6c0ae821a48b878b",
+      "status": "completed",
+      "elapsed_ms": 27253,
+      "model_attempts": 1,
+      "actions": [],
+      "input_tokens": 2336,
+      "output_tokens": 1495,
+      "provider_wall_ms": 10681,
+      "billing_states": [
+        "pending"
+      ],
+      "pending_money_hold": "0.25",
+      "formal_artifacts_created": false,
+      "phases": [
+        {
+          "stage": "prepared",
+          "state": "queued",
+          "elapsed_ms": 196,
+          "failure": null
+        },
+        {
+          "stage": "understood",
+          "state": "queued",
+          "elapsed_ms": 236,
+          "failure": null
+        },
+        {
+          "stage": "started",
+          "state": "queued",
+          "elapsed_ms": 1697,
+          "failure": null
+        },
+        {
+          "stage": "step",
+          "state": "queued",
+          "elapsed_ms": 1056,
+          "failure": null
+        },
+        {
+          "stage": "finished",
+          "state": "finished",
+          "elapsed_ms": 23626,
+          "failure": null
+        }
+      ],
+      "source_hashes": {
+        "src/uaw/agent/conversation.py": "3fc41f2966849933eb27549223d13582eba38cb8da9b99474853e10d5f5d4dc4",
+        "src/uaw/agent/conversation_context.py": "4951b6587597f8a80bd8b67964e25099aca004d819b14a3175aa2a547e810591",
+        "src/uaw/run/conversation_entry.py": "52579b07376d0781bb126f44c5d4f11f4b6ef9a9fd22941a9b8c6a31228fb3fa",
+        "src/uaw/run/background.py": "f99e9685ba2336372fd209f4ae28fae112463af394729e8f79d9fae5b568e23e",
+        "src/uaw/resources/prompts/conversation-v1.txt": "f845da68d597a4787d3e39d7030273edaf8d78adad660133c6473ff4c7773c57"
+      }
+    },
+    {
+      "sample": "comparison-concise",
+      "private_receipt": ".data\\h02-p1-13\\comparison-concise.json",
+      "receipt_sha256": "e753876ded3db556c8898487419038e1d5be26955733652539a2b114960e0412",
+      "status": "completed",
+      "elapsed_ms": 20730,
+      "model_attempts": 1,
+      "actions": [
+        "reply"
+      ],
+      "input_tokens": 2376,
+      "output_tokens": 1178,
+      "provider_wall_ms": 9176,
+      "billing_states": [
+        "pending"
+      ],
+      "pending_money_hold": "0.25",
+      "formal_artifacts_created": false,
+      "phases": [
+        {
+          "stage": "prepared",
+          "state": "queued",
+          "elapsed_ms": 117,
+          "failure": null
+        },
+        {
+          "stage": "understood",
+          "state": "queued",
+          "elapsed_ms": 117,
+          "failure": null
+        },
+        {
+          "stage": "started",
+          "state": "queued",
+          "elapsed_ms": 1570,
+          "failure": null
+        },
+        {
+          "stage": "step",
+          "state": "queued",
+          "elapsed_ms": 965,
+          "failure": null
+        },
+        {
+          "stage": "finished",
+          "state": "finished",
+          "elapsed_ms": 17647,
+          "failure": null
+        }
+      ],
+      "source_hashes": {
+        "src/uaw/agent/conversation.py": "3fc41f2966849933eb27549223d13582eba38cb8da9b99474853e10d5f5d4dc4",
+        "src/uaw/agent/conversation_context.py": "4951b6587597f8a80bd8b67964e25099aca004d819b14a3175aa2a547e810591",
+        "src/uaw/run/conversation_entry.py": "52579b07376d0781bb126f44c5d4f11f4b6ef9a9fd22941a9b8c6a31228fb3fa",
+        "src/uaw/run/background.py": "f99e9685ba2336372fd209f4ae28fae112463af394729e8f79d9fae5b568e23e",
+        "src/uaw/resources/prompts/conversation-v1.txt": "fa6ee17b82bfadfd2c514acc893265df2e987f612f08eeaf7267d50d7f70ed47"
+      }
+    },
+    {
+      "sample": "comparison-final",
+      "private_receipt": ".data\\h02-p1-13\\comparison-final.json",
+      "receipt_sha256": "fb520ba2249f4f3b3de2e0c5a848ff6e81b561fb28e59d1aa2dcec00c2c1ebef",
+      "status": "completed",
+      "elapsed_ms": 14824,
+      "model_attempts": 1,
+      "actions": [
+        "reply"
+      ],
+      "input_tokens": 2376,
+      "output_tokens": 1040,
+      "provider_wall_ms": 8519,
+      "billing_states": [
+        "pending"
+      ],
+      "pending_money_hold": "0.25",
+      "formal_artifacts_created": false,
+      "phases": [
+        {
+          "stage": "prepared",
+          "state": "queued",
+          "elapsed_ms": 131,
+          "failure": null
+        },
+        {
+          "stage": "understood",
+          "state": "queued",
+          "elapsed_ms": 117,
+          "failure": null
+        },
+        {
+          "stage": "started",
+          "state": "queued",
+          "elapsed_ms": 1056,
+          "failure": null
+        },
+        {
+          "stage": "step",
+          "state": "queued",
+          "elapsed_ms": 426,
+          "failure": null
+        },
+        {
+          "stage": "finished",
+          "state": "finished",
+          "elapsed_ms": 12794,
+          "failure": null
+        }
+      ],
+      "source_hashes": {
+        "src/uaw/agent/conversation.py": "3fc41f2966849933eb27549223d13582eba38cb8da9b99474853e10d5f5d4dc4",
+        "src/uaw/agent/conversation_context.py": "03dc0db5a2fddad86575e7a817995b4c52b5cd9aee8533c68d5404446fdeb7de",
+        "src/uaw/run/conversation_entry.py": "c21cf0f15f0dc987ac038cb93ed6283f10890312aeb58b73d42c2c7af3e71579",
+        "src/uaw/run/background.py": "30fb41982a2e829524621e6e8faf55f5f59dcd39968876fd3cd1989ac2a0f373",
+        "src/uaw/resources/prompts/conversation-v1.txt": "fa6ee17b82bfadfd2c514acc893265df2e987f612f08eeaf7267d50d7f70ed47"
+      }
+    }
+  ],
+  "old_human_failure": {
+    "total_elapsed_ms": 115637,
+    "model_attempts": 2,
+    "provider_wall_ms": 11279,
+    "failure_code": "provider_structured_output_invalid",
+    "missing_non_tool_field": "proposed_calls",
+    "generated_text_characters": 1853,
+    "private_receipt": ".data/human/H01-v4/feedback-20261016-original-records.json"
+  },
+  "runtime_checks_preserved": true,
+  "approval_review_rejected_removing_publish_verify": true,
+  "rejected_action_applied": false,
+  "full_repository_regression_run": false,
+  "native_file_gate_passed": false,
+  "same_run_continuation_installed": false,
+  "human_acceptance": false,
+  "limitations": [
+    "Engineering driver timing is not browser time-to-first-text or a performance guarantee.",
+    "After the last live sample only public failure wording/tests/planning were revised; successful reply path is unchanged.",
+    "First probe collected decisions by run_id only and missed run_ref-owned records; later probes correct that measurement.",
+    "Factual quality gate P1-15 and H02 human gate P1-17 remain pending."
+  ]
+}

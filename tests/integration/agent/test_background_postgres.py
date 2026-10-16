@@ -62,7 +62,7 @@ async def test_real_queue_pipeline_recovers_original_step_and_delivers(
         policies,
         FrameRepository(runs.store),
     )
-    driver = BackgroundAgent(control)
+    driver = BackgroundAgent(control, conversation_mode=False)
     queue = await driver.prepare()
     conv = await runs.create_conversation(
         actor,

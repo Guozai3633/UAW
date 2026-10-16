@@ -59,7 +59,7 @@ async def prepared(case, domain, tmp_path):
         policies,
         FrameRepository(runs.store),
     )
-    driver = BackgroundAgent(control)
+    driver = BackgroundAgent(control, conversation_mode=False)
     queue = await driver.prepare()
     conv = await runs.create_conversation(
         actor,

@@ -1,3 +1,13 @@
+# P1-13 工程组件：普通问答单次调用已实跑，准备固定体验修复版
+
+2026-10-16，A / integration。新Run走conversation-v1，普通reply只保存聊天消息，不固定独立理解/自评；实际工具/成果仍走原权限、核验与接受。原Run保留旧协议。准确源码随本次固定标签发布，尚不据此派B/C/D新包。
+
+103不同受影响节点最终通过，220源码类型/Ruff通过。真实固定DeepSeek三次同题各1次调用，27.253/20.730/14.824秒完成；7088/3713 Token，0.75 USD pending预留非账单。原用户115.6秒失败及全部测试失败/费用保留，不声称秒回或专业事实正确。
+
+[实现与限制](../implementation/P1-13.md) · [机器回执](../implementation/evidence/h02-p1-13.json) · [本人反馈H01-I03](../implementation/human-tests/H01-I03.md)。原native/flags/模型选择/last_full/标签不变；同Run续跑、事实门槛与H02整轮未接受。
+
+以下为原记录，旧派发不自动启动新包。
+
 # H02 P1-12协议阶段：准确源码已固定，运行接线待开发
 
 2026-10-14，Session A / integration。准确source **b13d8d9612b45f8833cebd29b603a940e0b815e9**，固定标签 **h02-p1-12-source**；仅公共协议/严格消费者/纯边界，不是worker正式开工基线或产品整轮验收。

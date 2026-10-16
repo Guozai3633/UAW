@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from uaw.agent.adapters import AgentObservations, RegisteredAgentContexts, RegisteredAgentModels
+from uaw.agent.conversation_context import ConversationContexts
 from uaw.agent.engines.langgraph import LangGraphAgentEngine
 from uaw.agent.facade import AgentRuntime
 from uaw.agent.factory import AgentFactory
@@ -130,6 +131,9 @@ def assemble_agent_runtime(
         output_reserve=max_output_tokens,
         instruction_refs=instruction_refs,
     )
+    conversation_contexts = ConversationContexts(context_adapter)
+    assert isinstance(model.gateway.inputs, ContextModelInputs)
+    model.gateway.inputs.conversation = conversation_contexts
     models = RegisteredAgentModels(
         model, original.policies, sources, max_output_tokens=max_output_tokens
     )
@@ -148,7 +152,7 @@ def assemble_agent_runtime(
         observations.results = runtime_tools
     loop = AgentLoop(
         repository,
-        context_adapter,
+        conversation_contexts,
         models,
         observations,
         tools=runtime_tools,

@@ -2,7 +2,7 @@
 
 [总索引](README.md)
 
-计划记录日期2026-10-14：已验收3轮、开发中7轮、待开发45轮、后续讨论1轮。已验收轮数：3。
+计划记录日期2026-10-14：已验收3轮、开发中8轮、待开发44轮、后续讨论1轮。已验收轮数：3。
 
 当前以DISPATCH页首和A32/H01-v4回执为准：单Agent文本/页面已实现，事实质量仍有错误与漏判；P1-12契约组件交付/in_progress，快通路/同Run接续/暂停计时实际服务未完成，本机首次签名发布链仍未过。下表旧轮状态未据后续组件重新裁决，不能算当前完成百分比；P1-13～17仍planned。当前能力与启动方式见[实际实施入口](../implementation/README.md)。文档检查只核对引用/覆盖/依赖，不能替代运行证据。
 
@@ -25,7 +25,7 @@
 | [P1-10 最小API与真实聊天工作区](rounds/P1-10.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-11 第一条真实任务阶段验收](rounds/P1-11.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-12 对话与续跑公共协议](rounds/P1-12.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-12.md](../implementation/P1-12.md)、[docs/implementation/evidence/h02-p1-12.json](../implementation/evidence/h02-p1-12.json)、[docs/implementation/evidence/h02-p1-12-tests.xml](../implementation/evidence/h02-p1-12-tests.xml) |
-| [P1-13 普通交流首次调用与消息完成](rounds/P1-13.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
+| [P1-13 普通交流首次调用与消息完成](rounds/P1-13.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-13.md](../implementation/P1-13.md)、[docs/implementation/evidence/h02-p1-13.json](../implementation/evidence/h02-p1-13.json) |
 | [P1-14 同Run澄清纠正与等待暂停](rounds/P1-14.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-15 人工正确性样本与发布评测](rounds/P1-15.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-16 单Agent粘贴文本成果独立验收](rounds/P1-16.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |

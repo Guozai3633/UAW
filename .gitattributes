@@ -5,3 +5,6 @@
 *.webp binary
 # Preserve the original failure transcript inside this JUnit receipt.
 docs/implementation/evidence/h02-p1-12-first-tests.xml -whitespace
+
+# Preserve raw P1-13 failure JUnit bytes; source whitespace checks remain enabled.
+docs/implementation/evidence/h02-p1-13-*.xml -whitespace

@@ -3617,10 +3617,13 @@
       "deliverables": [
         "真实快通路与正式交付分流回执"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/P1-13.md",
+        "docs/implementation/evidence/h02-p1-13.json"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P1-12",

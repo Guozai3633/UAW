@@ -13,6 +13,7 @@ from uaw.agent.assembly import AgentAssembly, assemble_agent_runtime
 from uaw.agent.completion.assembly import assemble_completion_runtime
 from uaw.agent.contracts import LoopOperation, validate_decision
 from uaw.agent.contracts import identifier as stable_id
+from uaw.agent.conversation import enabled
 from uaw.agent.repository import pin
 from uaw.agent.sources import check_pin
 from uaw.context.contracts import InstructionRule
@@ -62,9 +63,40 @@ def meta(key: str, revision: int | None = None) -> RequestMeta:
     return RequestMeta(request_id=key, schema_version="0.1", expected_revision=revision)
 
 
+def user_failure(failure: Payload) -> str:
+    """Public explanation only; protected receipts retain the original cause."""
+    code = failure["code"]
+    if failure.get("category") == "unknown_effect":
+        return "本次调用的最终状态尚未确认，需要先核对原记录。请暂时不要重复提交。"
+    if code == "provider_structured_output_invalid":
+        return (
+            "模型返回了内容，但响应格式不符合要求，本次答复未能完成。"
+            "记录已保留；你可以重新发送，也可以反馈这个问题。"
+        )
+    if code == "provider_timeout":
+        return "模型服务响应超时，本次未得到完整答复。记录已保留，你可以稍后重试。"
+    if code.startswith("provider_") or failure.get("category") in (
+        "model_protocol",
+        "infrastructure",
+    ):
+        return "模型服务本次未能完成答复。详细原因已记录，你可以稍后重试或反馈这个问题。"
+    if failure.get("category") == "cancelled":
+        return "任务已停止，现有记录已保留。"
+    if "policy" in code or failure.get("category") == "permission":
+        return "执行期间的权限或配置已变化，系统没有提交旧结果。请刷新后查看当前状态。"
+    if failure.get("category") == "budget":
+        return "本次任务已达到预算或运行限制，现有记录已保留。"
+    if code in ("agent_decision_invalid", "agent_request_invalid"):
+        return (
+            "模型未生成符合要求的完整答复，本次未能完成。详细原因已记录，你可以重试或反馈这个问题。"
+        )
+    return "本次处理未能完成，详细原因已记录。请刷新查看任务状态，或反馈这个问题。"
+
+
 class BackgroundAgent:
-    def __init__(self, control: Container) -> None:
+    def __init__(self, control: Container, *, conversation_mode: bool = True) -> None:
         self.control = control
+        self.conversation_mode = conversation_mode
         self.file_runtimes: dict[str, FileRunRuntime] = {}
         self.runtime_lock = asyncio.Lock()
 
@@ -178,6 +210,8 @@ class BackgroundAgent:
         c.completion_controller = RunCompletionRouter(self.completion_service)
         c.approvals = RunApprovalRouter(c.records, self.approval_service)
         c.bindings = replace(c.bindings, agent=self.agent.runtime)
+        from uaw.run.conversation_entry import admit
+
         return RunJobs(
             c.records,
             Principal(
@@ -189,6 +223,7 @@ class BackgroundAgent:
             concurrency=c.settings.agent_worker_count,
             advance=self.advance,
             finalize=self.finalize,
+            admit=admit if self.conversation_mode else None,
         )
 
     async def guard(self, job: Payload) -> tuple[Principal, Payload]:
@@ -343,6 +378,11 @@ class BackgroundAgent:
         contexts = runtime.contexts if runtime else self.contexts
         completion = runtime.completion if runtime else self.completion
         if job["stage"] == "prepared":
+            if await enabled(c.records, ctx):
+                from uaw.run.conversation_entry import source_frame
+
+                frame = await source_frame(c.records, ctx)
+                return {**base, "stage": "understood", "frame_ref": frame}
             inputs = await RunInputReader(c.records).read(ctx)
             result: Payload = dict(
                 await c.intent_service.understand(
@@ -369,7 +409,11 @@ class BackgroundAgent:
                     level="platform",
                     scope=ScopeSelector(conversation_id=run["conversation_id"]),
                     text=files("uaw.resources.prompts")
-                    .joinpath("agent-root-v2.txt")
+                    .joinpath(
+                        "conversation-v1.txt"
+                        if await enabled(c.records, ctx)
+                        else "agent-root-v2.txt"
+                    )
                     .read_text(encoding="utf-8")
                     + (
                         "\nFor file.read, use the exact admitted_workspaces Ref and a relative "
@@ -489,9 +533,25 @@ class BackgroundAgent:
                 step = job["step"] + 1
                 return {**base, "step": step, "step_context": self.step_context(ctx, step).wire()}
             if result["payload"]["action"] in ("wait", "blocked"):
-                await self.publish_pause(agent, operation_id, step_ctx, result)
+                if await enabled(c.records, ctx):
+                    from uaw.run.conversation_entry import publish
+
+                    await publish(agent, operation_id, step_ctx)
+                else:
+                    await self.publish_pause(agent, operation_id, step_ctx, result)
                 return {**base, "state": "blocked"}
             operation = await agent.repository.operation(operation_id, step_ctx)
+            if await enabled(c.records, ctx):
+                assert operation.model_result is not None
+                original = operation.model_result["payload"]["structured_data"]
+                if original["action"] == "reply":
+                    from uaw.run.conversation_entry import publish
+
+                    await publish(agent, operation_id, step_ctx)
+                    return {**base, "state": "finished", "stage": "finished"}
+                from uaw.run.conversation_entry import select_delivery
+
+                await select_delivery(c.records, step_ctx)
             proposal = (
                 Ref.model_validate(result["payload"]["completion_proposal_ref"])
                 if "completion_proposal_ref" in result["payload"]
@@ -754,7 +814,7 @@ class BackgroundAgent:
             actor,
             run,
             "agent_message",
-            failure["message"],
+            user_failure(failure),
             "web-failure-" + run["id"] + "-" + str(job["step"]),
         )
         return {**job, "state": "blocked", "failure": failure}

@@ -56,7 +56,10 @@ class FrameRepository:
             if (
                 current_task.payload["frame_ref"]
                 != reference("task_frame", task_id, value.revision)
-                or binding.payload["input_revision"] != sources.revision
+                or binding.payload[
+                    "revision" if binding.schema_name == "RunInputState" else "input_revision"
+                ]
+                != sources.revision
             ):
                 raise reject("intent_input_stale", "Current understanding requires a refresh", 412)
             return dict(value.payload)

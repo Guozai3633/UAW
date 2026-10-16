@@ -20,8 +20,10 @@ class ContextModelInputs:
         store: PostgresRecordStore,
         legacy: ModelInputPort,
         generic: ModelInputPort | None = None,
+        conversation: ModelInputPort | None = None,
     ) -> None:
         self.store, self.legacy, self.generic = store, legacy, generic
+        self.conversation = conversation
 
     async def resolve(self, ref: dict[str, Any], ctx: TrustedExecutionContext) -> ModelPrompt:
         validate_contract("Ref", ref)
@@ -33,7 +35,13 @@ class ContextModelInputs:
                     select(RecordRow.namespace).where(
                         RecordRow.principal_id == ctx.principal.id,
                         RecordRow.resource_id == ref["id"],
-                        RecordRow.namespace.in_(("context.bindings", "context.generic.bindings")),
+                        RecordRow.namespace.in_(
+                            (
+                                "context.bindings",
+                                "context.generic.bindings",
+                                "context.conversation.bindings",
+                            )
+                        ),
                         RecordRow.deleted.is_(False),
                     )
                 )
@@ -44,6 +52,10 @@ class ContextModelInputs:
             )
         if not found:
             raise StoreMissing()
+        if found[0] == "context.conversation.bindings":
+            if self.conversation is None:
+                raise CapabilityUnavailable("context.conversation_model_input_authority")
+            return await self.conversation.resolve(ref, ctx)
         if found[0] == "context.generic.bindings":
             if self.generic is None:
                 raise CapabilityUnavailable("context.generic_model_input_authority")

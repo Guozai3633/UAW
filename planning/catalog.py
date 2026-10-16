@@ -613,4 +613,7 @@ for package in ROUNDS:
             "docs/implementation/evidence/h02-p1-12-tests.xml",
         ])
     if package["id"] == "P1-13":
+        package.update(status="in_progress", implementation_evidence=[
+            "docs/implementation/P1-13.md", "docs/implementation/evidence/h02-p1-13.json",
+        ])
         package["tasks"].insert(0, "P1-12严格契约组件与消费示例已发布，可按准确阶段SHA实现本轮；P1-12整链门槛随消息/续跑服务接线另验，不以其in_progress阻止独立组件开发。")

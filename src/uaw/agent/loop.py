@@ -11,6 +11,7 @@ from uaw.agent.contracts import (
     identifier,
     validate_decision,
 )
+from uaw.agent.conversation import execution_decision
 from uaw.agent.ports import (
     AgentCompletionPort,
     AgentContextPort,
@@ -145,7 +146,7 @@ class AgentLoop:
             try:
                 if output["finish_reason"] != "stop" or output["tool_calls"]:
                     raise ValueError("Only complete structured proposals are supported")
-                proposal = validate_decision(output["structured_data"])
+                proposal = execution_decision(output["structured_data"])
             except KeyError, TypeError, ValueError, ValidationError:
                 failure = error_result(
                     reject(
@@ -176,8 +177,12 @@ class AgentLoop:
         if operation.proposal is None or operation.model_result is None:
             raise reject("agent_operation_invalid", "No saved model decision", 412)
         model_result = operation.model_result
-        await self.models.read(model_result, ctx)
+        actual_output = await self.models.read(model_result, ctx)
         proposal = validate_decision(operation.proposal)
+        if execution_decision(actual_output["structured_data"]) != proposal:
+            raise reject(
+                "agent_decision_changed", "Saved proposal differs from original output", 412
+            )
         result = {
             "kind": "ok",
             "output_refs": [],

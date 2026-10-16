@@ -20,6 +20,7 @@ Payload = dict[str, Any]
 JOBS = "run.background.jobs"
 Advance = Callable[[Payload], Awaitable[Payload]]
 Finalize = Callable[[Payload], Awaitable[None]]
+Admit = Callable[[RecordTransaction, Payload, Principal], Awaitable[None]]
 
 
 class RunJobs:
@@ -32,6 +33,7 @@ class RunJobs:
         concurrency: int = 1,
         advance: Advance | None = None,
         finalize: Finalize | None = None,
+        admit: Admit | None = None,
     ) -> None:
         if not 1 <= concurrency <= 4 or not 1 <= capacity <= 64:
             raise ValueError("Bounded queue/concurrency required")
@@ -39,6 +41,7 @@ class RunJobs:
         self.transactions = TransactionalStore(records.database)
         self.capacity, self.concurrency, self.advance = capacity, concurrency, advance
         self.finalize = finalize
+        self.admit = admit
         self.worker_id = identifier("worker")
         self.tasks: list[asyncio.Task[None]] = []
         self.stopping = asyncio.Event()
@@ -76,6 +79,8 @@ class RunJobs:
             "ready_at": datetime.now(UTC).isoformat(),
         }
         await tx.write(JOBS, run["id"], "BackgroundRunJob", value)
+        if self.admit is not None:
+            await self.admit(tx, run, actor)
 
     async def claim(self) -> Payload:
         async def claim(tx: RecordTransaction) -> Payload:

@@ -3,6 +3,7 @@
 import json
 
 from uaw.agent.contracts import Payload, decision_schema, frozen, identifier, identity
+from uaw.agent.conversation import DECISIONS, enabled
 from uaw.agent.ports import AgentSourcePort, PreparedAgentContext
 from uaw.agent.repository import meta
 from uaw.agent.sources import check_pin
@@ -15,8 +16,9 @@ from uaw.model.policy import PolicyResolver
 from uaw.run.file_context import FileContextMaterials
 from uaw.run.tool_sources import RunToolAccessSources, reference
 from uaw.shared.contracts import Ref, TrustedExecutionContext
+from uaw.shared.conversation import first_decision_schema
 from uaw.shared.errors import DomainError, reject
-from uaw.shared.schema import validate_contract
+from uaw.shared.schema import contract_validation_scope, validate_contract
 from uaw.shared.stores import StoreMissing
 from uaw.tool.discovery import require_entry
 from uaw.tool.registry import ToolRegistry
@@ -333,6 +335,10 @@ class RegisteredAgentModels:
         self.max_output_tokens = max_output_tokens
 
     async def request(self, snapshot: Ref, ctx: TrustedExecutionContext) -> Payload:
+        async with self.policies.store.current_reads(), contract_validation_scope():
+            return await self._request(snapshot, ctx)
+
+    async def _request(self, snapshot: Ref, ctx: TrustedExecutionContext) -> Payload:
         await self.sources.current(ctx)
         if ctx.model_policy_ref is None or ctx.run_id is None:
             raise reject("agent_context_missing", "Actual Run/model required", 403)
@@ -358,7 +364,11 @@ class RegisteredAgentModels:
             "context_snapshot_ref": snapshot.wire(),
             "model_config": selection.config,
             "output_protocol": "json_schema",
-            "output_schema": decision_schema(),
+            "output_schema": (
+                first_decision_schema()
+                if await enabled(self.policies.store, ctx)
+                else decision_schema()
+            ),
             "attempt_id": ctx.attempt_id,
         }
 
@@ -366,6 +376,10 @@ class RegisteredAgentModels:
         return await self.model.generate(request, ctx)
 
     async def read(self, result: Payload, ctx: TrustedExecutionContext) -> Payload:
+        async with self.policies.store.current_reads(), contract_validation_scope():
+            return await self._read(result, ctx)
+
+    async def _read(self, result: Payload, ctx: TrustedExecutionContext) -> Payload:
         await self.sources.current(ctx)
         validate_contract("RuntimeModelruntimeGenerateResult", result)
         if result["kind"] != "ok" or len(result.get("output_refs", [])) != 1:
@@ -386,5 +400,47 @@ class RegisteredAgentModels:
                 "Original invocation did not finish with this output",
                 412,
             )
+        if await enabled(self.policies.store, ctx):
+            validate_contract("FirstDecision", row.payload.get("structured_data", {}))
+            view = await self.sources.current(ctx)
+            value = {
+                "protocol": "conversation-v1",
+                "run_ref": {"kind": "run", "id": ctx.run_id, "version": str(view.run["revision"])},
+                "input_revision": view.frame["input_revision"],
+                "decision": row.payload["structured_data"],
+                "model_output_ref": ref.wire(),
+                "model_policy_ref": ctx.model_policy_ref.wire() if ctx.model_policy_ref else {},
+                "attempt_id": row.payload["attempt_id"],
+                # The complete immutable owning output includes actual usage;
+                # this is not an assertion that pending billing is settled.
+                "usage_ref": ref.wire(),
+            }
+            validate_contract("FirstDecisionRecord", value)
+            try:
+                previous = await self.policies.store.get(ctx.principal, DECISIONS, ctx.attempt_id)
+            except StoreMissing:
+                await self.policies.store.put(
+                    ctx.principal,
+                    DECISIONS,
+                    ctx.attempt_id,
+                    "FirstDecisionRecord",
+                    value,
+                    expected_revision=0,
+                    request_id="decision",
+                )
+            else:
+                original = previous.payload
+                if (
+                    previous.schema_name != "FirstDecisionRecord"
+                    or any(original[k] != v for k, v in value.items() if k != "run_ref")
+                    or original["run_ref"]["id"] != ctx.run_id
+                ):
+                    raise reject(
+                        "conversation_decision_changed", "Original model decision differs", 412
+                    )
+        else:
+            from uaw.agent.contracts import validate_decision
+
+            validate_decision(row.payload.get("structured_data", {}))
         await self.sources.current(ctx)
         return frozen(row.payload)

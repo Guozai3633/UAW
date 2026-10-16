@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.679" timestamp="2026-10-16T15:52:44.323794+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_conversation_postgres" name="test_reply_one_call_no_artifact_or_acceptance_and_restart[case0]" time="5.356"><failure message="AssertionError: {'step': 1, 'fence': 5, 'stage': 'step', 'state': 'blocked', ...}&#10;assert 'blocked' == 'finished'&#10;  &#10;  - finished&#10;  + blocked">tests\integration\agent\test_conversation_postgres.py:137: in test_reply_one_call_no_artifact_or_acceptance_and_restart
+    assert job["state"] == "finished", job
+E   AssertionError: {'step': 1, 'fence': 5, 'stage': 'step', 'state': 'blocked', ...}
+E   assert 'blocked' == 'finished'
+E     
+E     - finished
+E     + blocked</failure></testcase></testsuite></testsuites>

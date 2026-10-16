@@ -3,6 +3,7 @@
 from decimal import Decimal
 
 from uaw.agent.contracts import Payload
+from uaw.agent.conversation import enabled
 from uaw.agent.ports import AgentView
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.run.budget import BudgetService
@@ -10,7 +11,7 @@ from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.tool_sources import RunToolAccessSources
 from uaw.shared.contracts import Ref, TrustedExecutionContext
 from uaw.shared.errors import reject
-from uaw.shared.schema import validate_contract
+from uaw.shared.schema import contract_validation_scope, validate_contract
 
 
 def check_pin(ref: Ref, kind: str, identifier: str, revision: int, payload: Payload) -> None:
@@ -66,10 +67,12 @@ class RegisteredAgentSources:
         )
         inputs = await self.store.get(ctx.principal, "run.input_sets", run["id"])
         validate_contract("TaskFrame", frame.payload)
-        validate_contract("IntentFrameBinding", bound.payload)
+        literal = await enabled(self.store, ctx)
+        binding_schema = "RunInputState" if literal else "IntentFrameBinding"
+        validate_contract(binding_schema, bound.payload)
         if (
             frame.schema_name != "TaskFrame"
-            or bound.schema_name != "IntentFrameBinding"
+            or bound.schema_name != binding_schema
             or frame.payload["task_id"] != run["task_id"]
             or frame.payload["revision"] != frame.revision
             or frame.payload.get("input_revision") != inputs.revision
@@ -82,8 +85,12 @@ class RegisteredAgentSources:
             task.payload.get("frame_ref") != expected
             or run.get("frame_ref") != expected
             or bound.payload["run_id"] != run["id"]
-            or bound.payload["input_revision"] != inputs.revision
-            or bound.payload["source_refs"]
+            or bound.payload["revision" if literal else "input_revision"] != inputs.revision
+            or (
+                [bound.payload["original_input_ref"], *bound.payload["patch_refs"]]
+                if literal
+                else bound.payload["source_refs"]
+            )
             != [inputs.payload["original_input_ref"], *inputs.payload["patch_refs"]]
         ):
             raise reject("agent_frame_stale", "Actual task understanding requires refresh", 412)
@@ -95,6 +102,12 @@ class RegisteredAgentSources:
         return frame.payload
 
     async def current(self, ctx: TrustedExecutionContext) -> AgentView:
+        # Checkout reuse only: every mutable get remains a fresh SELECT.
+        # Pure shape results never replace a permission or source predicate.
+        async with self.store.current_reads(), contract_validation_scope():
+            return await self._current(ctx)
+
+    async def _current(self, ctx: TrustedExecutionContext) -> AgentView:
         if ctx.agent_id is not None or ctx.node_id is not None:
             raise reject("agent_root_only", "Subagent/graph contexts require separate sources", 403)
         sources = await self.runs.current(ctx)

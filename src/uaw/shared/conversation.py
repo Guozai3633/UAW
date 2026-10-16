@@ -288,4 +288,41 @@ def first_decision_schema() -> dict[str, object]:
         value = copy.deepcopy(source["$defs"][name])
         definitions[name] = value
         pending.extend(references(value))
-    return {"$schema": source["$schema"], "$ref": "#/$defs/FirstDecision", "$defs": definitions}
+
+    def expand(value: object) -> object:
+        if isinstance(value, list):
+            return [expand(v) for v in value]
+        if not isinstance(value, dict):
+            return value
+        if "$ref" in value:
+            name = value["$ref"].split("/")[-1]
+            if name == "Object":
+                return {"type": "object"}
+            if name == "JsonValue":
+                return {}
+            if name == "Ref":
+                ref_schema = source["$defs"]["Ref"]
+                return expand(
+                    {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            k: v
+                            for k, v in ref_schema["properties"].items()
+                            if k in ("kind", "id", "version", "content_hash")
+                        },
+                        "required": ref_schema["required"],
+                    }
+                )
+            return expand(definitions[name])
+        # Full canonical patterns are checked locally, outside the deliberately
+        # bounded, reference-free provider transport schema.
+        return {
+            k: expand(v)
+            for k, v in value.items()
+            if k not in ("description", "pattern") and not k.startswith("x-")
+        }
+
+    result = expand(definitions["FirstDecision"])
+    assert isinstance(result, dict)
+    return {"type": "object", **result}
