@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-16",
+  "package": "MS-I2m",
+  "stage": "A4 safe original queue continuation within original deadlines",
+  "status": "A_component_verified_controlled_clock_not_production_resume",
+  "parent": "64db8867a52d8e9e2d9362b98bac520df4ff2d47",
+  "source_sha256": {
+    "src/uaw/run/conversation_resume.py": "ccba8f02767b0c5f9c9bd735f3711de390fc03d0f43cb67da658f3472566c5c2",
+    "src/uaw/run/jobs.py": "10efc20c56f54c1b99e531cc79520865069b17d21f40ada2b53937a3052882bf",
+    "src/uaw/run/background.py": "4964f02e826d5ceeb9a55c3ae6c4ba8ccea56124a33e0274d4d7c330fb0f282b",
+    "src/uaw/run/conversation_entry.py": "b441de57992e2adf06e35d8a203d0ea73015a2abfcd37c38838dcfe54c002745",
+    "tests/integration/agent/test_conversation_resume.py": "a1eb39ee8e29cf08a470c221f2a48a5773ef64509c8604dbe5eca4f5570a2e28"
+  },
+  "unchanged_source_sha256": {
+    "contracts/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/resources/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/run/clock_ports.py": "6c924e0859f7304e0f5960835e113968ae2a28ae3f6dbce0d50bd97b3ae56461",
+    "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+  },
+  "final_distinct_sql_nodes": 28,
+  "passed": 28,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "final_receipt": "ms-i2m-a4-final-sql.xml",
+  "xml_receipts": {
+    "ms-i2m-a4-final-sql.xml": {
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "49a428d7358d663b762eae3dd8acf67bce533fe728cf7ab3bd2f7d17dbdf9d33"
+    },
+    "ms-i2m-a4-first-sql.xml": {
+      "tests": 9,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "e29ac578ed62af9738c684cec62d4ea5ab20015c2517742f060ee480d436df37"
+    },
+    "ms-i2m-a4-second-sql.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "c97fe7e3edffdf661a0aff37a4ce39c3e0de1f11ee66bd1dc2251813662d1f65"
+    }
+  },
+  "node_groups": {
+    "new_resume": 12,
+    "application_proof": 4,
+    "obsolete_failure_isolation": 3,
+    "original_conversation": 9
+  },
+  "failure_history": [
+    {
+      "receipt": "ms-i2m-a4-first-sql.xml",
+      "failed": 2,
+      "cause": "Continuation reused the original web-running Run transition request id with a different expected revision; driver stopped at started. New input frame versions now have distinct transition keys; initial frame key retained.",
+      "resolved_by": "ms-i2m-a4-second-sql.xml; then entire selected scope ms-i2m-a4-final-sql.xml"
+    }
+  ],
+  "static_preparation_failures": [
+    "Initial lint preceded formatting (line lengths/import order); final formatter and lint passed. Extracted legacy clock helper initially lacked row parameter annotations; explicit RecordTransaction/RecordRow types passed final strict Mypy."
+  ],
+  "validation_command": ".venv/Scripts/python.exe -m pytest -q -p no:cacheprovider --require-postgres tests/integration/agent/test_conversation_resume.py tests/integration/agent/test_conversation_applications.py tests/integration/agent/test_conversation_recovery.py tests/integration/agent/test_conversation_postgres.py --junitxml=docs/implementation/evidence/ms-i2m-a4-final-sql.xml",
+  "database": "isolated A development PostgreSQL; fixture users; protected process environment; no URL or credentials exported",
+  "controlled_dependencies": {
+    "model": "original owning Gateway with controlled HTTP response, not real DeepSeek",
+    "clock": "ControlledClockSeam in A test module, field transitions only, explicitly no time calculation or D accounting guarantee"
+  },
+  "verified": [
+    "Original same Run/Task/Agent/principal/model/role restored; accepted answer is applied only after original model consumption.",
+    "Two concurrent recovery requests produce one wake; stale worker save is fenced; fresh queue instance resumes persisted stage.",
+    "Actual model correction safely discards owning old settled operation, keeps old invocation and publishes only the new answer.",
+    "Actual model/Tool/reservation inventory blocks unknown, without resend.",
+    "Missing clock, different session, cancellation, expired original deadline and changed authenticated token do not wake.",
+    "Clock write failure, full queue, uncommitted clock return or expanded clock limit roll back Run/clock/binding/job/event.",
+    "Owning publication consumes injected clock in same transaction after Run update; legacy clock_ref and Run event revisions frozen before ORM mutation.",
+    "Original reply/question/provider failure/tool approval or decline/cancel/restart/artifact user acceptance/policy revocation still pass."
+  ],
+  "static": {
+    "mypy": "passed",
+    "mypy_source_files": 227,
+    "ruff": "passed",
+    "format": "passed",
+    "changed_file_count": 5
+  },
+  "production_clock_installed": false,
+  "http_auto_resume_installed": false,
+  "new_localhost_runtime_deployed": false,
+  "long_wait_execution_segments_implemented": false,
+  "D_implementation_modified": false,
+  "worker_branches_or_business_sources_modified": false,
+  "human_runtime_or_original_records_modified": false,
+  "feature_flags_changed": false,
+  "last_full_updated": false,
+  "real_provider_calls": 0,
+  "new_live_model_cost": "0",
+  "previous_pending_fees_preserved": true,
+  "pending": [
+    "D actual ExecutionClocks stage and SQL evidence",
+    "trusted new remaining-active execution segments beyond original wall deadlines",
+    "production control callback and restart recovery scan",
+    "clock stop on cancel/formal delivery terminal paths",
+    "B actual new service/browser integration",
+    "C actual candidate export/quality gate",
+    "fixed user model and H02 human acceptance"
+  ],
+  "counting": "Only the final 28 distinct SQL nodes counted. Initial 9 and target rerun 2 are not added. Previous A3 81 and historical full gates retained separately."
+}

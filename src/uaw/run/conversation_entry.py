@@ -6,6 +6,7 @@ from uaw.agent.assembly import AgentAssembly
 from uaw.agent.contracts import Payload, identifier
 from uaw.agent.conversation import BINDINGS, DECISIONS, execution_decision
 from uaw.agent.sources import check_pin
+from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import (
     RecordTransaction,
@@ -13,6 +14,7 @@ from uaw.infrastructure.db.transactions import (
     reference,
     timestamp,
 )
+from uaw.run.clock_ports import ClockChange, ConversationClockPort
 from uaw.run.inputs import RunInputReader
 from uaw.run.tool_sources import reference as source_reference
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
@@ -173,7 +175,13 @@ async def settled_effects(tx: RecordTransaction, ctx: TrustedExecutionContext) -
     await RunIdleEffects().check(tx, ctx.principal, ctx.run_id or "")
 
 
-async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecutionContext) -> Payload:
+async def publish(
+    agent: AgentAssembly,
+    operation_id: str,
+    ctx: TrustedExecutionContext,
+    *,
+    clocks: ConversationClockPort | None = None,
+) -> Payload:
     records = agent.repository.store
     operation = await agent.repository.operation(operation_id, ctx)
     if operation.phase != "finished" or operation.model_result is None:
@@ -310,51 +318,51 @@ async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecution
                     "created_at": now,
                 },
             )
-        elapsed = max(
-            0,
-            int(
-                (
-                    datetime.fromisoformat(now)
-                    - datetime.fromisoformat(clock.payload["active_since"].replace("Z", "+00:00"))
-                ).total_seconds()
-                * 1000
-            ),
-        )
-        clock_value = {
-            **clock.payload,
-            "revision": clock.revision + 1,
-            "captured_at": now,
-            "active_elapsed_ms": clock.payload["active_elapsed_ms"] + elapsed,
-            "mode": "stopped" if decision["action"] == "reply" else "waiting_for_user",
-        }
-        clock_value.pop("active_since", None)
-        if decision["action"] == "ask":
-            clock_value.update(waiting_since=now, waiting_item_ref=reference("item", item_id))
-        await tx.write(
-            "run.execution_clocks",
-            clock.resource_id,
-            "RunExecutionClock",
-            clock_value,
-            clock.revision,
-        )
-        await tx.write(
-            BINDINGS,
-            binding.resource_id,
-            "ConversationProtocolBinding",
-            {
-                **binding.payload,
-                "revision": binding.revision + 1,
-                "clock_ref": reference("checkpoint", clock.resource_id, clock.revision + 1),
-            },
-            binding.revision,
-        )
-        await tx.write("runs", run.resource_id, "RunRecord", changed, run.revision)
+        run_base = run.revision
+        await tx.write("runs", run.resource_id, "RunRecord", changed, run_base)
+        if clocks is not None:
+            clock_limit = clock.payload["active_limit_ms"]
+            clock_revision = clock.revision
+            result = await clocks.change(
+                tx,
+                ctx.principal,
+                ctx.run_id or "",
+                ClockChange(
+                    clock_revision,
+                    "stopped" if decision["action"] == "reply" else "waiting_for_user",
+                    waiting_item_ref=(
+                        Ref.model_validate(reference("item", item_id))
+                        if decision["action"] == "ask"
+                        else None
+                    ),
+                ),
+            )
+            actual = await tx.load("run.execution_clocks", ctx.run_id or "")
+            current_binding = await tx.load(BINDINGS, ctx.run_id or "")
+            if (
+                result.wire() != actual.payload
+                or actual.revision != clock_revision + 1
+                or result.revision != actual.revision
+                or result.run_id != ctx.run_id
+                or result.mode
+                != ("stopped" if decision["action"] == "reply" else "waiting_for_user")
+                or result.active_limit_ms != clock_limit
+                or current_binding.payload["clock_ref"]
+                != reference("checkpoint", actual.resource_id, actual.revision)
+                or current_binding.payload["input_revision"] != inputs.revision
+                or run.payload != changed
+            ):
+                raise reject(
+                    "conversation_clock_source_changed", "Original clock result differs", 412
+                )
+        else:
+            await legacy_clock(tx, clock, binding, decision, item_id, now)
         event = await tx.emit(
             ctx.conversation_id or "",
             "run.updated",
             changed,
-            base_revision=run.revision,
-            result_revision=run.revision + 1,
+            base_revision=run_base,
+            result_revision=run_base + 1,
         )
         if decision["action"] == "reply":
             receipt = {
@@ -374,6 +382,56 @@ async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecution
         RequestMeta(request_id=item_id, schema_version="0.1"),
         {"operation": operation.wire()},
         write,
+    )
+
+
+async def legacy_clock(
+    tx: RecordTransaction,
+    clock: RecordRow,
+    binding: RecordRow,
+    decision: Payload,
+    item_id: str,
+    now: str,
+) -> None:
+    """Original deployment compatibility; new composition injects the owning port."""
+    clock_base = clock.revision
+    elapsed = max(
+        0,
+        int(
+            (
+                datetime.fromisoformat(now)
+                - datetime.fromisoformat(clock.payload["active_since"].replace("Z", "+00:00"))
+            ).total_seconds()
+            * 1000
+        ),
+    )
+    clock_value = {
+        **clock.payload,
+        "revision": clock_base + 1,
+        "captured_at": now,
+        "active_elapsed_ms": clock.payload["active_elapsed_ms"] + elapsed,
+        "mode": "stopped" if decision["action"] == "reply" else "waiting_for_user",
+    }
+    clock_value.pop("active_since", None)
+    if decision["action"] == "ask":
+        clock_value.update(waiting_since=now, waiting_item_ref=reference("item", item_id))
+    await tx.write(
+        "run.execution_clocks",
+        clock.resource_id,
+        "RunExecutionClock",
+        clock_value,
+        clock_base,
+    )
+    await tx.write(
+        BINDINGS,
+        binding.resource_id,
+        "ConversationProtocolBinding",
+        {
+            **binding.payload,
+            "revision": binding.revision + 1,
+            "clock_ref": reference("checkpoint", clock.resource_id, clock_base + 1),
+        },
+        binding.revision,
     )
 
 

@@ -20,6 +20,7 @@ from uaw.context.contracts import InstructionRule
 from uaw.infrastructure.db.context_batch import PostgresContextRecordBatch
 from uaw.infrastructure.db.transactions import RecordTransaction, reference, timestamp
 from uaw.run.approval_router import RoutedApprovals, ToolApprovalRoute
+from uaw.run.clock_ports import ConversationClockPort
 from uaw.run.completion import RunCompletionController
 from uaw.run.file_admission import NAMESPACE as FILE_SOURCES
 from uaw.run.file_runtime import FileRunRuntime, assemble_file_run
@@ -94,9 +95,17 @@ def user_failure(failure: Payload) -> str:
 
 
 class BackgroundAgent:
-    def __init__(self, control: Container, *, conversation_mode: bool = True) -> None:
+    def __init__(
+        self,
+        control: Container,
+        *,
+        conversation_mode: bool = True,
+        conversation_clocks: ConversationClockPort | None = None,
+    ) -> None:
         self.control = control
         self.conversation_mode = conversation_mode
+        self.conversation_clocks = conversation_clocks
+        self.queue: RunJobs | None = None
         self.file_runtimes: dict[str, FileRunRuntime] = {}
         self.runtime_lock = asyncio.Lock()
 
@@ -212,7 +221,7 @@ class BackgroundAgent:
         c.bindings = replace(c.bindings, agent=self.agent.runtime)
         from uaw.run.conversation_entry import admit
 
-        return RunJobs(
+        self.queue = RunJobs(
             c.records,
             Principal(
                 id=c.settings.development_principal_id,
@@ -225,6 +234,34 @@ class BackgroundAgent:
             finalize=self.finalize,
             admit=admit if self.conversation_mode else None,
         )
+        return self.queue
+
+    async def verify_continuation(self, job: Payload) -> None:
+        """Current original authentication, model, policy and registered role only."""
+        c = self.control
+        if c.run_sources is None or c.tool_access is None:
+            raise CapabilityUnavailable("conversation.original_resume_sources")
+        actor, run = await self.guard(job)
+        ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["context"]))
+        if ctx.principal != actor or ctx.run_id != run["id"]:
+            raise reject("conversation_resume_owner", "Original context identity differs", 403)
+        await c.run_sources.current(ctx)
+        bound = await c.tool_access._binding(ctx)
+        if bound["role_ref"] != job["role_ref"]:
+            raise reject("conversation_resume_role_changed", "Original role differs", 412)
+        await c.tool_access._role(Ref.model_validate(job["role_ref"]))
+
+    async def resume_conversation(self, actor: Principal, run_id: str) -> bool:
+        from uaw.run.conversation_resume import ConversationResumer
+
+        if self.control.records is None or self.queue is None:
+            raise CapabilityUnavailable("conversation.original_queue")
+        return await ConversationResumer(
+            self.control.records,
+            self.queue,
+            clocks=self.conversation_clocks,
+            verify=self.verify_continuation,
+        ).resume(actor, run_id)
 
     async def guard(self, job: Payload) -> tuple[Principal, Payload]:
         c = self.control
@@ -382,6 +419,12 @@ class BackgroundAgent:
                 from uaw.run.conversation_entry import source_frame
 
                 frame = await source_frame(c.records, ctx)
+                if run.get("root_agent_ref"):
+                    _, _, state = await agent.repository.owned(run["root_agent_ref"]["id"], ctx)
+                    if state.active_operation_ref is not None:
+                        # Discard only an owning old operation proven safe by the
+                        # repository; unresolved model/Tool intents never replay.
+                        await agent.repository.discard_stale_unsent(state.active_operation_ref, ctx)
                 return {**base, "stage": "understood", "frame_ref": frame}
             inputs = await RunInputReader(c.records).read(ctx)
             result: Payload = dict(
@@ -401,6 +444,9 @@ class BackgroundAgent:
             # its event. A second driver Item repeats the same task summary.
             return {**base, "stage": "understood", "frame_ref": result["output_refs"][0]}
         if job["stage"] == "understood":
+            if "role_ref" in job:
+                await self.verify_continuation(job)
+                return {**base, "stage": "started"}
             method_id = "web-method-" + key
             method = await contexts.inputs.register_rule(
                 InstructionRule(
@@ -462,6 +508,7 @@ class BackgroundAgent:
             return {**base, "stage": "started", "role_ref": role.wire()}
         if job["stage"] == "started":
             root = run.get("root_agent_ref")
+            number = 1
             if root is None:
                 result = await agent.runtime.start(
                     {
@@ -475,17 +522,28 @@ class BackgroundAgent:
                 if result["kind"] != "ok":
                     return await self.failure(base, result)
                 root = result["output_refs"][0]
+            else:
+                instance, _, state = await agent.repository.owned(root["id"], ctx)
+                if state.active_operation_ref is not None:
+                    raise reject(
+                        "conversation_original_operation_pending", "Original step unresolved", 409
+                    )
+                root = pin("agent_instance", instance.wire()).wire()
+                number = max(job["step"], state.steps) + 1
             run = await c.run_service.get_run(actor, key)
             if run["status"] in ("preparing", "waiting_for_user"):
+                running_key = "web-running-" + key
+                if await enabled(c.records, ctx) and job["frame_ref"]["version"] != "1":
+                    running_key += "-frame-" + job["frame_ref"]["version"]
                 await c.run_service.advance(
-                    actor, key, "running", meta("web-running-" + key, run["revision"])
+                    actor, key, "running", meta(running_key, run["revision"])
                 )
             return {
                 **base,
                 "stage": "step",
-                "step": 1,
+                "step": number,
                 "instance_ref": root,
-                "step_context": self.step_context(ctx, 1).wire(),
+                "step_context": self.step_context(ctx, number).wire(),
             }
         if job["stage"] == "step":
             step_ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["step_context"]))
@@ -534,9 +592,7 @@ class BackgroundAgent:
                 return {**base, "step": step, "step_context": self.step_context(ctx, step).wire()}
             if result["payload"]["action"] in ("wait", "blocked"):
                 if await enabled(c.records, ctx):
-                    from uaw.run.conversation_entry import publish
-
-                    await publish(agent, operation_id, step_ctx)
+                    await self.publish_conversation(agent, operation_id, step_ctx)
                 else:
                     await self.publish_pause(agent, operation_id, step_ctx, result)
                 return {**base, "state": "blocked"}
@@ -545,9 +601,7 @@ class BackgroundAgent:
                 assert operation.model_result is not None
                 original = operation.model_result["payload"]["structured_data"]
                 if original["action"] == "reply":
-                    from uaw.run.conversation_entry import publish
-
-                    await publish(agent, operation_id, step_ctx)
+                    await self.publish_conversation(agent, operation_id, step_ctx)
                     return {**base, "state": "finished", "stage": "finished"}
                 from uaw.run.conversation_entry import select_delivery
 
@@ -584,6 +638,16 @@ class BackgroundAgent:
             self.file_runtimes.pop(key, None)
             return {**base, "stage": "finished", "state": "finished"}
         raise reject("background_stage_invalid", "Original background stage is invalid", 412)
+
+    async def publish_conversation(
+        self, agent: AgentAssembly, operation_id: str, ctx: TrustedExecutionContext
+    ) -> None:
+        from uaw.run.conversation_entry import publish
+
+        if self.conversation_clocks is None:
+            await publish(agent, operation_id, ctx)
+        else:
+            await publish(agent, operation_id, ctx, clocks=self.conversation_clocks)
 
     async def resume_approval(self, job: Payload, operation: LoopOperation) -> None:
         """Wake the original step after a real decision, never grant Tool dispatch."""

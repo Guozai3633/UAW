@@ -125,6 +125,51 @@ class RunJobs:
 
         return await self.transactions.inspect(self.owner, "web.queue", claim)
 
+    async def wake(self, tx: RecordTransaction, original: Payload) -> Payload:
+        """Join the original conversation transaction; never grant execution rights."""
+        validate_contract("BackgroundRunJob", original)
+        if tx.owner != self.owner.id or original["principal"]["id"] != tx.owner:
+            raise reject("job_owner_denied", "Original queue owner required", 403)
+        await tx.session.execute(
+            select(func.pg_advisory_xact_lock(func.hashtextextended(f"{tx.owner}:web.queue", 0)))
+        )
+        row = await tx.load(JOBS, original["run_id"])
+        if row.payload != original or row.payload["state"] != "blocked":
+            raise StoreConflict("job_wake_stale")
+        active = await tx.session.scalar(
+            select(func.count())
+            .select_from(RecordRow)
+            .where(
+                RecordRow.principal_id == tx.owner,
+                RecordRow.namespace == JOBS,
+                RecordRow.deleted.is_(False),
+                RecordRow.payload["state"].astext.in_(("queued", "working", "waiting")),
+            )
+        )
+        if active is None or active >= self.capacity:
+            raise reject("run_queue_full", "Background queue has no continuation slot", 409)
+        changed = {
+            **row.payload,
+            "revision": row.revision + 1,
+            "fence": row.payload["fence"] + 1,
+            "stage": "prepared",
+            "state": "queued",
+            "ready_at": datetime.now(UTC).isoformat(),
+        }
+        # Original row versions retain failures, previous frame and original calls.
+        # Fresh input preparation must not reuse an old output/attempt/lease.
+        for key in (
+            "failure",
+            "frame_ref",
+            "step_context",
+            "proposal_ref",
+            "worker_id",
+            "lease_expires",
+        ):
+            changed.pop(key, None)
+        await tx.write(JOBS, original["run_id"], "BackgroundRunJob", changed, row.revision)
+        return changed
+
     async def save(self, original: Payload, result: Payload) -> Payload:
         validate_contract("BackgroundRunJob", result)
 
