@@ -10,6 +10,7 @@
 - [http · runs.delivery.accept](../interfaces/http--runs-delivery-accept.md)
 - [http · tasks.attach_conversation](../interfaces/http--tasks-attach-conversation.md)
 - [component · run.state](../interfaces/component--run-state.md)
+- [http · runs.conversation.get](../interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](../interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](../interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](../interfaces/http--runs-correction-create.md)

@@ -1,3 +1,13 @@
+# MS-I2m准备：接口与四包已固定，正式SHA发布见页首后续记录
+
+2026-10-16，A / integration。固定共同标签将为ms-i2m-start；准确40位SHA必须由本次提交后正式发布回执给出，不能把历史标签或此准备行当开工回执。
+
+[允许目录和四里程碑](requests/A/MS-I2m-parallel-packages.md) · [A/B/D固定接口](requests/A/MS-I2m-AD-contract.md) · [四份提示词](requests/A/MS-I2m-session-prompts.md)。A/MS-I2m原Run接续/API与集成；B/MS-U4前端；C/MS-E1临时独立质量评测；D/MS-K1临时持久时钟。C/D原Tool/Runner成果和未完成本机链保留。
+
+H01-v5本人本次反馈“可以了”，普通问答复体验认可；原服务/快照保留，H02/专业事实/续跑/本机整轮未接受。新增RunConversationView和内部Clock port可消费；所有新控制HTTP目前implemented=false。阶段到即审，不等待全员最终交付。
+
+以下为原P1-13与更早记录，旧状态不覆盖正式新派发。
+
 # P1-13 工程组件：普通问答单次调用已实跑，H01-v5修复版已启动
 
 2026-10-16，A / integration。新Run走conversation-v1，普通reply只保存聊天消息，不固定独立理解/自评；实际工具/成果仍走原权限、核验与接受。原Run保留旧协议。准确源码 **305bd0a3ff7896f000a0f2dd5210d710f385a09f** / **h02-p1-13-source**；H01-v5实际127.0.0.2:8011/5181已ready、原账号已连接，尚不据此派B/C/D新包。

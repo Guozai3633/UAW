@@ -466,3 +466,48 @@ CONFIGURATIONS = {
     "4": ["A", "B", "C", "D"],
     "5": ["A", "B", "C", "D", "E"],
 }
+
+
+# Current dispatch is separate from the immutable legacy BASELINE/history above.
+# Per-round ownership overrides legacy broad module ownership for this package.
+CURRENT_DISPATCH = {
+    "round": "MS-I2m", "fixed_ref": "ms-i2m-start",
+    "exact_sha_authority": "origin/integration:docs/coordination/DISPATCH.md",
+    "package_document": "docs/coordination/requests/A/MS-I2m-parallel-packages.md",
+    "contract_document": "docs/coordination/requests/A/MS-I2m-AD-contract.md",
+    "prompts_document": "docs/coordination/requests/A/MS-I2m-session-prompts.md",
+    "sessions": {
+        "A": {"package": "MS-I2m", "role": "run_control_and_integration",
+              "excluded_paths": ["apps/web/", "src/uaw/evaluation/",
+                  "ops/evaluate_conversation.py", "src/uaw/run/execution_clock.py",
+                  "tests/unit/evaluation/", "tests/fixtures/evaluation/",
+                  "tests/unit/run_clock/", "tests/integration/run_clock/",
+                  "docs/implementation/evaluation/"]},
+        "B": {"package": "MS-U4", "role": "web_conversation_control",
+              "allowed_paths": ["apps/web/", "docs/coordination/requests/B/",
+                  "docs/coordination/handoffs/B.md", "tests/.artifacts/B/"]},
+        "C": {"package": "MS-E1", "role": "offline_quality_evaluation",
+              "allowed_paths": ["src/uaw/evaluation/", "ops/evaluate_conversation.py",
+                  "tests/unit/evaluation/", "tests/fixtures/evaluation/",
+                  "docs/implementation/evaluation/", "docs/coordination/requests/C/",
+                  "docs/coordination/handoffs/C.md", "tests/.artifacts/C/"]},
+        "D": {"package": "MS-K1", "role": "durable_execution_clock",
+              "allowed_paths": ["src/uaw/run/execution_clock.py", "tests/unit/run_clock/",
+                  "tests/integration/run_clock/", "docs/coordination/requests/D/",
+                  "docs/coordination/handoffs/D.md", "tests/.artifacts/D/"]},
+    },
+    "milestones_per_package": 4, "integrate_on_stage_sha": True,
+    "current_human_runtime": "H01-v5", "replace_human_runtime": False,
+    "runtime_subagents_enabled": False,
+}
+for session, package_id, rounds, title in [
+    ("A", "MS-I2m", ["P1-14", "P1-16", "P1-17"], "原Run控制和逐阶段集成"),
+    ("B", "MS-U4", ["P1-14", "P1-16"], "对话控制与成果页面"),
+    ("C", "MS-E1", ["P1-15"], "独立样本和离线质量评测"),
+    ("D", "MS-K1", ["P1-14"], "持久主动/等待时钟组件"),
+]:
+    PACKAGES.append(dict(id=package_id, session=session, rounds=rounds, title=title,
+        deps=[], scope="h02_parallel_component",
+        tasks=["按CURRENT_DISPATCH固定基线与正式分包M1–M4连续开发；阶段SHA到即审。"],
+        acceptance=["组件、真实整链、事实评测、本人体验分别记录，完整门槛不因提前分包降低。"],
+        fixed_base_ref="ms-i2m-start", package_document=CURRENT_DISPATCH["package_document"]))

@@ -1,3 +1,11 @@
+# 2026-10-16：MS-I2m / MS-I2m
+
+当前共同基线ms-i2m-start，准确40位SHA以远端DISPATCH页首正式记录核对；只合固定tag，不合浮动integration。原Run控制/API、真实Idle库存/队列/模型/文本成果接线及逐包接受。
+
+先读[本轮固定接口](../../coordination/requests/A/MS-I2m-AD-contract.md)、[分包第1/2/3/7/8节](../../coordination/requests/A/MS-I2m-parallel-packages.md)及[本会话提示词](../../coordination/requests/A/MS-I2m-session-prompts.md)。四里程碑连续完成；M1/M2阶段SHA到即交A，不等下一次派发。允许文件以本轮第2节为准，不自动扩大旧包或改其他worker业务。
+
+原提交/handoff/失败/未过门槛保留，以下均为历史记录。
+
 # H02当前：P1-12契约组件交付，下一步P1-13真实接线
 
 2026-10-14，准确source b13d8d9612b45f8833cebd29b603a940e0b815e9 / h02-p1-12-source，继续E:/UAW、integration。原1362结构兼容，56定向/217类型/1399正例335反例通过；新HTTP仍未安装，不把协议组件通过当整轮accepted。

@@ -723,6 +723,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3179,6 +3185,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3524,6 +3536,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3743,6 +3761,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3819,6 +3843,7 @@
         "context.composer"
       ],
       "tasks": [
+        "MS-I2m：A原Run控制与实际接线；B/MS-U4前端；D/MS-K1新增持久时钟组件。准确固定基线和允许目录按DISPATCH/正式分包；组件开发不等于续跑整链接受。",
         "原子保存具体question Item、waiting状态与暂停检查点；API按主体/问题/Run版本CAS追加不可变补充，不覆盖原文。",
         "在安全边界消费纠正，按真实依赖局部失效；保留原材料与未受影响成果；受理回执与生效反馈分别展示。",
         "用户等待不耗主动执行时间；续跑复核实际剩余额度、原模型、授权/资料访问、取消和未知效果；原调用deadline不延长。",
@@ -3837,7 +3862,7 @@
       "deliverables": [
         "问答/纠正/计时/恢复整链证据"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
       "implementation_evidence": [],
@@ -4277,6 +4302,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -4326,7 +4357,11 @@
         "apps/web/src/"
       ],
       "implementation_record_target": "docs/implementation/P1-14.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-I2m",
+        "MS-U4",
+        "MS-K1"
+      ]
     },
     {
       "id": "P1-15",
@@ -4343,6 +4378,7 @@
         "support.observability"
       ],
       "tasks": [
+        "MS-I2m C/MS-E1正式分派独立评测组件；新evaluation目录与原Tool包隔离。人工未核对的样本不伪造human-approved，真实候选/费用由A导出后再验。",
         "建立人工查证的小样本与反例，记录原材料、正确事实、允许假设、必要澄清条件和参考依据；H01错误进入回归。",
         "固定候选/基线源码、提示词、模型配置和样本版本；区分修订集/保留集，按场景审阅而非匹配固定答案措辞。",
         "报告答案关键错误率、Reviewer漏判率及其分母、不必要阻断/缺材料错误执行，Reviewer未启用记N/A。",
@@ -4423,7 +4459,9 @@
         "docs/implementation/evaluation/"
       ],
       "implementation_record_target": "docs/implementation/P1-15.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-E1"
+      ]
     },
     {
       "id": "P1-16",
@@ -4610,7 +4648,10 @@
         "apps/web/src/"
       ],
       "implementation_record_target": "docs/implementation/P1-16.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-I2m",
+        "MS-U4"
+      ]
     },
     {
       "id": "P1-17",
@@ -4667,7 +4708,9 @@
         "tests/integration/scenarios/"
       ],
       "implementation_record_target": "docs/implementation/P1-17.md",
-      "parallel_packages": []
+      "parallel_packages": [
+        "MS-I2m"
+      ]
     },
     {
       "id": "P2-01",
@@ -5993,6 +6036,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -6402,6 +6451,12 @@
           "id": "run.budget",
           "request": "InternalRunBudgetRequest",
           "response": "InternalRunBudgetOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
         },
         {
           "channel": "http",
@@ -7376,6 +7431,12 @@
           "id": "run.cancel",
           "request": "CancelInternalRequest",
           "response": "CancellationResult"
+        },
+        {
+          "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
         },
         {
           "channel": "http",
@@ -9264,6 +9325,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -9498,6 +9565,12 @@
           "id": "run.checkpoint",
           "request": "CheckpointCaptureRequest",
           "response": "Checkpoint"
+        },
+        {
+          "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
         },
         {
           "channel": "http",
@@ -10523,6 +10596,12 @@
           "id": "support.configuration",
           "request": "InternalSupportConfigurationRequest",
           "response": "InternalSupportConfigurationOutput"
+        },
+        {
+          "channel": "http",
+          "id": "runs.conversation.get",
+          "request": "RunsGetRequest",
+          "response": "RunConversationView"
         },
         {
           "channel": "http",

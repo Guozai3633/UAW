@@ -239,7 +239,16 @@ def test_invalid_clock_cannot_create_time_or_coerce_budget(invalid: dict) -> Non
 def test_published_endpoints_are_not_falsely_marked_implemented() -> None:
     catalog = json.loads((ROOT / "contracts/interfaces.json").read_text(encoding="utf-8"))
     new = [op for op in catalog["operations"] if op.get("protocol") == "conversation-v1"]
-    assert len(new) == 7
+    assert {op["id"] for op in new} == {
+        "runs.conversation.get",
+        "runs.clarification.get",
+        "runs.clarification.answer",
+        "runs.correction.create",
+        "runs.continuation.get",
+        "AgentRuntime.first_decision",
+        "RunRuntime.commit_reply",
+        "RunRuntime.commit_question",
+    }
     assert all(not op["implemented"] for op in new)
     api = json.loads((ROOT / "contracts/openapi.json").read_text(encoding="utf-8"))
     for op in new:

@@ -1,3 +1,9 @@
+# 2026-10-16：MS-I2m新增精确问题发现读图
+
+P1-13单次普通回复已实跑，H01-v5普通问答本人反馈认可。原Run续跑/计时仍待实际接线。本轮新增GET /v1/runs/{run_id}/conversation与RunConversationView，精确字段/允许目录/来源见[固定接口](../coordination/requests/A/MS-I2m-AD-contract.md)及[正式分包](../coordination/requests/A/MS-I2m-parallel-packages.md)。五个控制HTTP当前均仅契约，未安装handler，不能当已可调用。
+
+0.2兼容扩展不改变旧1399个命名schema；新增读图及其结果/请求封装共3个结构，原0.1与P1-12控制DTO保持。以下为原设计，当前可用性以DISPATCH及阶段实现为准。
+
 # 对话快通路与原任务续跑：接口修订设计
 
 2026-10-14，架构v0.11。**P1-12已加入契约目录0.2/schema/OpenAPI及Python严格消费者；新HTTP与运行流程仍未装配，不能当已可调用接口。** 原0.1对象/动作/期限保持，新对话控制meta为0.2。精确消费与可用性见 [P1-12固定协议](../coordination/requests/A/H02-P1-12-ports.md) 和 [本轮回执](../implementation/P1-12.md)。依据：[ADR-001](../decisions/ADR-001-conversation-and-delivery.md)、[详细执行设计](../design/CONVERSATION_EXECUTION.md)。

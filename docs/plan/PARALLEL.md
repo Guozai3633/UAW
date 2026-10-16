@@ -1,3 +1,9 @@
+# 2026-10-16：当前MS-I2m按四个独立组件并行
+
+当前正式分工以[MS-I2m分包](../coordination/requests/A/MS-I2m-parallel-packages.md)与远端DISPATCH准确基线为准：A原Run控制/真实接线，B前端，C独立质量评测，D持久执行计时。C/D是本包明确临时新增文件归属，原Tool/Runner交付与未过整链保留；没有新建worktree或增加运行时子Agent。
+
+[四份提示词](../coordination/requests/A/MS-I2m-session-prompts.md)。worker各自同步固定tag，A不代切分支；各包M1–M4连续推进、阶段到即审，模块验证归worker，A做跨模块与汇合全量。历史分包与回执如下，不据旧派发自动开工。
+
 # UAW 多session开发计划
 
 v0.17 · 2026-10-10 · 方案：**3个开发session＋1个集成session，共4个**。

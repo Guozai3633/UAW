@@ -2,7 +2,7 @@
 
 [计划入口](README.md) · [完整接口定义](../api/README.md)
 
-295个接口按其架构节点反查相关轮次。**关联不是一次性实施承诺，也不是接口就绪表。** ui/ingress/Runtime根聚合会把早期轮和晚期轮同时列出；实际可调用分支必须由具体轮任务、能力状态及验收证据判断。
+296个接口按其架构节点反查相关轮次。**关联不是一次性实施承诺，也不是接口就绪表。** ui/ingress/Runtime根聚合会把早期轮和晚期轮同时列出；实际可调用分支必须由具体轮任务、能力状态及验收证据判断。
 
 相同ID在不同channel下是不同接口，以 `(channel,id)` 定位。请求/返回字段以逐接口文档和对象字典为准。
 
@@ -296,6 +296,7 @@
 | [run.resume.effects](../api/interfaces/component--run-resume-effects.md) / 内部组件 | `InternalRunResumeEffectsRequest` → `ResumeEffectsResult` | [P5-02](rounds/P5-02.md) |
 | [run.resume.workspace](../api/interfaces/component--run-resume-workspace.md) / 内部组件 | `InternalRunResumeWorkspaceRequest` → `CompatibilityReport` | [P5-02](rounds/P5-02.md) |
 | [run.resume.continue](../api/interfaces/component--run-resume-continue.md) / 内部组件 | `InternalRunResumeContinueRequest` → `RunRecord` | [P5-02](rounds/P5-02.md) |
+| [runs.conversation.get](../api/interfaces/http--runs-conversation-get.md) / HTTP | `RunsGetRequest` → `RunConversationView` | [P0-04](rounds/P0-04.md)、[P1-10](rounds/P1-10.md)、[P1-12](rounds/P1-12.md)、[P1-13](rounds/P1-13.md)、[P1-14](rounds/P1-14.md)、[P2-08](rounds/P2-08.md)、[P3-03](rounds/P3-03.md)、[P3-07](rounds/P3-07.md)、[P4-09](rounds/P4-09.md)、[P5-01](rounds/P5-01.md)、[P5-05](rounds/P5-05.md) |
 | [runs.clarification.get](../api/interfaces/http--runs-clarification-get.md) / HTTP | `RunClarificationGetRequest` → `ClarificationView` | [P0-04](rounds/P0-04.md)、[P1-10](rounds/P1-10.md)、[P1-12](rounds/P1-12.md)、[P1-13](rounds/P1-13.md)、[P1-14](rounds/P1-14.md)、[P2-08](rounds/P2-08.md)、[P3-03](rounds/P3-03.md)、[P3-07](rounds/P3-07.md)、[P4-09](rounds/P4-09.md)、[P5-01](rounds/P5-01.md)、[P5-05](rounds/P5-05.md) |
 | [runs.clarification.answer](../api/interfaces/http--runs-clarification-answer.md) / HTTP | `RunClarificationAnswerRequest` → `RunContinuationReceipt` | [P0-04](rounds/P0-04.md)、[P1-10](rounds/P1-10.md)、[P1-12](rounds/P1-12.md)、[P1-13](rounds/P1-13.md)、[P1-14](rounds/P1-14.md)、[P2-08](rounds/P2-08.md)、[P3-03](rounds/P3-03.md)、[P3-07](rounds/P3-07.md)、[P4-09](rounds/P4-09.md)、[P5-01](rounds/P5-01.md)、[P5-05](rounds/P5-05.md) |
 | [runs.correction.create](../api/interfaces/http--runs-correction-create.md) / HTTP | `RunCorrectionRequest` → `RunContinuationReceipt` | [P0-04](rounds/P0-04.md)、[P1-10](rounds/P1-10.md)、[P1-12](rounds/P1-12.md)、[P1-13](rounds/P1-13.md)、[P1-14](rounds/P1-14.md)、[P2-08](rounds/P2-08.md)、[P3-03](rounds/P3-03.md)、[P3-07](rounds/P3-07.md)、[P4-09](rounds/P4-09.md)、[P5-01](rounds/P5-01.md)、[P5-05](rounds/P5-05.md) |

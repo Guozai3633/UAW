@@ -204,6 +204,17 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
         operations[-1].update(wire_version=WIRE_VERSION, request_meta="ConversationRequestMeta",
                               requires_cas=write, protocol=PROTOCOL, browser_session=True)
 
+    obj("RunConversationView", "run", "当前Run对话控制读图；问题ID来自持久来源，不猜消息文本。", {
+        "protocol": field(literal(PROTOCOL), "对话协议"),
+        "run": field("RunRecord", "当前原Run及CAS修订"),
+        "input_revision": revision("当前有效输入版本"),
+        "question": field("ClarificationView", "当前仍开放的具体问题；没有时省略，不传null", True),
+        "continuation_request_ids": field(arr("ID", 64), "按输入版本排序的既有补充request_id；查询原回执用", uniqueItems=True),
+    }, ["同一事务内读取当前owned会话/Run/协议/输入集/问题/补充；问题必须与当前Run/input版本一致。",
+        "只读，不触发执行/续期/重发；旧Run无协议返回明确503，取消/终态保持可读。",
+        "question只在open且原Run等待时返回；人工工具审批与成果接受不伪装成澄清。"])
+    http("runs.conversation.get", "GET", "/v1/runs/{run_id}/conversation", "RunsGetRequest", "RunConversationView")
+
     obj("RunClarificationGetRequest", "run", "读取原Run特定问题，不猜最新问题。", {
         "run_id": field("ID", "路径原Run"), "question_item_id": field("ID", "路径原问题"),
     })

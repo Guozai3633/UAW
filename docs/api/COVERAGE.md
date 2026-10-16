@@ -56,6 +56,7 @@
 - [http · runner.local.get](interfaces/http--runner-local-get.md)
 - [http · runner.local.stop](interfaces/http--runner-local-stop.md)
 - [component · ui](interfaces/component--ui.md)
+- [http · runs.conversation.get](interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](interfaces/http--runs-correction-create.md)
@@ -78,6 +79,7 @@
 - [http · runner.enrollments.begin](interfaces/http--runner-enrollments-begin.md)
 - [http · runner.local.begin](interfaces/http--runner-local-begin.md)
 - [component · ingress](interfaces/component--ingress.md)
+- [http · runs.conversation.get](interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](interfaces/http--runs-correction-create.md)
@@ -699,6 +701,7 @@
 - [http · web.session.logout](interfaces/http--web-session-logout.md)
 - [http · tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md)
 - [component · run.history](interfaces/component--run-history.md)
+- [http · runs.conversation.get](interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](interfaces/http--runs-correction-create.md)
@@ -716,6 +719,7 @@
 - [http · runs.delivery.accept](interfaces/http--runs-delivery-accept.md)
 - [http · tasks.attach_conversation](interfaces/http--tasks-attach-conversation.md)
 - [component · run.state](interfaces/component--run-state.md)
+- [http · runs.conversation.get](interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](interfaces/http--runs-correction-create.md)
@@ -738,6 +742,7 @@
 [详细开发设计](../../docs/design/components/run-budget.md) · 计划位置：`src/uaw/run/budget.py`。
 
 - [component · run.budget](interfaces/component--run-budget.md)
+- [http · runs.conversation.get](interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](interfaces/http--runs-correction-create.md)
@@ -1093,4 +1098,3 @@
 
 - [http · runs.resume](interfaces/http--runs-resume.md)
 - [component · run.resume.continue](interfaces/component--run-resume-continue.md)
-

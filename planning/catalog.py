@@ -605,6 +605,13 @@ r("P1-17","foundation","H02对话与文本成果真人体验","固定版本交�
  "本人能在原Run自然继续，无强制停止重发；普通无工具样例一次成功调用，真实失败另计。",
  "工程、事实质量、本人体验、接受/返工和全部费用分开记录，任何未过核心项保持未通过。"],
  ["docs/implementation/human-tests/","tests/integration/scenarios/"],["H02固定版本和人工反馈闭环","独立于本机/协作的文本里程碑结论"],phase_gate=None)
+# MS-I2m assignments retain the full H02 acceptance gates.
+for package in ROUNDS:
+    if package["id"] == "P1-14":
+        package["status"] = "in_progress"
+        package["tasks"].insert(0, "MS-I2m：A原Run控制与实际接线；B/MS-U4前端；D/MS-K1新增持久时钟组件。准确固定基线和允许目录按DISPATCH/正式分包；组件开发不等于续跑整链接受。")
+    if package["id"] == "P1-15":
+        package["tasks"].insert(0, "MS-I2m C/MS-E1正式分派独立评测组件；新evaluation目录与原Tool包隔离。人工未核对的样本不伪造human-approved，真实候选/费用由A导出后再验。")
 ROUNDS.sort(key=lambda package: package["id"])
 for package in ROUNDS:
     if package["id"] == "P1-12":

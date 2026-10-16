@@ -1,3 +1,11 @@
+# 2026-10-16：MS-I2m / MS-E1
+
+当前共同基线ms-i2m-start，准确40位SHA以远端DISPATCH页首正式记录核对；只合固定tag，不合浮动integration。本包临时负责独立质量评测新增目录；原Tool源码不动，原交付保留。
+
+先读[本轮固定接口](../../coordination/requests/A/MS-I2m-AD-contract.md)、[分包第1/2/5/7/8节](../../coordination/requests/A/MS-I2m-parallel-packages.md)及[本会话提示词](../../coordination/requests/A/MS-I2m-session-prompts.md)。四里程碑连续完成；M1/M2阶段SHA到即交A，不等下一次派发。允许文件以本轮第2节为准，不自动扩大旧包或改其他worker业务。
+
+原提交/handoff/失败/未过门槛保留，以下均为历史记录。
+
 # 2026-10-12：MS-T2i-b 已交付，当前无新包
 
 源码223c9a9963414bdc1ae71d3e723224d0958ab63c、handoff730a419c7b6558d239a701e3206b48a9cb353043保留。

@@ -1,3 +1,18 @@
+# 2026-10-16：MS-I2m并行开发入口
+
+P1-13实际普通聊天一次固定模型调用已交付；H01-v5本次本人反馈“可以了”，仅认可普通问答复体验。P1-14原Run续跑、P1-15独立正确性及H02完整验收仍未通过。
+
+[正式分包与M1–M4](../coordination/requests/A/MS-I2m-parallel-packages.md) · [固定A/B/D接口与C消费约定](../coordination/requests/A/MS-I2m-AD-contract.md) · [四份提示词](../coordination/requests/A/MS-I2m-session-prompts.md)。共同标签ms-i2m-start及准确40位SHA以远端DISPATCH页首正式发布为准。
+
+| Session | 本轮模块 | 说明 |
+| --- | --- | --- |
+| A | Run/API与真实接线 | 同Run回答/纠正、安全消费、实际固定模型和逐阶段集成 |
+| B | apps/web | 问题发现/原Run答复、受理与生效、刷新及成果审阅 |
+| C | 独立质量评测 | 临时新增evaluation目录；原Tool交付保留，不扩大原Tool包 |
+| D | 执行计时组件 | 临时新增execution_clock.py；主动/等待/CAS恢复，不延长旧调用或授权 |
+
+新增RunConversationView读图合同解决页面无法准确发现问题的缺口；现有P1-12四端点保持兼容，实际handlers到A阶段公布后才联调。C/D本轮明确新文件归属，暂停继续原本机链；本机首次链仍独立未通过。每包四里程碑连续完成，阶段SHA到即审，不等待全员最终交付。原表与历史状态如下，冲突以本段及正式DISPATCH为准。
+
 # H02：下一次对话与单 Agent 文本体验开发安排
 
 2026-10-14。P1-12公共契约/严格消费者已交付，准确阶段源码以DISPATCH为准；**P1-13～17尚未验收，新页面/续跑handler尚未装配，无新worker正式包**。本页由 [ADR-001](../decisions/ADR-001-conversation-and-delivery.md) 约束，任务权威在 planning/catalog.py，生成轮次页记录精确依赖。[P1-12消费说明](../coordination/requests/A/H02-P1-12-ports.md)。

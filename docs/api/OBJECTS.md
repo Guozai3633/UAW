@@ -1104,6 +1104,8 @@
 | [HttpRunsContinuationGetResult](objects/HttpRunsContinuationGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsControlEnvelope](objects/HttpRunsControlEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsControlResult](objects/HttpRunsControlResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsConversationGetEnvelope](objects/HttpRunsConversationGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsConversationGetResult](objects/HttpRunsConversationGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsCorrectionCreateEnvelope](objects/HttpRunsCorrectionCreateEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsCorrectionCreateResult](objects/HttpRunsCorrectionCreateResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsDeliveryAcceptEnvelope](objects/HttpRunsDeliveryAcceptEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1215,6 +1217,7 @@
 | [RunContinuationGetRequest](objects/RunContinuationGetRequest.md) | 原提交响应丢失或刷新后的受理/生效查询。 |
 | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | 补充受理和实际生效回执，不等于最终成果完成。 |
 | [RunControlRequest](objects/RunControlRequest.md) | 内部控制入口。 |
+| [RunConversationView](objects/RunConversationView.md) | 当前Run对话控制读图；问题ID来自持久来源，不猜消息文本。 |
 | [RunCorrectionRequest](objects/RunCorrectionRequest.md) | 当前Run纠正，不让客户端指定任意执行节点或权限。 |
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
 | [RunDeliveryView](objects/RunDeliveryView.md) | 真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。 |

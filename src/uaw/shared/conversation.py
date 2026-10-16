@@ -174,6 +174,29 @@ class ClarificationView(ContractModel):
         return self
 
 
+class RunConversationView(ContractModel):
+    protocol: Protocol
+    run: JsonObject
+    input_revision: PositiveRevision
+    continuation_request_ids: tuple[ID, ...]
+    question: ClarificationView | None = None
+
+    @model_validator(mode="after")
+    def check_question_scope(self) -> Self:
+        if self.question is not None:
+            view = self.question
+            if (
+                view.question.run_id != self.run["id"]
+                or view.question.conversation_id != self.run["conversation_id"]
+                or view.run_revision != self.run["revision"]
+                or view.run_status != self.run["status"]
+                or view.input_revision != self.input_revision
+                or view.question.state != "open"
+            ):
+                raise ValueError("Question view does not match the current owned Run")
+        return self
+
+
 class RunClarificationAnswerRequest(ContractModel):
     run_id: ID
     question_item_id: ID

@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-16",
+  "round": "MS-I2m",
+  "scope": "fixed_contracts_parallel_dispatch_preparation",
+  "status": "passed",
+  "base_parent": "57c4d9528cc55ead1f8ea04061c824da81f3c300",
+  "fixed_ref": "ms-i2m-start",
+  "exact_commit": "formal_publication_record_in_DISPATCH",
+  "contract_compatibility": {
+    "unchanged_existing_schemas": 1399,
+    "added_schemas": [
+      "HttpRunsConversationGetEnvelope",
+      "HttpRunsConversationGetResult",
+      "RunConversationView"
+    ],
+    "packaged_schema_byte_identical": true,
+    "http_handlers_installed": false
+  },
+  "tests": {
+    "final_distinct_nodes": 54,
+    "passed": 54,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "first_receipt": "docs/implementation/evidence/ms-i2m-contract-tests.xml",
+    "first_failures": 6,
+    "first_passed": 48,
+    "fixes": [
+      "Synchronized authoritative root schema into actual runtime package.",
+      "Preserved all seven operation assertions and added the explicit discovery operation."
+    ],
+    "final_receipt": "docs/implementation/evidence/ms-i2m-contract-final-tests.xml"
+  },
+  "static": {
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "mypy_source_files": 221
+  },
+  "contract_checker": {
+    "schemas": 1402,
+    "positive_examples": 1402,
+    "negative_rejections": 336,
+    "local_links": 18411,
+    "historical_evidence_source": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+    "historical_675_is_not_current_regression": true
+  },
+  "live_model_calls": 0,
+  "new_model_cost": 0,
+  "new_sql_tests_run": 0,
+  "human_feedback": {
+    "text": "可以了，开始下一轮的开发吧",
+    "accepted_scope": "H01-v5 ordinary conversation retest only"
+  },
+  "pending": [
+    "same-Run HTTP writes and safe application",
+    "durable clock implementation and integration",
+    "independent human-grounded quality gate",
+    "H02 text deliverable/human workflow",
+    "original native file chain"
+  ],
+  "unchanged": [
+    "H01-v5 runtime snapshot",
+    "user history",
+    "original failures and pending costs",
+    "old last_full",
+    "flags"
+  ],
+  "worker_branches_modified": false,
+  "worker_messages_sent": false
+}

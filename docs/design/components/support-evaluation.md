@@ -1,3 +1,9 @@
+# MS-I2m实施归属补充
+
+2026-10-16：C/MS-E1独立开发离线评测，实际本轮代码目录为新src/uaw/evaluation/、ops/evaluate_conversation.py及专属fixtures/tests。原下文shared/evaluation.py是设计位置，不作为本包新实现入口。精确字段在C M1阶段固定后由A消费；管理员HTTP尚未实现。人工未核对的候选样本标needs_human_review，不伪造human-approved或发布通过。
+
+[四里程碑和允许目录](../../coordination/requests/A/MS-I2m-parallel-packages.md) · [消费接口](../../coordination/requests/A/MS-I2m-AD-contract.md)。原设计与历史引用如下。
+
 # 离线质量评测：开发设计
 
 节点 `support.evaluation` · UAW v0.11 · 2026-10-14 · 状态：目标策略；实际分支与回执见实施记录。

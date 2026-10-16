@@ -254,6 +254,11 @@
           "doc": "docs/api/interfaces/component--ui.md"
         },
         {
+          "id": "runs.conversation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-conversation-get.md"
+        },
+        {
           "id": "runs.clarification.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-clarification-get.md"
@@ -344,6 +349,11 @@
           "id": "ingress",
           "channel": "component",
           "doc": "docs/api/interfaces/component--ingress.md"
+        },
+        {
+          "id": "runs.conversation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-conversation-get.md"
         },
         {
           "id": "runs.clarification.get",
@@ -2282,6 +2292,11 @@
           "doc": "docs/api/interfaces/component--run-history.md"
         },
         {
+          "id": "runs.conversation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-conversation-get.md"
+        },
+        {
           "id": "runs.clarification.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-clarification-get.md"
@@ -2347,6 +2362,11 @@
           "id": "run.state",
           "channel": "component",
           "doc": "docs/api/interfaces/component--run-state.md"
+        },
+        {
+          "id": "runs.conversation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-conversation-get.md"
         },
         {
           "id": "runs.clarification.get",
@@ -2421,6 +2441,11 @@
           "id": "run.budget",
           "channel": "component",
           "doc": "docs/api/interfaces/component--run-budget.md"
+        },
+        {
+          "id": "runs.conversation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-conversation-get.md"
         },
         {
           "id": "runs.clarification.get",

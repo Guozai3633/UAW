@@ -20,6 +20,7 @@
 - [http · web.session.logout](../interfaces/http--web-session-logout.md)
 - [http · tasks.attach_conversation](../interfaces/http--tasks-attach-conversation.md)
 - [component · run.history](../interfaces/component--run-history.md)
+- [http · runs.conversation.get](../interfaces/http--runs-conversation-get.md)
 - [http · runs.clarification.get](../interfaces/http--runs-clarification-get.md)
 - [http · runs.clarification.answer](../interfaces/http--runs-clarification-answer.md)
 - [http · runs.correction.create](../interfaces/http--runs-correction-create.md)
