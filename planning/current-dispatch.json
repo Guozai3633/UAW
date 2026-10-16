@@ -98,6 +98,13 @@
       "scope": "actual_input_application_and_obsolete_failure_isolation_no_queue_resume",
       "receipt": "docs/implementation/evidence/ms-i2m-a3.json",
       "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    },
+    "A/A4": {
+      "source_commit": "4102911b3bd493ca73d2e2a3c76c35017e86a5b7",
+      "fixed_ref": "ms-i2m-a4-source",
+      "scope": "in_deadline_safe_queue_continuation_component_controlled_clock_no_production_resume",
+      "receipt": "docs/implementation/evidence/ms-i2m-a4.json",
+      "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
     }
   }
 }

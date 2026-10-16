@@ -1,3 +1,13 @@
+# MS-I2m A4：A侧安全唤醒与原Run接续组件已提交
+
+2026-10-16，A source **4102911b3bd493ca73d2e2a3c76c35017e86a5b7** / **ms-i2m-a4-source**。已提供带实际身份/固定模型/角色/原库存复查的恢复器，原会话事务内处理Run/注入时钟/队列容量/fence/事件；同Run回答澄清与运行中纠正的A链路通过，旧作业、调用、用量保留，新attempt不复用。修复恢复状态幂等键和原兼容clock_ref/事件修订。
+
+[准确接线说明](requests/A/MS-I2m-A4-wiring.md) · [实施与限制](../implementation/MS-I2m-A4.md) · [原失败/最终28 SQL](../implementation/evidence/ms-i2m-a4.json)。28不同SQL最终通过＝12新增＋4应用证据＋3纠正隔离＋9原对话；首次9/复跑2不叠加。227源码类型、5文件静态/格式通过，契约/原A-D port/锁不变。A3的81和旧全量不计本段。
+
+**M2仍未整轮完成**：本段明确使用受控clock seam，只验证A消费；D实际时钟未接收/安装，长等待可信新执行段、生产HTTP恢复/后台重启扫描、取消/正式成果计时收尾及新服务待开发。默认恢复源503，原期限不延长；没有真实DeepSeek新调用/费用，没有本人H02或生产计时通过声明。H01-v5及原用户记录/flags/last_full保持。
+
+B/MS-U4、C/MS-E1、D/MS-K1仍按原连续M1–M4，阶段到即审。需要A4的worker先提交自身阶段并干净，自行fetch核对准确tag后普通merge固定ms-i2m-a4-source，保留原提交；不合浮动integration，不reset/rebase，A不操作worker分支。旧原包与下面历史继续有效。
+
 # MS-I2m A3：实际输入生效证据与旧失败隔离已提交
 
 2026-10-16，A source **63bf7aaeedb0cbca2dd7198a8f4fd4fc2c2cfb7b** / **ms-i2m-a3-source**。只有实际原模型调用消费当前输入、快照与决策来源全部一致，补充才从accepted变applied；补充/不可变应用证据/Run修订/Outbox同事务，旧输出不重新标成新版本。用户运行中纠正后，旧尝试失败保留而不误终结新输入；取消和当前版本真实失败仍有效。

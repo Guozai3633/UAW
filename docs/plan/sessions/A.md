@@ -1,3 +1,11 @@
+# MS-I2m A4已提交：继续D实源、可信执行段和生产恢复入口
+
+source 4102911b3bd493ca73d2e2a3c76c35017e86a5b7 / ms-i2m-a4-source。A恢复器/原队列容量与fence、角色与根Agent复用、新attempt、旧安全操作失效及注入时钟发布接线已实现。28 SQL通过，227源码类型/5文件静态格式通过；受控clock不证明D计时或长等待，不是整轮M2完成。
+
+下一步消费D实际ExecutionClocks阶段，接真实RunIdleEffects，完成超出原墙钟的可信剩余主动段、生产控制回调和重启扫描、取消/成果终态计时；随后给B实际新服务、固定模型与H02本人测试。B/C阶段到即审，原包不变；不得代写D clock或B/C业务，不操作它们分支。
+
+原失败、本人H01-v5/历史、pending费用、flags、旧标签及last_full保留。详见 [A4实施](../../implementation/MS-I2m-A4.md) 和 [精确消费](../../coordination/requests/A/MS-I2m-A4-wiring.md)。
+
 # MS-I2m A3已提交，继续原M2的队列/执行段/计时装配
 
 source 63bf7aaeedb0cbca2dd7198a8f4fd4fc2c2cfb7b / ms-i2m-a3-source。实际原Model/Context/input/decision证明补充已消费，applied证据/补充/Run/事件同事务；旧输出拒绝重标版本。并发纠正后的旧失败不误终止新输入，用户取消和当前失败保持。27 SQL＋54单元去重81通过，最后4 SQL已复跑；226源码类型通过。原失败和受影响范围见A3说明/回执。
