@@ -1,3 +1,11 @@
+# MS-I2m A6已提交：下一步真实 D 装配及 Tool 时间来源
+
+source b16c69a92d81124c00fb859ce8123748f56df054 / ms-i2m-a6-source。A 内部执行段、原历史证明、预算/权限/Context/消息/文本成果消费及根 lease 界限已实现；原 deadline 和总额保持。最终 83 SQL＋56 单元共139不同节点通过，230源码类型/13文件静态格式通过；原失败与定向修复不重复计数。[A6实施](../../implementation/MS-I2m-A6.md) · [准确装配](../../coordination/requests/A/MS-I2m-A6-wiring.md)。
+
+下一步接收 D/MS-K1 真实阶段和SQL证据，装配 RunIdleEffects/clock/ExecutionSegments；Tool 原 claim 尚缺显式时间 port，见A6具名提案，当前C/MS-E1不自动扩包。再完成真实长等待、固定用户模型、独立新服务/B页面、C候选质量与H02本人体验。只有受控clock/服务时间通过，不标M2整轮完成。
+
+H01-v5不替换，旧调用/预留/审批/root/native期限、unknown对账、原失败/pending费用/本人历史/flags/旧标签/last_full保留。原B/C/D任务保持连续M1–M4，阶段到即审，不操作worker分支或代写其业务。
+
 # MS-I2m A5已提交：继续真实计时和剩余主动执行段
 
 source 24be0944f7c63d650e0fd67800090ebf3d100975 / ms-i2m-a5-source。HTTP受理后只通知，原队列有界扫描和原Run安全续跑、重启找回、失败提示去重、取消/正式成果终态时钟消费已完成A接线。39 SQL、229源码类型/12变动文件静态格式通过；原失败和复跑均保留。[A5实施](../../implementation/MS-I2m-A5.md) · [固定消费](../../coordination/requests/A/MS-I2m-A5-wiring.md)。

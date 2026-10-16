@@ -112,6 +112,13 @@
       "scope": "optional_persisted_background_recovery_and_terminal_clock_consumption_controlled_clock_no_production_resume",
       "receipt": "docs/implementation/evidence/ms-i2m-a5.json",
       "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    },
+    "A/A6": {
+      "source_commit": "b16c69a92d81124c00fb859ce8123748f56df054",
+      "fixed_ref": "ms-i2m-a6-source",
+      "scope": "remaining_active_segment_and_A_consumers_controlled_time_clock_no_production_or_extended_Tool_dispatch",
+      "receipt": "docs/implementation/evidence/ms-i2m-a6.json",
+      "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
     }
   }
 }

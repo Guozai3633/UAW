@@ -1,3 +1,13 @@
+# MS-I2m A6：剩余主动执行段及 A 消费者已提交
+
+2026-10-16，A source **b16c69a92d81124c00fb859ce8123748f56df054** / **ms-i2m-a6-source**。显式候选装配可从实际 active clock 剩余额度派生新调用上下文，保存原作业/时钟版本和摘要；预算、权限、Context、消息和文本成果消费同源期限。原预算、账本、旧调用/预留/审批/native 期限保持，旧 lease 不复活，新 lease 使用实际 CAS 和更高 fence。
+
+[准确装配与阶段消费](requests/A/MS-I2m-A6-wiring.md) · [模块/算法/限制](../implementation/MS-I2m-A6.md) · [139 个不同节点及原失败](../implementation/evidence/ms-i2m-a6.json)。最终 83 SQL＋56 契约单元通过；对话批 50 通过/1 失败的原租约节点定向修复复跑后通过，另 32 来源 SQL，不重复累计。230 源码类型、13 变动文件静态/格式通过，1404 正例/336 反例通过；旧 1403 schema 逐项不变，原 A/D ports 与锁不变。旧 675/阶段历史不算本轮全仓。
+
+**M2 仍未整轮完成**：D 实际时钟未交付/安装，本段明确使用受控 clock 与服务时间；Tool claim 跨原墙钟仍缺显式时间 port，保守拒绝，见[待审提案](requests/A/MS-I2m-A6-tool-timing-proposal.md)。真实长等待/固定用户模型、独立新服务/B 页面、C 实际质量和本人 H02 未过。默认 segments/真实 clock 未注入，H01-v5、原失败/本人历史/pending 费用、flags 和 last_full 保留；无实际模型新调用或费用。
+
+B/MS-U4、C/MS-E1、D/MS-K1 继续原连续 M1–M4，未接收新阶段，不宣称已启动或完成。需要 A6 的 worker 先提交自身阶段、保持干净，fetch 核对准确 tag/本页后普通 merge 固定 ms-i2m-a6-source；不合浮动 integration、不 reset/rebase，A 不操作其分支。以下各阶段作为历史保留。
+
 # MS-I2m A5：后台恢复与终态计时消费已提交
 
 2026-10-16，A source **24be0944f7c63d650e0fd67800090ebf3d100975** / **ms-i2m-a5-source**。回答/纠正持久受理后只通知原队列；已组装的恢复器从实际库存找回原输入、执行有界重试和原准入，响应丢失或重启不新建 Run、不重复调用。恢复失败保留具体原因与稳定 Item；取消、当前失败及正式成果完成在原事务内消费注入时钟并收尾提示。
