@@ -8,7 +8,10 @@ from sqlalchemy import select
 from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, timestamp
+from uaw.run.clock_ports import ConversationClockPort
+from uaw.run.conversation_clock_commit import stop_clock
 from uaw.run.conversation_control import ConversationControls
+from uaw.run.conversation_recovery import close_notices
 from uaw.run.jobs import JOBS
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import reject
@@ -17,8 +20,11 @@ from uaw.shared.stores import StoreMissing
 
 
 class RunTerminationController:
-    def __init__(self, records: PostgresRecordStore) -> None:
+    def __init__(
+        self, records: PostgresRecordStore, *, clocks: ConversationClockPort | None = None
+    ) -> None:
         self.records = records
+        self.clocks = clocks
         self.transactions = TransactionalStore(records.database)
 
     async def settle(self, actor: Principal, run_id: str) -> None:
@@ -33,6 +39,9 @@ class RunTerminationController:
                 )
             run = await tx.load("runs", run_id)
             if run.payload["status"] in ("completed", "failed", "cancelled"):
+                await stop_clock(tx, actor, run_id, self.clocks)
+                if self.clocks is not None:
+                    await close_notices(tx, run_id)
                 return {}
             ledger = await tx.load("budget.ledgers", run_id)
             if any(
@@ -114,6 +123,9 @@ class RunTerminationController:
                 "ended_at": timestamp(),
             }
             await tx.write("runs", run_id, "RunRecord", value, run.revision)
+            await stop_clock(tx, actor, run_id, self.clocks)
+            if self.clocks is not None:
+                await close_notices(tx, run_id)
             task = await tx.load("tasks", run.payload["task_id"])
             changed = {
                 **task.payload,

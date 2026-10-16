@@ -1,0 +1,176 @@
+{
+  "date": "2026-10-16",
+  "package": "MS-I2m",
+  "stage": "A5 persisted-input background recovery and terminal clock consumption",
+  "status": "A_component_verified_controlled_clock_no_production_resume",
+  "parent": "1dfd029d0c30a6a2a6f3c38fee8e66b5d86c456d",
+  "source_sha256": {
+    "src/uaw/agent/completion/assembly.py": "faa58f3a952bb1ac5a879aada4ec3473ccf642e23bc922e1bb4c8bc52ebede1c",
+    "src/uaw/api/conversation.py": "72d2d6a72c0de46b3d9c16580b63615e65289a73e9744c64c79f890c83508b52",
+    "src/uaw/api/documentation.py": "09fdf6e9c2fab7e344178b9837e8e50f18f1798c6b29109168546afccf15c8e6",
+    "src/uaw/composition.py": "1780caa84b5c72ba0e31c402f000e6eaf6ad2ce2598a1862c3390477ad8b7e10",
+    "src/uaw/run/background.py": "c8a47e23cda0c9b9572987a5c7f0f7227406291ec9387fce72525dca06f0a23e",
+    "src/uaw/run/completion.py": "70379a7729e87403bddc2ac50417bccb63a95279b750773ae80b4d34273621d6",
+    "src/uaw/run/jobs.py": "4fc41a5c2311c9cf9440031463e5561fe6f84dac34a95b69a1a473ac769d764d",
+    "src/uaw/run/termination.py": "1c7b7de08e94aa3ee2933b1025b9b0c10583379072234a0795087270ab7db8f4",
+    "src/uaw/run/conversation_recovery.py": "0a5e681ab167dd066b2b81361be1694db85684777bce5729125b89ac803a4799",
+    "src/uaw/run/conversation_clock_commit.py": "d5f21def646b1a9399dd9ebc67067f3e9c1de37d4e69095aaef93c329dcb0448",
+    "tests/integration/agent/test_conversation_resume.py": "f580313b90a16d63717fd30936403877e136a7d6d7e8a1cf6fd6bab461123396",
+    "tests/integration/agent/test_conversation_recovery_service.py": "97df4d8e73880d7ba85723da5d1c1693d234829732683c0a7961345f708fa068"
+  },
+  "unchanged_source_sha256": {
+    "contracts/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/resources/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/run/clock_ports.py": "6c924e0859f7304e0f5960835e113968ae2a28ae3f6dbce0d50bd97b3ae56461",
+    "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f"
+  },
+  "final_distinct_sql_nodes": 39,
+  "passed": 39,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 496.66,
+  "final_receipt": "ms-i2m-a5-third-sql.xml",
+  "xml_receipts": {
+    "ms-i2m-a5-final-sql.xml": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "e2a7945e61f3c957b5ea4378263a2d1f0f679beeaa18d252a2134b036c980c2c"
+    },
+    "ms-i2m-a5-first-sql.xml": {
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "186dd2aa141c6c354938403c9b9d688247f0c7e851de84f4d866751e0f385a62"
+    },
+    "ms-i2m-a5-second-sql.xml": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "674c1443542b058089c1938137453af4ae277e809c90409a2798aa5f9d999d01"
+    },
+    "ms-i2m-a5-third-sql.xml": {
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "521cf18ed1fec8d13ac6f4e594cacaf2cf496f569e1723a20a32ae404b1093b6"
+    }
+  },
+  "node_groups": {
+    "new_recovery_service": 16,
+    "safe_resume": 12,
+    "original_conversation": 9,
+    "http_cli_cookie_auth": 2
+  },
+  "final_nodes": [
+    "tests.integration.agent.test_conversation_recovery_service::test_http_acceptance_only_signals_then_background_recovers_and_replay_reads_current[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_crash_after_acceptance_before_signal_reconstructed_service_finds_original_input[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_unavailable_source_backoff_and_feedback_are_durable_without_resending[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_foreign_session_cannot_write_recovery_feedback[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_concurrent_notifications_only_execute_one_original_resume[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_notice_storage_failure_retains_patch_and_recovery_restarts_from_database[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_cancelled_patch_is_not_selected_on_restart[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_scan_cursor_does_not_starve_next_blocked_task[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_cancellation_stops_clock_only_after_original_effects_settle[False-case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_cancellation_stops_clock_only_after_original_effects_settle[True-case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_clock_failure_rolls_back_cancel_terminal_commit_and_restart_retries_original[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_formal_artifact_stops_injected_clock_only_after_actual_user_acceptance[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_signal_failure_after_http_commit_does_not_turn_acceptance_into_error[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_unknown_response_keeps_actual_failure_but_never_dispatches_again[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_cancel_terminal_commit_closes_waiting_recovery_notice_without_false_applied[case0]",
+    "tests.integration.agent.test_conversation_recovery_service::test_current_model_failure_closes_injected_clock_without_marking_patch_applied[case0]",
+    "tests.integration.agent.test_conversation_resume::test_same_run_answer_wakes_once_fences_old_worker_and_consumes_original_input[case0]",
+    "tests.integration.agent.test_conversation_resume::test_missing_clock_is_explicit_and_does_not_wake_or_change_accepted_input[case0]",
+    "tests.integration.agent.test_conversation_resume::test_unknown_original_model_never_wakes_or_resends[case0]",
+    "tests.integration.agent.test_conversation_resume::test_clock_write_failure_rolls_back_run_binding_job_and_retry_uses_same_input[case0]",
+    "tests.integration.agent.test_conversation_resume::test_capacity_failure_rolls_back_clock_and_run[case0]",
+    "tests.integration.agent.test_conversation_resume::test_auth_revoked_while_clock_awaited_rolls_back_before_wake[case0]",
+    "tests.integration.agent.test_conversation_resume::test_correction_during_model_discards_only_settled_old_operation_and_continues[case0]",
+    "tests.integration.agent.test_conversation_resume::test_new_session_or_cancel_does_not_revive_original_job[foreign_session-case0]",
+    "tests.integration.agent.test_conversation_resume::test_new_session_or_cancel_does_not_revive_original_job[cancel-case0]",
+    "tests.integration.agent.test_conversation_resume::test_wait_does_not_renew_expired_original_deadline[case0]",
+    "tests.integration.agent.test_conversation_resume::test_clock_consumer_rejects_different_owning_result_atomically[expanded_limit-case0]",
+    "tests.integration.agent.test_conversation_resume::test_clock_consumer_rejects_different_owning_result_atomically[uncommitted_return-case0]",
+    "tests.integration.agent.test_conversation_postgres::test_reply_one_call_no_artifact_or_acceptance_and_restart[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_essential_question_visible_same_run_not_terminal[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_bad_provider_shape_keeps_failure_and_shows_useful_message[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_actual_tool_gates_then_message_only[approve_once-case0]",
+    "tests.integration.agent.test_conversation_postgres::test_actual_tool_gates_then_message_only[decline-case0]",
+    "tests.integration.agent.test_conversation_postgres::test_cancel_after_model_before_reply_does_not_publish[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_restart_after_original_response_does_not_resend[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_deliver_keeps_artifact_verification_and_user_acceptance[case0]",
+    "tests.integration.agent.test_conversation_postgres::test_policy_revocation_during_model_call_is_not_cached[case0]",
+    "tests.integration.agent.test_conversation_controls::test_cli_http_contract_auth_versions_and_original_request_lookup[case0]",
+    "tests.integration.agent.test_conversation_controls::test_cookie_control_requires_exact_origin_csrf_and_logout_revokes_access[case0]"
+  ],
+  "failure_history": [
+    {
+      "receipt": "ms-i2m-a5-first-sql.xml",
+      "failed": 1,
+      "cause": "Test treated the actual user cancellation control Item as a recovery notice. Assertion now selects the stable recovery-notice- ID prefix; actual cancellation Item remains required and unchanged.",
+      "resolved_by": "ms-i2m-a5-second-sql.xml and final complete selected scope"
+    },
+    {
+      "receipt": "ms-i2m-a5-final-sql.xml",
+      "executed_nodes": 0,
+      "cause": "Validation command named a nonexistent historical HTTP test. Collection stopped before executing tests; receipt name does not imply success.",
+      "resolved_by": "ms-i2m-a5-third-sql.xml"
+    }
+  ],
+  "static_preparation_failures": [
+    "Initial lint/import formatting and missing rows annotation corrected before SQL; final check passed.",
+    "One recheck used mypy src/uaw without the existing apps/local_runner/uaw_runner argument: 70 import/untyped and derivative errors in 17 files, 199 checked. Re-ran the exact existing ops/check.ps1 command with both roots; 229 source files passed."
+  ],
+  "validation_command": ".venv/Scripts/python.exe -m pytest -q -p no:cacheprovider --require-postgres tests/integration/agent/test_conversation_recovery_service.py tests/integration/agent/test_conversation_resume.py tests/integration/agent/test_conversation_postgres.py tests/integration/agent/test_conversation_controls.py::test_cli_http_contract_auth_versions_and_original_request_lookup tests/integration/agent/test_conversation_controls.py::test_cookie_control_requires_exact_origin_csrf_and_logout_revokes_access --junitxml=docs/implementation/evidence/ms-i2m-a5-third-sql.xml",
+  "environment_setup": ". ./ops/start-dev-db.ps1 -Session A in the same protected process; isolated 55432 PostgreSQL; per-test principals cleaned; no URL or credential exported",
+  "controlled_dependencies": {
+    "model": "original owning Gateway with controlled HTTP responses; not live DeepSeek",
+    "clock": "ControlledClockSeam, transitions only; no D elapsed-time/accounting guarantee",
+    "user_acceptance": "actual acceptance API under a random fixture principal; not human H02 acceptance"
+  },
+  "verified": [
+    "HTTP commits the original accepted input and only signals the queue; no inline model call. Same request replay reads current applied state.",
+    "Crash after acceptance before notification is recovered from persisted original jobs/patches; no new Run or duplicate invocation.",
+    "Bounded retry/backoff, stable failure Item and raw Failure preserve accepted inputs; failure Item write rollback does not lose input.",
+    "Original full session required; concurrent notifications yield one wake; scan cursor does not starve the next blocked job.",
+    "Unknown actual model state remains blocked with its actual failure notice, and is not resent.",
+    "Cancelled patches are not scanned; settled cancellation stops injected clock and closes waiting notices; unknown effects remain nonterminal.",
+    "Clock failure rolls back original terminal Run/clock/job/events and original cancellation can retry.",
+    "Formal actual artifact/report/user acceptance precede completed/stopped; current model failure stops clock without falsely applying its patch.",
+    "Original conversation, queue fencing, authenticated CLI and cookie Origin/CSRF/logout behavior remain passing."
+  ],
+  "static": {
+    "mypy_command": ".venv/Scripts/python.exe -m mypy src/uaw apps/local_runner/uaw_runner",
+    "mypy": "passed",
+    "mypy_source_files": 229,
+    "ruff": "passed",
+    "format": "passed",
+    "changed_file_count": 12
+  },
+  "production_clock_installed": false,
+  "optional_background_recovery_implemented": true,
+  "http_inline_model_execution": false,
+  "new_localhost_runtime_deployed": false,
+  "long_wait_execution_segments_implemented": false,
+  "D_implementation_modified": false,
+  "worker_branches_or_business_sources_modified": false,
+  "human_runtime_or_original_records_modified": false,
+  "feature_flags_changed": false,
+  "last_full_updated": false,
+  "real_provider_calls": 0,
+  "new_live_model_cost": "0",
+  "previous_pending_fees_preserved": true,
+  "pending": [
+    "D actual ExecutionClocks stage and SQL evidence",
+    "trusted new remaining-active execution segments beyond original wall deadlines",
+    "actual clock composition and independent new service for B browser integration",
+    "C actual candidate export and independent quality gate",
+    "fixed user model and H02 human experience"
+  ],
+  "counting": "Only 39 distinct nodes in third-sql counted; first 8, second 12, zero-node collection failure and previous stages are not added. No new full-repository gate claimed."
+}

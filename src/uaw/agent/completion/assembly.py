@@ -8,6 +8,7 @@ from uaw.agent.completion.evidence import EvidenceRead
 from uaw.agent.completion.semantic import SemanticVerifier
 from uaw.context.readers import RegisteredRuleProvider
 from uaw.model.evaluation_inputs import FixedModelEvaluator, FixedModelRuleAssessor
+from uaw.run.clock_ports import ConversationClockPort
 from uaw.run.completion import RunCompletionController
 from uaw.shared.settings import ConfigurationError
 from uaw.workspace.artifact_repository import ArtifactRepository
@@ -34,6 +35,7 @@ def assemble_completion_runtime(
     acceptance_required: bool = False,
     max_output_tokens: int = 2048,
     contexts: RegisteredContextBindings | None = None,
+    clocks: ConversationClockPort | None = None,
 ) -> CompletionAssembly:
     if container.model_service is None or container.records is None or container.blobs is None:
         raise ConfigurationError("Actual Model/record/blob sources required for completion")
@@ -63,5 +65,5 @@ def assemble_completion_runtime(
         evaluator,
         assessor,
         coordinator,
-        RunCompletionController(coordinator),
+        RunCompletionController(coordinator, clocks=clocks),
     )

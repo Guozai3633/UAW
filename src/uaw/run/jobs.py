@@ -21,6 +21,7 @@ JOBS = "run.background.jobs"
 Advance = Callable[[Payload], Awaitable[Payload]]
 Finalize = Callable[[Payload], Awaitable[None]]
 Admit = Callable[[RecordTransaction, Payload, Principal], Awaitable[None]]
+Recover = Callable[[], Awaitable[bool]]
 
 
 class RunJobs:
@@ -34,6 +35,7 @@ class RunJobs:
         advance: Advance | None = None,
         finalize: Finalize | None = None,
         admit: Admit | None = None,
+        recover: Recover | None = None,
     ) -> None:
         if not 1 <= concurrency <= 4 or not 1 <= capacity <= 64:
             raise ValueError("Bounded queue/concurrency required")
@@ -42,6 +44,7 @@ class RunJobs:
         self.capacity, self.concurrency, self.advance = capacity, concurrency, advance
         self.finalize = finalize
         self.admit = admit
+        self.recover = recover
         self.worker_id = identifier("worker")
         self.tasks: list[asyncio.Task[None]] = []
         self.stopping = asyncio.Event()
@@ -233,6 +236,8 @@ class RunJobs:
         job = await self.claim()
         if not job:
             await self.reconcile_stopped()
+            if self.recover is not None:
+                return await self.recover()
             return False
         heartbeat = asyncio.create_task(self.heartbeat(job))
         execution = asyncio.ensure_future(self.advance(job))

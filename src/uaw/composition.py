@@ -33,9 +33,11 @@ from uaw.model.input_router import ContextModelInputs
 from uaw.model.policy import PolicyResolver
 from uaw.run.approval import ApprovalService
 from uaw.run.budget import BudgetService
+from uaw.run.clock_ports import ConversationClockPort
 from uaw.run.completion import RunCompletionController
 from uaw.run.context import RunContextSources
 from uaw.run.context_sources import RegisteredRunContextSources, RegisteredToolSetValidator
+from uaw.run.conversation_recovery import ConversationRecovery
 from uaw.run.enrollment import RunnerEnrollments
 from uaw.run.events import EventReader
 from uaw.run.execution_sources import RunExecutionSources
@@ -160,6 +162,8 @@ class Container:
     runner_enrollments: RunnerEnrollments | None = None
     completion_controller: RunCompletionController | RunCompletionRouter | None = None
     background_jobs: RunJobs | None = None
+    conversation_clocks: ConversationClockPort | None = None
+    conversation_recovery: ConversationRecovery | None = None
     installed_lifecycle: InstalledLifecycle | None = None
     file_run_sources: InstalledFileRunSources | None = None
     started: bool = False
@@ -179,7 +183,9 @@ class Container:
             from uaw.run.background import BackgroundAgent
 
             try:
-                self.background_jobs = await BackgroundAgent(self).prepare()
+                self.background_jobs = await BackgroundAgent(
+                    self, conversation_clocks=self.conversation_clocks
+                ).prepare()
                 self.background_jobs.start()
             except Exception:
                 await self.close()
@@ -205,6 +211,7 @@ class Container:
             await self.installed_lifecycle.close()
         if self.background_jobs:
             await self.background_jobs.close()
+        self.conversation_recovery = None
         if self.model_service:
             await self.model_service.close()
         if self.database:

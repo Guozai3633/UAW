@@ -210,6 +210,7 @@ class BackgroundAgent:
             contexts=self.contexts,
             max_output_tokens=c.settings.agent_max_output_tokens,
             acceptance_required=c.settings.agent_acceptance_required,
+            clocks=self.conversation_clocks,
         )
         self.office_approvals = RoutedApprovals(
             registry,
@@ -234,6 +235,15 @@ class BackgroundAgent:
             finalize=self.finalize,
             admit=admit if self.conversation_mode else None,
         )
+        if self.conversation_mode and self.conversation_clocks is not None:
+            from uaw.run.conversation_recovery import ConversationRecovery
+
+            c.conversation_recovery = ConversationRecovery(
+                c.records,
+                owner_id=c.settings.development_principal_id,
+                resume=self.resume_conversation,
+            )
+            self.queue.recover = c.conversation_recovery.scan
         return self.queue
 
     async def verify_continuation(self, job: Payload) -> None:
@@ -704,9 +714,9 @@ class BackgroundAgent:
         from uaw.run.termination import RunTerminationController
 
         assert self.control.records
-        await RunTerminationController(self.control.records).settle(
-            Principal.model_validate(job["principal"]), job["run_id"]
-        )
+        await RunTerminationController(
+            self.control.records, clocks=self.conversation_clocks
+        ).settle(Principal.model_validate(job["principal"]), job["run_id"])
         self.file_runtimes.pop(job["run_id"], None)
 
     @staticmethod

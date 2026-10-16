@@ -15,6 +15,9 @@ from uaw.agent.completion.delivery import (
 from uaw.agent.contracts import Payload, identity
 from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, timestamp
+from uaw.run.clock_ports import ConversationClockPort
+from uaw.run.conversation_clock_commit import stop_clock
+from uaw.run.conversation_recovery import close_notices
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
 from uaw.shared.schema import validate_contract
@@ -22,8 +25,11 @@ from uaw.shared.stores import StoreConflict, StoreMissing
 
 
 class RunCompletionController:
-    def __init__(self, completion: CompletionCoordinator) -> None:
+    def __init__(
+        self, completion: CompletionCoordinator, *, clocks: ConversationClockPort | None = None
+    ) -> None:
         self.completion = completion
+        self.clocks = clocks
         self.records = completion.records
         self.transactions = TransactionalStore(self.records.database)
 
@@ -242,6 +248,9 @@ class RunCompletionController:
                 "ended_at": timestamp(),
             }
             await tx.write("runs", run.resource_id, "RunRecord", value, base)
+            await stop_clock(tx, ctx.principal, ctx.run_id or "", self.clocks)
+            if self.clocks is not None:
+                await close_notices(tx, ctx.run_id or "")
             task = await tx.load("tasks", run.payload["task_id"])
             artifacts = list(task.payload["artifact_refs"])
             if bundle["artifact_ref"] not in artifacts:

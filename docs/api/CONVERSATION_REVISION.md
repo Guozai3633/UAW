@@ -1,3 +1,11 @@
+# 2026-10-16：MS-I2m A5 的实际可用范围
+
+五个控制 HTTP 已实现原账号读图、回答/纠正持久受理、幂等回执及 Origin/CSRF 检查。正式恢复组装在新候选实例中显式注入 `ConversationClockPort` 后启用：HTTP 只通知，原队列空闲时从数据库扫描并恢复原 Run；实际模型消费后才提交 applied。具体实现、目录与回执见 [A5 实施记录](../implementation/MS-I2m-A5.md)，准确阶段 SHA 以 [DISPATCH](../coordination/DISPATCH.md) 为准。
+
+受理、后台唤醒、实际生效、完成及用户接受是不同状态。响应丢失或进程重启可找回已受理的原输入；无法恢复时保留原 Failure 和稳定 Item，不让用户重新提交同一补充。未知调用先对账；原执行期限仍有效。
+
+**默认尚未安装 D 的生产计时组件，当前 H01-v5 服务未替换；长时间等待后的可信新执行段和实际 H02 联调仍待完成。** 下面较早记录的“仅契约/handler 未安装”描述的是各历史阶段，当前状态以本节和正式派发记录为准。
+
 # 2026-10-16：MS-I2m新增精确问题发现读图
 
 P1-13单次普通回复已实跑，H01-v5普通问答本人反馈认可。原Run续跑/计时仍待实际接线。本轮新增GET /v1/runs/{run_id}/conversation与RunConversationView，精确字段/允许目录/来源见[固定接口](../coordination/requests/A/MS-I2m-AD-contract.md)及[正式分包](../coordination/requests/A/MS-I2m-parallel-packages.md)。五个控制HTTP当前均仅契约，未安装handler，不能当已可调用。

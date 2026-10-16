@@ -37,7 +37,9 @@ def install_openapi(app: FastAPI) -> None:
                 entry["x-uaw-implementation-scope"] = "acceptance_only_no_resume"
                 entry["description"] = (
                     "Owned conversation reads and durable input acceptance; "
-                    "execution continuation remains unavailable."
+                    "an explicitly composed recovery service may scan accepted inputs. "
+                    "Acceptance is not applied or an execution grant; default recovery "
+                    "has no production clock and remains unavailable."
                 )
                 if method == "GET":
                     entry["parameters"].append(

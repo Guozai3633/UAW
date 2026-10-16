@@ -15,6 +15,7 @@ from uaw.shared.conversation import (
     RunCorrectionRequest,
 )
 from uaw.shared.errors import CapabilityUnavailable, reject
+from uaw.shared.observability import report_request_failure
 from uaw.shared.schema import parse_json, validate_contract
 
 OPERATIONS = frozenset(
@@ -93,6 +94,13 @@ async def endpoint(
         else:
             correction = RunCorrectionRequest.model_validate_json(json.dumps(payload))
             result = (await service.correct(actor, correction, meta)).wire()
+        if container.conversation_recovery is not None:
+            try:
+                container.conversation_recovery.signal(actor, payload["run_id"])
+            except Exception as exc:
+                # Input is already durable. Do not return an apparent rejection
+                # that might cause the user to repeat the same accepted answer.
+                report_request_failure("conversation.recovery_signal", type(exc).__name__)
     validate_contract(response_schema, result)
     wire = {"kind": "ok", "payload": result, "output_refs": []}
     name = "Http" + "".join(part.capitalize() for part in operation.split(".")) + "Result"

@@ -54,10 +54,10 @@ class ControlledClockSeam:
         assert binding.payload["clock_ref"] == reference("checkpoint", run_id, row.revision)
         assert (
             run.payload["status"]
-            == {
-                "active": "preparing",
-                "waiting_for_user": "waiting_for_user",
-                "stopped": "completed",
+            in {
+                "active": ("preparing",),
+                "waiting_for_user": ("waiting_for_user",),
+                "stopped": ("completed", "failed", "cancelled"),
             }[request.mode]
         )
         revision = row.revision + 1
