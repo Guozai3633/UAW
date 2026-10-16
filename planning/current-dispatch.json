@@ -85,6 +85,12 @@
       "scope": "control_acceptance_only_no_resume",
       "receipt": "docs/implementation/evidence/ms-i2m-m1.json",
       "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    },
+    "A/A2": {
+      "source_commit": "17a02dd5904240a7f4a1e71640298053ea028aaf",
+      "fixed_ref": "ms-i2m-a2-source",
+      "scope": "continuation_input_preparation_only_no_resume",
+      "receipt": "docs/implementation/evidence/ms-i2m-a2.json"
     }
   }
 }

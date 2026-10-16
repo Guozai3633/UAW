@@ -1,3 +1,15 @@
+# MS-I2m A2：续跑输入准备已提交，完整执行仍待装配
+
+2026-10-16，A source **17a02dd5904240a7f4a1e71640298053ea028aaf** / **ms-i2m-a2-source**。新输入版本生成独立TaskFrame/原绑定，旧版本保留；原问题、原因/选项和准确回答链接进入同Run低信任Context，变动来源在模型输入前拒绝。普通无补充输入不增加问题查询或空数据块。
+
+[本段实现与边界](../implementation/MS-I2m-A2.md) · [4个实际SQL/失败收集记录](../implementation/evidence/ms-i2m-a2.json)。3个新来源准备节点＋1个原单调用重启兼容通过，225源码类型/4文件静态格式通过。没有新增真实LLM/费用，不把M1 74历史批次与本段4项相加冒充当前全量。
+
+这只是原M2的输入准备子段，**没有原队列唤醒/applied/长等待执行、新localhost部署或H02整轮接受**。D ExecutionClocks及真实SQL阶段尚未接收；到达后A按固定port接RunIdleEffects和可信剩余主动段，原Model/Tool/审批/root期限保持。B新页面、C独立质量及真实办公/学术成果仍按原四里程碑推进，未收到新worker阶段不宣称它们已经完成。
+
+共同开工tag和B/MS-U4、C/MS-E1、D/MS-K1任务包不变；M1原实际Idle adapter仍在ms-i2m-a1-source。worker需要A2时按上一阶段同样方式：干净且先提交自身阶段、fetch核对准确tag、普通merge固定tag保留原提交；不合浮动integration，A不操作worker分支。当前H01-v5/本人历史/失败/费用/flags/旧last_full保留。
+
+以下是M1与正式分包，仍然有效。
+
 # MS-I2m M1阶段已发布：原Run控制受理与真实Idle库存
 
 2026-10-16，A / integration。准确阶段source **78878f0e2a6a928ca53c0f8f8a34f54a91a3013e** / **ms-i2m-a1-source**，共同开工基线仍ms-i2m-start / 1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe，不移动旧标签，不另开新包。
