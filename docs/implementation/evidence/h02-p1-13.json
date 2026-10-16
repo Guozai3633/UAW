@@ -1,7 +1,7 @@
 {
   "recorded_at": "2026-10-16T08:26:47.241039+00:00",
   "package": "P1-13",
-  "status": "engineering_component_verified_human_version_not_yet_started",
+  "status": "engineering_component_verified_h01_v5_ready_human_acceptance_pending",
   "unique_affected_tests_final_passed": 103,
   "test_evidence": [
     "h02-p1-13-final-tests.xml",
@@ -208,5 +208,24 @@
     "After the last live sample only public failure wording/tests/planning were revised; successful reply path is unchanged.",
     "First probe collected decisions by run_id only and missed run_ref-owned records; later probes correct that measurement.",
     "Factual quality gate P1-15 and H02 human gate P1-17 remain pending."
-  ]
+  ],
+  "source_commit": "305bd0a3ff7896f000a0f2dd5210d710f385a09f",
+  "source_tag": "h02-p1-13-source",
+  "human_test_version": {
+    "name": "H01-v5",
+    "origin": "http://127.0.0.2:5181/",
+    "ready": true,
+    "same_original_account_connected": true,
+    "original_user_runs_unchanged": true,
+    "original_user_run_count": 4,
+    "original_conversations_visible": 2,
+    "original_frontend_dist_reused": true,
+    "user_actions_performed": {
+      "submit": 0,
+      "approval": 0,
+      "acceptance": 0,
+      "native_confirm": 0
+    },
+    "first_process_guard_stopped_without_mutation": true
+  }
 }
