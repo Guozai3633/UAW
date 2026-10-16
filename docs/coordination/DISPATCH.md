@@ -1,3 +1,15 @@
+# MS-I2m M1阶段已发布：原Run控制受理与真实Idle库存
+
+2026-10-16，A / integration。准确阶段source **78878f0e2a6a928ca53c0f8f8a34f54a91a3013e** / **ms-i2m-a1-source**，共同开工基线仍ms-i2m-start / 1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe，不移动旧标签，不另开新包。
+
+已实现候选源码的五个控制HTTP、RunConversationView/指定问题/当前回执、原Run不可变补充/CAS/幂等/取消失效及真实RunIdleEffects。**只完成accepted受理，尚未安装队列唤醒/applied/长等待续跑，未部署新localhost服务**。H01-v5旧快照/本人历史保留。
+
+[精确B/D消费与阶段同步](requests/A/MS-I2m-M1-wiring.md) · [策略和实际限制](../implementation/MS-I2m-M1.md) · [机器回执/失败历史](../implementation/evidence/ms-i2m-m1.json)。74个不同节点最终通过＝20真实SQL＋54契约单元；原失败/复跑保留，224源码类型/10文件静态格式通过，原1402 schema保持，1402正例/336反例通过。不是历史675/1691或全仓新全量，没有真实LLM新调用/费用。
+
+B/MS-U4、C/MS-E1、D/MS-K1继续原M1–M4，不需等新包；D可消费实际Idle adapter，B可消费精确handler，真正服务入口待A M2。需要本阶段源码的worker先提交本包阶段并保持干净，自行fetch后只合不可变ms-i2m-a1-source，可创建普通merge保留自己的提交；不合浮动integration，不reset/rebase或重写历史，A不操作worker分支。阶段到即审，业务错误回原worker。
+
+A接下来准备实际新输入Context、安全消费与原队列租约恢复，等待D组件后装配持久clock；固定用户模型/flags/原调用与权限期限/unknown对账保持。下方正式分包仍有效。
+
 # MS-I2m正式发布：四会话固定基线与任务包
 
 2026-10-16，A / integration。共同固定开工标签 **ms-i2m-start**，准确源码 **1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe**。本条为正式发布回执；固定tag指向源码提交，发布元数据在其后的integration提交中。worker fetch后只读远端本页核对本条，随后合固定tag；不因tag内旧准备状态再次停工，也不合浮动integration。

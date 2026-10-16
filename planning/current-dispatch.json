@@ -77,5 +77,14 @@
     "src/uaw/run/clock_ports.py": "6c924e0859f7304e0f5960835e113968ae2a28ae3f6dbce0d50bd97b3ae56461",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
     "src/uaw/resources/prompts/conversation-v1.txt": "fa6ee17b82bfadfd2c514acc893265df2e987f612f08eeaf7267d50d7f70ed47"
+  },
+  "stages": {
+    "A/M1": {
+      "source_commit": "78878f0e2a6a928ca53c0f8f8a34f54a91a3013e",
+      "fixed_ref": "ms-i2m-a1-source",
+      "scope": "control_acceptance_only_no_resume",
+      "receipt": "docs/implementation/evidence/ms-i2m-m1.json",
+      "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    }
   }
 }

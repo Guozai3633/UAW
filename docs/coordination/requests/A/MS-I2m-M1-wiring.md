@@ -1,3 +1,9 @@
+# 准确阶段来源
+
+`ms-i2m-a1-source` / `78878f0e2a6a928ca53c0f8f8a34f54a91a3013e`。共同worker初始基线不变。
+
+需要本阶段实际adapter的worker：先在自己的原分支提交当前阶段并保持干净，fetch tags、核对远端DISPATCH本条与tag SHA一致，然后自行 `git merge --no-edit ms-i2m-a1-source`（可以普通merge保留自己的提交）。只合此准确阶段，不合浮动integration；冲突保留现场交A协调，不reset/rebase/stash。纯组件开发可继续原固定基线，真实接线时再消费。A不代同步任何worker。
+
 # MS-I2m A/M1：B/D可消费阶段
 
 2026-10-16，准确source/tag见DISPATCH页首M1发布回执；共同worker开工基线仍ms-i2m-start，不移动原标签。

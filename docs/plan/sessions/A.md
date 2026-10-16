@@ -1,3 +1,9 @@
+# MS-I2m M1组件交付，继续M2安全消费与接线
+
+2026-10-16，source 78878f0e2a6a928ca53c0f8f8a34f54a91a3013e / ms-i2m-a1-source。五个0.2 HTTP及同Run追加受理/恢复查询已实现，RunIdleEffects提供D真实库存。74不同节点最终通过，224源码类型通过；只是accepted，不声称applied/长等待/实际新页面已装配。
+
+继续原MS-I2m包M2：输入版本对应新TaskFrame/Context，原问答语义保留，原队列fence/unknown效果对账，D clock到达即装配；实际服务与固定模型/文本成果在后续阶段验。本段下原M1–M4与范围仍有效，B/C/D原代码由原worker修改。
+
 # 2026-10-16：MS-I2m / MS-I2m
 
 当前共同基线ms-i2m-start，准确40位SHA以远端DISPATCH页首正式记录核对；只合固定tag，不合浮动integration。原Run控制/API、真实Idle库存/队列/模型/文本成果接线及逐包接受。
