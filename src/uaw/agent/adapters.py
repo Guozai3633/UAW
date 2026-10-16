@@ -403,6 +403,23 @@ class RegisteredAgentModels:
         if await enabled(self.policies.store, ctx):
             validate_contract("FirstDecision", row.payload.get("structured_data", {}))
             view = await self.sources.current(ctx)
+            snapshot_ref = invocation.payload["request"]["context_snapshot_ref"]
+            original_snapshot = await self.policies.store.get(
+                ctx.principal, "context.snapshots", snapshot_ref["id"]
+            )
+            check_pin(
+                Ref.model_validate(snapshot_ref),
+                "context",
+                original_snapshot.resource_id,
+                original_snapshot.revision,
+                original_snapshot.payload,
+            )
+            if original_snapshot.payload["epoch"] != view.frame["input_revision"]:
+                raise reject(
+                    "conversation_model_input_stale",
+                    "Original model used another input version",
+                    412,
+                )
             value = {
                 "protocol": "conversation-v1",
                 "run_ref": {"kind": "run", "id": ctx.run_id, "version": str(view.run["revision"])},
@@ -438,6 +455,10 @@ class RegisteredAgentModels:
                     raise reject(
                         "conversation_decision_changed", "Original model decision differs", 412
                     )
+            if view.frame["input_revision"] > 1:
+                from uaw.run.conversation_applications import ConversationApplications
+
+                await ConversationApplications(self.policies.store).consume(ref, ctx)
         else:
             from uaw.agent.contracts import validate_decision
 

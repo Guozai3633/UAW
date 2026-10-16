@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-16",
+  "package": "MS-I2m",
+  "stage": "A3 actual input application evidence and obsolete failure isolation",
+  "status": "component_verified_not_queue_resume",
+  "parent": "9f2ce8a43a2fe7f052325571c240ef3078490092",
+  "source_sha256": {
+    "contracts/conversation_catalog.py": "c6a6ac363e364b5ea9aa8225a493fc55ea240026da43fb394f5f5e60c95ceae3",
+    "contracts/build_interfaces.py": "debedf8b45691be8e565ed86b1b58d4eaa358e553a29efbe7980cb2dba3063e1",
+    "contracts/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/resources/uaw.schema.json": "1687c094c15ad28fab24fd9df05454cb32a91b7b9e32d3bd723d6f9bf716f5a3",
+    "src/uaw/agent/adapters.py": "2530eb55228f426cbf599952546f74f82234cb1e535ad8fd17adf7e40292ec14",
+    "src/uaw/run/conversation_applications.py": "af909ca4d4436a1612758d4da0adea63e8682e44e779335de63cee601fb2f98b",
+    "src/uaw/run/conversation_control.py": "6bd7208ac8a387592b919b809b37112f1a0d12dcc0d3114c2021fdd7f493aa8e",
+    "src/uaw/run/conversation_entry.py": "fc57f1a36e059f6059d9754ca559a065c1826dc332db5fa117c1cfb909a8be81",
+    "src/uaw/run/background.py": "ef765be019d99df3792663530cc017a315efa76a130d15b17a804d707b454510",
+    "src/uaw/run/termination.py": "00ca43fed1b4cfd5bb5ed7f23a6443d0660771c11e3243f134af2b795e6738bb",
+    "tests/integration/agent/test_conversation_applications.py": "032e88184ab3036f2fd9d6b61c309ef8a4df8ba91689d2ec16eaeebe2b0b8d5b",
+    "tests/integration/agent/test_conversation_recovery.py": "d9ea34e0a7d3d60deca688969f9f0b41f01d5030e2c63d0e977b045190efca52"
+  },
+  "deduplicated_final_nodes": 81,
+  "sql_nodes": 27,
+  "unit_nodes": 54,
+  "passed": 81,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "coverage_scope": "affected conversation/control/application/termination modules, not repository full regression",
+  "final_sql_receipt": "ms-i2m-a3-final-sql.xml",
+  "last_source_hardening": {
+    "change": "Verify original invocation request+trusted context hash, fixed model policy and owning row schemas",
+    "affected_rerun_receipt": "ms-i2m-a3-application-final-sql.xml",
+    "rerun_nodes": 4,
+    "count_again": false,
+    "unchanged_other_sql_nodes": 23
+  },
+  "xml_receipts": {
+    "ms-i2m-a3-application-final-sql.xml": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "508e7c060e433cac1f00e556499eccdd29b3e6c636e5a4a15ff9a2d5f57aff94"
+    },
+    "ms-i2m-a3-final-sql.xml": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "45cbd4eab0357c6bda37af4deed5fba5b254cb1d1ca853aa7b8bda4c77db9245"
+    },
+    "ms-i2m-a3-first-sql.xml": {
+      "tests": 5,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "9fd1b7fa6d52fb20224a5fdd3fe55e2ddb9d1e7189b8a035d36ed7e95c9cf8ec"
+    },
+    "ms-i2m-a3-recovery-first-sql.xml": {
+      "tests": 3,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "b9a07c9c416e075ac14ccb364145a8ff2654016c416eec6f2c9fdab5556b79dc"
+    },
+    "ms-i2m-a3-second-sql.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "fc781e40d5a927904cfd85d86bde414ea84118c59d5672178662b5802d6903a2"
+    },
+    "ms-i2m-a3-unit.xml": {
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "de7518c0ff0f2275852ba015650bb8b4bacb07018dc1f022bd73a2c7a881ffb5"
+    }
+  },
+  "preserved_failures": [
+    {
+      "receipt": "ms-i2m-a3-first-sql.xml",
+      "cause": "Publication accessed active_since while owning clock still waiting; now fails explicitly and atomically; fixture renamed to reflect no resume grant."
+    },
+    {
+      "receipt": "ms-i2m-a3-recovery-first-sql.xml",
+      "cause": "Obsolete failure handler moved the Run to waiting despite newer accepted input; it now preserves original failure without changing current state or displaying it as the new input failure."
+    },
+    {
+      "receipt": "ms-i2m-a3-contract-first.json",
+      "cause": "Generic shape example duplicated source input pins; explicit generator example now uses distinct actual-shaped pins."
+    }
+  ],
+  "command_preparation_failures": [
+    "Initial cancellation fixture intercepted transaction.write although decisions use record_store.put; corrected before first SQL execution.",
+    "An overly broad lint command included existing compact contract catalogs and reported E501; final Ruff/format scope is the 8 changed runtime/test files. Catalogs passed compile and generated schema/examples validation.",
+    "Reading redirected contract JSON with UTF-16 failed; actual UTF-8 bytes retained and validated.",
+    "Read-only wait diagnostic imported absent asyncpg; follow-up native Windows diagnostic used an incompatible default Proactor loop. No dependency/configuration changes or database mutations resulted; SQL suite independently completed successfully.",
+    "Staged whitespace gate found pytest diff trailing spaces in the preserved first recovery failure XML. Added a file-specific .gitattributes exception; raw failure bytes and source checks remain unchanged."
+  ],
+  "static": {
+    "mypy": "passed",
+    "mypy_source_files": 226,
+    "ruff": "passed",
+    "format": "passed",
+    "ruff_format_file_count": 8,
+    "catalog_py_compile": "passed",
+    "existing_schemas_unchanged": 1402,
+    "new_internal_schema": "RunInputApplication",
+    "positive_examples": 1403,
+    "negative_rejections": 336,
+    "contract_receipt": "ms-i2m-a3-contract-final.json"
+  },
+  "verified_behaviours": [
+    "Actual owning model consumes current original plus appended input; applied proof, patch, Run and event commit atomically.",
+    "Rereading actual output is idempotent; rollback recovers from original persisted result without model resend.",
+    "Old model snapshot cannot be relabelled with the newer input revision.",
+    "Cancellation before application prevents false applied state.",
+    "Waiting clock cannot be used to publish a new response.",
+    "Correction racing original model retains pending input and original failure; restart does not fail the new input.",
+    "User cancel still terminates; current input version failure still terminates.",
+    "Original reply/ask/provider failure/tool approve or decline/cancel/restart/formal artifact acceptance/policy revocation remain verified."
+  ],
+  "real_provider_calls": 0,
+  "new_live_model_cost": "0",
+  "billing_pending_records_modified": false,
+  "queue_wake_installed": false,
+  "full_continuation_accepted": false,
+  "D_clock_implementation_modified": false,
+  "worker_branches_modified": false,
+  "human_runtime_or_original_data_changed": false,
+  "last_full_updated": false,
+  "pending": [
+    "D actual ExecutionClocks stage and SQL evidence",
+    "A trusted remaining active segment and original queue lease wake",
+    "B actual new service/page integration",
+    "C independent quality gate and actual candidate exports",
+    "fixed user model and formal text delivery/H02 human workflow"
+  ],
+  "historical_evidence": "Previous M1 74/A2 4 and historical 675/1691 are not added to this scope."
+}

@@ -168,6 +168,20 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
         "patch": field("RunInputPatch", "原请求受理及生效状态"),
         "event_seq": revision("最后可续持久事件序号"),
     })
+    obj("RunInputApplication", "run", "原模型实际消费补充的不可变证据；不是执行授权。", {
+        "protocol": field(literal(PROTOCOL), "协议"),
+        "run_id": field("ID", "原Run"), "input_revision": revision("实际模型输入版本"),
+        "attempt_id": field("ID", "原模型attempt"),
+        "context_snapshot_ref": field("Ref", "实际调用固定上下文"),
+        "model_output_ref": field("Ref", "实际完成模型输出"),
+        "decision_record_ref": field("Ref", "所属有效Agent决策"),
+        "source_input_refs": field(arr("UserInputRef", 17, 2), "原文及全部实际消费补充", uniqueItems=True),
+        "patch_input_refs": field(arr("UserInputRef", 16, 1), "本事务从accepted变applied的原Input", uniqueItems=True),
+        "applied_at": field("Timestamp", "可信服务提交时间"),
+    }, ["只有原ModelInvocation/Output/LoopOperation与快照、当前输入/来源和已登记decision全部一致才标生效。",
+        "patch、不可变应用证据、Run版本及Outbox同事务；重读/重启不重复应用，不更新ModelOutput或旧输入。",
+        "不创建预算、权限、续期、唤醒或自动接受；仅证明原模型已消费。"])
+
     obj("RunExecutionClock", "run", "新Run有版本主动执行时钟；旧调用/授权独立到期。", {
         "protocol": field(literal(PROTOCOL), "协议"),
         "run_id": field("ID", "原Run"), "revision": revision("持久CAS修订"),

@@ -8,7 +8,7 @@ from sqlalchemy import func, select
 
 from uaw.agent.conversation import BINDINGS, DECISIONS
 from uaw.agent.sources import check_pin
-from uaw.infrastructure.db.models import OutboxRow, RecordRow
+from uaw.infrastructure.db.models import OutboxRow, RecordRow, RecordVersionRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import (
     RecordTransaction,
@@ -110,6 +110,70 @@ class ConversationControls:
                 )
             )
         )
+
+    async def pending_since(
+        self, tx: RecordTransaction, actor: Principal, run_id: str, frame_ref: Payload | None
+    ) -> bool:
+        """Hold an obsolete failure while newer accepted input awaits recovery.
+
+        This proves only that an original queued frame was superseded. It neither
+        clears the old failure nor wakes a job or grants a new execution segment.
+        """
+        try:
+            await tx.load(BINDINGS, run_id)
+        except StoreMissing:
+            return False  # Keep legacy termination semantics.
+        run = await self.owned(tx, actor, run_id)
+        if frame_ref is None:
+            return False
+        pin = Ref.model_validate(frame_ref)
+        if not pin.version.isdecimal():
+            raise reject("conversation_frame_unproven", "Original frame version required", 412)
+        old = await tx.session.get(
+            RecordVersionRow,
+            (actor.id, "intent.frames", pin.id, int(pin.version)),
+        )
+        if old is None or old.schema_name != "TaskFrame":
+            raise reject("conversation_frame_unproven", "Original frame is missing", 412)
+        validate_contract("TaskFrame", old.payload)
+        check_pin(pin, "task_frame", old.resource_id, old.revision, old.payload)
+        state = await tx.load("run.input_sets", run_id)
+        if (
+            old.payload["task_id"] != run["task_id"]
+            or old.payload["original_input_ref"] != state.payload["original_input_ref"]
+        ):
+            raise reject("conversation_frame_unproven", "Original task input differs", 412)
+        if old.payload["input_revision"] >= state.revision:
+            return False
+        patches = await self.matching(tx, PATCHES, run_id)
+        if len(patches) != len(state.payload["patch_refs"]):
+            raise reject("conversation_patch_unproven", "Current patch inventory differs", 412)
+        pending = False
+        for row in patches:
+            validate_contract("RunInputPatch", row.payload)
+            value = row.payload
+            if (
+                row.schema_name != "RunInputPatch"
+                or value["conversation_id"] != run["conversation_id"]
+                or value["input_ref"] not in state.payload["patch_refs"]
+                or value["input_revision"] > state.revision
+            ):
+                raise reject("conversation_patch_unproven", "Current patch source differs", 412)
+            if value["state"] == "accepted" and (
+                value["input_revision"] > old.payload["input_revision"]
+            ):
+                original = await tx.load("inputs", value["input_ref"]["id"])
+                check_pin(
+                    Ref.model_validate(value["input_ref"]),
+                    "input",
+                    original.resource_id,
+                    original.revision,
+                    original.payload,
+                )
+                if original.payload["conversation_id"] != run["conversation_id"]:
+                    raise reject("conversation_patch_unproven", "Input owner differs", 412)
+                pending = True
+        return pending
 
     async def question_value(
         self, tx: RecordTransaction, run: Payload, item_id: str

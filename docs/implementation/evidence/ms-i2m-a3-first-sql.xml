@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="63.139" timestamp="2026-10-16T19:52:19.738622+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_conversation_applications" name="test_actual_model_consumption_marks_applied_once_and_same_run_can_publish[case0]" time="17.094"><failure message="KeyError: 'active_since'">tests\integration\agent\test_conversation_applications.py:81: in test_actual_model_consumption_marks_applied_once_and_same_run_can_publish
+    await publish(p.driver.agent, op_id, ctx)
+src\uaw\run\conversation_entry.py:365: in publish
+    return await TransactionalStore(records.database).execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_entry.py:312: in write
+    - datetime.fromisoformat(clock.payload["active_since"].replace("Z", "+00:00"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'active_since'</failure></testcase><testcase classname="tests.integration.agent.test_conversation_applications" name="test_old_response_cannot_be_relabelled_as_the_new_input[case0]" time="8.986" /><testcase classname="tests.integration.agent.test_conversation_applications" name="test_cancel_before_application_leaves_accepted_input_without_false_applied[case0]" time="13.576" /><testcase classname="tests.integration.agent.test_conversation_applications" name="test_application_transaction_rollback_preserves_original_model_and_pending_input[case0]" time="13.482" /><testcase classname="tests.integration.agent.test_conversation_postgres" name="test_reply_one_call_no_artifact_or_acceptance_and_restart[case0]" time="8.553" /></testsuite></testsuites>

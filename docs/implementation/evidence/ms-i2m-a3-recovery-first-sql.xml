@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="28.522" timestamp="2026-10-16T19:56:54.505617+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_conversation_recovery" name="test_correction_during_original_model_preserves_pending_input_and_cancel[False-case0]" time="6.338"><failure message="AssertionError: assert 'waiting_for_user' == 'running'&#10;  &#10;  - running&#10;  + waiting_for_user">tests\integration\agent\test_conversation_recovery.py:61: in test_correction_during_original_model_preserves_pending_input_and_cancel
+    assert (await p.runs.get_run(p.actor, p.run["id"]))["status"] == "running"
+E   AssertionError: assert 'waiting_for_user' == 'running'
+E     
+E     - running
+E     + waiting_for_user</failure></testcase><testcase classname="tests.integration.agent.test_conversation_recovery" name="test_correction_during_original_model_preserves_pending_input_and_cancel[True-case0]" time="7.799"><failure message="AssertionError: assert 'waiting_for_user' == 'running'&#10;  &#10;  - running&#10;  + waiting_for_user">tests\integration\agent\test_conversation_recovery.py:61: in test_correction_during_original_model_preserves_pending_input_and_cancel
+    assert (await p.runs.get_run(p.actor, p.run["id"]))["status"] == "running"
+E   AssertionError: assert 'waiting_for_user' == 'running'
+E     
+E     - running
+E     + waiting_for_user</failure></testcase><testcase classname="tests.integration.agent.test_conversation_recovery" name="test_failure_from_current_input_version_still_terminates[case0]" time="13.039" /></testsuite></testsuites>

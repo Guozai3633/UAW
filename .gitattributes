@@ -8,3 +8,6 @@ docs/implementation/evidence/h02-p1-12-first-tests.xml -whitespace
 
 # Preserve raw P1-13 failure JUnit bytes; source whitespace checks remain enabled.
 docs/implementation/evidence/h02-p1-13-*.xml -whitespace
+
+# Preserve raw A3 failure diff text; runtime/source whitespace checks stay enabled.
+docs/implementation/evidence/ms-i2m-a3-recovery-first-sql.xml -whitespace

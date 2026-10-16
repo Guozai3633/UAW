@@ -800,8 +800,11 @@ class BackgroundAgent:
         )
 
     async def failure(self, job: Payload, result: Payload) -> Payload:
+        from uaw.run.conversation_control import ConversationControls
+
         actor = Principal.model_validate(job["principal"])
-        assert self.control.run_service
+        assert self.control.run_service and self.control.records
+        controls = ConversationControls(self.control.records)
         run = await self.control.run_service.get_run(actor, job["run_id"])
         failure = (
             result.get("failure")
@@ -809,6 +812,27 @@ class BackgroundAgent:
                 "background_result_unavailable", "No valid owning-domain result", 409
             ).failure.wire()
         )
+
+        async def superseded(tx: RecordTransaction) -> Payload:
+            current = await tx.load("runs", run["id"])
+            ledger = await tx.load("budget.ledgers", run["id"])
+            pending = False
+            if not ledger.payload["cancel_requested"] and current.payload["status"] not in (
+                "completed",
+                "failed",
+                "cancelled",
+            ):
+                pending = await controls.pending_since(tx, actor, run["id"], job.get("frame_ref"))
+            return {"pending": pending}
+
+        if (
+            await self.control.run_service.transactions.inspect(
+                actor, "conversation:" + run["conversation_id"], superseded
+            )
+        )["pending"]:
+            # Keep the original failure in the owning job without showing it as
+            # failure of the user's newer input or manufacturing a waiting clock.
+            return {**job, "state": "blocked", "failure": failure}
         await self.waiting(actor, run)
         await self.message(
             actor,

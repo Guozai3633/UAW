@@ -139,6 +139,16 @@ REAL_EXAMPLES={
  "ExecutionAssessment":{"planning":"steps","delegation":"single","parallelism":"parallel","information_state":"read_materials","rationale":"先并发只读检索接口与调用方；是否委派需读完材料后再判断。","candidate_agent_refs":[],"independent_groups":[],"reassessment_conditions":["读取实现和调用方后"],"source_frame_ref":ref_example("task_frame","task_api_1"),"decision_status":"provisional","parallel_scope":"tools","suggested_delegations":[]},
  "ConversationsCreateRequest":{"title":"API兼容检查","model_choice":{"mode":"explicit","model_id":"model_user_selected"},"memory_policy":{"revision":0,"read_enabled":False,"contribute_enabled":False,"scope":{"conversation_id":"new_conversation"}},"approval_mode":"manual"},
  "TurnsSubmitRequest":{"conversation_id":"conversation_1","text":"帮我检查这次API修改的兼容性，运行已有测试，保留我的未提交修改。","attachment_refs":[]},
+ "RunInputApplication":{
+     "protocol":"conversation-v1","run_id":"run_1","input_revision":2,
+     "attempt_id":"model_attempt_2",
+     "context_snapshot_ref":ref_example("context","snapshot_2"),
+     "model_output_ref":ref_example("content","output_2"),
+     "decision_record_ref":ref_example("content","model_attempt_2"),
+     "source_input_refs":[USER,ref_example("input","input_answer_2")],
+     "patch_input_refs":[ref_example("input","input_answer_2")],
+     "applied_at":"2026-10-16T02:00:00Z",
+ },
 }
 
 EXAMPLES={name:copy.deepcopy(REAL_EXAMPLES.get(name)) if name in REAL_EXAMPLES else example(ref_schema) for name,ref_schema in TYPES.items()}

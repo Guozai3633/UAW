@@ -243,6 +243,13 @@ async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecution
                 "conversation_model_unowned", "Original model/operation ownership differs", 412
             )
         await settled_effects(tx, ctx)
+        clock = await tx.load("run.execution_clocks", ctx.run_id or "")
+        if clock.payload["mode"] != "active" or "active_since" not in clock.payload:
+            raise reject(
+                "conversation_active_clock_required",
+                "Original execution clock must resume before publishing a new response",
+                503,
+            )
         now = timestamp()
         item = {
             "id": item_id,
@@ -303,7 +310,6 @@ async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecution
                     "created_at": now,
                 },
             )
-        clock = await tx.load("run.execution_clocks", ctx.run_id or "")
         elapsed = max(
             0,
             int(

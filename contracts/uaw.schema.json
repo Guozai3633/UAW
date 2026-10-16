@@ -27104,6 +27104,80 @@
       "additionalProperties": false,
       "x-uaw-protocol": "conversation-v1"
     },
+    "RunInputApplication": {
+      "type": "object",
+      "description": "原模型实际消费补充的不可变证据；不是执行授权。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "conversation-v1",
+          "description": "协议"
+        },
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "实际模型输入版本",
+          "minimum": 1
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原模型attempt"
+        },
+        "context_snapshot_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际调用固定上下文"
+        },
+        "model_output_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "实际完成模型输出"
+        },
+        "decision_record_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "所属有效Agent决策"
+        },
+        "source_input_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UserInputRef"
+          },
+          "minItems": 2,
+          "maxItems": 17,
+          "description": "原文及全部实际消费补充",
+          "uniqueItems": true
+        },
+        "patch_input_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UserInputRef"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "description": "本事务从accepted变applied的原Input",
+          "uniqueItems": true
+        },
+        "applied_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "可信服务提交时间"
+        }
+      },
+      "required": [
+        "protocol",
+        "run_id",
+        "input_revision",
+        "attempt_id",
+        "context_snapshot_ref",
+        "model_output_ref",
+        "decision_record_ref",
+        "source_input_refs",
+        "patch_input_refs",
+        "applied_at"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
     "RunExecutionClock": {
       "type": "object",
       "description": "新Run有版本主动执行时钟；旧调用/授权独立到期。",

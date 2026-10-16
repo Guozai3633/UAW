@@ -1222,6 +1222,7 @@
 | [RunCreateRequest](objects/RunCreateRequest.md) | 原文入库与Run受理原子关联。 |
 | [RunDeliveryView](objects/RunDeliveryView.md) | 真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。 |
 | [RunExecutionClock](objects/RunExecutionClock.md) | 新Run有版本主动执行时钟；旧调用/授权独立到期。 |
+| [RunInputApplication](objects/RunInputApplication.md) | 原模型实际消费补充的不可变证据；不是执行授权。 |
 | [RunInputPatch](objects/RunInputPatch.md) | 追加输入关联，InputRecord结构不变；受理与生效区分。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |

@@ -8,6 +8,7 @@ from sqlalchemy import select
 from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, timestamp
+from uaw.run.conversation_control import ConversationControls
 from uaw.run.jobs import JOBS
 from uaw.shared.contracts import Principal
 from uaw.shared.errors import reject
@@ -96,6 +97,13 @@ class RunTerminationController:
             failure = job.get("failure")
             cancelled = ledger.payload["cancel_requested"]
             if not cancelled and (not failure or failure["category"] == "unknown_effect"):
+                return {}
+            if not cancelled and await ConversationControls(self.records).pending_since(
+                tx, actor, run_id, job.get("frame_ref")
+            ):
+                # Preserve the original blocked job/failure and all effects. A
+                # safe continuation coordinator must recheck current sources;
+                # the obsolete attempt cannot fail the newer accepted input.
                 return {}
             target = "cancelled" if cancelled else "failed"
             value = {
