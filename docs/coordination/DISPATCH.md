@@ -1,3 +1,13 @@
+# MS-I2m A5：后台恢复与终态计时消费已提交
+
+2026-10-16，A source **24be0944f7c63d650e0fd67800090ebf3d100975** / **ms-i2m-a5-source**。回答/纠正持久受理后只通知原队列；已组装的恢复器从实际库存找回原输入、执行有界重试和原准入，响应丢失或重启不新建 Run、不重复调用。恢复失败保留具体原因与稳定 Item；取消、当前失败及正式成果完成在原事务内消费注入时钟并收尾提示。
+
+[准确接线与 D 装配前提](requests/A/MS-I2m-A5-wiring.md) · [目录与策略](../implementation/MS-I2m-A5.md) · [原失败和最终 39 SQL](../implementation/evidence/ms-i2m-a5.json)。39 个不同真实 SQL 全部通过＝16 恢复＋12 续跑＋9 原对话＋2 HTTP 认证；229 源码类型、12 变动文件静态/格式通过。首次 8/复跑 12、零节点错误及旧阶段不重复计数，不是本轮全仓。
+
+**完整 M2 仍待真实 D 组件和长等待执行段。** 当前明确使用受控 clock，默认没有安装生产计时组件；新 localhost 服务、B 真实页面、C 实际质量及 H02 本人体验未过。原 Model/Tool/审批/root/native 期限不续期，unknown 先对账不重发。没有真实模型新调用/费用，H01-v5、本人历史、flags 和 last_full 保留。
+
+原 B/MS-U4、C/MS-E1、D/MS-K1 连续 M1–M4 不变，未接收新 worker 阶段，不宣称它们已完成。需要 A5 的 worker 先提交自身阶段保持干净，fetch 核对准确 tag/本页后普通 merge 固定 ms-i2m-a5-source，保留原提交；不合浮动 integration，不 reset/rebase，A 不操作其分支。以下各阶段作为历史保留。
+
 # MS-I2m A4：A侧安全唤醒与原Run接续组件已提交
 
 2026-10-16，A source **4102911b3bd493ca73d2e2a3c76c35017e86a5b7** / **ms-i2m-a4-source**。已提供带实际身份/固定模型/角色/原库存复查的恢复器，原会话事务内处理Run/注入时钟/队列容量/fence/事件；同Run回答澄清与运行中纠正的A链路通过，旧作业、调用、用量保留，新attempt不复用。修复恢复状态幂等键和原兼容clock_ref/事件修订。

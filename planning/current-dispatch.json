@@ -105,6 +105,13 @@
       "scope": "in_deadline_safe_queue_continuation_component_controlled_clock_no_production_resume",
       "receipt": "docs/implementation/evidence/ms-i2m-a4.json",
       "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    },
+    "A/A5": {
+      "source_commit": "24be0944f7c63d650e0fd67800090ebf3d100975",
+      "fixed_ref": "ms-i2m-a5-source",
+      "scope": "optional_persisted_background_recovery_and_terminal_clock_consumption_controlled_clock_no_production_resume",
+      "receipt": "docs/implementation/evidence/ms-i2m-a5.json",
+      "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
     }
   }
 }

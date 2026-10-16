@@ -1,3 +1,11 @@
+# MS-I2m A5已提交：继续真实计时和剩余主动执行段
+
+source 24be0944f7c63d650e0fd67800090ebf3d100975 / ms-i2m-a5-source。HTTP受理后只通知，原队列有界扫描和原Run安全续跑、重启找回、失败提示去重、取消/正式成果终态时钟消费已完成A接线。39 SQL、229源码类型/12变动文件静态格式通过；原失败和复跑均保留。[A5实施](../../implementation/MS-I2m-A5.md) · [固定消费](../../coordination/requests/A/MS-I2m-A5-wiring.md)。
+
+下一步接收D/MS-K1实际阶段和SQL证据，安装真实RunIdleEffects/clock，构造超出原墙钟的可信剩余主动执行段，逐个对接预算/政策/租约/Model/Tool及成果来源。旧调用/审批/root/native期限不改，unknown不重发；随后发布独立新服务给B，导出C真实质量样本并完成固定用户模型/H02本人体验。
+
+默认真实clock仍缺，A5受控clock不证明D计量或长等待，M2未整轮完成；H01-v5及本人历史、pending费用、flags、旧标签和last_full保留。原B/C/D包持续有效，阶段到即审，不代写其业务或操作worker分支。
+
 # MS-I2m A4已提交：继续D实源、可信执行段和生产恢复入口
 
 source 4102911b3bd493ca73d2e2a3c76c35017e86a5b7 / ms-i2m-a4-source。A恢复器/原队列容量与fence、角色与根Agent复用、新attempt、旧安全操作失效及注入时钟发布接线已实现。28 SQL通过，227源码类型/5文件静态格式通过；受控clock不证明D计时或长等待，不是整轮M2完成。
