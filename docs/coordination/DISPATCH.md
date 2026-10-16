@@ -1,3 +1,13 @@
+# MS-I2m A3：实际输入生效证据与旧失败隔离已提交
+
+2026-10-16，A source **63bf7aaeedb0cbca2dd7198a8f4fd4fc2c2cfb7b** / **ms-i2m-a3-source**。只有实际原模型调用消费当前输入、快照与决策来源全部一致，补充才从accepted变applied；补充/不可变应用证据/Run修订/Outbox同事务，旧输出不重新标成新版本。用户运行中纠正后，旧尝试失败保留而不误终结新输入；取消和当前版本真实失败仍有效。
+
+[准确B/C/D消费说明](requests/A/MS-I2m-A3-wiring.md) · [实施边界](../implementation/MS-I2m-A3.md) · [回执和原失败](../implementation/evidence/ms-i2m-a3.json)。27不同SQL＋54单元共81节点最终通过；最后来源摘要/模型加固后4SQL复跑，不重复计数。226源码类型、8运行/测试文件Ruff/格式通过；1403正例/336反例通过，原1402结构不变。没有真实LLM新调用/费用或本轮全仓声明。
+
+**完整M2仍未完成**：原队列唤醒、可信剩余主动段、D真实持久时钟和新服务待接线。等待时钟发布回答明确503，不补造active或延长原调用/审批/root期限；H01-v5及本人历史保持，H02未accepted。
+
+原B/MS-U4、C/MS-E1、D/MS-K1连续M1–M4及共同基线不变。阶段到即审，尚未收到新worker阶段，不宣称已经完成。需要A3的worker先提交自身阶段保持干净、fetch核对本页/tag后普通merge固定ms-i2m-a3-source，保留原提交；不合浮动integration，不reset/rebase，A不操作worker分支。下面A2/M1与正式分包继续有效。
+
 # MS-I2m A2：续跑输入准备已提交，完整执行仍待装配
 
 2026-10-16，A source **17a02dd5904240a7f4a1e71640298053ea028aaf** / **ms-i2m-a2-source**。新输入版本生成独立TaskFrame/原绑定，旧版本保留；原问题、原因/选项和准确回答链接进入同Run低信任Context，变动来源在模型输入前拒绝。普通无补充输入不增加问题查询或空数据块。

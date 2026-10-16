@@ -91,6 +91,13 @@
       "fixed_ref": "ms-i2m-a2-source",
       "scope": "continuation_input_preparation_only_no_resume",
       "receipt": "docs/implementation/evidence/ms-i2m-a2.json"
+    },
+    "A/A3": {
+      "source_commit": "63bf7aaeedb0cbca2dd7198a8f4fd4fc2c2cfb7b",
+      "fixed_ref": "ms-i2m-a3-source",
+      "scope": "actual_input_application_and_obsolete_failure_isolation_no_queue_resume",
+      "receipt": "docs/implementation/evidence/ms-i2m-a3.json",
+      "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
     }
   }
 }

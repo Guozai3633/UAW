@@ -1,3 +1,11 @@
+# MS-I2m A3已提交，继续原M2的队列/执行段/计时装配
+
+source 63bf7aaeedb0cbca2dd7198a8f4fd4fc2c2cfb7b / ms-i2m-a3-source。实际原Model/Context/input/decision证明补充已消费，applied证据/补充/Run/事件同事务；旧输出拒绝重标版本。并发纠正后的旧失败不误终止新输入，用户取消和当前失败保持。27 SQL＋54单元去重81通过，最后4 SQL已复跑；226源码类型通过。原失败和受影响范围见A3说明/回执。
+
+完整续跑未接受；下一步消费D实际ExecutionClocks阶段和SQL证据，接真实RunIdleEffects、可信剩余主动执行段与队列租约唤醒，原调用/审批/权限期限不变。D未到可继续A队列/来源准备，但不代写D专属业务。真实B/C阶段到即审，不等全部最终包；没有新worker包，不改其工作区/分支。
+
+H01-v5不热改，无真实模型新调用/费用，旧last_full/原用户记录/flags保留。详见 [A3实施](../../implementation/MS-I2m-A3.md) 与 [固定消费](../../coordination/requests/A/MS-I2m-A3-wiring.md)。
+
 # MS-I2m A2输入准备完成，后续安全执行门槛
 
 source 17a02dd5904240a7f4a1e71640298053ea028aaf / ms-i2m-a2-source；新TaskFrame版本、同Run原问题/回答关系与Context已验证，4 SQL/225源码类型通过。完整M2没有标完成：尚无队列唤醒/applied/长等待执行或新服务。
