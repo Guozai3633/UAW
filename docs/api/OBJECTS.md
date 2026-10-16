@@ -1146,6 +1146,7 @@
 | [InternalIngressRequest](objects/InternalIngressRequest.md) | 互斥分支；所有字段须匹配所选action。 |
 | [InternalIngressRequestEvents](objects/InternalIngressRequestEvents.md) | 按action选择的独立参数/结果分支。 |
 | [InternalIngressRequestSubmit](objects/InternalIngressRequestSubmit.md) | 按action选择的独立参数/结果分支。 |
+| [InternalRunActiveSegment](objects/InternalRunActiveSegment.md) | 可信服务在原事务签发的新执行段；非HTTP或模型输入。 |
 | [InternalRunApprovalOutput](objects/InternalRunApprovalOutput.md) | 互斥分支；所有字段须匹配所选action。 |
 | [InternalRunApprovalOutputControl](objects/InternalRunApprovalOutputControl.md) | 按action选择的独立参数/结果分支。 |
 | [InternalRunApprovalOutputDecide](objects/InternalRunApprovalOutputDecide.md) | 按action选择的独立参数/结果分支。 |

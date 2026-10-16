@@ -1,3 +1,9 @@
+# 2026-10-16：MS-I2m A6 内部执行段
+
+新增 `InternalRunActiveSegment` 作为服务端持久记录；五个控制 HTTP、0.2 meta 和原 1403 个 schema 保持。显式注入 A 执行段组件及实际 D clock 的候选实例，可为尚未发出的新调用按剩余主动额度派生新上下文；预算、权限、Context、消息及文本成果共同复查其来源。旧 Run 预算、账本、调用、预留、审批和本机授权的原期限均保留。具体字段见 [内部执行段](objects/InternalRunActiveSegment.md)，算法/目录/边界见 [A6 实施](../implementation/MS-I2m-A6.md)。
+
+默认尚未注入新段或真实 D clock；Tool dispatch 跨原墙钟的 port 仍未接线，因此本段不能作为完整 M2、真实长等待、Tool、H02 或新测试服务已通过的声明。当前准确阶段以 [DISPATCH](../coordination/DISPATCH.md) 为准。下方 A5 和更早阶段继续作为历史保留。
+
 # 2026-10-16：MS-I2m A5 的实际可用范围
 
 五个控制 HTTP 已实现原账号读图、回答/纠正持久受理、幂等回执及 Origin/CSRF 检查。正式恢复组装在新候选实例中显式注入 `ConversationClockPort` 后启用：HTTP 只通知，原队列空闲时从数据库扫描并恢复原 Run；实际模型消费后才提交 applied。具体实现、目录与回执见 [A5 实施记录](../implementation/MS-I2m-A5.md)，准确阶段 SHA 以 [DISPATCH](../coordination/DISPATCH.md) 为准。

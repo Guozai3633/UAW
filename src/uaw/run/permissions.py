@@ -1,10 +1,10 @@
 """Current owned policy chains; no permission cache, registration or inferred grants."""
 
 from collections.abc import Awaitable, Callable
-from datetime import UTC, datetime
 from typing import Any
 
 from uaw.infrastructure.db.records import PostgresRecordStore, parameter_hash
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.shared.contracts import Principal, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.ports import ExecutionPolicyPort
@@ -50,7 +50,7 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
         self.store = store
         self.authentication_check: Callable[[Principal], Awaitable[None]] | None = None
 
-    async def _run(self, ctx: TrustedExecutionContext) -> None:
+    async def _run(self, ctx: TrustedExecutionContext, *, check_time: bool = True) -> None:
         if not ctx.run_id:
             raise CapabilityUnavailable("execution.admitted_run")
         run_row, ledger_row = await self.store.get_current_many(
@@ -78,19 +78,21 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
             raise reject("execution_cancelled", "Run has been cancelled", 409, "cancelled")
         if run["status"] not in ("preparing", "running", "verifying", "waiting_for_user"):
             raise reject("execution_run_unavailable", "Run is not active", 409)
-        if any(
-            datetime.fromisoformat(deadline.replace("Z", "+00:00")) <= datetime.now(UTC)
-            for deadline in (ctx.deadline, run["budget"]["deadline"], ledger["deadline"])
-        ):
-            raise reject(
-                "execution_deadline_expired", "Execution deadline has passed", 409, "timeout"
-            )
+        if check_time:
+            await ExecutionSegments(self.store).deadline(ctx, run, ledger)
 
     async def resolve(self, ctx: TrustedExecutionContext) -> Payload:
+        return await self._resolve(ctx, check_time=True)
+
+    async def inspect_for_continuation(self, ctx: TrustedExecutionContext) -> None:
+        """Current identity/policy observation ONLY; never a dispatch snapshot."""
+        await self._resolve(ctx, check_time=False)
+
+    async def _resolve(self, ctx: TrustedExecutionContext, *, check_time: bool) -> Payload:
         validate_contract("TrustedExecutionContext", ctx.wire())
         if self.authentication_check is not None:
             await self.authentication_check(ctx.principal)
-        await self._run(ctx)
+        await self._run(ctx, check_time=check_time)
         pin = ctx.capability_policy_ref.wire()
         policies: list[Payload] = []
         pins: list[Payload] = []
@@ -190,7 +192,7 @@ class ExecutionPolicyResolver(ExecutionPolicyPort):
                 raise reject(
                     "execution_policy_stale", "Policy changed during permission resolution", 412
                 )
-        await self._run(ctx)
+        await self._run(ctx, check_time=check_time)
         result = {
             "run_id": ctx.run_id,
             "scope": ctx.scope.wire(),

@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from uaw.context.contracts import Reading, from_wire
 from uaw.context.seed import revision
 from uaw.infrastructure.db.records import PostgresRecordStore
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.permissions import ExecutionPolicyResolver, require_snapshot
 from uaw.shared.contracts import Ref, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, DomainError, reject
@@ -35,10 +36,7 @@ class RunContextSources:
             return True
         if run["status"] not in ("preparing", "running"):
             raise reject("context_run_unavailable", "Run is not active", 409)
-        if datetime.fromisoformat(run["budget"]["deadline"].replace("Z", "+00:00")) <= datetime.now(
-            UTC
-        ):
-            raise reject("deadline_exceeded", "Run deadline expired", 422, "timeout")
+        await ExecutionSegments(self.store).deadline(ctx, run, ledger)
         return False
 
     async def authorize(self, ctx: TrustedExecutionContext) -> None:

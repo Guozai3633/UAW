@@ -40,6 +40,7 @@ from uaw.run.context_sources import RegisteredRunContextSources, RegisteredToolS
 from uaw.run.conversation_recovery import ConversationRecovery
 from uaw.run.enrollment import RunnerEnrollments
 from uaw.run.events import EventReader
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.facade import RunFacade
 from uaw.run.file_context import FileAwareContextInputs, FileContextMaterials
@@ -164,6 +165,7 @@ class Container:
     background_jobs: RunJobs | None = None
     conversation_clocks: ConversationClockPort | None = None
     conversation_recovery: ConversationRecovery | None = None
+    conversation_segments: ExecutionSegments | None = None
     installed_lifecycle: InstalledLifecycle | None = None
     file_run_sources: InstalledFileRunSources | None = None
     started: bool = False
@@ -184,7 +186,9 @@ class Container:
 
             try:
                 self.background_jobs = await BackgroundAgent(
-                    self, conversation_clocks=self.conversation_clocks
+                    self,
+                    conversation_clocks=self.conversation_clocks,
+                    conversation_segments=self.conversation_segments,
                 ).prepare()
                 self.background_jobs.start()
             except Exception:

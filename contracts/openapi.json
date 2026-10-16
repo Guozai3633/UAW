@@ -59462,6 +59462,69 @@
         "additionalProperties": false,
         "x-uaw-protocol": "conversation-v1"
       },
+      "InternalRunActiveSegment": {
+        "type": "object",
+        "description": "可信服务在原事务签发的新执行段；非HTTP或模型输入。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "执行段CAS修订",
+            "minimum": 1
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "签发时的有效补充版本",
+            "minimum": 1
+          },
+          "context": {
+            "$ref": "#/components/schemas/TrustedExecutionContext",
+            "description": "仅新调用使用的新上下文；旧上下文保留"
+          },
+          "source_job_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原blocked作业历史版本和完整摘要"
+          },
+          "clock_ref": {
+            "$ref": "#/components/schemas/ConversationClockRef",
+            "description": "实际active时钟历史版本和摘要"
+          },
+          "budget_hash": {
+            "$ref": "#/components/schemas/Hash",
+            "description": "原Run预算全量摘要，不增加资源或限额"
+          },
+          "ledger_deadline": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "原账本截止时间，不能改写"
+          },
+          "issued_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "原active时钟捕获时刻"
+          }
+        },
+        "required": [
+          "protocol",
+          "run_id",
+          "revision",
+          "input_revision",
+          "context",
+          "source_job_ref",
+          "clock_ref",
+          "budget_hash",
+          "ledger_deadline",
+          "issued_at"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
       "RunExecutionClock": {
         "type": "object",
         "description": "新Run有版本主动执行时钟；旧调用/授权独立到期。",

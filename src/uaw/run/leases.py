@@ -7,6 +7,7 @@ from typing import Any
 
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, reference
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.ports import ExecutionLeasePort
@@ -69,6 +70,10 @@ class ExecutionLeaseService(ExecutionLeasePort):
         ):
             raise reject("lease_scope_denied", "Lease is outside the owned Run", 403)
         root_deadline = min(instant(run["budget"]["deadline"]), instant(ledger["deadline"]))
+        if root_deadline <= self._now():
+            root_deadline = await ExecutionSegments(self.store).root_deadline(
+                ctx, run, ledger, tx=tx, now=self._now()
+            )
         deadline = min(instant(ctx.deadline), root_deadline)
         reason = None
         if ledger["cancel_requested"] or run["status"] == "cancelled":

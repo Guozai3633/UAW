@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="16.174" timestamp="2026-10-16T22:09:01.050218+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_execution_segments" name="test_late_answer_mints_only_new_context_and_completes_original_run_after_restart[case0]" time="14.385"><failure message="assert False">tests\integration\agent\test_execution_segments.py:103: in test_late_answer_mints_only_new_context_and_completes_original_run_after_restart
+    await finish(p)
+tests\integration\agent\test_execution_segments.py:80: in finish
+    assert await p.queue.tick()
+E   assert False</failure></testcase></testsuite></testsuites>

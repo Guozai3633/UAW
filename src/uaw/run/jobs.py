@@ -10,7 +10,7 @@ from sqlalchemy import func, select
 from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalStore, identifier
-from uaw.shared.contracts import Principal
+from uaw.shared.contracts import Principal, TrustedExecutionContext
 from uaw.shared.errors import DomainError, reject
 from uaw.shared.observability import report_request_failure
 from uaw.shared.schema import validate_contract
@@ -128,7 +128,13 @@ class RunJobs:
 
         return await self.transactions.inspect(self.owner, "web.queue", claim)
 
-    async def wake(self, tx: RecordTransaction, original: Payload) -> Payload:
+    async def wake(
+        self,
+        tx: RecordTransaction,
+        original: Payload,
+        *,
+        continuation_context: TrustedExecutionContext | None = None,
+    ) -> Payload:
         """Join the original conversation transaction; never grant execution rights."""
         validate_contract("BackgroundRunJob", original)
         if tx.owner != self.owner.id or original["principal"]["id"] != tx.owner:
@@ -159,6 +165,12 @@ class RunJobs:
             "state": "queued",
             "ready_at": datetime.now(UTC).isoformat(),
         }
+        if continuation_context is not None:
+            from uaw.run.execution_segments import identity
+
+            if identity(continuation_context.wire()) != identity(original.get("context", {})):
+                raise reject("job_continuation_scope", "Original execution scope required", 403)
+            changed["context"] = continuation_context.wire()
         # Original row versions retain failures, previous frame and original calls.
         # Fresh input preparation must not reuse an old output/attempt/lease.
         for key in (

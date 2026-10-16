@@ -1,11 +1,11 @@
 """Read-only, Run-owned source set. Intent never writes its own original-input ledger."""
 
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from typing import Any
 
 from uaw.context.seed import revision
 from uaw.infrastructure.db.records import PostgresRecordStore
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.shared.contracts import TrustedExecutionContext
 from uaw.shared.errors import reject
 from uaw.shared.stores import StoreMissing
@@ -40,13 +40,7 @@ class RunInputReader:
         ledger = (await self.store.get(ctx.principal, "budget.ledgers", run["id"])).payload
         if ledger["cancel_requested"]:
             raise reject("intent_cancelled", "Run has been cancelled", 409, "cancelled")
-        deadlines = (ctx.deadline, run["budget"]["deadline"])
-        if any(
-            datetime.fromisoformat(d.replace("Z", "+00:00")) <= datetime.now(UTC) for d in deadlines
-        ):
-            raise reject(
-                "intent_deadline_expired", "Understanding deadline has passed", 409, "timeout"
-            )
+        await ExecutionSegments(self.store).deadline(ctx, run, ledger)
         try:
             state = (await self.store.get(ctx.principal, "run.input_sets", run["id"])).payload
         except StoreMissing as exc:

@@ -15,6 +15,7 @@ from uaw.infrastructure.db.transactions import (
     reference,
     timestamp,
 )
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.facade import zero_resources
 from uaw.shared.contracts import Principal, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
@@ -197,7 +198,9 @@ class BudgetService(BudgetPort, BudgetStatePort, BudgetExecutionStatePort):
                     "budget_admission_stopped", "Run is not accepting new actions", 409, "cancelled"
                 )
             deadline = datetime.fromisoformat(request["deadline"].replace("Z", "+00:00"))
-            root_deadline = datetime.fromisoformat(row.payload["deadline"].replace("Z", "+00:00"))
+            root_deadline = await ExecutionSegments(self.store).deadline(
+                ctx, run.payload, row.payload, tx=tx
+            )
             ctx_deadline = datetime.fromisoformat(ctx.deadline.replace("Z", "+00:00"))
             if not datetime.now(UTC) < deadline <= min(root_deadline, ctx_deadline):
                 raise reject(
@@ -291,15 +294,15 @@ class BudgetService(BudgetPort, BudgetStatePort, BudgetExecutionStatePort):
                 raise reject(
                     "budget_exhausted", "Run has exceeded its resource budget", 409, "budget"
                 )
-            if (
-                ledger.payload["cancel_requested"]
-                or run.payload["status"] not in ("preparing", "running", "verifying")
-                or datetime.fromisoformat(ledger.payload["deadline"].replace("Z", "+00:00"))
-                <= datetime.now(UTC)
+            if ledger.payload["cancel_requested"] or run.payload["status"] not in (
+                "preparing",
+                "running",
+                "verifying",
             ):
                 raise reject(
                     "budget_admission_stopped", "Run no longer permits dispatch", 409, "cancelled"
                 )
+            await ExecutionSegments(self.store).deadline(ctx, run.payload, ledger.payload, tx=tx)
             if datetime.fromisoformat(
                 row.payload["deadline"].replace("Z", "+00:00")
             ) <= datetime.now(UTC):

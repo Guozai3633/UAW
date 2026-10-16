@@ -1,7 +1,8 @@
 """A-owned safe queue wake. A clock transition is never execution authorization.
 
-This first adapter admits only calls still inside their original deadlines.
-Long waits require a separate proven execution segment; no deadline is renewed.
+The compatibility path retains the original deadlines. Explicit segment
+composition may derive a new call's bound from remaining active time; old
+invocations, reservations and permission deadlines are never renewed.
 """
 
 import json
@@ -14,6 +15,7 @@ from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalS
 from uaw.run.clock_ports import ClockChange, ConversationClockPort
 from uaw.run.clock_sources import RunIdleEffects
 from uaw.run.conversation_control import QUESTIONS, ConversationControls
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.jobs import JOBS, RunJobs
 from uaw.shared.contracts import Principal, TrustedExecutionContext
 from uaw.shared.errors import CapabilityUnavailable, reject
@@ -31,10 +33,14 @@ class ConversationResumer:
         *,
         clocks: ConversationClockPort | None,
         verify: ResumeCheck,
+        segments: ExecutionSegments | None = None,
     ) -> None:
         if jobs.records is not records:
             raise ValueError("Continuation must use the original queue/store")
         self.records, self.jobs, self.clocks, self.verify = records, jobs, clocks, verify
+        if segments is not None and segments.records is not records:
+            raise ValueError("Execution segments require the original store")
+        self.segments = segments
         self.controls = ConversationControls(records)
         self.transactions = TransactionalStore(records.database)
 
@@ -73,7 +79,7 @@ class ConversationResumer:
                 raise reject("conversation_resume_owner", "Original task/root differs", 403)
             if not await self.controls.pending_since(tx, actor, run_id, job.get("frame_ref")):
                 return {"woken": False}
-            if any(
+            if self.segments is None and any(
                 r.payload["state"] == "open"
                 for r in await self.controls.matching(tx, QUESTIONS, run_id)
             ):
@@ -116,8 +122,18 @@ class ConversationResumer:
                 raise reject("conversation_resume_clock_unproven", "Owning clock differs", 412)
             if await self.controls.owned(tx, actor, run_id) != changed:
                 raise reject("conversation_resume_run_changed", "Clock changed Run state", 412)
-            await self.jobs.wake(tx, job)
+            continuation = None
+            if self.segments is not None:
+                continuation = await self.segments.mint(tx, job, resumed.wire())
+            await self.jobs.wake(tx, job, continuation_context=continuation)
             await self.verify(job)  # Auth/model/policy are re-read after all awaits.
+            if continuation is not None:
+                assert self.segments is not None
+                current_run = await tx.load("runs", run_id)
+                current_ledger = await tx.load("budget.ledgers", run_id)
+                await self.segments.deadline(
+                    continuation, current_run.payload, current_ledger.payload, tx=tx
+                )
             await tx.emit(
                 run["conversation_id"],
                 "run.updated",

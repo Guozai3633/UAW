@@ -22,6 +22,7 @@ from uaw.infrastructure.db.transactions import RecordTransaction, reference, tim
 from uaw.run.approval_router import RoutedApprovals, ToolApprovalRoute
 from uaw.run.clock_ports import ConversationClockPort
 from uaw.run.completion import RunCompletionController
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.file_admission import NAMESPACE as FILE_SOURCES
 from uaw.run.file_runtime import FileRunRuntime, assemble_file_run
 from uaw.run.inputs import RunInputReader
@@ -101,10 +102,12 @@ class BackgroundAgent:
         *,
         conversation_mode: bool = True,
         conversation_clocks: ConversationClockPort | None = None,
+        conversation_segments: ExecutionSegments | None = None,
     ) -> None:
         self.control = control
         self.conversation_mode = conversation_mode
         self.conversation_clocks = conversation_clocks
+        self.conversation_segments = conversation_segments
         self.queue: RunJobs | None = None
         self.file_runtimes: dict[str, FileRunRuntime] = {}
         self.runtime_lock = asyncio.Lock()
@@ -270,10 +273,31 @@ class BackgroundAgent:
             self.control.records,
             self.queue,
             clocks=self.conversation_clocks,
-            verify=self.verify_continuation,
+            verify=(
+                self.verify_segment_sources
+                if self.conversation_segments
+                else self.verify_continuation
+            ),
+            segments=self.conversation_segments,
         ).resume(actor, run_id)
 
-    async def guard(self, job: Payload) -> tuple[Principal, Payload]:
+    async def verify_segment_sources(self, job: Payload) -> None:
+        """Observe current sources for a safe wake, without granting an execution."""
+        c = self.control
+        if c.run_sources is None or c.tool_access is None or c.execution_permissions is None:
+            raise CapabilityUnavailable("conversation.original_segment_sources")
+        actor, run = await self.guard(job, inspect_only=True)
+        ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["context"]))
+        if ctx.principal != actor or ctx.run_id != run["id"]:
+            raise reject("conversation_resume_owner", "Original context identity differs", 403)
+        await c.execution_permissions.inspect_for_continuation(ctx)
+        await c.run_sources.data(ctx)
+        bound = await c.tool_access._binding(ctx)
+        if bound["role_ref"] != job["role_ref"]:
+            raise reject("conversation_resume_role_changed", "Original role differs", 412)
+        await c.tool_access._role(Ref.model_validate(job["role_ref"]))
+
+    async def guard(self, job: Payload, *, inspect_only: bool = False) -> tuple[Principal, Payload]:
         c = self.control
         assert c.run_service and c.records
         actor = Principal.model_validate(job["principal"])
@@ -303,10 +327,23 @@ class BackgroundAgent:
                 409,
                 "cancelled",
             )
-        if datetime.fromisoformat(run["budget"]["deadline"]) <= datetime.now(UTC):
-            raise reject(
-                "background_deadline_expired", "Original Run deadline passed", 409, "timeout"
-            )
+        if not inspect_only:
+            if "context" in job:
+                ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["context"]))
+                try:
+                    await ExecutionSegments(c.records).deadline(
+                        ctx, run, ledger, now=datetime.now(UTC)
+                    )
+                except DomainError as exc:
+                    if exc.failure.code != "execution_deadline_expired":
+                        raise
+                    raise reject(
+                        "background_deadline_expired", "Run execution time expired", 409, "timeout"
+                    ) from None
+            elif datetime.fromisoformat(run["budget"]["deadline"]) <= datetime.now(UTC):
+                raise reject(
+                    "background_deadline_expired", "Original Run deadline passed", 409, "timeout"
+                )
         return actor, run
 
     async def advance(self, job: Payload) -> Payload:

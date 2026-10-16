@@ -7,6 +7,7 @@ from uaw.agent.conversation import enabled
 from uaw.agent.ports import AgentView
 from uaw.infrastructure.db.records import parameter_hash
 from uaw.run.budget import BudgetService
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.execution_sources import RunExecutionSources
 from uaw.run.tool_sources import RunToolAccessSources
 from uaw.shared.contracts import Ref, TrustedExecutionContext
@@ -144,6 +145,9 @@ class RegisteredAgentSources:
             raise reject("agent_frame_stale", "Run and Task have different understanding", 412)
         ledger = await self.budgets.get_ledger(ctx)
         remaining = dict(row.payload["budget"])
+        remaining["deadline"] = (
+            await ExecutionSegments(self.store).deadline(ctx, row.payload, ledger)
+        ).isoformat()
         limits = dict(ledger["limits"])
         for key in limits:
             if key == "currency":

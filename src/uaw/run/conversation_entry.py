@@ -15,6 +15,7 @@ from uaw.infrastructure.db.transactions import (
     timestamp,
 )
 from uaw.run.clock_ports import ClockChange, ConversationClockPort
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.inputs import RunInputReader
 from uaw.run.tool_sources import reference as source_reference
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
@@ -209,6 +210,8 @@ async def publish(
         binding = await tx.load(BINDINGS, ctx.run_id or "")
         inputs = await tx.load("run.input_sets", ctx.run_id or "")
         frame = await tx.load("intent.frames", ctx.task_id or "")
+        ledger = await tx.load("budget.ledgers", ctx.run_id or "")
+        await ExecutionSegments(records).deadline(ctx, run.payload, ledger.payload, tx=tx)
         check_pin(
             Ref.model_validate(operation.request["current_frame_ref"]),
             "task_frame",
@@ -228,11 +231,6 @@ async def publish(
             or frame.payload["input_revision"] != inputs.revision
             or run.payload["status"] != "running"
             or run.payload.get("root_agent_ref", {}).get("id") != operation.instance_id
-            or min(
-                datetime.fromisoformat(x.replace("Z", "+00:00"))
-                for x in (ctx.deadline, run.payload["budget"]["deadline"])
-            )
-            <= datetime.now(UTC)
         ):
             raise reject(
                 "conversation_publication_stale", "Original Run/input/model sources changed", 412

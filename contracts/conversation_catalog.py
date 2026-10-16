@@ -182,6 +182,29 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
         "patch、不可变应用证据、Run版本及Outbox同事务；重读/重启不重复应用，不更新ModelOutput或旧输入。",
         "不创建预算、权限、续期、唤醒或自动接受；仅证明原模型已消费。"])
 
+    obj(
+        "InternalRunActiveSegment",
+        "run",
+        "可信服务在原事务签发的新执行段；非HTTP或模型输入。",
+        {
+            "protocol": field(literal(PROTOCOL), "协议"),
+            "run_id": field("ID", "原Run"),
+            "revision": revision("执行段CAS修订"),
+            "input_revision": revision("签发时的有效补充版本"),
+            "context": field("TrustedExecutionContext", "仅新调用使用的新上下文；旧上下文保留"),
+            "source_job_ref": field("Ref", "原blocked作业历史版本和完整摘要"),
+            "clock_ref": field("ConversationClockRef", "实际active时钟历史版本和摘要"),
+            "budget_hash": field("Hash", "原Run预算全量摘要，不增加资源或限额"),
+            "ledger_deadline": field("Timestamp", "原账本截止时间，不能改写"),
+            "issued_at": field("Timestamp", "原active时钟捕获时刻"),
+        },
+        [
+            "只在同Run安全续跑事务中由实际D时钟剩余额度派生，源作业与时钟历史必须可复核。",
+            "不修改旧Run预算/账本deadline、invocation、预留、审批或native授权；新段不是权限或额度扩张。",
+            "缺生产clock/源版本、归属变化、取消、时钟停止或原额度耗尽均拒绝；旧协议原期限不变。",
+        ],
+    )
+
     obj("RunExecutionClock", "run", "新Run有版本主动执行时钟；旧调用/授权独立到期。", {
         "protocol": field(literal(PROTOCOL), "协议"),
         "run_id": field("ID", "原Run"), "revision": revision("持久CAS修订"),
