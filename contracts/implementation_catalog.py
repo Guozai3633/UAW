@@ -70,3 +70,14 @@ for operation in ("approvals.get", "approvals.decide"):
         "entrypoint": "src/uaw/api/routes.py",
         "evidence": ["docs/implementation/MS-I2a.md", "docs/implementation/evidence/p0-tests.xml"],
     }
+
+for operation in (
+    "runs.conversation.get", "runs.clarification.get", "runs.clarification.answer",
+    "runs.correction.create", "runs.continuation.get",
+):
+    IMPLEMENTATIONS[operation] = {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": ["docs/implementation/MS-I2m-M1.md",
+                     "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"],
+    }

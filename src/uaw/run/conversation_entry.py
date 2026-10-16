@@ -1,15 +1,11 @@
 """New-Run admission, literal source projection and atomic message publication."""
 
 from datetime import UTC, datetime
-from decimal import Decimal
-
-from sqlalchemy import select
 
 from uaw.agent.assembly import AgentAssembly
 from uaw.agent.contracts import Payload, identifier
 from uaw.agent.conversation import BINDINGS, DECISIONS, execution_decision
 from uaw.agent.sources import check_pin
-from uaw.infrastructure.db.models import RecordRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import (
     RecordTransaction,
@@ -140,48 +136,9 @@ async def source_frame(records: PostgresRecordStore, ctx: TrustedExecutionContex
 
 
 async def settled_effects(tx: RecordTransaction, ctx: TrustedExecutionContext) -> None:
-    ledger = await tx.load("budget.ledgers", ctx.run_id or "")
-    if ledger.payload["cancel_requested"] or ledger.payload["overdrawn"]:
-        raise reject("conversation_stopped", "Task cancelled or budget exceeded", 409)
-    if any(
-        Decimal(str(v)) != 0
-        for k, v in ledger.payload["held"].items()
-        if k not in ("currency", "money")
-    ):
-        raise reject("conversation_effect_pending", "Executable budget remains reserved", 409)
+    from uaw.run.clock_sources import RunIdleEffects
 
-    async def rows(namespace: str) -> list[RecordRow]:
-        return list(
-            await tx.session.scalars(
-                select(RecordRow).where(
-                    RecordRow.principal_id == ctx.principal.id,
-                    RecordRow.namespace == namespace,
-                    RecordRow.deleted.is_(False),
-                    RecordRow.payload["run_id"].as_string() == ctx.run_id,
-                )
-            )
-        )
-
-    for row in await rows("model.invocations"):
-        if (
-            row.payload["state"] != "finished"
-            or row.payload.get("result", {}).get("failure", {}).get("category") == "unknown_effect"
-        ):
-            raise reject("conversation_effect_pending", "Original model effect unresolved", 409)
-    for row in await rows("tool.contexts"):
-        try:
-            await tx.load("tool.dispatch.intents", row.resource_id)
-        except StoreMissing:
-            continue
-        effect = await tx.load("tool.effects", row.resource_id)
-        if effect.payload["state"] != "confirmed":
-            raise reject("conversation_effect_pending", "Original tool effect unresolved", 409)
-    for row in await rows("budget.accounting"):
-        reservation = await tx.load("budget.reservations", row.resource_id)
-        if reservation.payload["status"] not in ("settled", "partially_settled", "released"):
-            raise reject(
-                "conversation_effect_pending", "Original reservation remains executable", 409
-            )
+    await RunIdleEffects().check(tx, ctx.principal, ctx.run_id or "")
 
 
 async def publish(agent: AgentAssembly, operation_id: str, ctx: TrustedExecutionContext) -> Payload:

@@ -30,7 +30,7 @@ def create_app(container: Container) -> FastAPI:
             allow_origins=[container.settings.browser_origin],
             allow_credentials=True,
             allow_methods=["GET", "POST", "DELETE"],
-            allow_headers=["Content-Type", "X-UAW-CSRF"],
+            allow_headers=["Content-Type", "X-UAW-CSRF", "X-UAW-Schema-Version"],
             max_age=120,
         )
 

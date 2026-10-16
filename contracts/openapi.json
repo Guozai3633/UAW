@@ -30813,8 +30813,8 @@
           "run.state",
           "run.budget"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned"
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume"
       }
     },
     "/v1/runs/{run_id}/clarifications/{question_item_id}": {
@@ -31139,8 +31139,8 @@
           "run.state",
           "run.budget"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned"
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume"
       }
     },
     "/v1/runs/{run_id}/clarifications/{question_item_id}/answers": {
@@ -31457,8 +31457,8 @@
           "run.state",
           "run.budget"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned",
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume",
         "requestBody": {
           "required": true,
           "content": {
@@ -31863,8 +31863,8 @@
           "run.state",
           "run.budget"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned",
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume",
         "requestBody": {
           "required": true,
           "content": {
@@ -32280,8 +32280,8 @@
           "run.state",
           "run.budget"
         ],
-        "x-uaw-implemented": false,
-        "x-uaw-implementation-scope": "planned"
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume"
       }
     }
   },

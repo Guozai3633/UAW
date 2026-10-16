@@ -7,6 +7,7 @@ from typing import Any
 
 from fastapi import FastAPI
 
+from uaw.api.conversation import OPERATIONS as CONVERSATION_OPERATIONS
 from uaw.api.routes import ROUTES, result_schema
 from uaw.shared.schema import contract_schema
 
@@ -31,6 +32,22 @@ def install_openapi(app: FastAPI) -> None:
                 ],
                 "responses": {},
             }
+            if operation in CONVERSATION_OPERATIONS:
+                entry["x-uaw-wire-version"] = "0.2"
+                entry["x-uaw-implementation-scope"] = "acceptance_only_no_resume"
+                entry["description"] = (
+                    "Owned conversation reads and durable input acceptance; "
+                    "execution continuation remains unavailable."
+                )
+                if method == "GET":
+                    entry["parameters"].append(
+                        {
+                            "name": "X-UAW-Schema-Version",
+                            "in": "header",
+                            "required": False,
+                            "schema": {"type": "string", "const": "0.2"},
+                        }
+                    )
             if operation.startswith("web.session."):
                 entry["security"] = [] if operation.endswith("exchange") else [{"webCookie": []}]
                 entry["x-required-role"] = (
@@ -79,7 +96,11 @@ def install_openapi(app: FastAPI) -> None:
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "meta": {"$ref": "#/$defs/RequestMeta"},
+                                    "meta": {
+                                        "$ref": "#/$defs/ConversationRequestMeta"
+                                        if operation in CONVERSATION_OPERATIONS
+                                        else "#/$defs/RequestMeta"
+                                    },
                                     "payload": request,
                                 },
                                 "required": ["meta", "payload"],

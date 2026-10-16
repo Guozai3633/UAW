@@ -236,7 +236,7 @@ def test_invalid_clock_cannot_create_time_or_coerce_budget(invalid: dict) -> Non
         RunExecutionClock.model_validate_json(json.dumps({**clock(), **invalid}))
 
 
-def test_published_endpoints_are_not_falsely_marked_implemented() -> None:
+def test_published_endpoints_record_exact_acceptance_scope_not_full_continuation() -> None:
     catalog = json.loads((ROOT / "contracts/interfaces.json").read_text(encoding="utf-8"))
     new = [op for op in catalog["operations"] if op.get("protocol") == "conversation-v1"]
     assert {op["id"] for op in new} == {
@@ -249,7 +249,15 @@ def test_published_endpoints_are_not_falsely_marked_implemented() -> None:
         "RunRuntime.commit_reply",
         "RunRuntime.commit_question",
     }
-    assert all(not op["implemented"] for op in new)
+    for op in new:
+        if op["channel"] == "http":
+            assert op["implemented"]
+            assert (
+                op["implementation"]["scope"]
+                == "development_conversation_control_acceptance_only_no_resume"
+            )
+        else:
+            assert not op["implemented"]
     api = json.loads((ROOT / "contracts/openapi.json").read_text(encoding="utf-8"))
     for op in new:
         if op["channel"] == "http" and op["method"] == "POST":

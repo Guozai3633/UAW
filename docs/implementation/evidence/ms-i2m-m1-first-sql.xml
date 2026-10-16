@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="8" time="50.963" timestamp="2026-10-16T18:07:34.200336+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_conversation_controls" name="test_same_run_answer_is_atomic_immutable_idempotent_and_only_accepted[case0]" time="6.727"><failure message="uaw.shared.errors.DomainError: Original conversation sources differ">tests\integration\agent\test_conversation_controls.py:85: in test_same_run_answer_is_atomic_immutable_idempotent_and_only_accepted
+    receipt = await control.answer(p.actor, request, request_meta)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:207: in answer
+    return await self.accept(actor, request, meta)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:355: in accept
+    return await self.lookup(actor, request.run_id, meta.request_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:198: in lookup
+    value = await self.transactions.inspect(actor, await self.aggregate(actor, run_id), read)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:164: in inspect
+    return await action(RecordTransaction(session, owner.id, self.database))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:176: in read
+    run = await self.owned(tx, actor, run_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:84: in owned
+    raise reject("conversation_binding_stale", "Original conversation sources differ", 412)
+E   uaw.shared.errors.DomainError: Original conversation sources differ</failure></testcase><testcase classname="tests.integration.agent.test_conversation_controls" name="test_two_pages_answer_cas_has_one_winner_and_refresh_reads_original[case0]" time="7.319"><failure message="assert 0 == 1&#10; +  where 0 = len([])">tests\integration\agent\test_conversation_controls.py:121: in test_two_pages_answer_cas_has_one_winner_and_refresh_reads_original
+    assert len(success) == 1
+E   assert 0 == 1
+E    +  where 0 = len([])</failure></testcase><testcase classname="tests.integration.agent.test_conversation_controls" name="test_cancelled_run_replay_reads_receipt_but_new_answer_cannot_revive[case0]" time="6.402"><failure message="uaw.shared.errors.DomainError: Original conversation sources differ">tests\integration\agent\test_conversation_controls.py:133: in test_cancelled_run_replay_reads_receipt_but_new_answer_cannot_revive
+    receipt = await control.answer(p.actor, request, request_meta)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:207: in answer
+    return await self.accept(actor, request, meta)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:355: in accept
+    return await self.lookup(actor, request.run_id, meta.request_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:198: in lookup
+    value = await self.transactions.inspect(actor, await self.aggregate(actor, run_id), read)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:164: in inspect
+    return await action(RecordTransaction(session, owner.id, self.database))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:176: in read
+    run = await self.owned(tx, actor, run_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:84: in owned
+    raise reject("conversation_binding_stale", "Original conversation sources differ", 412)
+E   uaw.shared.errors.DomainError: Original conversation sources differ</failure></testcase><testcase classname="tests.integration.agent.test_conversation_controls" name="test_control_transaction_failure_rolls_back_input_question_patch_and_outbox[case0]" time="8.358" /><testcase classname="tests.integration.agent.test_conversation_controls" name="test_correction_invalidates_old_frame_and_is_not_a_new_task[case0]" time="2.743"><failure message="uaw.shared.errors.DomainError: Original conversation sources differ">tests\integration\agent\test_conversation_controls.py:201: in test_correction_invalidates_old_frame_and_is_not_a_new_task
+    receipt = await control.correct(p.actor, request, control_meta(view, "correct-1"))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:212: in correct
+    return await self.accept(actor, request, meta)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:355: in accept
+    return await self.lookup(actor, request.run_id, meta.request_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:198: in lookup
+    value = await self.transactions.inspect(actor, await self.aggregate(actor, run_id), read)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:164: in inspect
+    return await action(RecordTransaction(session, owner.id, self.database))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:176: in read
+    run = await self.owned(tx, actor, run_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_control.py:84: in owned
+    raise reject("conversation_binding_stale", "Original conversation sources differ", 412)
+E   uaw.shared.errors.DomainError: Original conversation sources differ</failure></testcase><testcase classname="tests.integration.agent.test_conversation_controls" name="test_old_protocol_and_foreign_actor_do_not_get_control_source[case0]" time="2.596" /><testcase classname="tests.integration.agent.test_conversation_controls" name="test_real_idle_inventory_allows_known_pending_money_and_rejects_live_reservations[case0]" time="7.912" /><testcase classname="tests.integration.agent.test_conversation_controls" name="test_cli_http_contract_auth_versions_and_original_request_lookup[case0]" time="8.213"><failure message="AssertionError: {'kind': 'stale', 'failure': {'code': 'conversation_binding_stale', 'category': 'arguments', 'message': 'Original conversation sources differ', 'retryable': False, ...}, 'output_refs': []}&#10;assert 412 == 200&#10; +  where 412 = &lt;Response [412 Precondition Failed]&gt;.status_code">tests\integration\agent\test_conversation_controls.py:290: in test_cli_http_contract_auth_versions_and_original_request_lookup
+    assert result.status_code == 200, result.json()
+E   AssertionError: {'kind': 'stale', 'failure': {'code': 'conversation_binding_stale', 'category': 'arguments', 'message': 'Original conversation sources differ', 'retryable': False, ...}, 'output_refs': []}
+E   assert 412 == 200
+E    +  where 412 = &lt;Response [412 Precondition Failed]&gt;.status_code</failure></testcase></testsuite></testsuites>

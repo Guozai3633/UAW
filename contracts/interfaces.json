@@ -7552,7 +7552,7 @@
       "response": "RunConversationView",
       "effect": "read",
       "rules": [
-        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
         "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
         "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
       ],
@@ -7563,12 +7563,20 @@
         "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
       ],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
       "wire_version": "0.2",
       "request_meta": "ConversationRequestMeta",
       "requires_cas": false,
       "protocol": "conversation-v1",
       "browser_session": true,
+      "implementation": {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-M1.md",
+          "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+        ]
+      },
       "result": "HttpRunsConversationGetResult",
       "envelope": "HttpRunsConversationGetEnvelope"
     },
@@ -7587,7 +7595,7 @@
       "response": "ClarificationView",
       "effect": "read",
       "rules": [
-        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
         "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
         "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
       ],
@@ -7598,12 +7606,20 @@
         "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
       ],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
       "wire_version": "0.2",
       "request_meta": "ConversationRequestMeta",
       "requires_cas": false,
       "protocol": "conversation-v1",
       "browser_session": true,
+      "implementation": {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-M1.md",
+          "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+        ]
+      },
       "result": "HttpRunsClarificationGetResult",
       "envelope": "HttpRunsClarificationGetEnvelope"
     },
@@ -7622,7 +7638,7 @@
       "response": "RunContinuationReceipt",
       "effect": "internal_write",
       "rules": [
-        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
         "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
         "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
       ],
@@ -7633,12 +7649,20 @@
         "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
       ],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
       "wire_version": "0.2",
       "request_meta": "ConversationRequestMeta",
       "requires_cas": true,
       "protocol": "conversation-v1",
       "browser_session": true,
+      "implementation": {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-M1.md",
+          "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+        ]
+      },
       "result": "HttpRunsClarificationAnswerResult",
       "envelope": "HttpRunsClarificationAnswerEnvelope"
     },
@@ -7657,7 +7681,7 @@
       "response": "RunContinuationReceipt",
       "effect": "internal_write",
       "rules": [
-        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
         "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
         "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
       ],
@@ -7668,12 +7692,20 @@
         "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
       ],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
       "wire_version": "0.2",
       "request_meta": "ConversationRequestMeta",
       "requires_cas": true,
       "protocol": "conversation-v1",
       "browser_session": true,
+      "implementation": {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-M1.md",
+          "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+        ]
+      },
       "result": "HttpRunsCorrectionCreateResult",
       "envelope": "HttpRunsCorrectionCreateEnvelope"
     },
@@ -7692,7 +7724,7 @@
       "response": "RunContinuationReceipt",
       "effect": "read",
       "rules": [
-        "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
         "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
         "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
       ],
@@ -7703,12 +7735,20 @@
         "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
       ],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
       "wire_version": "0.2",
       "request_meta": "ConversationRequestMeta",
       "requires_cas": false,
       "protocol": "conversation-v1",
       "browser_session": true,
+      "implementation": {
+        "scope": "development_conversation_control_acceptance_only_no_resume",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-M1.md",
+          "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+        ]
+      },
       "result": "HttpRunsContinuationGetResult",
       "envelope": "HttpRunsContinuationGetEnvelope"
     },

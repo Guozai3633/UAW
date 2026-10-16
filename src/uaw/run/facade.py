@@ -515,6 +515,9 @@ class RunFacade:
                 {**ledger.payload, "revision": ledger.revision + 1, "cancel_requested": True},
                 ledger.revision,
             )
+            from uaw.run.conversation_control import cancel_pending_controls
+
+            await cancel_pending_controls(tx, run.resource_id)
             base = run.revision
             value = {**run.payload, "revision": base + 1}
             stopped = run.payload["status"] == "queued"

@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-14",
+  "contract_version": "0.2",
+  "schema_validator": "jsonschema Draft202012Validator with FormatChecker",
+  "schema_meta_validation": "passed",
+  "named_schemas": 1402,
+  "positive_examples": 1402,
+  "negative_cases": 336,
+  "negative_rejections": 336,
+  "interfaces": 296,
+  "nodes_covered": 115,
+  "nodes_total": 115,
+  "openapi_checks": "structural_refs_parameters_wire_examples_only_not_full_OpenAPI_meta_validation",
+  "local_links_checked": 18413,
+  "errors": [
+    {
+      "kind": "implementation_evidence_path_missing",
+      "id": "runs.conversation.get",
+      "source": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "kind": "implementation_evidence_path_missing",
+      "id": "runs.clarification.get",
+      "source": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "kind": "implementation_evidence_path_missing",
+      "id": "runs.clarification.answer",
+      "source": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "kind": "implementation_evidence_path_missing",
+      "id": "runs.correction.create",
+      "source": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "kind": "implementation_evidence_path_missing",
+      "id": "runs.continuation.get",
+      "source": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml"
+    }
+  ],
+  "runtime_integration_tests": "not_executed_by_contract_checker_see_implementation_evidence",
+  "semantic_authorization_version_effect_checks": "not_executed_by_contract_checker",
+  "reviewed_implementation_evidence": {
+    "operations": 49,
+    "existing_test_counts": {
+      "tests": 675,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "source_snapshot_ref": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+    "current_source_differences": [
+      "contracts/build_interfaces.py",
+      "contracts/check_interfaces.py",
+      "contracts/implementation_catalog.py",
+      "contracts/interface_catalog.py",
+      "contracts/uaw.schema.json",
+      "src/uaw/agent/adapters.py",
+      "src/uaw/agent/assembly.py",
+      "src/uaw/agent/loop.py",
+      "src/uaw/agent/sources.py",
+      "src/uaw/api/application.py",
+      "src/uaw/api/documentation.py",
+      "src/uaw/api/routes.py",
+      "src/uaw/intent/frame.py",
+      "src/uaw/model/input_router.py",
+      "src/uaw/run/background.py",
+      "src/uaw/run/facade.py",
+      "src/uaw/run/jobs.py",
+      "src/uaw/shared/ports.py",
+      "src/uaw/workspace/artifacts.py",
+      "tests/integration/agent/test_background_pause.py",
+      "tests/integration/agent/test_background_postgres.py"
+    ],
+    "checks": "manifest, literal HTTP route table, preserved test hashes and exact source snapshot; not current full-runtime verification"
+  }
+}

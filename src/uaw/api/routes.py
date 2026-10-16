@@ -151,6 +151,41 @@ ROUTES = (
         "RunRecord",
     ),
     ("runs.get", "GET", "/v1/runs/{run_id}", "RunsGetRequest", "RunRecord"),
+    (
+        "runs.conversation.get",
+        "GET",
+        "/v1/runs/{run_id}/conversation",
+        "RunsGetRequest",
+        "RunConversationView",
+    ),
+    (
+        "runs.clarification.get",
+        "GET",
+        "/v1/runs/{run_id}/clarifications/{question_item_id}",
+        "RunClarificationGetRequest",
+        "ClarificationView",
+    ),
+    (
+        "runs.clarification.answer",
+        "POST",
+        "/v1/runs/{run_id}/clarifications/{question_item_id}/answers",
+        "RunClarificationAnswerRequest",
+        "RunContinuationReceipt",
+    ),
+    (
+        "runs.correction.create",
+        "POST",
+        "/v1/runs/{run_id}/corrections",
+        "RunCorrectionRequest",
+        "RunContinuationReceipt",
+    ),
+    (
+        "runs.continuation.get",
+        "GET",
+        "/v1/runs/{run_id}/continuations/{request_id}",
+        "RunContinuationGetRequest",
+        "RunContinuationReceipt",
+    ),
     ("tasks.frame", "GET", "/v1/tasks/{task_id}/frame", "TasksFrameRequest", "TaskFrame"),
     ("runs.control", "POST", "/v1/runs/{run_id}/control", "RunsControlRequest", "Acknowledgement"),
     (
@@ -347,6 +382,14 @@ def install_routes(app: FastAPI, container: Container) -> None:
             )
             if configuration is None or run is None or records is None:
                 raise CapabilityUnavailable("development_persistence")
+            from uaw.api.conversation import OPERATIONS
+            from uaw.api.conversation import endpoint as conversation_endpoint
+
+            if operation in OPERATIONS:
+                assert actor is not None
+                return await conversation_endpoint(
+                    request, container, actor, operation, schema, response_schema
+                )
             if method == "GET":
                 if set(request.path_params) & set(request.query_params):
                     raise reject(

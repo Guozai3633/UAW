@@ -2164,6 +2164,13 @@ def finalize(graph,strategies):
     # Additive conversation-v1 objects do not change any legacy 0.1 DTO or action.
     from contracts.conversation_catalog import register as register_conversation
     register_conversation(TYPES, OWNERS, RULES, OPERATIONS, obj, field, ref, arr, operation)
+    # Conversation operations are registered after the historical implementation pass.
+    # Install only the specifically verified HTTP control scope, not full continuation.
+    for declared_operation in OPERATIONS:
+        if declared_operation["id"] in IMPLEMENTATIONS:
+            declared_operation["implemented"] = True
+            declared_operation["implementation"] = IMPLEMENTATIONS[declared_operation["id"]]
+
     # Each operation receives a strict discriminated result object and HTTP envelope.
     for op in OPERATIONS:
         stem="".join(x.capitalize() for x in (op["channel"]+"."+op["id"]).replace("_",".").split("."))

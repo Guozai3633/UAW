@@ -196,7 +196,7 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
     def http(id, method, path, request, response, write=False):
         operation(id, "http", "run", "ui ingress run.history run.state run.budget", request, response,
                   "internal_write" if write else "read", [
-                      "尚未装配handler；契约发布不等于端点可用。旧Run无conversation-v1绑定拒绝续跑，不转换旧期限。",
+                      "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
                       "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
                       "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。",
                   ], method=method, path=path,

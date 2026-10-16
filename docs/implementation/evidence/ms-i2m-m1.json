@@ -1,0 +1,487 @@
+{
+  "date": "2026-10-16",
+  "package": "MS-I2m",
+  "milestone": "M1",
+  "status": "component_verified_acceptance_only",
+  "parent": "3e5420ec6cdd4ad7972000cbc244f6aea8dc91d2",
+  "fixed_worker_base": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
+  "source_sha256": {
+    "src/uaw/api/conversation.py": "e059f0e8a3d00c7f76adfb076a3ee2dee0190d33867a48f865fe20276cb8f673",
+    "src/uaw/api/routes.py": "ee26bb07f50dcb1871321301e1bf1c6c63b460a80e98573e887a23396319a532",
+    "src/uaw/api/documentation.py": "7f32d40c8c9e2f4afdda9d4357b0c81be0e95f319eb1b7057f5cd0dad8713bad",
+    "src/uaw/api/application.py": "f995a4c76425f090454c3b26c8e31e67d96aa0570c4e8151a1a5d05f72e4547f",
+    "src/uaw/run/conversation_control.py": "d29e2d1ed8f87231efa8fd244112f8a98708b8131aa47844e407e20825d3e3b0",
+    "src/uaw/run/clock_sources.py": "9c6b8065dc4c30b07b684df1e36add7a339d617016a7d2d32dc0aac453e45b05",
+    "src/uaw/run/conversation_entry.py": "7a17fbe57a938092f004ba4b56e5ee124b8964da3df9585ebae8d4b82af2b3a4",
+    "src/uaw/run/facade.py": "05f29eecafaf15fd15fca1b639aabed62a645438ee73eb6e8dd3ce94b18fa5b0",
+    "contracts/implementation_catalog.py": "3225dc3319507829427da6a1432b77b82846708cd472325443dd8f961533e427",
+    "contracts/interface_catalog.py": "6f7b35bf84395e3de96c563e2f38a347d27f5cc8d45b3bef0eb1c0940826731f",
+    "contracts/conversation_catalog.py": "c70726ed0a0fbff083d1a6b7c8a90386e1e889fba5595936ebe9ce6c823490da"
+  },
+  "unique_final_nodes": 74,
+  "unit_nodes": 54,
+  "real_sql_nodes": 20,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "history": [
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-first-sql.xml",
+      "sha256": "425630aa821d2a5ebad03fa8290cdd2acd4793937257852a76a80637b1dc580d",
+      "tests": 8,
+      "failures": 5,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-second-sql.xml",
+      "sha256": "51bb6fc965750d04bd5d8e2785b300afb39e495fbbdb0369cf4d3f641893d4e0",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-final-sql.xml",
+      "sha256": "6f1778f54b000b2edc3b53d234ec1c2de27303a9a4ff912d1e2c33e858db01f1",
+      "tests": 20,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-rerun-sql.xml",
+      "sha256": "14bcf13834e0e58b6594abe25fd4dc767c4009e69df27a05c0361a1899c4e2fe",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-http-final.xml",
+      "sha256": "7347201d333359801ed55df5081c3a32c9cd1fb05a9206722c5545e4f0cf7854",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/evidence/ms-i2m-m1-contract-tests.xml",
+      "sha256": "68e1683ed911df18c7ada4d6ca84af3261a059c374ca6419014b0ad6eefe0068",
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "node_final_results": [
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_cancelled_run_replay_reads_receipt_but_new_answer_cannot_revive[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_cli_http_contract_auth_versions_and_original_request_lookup[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-http-final.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_control_transaction_failure_rolls_back_input_question_patch_and_outbox[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_cookie_control_requires_exact_origin_csrf_and_logout_revokes_access[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_correction_invalidates_old_frame_and_is_not_a_new_task[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_idle_cannot_treat_a_claimed_original_model_as_free_wait[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_old_protocol_and_foreign_actor_do_not_get_control_source[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_oversized_or_unavailable_attachments_do_not_append_partial_input[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_real_idle_inventory_allows_known_pending_money_and_rejects_live_reservations[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_same_run_answer_is_atomic_immutable_idempotent_and_only_accepted[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_controls.test_two_pages_answer_cas_has_one_winner_and_refresh_reads_original[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-rerun-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_actual_tool_gates_then_message_only[approve_once-case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_actual_tool_gates_then_message_only[decline-case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_bad_provider_shape_keeps_failure_and_shows_useful_message[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_cancel_after_model_before_reply_does_not_publish[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_deliver_keeps_artifact_verification_and_user_acceptance[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_essential_question_visible_same_run_not_terminal[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_policy_revocation_during_model_call_is_not_cached[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_reply_one_call_no_artifact_or_acceptance_and_restart[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.integration.agent.test_conversation_postgres.test_restart_after_original_response_does_not_resend[case0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-final-sql.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_failure_text_does_not_expose_internal_receipts_or_urge_unknown_resend",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_plain_reply_needs_no_tool_array_and_provider_schema_is_supported",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_reply_cannot_smuggle_execution_or_authority[extra0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_reply_cannot_smuggle_execution_or_authority[extra1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_reply_cannot_smuggle_execution_or_authority[extra2]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.agent.test_conversation_decisions.test_transport_projection_still_has_canonical_local_nonblank_check",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_active_clock_charges_elapsed_time_and_never_renews_allowance",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_answer_cannot_create_authority_or_extend_deadline[extra0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_answer_cannot_create_authority_or_extend_deadline[extra1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_answer_cannot_create_authority_or_extend_deadline[extra2]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_answer_requires_text_or_existing_authorized_materials",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_control_versions_cannot_be_sent_to_other_generations",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_first_decision_has_one_exact_action_without_second_understanding_call[ask]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_first_decision_has_one_exact_action_without_second_understanding_call[deliver]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_first_decision_has_one_exact_action_without_second_understanding_call[reply]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_first_decision_has_one_exact_action_without_second_understanding_call[tool]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_invalid_clock_cannot_create_time_or_coerce_budget[invalid0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_invalid_clock_cannot_create_time_or_coerce_budget[invalid1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_invalid_clock_cannot_create_time_or_coerce_budget[invalid2]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_invalid_clock_cannot_create_time_or_coerce_budget[invalid3]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[-1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[1.5]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[None]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_new_control_meta_requires_strict_positive_original_run_cas[True]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_open_question_must_match_current_run_wait_and_input_version",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[answered-conversation_question_stale]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[cancel-conversation_run_terminal]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[foreign_owner-conversation_control_denied]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[input_revision-conversation_input_stale]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[old_run-conversation_protocol_unavailable]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[question_revision-conversation_question_stale]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_original_scope_cas_and_question_sources_fail_closed[run_revision-conversation_revision_conflict]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_patch_is_append_only_and_acceptance_does_not_claim_application",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_published_endpoints_record_exact_acceptance_scope_not_full_continuation",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_pure_boundary_accepts_current_question_but_does_not_write_or_wake_run",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_reply_and_continuation_receipts_do_not_cross_runs_or_conversations",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_reply_rejects_other_actions_and_runtime_authority[injected0]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_reply_rejects_other_actions_and_runtime_authority[injected1]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_reply_rejects_other_actions_and_runtime_authority[injected2]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_reply_rejects_other_actions_and_runtime_authority[injected3]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_source_record_is_strict_and_legacy_actions_remain_separate",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_terminal_question_answer_never_revives_original_run[cancelled]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_terminal_question_answer_never_revives_original_run[completed]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_terminal_question_answer_never_revives_original_run[failed]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_contracts.test_user_wait_does_not_charge_active_time_but_cannot_hide_an_inflight_call",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_another_run_or_closed_question_cannot_be_exposed_as_current[conversation_id-another-conversation]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_another_run_or_closed_question_cannot_be_exposed_as_current[run_id-another-run]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_another_run_or_closed_question_cannot_be_exposed_as_current[state-answered]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_discovery_exposes_the_persisted_question_without_guessing_messages",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_discovery_rejects_mixed_read_versions[input_revision-2]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_discovery_rejects_mixed_read_versions[run_revision-3]",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    },
+    {
+      "node": "tests.unit.shared.test_conversation_view.test_no_question_is_omitted_and_not_conflated_with_approval_or_acceptance",
+      "state": "passed",
+      "receipt": "ms-i2m-m1-contract-tests.xml"
+    }
+  ],
+  "real_sql": "A own PostgreSQL 55432; random test owners; controlled provider HTTP not live LLM",
+  "static": {
+    "ruff_files": 10,
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_source_files": 224,
+    "mypy": "passed"
+  },
+  "contract_checker": {
+    "positive": 1402,
+    "negative_rejections": 336,
+    "interfaces": 296,
+    "errors": [],
+    "preserved_first_failure": "docs/implementation/evidence/ms-i2m-m1-first-contract-check.json",
+    "historical_675_not_current_full": true
+  },
+  "wire_changes": {
+    "old_1402_schemas_unchanged": true,
+    "control_http_installed_in_candidate": 5,
+    "implemented_scope": "development_conversation_control_acceptance_only_no_resume",
+    "old_0_1_meta_unchanged": true
+  },
+  "worker_source": {
+    "D": "RunIdleEffects.check joins supplied transaction; current original model/tool/budget inventory",
+    "B": "5 strict 0.2 HTTP; actual localhost service is not deployed yet"
+  },
+  "not_implemented": [
+    "queue wake and safe applied boundary",
+    "D execution clock composition",
+    "long-wait active execution grant",
+    "real H02 browser/model/quality/human acceptance"
+  ],
+  "live_model_attempts": 0,
+  "new_model_cost": "0",
+  "runtime_snapshot_changed": false,
+  "worker_branches_modified": false,
+  "flags_changed": false,
+  "old_last_full_unchanged": true
+}
