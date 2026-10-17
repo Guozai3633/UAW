@@ -1,3 +1,9 @@
+# MS-I2m A8已固定：启动独立H02-v2体验
+
+source **fd50359ccd0c99f3416b5c0aeaf2375847f60dca** / **ms-i2m-a8-source**。真实H02-v1较早纠正被budget_deadline_invalid终止；A修复，26个真实SQL及静态/类型通过，原失败与用量保留。[回执](../../implementation/evidence/ms-i2m-a8.json)。接下来新独立服务实际模型提问/纠正/回答与已登录Page；H02本人反馈及C质量仍pending。保留H01-v5及失败H02-v1，不修改worker或last_full。
+
+以下为历史。
+
 # MS-I2m A7已固定：下一步实际新服务和质量来源
 
 准确源码 **d46f85d712161f77086610a15e225b294164a8de** / **ms-i2m-a7-source**。B/MS-U4组件、C/MS-E1 M1–M3、D/MS-K1+目录修复已普通合入并按范围接受；314不同节点通过（71 SQL/190单元/53受控Chromium），33文件静态格式/240源码类型通过。[逐包接受](../../coordination/requests/A/MS-I2m-A7-worker-acceptance.md) · [最终回执](../../implementation/evidence/ms-i2m-a7-integration.json)。原失败和历史保留，非全仓/整轮产品通过。

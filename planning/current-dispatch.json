@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "components_accepted_A7_fixed_source_live_and_human_gates_pending",
+  "status": "A8_fixed_early_resume_SQL_passed_H02_v2_preparing",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -126,22 +126,28 @@
       "scope": "accepted_B_C_D_components_and_actual_owned_clock_SQL_controlled_provider_time_no_live_product_acceptance",
       "receipt": "docs/implementation/evidence/ms-i2m-a7-integration.json",
       "worker_consumption": "no_automatic_sync_or_new_package_after_delivery"
+    },
+    "A/A8": {
+      "source_commit": "fd50359ccd0c99f3416b5c0aeaf2375847f60dca",
+      "fixed_ref": "ms-i2m-a8-source",
+      "receipt": "docs/implementation/evidence/ms-i2m-a8.json",
+      "scope": "early_resume_segment_budget_fix_actual_live_preparation",
+      "worker_consumption": "no_automatic_sync_or_new_package"
     }
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A7",
+    "stage": "A8",
     "published": true,
-    "source_commit": "d46f85d712161f77086610a15e225b294164a8de",
-    "fixed_ref": "ms-i2m-a7-source",
-    "receipt": "docs/implementation/evidence/ms-i2m-a7-integration.json",
-    "A_owning_clock_SQL": "passed_controlled_provider_and_service_time",
+    "source_commit": "fd50359ccd0c99f3416b5c0aeaf2375847f60dca",
+    "fixed_ref": "ms-i2m-a8-source",
+    "receipt": "docs/implementation/evidence/ms-i2m-a8.json",
     "runtime_deployed": false,
     "next": [
-      "independent_new_service_and_owned_Page",
-      "fixed_user_model_actual_wait_and_controls",
-      "candidate_baseline_export_and_real_human_review",
-      "H02_human_experience"
+      "H02_v2_actual_provider_smoke",
+      "authenticated_user_Page",
+      "human_feedback",
+      "offline_quality_review"
     ]
   },
   "worker_stage_reports": {
