@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-17",
+  "backend_source": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
+  "frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+  "same_original_user_database_and_identity": true,
+  "origin": "http://127.0.0.1:5183",
+  "original_user_conversation": "conversation-586d9b24338447bfa0ab9483cb7fa607",
+  "original_tab_accessible": false,
+  "same_conversation_reopened_in_new_tab": true,
+  "new_launch_exchanged": false,
+  "authenticated_cookie_retained": true,
+  "actual_1050px_artifact_drawer_opened": true,
+  "original_report_heading": "AI时代对就业的影响：趋势、机制与应对",
+  "old_revision_readonly": true,
+  "acceptance_disabled": true,
+  "accepted_failed_feedback_visible": true,
+  "terminal_understanding_not_waiting": true,
+  "temporary_viewport_reset": true,
+  "human_task_submitted_by_agent": false,
+  "human_acceptance_performed": false,
+  "screenshot": "private .data/human/H02-v3/original-report-narrow.jpg",
+  "dist_sha256": {
+    "index.html": "2bb4cfe3a59dca6c72d7fdd0d5e1b36875b9fbbc8a930525ba6bfff83e42b5a0",
+    "assets/index-BqL45bof.css": "40e08da4c5b490bdbab11b1bdd9b42d0accba7cc4a1cf803ff0f521557b87270",
+    "assets/index-CfUSTHXz.js": "51598b4bbfbb2e1f9a704f9a644ad011bff2154b42232e3cacc478b4eefd2643"
+  }
+}

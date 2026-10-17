@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-17",
+  "status": "failed_diagnostic_receipts_preserved",
+  "fixed_A9": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
+  "attempts": [
+    {
+      "receipt": "live-report-smoke-9a079cecd63d4dd991f0a54b0bf930ab.json",
+      "status": "stopped",
+      "error_type": "ConnectError",
+      "error_code": null,
+      "model_calls": 0,
+      "usage": [],
+      "human_acceptance_performed": false
+    },
+    {
+      "receipt": "live-report-smoke-ba214f1fd44647be81072b3be0907892.json",
+      "status": "stopped",
+      "error_type": "RuntimeError",
+      "error_code": "diagnostic_report_failed",
+      "model_calls": 1,
+      "usage": [
+        {
+          "resources": {
+            "currency": "USD",
+            "tool_calls": 0,
+            "model_calls": 1,
+            "child_agents": 0,
+            "input_tokens": 2379,
+            "wall_time_ms": 9146,
+            "output_tokens": 1338
+          },
+          "attempt_id": "web-step-model-1-run-dbf45f46c5f146b6abb1a58a4e50550b",
+          "billing_state": "pending"
+        }
+      ],
+      "human_acceptance_performed": false
+    },
+    {
+      "receipt": "live-report-smoke-cb9d5122749146a6a95980e15da46403.json",
+      "status": "stopped",
+      "error_type": "RuntimeError",
+      "error_code": "diagnostic_report_timeout",
+      "model_calls": 2,
+      "usage": [
+        {
+          "resources": {
+            "currency": "USD",
+            "tool_calls": 0,
+            "model_calls": 1,
+            "child_agents": 0,
+            "input_tokens": 2377,
+            "wall_time_ms": 9823,
+            "output_tokens": 1534
+          },
+          "attempt_id": "web-step-model-1-run-6064cab22d91488a91f7637863cfc36b",
+          "billing_state": "pending",
+          "cached_input_tokens": 256,
+          "provider_receipt_id": "cd612706-1e83-41bb-8cb6-f1b909799f54"
+        },
+        {
+          "resources": {
+            "currency": "USD",
+            "tool_calls": 0,
+            "model_calls": 1,
+            "child_agents": 0,
+            "input_tokens": 2922,
+            "wall_time_ms": 2004,
+            "output_tokens": 220
+          },
+          "attempt_id": "evaluation-31262952b9db2b8995e4e58051ebf4772b2cb27c3fb98a4e585293cc173d089b",
+          "billing_state": "pending",
+          "cached_input_tokens": 384,
+          "provider_receipt_id": "53373313-8248-4b32-b2e9-14e1d2b27fde"
+        }
+      ],
+      "human_acceptance_performed": false
+    }
+  ],
+  "all_billing_pending": true,
+  "failures": [
+    "first_probe_started_before_server_ready_zero_calls",
+    "probe_expected_waiting_status_but_delivery_retains_pinned_running_revision_two_calls",
+    "provider_text_contains_unescaped_quotes_one_call"
+  ],
+  "original_user_task_replayed": false
+}

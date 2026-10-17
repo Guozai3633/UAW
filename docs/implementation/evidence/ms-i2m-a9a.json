@@ -1,0 +1,32 @@
+{
+  "stage": "MS-I2m A9a",
+  "date": "2026-10-17",
+  "status": "targeted_adapter_unit_passed_live_report_correction_pending",
+  "distinct_adapter_unit_nodes": 11,
+  "nodes": [
+    "tests.unit.model.test_adapter::test_explicit_json_object_mode_keeps_local_schema_validation_and_exact_estimate",
+    "tests.unit.model.test_adapter::test_deepseek_cache_usage_aliases_must_agree",
+    "tests.unit.model.test_adapter::test_malformed_structured_text_preserves_raw_usage_and_never_retries[{\"answer\":\"A \"quoted\" term\"}]",
+    "tests.unit.model.test_adapter::test_malformed_structured_text_preserves_raw_usage_and_never_retries[{\"answer\":\"first\",\"answer\":\"second\"}]",
+    "tests.unit.model.test_adapter::test_actual_loopback_http_without_environment_proxy",
+    "tests.unit.model.test_adapter::test_redirect_does_not_forward_credentials",
+    "tests.unit.model.test_adapter::test_bounded_response_and_non_integral_usage",
+    "tests.unit.model.test_adapter::test_tool_proposals_bind_to_registered_schema_and_stable_action",
+    "tests.unit.model.test_adapter::test_native_estimate_covers_exact_http_json_with_unicode_and_schemas[text]",
+    "tests.unit.model.test_adapter::test_native_estimate_covers_exact_http_json_with_unicode_and_schemas[json_schema]",
+    "tests.unit.model.test_adapter::test_native_estimate_covers_exact_http_json_with_unicode_and_schemas[tool_calls]"
+  ],
+  "final_XML": "h02-i01-format-adapter-unit-final.xml",
+  "original_raw_replay_code": "provider_structured_output_invalid",
+  "replay_new_model_calls": 0,
+  "no_invalid_JSON_repair_or_auto_retry": true,
+  "interrupted_unfinished_invocation": "non_escalated_pytest_no_XML_no_result_stopped_by_exact_command_identity",
+  "final_loopback_test_execution": "require_escalated_local_HTTP_fixture",
+  "strict_mypy_sources": 240,
+  "changed_prompt_sha256": "2e5f49bb3f67f4c37a3ab2f8d8cc7b0d4c6081d1d7392f4f8dff4df7367a1505",
+  "original_live_failures": "h02-i01-live-first.json",
+  "previous_A9_SQL_distinct": 16,
+  "worker_changes": false,
+  "human_accepted": false,
+  "last_full_updated": false
+}

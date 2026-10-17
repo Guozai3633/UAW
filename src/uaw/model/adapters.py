@@ -248,7 +248,10 @@ class ChatCompletionsAdapter:
                     raise ProviderFailure("provider_usage_invalid")
         structured = None
         if request.protocol == "json_schema" and reason == "stop":
-            structured = parse_json(text)
+            try:
+                structured = parse_json(text)
+            except ValueError, TypeError, RecursionError:
+                raise ProviderFailure("provider_structured_output_invalid") from None
             if not isinstance(structured, dict) or not bounded_schema(
                 request.output_schema or {}
             ).is_valid(structured):

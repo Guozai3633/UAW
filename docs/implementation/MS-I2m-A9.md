@@ -27,3 +27,9 @@
 ## B组件接受
 
 普通合入B源码500d292937b511dbced4e674e3486b84213a2de6及独立handoff9504d70f650318f025d24531d6e8bbbba1ed5fb8。A核对10业务/测试文件逐字等于交付，XML摘要与107单元/60受控浏览器全通过及固定dist三文件一致，按组件范围接受。原Page、真实模型与候选部署待实际验证。[汇合回执](evidence/h02-i01-ab-integration.json)。
+
+## A9a：实际复验进一步发现的格式错误
+
+A9已装配，实际模型输出容量受原管理员模型上限限制为4096，语义核验2048。第一轮零调用探针抢在HTTP就绪前启动；第二轮原报告+核验2调用成功，但诊断脚本错误要求Run必须waiting_for_user；正式交付为了原proposal修订保持running，脚本180秒后超时并取消自己的诊断。修正只读成果判断后，下一次实际provider输出内部ASCII引号未转义，stop而非length，完整raw/用量保留，不作为通过。
+
+A9a不接受或自动修补无效JSON：parse_json语法/重复key错误准确归为provider_structured_output_invalid，原raw/usage保留，无自动重发。平台conversation提示增加字符串转义、正文弯引号和容量内完整收尾要求，未改变业务决策或固定模型。新增两项实际HTTP夹具验证错误分类、原raw/用量/一次发送。原H02本人失败/补充/消息/Model 12条payload逐项未变；实际1050px原报告抽屉可读、旧接受禁用、终态补充/理解反馈已在原会话复验。

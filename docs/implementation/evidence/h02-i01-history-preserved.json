@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-17",
+  "same_database": true,
+  "original_run": "run-f574cee6575a408fbed0a6b4380a5351",
+  "checked_namespaces": [
+    "runs",
+    "run.input_patches",
+    "items",
+    "model.invocations",
+    "model.attempts"
+  ],
+  "checked_records": 12,
+  "original_payloads_unchanged": true,
+  "native_access": false,
+  "human_acceptance_performed": false
+}

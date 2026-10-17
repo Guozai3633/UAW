@@ -82,6 +82,35 @@ def test_deepseek_cache_usage_aliases_must_agree():
     assert failed.value.failure.code == "provider_usage_invalid"
 
 
+@pytest.mark.parametrize(
+    "content", ['{"answer":"A "quoted" term"}', '{"answer":"first","answer":"second"}']
+)
+async def test_malformed_structured_text_preserves_raw_usage_and_never_retries(content):
+    base = request()
+    configured = replace(
+        base,
+        protocol="json_schema",
+        output_schema={"type": "object", "properties": {"answer": {"type": "string"}}},
+    )
+    raw = json.dumps(reply(content)).encode()
+    sent = []
+
+    def respond(req):
+        sent.append(req)
+        return httpx.Response(200, content=raw)
+
+    adapter = ChatCompletionsAdapter(httpx.AsyncClient(transport=httpx.MockTransport(respond)))
+    try:
+        with pytest.raises(ProviderFailure) as failed:
+            await adapter.generate(configured)
+        assert failed.value.failure.code == "provider_structured_output_invalid"
+        assert failed.value.response_raw == raw
+        assert failed.value.resources == {"input_tokens": 20, "output_tokens": 8}
+        assert not failed.value.safe_retry and len(sent) == 1
+    finally:
+        await adapter.close()
+
+
 async def test_actual_loopback_http_without_environment_proxy(monkeypatch):
     captured = []
 

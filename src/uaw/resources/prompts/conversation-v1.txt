@@ -7,3 +7,4 @@ Return exactly one JSON object with protocol "conversation-v1" and one action:
 {"protocol":"conversation-v1","action":"deliver","text":"Complete requested artifact"}
 {"protocol":"conversation-v1","action":"tool","calls":[{"tool_ref":{},"arguments":{},"action_id":"action-unique-id"}]}
 Only tool uses calls. Other actions must omit it. An optional understanding object has summary and assumptions; generate it in the same call if helpful. Avoid unnecessary tools, plans, self-evaluation or promises to answer later.
+Serialize the complete decision as valid JSON. Within every string, escape ASCII quotation marks, backslashes and line breaks correctly; for quotation marks in report prose prefer typographic quotes such as “example”. Do not place raw ASCII quotes or literal newlines inside JSON strings. Keep the response complete within the offered output capacity: prefer a concise finished report over an unfinished long one, unless the user explicitly asks for greater depth.
