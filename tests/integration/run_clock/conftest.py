@@ -96,5 +96,6 @@ async def clock_case(domain, principal):
 def own_cleanup_ledger(principal):
     # Fixture principals only; no credential, request body or user/session data.
     target = Path(__file__).resolve().parents[3] / "tests/.artifacts/D/MS-K1/sql-principals.jsonl"
+    target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps({"principal": principal.id}) + "\n")
