@@ -12,3 +12,7 @@ it('per-request keys preserve two tab CAS contenders and resolve only the exact 
 it('pending persistence failure blocks dispatch and malformed original metadata does not become an empty successful recovery',()=>{
  const blocked={getItem:()=>null,setItem:()=>{throw Error('blocked');},removeItem:()=>{},clear:()=>{},length:0,key:()=>null} satisfies Storage;const s=new ContinuationStore(blocked);s.bind('one');expect(()=>s.mark(scope,pending)).toThrow('没有发送');const actual=new ContinuationStore();actual.bind('one');localStorage.setItem('uaw.web.continuation.pending.v1.request-one',JSON.stringify({identity:'one',scope,pending:{...pending,inputRevision:0}}));expect(()=>actual.pending(scope)).toThrow('损坏');
 });
+
+it('corrupt scope, unexpected answer metadata and colliding request IDs block a new submission without deleting the original',()=>{
+ const s=new ContinuationStore();s.bind('one');s.mark(scope,pending);expect(()=>s.mark({...scope,runId:'run-two'},pending)).toThrow('没有发送');expect(s.pending(scope)).toEqual([pending]);expect(()=>s.mark(scope,{...pending,requestId:'bad-one',questionId:'not-for-correction'})).toThrow('没有发送');localStorage.setItem('uaw.web.continuation.pending.v1.bad',JSON.stringify({identity:'one',scope:{conversationId:'conv-one'},pending}));expect(()=>s.pending(scope)).toThrow('损坏');expect(localStorage.getItem('uaw.web.continuation.pending.v1.request-one')).not.toBeNull();
+});

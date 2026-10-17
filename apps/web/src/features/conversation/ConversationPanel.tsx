@@ -28,7 +28,7 @@ export function ConversationPanel({port,store:providedStore,run,identity,connect
   try{store.bind(identity);if(store.pending(scope).length)throw Error('原补充结果未知，请先查询同一请求；不会换ID重发。');const meta=conversationMeta(view.run.revision);requestId=meta.request_id;const q=view.question?.question;
    const lookup:PendingContinuation={requestId,kind,runRevision:view.run.revision,inputRevision:view.input_revision,...(kind==='clarification_answer'&&q?{questionId:q.item_id,questionRevision:q.revision}:{})};store.mark(scope,lookup);marked=true;setPending(store.pending(scope));
    const receipt=await port.submit(view,kind,text,meta,current.signal);if(current.signal.aborted||!active.current)return;store.resolve(scope,receipt);setReceipts(old=>[...old.filter(r=>r.patch.request_id!==receipt.patch.request_id),receipt]);setPending(store.pending(scope));setMessage('原任务已收到这份补充；实际生效以回执为准。');onChanged();
-  }catch(e){if(!current.signal.aborted&&active.current){if(marked&&requestId&&(e instanceof ControlPreflightError||e instanceof ApiFailure&&e.result.kind!=='waiting'))store.forget(requestId);setPending(store.pending(scope));setMessage(e instanceof Error?e.message:'补充结果未知，请查询原请求。');}}
+  }catch(e){if(!current.signal.aborted&&active.current){let notice=e instanceof Error?e.message:'补充结果未知，请查询原请求。';try{if(marked&&requestId&&(e instanceof ControlPreflightError||e instanceof ApiFailure&&e.result.kind!=='waiting'))store.forget(requestId);setPending(store.pending(scope));}catch(storageError){notice+=' '+(storageError instanceof Error?storageError.message:'原查找不可用。');}setMessage(notice);}}
   finally{if(abort.current===current&&active.current){writing.current=false;setBusy(false);onBusy(false);void refresh(false);}}
  }
  if(!port)return null;
