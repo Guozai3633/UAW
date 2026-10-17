@@ -25,3 +25,13 @@ def test_corrupt_source_is_incomplete_and_cannot_supply_semantic_ground_truth(tm
     assert "source_text_hash_mismatch" in report.release_gate.reasons
     assert report.candidate.answer_error.value is None
     assert report.candidate.costs[0].pending == "0.02"
+
+
+def test_report_pins_the_actual_evaluator_source_separately_from_candidate_manifest(tmp_path):
+    files = write_files(tmp_path, example_files(tmp_path))
+    first = evaluate_files(*files)
+    second = evaluate_files(*files)
+    assert first == second
+    names = {pin.name: pin.sha256 for pin in first.input_sha256}
+    assert set(names) == {"suite", "manifest", "observations", "reviews", "evaluator_source"}
+    assert len(names["evaluator_source"]) == 64

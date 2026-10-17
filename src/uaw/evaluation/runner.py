@@ -1,6 +1,9 @@
 """Deterministic offline evaluation; hashes are bindings, never semantic graders."""
 
+import hashlib
+import sys
 from decimal import Decimal, localcontext
+from importlib.metadata import version
 from pathlib import Path
 from typing import Literal
 
@@ -11,11 +14,12 @@ from uaw.evaluation.contracts import (
     Comparison,
     Gate,
     Issue,
+    NamedHash,
     Observation,
     Report,
     Review,
 )
-from uaw.evaluation.io import digest, text_hash
+from uaw.evaluation.io import EvaluationInputError, digest, text_hash
 from uaw.evaluation.metrics import costs, milliseconds, quantity, rate, utc
 from uaw.evaluation.reader import Bundle, load_bundle
 
@@ -303,7 +307,19 @@ def _differences(candidate: CandidateReport, baseline: CandidateReport) -> dict[
         return result
 
 
+def _evaluator_source() -> str:
+    # Only this trusted component's installed source files are read, never a
+    # locator/URL/path supplied by an answer. A uses an immutable source snapshot.
+    directory = Path(__file__).parent
+    files = {
+        name: hashlib.sha256((directory / name).read_bytes()).hexdigest()
+        for name in ("__init__.py", "contracts.py", "io.py", "reader.py", "metrics.py", "runner.py")
+    }
+    return digest({"files": files, "python": sys.version, "pydantic": version("pydantic")})
+
+
 def evaluate(bundle: Bundle) -> Report:
+    evaluator_source = _evaluator_source()
     issues = []
     for case in bundle.suite.cases:
         for source in case.evidence:
@@ -398,6 +414,8 @@ def evaluate(bundle: Bundle) -> Report:
             reasons=tuple(sorted(set(mismatch))),
             candidate_minus_baseline={} if mismatch else _differences(candidate, baseline),
         )
+    if _evaluator_source() != evaluator_source:
+        raise EvaluationInputError("evaluator_changed_during_evaluation")
     return Report(
         schema_version="ms-e1.v1",
         suite_id=bundle.suite.id,
@@ -423,7 +441,10 @@ def evaluate(bundle: Bundle) -> Report:
         unassigned_costs=costs(
             tuple(r for r in bundle.observations if r.manifest_id not in ids), 0
         ),
-        input_sha256=bundle.input_sha256,
+        input_sha256=(
+            *bundle.input_sha256,
+            NamedHash(name="evaluator_source", sha256=evaluator_source),
+        ),
         candidate=candidate,
         baseline=baseline,
         comparison=comparison,
