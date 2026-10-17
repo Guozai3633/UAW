@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "packages_released_worker_start_not_yet_reported",
+  "status": "workers_started_local_A7_integration_review_pending",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -119,6 +119,41 @@
       "scope": "remaining_active_segment_and_A_consumers_controlled_time_clock_no_production_or_extended_Tool_dispatch",
       "receipt": "docs/implementation/evidence/ms-i2m-a6.json",
       "worker_consumption": "fixed_source_merge_after_own_stage_commit_no_rewrite"
+    }
+  },
+  "worker_start_authorized_and_sent": true,
+  "local_integration": {
+    "stage": "A7",
+    "published": false,
+    "fixed_ref": null,
+    "A_source_commit": "096be27",
+    "commit": "5815c2abcffbf1f7110a8a273580bffd9573144f",
+    "receipt": "docs/implementation/evidence/ms-i2m-a7.json",
+    "A_owning_clock_SQL": "not_executed_review_service_usage_limit",
+    "runtime_deployed": false,
+    "next": [
+      "owning_D_A_queue_SQL",
+      "B_stage_frontend_verification",
+      "C_M1_review_merge",
+      "fixed_source_publication",
+      "independent_new_runtime"
+    ]
+  },
+  "worker_stage_reports": {
+    "B": {
+      "source_commit": "1e3447853b4d068955728b43099beb07d74ffac9",
+      "handoff_commit": "7676b135f670fa87409378ae9361ef4a6d3a8dd3",
+      "status": "interface_reviewed_locally_merged_verification_pending"
+    },
+    "C": {
+      "source_commit": "49d3fbfeaa1ec5a3aedcb1becccd1d5fa4683eee",
+      "handoff_commit": "5096a2c5816532efff729c612c3004a5723bf982",
+      "status": "received_not_merged"
+    },
+    "D": {
+      "source_commit": "81d8f9989fc5825c531f9c568cf7898b1252a841",
+      "handoff_commit": "aae77f0c0e8190677a0af9bd63f9972422f6f896",
+      "status": "interface_reviewed_locally_merged_A_SQL_pending"
     }
   }
 }

@@ -1,3 +1,11 @@
+# MS-I2m A7本地集成，恢复审批后先验真实D原队列
+
+2026-10-17。A修复源码096be27，B M1与D M1/M2已普通合入本地5815c2abcffbf1f7110a8a273580bffd9573144f；尚未发布A7标签。21不同SQL+14代理单元已过，233源码类型/8文件静态格式通过，原失败保留。[实现/准确停止点](../../implementation/MS-I2m-A7.md) · [内部Tool时间接口](../../coordination/requests/A/MS-I2m-A7-wiring.md)。
+
+下一步：自动审批服务恢复后先执行已准备的三个真实D+原队列SQL、D阶段受影响门槛；验证B M1客户端；审阅并合入C M1；发布准确源码/标签与逐包回执，随后独立新服务、实际固定模型及B/H02。上次汇合命令因自动审批账户额度无法审查而未启动，不算失败/通过；不换路径绕过，不发布虚构SHA。
+
+B/C/D已在用户明确授权后直接派发并开工，原连续M1–M4继续，阶段到即审。不操作worker分支或未提交源码；接口审阅/本地合入不是整包accepted。原用户服务/记录/费用/flags/last_full保持，Tool claim及新审批消费仍待明确范围，C评测包不自动扩成Tool包。
+
 # MS-I2m A6已提交：下一步真实 D 装配及 Tool 时间来源
 
 source b16c69a92d81124c00fb859ce8123748f56df054 / ms-i2m-a6-source。A 内部执行段、原历史证明、预算/权限/Context/消息/文本成果消费及根 lease 界限已实现；原 deadline 和总额保持。最终 83 SQL＋56 单元共139不同节点通过，230源码类型/13文件静态格式通过；原失败与定向修复不重复计数。[A6实施](../../implementation/MS-I2m-A6.md) · [准确装配](../../coordination/requests/A/MS-I2m-A6-wiring.md)。

@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-17",
+  "package": "MS-I2m",
+  "stage": "A7",
+  "status": "local_integration_not_published_owning_clock_SQL_not_executed",
+  "local_A_source_commit": "096be27",
+  "local_integration_commit": "5815c2abcffbf1f7110a8a273580bffd9573144f",
+  "fixed_ref": null,
+  "published": false,
+  "final_distinct_sql_nodes": 21,
+  "proxy_unit_nodes": 14,
+  "final_distinct_nodes": 35,
+  "final_sql_nodes": [
+    "tests.integration.agent.test_execution_segments::test_cancellation_and_active_exhaustion_do_not_grant_new_segment[case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[budget-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_hash-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_pin-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_stopped-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[context-case0]",
+    "tests.integration.agent.test_execution_segments::test_expired_original_lease_is_replaced_with_new_fence_not_renewed[case0]",
+    "tests.integration.agent.test_execution_segments::test_late_answer_mints_only_new_context_and_completes_original_run_after_restart[case0]",
+    "tests.integration.agent.test_execution_segments::test_late_text_delivery_keeps_verification_and_independent_acceptance[case0]",
+    "tests.integration.agent.test_execution_segments::test_later_clock_cannot_increase_original_admission_limit[case0]",
+    "tests.integration.agent.test_execution_segments::test_missing_segment_keeps_legacy_expiry_and_metadata_inspection_does_not_grant[case0]",
+    "tests.integration.agent.test_execution_segments::test_new_lease_uses_segment_but_expired_context_cannot_revoke_it[case0]",
+    "tests.integration.agent.test_execution_segments::test_segment_mint_failure_rolls_back_clock_job_run_and_events[case0]",
+    "tests.integration.agent.test_execution_segments::test_two_pages_mint_one_owning_segment_and_do_not_repeat_original_model[case0]",
+    "tests.integration.agent.test_tool_timing::test_cancelled_after_cached_reads_is_seen_in_original_tool_transaction[case0]",
+    "tests.integration.agent.test_tool_timing::test_check_joins_outer_rollback_and_checks_final_time[case0]",
+    "tests.integration.agent.test_tool_timing::test_current_open_question_blocks_accepted_patch_when_segments_installed[case0]",
+    "tests.integration.agent.test_tool_timing::test_foreign_transaction_and_mismatched_store_are_rejected[case0]",
+    "tests.integration.agent.test_tool_timing::test_live_legacy_call_needs_no_segment_but_cannot_dispatch_while_waiting[case0]",
+    "tests.integration.agent.test_tool_timing::test_missing_current_segment_cannot_use_cached_proof[case0]",
+    "tests.integration.agent.test_tool_timing::test_new_segment_checks_without_mutation_old_context_stays_expired[case0]"
+  ],
+  "proxy_unit_node_ids": [
+    "tests.unit.agent.test_pinned_web_server::test_invalid_or_shared_ports_refused[ports0]",
+    "tests.unit.agent.test_pinned_web_server::test_invalid_or_shared_ports_refused[ports1]",
+    "tests.unit.agent.test_pinned_web_server::test_invalid_or_shared_ports_refused[ports2]",
+    "tests.unit.agent.test_pinned_web_server::test_invalid_or_shared_ports_refused[ports3]",
+    "tests.unit.agent.test_pinned_web_server::test_invalid_or_shared_ports_refused[ports4]",
+    "tests.unit.agent.test_pinned_web_server::test_missing_dist_does_not_listen",
+    "tests.unit.agent.test_pinned_web_server::test_unpinned_or_public_host_refused[0.0.0.0]",
+    "tests.unit.agent.test_pinned_web_server::test_unpinned_or_public_host_refused[::]",
+    "tests.unit.agent.test_pinned_web_server::test_unpinned_or_public_host_refused[localhost]",
+    "tests.unit.agent.test_pinned_web_server::test_unpinned_or_public_host_refused[example.com]",
+    "tests.unit.agent.test_pinned_web_server::test_actual_independent_loopback_is_separate_cookie_host",
+    "tests.unit.agent.test_pinned_web_server::test_actual_nondefault_tcp_preserves_session_and_exact_origin",
+    "tests.unit.agent.test_pinned_web_server::test_proxy_preserves_explicit_protocol_and_rejects_duplicate_headers[0.1]",
+    "tests.unit.agent.test_pinned_web_server::test_proxy_preserves_explicit_protocol_and_rejects_duplicate_headers[0.2]"
+  ],
+  "static": {
+    "ruff": {
+      "exit_code": 0,
+      "receipt": "ms-i2m-a7-ruff.txt"
+    },
+    "format": {
+      "exit_code": 0,
+      "receipt": "ms-i2m-a7-format.txt"
+    },
+    "mypy": {
+      "exit_code": 0,
+      "receipt": "ms-i2m-a7-mypy.txt"
+    }
+  },
+  "source_sha256": {
+    "src/uaw/run/conversation_resume.py": "70a62af4e5b67eebe8a66d732e3505a61f5b02f23c9c97fe2e0cc7f93b7dccaa",
+    "src/uaw/run/tool_timing.py": "d485ecc5dbe4ca813039d6524a583633f5c4308e9ac46384ae9deac3233e377c",
+    "src/uaw/shared/tool_timing.py": "d8e906673538f1640bcb4467adf9de8155928fb0e2307668f69dfbc7f725ce03",
+    "ops/serve_existing_web.py": "b2743b42ed83c4a042e33b530acf8426343f9ec7323d79fdb5228bc68d195f47",
+    "tests/integration/agent/test_tool_timing.py": "48673379d28601a9aca41f2f339408509a484bc37dd399432e73ad8b150219ec",
+    "tests/integration/agent/test_execution_segments.py": "5cc7869d6a84d17fe336099233383f5742fc3ccd579c34f6d7f729a754e5198e",
+    "tests/unit/agent/test_pinned_web_server.py": "3514aa44641870fd94426a041f36b8f0468797bd41ad2188e2e852b27a5b016c",
+    "tests/integration/agent/test_owned_clock_continuation.py": "ce8e22c295b95126f2c0c49327e1f35690aabc7dc63b42592089279a0621fcfe"
+  },
+  "retained_receipts": {
+    "long_wait_reproduction": "ms-i2m-a7-wait-first-sql.xml",
+    "SQL_first_batch": "ms-i2m-a7-first-batch-sql.xml",
+    "SQL_repaired_nodes": "ms-i2m-a7-repaired-sql.xml",
+    "proxy_sandbox_temp_errors": "ms-i2m-a7-proxy-unit.xml",
+    "proxy_parent_directory_errors": "ms-i2m-a7-proxy-temp-error-unit.xml",
+    "proxy_final": "ms-i2m-a7-proxy-final-unit.xml"
+  },
+  "first_batch": {
+    "passed": 19,
+    "failed": 2,
+    "errors": 0,
+    "failed_nodes": [
+      "tests.integration.agent.test_tool_timing::test_check_joins_outer_rollback_and_checks_final_time[case0]",
+      "tests.integration.agent.test_tool_timing::test_correction_cannot_bypass_open_question_when_segments_installed[case0]"
+    ]
+  },
+  "repairs": "Valid run.updated EventPayload replaces invalid fixture action; correction normally marks old question stale, so guard fixture explicitly installs a current open question. Only repaired nodes rerun; no runtime weakening.",
+  "review_service_failure": {
+    "action": "A owning clock cross-module SQL command",
+    "executed": false,
+    "reason": "Automatic approval review failed because account usage limit prevented review; not an unsafe-action decision",
+    "workaround_attempted": false
+  },
+  "A_owning_clock_integration": {
+    "tests_prepared": 3,
+    "executed": false,
+    "passed": null,
+    "time": "controlled service time, not actual elapsed long wait",
+    "model": "actual owning gateway with controlled HTTP provider, not live DeepSeek"
+  },
+  "worker_stages": {
+    "B": {
+      "source": "1e3447853b4d068955728b43099beb07d74ffac9",
+      "handoff": "7676b135f670fa87409378ae9361ef4a6d3a8dd3",
+      "local_merge": "9949521",
+      "status": "interface_reviewed_local_merge_A_frontend_verification_pending"
+    },
+    "C": {
+      "source": "49d3fbfeaa1ec5a3aedcb1becccd1d5fa4683eee",
+      "handoff": "5096a2c5816532efff729c612c3004a5723bf982",
+      "status": "received_not_merged_full_review_pending"
+    },
+    "D": {
+      "source": "81d8f9989fc5825c531f9c568cf7898b1252a841",
+      "handoff": "aae77f0c0e8190677a0af9bd63f9972422f6f896",
+      "local_merge": "5815c2abcffbf1f7110a8a273580bffd9573144f",
+      "status": "interface_reviewed_local_merge_A_owned_queue_SQL_pending"
+    }
+  },
+  "ToolLedger_timing_port_installed": false,
+  "new_approval_segment_time_installed": false,
+  "production_clock_installed": false,
+  "new_localhost_runtime_deployed": false,
+  "real_provider_calls": 0,
+  "new_live_model_cost": "0",
+  "feature_flags_changed": false,
+  "human_runtime_or_original_records_modified": false,
+  "worker_business_sources_modified_by_A": false,
+  "worker_branches_modified_by_A": false,
+  "last_full_updated": false
+}
