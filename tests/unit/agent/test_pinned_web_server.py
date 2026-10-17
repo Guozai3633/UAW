@@ -153,3 +153,45 @@ def test_actual_nondefault_tcp_preserves_session_and_exact_origin(tmp_path):
             response.read()
         finally:
             client.close()
+
+
+@pytest.mark.parametrize("version", ["0.1", "0.2"])
+def test_proxy_preserves_explicit_protocol_and_rejects_duplicate_headers(tmp_path, version):
+    seen = []
+
+    class Backend(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):
+            seen.append(self.headers.get_all("X-UAW-Schema-Version"))
+            self.send_response(200)
+            self.send_header("Content-Length", "2")
+            self.end_headers()
+            self.wfile.write(b"{}")
+
+    (tmp_path / "index.html").write_bytes(b"<h1>pinned</h1>")
+    backend = ThreadingHTTPServer(("127.0.0.1", 0), Backend)
+    port = free_port()
+    with (
+        running(backend),
+        running(create_server(tmp_path, port=port, backend_port=backend.server_port)),
+    ):
+        client = http.client.HTTPConnection("127.0.0.1", port, timeout=3)
+        try:
+            client.request(
+                "GET", "/v1/runs/original/conversation", headers={"X-UAW-Schema-Version": version}
+            )
+            response = client.getresponse()
+            assert response.status == 200 and response.read() == b"{}"
+            assert seen == [[version]]
+            client.putrequest("GET", "/v1/runs/original/conversation")
+            client.putheader("X-UAW-Schema-Version", version)
+            client.putheader("X-UAW-Schema-Version", version)
+            client.endheaders()
+            response = client.getresponse()
+            assert response.status == 400
+            response.read()
+            assert seen == [[version]]
+        finally:
+            client.close()

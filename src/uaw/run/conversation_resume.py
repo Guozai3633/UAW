@@ -79,14 +79,14 @@ class ConversationResumer:
                 raise reject("conversation_resume_owner", "Original task/root differs", 403)
             if not await self.controls.pending_since(tx, actor, run_id, job.get("frame_ref")):
                 return {"woken": False}
-            if self.segments is None and any(
+            if any(
                 r.payload["state"] == "open"
                 for r in await self.controls.matching(tx, QUESTIONS, run_id)
             ):
                 raise reject("conversation_resume_question", "Original question still open", 409)
             await RunIdleEffects().check(tx, actor, run_id)
             ledger = await tx.load("budget.ledgers", run_id)
-            if any(
+            if self.segments is None and any(
                 datetime.fromisoformat(v.replace("Z", "+00:00")) <= datetime.now(UTC)
                 for v in (ctx.deadline, run["budget"]["deadline"], ledger.payload["deadline"])
             ):

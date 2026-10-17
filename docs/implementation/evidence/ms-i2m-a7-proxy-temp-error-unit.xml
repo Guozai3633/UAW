@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="14" failures="0" skipped="0" tests="14" time="0.873" timestamp="2026-10-17T10:41:28.074962+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_invalid_or_shared_ports_refused[ports0]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_invalid_or_shared_ports_refused[ports1]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_invalid_or_shared_ports_refused[ports2]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_invalid_or_shared_ports_refused[ports3]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_invalid_or_shared_ports_refused[ports4]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_missing_dist_does_not_listen" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_unpinned_or_public_host_refused[0.0.0.0]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_unpinned_or_public_host_refused[::]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_unpinned_or_public_host_refused[localhost]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_unpinned_or_public_host_refused[example.com]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_actual_independent_loopback_is_separate_cookie_host" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_actual_nondefault_tcp_preserves_session_and_exact_origin" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_proxy_preserves_explicit_protocol_and_rejects_duplicate_headers[0.1]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase><testcase classname="tests.unit.agent.test_pinned_web_server" name="test_proxy_preserves_explicit_protocol_and_rejects_duplicate_headers[0.2]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:1011: in mkdir
+    os.mkdir(self, mode)
+E   FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\UAW\\tests\\.artifacts\\A\\MS-I2m-A7\\proxy-final-tmp'</error></testcase></testsuite></testsuites>

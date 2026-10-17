@@ -34,6 +34,9 @@ def create_server(
                 return
             path = urlsplit(self.path).path
             if path.startswith("/v1/"):
+                if len(self.headers.get_all("X-UAW-Schema-Version", [])) > 1:
+                    self.send_error(400)
+                    return
                 if (
                     self.headers.get_all("Content-Length")
                     and len(self.headers.get_all("Content-Length")) != 1
@@ -62,6 +65,7 @@ def create_server(
                         "Origin",
                         "Referer",
                         "X-UAW-CSRF",
+                        "X-UAW-Schema-Version",
                         "Content-Type",
                         "Accept",
                     )

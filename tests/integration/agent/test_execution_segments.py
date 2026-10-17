@@ -16,7 +16,7 @@ from tests.integration.agent.test_conversation_controls import scenario as scena
 from tests.integration.agent.test_conversation_postgres import inventory, output
 from tests.integration.agent.test_conversation_resume import ControlledClockSeam
 from tests.integration.test_control_plane import meta
-from uaw.run import background, execution_segments, jobs
+from uaw.run import background, conversation_resume, execution_segments, jobs
 from uaw.run.background import BackgroundAgent
 from uaw.run.execution_segments import SEGMENTS, ExecutionSegments
 from uaw.run.jobs import JOBS, RunJobs
@@ -53,6 +53,7 @@ async def waiting(p, monkeypatch):
 
     monkeypatch.setattr(execution_segments, "utcnow", lambda: p.future)
     monkeypatch.setattr(background, "datetime", Future)
+    monkeypatch.setattr(conversation_resume, "datetime", Future)
     monkeypatch.setattr(jobs, "datetime", Future)
     monkeypatch.setattr(
         "tests.integration.agent.test_conversation_resume.timestamp", lambda: p.future.isoformat()

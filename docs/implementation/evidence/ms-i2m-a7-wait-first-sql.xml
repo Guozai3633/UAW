@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="12.451" timestamp="2026-10-17T10:35:03.176394+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_execution_segments" name="test_late_answer_mints_only_new_context_and_completes_original_run_after_restart[case0]" time="10.877"><failure message="uaw.shared.errors.CapabilityUnavailable: Capability is not implemented: conversation.new_active_execution_segment">tests\integration\agent\test_execution_segments.py:92: in test_late_answer_mints_only_new_context_and_completes_original_run_after_restart
+    control, receipt = await resumed(p, monkeypatch)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\agent\test_execution_segments.py:66: in resumed
+    assert await p.driver.resume_conversation(p.actor, p.run["id"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\background.py:272: in resume_conversation
+    return await ConversationResumer(
+src\uaw\run\conversation_resume.py:146: in resume
+    return bool((await self.transactions.inspect(actor, aggregate, write))["woken"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\infrastructure\db\transactions.py:164: in inspect
+    return await action(RecordTransaction(session, owner.id, self.database))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\conversation_resume.py:93: in write
+    raise CapabilityUnavailable("conversation.new_active_execution_segment")
+E   uaw.shared.errors.CapabilityUnavailable: Capability is not implemented: conversation.new_active_execution_segment</failure></testcase></testsuite></testsuites>
