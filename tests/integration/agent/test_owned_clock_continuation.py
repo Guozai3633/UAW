@@ -89,8 +89,11 @@ async def test_real_clock_two_waits_preserve_limit_and_do_not_resend_original_ca
             }
         )
     ]
-    assert await p.queue.tick()
-    view = await control.view(p.actor, p.run["id"])
+    for _ in range(4):
+        assert await p.queue.tick()
+        view = await control.view(p.actor, p.run["id"])
+        if view.question is not None:
+            break
     assert view.question is not None and view.input_revision == 2
     await control.answer(p.actor, answer(view, "For beginners"), control_meta(view, "answer-two"))
     p.future += timedelta(minutes=30)

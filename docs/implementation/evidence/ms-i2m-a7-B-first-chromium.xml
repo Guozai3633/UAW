@@ -1,0 +1,1765 @@
+<testsuites id="" name="" tests="53" failures="0" skipped="0" errors="53" time="31.601737">
+<testsuite name="controlled\a2-workspace.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="10" failures="0" skipped="0" time="0.011" errors="10">
+<testcase name="A2 default: server list, full text, requirement reasons and exact contract acceptance survive refresh" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-34510--acceptance-survive-refresh-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-34510--acceptance-survive-refresh-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:31:1 › A2 default: server list, full text, requirement reasons and exact contract acceptance survive refresh 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-34510--acceptance-survive-refresh-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-34510--acceptance-survive-refresh-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-34510--acceptance-survive-refresh-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: unknown acceptance stays blocked after reload until actual receipt exists" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-9ea32-until-actual-receipt-exists-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-9ea32-until-actual-receipt-exists-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:32:1 › A2 default: unknown acceptance stays blocked after reload until actual receipt exists 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-9ea32-until-actual-receipt-exists-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-9ea32-until-actual-receipt-exists-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-9ea32-until-actual-receipt-exists-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: lost submit refresh looks up original request and never resubmits" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-f22c6-request-and-never-resubmits-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-f22c6-request-and-never-resubmits-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:33:1 › A2 default: lost submit refresh looks up original request and never resubmits 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-f22c6-request-and-never-resubmits-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-f22c6-request-and-never-resubmits-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-f22c6-request-and-never-resubmits-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: old artifact hash refuses content and acceptance" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-57473-uses-content-and-acceptance-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-57473-uses-content-and-acceptance-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:34:1 › A2 default: old artifact hash refuses content and acceptance 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-57473-uses-content-and-acceptance-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-57473-uses-content-and-acceptance-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-57473-uses-content-and-acceptance-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: missing delivery is no result and never creates a task" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-d62ce-lt-and-never-creates-a-task-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-d62ce-lt-and-never-creates-a-task-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:35:1 › A2 default: missing delivery is no result and never creates a task 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-d62ce-lt-and-never-creates-a-task-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-d62ce-lt-and-never-creates-a-task-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-d62ce-lt-and-never-creates-a-task-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: cancellation winning acceptance race is not reported as completed or retried" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-e53a6-ted-as-completed-or-retried-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-e53a6-ted-as-completed-or-retried-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:36:1 › A2 default: cancellation winning acceptance race is not reported as completed or retried 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-e53a6-ted-as-completed-or-retried-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-e53a6-ted-as-completed-or-retried-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-e53a6-ted-as-completed-or-retried-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: expired server cursor restarts and later page history is visible" classname="controlled\a2-workspace.spec.ts" time="0.002">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-b7d31-ter-page-history-is-visible-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-b7d31-ter-page-history-is-visible-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:37:1 › A2 default: expired server cursor restarts and later page history is visible 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-b7d31-ter-page-history-is-visible-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-b7d31-ter-page-history-is-visible-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-b7d31-ter-page-history-is-visible-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: later login reads history but server refuses old-session acceptance; no automatic action" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-03bcb-eptance-no-automatic-action-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-03bcb-eptance-no-automatic-action-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:38:1 › A2 default: later login reads history but server refuses old-session acceptance; no automatic action 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-03bcb-eptance-no-automatic-action-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-03bcb-eptance-no-automatic-action-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-03bcb-eptance-no-automatic-action-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: unsupported artifact media type rejects full content and acceptance" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-e0946-full-content-and-acceptance-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-e0946-full-content-and-acceptance-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:41:1 › A2 default: unsupported artifact media type rejects full content and acceptance 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-e0946-full-content-and-acceptance-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-e0946-full-content-and-acceptance-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-e0946-full-content-and-acceptance-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="A2 default: running/version5 fixed delivery accepts but stays running until a separately reread completion" classname="controlled\a2-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-7f50e-eparately-reread-completion-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-a2-workspace-A2-7f50e-eparately-reread-completion-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\a2-workspace.spec.ts:50:1 › A2 default: running/version5 fixed delivery accepts but stays running until a separately reread completion 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-a2-workspace-A2-7f50e-eparately-reread-completion-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-a2-workspace-A2-7f50e-eparately-reread-completion-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-a2-workspace-A2-7f50e-eparately-reread-completion-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\auth.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.002" errors="2">
+<testcase name="controlled: published session exchange removes fragment, logout clears local drafts and uses CSRF" classname="controlled\auth.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-auth-controlled-f52e6--local-drafts-and-uses-CSRF-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-auth-controlled-f52e6--local-drafts-and-uses-CSRF-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\auth.spec.ts:5:1 › controlled: published session exchange removes fragment, logout clears local drafts and uses CSRF 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-auth-controlled-f52e6--local-drafts-and-uses-CSRF-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-auth-controlled-f52e6--local-drafts-and-uses-CSRF-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-auth-controlled-f52e6--local-drafts-and-uses-CSRF-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: lost exchange reconciles GET cookie session without consuming launch code twice" classname="controlled\auth.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-auth-controlled-7243b-consuming-launch-code-twice-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-auth-controlled-7243b-consuming-launch-code-twice-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\auth.spec.ts:16:1 › controlled: lost exchange reconciles GET cookie session without consuming launch code twice 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-auth-controlled-7243b-consuming-launch-code-twice-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-auth-controlled-7243b-consuming-launch-code-twice-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-auth-controlled-7243b-consuming-launch-code-twice-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\u3-workspace.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="7" failures="0" skipped="0" time="0.007" errors="7">
+<testcase name="MS-U3: explicit older URL and drafts survive reload, list refresh and back navigation with zero writes" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-19036-navigation-with-zero-writes-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-19036-navigation-with-zero-writes-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:29:1 › MS-U3: explicit older URL and drafts survive reload, list refresh and back navigation with zero writes 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-19036-navigation-with-zero-writes-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-19036-navigation-with-zero-writes-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-19036-navigation-with-zero-writes-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3: hidden explicit URL never falls back to newest or retains old content" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-74c11-west-or-retains-old-content-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-74c11-west-or-retains-old-content-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:35:1 › MS-U3: hidden explicit URL never falls back to newest or retains old content 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-74c11-west-or-retains-old-content-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-74c11-west-or-retains-old-content-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-74c11-west-or-retains-old-content-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3: identity change on reload keeps URL but clears foreign drafts and reads current owner only" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-30351-nd-reads-current-owner-only-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-30351-nd-reads-current-owner-only-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:38:1 › MS-U3: identity change on reload keeps URL but clears foreign drafts and reads current owner only 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-30351-nd-reads-current-owner-only-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-30351-nd-reads-current-owner-only-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-30351-nd-reads-current-owner-only-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3: original global recovery stays linked while another conversation retains its draft" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-1d88d-versation-retains-its-draft-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-1d88d-versation-retains-its-draft-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:41:1 › MS-U3: original global recovery stays linked while another conversation retains its draft 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-1d88d-versation-retains-its-draft-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-1d88d-versation-retains-its-draft-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-1d88d-versation-retains-its-draft-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3: device pending/active/revoked are actual read states and absent candidate/root are unavailable" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-b458d-didate-root-are-unavailable-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-b458d-didate-root-are-unavailable-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:46:1 › MS-U3: device pending/active/revoked are actual read states and absent candidate/root are unavailable 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-b458d-didate-root-are-unavailable-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-b458d-didate-root-are-unavailable-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-b458d-didate-root-are-unavailable-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3 controlled: unknown device confirmation survives reload and never retries POST without new original version" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-2cce5-ithout-new-original-version-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-2cce5-ithout-new-original-version-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:53:1 › MS-U3 controlled: unknown device confirmation survives reload and never retries POST without new original version 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-2cce5-ithout-new-original-version-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-2cce5-ithout-new-original-version-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-2cce5-ithout-new-original-version-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3: server list removal clears active data on read and does not pick a newer conversation" classname="controlled\u3-workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-037b5-t-pick-a-newer-conversation-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3-workspace-MS-037b5-t-pick-a-newer-conversation-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3-workspace.spec.ts:58:1 › MS-U3: server list removal clears active data on read and does not pick a newer conversation 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3-workspace-MS-037b5-t-pick-a-newer-conversation-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3-workspace-MS-037b5-t-pick-a-newer-conversation-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3-workspace-MS-037b5-t-pick-a-newer-conversation-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\u3b-installed.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="7" failures="0" skipped="0" time="0.008" errors="7">
+<testcase name="MS-U3b controlled: click starts once, system steps and current lifecycle never imply file rights, stop is original CAS" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-93c1e-rights-stop-is-original-CAS-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-93c1e-rights-stop-is-original-CAS-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:25:1 › MS-U3b controlled: click starts once, system steps and current lifecycle never imply file rights, stop is original CAS 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-93c1e-rights-stop-is-original-CAS-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-93c1e-rights-stop-is-original-CAS-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-93c1e-rights-stop-is-original-CAS-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: known-ID refresh and conversation switch only GET original launch, draft is preserved" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-326a8-l-launch-draft-is-preserved-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-326a8-l-launch-draft-is-preserved-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:30:1 › MS-U3b controlled: known-ID refresh and conversation switch only GET original launch, draft is preserved 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-326a8-l-launch-draft-is-preserved-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-326a8-l-launch-draft-is-preserved-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-326a8-l-launch-draft-is-preserved-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: lost start has no ID; reload never POSTs and explicit recovery replays same request ID" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-5003a-ery-replays-same-request-ID-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-5003a-ery-replays-same-request-ID-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:35:1 › MS-U3b controlled: lost start has no ID; reload never POSTs and explicit recovery replays same request ID 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-5003a-ery-replays-same-request-ID-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-5003a-ery-replays-same-request-ID-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-5003a-ery-replays-same-request-ID-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: stop unknown first GETs on reload, terminal original response clears it without another stop" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-8b0a6-ars-it-without-another-stop-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-8b0a6-ars-it-without-another-stop-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:39:1 › MS-U3b controlled: stop unknown first GETs on reload, terminal original response clears it without another stop 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-8b0a6-ars-it-without-another-stop-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-8b0a6-ars-it-without-another-stop-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-8b0a6-ars-it-without-another-stop-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: same account new session cannot inherit, logout clears lookup without frontend stop" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-a8de5-ookup-without-frontend-stop-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-a8de5-ookup-without-frontend-stop-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:43:1 › MS-U3b controlled: same account new session cannot inherit, logout clears lookup without frontend stop 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-a8de5-ookup-without-frontend-stop-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-a8de5-ookup-without-frontend-stop-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-a8de5-ookup-without-frontend-stop-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: actual 503 is unavailable, refresh does not retry or show ready" classname="controlled\u3b-installed.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-8e0eb-oes-not-retry-or-show-ready-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-8e0eb-oes-not-retry-or-show-ready-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:47:1 › MS-U3b controlled: actual 503 is unavailable, refresh does not retry or show ready 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-8e0eb-oes-not-retry-or-show-ready-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-8e0eb-oes-not-retry-or-show-ready-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-8e0eb-oes-not-retry-or-show-ready-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U3b controlled: reusable same owner Page verifier performs GET/reload with no launch exchange or lifecycle write" classname="controlled\u3b-installed.spec.ts" time="0.002">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-30475-exchange-or-lifecycle-write-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u3b-installed-M-30475-exchange-or-lifecycle-write-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u3b-installed.spec.ts:51:1 › MS-U3b controlled: reusable same owner Page verifier performs GET/reload with no launch exchange or lifecycle write 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u3b-installed-M-30475-exchange-or-lifecycle-write-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u3b-installed-M-30475-exchange-or-lifecycle-write-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u3b-installed-M-30475-exchange-or-lifecycle-write-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\u4-conversation.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="10" failures="0" skipped="0" time="0.01" errors="10">
+<testcase name="MS-U4: graph question/options/free answer use same Run and exact 0.2 CAS; accepted never renders applied or completed" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-f6274-enders-applied-or-completed-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-f6274-enders-applied-or-completed-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:34:1 › MS-U4: graph question/options/free answer use same Run and exact 0.2 CAS; accepted never renders applied or completed 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-f6274-enders-applied-or-completed-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-f6274-enders-applied-or-completed-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-f6274-enders-applied-or-completed-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: running correction is one explicit write, real superseded state and original draft survive refresh" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-22dcf-ginal-draft-survive-refresh-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-22dcf-ginal-draft-survive-refresh-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:38:1 › MS-U4: running correction is one explicit write, real superseded state and original draft survive refresh 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-22dcf-ginal-draft-survive-refresh-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-22dcf-ginal-draft-survive-refresh-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-22dcf-ginal-draft-survive-refresh-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: lost response and absent receipt reload query the original ID without POST replay or ID replacement" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-8186d-ST-replay-or-ID-replacement-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-8186d-ST-replay-or-ID-replacement-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:41:1 › MS-U4: lost response and absent receipt reload query the original ID without POST replay or ID replacement 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-8186d-ST-replay-or-ID-replacement-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-8186d-ST-replay-or-ID-replacement-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-8186d-ST-replay-or-ID-replacement-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: stale question after server CAS refuses old answer, retains exact draft and never retries" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-09c18-act-draft-and-never-retries-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-09c18-act-draft-and-never-retries-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:44:1 › MS-U4: stale question after server CAS refuses old answer, retains exact draft and never retries 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-09c18-act-draft-and-never-retries-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-09c18-act-draft-and-never-retries-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-09c18-act-draft-and-never-retries-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: another page sees original in-flight lookup, cannot replace ID; release reconciles both with GET" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-dd5f0-se-reconciles-both-with-GET-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-dd5f0-se-reconciles-both-with-GET-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:47:1 › MS-U4: another page sees original in-flight lookup, cannot replace ID; release reconciles both with GET 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-dd5f0-se-reconciles-both-with-GET-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-dd5f0-se-reconciles-both-with-GET-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-dd5f0-se-reconciles-both-with-GET-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: cancellation winning answer race shows actual terminal status; no continuation resurrection" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-16f1b-o-continuation-resurrection-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-16f1b-o-continuation-resurrection-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:50:1 › MS-U4: cancellation winning answer race shows actual terminal status; no continuation resurrection 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-16f1b-o-continuation-resurrection-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-16f1b-o-continuation-resurrection-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-16f1b-o-continuation-resurrection-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: identity/session changes isolate drafts and pending; auth/source absence never manufactures capability" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-29a5a-ver-manufactures-capability-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-29a5a-ver-manufactures-capability-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:53:1 › MS-U4: identity/session changes isolate drafts and pending; auth/source absence never manufactures capability 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-29a5a-ver-manufactures-capability-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-29a5a-ver-manufactures-capability-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-29a5a-ver-manufactures-capability-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4: ordinary waiting text is not a graph question or a contract acceptance" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-6074f-on-or-a-contract-acceptance-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-6074f-on-or-a-contract-acceptance-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:57:1 › MS-U4: ordinary waiting text is not a graph question or a contract acceptance 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-6074f-on-or-a-contract-acceptance-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-6074f-on-or-a-contract-acceptance-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-6074f-on-or-a-contract-acceptance-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4 verifier controlled: original Page only GETs the exact graph/question and original receipt; does not navigate or persist" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-045ee-oes-not-navigate-or-persist-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-045ee-oes-not-navigate-or-persist-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:61:1 › MS-U4 verifier controlled: original Page only GETs the exact graph/question and original receipt; does not navigate or persist 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-045ee-oes-not-navigate-or-persist-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-045ee-oes-not-navigate-or-persist-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-045ee-oes-not-navigate-or-persist-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="MS-U4 verifier controlled: missing actual source or foreign graph fails privately with zero writes" classname="controlled\u4-conversation.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-u4-conversation-11f3b--privately-with-zero-writes-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-u4-conversation-11f3b--privately-with-zero-writes-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\u4-conversation.spec.ts:65:1 › MS-U4 verifier controlled: missing actual source or foreign graph fails privately with zero writes 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-u4-conversation-11f3b--privately-with-zero-writes-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-u4-conversation-11f3b--privately-with-zero-writes-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-u4-conversation-11f3b--privately-with-zero-writes-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\waiting-feedback.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="7" failures="0" skipped="0" time="0.007" errors="7">
+<testcase name="H01-I01 controlled: original question/limits and three pinned refs show neutral waiting with no invented decision; refresh only GET" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-10718-d-decision-refresh-only-GET-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-10718-d-decision-refresh-only-GET-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:27:1 › H01-I01 controlled: original question/limits and three pinned refs show neutral waiting with no invented decision; refresh only GET 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-10718-d-decision-refresh-only-GET-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-10718-d-decision-refresh-only-GET-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-10718-d-decision-refresh-only-GET-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: only original ApprovalRequest has approve/decline operations" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-d7531--approve-decline-operations-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-d7531--approve-decline-operations-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:31:1 › H01-I01 controlled: only original ApprovalRequest has approve/decline operations 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-d7531--approve-decline-operations-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-d7531--approve-decline-operations-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-d7531--approve-decline-operations-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: only actual fixed DeliveryView has full content/report and acceptance operation" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-60b72-rt-and-acceptance-operation-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-60b72-rt-and-acceptance-operation-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:34:1 › H01-I01 controlled: only actual fixed DeliveryView has full content/report and acceptance operation 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-60b72-rt-and-acceptance-operation-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-60b72-rt-and-acceptance-operation-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-60b72-rt-and-acceptance-operation-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: empty original source cannot fabricate question, success or approval" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-94c23-uestion-success-or-approval-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-94c23-uestion-success-or-approval-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:37:48 › H01-I01 controlled: empty original source cannot fabricate question, success or approval 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-94c23-uestion-success-or-approval-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-94c23-uestion-success-or-approval-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-94c23-uestion-success-or-approval-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: missing original source cannot fabricate question, success or approval" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-8bbec-uestion-success-or-approval-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-8bbec-uestion-success-or-approval-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:37:48 › H01-I01 controlled: missing original source cannot fabricate question, success or approval 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-8bbec-uestion-success-or-approval-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-8bbec-uestion-success-or-approval-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-8bbec-uestion-success-or-approval-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: manual stop acknowledgement keeps draft blocked; only actual cancelled GET permits a new exact request" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-2f0a9-permits-a-new-exact-request-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-2f0a9-permits-a-new-exact-request-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:40:1 › H01-I01 controlled: manual stop acknowledgement keeps draft blocked; only actual cancelled GET permits a new exact request 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-2f0a9-permits-a-new-exact-request-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-2f0a9-permits-a-new-exact-request-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-2f0a9-permits-a-new-exact-request-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="H01-I01 controlled: lost manual stop first reads original run after refresh and never cancels or submits automatically" classname="controlled\waiting-feedback.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-21a47-ls-or-submits-automatically-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-waiting-feedbac-21a47-ls-or-submits-automatically-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\waiting-feedback.spec.ts:44:1 › H01-I01 controlled: lost manual stop first reads original run after refresh and never cancels or submits automatically 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-waiting-feedbac-21a47-ls-or-submits-automatically-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-waiting-feedbac-21a47-ls-or-submits-automatically-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-waiting-feedbac-21a47-ls-or-submits-automatically-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="controlled\workspace.spec.ts" timestamp="2026-10-17T05:31:36.741Z" hostname="chromium" tests="10" failures="0" skipped="0" time="0.01" errors="10">
+<testcase name="controlled: original→understanding→Markdown summary; reload/reconnect never resend" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-73a35-load-reconnect-never-resend-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-73a35-load-reconnect-never-resend-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:7:1 › controlled: original→understanding→Markdown summary; reload/reconnect never resend 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-73a35-load-reconnect-never-resend-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-73a35-load-reconnect-never-resend-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-73a35-load-reconnect-never-resend-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: fresh approval 批准 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-4e615-ds-exact-hashes-and-version-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-4e615-ds-exact-hashes-and-version-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:21:44 › controlled: fresh approval 批准 binds exact hashes and version 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-4e615-ds-exact-hashes-and-version-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-4e615-ds-exact-hashes-and-version-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-4e615-ds-exact-hashes-and-version-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: fresh approval 拒绝 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-6c45c-ds-exact-hashes-and-version-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-6c45c-ds-exact-hashes-and-version-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:21:44 › controlled: fresh approval 拒绝 binds exact hashes and version 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-6c45c-ds-exact-hashes-and-version-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-6c45c-ds-exact-hashes-and-version-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-6c45c-ds-exact-hashes-and-version-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: stale approval prevents POST" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-controlled-stale-approval-prevents-POST-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-controlled-stale-approval-prevents-POST-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:27:1 › controlled: stale approval prevents POST ────────
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-controlled-stale-approval-prevents-POST-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-controlled-stale-approval-prevents-POST-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-controlled-stale-approval-prevents-POST-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: actual terminal confirms cancel, no resend on refresh" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-fc9af-cancel-no-resend-on-refresh-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-fc9af-cancel-no-resend-on-refresh-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:30:1 › controlled: actual terminal confirms cancel, no resend on refresh 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-fc9af-cancel-no-resend-on-refresh-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-fc9af-cancel-no-resend-on-refresh-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-fc9af-cancel-no-resend-on-refresh-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: unknown send retained across refresh without matching text or resubmission" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-b656b-tching-text-or-resubmission-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-b656b-tching-text-or-resubmission-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:34:1 › controlled: unknown send retained across refresh without matching text or resubmission 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-b656b-tching-text-or-resubmission-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-b656b-tching-text-or-resubmission-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-b656b-tching-text-or-resubmission-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: mobile layout, unavailable identity and denied API are readable" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-94ed9-and-denied-API-are-readable-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-94ed9-and-denied-API-are-readable-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:38:1 › controlled: mobile layout, unavailable identity and denied API are readable 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-94ed9-and-denied-API-are-readable-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-94ed9-and-denied-API-are-readable-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-94ed9-and-denied-API-are-readable-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: create uses actual model catalog and remains usable after opening" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:46:1 › controlled: create uses actual model catalog and remains usable after opening 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-74703-ecting-never-dispatch-again-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-74703-ecting-never-dispatch-again-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:52:1 › controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-74703-ecting-never-dispatch-again-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-74703-ecting-never-dispatch-again-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-74703-ecting-never-dispatch-again-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="controlled: a rejected historical event keeps recovery accessible and restores new conversation after validated reread" classname="controlled\workspace.spec.ts" time="0.001">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-64fe4-tion-after-validated-reread-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-64fe4-tion-after-validated-reread-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:59:1 › controlled: a rejected historical event keeps recovery accessible and restores new conversation after validated reread 
+
+    Error: browserType.launch: Executable doesn't exist at E:\UAW\apps\web\.playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     pnpm exec playwright install                           ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-64fe4-tion-after-validated-reread-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-64fe4-tion-after-validated-reread-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-64fe4-tion-after-validated-reread-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="47" failures="1" skipped="0" tests="130" time="74.817" timestamp="2026-10-17T13:29:05.844122+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_owned_clock_continuation" name="test_real_owned_clock_resumes_original_queue_and_stops_after_reply[case0]" time="36.537" /><testcase classname="tests.integration.agent.test_owned_clock_continuation" name="test_real_clock_two_waits_preserve_limit_and_do_not_resend_original_calls[case0]" time="13.194"><failure message="AssertionError: assert (None is not None)&#10; +  where None = RunConversationView(protocol='conversation-v1', run={'id': 'run-71616435a8dd4d52909791bd0f73261e', 'budget': {'limits'...nversation-9e6d9a8578e84ab89b54c8756f11aed4'}, input_revision=2, continuation_request_ids=('answer-1',), question=None).question">tests\integration\agent\test_owned_clock_continuation.py:94: in test_real_clock_two_waits_preserve_limit_and_do_not_resend_original_calls
+    assert view.question is not None and view.input_revision == 2
+E   AssertionError: assert (None is not None)
+E    +  where None = RunConversationView(protocol='conversation-v1', run={'id': 'run-71616435a8dd4d52909791bd0f73261e', 'budget': {'limits'...nversation-9e6d9a8578e84ab89b54c8756f11aed4'}, input_revision=2, continuation_request_ids=('answer-1',), question=None).question</failure></testcase><testcase classname="tests.integration.agent.test_owned_clock_continuation" name="test_real_clock_change_rolls_back_with_failed_segment_and_retries_original_input[case0]" time="12.310" /><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_actual_a_queue_two_calls_late_answer_new_segment_and_terminal_clock[case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[known_money_pending-case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[live_held-case0]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[model_claimed-case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[model_unknown-case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[reservation_live-case0]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[tool_unknown-case0]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_real_idle_inventory_with_known_and_unresolved_model_accounting[tool_confirmed-case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_actual_consumers" name="test_actual_cancel_stops_wait_clock_without_erasing_pending_money_or_question[case0]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_missing_inventory_cannot_construct_a_free_pause" time="0.004"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[false]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[exception]" time="0.004"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[cancel]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[clock_changed]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[cancel_changed]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_failed_or_changed_inventory_rolls_back_and_never_falls_back[question_changed]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_earlier_outer_cancel_drains_inventory_and_keeps_original_clock" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_coherent_new_pin_cannot_increase_original_admission_limit" time="0.005"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_request_cannot_supply_time_or_boolean_cas[clock_request0]" time="0.004"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_request_cannot_supply_time_or_boolean_cas[clock_request1]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_request_cannot_supply_time_or_boolean_cas[clock_request2]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_request_cannot_supply_time_or_boolean_cas[clock_request3]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_idle_boundary" name="test_request_cannot_supply_time_or_boolean_cas[clock_request4]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_concurrent_expected_revision_has_exactly_one_winner_and_original_replay" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_outer_transaction_failure_rolls_back_both_records_and_retry_still_owns_old_time" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_two_waits_and_restart_do_not_reissue_active_budget" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_time_rollback_never_partially_writes[active]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_time_rollback_never_partially_writes[waiting_for_user]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_time_rollback_never_partially_writes[stopped]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_real_active_overrun_is_saved_on_stop_not_clamped_or_refilled" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_stop_preserves_unresolved_original_refs_even_if_request_proposes_empty" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_cancel_or_terminal_source_can_only_stop[cancel]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_cancel_or_terminal_source_can_only_stop[overdrawn]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_cancel_or_terminal_source_can_only_stop[terminal]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[clock_pin]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[input_revision]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[owner]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[limit]" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[clock_run]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[question_revision]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_changed_owning_sources_never_write_partial_clock[item_revision]" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_open_question_cannot_resume_even_if_run_preparing_is_proposed" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_wrong_user_transaction_and_old_protocol_fail_closed" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_real_new_processes_cas_one_winner_and_restart_reads_original_segment" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_persistence" name="test_terminal_waiting_run_can_stop_without_claiming_question_was_answered" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_transactions" name="test_active_settlement_persists_clock_and_binding_only" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.integration.run_clock.test_transactions" name="test_actual_idle_pause_and_resume_charge_only_original_active_time" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'&quot;">.venv\Lib\site-packages\pytest_asyncio\plugin.py:558: in setup
+    return super().setup()
+           ^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pytest_asyncio\plugin.py:926: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+tests\integration\run_clock\conftest.py:99: in own_cleanup_ledger
+    with target.open("a", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.cache\python\cpython-3.14-windows-x86_64-none\Lib\pathlib\__init__.py:771: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\UAW\\tests\\.artifacts\\D\\MS-K1\\sql-principals.jsonl'</error></testcase><testcase classname="tests.unit.run_clock.test_measurement" name="test_settles_milliseconds_without_reissuing_limit_or_changing_original" time="0.003" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_mode_only_charges_its_original_persisted_segment[active]" time="0.003" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_mode_only_charges_its_original_persisted_segment[waiting_for_user]" time="0.005" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_mode_only_charges_its_original_persisted_segment[stopped]" time="0.003" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_time_reversal_rejected_instead_of_clamped[2026-10-17T00:00:00.999999Z]" time="0.002" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_time_reversal_rejected_instead_of_clamped[2026-10-16T23:00:00Z]" time="0.002" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_equal_utc_instants_and_trusted_offset_do_not_charge_twice[2026-10-17T00:00:01Z]" time="0.005" /><testcase classname="tests.unit.run_clock.test_measurement" name="test_equal_utc_instants_and_trusted_offset_do_not_charge_twice[2026-10-17T08:00:01+08:00]" time="0.004" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_duplicate_attempts_or_ground_truth_are_rejected_not_double_billed[same_attempt]" time="0.062" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_duplicate_attempts_or_ground_truth_are_rejected_not_double_billed[same_request_number]" time="0.036" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_duplicate_attempts_or_ground_truth_are_rejected_not_double_billed[same_review_target]" time="0.041" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_duplicate_attempts_or_ground_truth_are_rejected_not_double_billed[same_review_id]" time="0.034" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[omitted_row]" time="0.071" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[extra_row]" time="0.053" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[sequence_gap]" time="0.056" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[case_version]" time="0.057" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[not_preregistered]" time="0.050" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[inventory_incomplete]" time="0.053" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_incomplete_inventory_or_version_remains_incomplete_not_success[dirty]" time="0.058" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_future_review_or_foreign_case_does_not_authorize_a_selected_output" time="0.060" /><testcase classname="tests.unit.evaluation.test_bundle_integrity" name="test_review_before_actual_output_cannot_grade_a_later_attempt" time="0.056" /><testcase classname="tests.unit.evaluation.test_candidate_suite" name="test_sixteen_candidates_keep_disjoint_splits_and_explicit_unreviewed_status" time="0.048" /><testcase classname="tests.unit.evaluation.test_candidate_suite" name="test_m1_published_input_and_report_schemas_do_not_drift_during_m3" time="0.031" /><testcase classname="tests.unit.evaluation.test_offline_cli" name="test_cli_reports_incomplete_and_will_never_overwrite_a_previous_report" time="1.148" /><testcase classname="tests.unit.evaluation.test_offline_cli" name="test_two_real_cli_processes_have_one_complete_immutable_publication" time="0.609" /><testcase classname="tests.unit.evaluation.test_offline_cli" name="test_bad_offline_input_does_not_publish_a_partial_report_or_disclose_its_body" time="0.549" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_unknown_cost_can_never_become_confirmed_or_coerced_to_zero" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes0]" time="0.002" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes1]" time="0.002" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes2]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes3]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes4]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes5]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes6]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_contracts" name="test_actual_usage_rejects_coercion_nonfinite_negative_and_extra_fields[changes7]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_offline_json_rejects_duplicate_keys_without_silently_choosing_a_value" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[{&quot;x&quot;:NaN}]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[{&quot;x&quot;:Infinity}]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[{&quot;x&quot;:-Infinity}]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[{&quot;x&quot;:1e999}]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[\xff]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_nonfinite_invalid_utf8_and_lone_surrogate_are_not_offline_data[&quot;\ud800&quot;]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_depth_and_size_are_bounded_before_domain_processing[over-depth]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_io" name="test_depth_and_size_are_bounded_before_domain_processing[over-2mib]" time="0.001" /><testcase classname="tests.unit.evaluation.test_offline_report" name="test_unreviewed_sample_with_pending_cost_is_incomplete_and_has_no_fake_zero_error" time="0.043" /><testcase classname="tests.unit.evaluation.test_offline_report" name="test_corrupt_source_is_incomplete_and_cannot_supply_semantic_ground_truth" time="0.066" /><testcase classname="tests.unit.evaluation.test_offline_report" name="test_report_pins_the_actual_evaluator_source_separately_from_candidate_manifest" time="0.071" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_all_failed_retry_and_reviewer_attempts_keep_money_time_usage_and_distinct_rates" time="0.063" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_model_passed_or_suggested_labels_are_not_independent_fact_verification[controlled_test-1]" time="0.061" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_model_passed_or_suggested_labels_are_not_independent_fact_verification[model_suggestion-None]" time="0.049" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_reviewer_na_is_reported_with_zero_denominator_and_never_zero_miss_rate[not_applicable]" time="0.053" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_reviewer_na_is_reported_with_zero_denominator_and_never_zero_miss_rate[unavailable]" time="0.052" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_unknown_pending_and_confirmed_zero_are_separate_actual_states[unknown-None]" time="0.051" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_unknown_pending_and_confirmed_zero_are_separate_actual_states[unknown-0.25]" time="0.052" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_unknown_pending_and_confirmed_zero_are_separate_actual_states[pending-None]" time="0.051" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_unknown_pending_and_confirmed_zero_are_separate_actual_states[confirmed-0]" time="0.049" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_hash_mismatch_quarantines_usage_instead_of_dropping_or_calling_it_confirmed[output]" time="0.124" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_hash_mismatch_quarantines_usage_instead_of_dropping_or_calling_it_confirmed[observation]" time="0.046" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_hash_mismatch_quarantines_usage_instead_of_dropping_or_calling_it_confirmed[suite]" time="0.044" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_independent_review_must_bind_original_output_sample_and_evidence[output_sha256]" time="0.048" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_independent_review_must_bind_original_output_sample_and_evidence[case_sha256]" time="0.051" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_independent_review_must_bind_original_output_sample_and_evidence[case_version]" time="0.046" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_independent_review_must_bind_original_output_sample_and_evidence[evidence_sha256]" time="0.051" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_reviewer_cannot_pass_a_different_attempt_or_changed_text[target_attempt_id]" time="0.062" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_reviewer_cannot_pass_a_different_attempt_or_changed_text[target_output_sha256]" time="0.062" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_text_injection_is_inert_and_never_changes_independent_labels" time="0.061" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_unassigned_attempt_is_retained_as_unverified_cost_not_hidden" time="0.043" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_zero_observations_and_no_human_review_are_not_a_zero_error_release" time="0.040" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_contradictory_acceptable_label_cannot_create_a_cost_per_accepted_output" time="0.050" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_large_confirmed_costs_preserve_all_eight_decimal_places" time="0.084" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_critical_sample_error_is_blocked_even_if_noncritical_threshold_is_permissive" time="0.045" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_declared_reviewer_selection_cannot_silently_point_at_wrong_phase_or_missing_inventory[answer-1]" time="0.061" /><testcase classname="tests.unit.evaluation.test_quality_metrics" name="test_declared_reviewer_selection_cannot_silently_point_at_wrong_phase_or_missing_inventory[missing-reviewer]" time="0.047" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_incomparable_baseline_has_its_own_gate_reason_and_no_fake_delta[model]" time="0.050" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_incomparable_baseline_has_its_own_gate_reason_and_no_fake_delta[environment_sha256]" time="0.062" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_incomparable_baseline_has_its_own_gate_reason_and_no_fake_delta[suite_sha256]" time="0.050" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_incomparable_baseline_has_its_own_gate_reason_and_no_fake_delta[provenance]" time="0.049" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_known_critical_error_is_blocked_while_unreviewed_scope_is_still_visible" time="0.046" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_baseline_known_failure_is_compared_but_does_not_become_candidate_failure" time="0.058" /><testcase classname="tests.unit.evaluation.test_version_comparison" name="test_threshold_uses_exact_fraction_not_the_rounded_display_rate" time="0.066" /></testsuite></testsuites>
