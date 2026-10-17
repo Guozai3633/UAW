@@ -18,8 +18,8 @@
   },
   "status_counts": {
     "accepted": 3,
-    "in_progress": 9,
-    "planned": 43,
+    "in_progress": 10,
+    "planned": 42,
     "deferred": 1
   },
   "planned_node_coverage": {
@@ -31,7 +31,7 @@
   "final_core_gate_covers_required_rounds": true,
   "optional_rounds_do_not_block_first_core_trial": true,
   "conversation_text_independent_of_local_and_join": true,
-  "local_document_links_checked": 4652,
+  "local_document_links_checked": 4658,
   "generated_files": 78,
   "errors": [],
   "runtime_implementation": "not_inferred_from_plan_checks",

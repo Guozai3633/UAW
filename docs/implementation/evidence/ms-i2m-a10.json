@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m-A10",
+  "status": "actual_readonly_capture_integrated_quality_incomplete",
+  "source_ref": "ms-i2m-a10-source",
+  "source_commit_authority": "origin/integration:docs/coordination/DISPATCH.md",
+  "runtime_backend_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+  "runtime_source_unchanged": true,
+  "new_model_calls": 0,
+  "runtime_writes_by_exporter": 0,
+  "actual_capture": {
+    "run_id": "run-26abe943d8324d4db3fe3e2e043b9d0c",
+    "scope": "one_explicit_Run_all_model_invocations_no_Tool",
+    "diagnostic_not_user_request": true,
+    "observations": 4,
+    "answers": 2,
+    "reviewers": 2,
+    "observed_failures_in_this_run": 0,
+    "retry_count": 0,
+    "input_tokens": {
+      "known_total": 11289,
+      "unknown_attempts": 0
+    },
+    "output_tokens": {
+      "known_total": 3741,
+      "unknown_attempts": 0
+    },
+    "provider_active_ms": 27179,
+    "attempt_wall_ms_sum": 29484,
+    "invocation_interval_ms_not_total_user_wait": 51584,
+    "costs": [
+      {
+        "confirmed": "0",
+        "confirmed_per_acceptable_output": null,
+        "currency": "USD",
+        "pending": "0",
+        "pending_attempts": 4,
+        "unknown_billing_attempts": 0,
+        "unknown_estimate": "0",
+        "unknown_money_attempts": 4
+      }
+    ],
+    "selection": [
+      {
+        "answer_attempt_id": "web-step-model-2-run-26abe943d8324d4db3fe3e2e043b9d0c",
+        "case_id": "h02-report-correction-retrospective",
+        "reviewer_attempt_id": "evaluation-7a70ce65c6a1c6a1ce830616d732b0b445bff3dc56e5b254cd71bdd14c419f5c"
+      }
+    ],
+    "release_gate": {
+      "reasons": [
+        "answer_error_na",
+        "baseline_required",
+        "independent_human_review_incomplete",
+        "missing_independent_review",
+        "no_acceptable_output",
+        "policy_not_preregistered",
+        "requirements_lost_na",
+        "reviewer_miss_na",
+        "sample_needs_human_review",
+        "unnecessary_block_na",
+        "unsupported_execution_na"
+      ],
+      "status": "incomplete"
+    },
+    "evaluator_exit_code": 3,
+    "human_reviews_created": 0,
+    "human_reviewed_cases": 0,
+    "facts_or_quality_accepted": false,
+    "actual_files_sha256": {
+      "audit.json": "f8245f85d62a13d1c9304202365c5ac3d229c9f639b8fa49cd6c2f0ae947c9c4",
+      "manifest.json": "619914ac5b9db258b238703c3f67b0cc77d61b08b01986afa8fb8ce0b938cfa7",
+      "observations.jsonl": "b346368dae25a2dbf56408130914740b56ed267cea1e49cb3b7feb93af29157b",
+      "quality-report.json": "e1ead9fe9b5b45c82e6c2beef8a36ad4033910332f35f59e5548d91a96e60d18",
+      "review.html": "768291294ea2564c5a48f2a3d206cfc14c705b1d5f5d87ab0eb8cb9979f9578b",
+      "reviews.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "suite.json": "49ecf30c0610929c7fca001810f5ca21b2ca0d84b9ea3a39ac08a72122afb604"
+    },
+    "runtime_source_attestation": {
+      "file_count": 261,
+      "files_sha256": "5a56867d6d17a3a9a08e981ced2924d16cbc38d2972a1e4e51a631bef0f666ec",
+      "source_commit": "ebbcd9ea33557d23ddcda4569909893ce590da4d"
+    },
+    "immutable_run_source_attestation": false,
+    "retrospective_policy_not_preregistered": true,
+    "historical_failures_reference": "docs/implementation/evidence/h02-i01-final.json",
+    "raw_files_ignored_local_only": ".data/evaluation/a10-capture-published/"
+  },
+  "verification": {
+    "unique_final_nodes": 7,
+    "unit": 4,
+    "postgresql": 3,
+    "mypy_source_files": 242,
+    "ruff_changed_python_files": 4,
+    "full_repository_regression": false,
+    "final_receipts": [
+      "ms-i2m-a10-unit-published.xml",
+      "ms-i2m-a10-sql-final.xml"
+    ],
+    "failure_history": [
+      {
+        "receipt": "ms-i2m-a10-unit-first.xml",
+        "reason": "sandbox_temporary_directory_denied",
+        "tests": 4,
+        "errors": 4,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "receipt": "ms-i2m-a10-unit-final.xml",
+        "reason": "existing_atomic_publisher_hardlink_sandbox_denied",
+        "tests": 4,
+        "errors": 0,
+        "failures": 1,
+        "skipped": 0
+      },
+      {
+        "receipt": "ms-i2m-a10-sql-published.xml",
+        "reason": "controlled_cancel_requested_but_original_queue_not_yet_finalized",
+        "tests": 3,
+        "errors": 0,
+        "failures": 1,
+        "skipped": 0
+      }
+    ],
+    "earlier_partial_SQL_passes_not_added": "ms-i2m-a10-sql-first.xml"
+  },
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:5183/",
+      "http_status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8013/health/ready",
+      "http_status": 200
+    }
+  ],
+  "service_restart": {
+    "original_ports": true,
+    "original_database_and_identity": true,
+    "original_environment_unchanged": true,
+    "new_log_id": "7cf3fccfdc6f49b0a9d8b75744d5d22a",
+    "local_restart_receipt": ".data/human/H02-v4/a10-restart-7cf3fccfdc6f49b0a9d8b75744d5d22a.json"
+  },
+  "scope_limits": [
+    "single_terminal_conversation_v1_Run_without_Tool",
+    "missing_active_duration_rejects_complete_capture_not_zero",
+    "no_baseline_or_human_review_created",
+    "not_C_16_case_experiment",
+    "operator_start_record_plus_exact_runtime_bytes_not_immutable_Run_code_pin"
+  ],
+  "pending": [
+    "human_verification_of_cases_and_answer_evidence",
+    "preregistered_policy_and_comparable_baseline_experiment",
+    "H02_actual_user_retest",
+    "native_file_chain",
+    "Tool_long_wall_dispatch"
+  ],
+  "workers": "B_C_D_delivered_stopped_no_new_dispatch",
+  "last_full_updated": false,
+  "implementation_sha256": {
+    "src\\uaw\\run\\evaluation_capture.py": "d8649993ebf098eecccdf4e0b26b12b299462c0a77e99498853836d398aee452",
+    "ops\\capture_conversation_evaluation.py": "1181bd1ad33648b5aa2712b62386031f5ed27faac058ab12a478fa3e67591f04",
+    "tests\\unit\\agent\\test_evaluation_capture.py": "5766e0faab9cba9a36eb75ea288426b02ba46ce5f02cb9700195c92d6add11d2",
+    "tests\\integration\\agent\\test_evaluation_capture.py": "676c1ea9d628b14996b755cd1238a4acdfabf1ec4272ef300ea0de3169038004"
+  }
+}

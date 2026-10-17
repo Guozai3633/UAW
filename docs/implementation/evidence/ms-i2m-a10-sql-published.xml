@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="30.061" timestamp="2026-10-17T21:42:43.231256+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_evaluation_capture" name="test_readonly_capture_retains_every_attempt_and_cannot_pass_without_human[reply-case0]" time="8.700" /><testcase classname="tests.integration.agent.test_evaluation_capture" name="test_readonly_capture_retains_every_attempt_and_cannot_pass_without_human[failed-case0]" time="7.553" /><testcase classname="tests.integration.agent.test_evaluation_capture" name="test_readonly_capture_retains_every_attempt_and_cannot_pass_without_human[deliver-case0]" time="12.263"><failure message="uaw.run.evaluation_capture.CaptureError: capture_requires_terminal_run">tests\integration\agent\test_evaluation_capture.py:117: in test_readonly_capture_retains_every_attempt_and_cannot_pass_without_human
+    bundle = prepare_bundle(rows, sample, policy, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\evaluation_capture.py:173: in prepare_bundle
+    raise CaptureError("capture_requires_terminal_run")
+E   uaw.run.evaluation_capture.CaptureError: capture_requires_terminal_run</failure></testcase></testsuite></testsuites>

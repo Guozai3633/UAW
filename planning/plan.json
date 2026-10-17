@@ -4398,10 +4398,14 @@
         "人工样本与反例集",
         "版本发布质量报告与运行说明"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/P1-15.md",
+        "docs/implementation/MS-I2m-A10.md",
+        "docs/implementation/evidence/ms-i2m-a10.json"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P1-12",

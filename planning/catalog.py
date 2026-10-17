@@ -611,6 +611,10 @@ for package in ROUNDS:
         package["status"] = "in_progress"
         package["tasks"].insert(0, "MS-I2m：A原Run控制与实际接线；B/MS-U4前端；D/MS-K1新增持久时钟组件。准确固定基线和允许目录按DISPATCH/正式分包；组件开发不等于续跑整链接受。")
     if package["id"] == "P1-15":
+        package.update(status="in_progress", implementation_evidence=[
+            "docs/implementation/P1-15.md", "docs/implementation/MS-I2m-A10.md",
+            "docs/implementation/evidence/ms-i2m-a10.json",
+        ])
         package["tasks"].insert(0, "MS-I2m C/MS-E1正式分派独立评测组件；新evaluation目录与原Tool包隔离。人工未核对的样本不伪造human-approved，真实候选/费用由A导出后再验。")
 ROUNDS.sort(key=lambda package: package["id"])
 for package in ROUNDS:

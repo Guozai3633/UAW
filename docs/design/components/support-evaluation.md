@@ -1,3 +1,7 @@
+# A10实际来源接线
+
+2026-10-17。A在 `src/uaw/run/evaluation_capture.py` 和 `ops/capture_conversation_evaluation.py` 提供终态单Run的只读采集，不改C评测器。原输入/全部模型调用/精确核验绑定/未知费用进入四文件，空人审不产生质量通过；目前实际结果为incomplete。[逐项算法与限制](../../implementation/MS-I2m-A10.md) · [输入输出和目录](../../coordination/requests/A/MS-I2m-A10-capture-wiring.md)。该来源适配不装入每次用户请求，事后采集不替代题集人审或事前登记。
+
 # MS-I2m实施归属补充
 
 2026-10-16：C/MS-E1独立开发离线评测，实际本轮代码目录为新src/uaw/evaluation/、ops/evaluate_conversation.py及专属fixtures/tests。原下文shared/evaluation.py是设计位置，不作为本包新实现入口。精确字段在C M1阶段固定后由A消费；管理员HTTP尚未实现。人工未核对的候选样本标needs_human_review，不伪造human-approved或发布通过。
