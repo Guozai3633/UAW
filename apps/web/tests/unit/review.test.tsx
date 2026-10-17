@@ -44,3 +44,7 @@ it('terminal, non-delivery phases, missing or mismatched current sources and unc
   await screen.findByRole('heading',{name:'正文报告'});expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).not.toHaveBeenCalled();result.unmount();
  }
 });
+
+it('previous delivery remains fully readable with explicit task revisions while stale acceptance stays blocked',async()=>{
+ const v=snapshot();v.delivery!.stale=true;v.delivery!.proposal.run_ref.version='3';const accept=vi.fn();render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false,gcTime:0}}})}><Review items={[]} run={makeRun('failed',6)} port={{read:async()=>v,accept}} identity="user-one" connected onAccepted={()=>{}}/></QueryClientProvider>);await screen.findByRole('heading',{name:'正文报告'});expect(screen.getByText('此成果为此前版本，仅供查阅，不能作为当前补充的结果接受。')).toBeVisible();expect(screen.getByText(/成果对应任务修订 3 · 当前任务修订 6/)).toBeVisible();expect(screen.getByRole('heading',{name:'报告'})).toBeVisible();expect(screen.getByRole('button',{name:'接受整份成果'})).toBeDisabled();expect(accept).not.toHaveBeenCalled();
+});
