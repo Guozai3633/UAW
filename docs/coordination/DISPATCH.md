@@ -1,3 +1,13 @@
+# MS-I2m A11正式固定：空白人工审阅表与显式导入
+
+2026-10-17，准确源码 **e3de5d6f17400ec442ce47c0b0e21857399da6b7** / **ms-i2m-a11-source**。A在自有离线适配目录实现固定原四文件/Case/Answer的审阅包与人工文件导入；所有判断无预选，未知保留，标准存疑仍待审。C契约/评测算法、B页面、D时钟、依赖锁和flags未改。[完整策略](../implementation/MS-I2m-A11.md) · [逐字段接口](requests/A/MS-I2m-A11-review-wiring.md) · [机器回执](../implementation/evidence/ms-i2m-a11.json)。
+
+23个不同构造单元/CLI节点、3变动Python静态/格式、244源码类型与实际生成脚本语法检查通过；原15/21批不累计，SQL不适用，不更新last_full。测试评分不能升级人工核准；真正人审导入须明确原包和操作者声明，摘要/自报身份不等于人实际阅读的认证。
+
+已有H02诊断4调用的实际待审页准备于`.data/evaluation/a11-review-ready/index.html`，原来源四文件逐字不变；**真人评分0、真实导入0、新模型调用0**。内置浏览器安全策略拒绝file协议，实际显示/下载保持pending，未尝试绕过或代做本人判断。此为离线组件交付，不是C M4事实质量或H02体验验收。
+
+原 http://127.0.0.1:5183/ 和后端ready实查200，仍为A9a后端/B原前端；本轮未修改或重启服务，没有改写本人原会话/失败/接受。下一步完成实际显示/下载与独立人审，再按事前政策做固定候选/基线比较；原本机及Tool长墙钟继续独立pending。B/C/D保持交付停止点，没有新包或自动同步。以下为历史。
+
 # MS-I2m A10正式固定：真实任务记录接入离线评测
 
 2026-10-17，准确源码 **3576ea6a0a96d202fe97291b332d3206e4d0a4a9** / **ms-i2m-a10-source**。A只读导出单个明确终态Run，保留原输入、全部模型调用、固定模型/结果/用量及对应Reviewer；不改C的冻结格式/评测器，不产生人审。4单元＋3真实SQL共7个不同节点通过，4变动Python静态/格式及242源码类型通过；原setup/hardlink/取消夹具失败均保留。不是全仓，不更新last_full。[实现与限制](../implementation/MS-I2m-A10.md) · [输入输出](requests/A/MS-I2m-A10-capture-wiring.md) · [完整回执](../implementation/evidence/ms-i2m-a10.json)。

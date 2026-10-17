@@ -98,5 +98,6 @@
     "src/uaw/resources/reviews/human-review-v1.html": "a2b226ae231dfee7575e2549204e57321dc848981ae4fcd59e15e0963be9d3d0",
     "ops/conversation_review.py": "6a575dcac236e8c98317b4c9c57135af675f5dd8c4ccd54a8fb2da10b525f025",
     "tests/unit/agent/test_evaluation_review.py": "ce4585f4653f2834be66c7360b582c4e03081d27aad44458d692ffa2d78713bd"
-  }
+  },
+  "source_commit": "e3de5d6f17400ec442ce47c0b0e21857399da6b7"
 }
