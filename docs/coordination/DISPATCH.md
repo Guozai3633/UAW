@@ -1,3 +1,9 @@
+# MS-I2m A9正式固定：H02报告纠正与成果入口修复
+
+2026-10-17。准确源码 **01b3e6e4f3301c684ff4a29a53bf69128130497e** / **ms-i2m-a9-source**。A提高受原剩余额度/模型能力约束的生成容量，核验保持2048，真实length保留为截断失败而不创建决策/applied。B原交付500d292/9504d70已普通合入：终态补充反馈、理解版本和窄屏成果入口。16不同SQL、107单元、60受控Chromium通过，240源码类型/6变动Python静态格式通过。不是全仓门槛。[A实现](../implementation/MS-I2m-A9.md) · [汇合回执](../implementation/evidence/h02-i01-ab-integration.json)。
+
+现在候选升级原H02独立数据库/身份服务；本人失败Run及旧成果不改写、不复活，原Page保留，H01不变。实际报告→原Run纠正→新成果/独立核验仍待新固定版本实测；本人反馈/质量/native门槛各自pending。B组件接受后停止，不自动扩包；flags/last_full保持。以下为历史。
+
 # H02-v2已启动：可进行澄清、纠正与续跑本人体验
 
 2026-10-17。独立地址 **http://127.0.0.1:5183/**，准确A8源码 **fd50359ccd0c99f3416b5c0aeaf2375847f60dca** / **ms-i2m-a8-source**。实际浏览器已登录并留在空白测试会话。实际DeepSeek诊断3次调用完成同Run提问→纠正→回答，两次补充applied；真实idle6008ms，clock stopped。含H02-v1原失败共4次调用，用量及pending费用保留。[本人测试说明](../implementation/human-tests/H02.md) · [实际启动/模型回执](../implementation/evidence/h02-v2-ready.json)。

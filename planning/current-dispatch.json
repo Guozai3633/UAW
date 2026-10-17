@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "H02_v2_authenticated_ready_for_human_test",
+  "status": "A9_fixed_H02_report_correction_candidate_preparing",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -133,21 +133,27 @@
       "receipt": "docs/implementation/evidence/ms-i2m-a8.json",
       "scope": "early_resume_segment_budget_fix_actual_live_preparation",
       "worker_consumption": "no_automatic_sync_or_new_package"
+    },
+    "A/A9": {
+      "source_commit": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
+      "fixed_ref": "ms-i2m-a9-source",
+      "receipt": "docs/implementation/evidence/h02-i01-ab-integration.json",
+      "scope": "report_capacity_truncation_and_B_terminal_narrow_artifact_feedback",
+      "worker_consumption": "no_automatic_sync_or_new_package"
     }
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A8",
+    "stage": "A9",
     "published": true,
-    "source_commit": "fd50359ccd0c99f3416b5c0aeaf2375847f60dca",
-    "fixed_ref": "ms-i2m-a8-source",
-    "receipt": "docs/implementation/evidence/ms-i2m-a8.json",
-    "runtime_deployed": true,
+    "source_commit": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
+    "fixed_ref": "ms-i2m-a9-source",
+    "receipt": "docs/implementation/evidence/h02-i01-ab-integration.json",
+    "runtime_deployed": false,
     "next": [
-      "human_clarification_correction_resume_refresh_feedback",
-      "independent_quality_human_review",
-      "tool_dispatch_beyond_original_wall_deadline",
-      "native_file_chain"
+      "actual_report_correction_smoke",
+      "original_Page_narrow_terminal_artifact",
+      "human_feedback"
     ],
     "live_provider_smoke": "passed_three_calls_two_applied_patches_same_Run",
     "human_experience": "pending",
@@ -158,7 +164,12 @@
       "source_commit": "5e0b37d90d12641d20e3acf4b704cf79bca3a13d",
       "handoff_commit": "f37265a5d4fc7f5545a0591ab91057e45b29d84c",
       "status": "component_accepted_actual_service_integration_pending",
-      "work_status": "delivered_stopped"
+      "work_status": "delivered_stopped",
+      "followup": {
+        "source_commit": "500d292937b511dbced4e674e3486b84213a2de6",
+        "handoff_commit": "9504d70f650318f025d24531d6e8bbbba1ed5fb8",
+        "status": "component_accepted_actual_Page_pending"
+      }
     },
     "C": {
       "source_commit": "c8dba72e3a5dc707911c841e3cf6c3bf781d9ac3",
