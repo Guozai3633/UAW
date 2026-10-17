@@ -212,3 +212,17 @@ def test_critical_sample_error_is_blocked_even_if_noncritical_threshold_is_permi
     assert report.candidate.answer_error.value == "1"
     assert "critical_answer_error" in report.release_gate.reasons
     assert report.release_gate.status == "blocked"
+
+
+@pytest.mark.parametrize("selected", ["answer-1", "missing-reviewer"])
+def test_declared_reviewer_selection_cannot_silently_point_at_wrong_phase_or_missing_inventory(
+    tmp_path, selected
+):
+    data = add_review(example_files(tmp_path), correct=True, acceptable=True)
+    data["manifest"]["candidate"]["selections"][0]["reviewer_attempt_id"] = selected
+    report = evaluate_files(*write_files(tmp_path, data))
+    expected = (
+        "reviewer_target_mismatch" if selected == "answer-1" else "missing_reviewer_observation"
+    )
+    assert expected in report.release_gate.reasons
+    assert report.candidate.reviewer_miss.value is None

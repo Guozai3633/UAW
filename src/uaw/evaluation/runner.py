@@ -175,6 +175,26 @@ def _candidate(bundle: Bundle, manifest: CandidateManifest, issues: list[Issue])
             ):
                 issues.append(_issue("critical_answer_error", manifest.id, case.id, row.attempt_id))
         reviewer = verified.get(selection.reviewer_attempt_id or "") if selection else None
+        if selection is not None and selection.reviewer_attempt_id is not None:
+            if reviewer is None:
+                issues.append(
+                    _issue(
+                        "missing_reviewer_observation",
+                        manifest.id,
+                        case.id,
+                        selection.reviewer_attempt_id,
+                    )
+                )
+            elif reviewer.phase != "reviewer" or reviewer.case_id != case.id:
+                issues.append(
+                    _issue(
+                        "reviewer_target_mismatch",
+                        manifest.id,
+                        case.id,
+                        selection.reviewer_attempt_id,
+                    )
+                )
+                reviewer = None
         actual = (
             reviewer.reviewer
             if reviewer is not None
