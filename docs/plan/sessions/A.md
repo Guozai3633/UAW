@@ -1,3 +1,7 @@
+# H02-v2独立体验已就绪，等待本人反馈
+
+A8固定源码fd50359ccd0c99f3416b5c0aeaf2375847f60dca / ms-i2m-a8-source，已登录 http://127.0.0.1:5183 的空白测试会话。真实模型3调用完成澄清→纠正→回答，2补充applied，实际idle6008ms；含原失败共4调用、费用pending。[测试说明](../../implementation/human-tests/H02.md) · [实际回执](../../implementation/evidence/h02-v2-ready.json)。下一步根据本人体验修正，独立质量人审与工具/native路径继续保留pending；不代本人任务或接受。以下为历史。
+
 # MS-I2m A8已固定：启动独立H02-v2体验
 
 source **fd50359ccd0c99f3416b5c0aeaf2375847f60dca** / **ms-i2m-a8-source**。真实H02-v1较早纠正被budget_deadline_invalid终止；A修复，26个真实SQL及静态/类型通过，原失败与用量保留。[回执](../../implementation/evidence/ms-i2m-a8.json)。接下来新独立服务实际模型提问/纠正/回答与已登录Page；H02本人反馈及C质量仍pending。保留H01-v5及失败H02-v1，不修改worker或last_full。

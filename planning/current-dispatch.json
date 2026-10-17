@@ -60,12 +60,12 @@
   },
   "milestones_per_package": 4,
   "integrate_on_stage_sha": true,
-  "current_human_runtime": "H01-v5",
+  "current_human_runtime": "H02-v2",
   "replace_human_runtime": false,
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A8_fixed_early_resume_SQL_passed_H02_v2_preparing",
+  "status": "H02_v2_authenticated_ready_for_human_test",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -142,13 +142,16 @@
     "source_commit": "fd50359ccd0c99f3416b5c0aeaf2375847f60dca",
     "fixed_ref": "ms-i2m-a8-source",
     "receipt": "docs/implementation/evidence/ms-i2m-a8.json",
-    "runtime_deployed": false,
+    "runtime_deployed": true,
     "next": [
-      "H02_v2_actual_provider_smoke",
-      "authenticated_user_Page",
-      "human_feedback",
-      "offline_quality_review"
-    ]
+      "human_clarification_correction_resume_refresh_feedback",
+      "independent_quality_human_review",
+      "tool_dispatch_beyond_original_wall_deadline",
+      "native_file_chain"
+    ],
+    "live_provider_smoke": "passed_three_calls_two_applied_patches_same_Run",
+    "human_experience": "pending",
+    "runtime_receipt": "docs/implementation/evidence/h02-v2-ready.json"
   },
   "worker_stage_reports": {
     "B": {
@@ -171,5 +174,6 @@
       "status": "component_and_A_owned_queue_controlled_SQL_accepted_live_runtime_pending",
       "work_status": "delivered_stopped"
     }
-  }
+  },
+  "old_human_runtime_preserved": "H01-v5"
 }

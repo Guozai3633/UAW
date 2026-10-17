@@ -1,3 +1,9 @@
+# H02-v2已启动：可进行澄清、纠正与续跑本人体验
+
+2026-10-17。独立地址 **http://127.0.0.1:5183/**，准确A8源码 **fd50359ccd0c99f3416b5c0aeaf2375847f60dca** / **ms-i2m-a8-source**。实际浏览器已登录并留在空白测试会话。实际DeepSeek诊断3次调用完成同Run提问→纠正→回答，两次补充applied；真实idle6008ms，clock stopped。含H02-v1原失败共4次调用，用量及pending费用保留。[本人测试说明](../implementation/human-tests/H02.md) · [实际启动/模型回执](../implementation/evidence/h02-v2-ready.json)。
+
+H01-v5和失败H02-v1保持独立；26 SQL为定向门槛，未更新last_full。本人体验、质量题集人审、Tool跨原deadline和本机文件链仍分别pending，不将自检或页面登录当整轮accepted。B/C/D继续保留已交付停止点；没有新派发或自动同步要求。以下是历史。
+
 # MS-I2m A8 正式固定：早答复期限修复，独立体验服务准备中
 
 2026-10-17。准确源码 **fd50359ccd0c99f3416b5c0aeaf2375847f60dca** / **ms-i2m-a8-source**。真实H02-v1自检发现较早纠正时预算期限不一致；A修复并保留原失败、1次模型用量及pending费用。26个不同真实SQL、2文件静态/格式及240源码类型通过。[实现与边界](../implementation/MS-I2m-A8.md) · [逐项回执](../implementation/evidence/ms-i2m-a8.json)。不是全仓门槛，不更新last_full。

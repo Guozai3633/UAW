@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m A8 H02-v2 independent service",
+  "status": "ready_for_human_test_not_human_accepted",
+  "backend_source": "fd50359ccd0c99f3416b5c0aeaf2375847f60dca",
+  "fixed_ref": "ms-i2m-a8-source",
+  "frontend_source": "5e0b37d90d12641d20e3acf4b704cf79bca3a13d",
+  "origin": "http://127.0.0.1:5183",
+  "backend_port": 8013,
+  "isolated_database": true,
+  "independent_runtime_and_dependencies": true,
+  "dependency_lock_sha256": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
+  "dist_sha256": {
+    "index.html": "7abf73d60c2c8de9ecb952b0f3969bef35a6d58e164809ef18ee4f8fa2dd34a5",
+    "assets/index-Bf4x2xo2.css": "b7d60e370ceecc4df7024e3f97366150998a76902a291c6fbe09d7552d2d5aa8",
+    "assets/index-DpAgQSfE.js": "4f1ad1f955eaa90219870f053169c6cf7b24908bd24804c6e79cc38e03a71325"
+  },
+  "copied_user_records": 0,
+  "copied_browser_sessions": 0,
+  "copied_native_authorizations": 0,
+  "real_owned_clock_installed": true,
+  "active_segments_installed": true,
+  "live_smoke": {
+    "status": "passed",
+    "run_id": "run-6a84c2f128204c39a8af9d405befe855",
+    "phases": [
+      {
+        "state": "waiting_for_user",
+        "input_revision": 1,
+        "elapsed_ms": 8128
+      },
+      {
+        "state": "waiting_for_user",
+        "input_revision": 2,
+        "elapsed_ms": 12192
+      },
+      {
+        "state": "completed",
+        "input_revision": 3,
+        "elapsed_ms": 12176
+      }
+    ],
+    "patch_states": [
+      "applied",
+      "applied"
+    ],
+    "clock_mode": "stopped",
+    "wait_elapsed_ms": 6008,
+    "provider_calls": 3,
+    "usage": [
+      {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 2417,
+          "wall_time_ms": 1375,
+          "output_tokens": 117
+        },
+        "attempt_id": "web-step-model-1-run-6a84c2f128204c39a8af9d405befe855",
+        "billing_state": "pending",
+        "cached_input_tokens": 384,
+        "provider_receipt_id": "83647a3e-74d0-4607-803a-6560c0d28b99"
+      },
+      {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 2602,
+          "wall_time_ms": 1284,
+          "output_tokens": 96
+        },
+        "attempt_id": "web-step-model-2-run-6a84c2f128204c39a8af9d405befe855",
+        "billing_state": "pending",
+        "cached_input_tokens": 384,
+        "provider_receipt_id": "55778910-a7d7-4d3a-a07c-0bff45c3ec77"
+      },
+      {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 3039,
+          "wall_time_ms": 1425,
+          "output_tokens": 106
+        },
+        "attempt_id": "web-step-model-3-run-6a84c2f128204c39a8af9d405befe855",
+        "billing_state": "pending",
+        "cached_input_tokens": 384,
+        "provider_receipt_id": "7c025006-b9e1-440a-82c7-ed3b78d8cf56"
+      }
+    ],
+    "billing_state": "pending",
+    "synthetic_diagnostic_material": true,
+    "human_acceptance_performed": false
+  },
+  "actual_Page": {
+    "url": "http://127.0.0.1:5183/?conversation=conversation-586d9b24338447bfa0ab9483cb7fa607",
+    "tab_id": "2",
+    "session_label": "已连接用户会话",
+    "title": "澄清、纠正与续跑测试",
+    "empty_human_task": true,
+    "fixed_model_label": "本会话固定模型",
+    "left_open": true
+  },
+  "total_new_live_provider_calls_including_failed_v1": 4,
+  "first_failure_receipt": "h02-v1-live-first.json",
+  "all_provider_billing_pending": true,
+  "old_H01_modified": false,
+  "failed_H02_v1_preserved": true,
+  "default_flags_changed": false,
+  "last_full_updated": false,
+  "pending": [
+    "human_clarification_correction_resume_refresh_feedback",
+    "independent_quality_human_review",
+    "tool_dispatch_beyond_original_wall_deadline",
+    "native_file_chain"
+  ]
+}
