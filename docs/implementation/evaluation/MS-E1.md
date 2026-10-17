@@ -48,7 +48,7 @@ Reviewer未启用、failed/unavailable/not_applicable或没有错误答案样本
 
 伪造资料或输出hash时不计算相应语义分母；观测binding不通过的费用单列unverified_costs，未归属manifest观测及费用也保留，不隐藏或当确认账单。矛盾acceptable标签不制造接受分母。关键Case预登记critical：独立确认答案错误、无证据执行或保留要求丢失即阻断，不能靠普通阈值放行或漏填critical_error绕过。指标阈值用精确分子与分母交叉相乘；八位展示小数不参与放行决策。关键/阈值错误优先blocked，缺人工等原因仍保留；信息缺失、零可接受数、零必需分母为incomplete。
 
-所有answer/reviewer/tool/preparation的成功/失败/取消/unknown与重试均保留。各用量给known_total/unknown_attempts；费用按币种独立列confirmed/pending/unknown_estimate及未知金额/账务数。pending预留不是账单，unknown不回填零；局部64位十进制精度防大额累计丢小数。不改全局Decimal环境。
+所有answer/reviewer/tool/preparation的成功/失败/取消/unknown与重试均保留。各用量给known_total/unknown_attempts；费用按币种独立列confirmed/pending/unknown_estimate及未知金额/账务数。pending预留不是账单，unknown不回填零；局部64个有效数字的十进制精度防大额累计丢小数。不改全局Decimal环境。
 
 active_ms为全部观测主动时间和，attempt_wall_ms_sum不冒充用户总等待；experiment_wall_ms来自固定manifest实际起止区间。声明库存/时段/hash不符保持incomplete。单位可接受输出成本只有接受分母正且该币种全账单确认时才计算，否则null。
 
@@ -56,7 +56,7 @@ active_ms为全部观测主动时间和，attempt_wall_ms_sum不冒充用户总�
 
 ## 样本与可运行报告
 
-[16条候选说明](MS-E1-candidates.md)：revision/holdout各8，办公3/学术2/技术4/缺材料2/合理歧义3/纠正2。办公和学术材料、其余自含规范为本开发代理草拟的synthetic数据；文中“构造材料”不是人类已核对或真实业务资料。原TCC/ZooKeeper概念错误纳入但无专用关键词规则；所有候选 **needs_human_review**，没有自动标签真值。实际打开官方资料的位置、UTC及选取中文摘要hash都在每条Evidence，摘要hash不是网站原HTML或人工审核证明。
+[16条候选说明](MS-E1-candidates.md)：revision/holdout各8，办公3/学术2/技术4/缺材料2/合理歧义3/纠正2。办公和学术材料、其余自含规范为本开发代理草拟的synthetic数据；文中“构造材料”不是人类已核对或真实业务资料。另有[实际原文短节选指纹](MS-E1-primary-source-checks.json)，分别记录官方协调/普通读语句的准确UTF8节选hash；不覆盖冻结题集或声称整页hash。原TCC/ZooKeeper概念错误纳入但无专用关键词规则；所有候选 **needs_human_review**，没有自动标签真值。实际打开官方资料的位置、UTC及选取中文摘要hash都在每条Evidence，摘要hash不是网站原HTML或人工审核证明。
 
 - `tests/fixtures/evaluation/ms-e1-interface`：单条构造观测，pending USD0.02、无review，实际CLI退出3/incomplete。
 - `tests/fixtures/evaluation/ms-e1-candidates`：16条题集但观测/review为空，最终实际CLI退出3/incomplete，0运行不代表0错。
