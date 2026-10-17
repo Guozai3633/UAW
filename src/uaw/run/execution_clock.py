@@ -5,6 +5,8 @@ from collections.abc import Awaitable, Callable
 from copy import deepcopy
 from datetime import UTC, datetime
 
+from uaw.agent.conversation import DECISIONS
+from uaw.agent.sources import check_pin
 from uaw.infrastructure.db.models import RecordVersionRow
 from uaw.infrastructure.db.records import PostgresRecordStore
 from uaw.infrastructure.db.transactions import (
@@ -16,7 +18,7 @@ from uaw.infrastructure.db.transactions import (
 from uaw.run.clock_ports import ClockChange, ClockIdlePort
 from uaw.run.conversation_control import QUESTIONS, TERMINAL, ConversationControls
 from uaw.shared.contracts import JsonObject, Principal, Ref
-from uaw.shared.conversation import RunExecutionClock
+from uaw.shared.conversation import ClarificationQuestion, RunExecutionClock
 from uaw.shared.errors import CapabilityUnavailable, reject
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import StoreConflict, StoreMissing
@@ -124,20 +126,43 @@ class ExecutionClocks:
         *,
         opened: bool,
     ) -> None:
-        view = await self.controls.question_value(tx, run, pin.id)
-        row = await tx.load("run.clarification_questions", pin.id)
+        row = await tx.load(QUESTIONS, pin.id)
+        validate_contract("ClarificationQuestion", row.payload)
+        question = ClarificationQuestion.model_validate_json(json.dumps(row.payload))
         item = await tx.load("items", pin.id)
+        inputs = await tx.load("run.input_sets", str(run["id"]))
+        decision = await tx.load(DECISIONS, question.decision_record_ref.id)
         validate_contract("InteractionItem", item.payload)
+        validate_contract("FirstDecisionRecord", decision.payload)
+        check_pin(
+            question.decision_record_ref,
+            "content",
+            decision.resource_id,
+            decision.revision,
+            decision.payload,
+        )
         if (
             pin.wire() != reference("item", item.resource_id, item.revision)
             or item.payload["id"] != item.resource_id
             or item.payload["revision"] != item.revision
             or item.payload["type"] != "agent_message"
             or item.payload["status"] != "completed"
-            or row.revision != view.question.revision
+            or item.payload.get("run_id") != run["id"]
+            or item.payload["conversation_id"] != run["conversation_id"]
+            or item.payload["text"] != question.prompt.text
+            or row.revision != question.revision
             or row.schema_name != "ClarificationQuestion"
             or item.schema_name != "InteractionItem"
-            or (opened and (view.question.state != "open" or run["status"] != "waiting_for_user"))
+            or decision.schema_name != "FirstDecisionRecord"
+            or question.run_id != run["id"]
+            or question.conversation_id != run["conversation_id"]
+            or question.item_id != item.resource_id
+            or decision.payload["run_ref"]["id"] != run["id"]
+            or decision.payload["decision"].get("action") != "ask"
+            or decision.payload["decision"].get("question") != question.prompt.wire()
+            or decision.payload["input_revision"] != question.input_revision
+            or (question.state == "open" and question.input_revision != inputs.revision)
+            or (opened and (question.state != "open" or run["status"] != "waiting_for_user"))
         ):
             raise reject(
                 "execution_clock_question_changed", "Original stable question Item differs", 412
