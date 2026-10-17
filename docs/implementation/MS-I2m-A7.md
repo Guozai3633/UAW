@@ -1,3 +1,7 @@
+# A7准确发布来源
+
+2026-10-17，**ms-i2m-a7-source / d46f85d712161f77086610a15e225b294164a8de**。314不同节点通过，组件接受和实际产品pending按逐包回执；下文“待发布/待审批”保留为原始准备历史。需要复验时核对远端DISPATCH准确SHA，只消费固定tag，不合浮动integration。没有下一包或自动同步指令。
+
 # A7 最新：组件与受影响链路验收通过，待固定源码发布
 
 2026-10-17。B/MS-U4组件、C/MS-E1 M1–M3、D/MS-K1及D目录定向修复均已审阅并普通合入。**314个不同最终节点通过**：71 SQL、190单元、53受控Chromium；33个变动Python文件Ruff/格式、240源码类型通过。不是全仓或产品整轮通过。[逐包验收](../coordination/requests/A/MS-I2m-A7-worker-acceptance.md) · [完整去重/来源/失败回执](evidence/ms-i2m-a7-integration.json)。

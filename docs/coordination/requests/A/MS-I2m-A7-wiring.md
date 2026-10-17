@@ -1,3 +1,7 @@
+# A7准确发布来源
+
+2026-10-17，**ms-i2m-a7-source / d46f85d712161f77086610a15e225b294164a8de**。314不同节点通过，组件接受和实际产品pending按逐包回执；下文“待发布/待审批”保留为原始准备历史。需要复验时核对远端DISPATCH准确SHA，只消费固定tag，不合浮动integration。没有下一包或自动同步指令。
+
 # A7 最新消费结论：实际组件汇合已验，固定发布按DISPATCH
 
 2026-10-17。B/C/D最终包和D目录定向修复均已普通合入，原构造与A/D ports不变。**314不同节点通过**，实际D+原队列严格跨墙钟与两次等待、原事务回滚均有真实SQL回执；模型回复/服务时间仍受控。[逐包门槛与SHA](MS-I2m-A7-worker-acceptance.md) · [最终回执](../../../implementation/evidence/ms-i2m-a7-integration.json)。

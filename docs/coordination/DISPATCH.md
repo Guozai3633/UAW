@@ -1,3 +1,19 @@
+# MS-I2m A7 正式固定发布：B/C/D组件接受，实际产品门槛继续
+
+2026-10-17，准确源码 **d46f85d712161f77086610a15e225b294164a8de** / **ms-i2m-a7-source**。共同开工基线仍ms-i2m-start，不移动旧tag，不合浮动integration。固定源码中的“待发布”属于先前准备状态，实际准确发布以本远端页首为准；原包已交付，无需因此自动同步或扩包。
+
+**314个不同节点最终通过**：71真实SQL、190单元、53受控Chromium；33变动Python文件Ruff/格式、240源码严格类型通过。公开契约、原A/D ports、依赖/锁和提示词字节不变。不是全仓回归，不更新last_full。[逐包接受及SHA](requests/A/MS-I2m-A7-worker-acceptance.md) · [接线](requests/A/MS-I2m-A7-wiring.md) · [完整去重回执](../implementation/evidence/ms-i2m-a7-integration.json)。
+
+- B/MS-U4组件接受：96单元+53受控浏览器；实际新服务/原拥有者Page联调仍pending。
+- C/MS-E1 M1–M3接受：72离线节点；16候选均待人审，M4真实候选/基线比较仍pending。
+- D/MS-K1组件及目录定向修复接受：8单元+47 SQL（含原A6严格跨墙钟节点）通过；另3个A/D原队列汇合SQL通过。实际D计时算法已消费，provider回复与服务时间受控，非真实模型/elapsed wait/本人体验证明。
+
+原首批82通过/1个A测试失败/47个D准备错误和53个浏览器准备错误保留。A修正少tick的二次澄清fixture；D提交单行父目录建立修复，A核验全新隔离目录及append字节；补齐A浏览器缓存后全部复跑。原失败/用量/pending费用没有清零，用户记录未改。
+
+A下一步：独立新候选服务中显式安装实际ExecutionClocks+RunIdleEffects及ExecutionSegments，给B真实同源入口/原Page，固定用户模型、实际等待/回答/纠正/取消/刷新/文本成果；导出C四文件并提供真正人工核对。H02与完整M2尚未接受；Tool实际claim/新审批仍未消费时间port，旧审批/native期限保持。本机首次签名文件链仍独立未通过。H01-v5/本人历史、flags、旧标签和last_full保留，没有新真实模型调用。
+
+B/C/D保留原提交/handoff及停止点，本页不是下一包或发送新任务授权。以下阶段均为原始历史。
+
 # MS-I2m A7 本地集成：worker已开工，汇合验证/发布待审批服务恢复
 
 2026-10-17，已按用户明确授权把 MS-U4/MS-E1/MS-K1 和固定 A6 直接发给原 B/C/D，三个会话已开工并报告 M1 阶段。共同开工标签和最后正式发布的 A6 不变；**没有发布 ms-i2m-a7-source**，不要合浮动 integration。

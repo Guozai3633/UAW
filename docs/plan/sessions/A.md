@@ -1,3 +1,11 @@
+# MS-I2m A7已固定：下一步实际新服务和质量来源
+
+准确源码 **d46f85d712161f77086610a15e225b294164a8de** / **ms-i2m-a7-source**。B/MS-U4组件、C/MS-E1 M1–M3、D/MS-K1+目录修复已普通合入并按范围接受；314不同节点通过（71 SQL/190单元/53受控Chromium），33文件静态格式/240源码类型通过。[逐包接受](../../coordination/requests/A/MS-I2m-A7-worker-acceptance.md) · [最终回执](../../implementation/evidence/ms-i2m-a7-integration.json)。原失败和历史保留，非全仓/整轮产品通过。
+
+继续A原M2–M4：独立新实例装配实际D时钟+RunIdleEffects/ExecutionSegments，提供真实同源服务与原Page；固定用户模型实测普通回复、原Run回答/纠正、实际等待、取消/刷新和文本成果；保留全部attempt/用量/pending费用后导出C候选/基线及真正人审。H01-v5不热改，不代本人确认/接受。Tool时间port和新审批消费待明确worker范围后再接，C评测包不自动扩大。
+
+worker均交付停止，不自动同步或扩包；A不操作其工作区/分支/业务源码。旧A6严格跨墙钟失败已由A7恢复条件修复并通过原节点；真实elapsed wait/新服务/独立质量/H02仍pending。flags/旧期限/unknown对账/本人历史/last_full保持。以下为原始历史。
+
 # MS-I2m A7本地集成，恢复审批后先验真实D原队列
 
 2026-10-17。A修复源码096be27，B M1与D M1/M2已普通合入本地5815c2abcffbf1f7110a8a273580bffd9573144f；尚未发布A7标签。21不同SQL+14代理单元已过，233源码类型/8文件静态格式通过，原失败保留。[实现/准确停止点](../../implementation/MS-I2m-A7.md) · [内部Tool时间接口](../../coordination/requests/A/MS-I2m-A7-wiring.md)。
