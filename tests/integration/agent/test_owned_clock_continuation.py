@@ -4,12 +4,14 @@ These exercise the actual cross-module accounting implementation, not real
 elapsed long waits, live provider quality, native access or human acceptance.
 """
 
+import asyncio
+import json
 from datetime import UTC, datetime, timedelta
 
 import pytest
 
 from tests.integration.agent import test_execution_segments as segment_cases
-from tests.integration.agent.test_conversation_controls import answer, control_meta
+from tests.integration.agent.test_conversation_controls import answer, ask, control_meta
 from tests.integration.agent.test_conversation_controls import case as case
 from tests.integration.agent.test_conversation_controls import domain as domain
 from tests.integration.agent.test_conversation_controls import scenario as scenario
@@ -17,7 +19,11 @@ from tests.integration.agent.test_conversation_postgres import inventory, output
 from tests.integration.agent.test_conversation_resume import snapshot
 from uaw.run.clock_sources import RunIdleEffects
 from uaw.run.execution_clock import ExecutionClocks
+from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.jobs import JOBS, RunJobs
+from uaw.shared.contracts import TrustedExecutionContext
+from uaw.shared.conversation import RunCorrectionRequest
+from uaw.shared.errors import DomainError
 
 pytestmark = pytest.mark.parametrize(
     "case", [{"active_provider_for_tools": True, "json_object_mode": True}], indirect=True
@@ -133,3 +139,56 @@ async def test_real_clock_change_rolls_back_with_failed_segment_and_retries_orig
     assert await p.driver.resume_conversation(p.actor, p.run["id"])
     clock = await p.driver.conversation_clocks.current(p.actor, p.run["id"])
     assert clock.mode == "active" and len(p.case.requests) == 1
+
+
+@pytest.mark.parametrize("kind", ["clarification_answer", "correction"])
+async def test_early_resume_can_reserve_new_call_before_original_wall_expiry(scenario, kind):
+    """Actual service time catches a bound mismatch hidden by late-only fixtures."""
+    p = scenario
+    from uaw.run.background import BackgroundAgent
+
+    p.driver = BackgroundAgent(
+        p.control,
+        conversation_clocks=ExecutionClocks(p.runs.store, effects=RunIdleEffects()),
+        conversation_segments=ExecutionSegments(p.runs.store),
+    )
+    p.queue = await p.driver.prepare()
+    control, view = await ask(p)
+    original = (await p.runs.store.get(p.actor, "budget.ledgers", p.run["id"])).payload
+    await asyncio.sleep(0.05)  # Real idle wait, not a clock or future-time seam.
+    if kind == "clarification_answer":
+        await control.answer(p.actor, answer(view), control_meta(view))
+    else:
+        await control.correct(
+            p.actor,
+            RunCorrectionRequest(
+                run_id=p.run["id"],
+                expected_input_revision=view.input_revision,
+                text="Use the appended material and a shorter explanation.",
+                attachment_refs=(),
+            ),
+            control_meta(view),
+        )
+    assert await p.driver.resume_conversation(p.actor, p.run["id"])
+    job = (await p.runs.store.get(p.actor, JOBS, p.run["id"])).payload
+    ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["context"]))
+    assert (
+        datetime.now(UTC)
+        < datetime.fromisoformat(original["deadline"])
+        < datetime.fromisoformat(ctx.deadline)
+    )
+    forged = ctx.model_copy(
+        update={
+            "deadline": (datetime.fromisoformat(ctx.deadline) + timedelta(seconds=1)).isoformat()
+        }
+    )
+    with pytest.raises(DomainError) as denied:
+        await p.control.execution_permissions.resolve(forged)
+    assert denied.value.failure.code == "execution_segment_unproven"
+    await segment_cases.finish(p)
+    latest = await control.lookup(p.actor, p.run["id"], "answer-1")
+    assert latest.patch.state == "applied" and latest.run["status"] == "completed"
+    assert len(p.case.requests) == 2
+    assert (await p.runs.store.get(p.actor, "budget.ledgers", p.run["id"])).payload[
+        "deadline"
+    ] == original["deadline"]

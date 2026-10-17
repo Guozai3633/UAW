@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-17",
+  "stage": "A8 early continuation correction",
+  "status": "awaiting_final_SQL_receipt",
+  "A7_original_source": "d46f85d712161f77086610a15e225b294164a8de",
+  "real_failure_receipt": "h02-v1-live-first.json",
+  "red_SQL": "h02-v1-early-resume-first-sql.xml",
+  "code_sha256": {
+    "src/uaw/run/execution_segments.py": "866afb1d85541d3ccd6e6903c2e3b46f7c5a6862aa2b278aa1a9e2412632e586",
+    "tests/integration/agent/test_owned_clock_continuation.py": "da2bc7c6520ad7b8f5de7140d8c6b6133be5d9188663efa85ba4d20c01aaa491"
+  },
+  "original_model_calls": 1,
+  "original_billing_state": "pending",
+  "old_user_records_modified": false,
+  "native_authorization_performed": false,
+  "root_budget_or_old_deadlines_rewritten": false,
+  "pending": [
+    "final SQL",
+    "fixed A8 source",
+    "fresh H02-v2 service",
+    "actual model continuation diagnostic",
+    "logged-in user Page"
+  ]
+}

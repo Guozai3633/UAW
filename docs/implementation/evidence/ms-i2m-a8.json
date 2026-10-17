@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m A8",
+  "status": "targeted_SQL_passed_live_service_preparation",
+  "distinct_final_SQL_nodes": 26,
+  "nodes": [
+    "tests.integration.agent.test_execution_segments::test_late_answer_mints_only_new_context_and_completes_original_run_after_restart[case0]",
+    "tests.integration.agent.test_execution_segments::test_segment_mint_failure_rolls_back_clock_job_run_and_events[case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[context-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_pin-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_hash-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[budget-case0]",
+    "tests.integration.agent.test_execution_segments::test_changed_segment_sources_never_authorize_a_new_call[clock_stopped-case0]",
+    "tests.integration.agent.test_execution_segments::test_missing_segment_keeps_legacy_expiry_and_metadata_inspection_does_not_grant[case0]",
+    "tests.integration.agent.test_execution_segments::test_new_lease_uses_segment_but_expired_context_cannot_revoke_it[case0]",
+    "tests.integration.agent.test_execution_segments::test_cancellation_and_active_exhaustion_do_not_grant_new_segment[case0]",
+    "tests.integration.agent.test_execution_segments::test_two_pages_mint_one_owning_segment_and_do_not_repeat_original_model[case0]",
+    "tests.integration.agent.test_execution_segments::test_later_clock_cannot_increase_original_admission_limit[case0]",
+    "tests.integration.agent.test_execution_segments::test_late_text_delivery_keeps_verification_and_independent_acceptance[case0]",
+    "tests.integration.agent.test_execution_segments::test_expired_original_lease_is_replaced_with_new_fence_not_renewed[case0]",
+    "tests.integration.agent.test_owned_clock_continuation::test_real_owned_clock_resumes_original_queue_and_stops_after_reply[case0]",
+    "tests.integration.agent.test_owned_clock_continuation::test_real_clock_two_waits_preserve_limit_and_do_not_resend_original_calls[case0]",
+    "tests.integration.agent.test_owned_clock_continuation::test_real_clock_change_rolls_back_with_failed_segment_and_retries_original_input[case0]",
+    "tests.integration.agent.test_owned_clock_continuation::test_early_resume_can_reserve_new_call_before_original_wall_expiry[clarification_answer-case0]",
+    "tests.integration.agent.test_owned_clock_continuation::test_early_resume_can_reserve_new_call_before_original_wall_expiry[correction-case0]",
+    "tests.integration.agent.test_tool_timing::test_new_segment_checks_without_mutation_old_context_stays_expired[case0]",
+    "tests.integration.agent.test_tool_timing::test_cancelled_after_cached_reads_is_seen_in_original_tool_transaction[case0]",
+    "tests.integration.agent.test_tool_timing::test_missing_current_segment_cannot_use_cached_proof[case0]",
+    "tests.integration.agent.test_tool_timing::test_check_joins_outer_rollback_and_checks_final_time[case0]",
+    "tests.integration.agent.test_tool_timing::test_foreign_transaction_and_mismatched_store_are_rejected[case0]",
+    "tests.integration.agent.test_tool_timing::test_live_legacy_call_needs_no_segment_but_cannot_dispatch_while_waiting[case0]",
+    "tests.integration.agent.test_tool_timing::test_current_open_question_blocks_accepted_patch_when_segments_installed[case0]"
+  ],
+  "XML": "h02-v1-early-resume-final-sql.xml",
+  "red_SQL": "h02-v1-early-resume-first-sql.xml",
+  "original_live_failure": "h02-v1-live-first.json",
+  "code_sha256": {
+    "src/uaw/run/execution_segments.py": "866afb1d85541d3ccd6e6903c2e3b46f7c5a6862aa2b278aa1a9e2412632e586",
+    "tests/integration/agent/test_owned_clock_continuation.py": "da2bc7c6520ad7b8f5de7140d8c6b6133be5d9188663efa85ba4d20c01aaa491"
+  },
+  "static": {
+    "Ruff": "passed_two_changed_Python_files",
+    "format": "passed_two_changed_Python_files",
+    "strict_mypy": "passed_240_source_files"
+  },
+  "original_provider_calls": 1,
+  "original_billing_state": "pending",
+  "worker_files_modified": false,
+  "last_full_updated": false,
+  "full_repository_gate": false,
+  "human_acceptance": false,
+  "pending": [
+    "fixed_A8_source",
+    "fresh_H02-v2_service",
+    "real_provider_smoke",
+    "authenticated_user_Page",
+    "human_feedback",
+    "offline_quality_review"
+  ]
+}

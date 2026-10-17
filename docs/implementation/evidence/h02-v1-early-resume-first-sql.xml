@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="29.084" timestamp="2026-10-17T13:49:51.370235+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_owned_clock_continuation" name="test_early_resume_can_reserve_new_call_before_original_wall_expiry[clarification_answer-case0]" time="12.522"><failure message="AssertionError: {'code': 'budget_deadline_invalid', 'message': 'Reservation deadline is outside the Run deadline', 'category': 'budget', 'retryable': False, ...}&#10;assert 'blocked' != 'blocked'">tests\integration\agent\test_owned_clock_continuation.py:179: in test_early_resume_can_reserve_new_call_before_original_wall_expiry
+    await segment_cases.finish(p)
+tests\integration\agent\test_execution_segments.py:85: in finish
+    assert job["state"] != "blocked", job.get("failure")
+E   AssertionError: {'code': 'budget_deadline_invalid', 'message': 'Reservation deadline is outside the Run deadline', 'category': 'budget', 'retryable': False, ...}
+E   assert 'blocked' != 'blocked'</failure></testcase><testcase classname="tests.integration.agent.test_owned_clock_continuation" name="test_early_resume_can_reserve_new_call_before_original_wall_expiry[correction-case0]" time="15.119"><failure message="AssertionError: {'code': 'budget_deadline_invalid', 'message': 'Reservation deadline is outside the Run deadline', 'category': 'budget', 'retryable': False, ...}&#10;assert 'blocked' != 'blocked'">tests\integration\agent\test_owned_clock_continuation.py:179: in test_early_resume_can_reserve_new_call_before_original_wall_expiry
+    await segment_cases.finish(p)
+tests\integration\agent\test_execution_segments.py:85: in finish
+    assert job["state"] != "blocked", job.get("failure")
+E   AssertionError: {'code': 'budget_deadline_invalid', 'message': 'Reservation deadline is outside the Run deadline', 'category': 'budget', 'retryable': False, ...}
+E   assert 'blocked' != 'blocked'</failure></testcase></testsuite></testsuites>

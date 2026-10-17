@@ -166,7 +166,11 @@ class ExecutionSegments:
         caller_deadline = instant(ctx.deadline)
         original = min(instant(run["budget"]["deadline"]), instant(ledger["deadline"]))
         result = min(caller_deadline, original)
-        if original <= current_time < caller_deadline:
+        # A resumed call may already carry a proven remaining-active segment
+        # while the initial wall deadline is still live. Its new reservation
+        # must use that same bound, not silently clamp it to the old ledger.
+        # Ordinary original contexts keep the no-segment-read fast path.
+        if original < caller_deadline and current_time < caller_deadline:
             try:
                 segment = await self.load(ctx, SEGMENTS, tx=tx)
             except StoreMissing:
