@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A9_fixed_H02_report_correction_candidate_preparing",
+  "status": "A9a_fixed_actual_report_correction_pending",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -76,7 +76,7 @@
     "src/uaw/shared/conversation.py": "bff466f64f2fc37692dc9f60f3d97146a9b3815510898b272cafb53259eb3e00",
     "src/uaw/run/clock_ports.py": "6c924e0859f7304e0f5960835e113968ae2a28ae3f6dbce0d50bd97b3ae56461",
     "uv.lock": "a065f5af348ed573e7f2547a62ec393366a499103a6e0c791686a8404b89c59f",
-    "src/uaw/resources/prompts/conversation-v1.txt": "fa6ee17b82bfadfd2c514acc893265df2e987f612f08eeaf7267d50d7f70ed47"
+    "src/uaw/resources/prompts/conversation-v1.txt": "2e5f49bb3f67f4c37a3ab2f8d8cc7b0d4c6081d1d7392f4f8dff4df7367a1505"
   },
   "stages": {
     "A/M1": {
@@ -140,14 +140,20 @@
       "receipt": "docs/implementation/evidence/h02-i01-ab-integration.json",
       "scope": "report_capacity_truncation_and_B_terminal_narrow_artifact_feedback",
       "worker_consumption": "no_automatic_sync_or_new_package"
+    },
+    "A/A9a": {
+      "source_commit": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+      "fixed_ref": "ms-i2m-a9a-source",
+      "receipt": "docs/implementation/evidence/ms-i2m-a9a.json",
+      "scope": "actual_provider_JSON_failure_and_serialization_guidance"
     }
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A9",
+    "stage": "A9a",
     "published": true,
-    "source_commit": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
-    "fixed_ref": "ms-i2m-a9-source",
+    "source_commit": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+    "fixed_ref": "ms-i2m-a9a-source",
     "receipt": "docs/implementation/evidence/h02-i01-ab-integration.json",
     "runtime_deployed": false,
     "next": [

@@ -1,3 +1,9 @@
+# MS-I2m A9a固定补充：模型字符串格式与真实回执
+
+2026-10-17。准确源码 **ebbcd9ea33557d23ddcda4569909893ce590da4d** / **ms-i2m-a9a-source**。A9实际报告自检又发现模型正文ASCII引号未转义；A9a准确归类structured-output失败并补平台JSON转义/完整收尾指引，不接纳无效JSON、不自动重发。11 adapter单元及240源码类型通过；A9原16SQL/B107单元/60受控浏览器按各自范围保留。原零调用准备错误、诊断状态误判与真实模型失败/3调用/pending费用全部保留，非实际整链通过。[A9过程](../implementation/MS-I2m-A9.md) · [A9a回执](../implementation/evidence/ms-i2m-a9a.json)。
+
+实际原会话1050px可读旧报告、终态反馈已核验，原本人12条记录payload不变。新固定版本继续原H02数据库/身份的候选升级及报告纠正实测；不得复活本人失败Run或代本人接受，H02仍未accepted。以下为历史。
+
 # MS-I2m A9正式固定：H02报告纠正与成果入口修复
 
 2026-10-17。准确源码 **01b3e6e4f3301c684ff4a29a53bf69128130497e** / **ms-i2m-a9-source**。A提高受原剩余额度/模型能力约束的生成容量，核验保持2048，真实length保留为截断失败而不创建决策/applied。B原交付500d292/9504d70已普通合入：终态补充反馈、理解版本和窄屏成果入口。16不同SQL、107单元、60受控Chromium通过，240源码类型/6变动Python静态格式通过。不是全仓门槛。[A实现](../implementation/MS-I2m-A9.md) · [汇合回执](../implementation/evidence/h02-i01-ab-integration.json)。
