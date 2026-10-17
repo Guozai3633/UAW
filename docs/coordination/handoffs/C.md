@@ -895,3 +895,68 @@ runtime = RoutedToolRuntime(
 A8原assemble_office_tools/file_tool和installed_file从container.tool_access直接取Run sources，没有独立Agent access参数；C具名 **MS-T2i-b-agent-access-proposal.md** 提最小keyword构造/传递缺口，A处理自己的assembly/Agent消费。不可用Run access代替同一Agent有效port，不全局替换RegisteredFileDataAccess依赖的真实Run sources；same records实例已兼容多个ToolLedger。A按持久原action/完整ctx选实际approval service/Reader，结果与账务来源分开。
 SQL、实际Decimal/JSON/text计算、临时目录Windows文件句柄读取、真实Ed25519签名/原SQLjournal、独立恢复子进程实际运行；Agent/角色/配置flag/provider决定、文件bridge/root/device来源和批准/拒绝决定是明确controlled fixtures，未注册为产品能力。**真实native本人授权/installed生产双进程整链、本轮生产Agent/model/Artifact/Task验收均0，仍待A/D来源和接线。** 本轮未开放flags/网络/目录/exec或改模型，没有新增公共DTO/依赖。
 原效果/费用/attempt及full-file/fragment/material hash语义不变。原fixture清理自身随机主体，测试子进程退出；C独立DB保留供后续验证，没有C常驻executor/重试任务。本包MS-T2i-b完成后停止，不自动扩MS-T2或下一包；A负责审阅合入、公共接线冲突和整链验收。
+
+
+## MS-E1 最终组件交接：独立离线质量门槛（2026-10-17）
+
+**M1–M3组件/受控计算交付；M4实际候选/基线和真正人工核对未提供，实际质量实测pending。** 不把harness通过计为真实模型、事实质量、本人体验或P1-15/H02接受。本包后停止，不据A6 Tool时间提案扩大原Tool职责。
+
+### 原分支、准确基线与阶段
+
+- 原worktree **E:/UAW/.worktrees/tool**，实际分支 **dev/tool**，git worktree list核对，旧干净HEAD **730a419c7b6558d239a701e3206b48a9cb353043**。UI另一cwd未用于开发，未新建替代目录。
+- fetch origin --tags、只读origin/integration正式DISPATCH与ls-remote，核对共同 **ms-i2m-start / 1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe**；先快进此tag并HEAD一致，再快进固定 **ms-i2m-a6-source / b16c69a92d81124c00fb859ce8123748f56df054** 并HEAD一致。无浮动integration/reset/rebase/stash/history rewrite。原MS-T2i-b源码/handoff和全部失败回执保留。
+- A6接线文档不在其源码tag中，从origin/integration后续文档提交只读消费；机器索引记准确remote_documentation_commit，没有为取元数据合浮动分支。已读MS-I2m分包/AD合同C章节、session/C、support.evaluation、H01-I02/I03与H02计划。
+- **M1源码49d3fbfeaa1ec5a3aedcb1becccd1d5fa4683eee** / 阶段schema样例说明 **5096a2c5816532efff729c612c3004a5723bf982**；阶段后继续M2/M3未等待新包。
+- M2/M3题集/统计 **36507dda7fc03d59a465c2696928b5395ed1fc27**；评分器指纹/初版受控报告 **55c3e99b28026706846ef13febaaf1f832170fdd**；**最终源码c8dba72e3a5dc707911c841e3cf6c3bf781d9ac3**。
+- 最终接线/算法/最终受控报告文档 **e43ca4fe78eabb3b46b810ba57ada192b463e2e3**；原文一手短节选指纹补充 **9758073403054408e752d9a36961c7add892fbc8**。独立handoff提交随后产生，实际SHA写最终回报/ignored delivery。
+- 旧handoff字节 **106194**、SHA256 **526fa191598dafde30e4060457fbebe3326012ceaeea167a5cef6cd291336df6** 为精确保留前缀，本节只追加。
+
+### 修改文件和公开离线入口
+
+仅新增/修改本包允许的 `src/uaw/evaluation/`（__init__/contracts/io/reader/metrics/runner）、`ops/evaluate_conversation.py`、`tests/unit/evaluation/`、`tests/fixtures/evaluation/`、`docs/implementation/evaluation/`、C requests及此handoff。没有改原Tool/Runner/Run、Agent/Context、composition/API、公共DTO/锁/依赖/flags、其他worker目录。
+
+```text
+python ops/evaluate_conversation.py --suite <suite.json> --manifest <manifest.json>
+  --observations <observations.jsonl> --reviews <reviews.jsonl> --output <new-report.json>
+```
+
+函数：`evaluate_files(suite:Path, manifest:Path, observations:Path, reviews:Path)->Report`。退出0 passed / 1 blocked / 2输入或IO拒绝 / 3 incomplete。缺实际文件拒绝；观测可为空但报告incomplete，不填零错误。报告exclusive硬链接原子发布；已有路径不覆盖，真实双CLI并发单赢家，无后台任务，无产品装配，关闭无需回收Runtime资源。
+
+v1类型源 `src/uaw/evaluation/contracts.py`；精确5类schema在 `docs/implementation/evaluation/MS-E1-schemas.json`，M1冻结后未改，最终测试守护。Suite/Manifest/Observation/Review/Report是独立离线私有协议，不扩共享HTTP/Runtime DTO。
+Suite保存原prompt/rubric/source、版本及revision/holdout，明确needs_human_review/human_verification；Manifest固定源码/dirty/prompt/environment/完整model-provider-config/suite hash、实验前Policy、全部attempt库存/Selection；Observation保存成功/失败/取消/unknown、每次phase/action输出/Reviewer target、UTC主动/墙钟及完整Usage；Review精确绑定Case/Output/version/evidence，区分human_evidence_review/model_suggestion/controlled_test。未知维度/金额显式null，pending不是确认账单。
+Report给原四文件字节hash、完整Manifest、每attempt摘要、验证/隔离费用、独立率/分母/N/A、全部尝试时段/费用、可比性/delta和门槛原因。另在既有NamedHash元数据添加 **evaluator_source**：实际本包六源文件+Python/Pydantic版本指纹，前后变化拒绝；不让候选自报评分器，不改M1字段。读取的是本包安装代码，不展开输入URL/ref/附件。
+
+### 策略、模型边界与样本
+
+语义真值只来自正确绑定且证据已审的独立review；不对输出关键词/TCC词典打分，modelpassed不是真值。controlled_test只证明算术/逻辑，各率provisional；human声明只校验绑定，不认证人的行为，Report明确offline_assertions_only_not_identity_authentication。C未产生human_verified样本或真正human_evidence_review。
+答案错误、Reviewer漏判、无谓阻断、无证据执行、保留要求丢失各自分子/分母；Reviewer缺失/failed/N/A或没有错误样本，漏判分母0就N/A，不当0漏判。显式Reviewer引用缺失/错phase/case/输出另报绑定问题。Policy实验前明确reviewer_required/baseline_required；不强加每条普通回复一次自评。
+关键Case的独立错误/无证据执行/丢要求不能靠宽松非关键阈值或漏critical标签放行；已知错误blocked，未审等原因仍保留。阈值精确分子/分母比较，不用舍入展示值；矛盾接受标签不制造接受数。零可接受输出/必需分母、资料/manifest/输出hash失配和缺完整观测为incomplete/N/A。
+全部失败/重试/Reviewer/tool/preparation都保留；确认/pending/未知估计按币种分记，损坏绑定的费用单列unverified_costs，不隐藏不计零。局部Decimal **64个有效数字** 累计，未改全局环境。接受分母0或账单未全确认，单位成本为null。attempt墙钟和不等于用户总等待，实验墙钟另记实际manifest区间。
+基线同suite/environment/model/provenance且结构性来源完整才可比；不可比无delta并单独阻止通过。旧基线语义错误保留在其报告而不污染新候选；差异含质量/时间/失败重试/已知用量/逐币种已知费用，N/A差异仍null。所有统计都是离线声明分析，不授权任何执行或更改固定模型。
+
+**16条候选，revision/holdout各8**：办公3、学术2、普通技术4、缺材料2、合理歧义3、纠正2；全部needs_human_review。本开发代理草拟的synthetic材料，不是真实订单/论文/用户Run，不表示人类已审。TCC/ZooKeeper旧错误纳入但不只测该题。
+Apache Seata TCC v2.6和ZooKeeper 3.9 current一手资料已实际打开，具体section/段落、2026-10-17T02:42:49Z、中文摘要hash在每条Evidence；另 `MS-E1-primary-source-checks.json` 保存准确原文短节选及其UTF8 hash。摘要/节选hash不是整页HTML或人工评分证明，未审不能正式通过；旧suite版本不覆盖。
+
+### 实际验证、失败/修复和节点去重
+
+原uv.lock `uv sync --frozen --extra agent-engine --link-mode copy`，自身.cache/uv、91包；未安装新库。SQL **N/A，不需要/未运行**；本轮真实模型调用/实际候选比较/真人样本核对/新增真实费用均0，未读A凭据/本人会话或重放写操作。
+
+最终命令：`.venv/Scripts/python.exe -m pytest tests/unit/evaluation --junitxml=tests/.artifacts/C/MS-E1/final-evaluation-v2.xml`，**72不同离线节点全部通过，0 failure/error/skip，3.43秒**。覆盖实际CLI子进程/并发发布、重复/大小/非有限数/严格类型、schema稳定、16题待审、错源/输出/版本/review/hash、注入、原尝试/失败/重试全部成本、独立Reviewer漏判/N/A、关键阻断、精确阈值、大额小数和版本隔离。没有跑历史Tool/全仓，不叠加阶段4/21/5/66/67/69/70节点。
+ruff/format **16个文件** 通过，mypy `src/uaw/evaluation ops/evaluate_conversation.py` **7源码/脚本** 通过；git diff --check和允许目录/原模块/锁/冻结schema保护检查通过。
+
+回执均ignored `tests/.artifacts/C/MS-E1`，**verification-index.json/build_index.py**逐节点和全部XML SHA256可复查。全部 **26条原failure/error** 保留：18条预期TDD红测试、8条整批setup/teardown/回归记录；不把它们当实际模型失败。
+预期红测试包括缺新模块/CLI、损坏资料进入语义分母、不可比/关键阻断、旧错污染新候选、矛盾接受、累计精度/展示舍入、critical绕过、评分器指纹缺失、Reviewer选择引用。逐项修复后实跑，未私改模型输出。
+整批两次各1失败/3error：pytest把2MiB bytes参数自动变成nodeid，超过Windows32767环境变量上限并污染后续teardown；还有候选隔离遗漏unknown_manifest原因。修有界ids/诊断隔离后全绿。第一次参数名补丁断言失败而命令继续旧验证，原重复失败保留；随后加guard并精确修改。仅停止两个已核实在扫描本包巨型日志的C Get-Content进程，pytest当时已完成；无其他worker进程被停。初始10条mypy及格式提示也保留。
+
+实际CLI：
+
+- interface构造单例退出3/incomplete，pending0.02 USD示例、无Reviewer N/A；旧报告不覆盖。
+- 16题零观测/review最终退出3/incomplete，`candidates-unrun-final.json`，不是0错通过。
+- 三attempt受控错误/重试/Reviewer passed示例退出1/blocked，最终 `docs/implementation/evaluation/MS-E1-controlled-report-final.json`。确认0.07/pending0.02 **只是构造金额**，不是真实费用；全attempt=3、failure=1、retry=1，主动1700/墙钟和3000/实验3000ms，错误与漏判各1/1/provisional。旧 `MS-E1-controlled-report.json` 原字节保留，评分器指纹区分来源。
+
+### A接线、M4 pending 与停止
+
+精确消费：[C requests/MS-E1-stage-interface.md]及[MS-E1-final-wiring.md]；完整算法/命令/分母/限制在 `docs/implementation/evaluation/MS-E1.md`，候选/一手核对/两版受控报告同目录。
+A从真实owning记录导出固定v1四文件，先冻结suite/Policy/模型与候选源码；保留所有attempt、失败/重试、实际用量与pending，独立review完整绑定原输出/Case/evidence，不复制模型passed造人审。CLI只消费离线数据，**不替A导出私有记录、不使用A密钥、不调用模型**。新报告必须新路径，人工事实/来源语义需真正人员核对。
+当前没有A准确实际候选/历史基线与真实review输入，M4 **pending**。公开H01-I02/I03错误摘要只用作反例设计，不充完整实际观测；A6受控HTTP测试也不是实际DeepSeek质量数据。缺源不影响已交harness组件，但不生成“人工已审”或“实测通过”。A可现在审M1–M3，真实导出到达后再按固定输入比较。
+本包临时evaluation职责到此交付，保持原Tool/Runner成果、原失败/本人历史/pending费用/last_full/flags，不接受A6时间提案为扩Tool授权，不自动进入下一包。独立handoff与源码分开提交；包后干净停止，A逐阶段审阅合入/公共装配和真实质量/本人H02验收。A会读本会话，无需跨会话回信。
