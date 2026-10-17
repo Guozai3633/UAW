@@ -1,6 +1,6 @@
 """Deterministic offline evaluation; hashes are bindings, never semantic graders."""
 
-from decimal import Decimal
+from decimal import Decimal, localcontext
 from pathlib import Path
 from typing import Literal
 
@@ -89,6 +89,7 @@ def _candidate(bundle: Bundle, manifest: CandidateManifest, issues: list[Issue])
             or review.output_sha256 != digest(row.output.wire())
             or review.case_sha256 != digest(case.wire())
             or review.evidence_sha256 != tuple(e.sha256 for e in case.evidence)
+            or any(e.sha256 != text_hash(e.text) for e in case.evidence)
             or utc(review.reviewed_at) < utc(row.finished_at)
         ):
             issues.append(
@@ -103,6 +104,18 @@ def _candidate(bundle: Bundle, manifest: CandidateManifest, issues: list[Issue])
                 _issue(
                     "review_evidence_not_reviewed", manifest.id, review.case_id, review.attempt_id
                 )
+            )
+            continue
+        labels = review.labels
+        if labels.acceptable is True and not (
+            labels.answer_correct is True
+            and labels.unnecessary_block is False
+            and labels.unsupported_execution is False
+            and labels.requirements_preserved is True
+            and not labels.critical_error
+        ):
+            issues.append(
+                _issue("inconsistent_review_labels", manifest.id, review.case_id, review.attempt_id)
             )
             continue
         previous = reviews.get(review.attempt_id)
@@ -148,7 +161,14 @@ def _candidate(bundle: Bundle, manifest: CandidateManifest, issues: list[Issue])
                 if value is not None:
                     values[name].append(value)
             acceptable += review.labels.acceptable is True
-            if review.labels.critical_error:
+            if review.labels.critical_error or (
+                case.rubric.critical
+                and (
+                    review.labels.answer_correct is False
+                    or review.labels.unsupported_execution is True
+                    or review.labels.requirements_preserved is False
+                )
+            ):
                 issues.append(_issue("critical_answer_error", manifest.id, case.id, row.attempt_id))
         reviewer = verified.get(selection.reviewer_attempt_id or "") if selection else None
         actual = (
@@ -239,6 +259,50 @@ def _candidate(bundle: Bundle, manifest: CandidateManifest, issues: list[Issue])
     )
 
 
+def _differences(candidate: CandidateReport, baseline: CandidateReport) -> dict[str, str | None]:
+    with localcontext() as calculation:
+        calculation.prec = 64
+        result: dict[str, str | None] = {}
+        for name in (
+            "active_ms",
+            "experiment_wall_ms",
+            "attempt_wall_ms_sum",
+            "attempt_count",
+            "failure_count",
+            "retry_count",
+            "acceptable_output_count",
+        ):
+            result[name] = str(getattr(candidate, name) - getattr(baseline, name))
+        for name in (
+            "answer_error",
+            "reviewer_miss",
+            "unnecessary_block",
+            "unsupported_execution",
+            "requirements_lost",
+        ):
+            left, right = getattr(candidate, name).value, getattr(baseline, name).value
+            result[name] = (
+                str(Decimal(left) - Decimal(right))
+                if left is not None and right is not None
+                else None
+            )
+        for name in ("input_tokens", "output_tokens", "model_calls", "tool_calls"):
+            left_q, right_q = getattr(candidate, name), getattr(baseline, name)
+            result[name] = (
+                str(left_q.known_total - right_q.known_total)
+                if left_q.unknown_attempts == right_q.unknown_attempts == 0
+                else None
+            )
+        for currency in sorted({c.currency for c in (*candidate.costs, *baseline.costs)}):
+            left_c = next((c for c in candidate.costs if c.currency == currency), None)
+            right_c = next((c for c in baseline.costs if c.currency == currency), None)
+            for name in ("confirmed", "pending", "unknown_estimate"):
+                result[currency + "_known_" + name] = str(
+                    Decimal(getattr(left_c, name, "0")) - Decimal(getattr(right_c, name, "0"))
+                )
+        return result
+
+
 def evaluate(bundle: Bundle) -> Report:
     issues = []
     for case in bundle.suite.cases:
@@ -259,11 +323,17 @@ def evaluate(bundle: Bundle) -> Report:
     baseline = (
         _candidate(bundle, bundle.manifest.baseline, issues) if bundle.manifest.baseline else None
     )
-    reasons = {i.code for i in issues}
+    reasons = {
+        i.code
+        for i in issues
+        if i.manifest_id in (None, bundle.manifest.candidate.id) or i.code == "unknown_manifest"
+    }
     if bundle.manifest.candidate.provenance != "actual_candidate":
         reasons.add("controlled_fixture_not_release_evidence")
     if candidate.human_reviewed_cases != len(bundle.suite.cases):
         reasons.add("independent_human_review_incomplete")
+    if candidate.acceptable_output_count == 0:
+        reasons.add("no_acceptable_output")
     if candidate.failure_count or candidate.cancelled_count or candidate.unknown_count:
         # Keep all failures visible. Retries may produce a valid selected answer;
         # errors remain measured and charged rather than automatically erased.
@@ -288,7 +358,7 @@ def evaluate(bundle: Bundle) -> Report:
         if measure.value is None:
             if name != "reviewer_miss" or bundle.manifest.policy.reviewer_required:
                 reasons.add(name + "_na")
-        elif Decimal(measure.value) > Decimal(threshold):
+        elif Decimal(measure.numerator) > Decimal(threshold) * measure.denominator:
             exceeded.append(name + "_threshold_exceeded")
     if candidate.requirements_lost.value is None:
         reasons.add("requirements_lost_na")
@@ -300,7 +370,7 @@ def evaluate(bundle: Bundle) -> Report:
         exceeded.append("critical_answer_error")
     incomplete = reasons - {"attempt_failures_retained", "critical_answer_error"}
     status: Literal["passed", "blocked", "incomplete"] = (
-        "incomplete" if incomplete else "blocked" if exceeded else "passed"
+        "blocked" if exceeded else "incomplete" if incomplete else "passed"
     )
     if exceeded:
         reasons.update(exceeded)
@@ -315,19 +385,18 @@ def evaluate(bundle: Bundle) -> Report:
                 mismatch.append(name + "_differs")
         if left.dirty or right.dirty:
             mismatch.append("dirty_source")
-        if issues:
+        if any(
+            i.code not in {"sample_needs_human_review", "critical_answer_error"} for i in issues
+        ):
             mismatch.append("incomplete_evidence")
+        if mismatch:
+            reasons.add("incomparable_baseline")
+            if status != "blocked":
+                status = "incomplete"
         comparison = Comparison(
             status="incomparable" if mismatch else "comparable",
             reasons=tuple(sorted(set(mismatch))),
-            candidate_minus_baseline={}
-            if mismatch
-            else {
-                "active_ms": str(candidate.active_ms - baseline.active_ms),
-                "experiment_wall_ms": str(
-                    candidate.experiment_wall_ms - baseline.experiment_wall_ms
-                ),
-            },
+            candidate_minus_baseline={} if mismatch else _differences(candidate, baseline),
         )
     return Report(
         schema_version="ms-e1.v1",

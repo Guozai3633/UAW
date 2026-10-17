@@ -2,7 +2,7 @@
 
 from collections import defaultdict
 from datetime import datetime, timedelta
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import ROUND_HALF_UP, Decimal, localcontext
 from typing import Literal
 
 from uaw.evaluation.contracts import Cost, Observation, Quantity, Rate
@@ -51,41 +51,43 @@ def quantity(rows: tuple[Observation, ...], name: str) -> Quantity:
 
 
 def costs(rows: tuple[Observation, ...], acceptable: int) -> tuple[Cost, ...]:
-    currencies: dict[str, list[Observation]] = defaultdict(list)
-    for row in rows:
-        currencies[row.usage.currency].append(row)
-    result = []
-    for currency, group in sorted(currencies.items()):
-        totals = {
-            state: sum(
-                (
-                    Decimal(r.usage.money)
-                    for r in group
-                    if r.usage.billing_state == state and r.usage.money is not None
-                ),
-                Decimal(0),
-            )
-            for state in ("confirmed", "pending", "unknown")
-        }
-        complete = all(
-            r.usage.billing_state == "confirmed" and r.usage.money is not None for r in group
-        )
-        result.append(
-            Cost(
-                currency=currency,
-                confirmed=decimal_text(totals["confirmed"]),
-                pending=decimal_text(totals["pending"]),
-                unknown_estimate=decimal_text(totals["unknown"]),
-                unknown_money_attempts=sum(r.usage.money is None for r in group),
-                pending_attempts=sum(r.usage.billing_state == "pending" for r in group),
-                unknown_billing_attempts=sum(r.usage.billing_state == "unknown" for r in group),
-                confirmed_per_acceptable_output=decimal_text(
-                    (totals["confirmed"] / acceptable).quantize(
-                        Decimal("0.00000001"), rounding=ROUND_HALF_UP
-                    )
+    with localcontext() as calculation:
+        calculation.prec = 64
+        currencies: dict[str, list[Observation]] = defaultdict(list)
+        for row in rows:
+            currencies[row.usage.currency].append(row)
+        result = []
+        for currency, group in sorted(currencies.items()):
+            totals = {
+                state: sum(
+                    (
+                        Decimal(r.usage.money)
+                        for r in group
+                        if r.usage.billing_state == state and r.usage.money is not None
+                    ),
+                    Decimal(0),
                 )
-                if acceptable and complete
-                else None,
+                for state in ("confirmed", "pending", "unknown")
+            }
+            complete = all(
+                r.usage.billing_state == "confirmed" and r.usage.money is not None for r in group
             )
-        )
-    return tuple(result)
+            result.append(
+                Cost(
+                    currency=currency,
+                    confirmed=decimal_text(totals["confirmed"]),
+                    pending=decimal_text(totals["pending"]),
+                    unknown_estimate=decimal_text(totals["unknown"]),
+                    unknown_money_attempts=sum(r.usage.money is None for r in group),
+                    pending_attempts=sum(r.usage.billing_state == "pending" for r in group),
+                    unknown_billing_attempts=sum(r.usage.billing_state == "unknown" for r in group),
+                    confirmed_per_acceptable_output=decimal_text(
+                        (totals["confirmed"] / acceptable).quantize(
+                            Decimal("0.00000001"), rounding=ROUND_HALF_UP
+                        )
+                    )
+                    if acceptable and complete
+                    else None,
+                )
+            )
+        return tuple(result)

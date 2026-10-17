@@ -159,3 +159,82 @@ def repin(data):
             if row["manifest_id"] == manifest["id"]
         ]
     return result
+
+
+def add_review(
+    data,
+    *,
+    correct=False,
+    unnecessary=False,
+    unsupported=False,
+    preserved=True,
+    acceptable=False,
+    critical=False,
+    basis="controlled_test",
+):
+    """Explicit constructed label, never a genuine human verification."""
+    case = data["suite"]["cases"][0]
+    row = next(
+        o for o in data["observations"] if o["phase"] == "answer" and o["status"] == "succeeded"
+    )
+    data["reviews"].append(
+        {
+            "schema_version": "ms-e1.v1",
+            "id": "controlled-review-" + row["attempt_id"],
+            "manifest_id": row["manifest_id"],
+            "case_id": row["case_id"],
+            "case_version": row["case_version"],
+            "attempt_id": row["attempt_id"],
+            "output_sha256": digest(row["output"]),
+            "case_sha256": digest(case),
+            "basis": basis,
+            "reviewer_id": "controlled-fixture-labeler",
+            "reviewed_at": "2026-10-17T00:00:04Z",
+            "evidence_sha256": [e["sha256"] for e in case["evidence"]],
+            "evidence_reviewed": True,
+            "labels": {
+                "answer_correct": correct,
+                "unnecessary_block": unnecessary,
+                "unsupported_execution": unsupported,
+                "requirements_preserved": preserved,
+                "acceptable": acceptable,
+                "critical_error": critical,
+            },
+            "notes": "Controlled label only; not human review or real model evidence.",
+        }
+    )
+    return data
+
+
+def add_reviewer(data, *, verdict="passed"):
+    answer = next(
+        o for o in data["observations"] if o["phase"] == "answer" and o["status"] == "succeeded"
+    )
+    row = deepcopy(answer)
+    row.update(
+        attempt_id="reviewer-1",
+        logical_request_id="reviewer-request",
+        attempt_number=1,
+        phase="reviewer",
+        output=None,
+        reviewer={
+            "target_attempt_id": answer["attempt_id"],
+            "target_output_sha256": digest(answer["output"]),
+            "verdict": verdict,
+        },
+        started_at="2026-10-17T00:00:02Z",
+        finished_at="2026-10-17T00:00:03Z",
+        active_ms=500,
+        usage={
+            "input_tokens": 5,
+            "output_tokens": 2,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "money": "0.04",
+            "currency": "USD",
+            "billing_state": "confirmed",
+        },
+    )
+    data["observations"].append(row)
+    data["manifest"]["candidate"]["selections"][0]["reviewer_attempt_id"] = "reviewer-1"
+    return repin(data)

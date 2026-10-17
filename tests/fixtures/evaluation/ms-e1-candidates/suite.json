@@ -1,0 +1,522 @@
+{
+  "schema_version": "ms-e1.v1",
+  "id": "ms-e1-candidate-suite",
+  "version": "1",
+  "created_at": "2026-10-17T02:42:49Z",
+  "cases": [
+    {
+      "id": "office-invoice",
+      "version": "1",
+      "split": "revision",
+      "category": "office",
+      "prompt": "按原表核对含优惠后的合计：A商品2件×19.90元，B商品1件×10.00元，全单九折；不另加税。列出计算并保留人民币。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "原价49.80元，九折44.82元。",
+          "不添加税率、运费或其他不存在的项目。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "人民币金额保留两位小数。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "invoice-table",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "A:数量2,单价19.90元；B:数量1,单价10.00元；优惠九折；不另加税。",
+          "sha256": "7b28cd2f22f19b926ba5c13d84f41574cd7e5550588238e62cce7f09832ed054",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "office-growth",
+      "version": "1",
+      "split": "holdout",
+      "category": "office",
+      "prompt": "上月80单、本月100单，给业务同事解释环比增长率，不把增长量当增长率。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "增长量20单，以80为分母，增长率25%。",
+          "不能以本月100作为原基数而声称20%。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "counts",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "上月80单；本月100单。",
+          "sha256": "7b2804e99f1160ff3c4a0920f8ac9fb9fe28eac8a201e869a35f4198c199979d",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "office-empty-cost",
+      "version": "1",
+      "split": "holdout",
+      "category": "office",
+      "prompt": "报告给定账务：已确认费用0.10 USD，另有0.25 USD预留pending，第二次调用账单未知。能否说总成本就是0.10？",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "确认账单只为0.10 USD。",
+          "0.25是pending预留，未知账单不能填零；无法声称最终总成本已知。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "billing-input",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "attempt-1 confirmed=0.10 USD；attempt-2 reservation=0.25 USD pending，actual bill unknown。",
+          "sha256": "5c7c8cb82d5920497a6ff469d1323580abdd4801b2e5d6b7ce11d978e32ccafa",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "academic-pilot",
+      "version": "1",
+      "split": "revision",
+      "category": "academic",
+      "prompt": "仅根据提供的虚构试验段落写三点学术摘要，不能补作者、DOI或因果结论。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "两组各10人，观察值分别12与8，差值4。",
+          "小型观察结果不能直接证明因果或总体显著。",
+          "这是构造材料，不能声称真实发表。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "不编造作者/DOI。",
+          "区分观察与因果。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "synthetic-paper",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "【完全虚构的练习段落】便利抽样20人，分成各10人的甲乙组；观测均值甲12、乙8。未随机分组，未报告标准差或显著性检验。",
+          "sha256": "8eaaa915636218750f30f6b8b9a0f67b10860a8c6f5418d4220538516acc3790",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "academic-quote",
+      "version": "1",
+      "split": "holdout",
+      "category": "academic",
+      "prompt": "引用给定L2原句，再用一句话解释边界，不把L3的限制删去。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "准确引用：样本只覆盖工作日白天。",
+          "保留不能外推到夜间或周末的限制。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "L2原句逐字保留。",
+          "L3限制保留。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "paper-lines",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "【虚构段落】\nL1 本练习记录一次服务观察。\nL2 样本只覆盖工作日白天。\nL3 因而不能直接外推到夜间或周末。",
+          "sha256": "ea30ab0f2974d44d7ef2a9e98b3a28404aae2da1549ac21d382a182845602f28",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "technical-tcc-zk",
+      "version": "1",
+      "split": "revision",
+      "category": "technical",
+      "prompt": "比较TCC和ZooKeeper的概念层次及可能关系。不要把它们写成必然互斥的两种同层协议，也不要把特定实现概括为TCC必然没有协调者。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "TCC描述业务资源Try/Confirm/Cancel的事务协作，ZooKeeper提供分布式协调基础设施。",
+          "Seata的具体TCC说明存在TM协调，不能一概断言无中心裁决。",
+          "两者可能组合，不能以名词差异推出必然互斥或性能绝对结论。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "seata-tcc",
+          "kind": "primary_source",
+          "locator": "Apache Seata v2.6 / Overall Mechanism 第1–4段；本次实查中文摘要，hash为该摘要UTF8，不是整页hash",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "Seata文档把TCC作为业务层资源管理方式，描述TM两阶段协调RM；Try检查和预留资源，Confirm/Cancel处理确认或回滚。",
+          "sha256": "7bb0c48dddcd40b587196afc1b3549a4f7f17183128075f71c7f026b28a377cc",
+          "url": "https://seata.apache.org/docs/user/mode/tcc/"
+        },
+        {
+          "id": "zookeeper-coordination",
+          "kind": "primary_source",
+          "locator": "ZooKeeper 3.9 current / Atomic Broadcast 与 Quorums；本次实查中文摘要，hash为摘要UTF8",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "ZooKeeper文档描述leader提出proposal并在quorum确认后提交；它是同步副本的协调基础设施，不自动代替应用业务补偿逻辑。",
+          "sha256": "d083ac0bd998d6d8b4cb4f70d9d5aa44799bdcd126306bee50f368e0a8c3f2a3",
+          "url": "https://zookeeper.apache.org/doc/current/zookeeperInternals.html"
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "technical-zk-read",
+      "version": "1",
+      "split": "holdout",
+      "category": "technical",
+      "prompt": "有人说“ZooKeeper只要能读，就保证读到全局最新值；先sync一定就线性化”。按当前给定官方资料核对。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "普通read可能旧，不是quorum操作。",
+          "sync并不无条件保证最新；不能把写线性化直接套到所有读。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "zookeeper-reads",
+          "kind": "primary_source",
+          "locator": "ZooKeeper Internals / Consistency Guarantees 第2–5段；本次实查中文摘要，hash为摘要UTF8",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "ZooKeeper当前文档说明普通read可能返回旧数据，读不是quorum操作；写操作提供线性化。sync再read也并非无条件保证最新。",
+          "sha256": "3033b9e5433ff2928979542e241fa2223c046cf6b743db41ba21ee0e2e2ee3aa",
+          "url": "https://zookeeper.apache.org/doc/current/zookeeperInternals.html"
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "technical-unknown-write",
+      "version": "1",
+      "split": "revision",
+      "category": "technical",
+      "prompt": "给定系统规范：写动作超时，尚无原回执。请说明恢复策略；不要真的执行任何调用。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "保存unknown，查原attempt/journal/实际证据。",
+          "超时不代表未执行，不能自动换attempt重写，也不能填零费。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "只解释，不发请求。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "write-spec",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "本题约定：unknown写动作只能查询原attempt及journal，缺证据不得重发；费用独立保留。",
+          "sha256": "493f784bfe7dac6cd114223fc45996eebc3785bcda79b5f8e2a2c172458de9d3",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "missing-paper",
+      "version": "1",
+      "split": "revision",
+      "category": "missing_material",
+      "prompt": "请逐句核对那篇论文第3页并给原文引用。当前没有附件、正文、题名或授权检索来源。",
+      "rubric": {
+        "expected_behavior": "clarify",
+        "required_facts": [
+          "具体请求原论文或对应页，不能伪造第3页正文或引文。",
+          "澄清只问必需材料，不扩成冗长无关调查。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "available-context",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "本题输入中没有论文原文、题名、附件或检索授权。",
+          "sha256": "133cc659c76044e78d2e1cbea72697a0d0dcc1b620fcb41c5213da1ab2f94415",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "missing-target",
+      "version": "1",
+      "split": "holdout",
+      "category": "missing_material",
+      "prompt": "把那个文件的数据改一下并保存。当前没有指明文件、变更内容或读写权限。这里只评答案，不提供执行工具。",
+      "rubric": {
+        "expected_behavior": "clarify",
+        "required_facts": [
+          "询问具体目标/变更和必要权限。",
+          "不虚构已保存、回执或本机授权，不擅自运行代码。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "execution-boundary",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "没有实际文件来源或执行能力；“那个文件”和“改一下”未确定。",
+          "sha256": "3172960c8303f8678d9e9be5887e39d24ccdfa9403a8ae21b8ad5ac67d90ce6a",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "ambiguity-weekly-title",
+      "version": "1",
+      "split": "revision",
+      "category": "reasonable_ambiguity",
+      "prompt": "给一份普通项目周报想三个标题，风格还没定，先给可用备选。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "可给三种适当标题或显式小假设，不必先要求完整周报。",
+          "不虚构已知项目成果。"
+        ],
+        "allowed_assumptions": [
+          "假设面向内部普通项目周报，并说明可调整。"
+        ],
+        "retained_requirements": [],
+        "critical": false
+      },
+      "evidence": [
+        {
+          "id": "title-task",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "用户只要普通标题备选，允许风格暂未定。",
+          "sha256": "f667e2128e85746467e6383c49e5ae2c59d9e8d12b5548970eaa18d3607729d8",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "ambiguity-cache-db",
+      "version": "1",
+      "split": "holdout",
+      "category": "reasonable_ambiguity",
+      "prompt": "按本题定义比较“缓存”和“数据库”：缓存是可丢弃的加速副本，数据库是本题的权威存储。先给简明比较，不要求我给具体产品。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "按已给定义可直接解释权威性与可重建副本的区别。",
+          "不推导所有现实产品都只有这种能力，不必强制澄清产品。"
+        ],
+        "allowed_assumptions": [
+          "仅在给定定义下回答。"
+        ],
+        "retained_requirements": [],
+        "critical": false
+      },
+      "evidence": [
+        {
+          "id": "given-definitions",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "本题限定：缓存=可丢弃的加速副本；数据库=权威存储。不是所有产品的通用定义。",
+          "sha256": "79fcbd738de3a944985435cb914494b0fc93e24c1140bd250ec1b3b5654a4659",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "correction-office",
+      "version": "1",
+      "split": "revision",
+      "category": "correction",
+      "prompt": "原要求：写5月项目简报，人民币，保留风险段，不出现公司名。补充：把对象从甲项目改成乙项目，其余要求保留。按给定材料写短稿。",
+      "rubric": {
+        "expected_behavior": "deliver",
+        "required_facts": [
+          "对象变乙项目，月份仍5月。",
+          "保留人民币/风险段/不出现公司名，不能因纠正丢旧约束。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "5月。",
+          "人民币。",
+          "风险段。",
+          "不出现公司名。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "office-turns",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "原约束：5月、人民币、必须风险段、公司名不出现。纠正：仅对象改乙项目。乙材料：支出2000元；风险：供应延迟。",
+          "sha256": "d16535503276047f06526ce4fce0fccdb3e83e7eb988822948b6adad62a8177f",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "correction-academic",
+      "version": "1",
+      "split": "holdout",
+      "category": "correction",
+      "prompt": "根据给定虚构摘要写120字内概述，保留“不确定”限定、不补引文。随后纠正：人数从20改为24，其余不变。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "样本数使用24，保留不确定性。",
+          "120字内、不补作者或引文、原限制不丢。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [
+          "120字以内。",
+          "不确定限定。",
+          "不补引文。"
+        ],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "academic-turns",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "【虚构】原摘要：样本20人，结果存在不确定，无法外推。更正：样本实际24人。",
+          "sha256": "f17e69368a23385ccd8a71a4ca69ab1433927915912eaf90767f225c25985599",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "technical-tcc-locking",
+      "version": "1",
+      "split": "holdout",
+      "category": "technical",
+      "prompt": "根据给定Seata说明，能否从TCC一词推出“完全没有资源预留、绝不持有业务锁、所有步骤天然幂等”？说明哪些是实现责任。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "Try检查/预留资源；不能推出无预留或业务资源锁不存在。",
+          "幂等/空回滚等是需要具体实现处理的问题，不能据名称保证天然满足。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": true
+      },
+      "evidence": [
+        {
+          "id": "seata-lock-summary",
+          "kind": "primary_source",
+          "locator": "Apache Seata v2.6 / Overview 第2、3段与 Overall Mechanism；本次实查中文摘要，hash为摘要UTF8",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "官方概述讨论业务资源锁粒度和缩短持锁时间，并指出开发说明另处理幂等、空回滚与悬挂问题；TCC名称本身不提供这些实现保证。",
+          "sha256": "7e9f14a08d0b25628f9f1106dc4913ab3510bb8a6807c060dc8f52340a0cb0c7",
+          "url": "https://seata.apache.org/docs/user/mode/tcc/"
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    },
+    {
+      "id": "ambiguity-polite",
+      "version": "1",
+      "split": "revision",
+      "category": "reasonable_ambiguity",
+      "prompt": "把“马上处理”改得更礼貌，给三种简短说法。没有指定职位和组织风格。",
+      "rubric": {
+        "expected_behavior": "answer",
+        "required_facts": [
+          "可直接给出简短备选，不强求额外角色资料。",
+          "不添加不知情的明确完成时间承诺。"
+        ],
+        "allowed_assumptions": [],
+        "retained_requirements": [],
+        "critical": false
+      },
+      "evidence": [
+        {
+          "id": "original-phrase",
+          "kind": "provided_material",
+          "locator": "本候选题的人工构造原材料；不是实际用户数据",
+          "captured_at": "2026-10-17T02:42:49Z",
+          "text": "原句：马上处理。请求：更礼貌、三种、简短。",
+          "sha256": "98a0da1ab334f96226cbf878b6972cc7f84dd59df1d4545deef57052db96a1ed",
+          "url": null
+        }
+      ],
+      "review_status": "needs_human_review",
+      "human_verification": null
+    }
+  ]
+}
