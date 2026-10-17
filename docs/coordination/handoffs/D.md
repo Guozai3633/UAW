@@ -759,3 +759,13 @@ A具体验证请求已交，固定A3源码5fbfa752f6d83a3e663b98b6b002eb8a481e8b
 - 失败全保留：red缺实现、fixture未走admit/RefKind/决策namespace/模型策略字段、D开放问题读图/终态stop、selector asyncio subprocess限制（改线程内隐藏Popen）、新增fixture accounting主键/漏导入、pytest保留参数、GBK脚本读取及mypy -c/初轮类型/格式。无删除检查/延时/跳过或反复重跑固定外部失败；原8单元/41阶段不与最终54相加。
 - 精确清理：最终和新增阶段跟踪50个随机fixture principal及其platform（100个owner ID），uaw_records/record_versions/requests/outbox/consumer_receipts均0行；只查自己的D55435，无truncate/他库。此前未跟踪批次依赖原fixture finally且无teardown错误，不冒称独立统计。A模型fixture随机Windows provider凭据沿原finally delete，无teardown错误；D没有provision Runner keys/pipe。3个自有隐藏SQL子进程已退出，CIM确认无本轮pytest/child残留，不打印私钥/DB URL或操作用户凭据/目录。
 - 独立最终handoff提交后工作区干净，本包组件交付点停止；A7/正式服务与严格跨墙钟缺口明确pending，不自动扩包或推进旧本机链。原文/固定用户模型/权限/flags/取消/CAS保持；子Agent/DAG/本机写入安装exec/checked_metadata关闭，D01/D03/D06不代选，原Runner ok不自动Tool业务成功。
+
+
+## 2026-10-17 MS-K1 干净 checkout 回执 fixture 定向修复
+
+- 实际 **E:/UAW/.worktrees/runner / dev/runner**；原 **35c43c1d4642fb0c2a2c9183a0e1f7fafb2d6ddf** 干净。按A具体授权仅修D fixture，不fetch/合浮动integration、不等A7、不扩其他功能，旧54组件通过和严格跨墙钟A6失败原字节保留。
+- 精确源码 **f3b3b8c9b984dcafc4fff683663532da3aa0f94b**。只改 **tests/integration/run_clock/conftest.py** 一行：在原 `target.open("a",encoding="utf-8")` 前 `target.parent.mkdir(parents=True,exist_ok=True)`；路径/append/记录内容不变，无Run/期限/公共fixture/门槛改动。
+- 干净目录准备验证：ignored **tests/.artifacts/D/MS-K1-fixture-fix/verify_clean_fixture.py** 使用全新TemporaryDirectory，将实际fixture模块__file__定位到隔离根的同样tests/integration/run_clock路径；**准确目标父目录起初不存在**。直接运行HEAD旧版实际fixture源在该准确target复现FileNotFoundError；当前实际fixture成功创建准确目录，连续调用2次，原第1记录完整字节前缀保留、2行解析及顺序正确；临时根finally自动清理，没有移动/删除旧ignored MS-K1目录或其记录。这是空目录准备验证，不冒称另建git checkout。
+- 验证命令 `.venv/Scripts/python tests/.artifacts/D/MS-K1-fixture-fix/verify_clean_fixture.py`；回执 **clean-final.log**。最初脚本从ignored子目录直接运行缺repo import path，before.log/after.log的ModuleNotFoundError原回执保留，修正仅验证脚本路径后成功，不把初轮准备错误当目录复现。
+- 自己D55435原2项真实SQL复验：`. ./ops/start-dev-db.ps1 -Session D` 后 `.venv/Scripts/python -m pytest tests/integration/run_clock/test_transactions.py --require-postgres -q --junitxml=tests/.artifacts/D/MS-K1-fixture-fix/sql.xml`，**2 passed /1.59秒**；原临时SQL fixture正常finally，无teardown错误。Ruff/单文件格式/diff-check通过，不重跑47或54全量，不把此次2项与原54相加。
+- 无新公开接口/构造/依赖/权限/flags，原append历史及旧handoff字节保留；源码和此handoff独立提交，准确handoff SHA提交后报告。A可在原integration干净ignored目录直接复跑47 SQL，本轮仅解除目录准备失败，不宣称A7/严格跨墙钟/生产长等待/H02通过。本定向请求交付后干净停止。
