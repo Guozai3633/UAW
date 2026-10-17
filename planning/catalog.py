@@ -615,6 +615,7 @@ for package in ROUNDS:
             "docs/implementation/P1-15.md", "docs/implementation/MS-I2m-A10.md",
             "docs/implementation/evidence/ms-i2m-a10.json",
             "docs/implementation/MS-I2m-A11.md", "docs/implementation/evidence/ms-i2m-a11.json",
+            "docs/implementation/MS-I2m-A12.md", "docs/implementation/evidence/ms-i2m-a12.json",
         ])
         package["tasks"].insert(0, "MS-I2m C/MS-E1正式分派独立评测组件；新evaluation目录与原Tool包隔离。人工未核对的样本不伪造human-approved，真实候选/费用由A导出后再验。")
 ROUNDS.sort(key=lambda package: package["id"])

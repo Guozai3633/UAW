@@ -1,0 +1,49 @@
+[
+  {
+    "command": [
+      "E:\\UAW\\.venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "check",
+      "src/uaw/run/evaluation_experiment.py",
+      "ops/conversation_experiment.py",
+      "src/uaw/run/evaluation_review.py",
+      "tests/unit/agent/test_evaluation_experiment.py"
+    ],
+    "exit_code": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "E:\\UAW\\.venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "src/uaw/run/evaluation_experiment.py",
+      "ops/conversation_experiment.py",
+      "src/uaw/run/evaluation_review.py",
+      "tests/unit/agent/test_evaluation_experiment.py"
+    ],
+    "exit_code": 0,
+    "stdout": "4 files already formatted\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "E:\\UAW\\.venv\\Scripts\\python.exe",
+      "-m",
+      "mypy",
+      "src/uaw",
+      "apps/local_runner/uaw_runner",
+      "ops/evaluate_conversation.py",
+      "ops/capture_conversation_evaluation.py",
+      "ops/conversation_review.py",
+      "ops/conversation_experiment.py"
+    ],
+    "exit_code": 0,
+    "stdout": "Success: no issues found in 246 source files\n",
+    "stderr": ""
+  }
+]

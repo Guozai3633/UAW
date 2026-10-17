@@ -230,7 +230,11 @@ def import_review(
             case = record(Case, value)
             cases[case.id] = case
         # Controlled imports cannot promote a sample to human-verified.
-        if item.case_review == "verified" and basis == "human_evidence_review":
+        if (
+            item.case_review == "verified"
+            and basis == "human_evidence_review"
+            and case.review_status != "human_verified"
+        ):
             value = case.wire()
             value.update(
                 review_status="human_verified",

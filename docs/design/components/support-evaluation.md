@@ -1,3 +1,7 @@
+# A12实验固定及多Run来源汇合
+
+2026-10-17。A自有`run/evaluation_experiment.py`与`ops/conversation_experiment.py`固定题集、源码/提示词、相同模型/环境和事前政策；每题每版完整采集后复核再交C原评分器。旧调用、少题、重复、条件改变拒绝；失败/unknown/费用保留，登记成功不决定质量门槛。A11对已有题目核准保留原版本，存疑须重新登记。[策略/目录/限制](../../implementation/MS-I2m-A12.md) · [完整接口](../../coordination/requests/A/MS-I2m-A12-experiment-wiring.md)。实际只有未审的未来单案例暂定登记，没有新的真实执行或对比。
+
 # A11人工审阅消费
 
 2026-10-17。A自有`run/evaluation_review.py`将固定实际回答与原标准/材料整理为无预选的离线表单；原包/目标/版本/摘要一致且操作者明确提供真正人工判断后，写入新的C四文件及审计。测试评分不升级人工核准，事后人审不补造预登记；身份声明并非认证。[逐字段接口](../../coordination/requests/A/MS-I2m-A11-review-wiring.md) · [实现与实际未过项](../../implementation/MS-I2m-A11.md)。真实浏览器显示/下载、本人评分及新旧比较仍待完成。

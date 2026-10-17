@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m-A12",
+  "status": "fixed_experiment_registration_and_capture_assembly_component_ready_actual_comparison_pending",
+  "source_ref": "ms-i2m-a12-source",
+  "source_commit_authority": "origin/integration:docs/coordination/DISPATCH.md",
+  "verification": {
+    "unique_nodes": 47,
+    "new_experiment_nodes": 24,
+    "affected_review_nodes": 23,
+    "final_receipt": "ms-i2m-a12-unit-final.xml",
+    "static_receipt": "ms-i2m-a12-static.json",
+    "changed_Python_files": 4,
+    "mypy_source_files": 246,
+    "SQL": "N/A_offline_only",
+    "full_repository_regression": false,
+    "failures_retained": [
+      {
+        "receipt": "ms-i2m-a12-unit-first.xml",
+        "passed": 22,
+        "failed": 1,
+        "reason": "constructed_review_timestamp_before_answer_correctly_rejected_by_C"
+      }
+    ],
+    "development_diagnostics": [
+      "initial_line_lengths_reformatted",
+      "mypy_manifest_variable_type_collision_fixed",
+      "new_test_canonical_import_added"
+    ]
+  },
+  "actual_provisional_registration": {
+    "id": "a12-provisional-future-report-correction",
+    "registered_at": "2026-10-17T14:21:36.657739+00:00",
+    "registration_sha256": "273b2d35e31383913eb1e8086a9f44f855fad5687cf5610629f192375b8712c1",
+    "cases": 1,
+    "case_human_verified": false,
+    "readiness": "needs_case_review",
+    "candidate_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+    "baseline_source": "01b3e6e4f3301c684ff4a29a53bf69128130497e",
+    "known_consumed_configs_equal": true,
+    "original_configuration_refs_equal": true,
+    "actual_settings_bytes_rechecked": true,
+    "recorded_environment_pins_equal": true,
+    "source_snapshots_checked": [
+      {
+        "file_count": 261,
+        "files_sha256": "3e194518d63c1e9fc82ae132a8dfa58652a25e74fc3ec8284c3b24a335f3ed66",
+        "source_commit": "01b3e6e4f3301c684ff4a29a53bf69128130497e"
+      },
+      {
+        "file_count": 261,
+        "files_sha256": "5a56867d6d17a3a9a08e981ced2924d16cbc38d2972a1e4e51a631bef0f666ec",
+        "source_commit": "ebbcd9ea33557d23ddcda4569909893ce590da4d"
+      }
+    ],
+    "new_model_calls": 0,
+    "actual_new_executions": 0,
+    "actual_comparison_assembled": false,
+    "old_runs_not_reclassified_as_preregistered": true,
+    "timestamp_externally_authenticated": false,
+    "private_folder": ".data/evaluation/a12-future-registration/",
+    "files_sha256": {
+      "policy.json": "9e39f94dcef0f334ed307821e3e00cf2cd9194fef5cd34eff270828df0fb7e62",
+      "registration-audit.json": "1f02981099884e574a817424ab9c695e800b3960d7a728447312e782a4604302",
+      "registration.json": "32aff0e2d800b2cb3796b46c42651221a695883cc27375864b2f1aa29b1eb918",
+      "suite.json": "a1b39f27d65a14556164c3a75512b389e8d13f251fe3f0e4c2e21d083adf87a1"
+    }
+  },
+  "candidate_suite_readiness": {
+    "suite_file_sha256": "ffed8431b91b1da4fdc998be5ca8a74cf34f90481e873a1fd80a5ea966fc8d04",
+    "suite_sha256": "b50464d91b84f94393bc05b1a9cffc631271965a2d47734954d5521bae75624f",
+    "case_count": 16,
+    "human_verified_cases": 0,
+    "unreviewed_ids": [
+      "office-invoice",
+      "office-growth",
+      "office-empty-cost",
+      "academic-pilot",
+      "academic-quote",
+      "technical-tcc-zk",
+      "technical-zk-read",
+      "technical-unknown-write",
+      "missing-paper",
+      "missing-target",
+      "ambiguity-weekly-title",
+      "ambiguity-cache-db",
+      "correction-office",
+      "correction-academic",
+      "technical-tcc-locking",
+      "ambiguity-polite"
+    ],
+    "full_suite_experiment_registered": false,
+    "human_labels_created": false,
+    "new_model_calls": 0
+  },
+  "human_reviews_created": 0,
+  "human_judgments_performed": false,
+  "browser_render_or_download_attempted": false,
+  "A11_browser_file_policy_pending_preserved": true,
+  "runtime_writes": 0,
+  "new_model_calls": 0,
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:5183/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8013/health/ready",
+      "status": 200
+    }
+  ],
+  "existing_service_modified_or_restarted": true,
+  "runtime_backend_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+  "runtime_frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+  "scope_limits": [
+    "one_capture_per_registered_case_and_version",
+    "full_model_and_environment_pins_equal_across_conditions",
+    "CLI_local_timestamp_not_external_attestation",
+    "all_original_observations_and_costs_retained_no_scope_beyond_given_captures",
+    "existing_C_contracts_and_evaluator_unchanged",
+    "no_baseline_invented_and_no_actual_new_quality_comparison"
+  ],
+  "pending": [
+    "real_case_and_evidence_calibration",
+    "human_review_and_local_form_experience",
+    "new_fixed_executions_after_valid_registration",
+    "actual_candidate_baseline_comparison",
+    "H02_owner_retest",
+    "native_file_chain_and_Tool_long_wall_independent_gates"
+  ],
+  "workers": "B_C_D_delivered_stopped_no_dispatch",
+  "last_full_updated": false,
+  "implementation_sha256": {
+    "src/uaw/run/evaluation_experiment.py": "5648aa04ba46066f02911ad8bb3997fef6b93f862282d28e14cd13570970572e",
+    "ops/conversation_experiment.py": "5dc7695f31d187d091db08d51eaf037500ed5b26fb69b9c8d86e72436a1659ac",
+    "src/uaw/run/evaluation_review.py": "df38d7502a214e13958ba01a0de4189ebe16a7765a499748d3267e4b60088bc9",
+    "tests/unit/agent/test_evaluation_experiment.py": "b2c63474f9000d5a00034b224f285019549d9d08411a7db58ecf41ed2c741a45"
+  },
+  "service_checks_before_restart": [
+    {
+      "url": "http://127.0.0.1:5183/",
+      "error_type": "ConnectError"
+    },
+    {
+      "url": "http://127.0.0.1:8013/health/ready",
+      "error_type": "ConnectError"
+    }
+  ],
+  "service_restart": {
+    "original_sources_database_identity_and_environment_preserved": true,
+    "stop_cause": "unknown",
+    "new_log_id": "3f94391f6aed4884af4b051bc215728e",
+    "local_receipt": ".data/human/H02-v4/a12-restart-3f94391f6aed4884af4b051bc215728e.json",
+    "service_code_modified": false,
+    "model_calls_requested": 0
+  }
+}
