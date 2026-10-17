@@ -149,7 +149,6 @@ async def assemble_file_run(container: Container, ctx: TrustedExecutionContext) 
         scoped,
         agent,
         contexts=contexts,
-        max_output_tokens=c.settings.agent_max_output_tokens,
         acceptance_required=c.settings.agent_acceptance_required,
     )
     approvals = RoutedApprovals(

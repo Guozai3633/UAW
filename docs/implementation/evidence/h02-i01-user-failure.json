@@ -1,0 +1,77 @@
+{
+  "issue": "H02-I01",
+  "status": "user_reported_failure_preserved",
+  "run_id": "run-f574cee6575a408fbed0a6b4380a5351",
+  "original_artifact_preserved": true,
+  "patch_state": "accepted_not_applied",
+  "root_cause": "corrected_report_truncated_at_2048_output_tokens_then_misclassified_as_agent_request_invalid",
+  "calls": [
+    {
+      "id": "web-step-model-1-run-f574cee6575a408fbed0a6b4380a5351",
+      "finish_reason": "stop",
+      "output_limit": 2048,
+      "text_characters": 2322,
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 2380,
+          "wall_time_ms": 9651,
+          "output_tokens": 1354
+        },
+        "attempt_id": "web-step-model-1-run-f574cee6575a408fbed0a6b4380a5351",
+        "billing_state": "pending",
+        "cached_input_tokens": 256,
+        "provider_receipt_id": "ada252f8-bee0-4343-ab84-1f930e70e390"
+      }
+    },
+    {
+      "id": "web-step-model-2-run-f574cee6575a408fbed0a6b4380a5351",
+      "finish_reason": "length",
+      "output_limit": 2048,
+      "text_characters": 3411,
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 2525,
+          "wall_time_ms": 13167,
+          "output_tokens": 2048
+        },
+        "attempt_id": "web-step-model-2-run-f574cee6575a408fbed0a6b4380a5351",
+        "billing_state": "pending",
+        "cached_input_tokens": 256,
+        "provider_receipt_id": "60a69d2e-f568-4e1d-b5df-bb7f70d25dcb"
+      }
+    },
+    {
+      "id": "evaluation-f8d2723099a727ad612091b0be92eea2ff9e72f1de7fd0aba46ff1b24ccea2d0",
+      "finish_reason": "stop",
+      "output_limit": 2048,
+      "text_characters": 1353,
+      "usage": {
+        "resources": {
+          "currency": "USD",
+          "tool_calls": 0,
+          "model_calls": 1,
+          "child_agents": 0,
+          "input_tokens": 2745,
+          "wall_time_ms": 2280,
+          "output_tokens": 259
+        },
+        "attempt_id": "evaluation-f8d2723099a727ad612091b0be92eea2ff9e72f1de7fd0aba46ff1b24ccea2d0",
+        "billing_state": "pending",
+        "cached_input_tokens": 0,
+        "provider_receipt_id": "0aeeb8da-e4c1-4295-9408-975da7de8c9e"
+      }
+    }
+  ],
+  "provider_calls": 3,
+  "billing_state": "pending",
+  "user_history_rewritten": false,
+  "human_acceptance_performed": false
+}

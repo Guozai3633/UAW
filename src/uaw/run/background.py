@@ -77,6 +77,11 @@ def user_failure(failure: Payload) -> str:
         )
     if code == "provider_timeout":
         return "模型服务响应超时，本次未得到完整答复。记录已保留，你可以稍后重试。"
+    if code == "agent_output_truncated":
+        return (
+            "这次内容生成到输出上限时被截断，系统没有提交这次不完整结果。"
+            "已生成的旧成果和原文仍保留。你可以缩短篇幅后重新提交，或反馈这个问题。"
+        )
     if code.startswith("provider_") or failure.get("category") in (
         "model_protocol",
         "infrastructure",
@@ -211,7 +216,6 @@ class BackgroundAgent:
             c,
             self.agent,
             contexts=self.contexts,
-            max_output_tokens=c.settings.agent_max_output_tokens,
             acceptance_required=c.settings.agent_acceptance_required,
             clocks=self.conversation_clocks,
         )

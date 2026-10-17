@@ -1,0 +1,25 @@
+# A9：本人报告纠正时的输出截断修复
+
+2026-10-17。H02-v2 本人体验发现：原报告生成并登记后，补充重点触发原 Run 重写；第二次模型返回 `finish_reason=length`、output_tokens=2048，无完整结构化对象。Agent Model Reader 在循环检查完成原因之前校验空 FirstDecision，导致实际截断被误记成 agent_request_invalid。原 Run failed，纠正仍 accepted，原成果未丢失。[原失败/用量](evidence/h02-i01-user-failure.json)。
+
+## A 的修复策略
+
+- 根 Agent 默认输出容量从2048提高到8192；仍取管理员模型能力与实际剩余 Run 输出预算的最小值。它是单次上限，不是目标篇幅或自动花费；固定模型、原总预算、原 deadline、失败与pending费用不变。
+- 正式成果的语义核验沿用独立默认2048，不随根生成上限同步增大；Agent 和核验总用量继续进入原账本。
+- 有权威 ModelOutput/固定 Ref/实际 invocation 的不完整输出可被循环读取并记录失败，但不能被解释为 FirstDecision、不能登记完整成果、不能创建补充 applied 证据。length 明确记 agent_output_truncated，原循环 operation 留存 Model result 和失败原因；不追加新调用或自动重发。
+- 向用户解释输出截断与旧成果保留，不再把模型输出问题说成用户请求无效。
+- 原失败任务和输入历史不改写、不复活、不替本人重试或接受。候选更新复用 H02 独立数据库与原身份，保留旧固定源码/配置，H01保持独立。
+
+## B 负责的体验修复
+
+[具体固定请求](../coordination/requests/A/H02-I01-B-terminal-correction-feedback.md)已发给原 B：终态 accepted 补充说明“本次未生效”；终态无当前理解不再写等待；窄屏隐藏侧栏时仍能查看原成果，旧输入成果不能接受为新版本。A 不改 B 源码或操作其分支，阶段到即审。
+
+## 验证与发布
+
+新增真实SQL覆盖 length+截断JSON、length+碰巧完整JSON，两者均拒绝完整成果/决策；覆盖报告登记→原 Run 立即纠正→旧结果保留→新版本与独立核验/本人接受。首轮2通过/1夹具尚未把旧 delivery 作业推进阻塞，保留原回执；后续按实际队列生命周期验证，不篡改作业状态来绕过前置。
+
+准确最终节点、静态检查、固定源码、真实模型报告纠正及 B/dist 接受由后续回执提供；未执行不算通过。已有H02澄清自检不是这条报告纠正链的证明，H02本人体验仍未accepted，last_full不更新。
+
+## A定向工程结果
+
+16个不同SQL节点最终通过（15原批＋1定向复跑，不重复累计），6变动Python文件Ruff/格式和240源码严格类型通过；原两个夹具失败保留，第二次为提供方参数名误用max_tokens，实际夹具使用max_completion_tokens。未放宽业务断言，未标全仓通过。[逐项回执](evidence/ms-i2m-a9.json)。

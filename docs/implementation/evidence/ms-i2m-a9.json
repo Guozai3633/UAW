@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m A9 H02-I01",
+  "status": "A_targeted_engineering_passed_live_and_B_integration_pending",
+  "distinct_final_SQL_nodes": 16,
+  "nodes": {
+    "tests.integration.agent.test_output_capacity::test_length_output_has_owning_failure_and_never_registers_partial_artifact[False-case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_output_capacity::test_length_output_has_owning_failure_and_never_registers_partial_artifact[True-case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_output_capacity::test_report_then_correction_keeps_old_artifact_and_applies_only_complete_new_report[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-report-correction-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_reply_one_call_no_artifact_or_acceptance_and_restart[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_essential_question_visible_same_run_not_terminal[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_bad_provider_shape_keeps_failure_and_shows_useful_message[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_actual_tool_gates_then_message_only[approve_once-case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_actual_tool_gates_then_message_only[decline-case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_cancel_after_model_before_reply_does_not_publish[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_restart_after_original_response_does_not_resend[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_deliver_keeps_artifact_verification_and_user_acceptance[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_postgres::test_policy_revocation_during_model_call_is_not_cached[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_applications::test_actual_model_consumption_marks_applied_once_but_does_not_grant_resume[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_applications::test_old_response_cannot_be_relabelled_as_the_new_input[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_applications::test_cancel_before_application_leaves_accepted_input_without_false_applied[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    },
+    "tests.integration.agent.test_conversation_applications::test_application_transaction_rollback_preserves_original_model_and_pending_input[case0]": {
+      "passed": true,
+      "receipt": "h02-i01-capacity-final-sql.xml"
+    }
+  },
+  "failed_receipts_preserved": [
+    "h02-i01-capacity-first-sql.xml",
+    "h02-i01-capacity-final-sql.xml"
+  ],
+  "first_failures": "original_delivery_poll_not_yet_blocked_and_wrong_fixture_output_parameter_name",
+  "root_output_limit": 8192,
+  "semantic_review_limit": 2048,
+  "same_fixed_user_model": true,
+  "strict_mypy_sources": 240,
+  "static_and_format_changed_files": 6,
+  "code_sha256": {
+    "src/uaw/agent/adapters.py": "663a600d02381c50fc7893e07b95fed2df053ed1b0eff7a8fb912b3c4e685a12",
+    "src/uaw/agent/loop.py": "838150d27783531b11be84cefd5b8d1e50fb0f3f4c12ba1dac4fc1295b2c11ed",
+    "src/uaw/run/background.py": "6005d280bb905f1d51e775b4a78d77535ff3b9719326b48e98618ebfa5eb94fa",
+    "src/uaw/run/file_runtime.py": "4e1f7202cb7873445cbf3805bcf45898bb9a34c2ef3513686ebff6e7f7052a74",
+    "src/uaw/shared/settings.py": "30fa67d3d561543b12de3f95b5b3c4aaef18dab41cf487bb0195b0c6d5b6663e",
+    "tests/integration/agent/test_output_capacity.py": "9a3bd402da2e1f4cf1916725effecb03494b76bfd4aeceeed418c6264ddee68d"
+  },
+  "original_user_failure_receipt": "h02-i01-user-failure.json",
+  "no_new_provider_calls_in_controlled_SQL": true,
+  "whole_repository_gate": false,
+  "last_full_updated": false,
+  "human_accepted": false
+}

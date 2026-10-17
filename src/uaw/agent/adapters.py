@@ -339,7 +339,7 @@ class RegisteredAgentModels:
             return await self._request(snapshot, ctx)
 
     async def _request(self, snapshot: Ref, ctx: TrustedExecutionContext) -> Payload:
-        await self.sources.current(ctx)
+        view = await self.sources.current(ctx)
         if ctx.model_policy_ref is None or ctx.run_id is None:
             raise reject("agent_context_missing", "Actual Run/model required", 403)
         row = await self.policies.store.get(
@@ -352,12 +352,19 @@ class RegisteredAgentModels:
         model = await self.policies.configuration.require_model(
             row.payload["fixed_model_id"], fixed
         )
+        output_limit = min(
+            self.max_output_tokens,
+            model["output_limit_tokens"],
+            view.remaining_budget["limits"]["output_tokens"],
+        )
+        if output_limit < 1:
+            raise reject("agent_output_budget_exhausted", "No output budget remains", 409, "budget")
         config = {
             "model_id": model["id"],
             "catalog_revision": model["revision"],
             "provider_ref": model["provider_ref"],
             "policy_ref": ctx.model_policy_ref.wire(),
-            "max_output_tokens": min(self.max_output_tokens, model["output_limit_tokens"]),
+            "max_output_tokens": output_limit,
         }
         selection = await self.policies.resolve(config, ctx)
         return {
@@ -400,6 +407,12 @@ class RegisteredAgentModels:
                 "Original invocation did not finish with this output",
                 412,
             )
+        if row.payload["finish_reason"] != "stop" or row.payload["tool_calls"]:
+            # This is still an owning, metered Model output. Let the loop record
+            # its actual terminal reason without parsing a cut-off JSON proposal
+            # or claiming that any newer user input has been applied.
+            await self.sources.current(ctx)
+            return frozen(row.payload)
         if await enabled(self.policies.store, ctx):
             validate_contract("FirstDecision", row.payload.get("structured_data", {}))
             view = await self.sources.current(ctx)

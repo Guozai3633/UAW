@@ -150,9 +150,14 @@ class AgentLoop:
             except KeyError, TypeError, ValueError, ValidationError:
                 failure = error_result(
                     reject(
-                        "agent_decision_invalid",
-                        "Model proposal is incomplete or inconsistent",
+                        "agent_output_truncated"
+                        if output["finish_reason"] == "length"
+                        else "agent_decision_invalid",
+                        "Model output reached its output token limit"
+                        if output["finish_reason"] == "length"
+                        else "Model proposal is incomplete or inconsistent",
                         409,
+                        "model_protocol",
                     )
                 )
                 await repo.update(

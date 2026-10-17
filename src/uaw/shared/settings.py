@@ -32,7 +32,7 @@ class Settings(BaseModel):
     agent_execution_enabled: bool = False
     agent_worker_count: int = Field(default=1, ge=1, le=4)
     agent_queue_capacity: int = Field(default=16, ge=1, le=64)
-    agent_max_output_tokens: int = Field(default=2048, ge=128, le=8192)
+    agent_max_output_tokens: int = Field(default=8192, ge=128, le=8192)
     agent_acceptance_required: bool = False
     installed_state_directory: Path | None = None
     installed_workspace_id: ID | None = None
