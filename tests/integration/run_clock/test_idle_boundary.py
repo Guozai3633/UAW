@@ -134,7 +134,7 @@ async def test_coherent_new_pin_cannot_increase_original_admission_limit(clock_c
 
 
 @pytest.mark.parametrize(
-    "request",
+    "clock_request",
     [
         ClockChange(True, "active"),
         ClockChange(0, "active"),
@@ -143,12 +143,12 @@ async def test_coherent_new_pin_cannot_increase_original_admission_limit(clock_c
         {"mode": "active"},
     ],
 )
-async def test_request_cannot_supply_time_or_boolean_cas(clock_case, request):
+async def test_request_cannot_supply_time_or_boolean_cas(clock_case, clock_request):
     p = clock_case
     before = await stored(p)
 
     async def write(tx):
-        return (await p.clocks.change(tx, p.actor, p.run["id"], request)).wire()
+        return (await p.clocks.change(tx, p.actor, p.run["id"], clock_request)).wire()
 
     with pytest.raises(DomainError) as error:
         await p.transactions.inspect(p.actor, "conversation:" + p.run["conversation_id"], write)

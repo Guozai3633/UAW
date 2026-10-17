@@ -41,7 +41,7 @@ async def clock_case(domain, principal):
         principal,
         {
             "conversation_id": conversation["id"],
-            "text": "鍘熸枃  涓嶆敼\nclock component",
+            "text": "原文  不改\nclock component",
             "attachment_refs": [],
         },
         meta("clock-run"),
