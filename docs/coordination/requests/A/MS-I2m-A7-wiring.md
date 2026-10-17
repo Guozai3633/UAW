@@ -1,3 +1,11 @@
+# A7 最新消费结论：实际组件汇合已验，固定发布按DISPATCH
+
+2026-10-17。B/C/D最终包和D目录定向修复均已普通合入，原构造与A/D ports不变。**314不同节点通过**，实际D+原队列严格跨墙钟与两次等待、原事务回滚均有真实SQL回执；模型回复/服务时间仍受控。[逐包门槛与SHA](MS-I2m-A7-worker-acceptance.md) · [最终回执](../../../implementation/evidence/ms-i2m-a7-integration.json)。
+
+A7补充的新ToolDispatchTimingPort及RunToolDispatchTiming准确签名见下方第1节；Tool原claim/新审批尚未消费，无默认权限或期限变化。候选服务要在start前显式装配真实ExecutionClocks与ExecutionSegments，H01-v5不热改。旧调用/审批/native期限与unknown对账规则保持。
+
+准确固定A7 source/tag以远端DISPATCH随后正式记录为准；以下“待审批/尚未汇合”段落保留为早期停止点历史。worker原已交付包不自动扩包，无需为取文档合浮动integration。A下一步提供实际新服务/原Page、真实固定模型记录与C离线导出，不能把当前工程回执当人审/模型质量。
+
 # A7 内部时间接口与本地集成状态
 
 2026-10-17。**未正式发布 A7 标签；worker 继续准确 A6 与各自原阶段，不据此合浮动 integration。**

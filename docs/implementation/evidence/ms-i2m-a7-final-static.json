@@ -1,0 +1,49 @@
+{
+  "ruff": {
+    "exit_code": 0,
+    "receipt": "ms-i2m-a7-final-ruff.txt"
+  },
+  "format": {
+    "exit_code": 0,
+    "receipt": "ms-i2m-a7-final-format.txt"
+  },
+  "mypy": {
+    "exit_code": 0,
+    "receipt": "ms-i2m-a7-final-mypy.txt"
+  },
+  "python_files_checked": [
+    "ops/evaluate_conversation.py",
+    "ops/serve_existing_web.py",
+    "src/uaw/evaluation/__init__.py",
+    "src/uaw/evaluation/contracts.py",
+    "src/uaw/evaluation/io.py",
+    "src/uaw/evaluation/metrics.py",
+    "src/uaw/evaluation/reader.py",
+    "src/uaw/evaluation/runner.py",
+    "src/uaw/run/conversation_resume.py",
+    "src/uaw/run/execution_clock.py",
+    "src/uaw/run/tool_timing.py",
+    "src/uaw/shared/tool_timing.py",
+    "tests/integration/agent/test_execution_segments.py",
+    "tests/integration/agent/test_owned_clock_continuation.py",
+    "tests/integration/agent/test_tool_timing.py",
+    "tests/integration/run_clock/clock_child.py",
+    "tests/integration/run_clock/conftest.py",
+    "tests/integration/run_clock/helpers.py",
+    "tests/integration/run_clock/test_actual_consumers.py",
+    "tests/integration/run_clock/test_idle_boundary.py",
+    "tests/integration/run_clock/test_persistence.py",
+    "tests/integration/run_clock/test_transactions.py",
+    "tests/unit/agent/test_pinned_web_server.py",
+    "tests/unit/evaluation/factories.py",
+    "tests/unit/evaluation/test_bundle_integrity.py",
+    "tests/unit/evaluation/test_candidate_suite.py",
+    "tests/unit/evaluation/test_offline_cli.py",
+    "tests/unit/evaluation/test_offline_contracts.py",
+    "tests/unit/evaluation/test_offline_io.py",
+    "tests/unit/evaluation/test_offline_report.py",
+    "tests/unit/evaluation/test_quality_metrics.py",
+    "tests/unit/evaluation/test_version_comparison.py",
+    "tests/unit/run_clock/test_measurement.py"
+  ]
+}

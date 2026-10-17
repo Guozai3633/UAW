@@ -1,0 +1,8 @@
+{
+  "scope": "actual D fixture in a fresh isolated directory",
+  "parent_initially_absent": true,
+  "created_parent": true,
+  "appended_twice_preserving_original_bytes": true,
+  "runtime_SQL_not_repeated": true,
+  "source_commit": "f3b3b8c9b984dcafc4fff683663532da3aa0f94b"
+}

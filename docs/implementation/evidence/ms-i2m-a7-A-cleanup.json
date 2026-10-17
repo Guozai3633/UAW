@@ -1,0 +1,15 @@
+{
+  "scope": "exact A integration clock fixture user/platform/admin principals",
+  "fixture_user_count": 47,
+  "checked_owner_count": 141,
+  "platform_convention": "platform-<fixture id> from original domain fixture",
+  "counts": {
+    "uaw_records": 0,
+    "uaw_record_versions": 0,
+    "uaw_requests": 0,
+    "uaw_outbox": 0,
+    "uaw_consumer_receipts": 0
+  },
+  "removed_any_data": false,
+  "other_databases_touched": false
+}

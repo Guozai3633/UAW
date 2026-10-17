@@ -1,3 +1,11 @@
+# A7 最新：组件与受影响链路验收通过，待固定源码发布
+
+2026-10-17。B/MS-U4组件、C/MS-E1 M1–M3、D/MS-K1及D目录定向修复均已审阅并普通合入。**314个不同最终节点通过**：71 SQL、190单元、53受控Chromium；33个变动Python文件Ruff/格式、240源码类型通过。不是全仓或产品整轮通过。[逐包验收](../coordination/requests/A/MS-I2m-A7-worker-acceptance.md) · [完整去重/来源/失败回执](evidence/ms-i2m-a7-integration.json)。
+
+审批服务现已恢复。实际D时钟、A原队列/Model Gateway/补充协议联调通过；原A6严格跨墙钟节点在A7修复后通过。A新二次澄清fixture补齐队列推进；D自己修正干净目录父目录建立，原47准备错误保留；B原53启动错误在匹配Chromium缓存补齐后复跑通过。所有原回执不删除，不累加重复节点。
+
+B实际新服务/原Page、固定用户模型与实际elapsed wait、C实际候选/基线导出及真正人审、H02本人体验仍pending；Tool实际claim和新审批尚未消费执行段，继续保守拒绝。原H01-v5/本人记录/费用/flags/last_full保持。准确固定源码由远端DISPATCH正式记录；以下是本段早期准备状态的原始历史，不再代表最新门槛。
+
 # MS-I2m A7：续跑期限修复、Tool 时间接口与阶段合入
 
 2026-10-17，A / E:/UAW / integration。**本段仍在本地集成，尚未发布 A7 固定标签。**
