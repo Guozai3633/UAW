@@ -163,5 +163,6 @@
     "ops\\capture_conversation_evaluation.py": "1181bd1ad33648b5aa2712b62386031f5ed27faac058ab12a478fa3e67591f04",
     "tests\\unit\\agent\\test_evaluation_capture.py": "5766e0faab9cba9a36eb75ea288426b02ba46ce5f02cb9700195c92d6add11d2",
     "tests\\integration\\agent\\test_evaluation_capture.py": "676c1ea9d628b14996b755cd1238a4acdfabf1ec4272ef300ea0de3169038004"
-  }
+  },
+  "source_commit": "3576ea6a0a96d202fe97291b332d3206e4d0a4a9"
 }

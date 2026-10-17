@@ -1,3 +1,9 @@
+# A10固定：真实Run只读评测接线完成
+
+2026-10-17，source **3576ea6a0a96d202fe97291b332d3206e4d0a4a9** / **ms-i2m-a10-source**。单个终态Run全部模型调用/原输入/精确核验与未知费用进入C原四文件评测；4单元＋3SQL通过，242源码类型通过。已有真实诊断4调用实际评测为incomplete：无人工评分、缺可比基线和事前登记；0新模型调用。[实施](../../implementation/MS-I2m-A10.md) · [机器回执](../../implementation/evidence/ms-i2m-a10.json)。P1-15开发中，不宣称质量或H02已过。
+
+下一步人工核对题集/依据、登记新实验并完成真正候选/基线比较；原H02-v4服务已用同launcher/数据库恢复，A9a后端/B固定前端保持。本人历史、原失败、pending费用/flags/last_full保留，B/C/D均停止不自动扩包。以下为历史。
+
 # H02-I01已修复并部署，继续本人重测
 
 H02-v4 / ms-i2m-a9a-source ebbcd9ea33557d23ddcda4569909893ce590da4d，原5183地址/登录/历史沿用；真实模型报告纠正4调用通过、实际applied，新稿2098 tokens完整stop。B修复已合入并实际验证1050px旧成果可读及终态反馈；本人原12条payload未改，未代接受。A16 SQL/B107单元60浏览器/A9a11单元分别通过，非全仓。所有9诊断调用与原本人失败3调用费用pending。[最终回执](../../implementation/evidence/h02-i01-final.json)。下一步按本人反馈处理，质量人审/native/Tool长墙钟保持pending。以下为历史。
