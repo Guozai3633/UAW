@@ -131,3 +131,25 @@ async def test_coherent_new_pin_cannot_increase_original_admission_limit(clock_c
     with pytest.raises(DomainError) as error:
         await p.change(ClockChange(2, "active"))
     assert error.value.status_code == 412 and await stored(p) == before
+
+
+@pytest.mark.parametrize(
+    "request",
+    [
+        ClockChange(True, "active"),
+        ClockChange(0, "active"),
+        ClockChange(1, "approved"),
+        ClockChange(1, "active", in_flight_refs=[]),
+        {"mode": "active"},
+    ],
+)
+async def test_request_cannot_supply_time_or_boolean_cas(clock_case, request):
+    p = clock_case
+    before = await stored(p)
+
+    async def write(tx):
+        return (await p.clocks.change(tx, p.actor, p.run["id"], request)).wire()
+
+    with pytest.raises(DomainError) as error:
+        await p.transactions.inspect(p.actor, "conversation:" + p.run["conversation_id"], write)
+    assert error.value.status_code == 412 and await stored(p) == before
