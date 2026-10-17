@@ -1,0 +1,32 @@
+import {beforeEach,afterEach,it,expect,vi} from 'vitest';
+import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
+import {ConversationPanel} from '../../src/features/conversation/ConversationPanel';
+import {HttpConversationPort} from '../../src/features/conversation/port';
+import {ContinuationStore} from '../../src/features/conversation/store';
+import {UawClient} from '../../src/lib/api/client';
+import {conversationView,continuationReceipt} from '../conversation-fixtures';
+import {ok} from '../fixtures';
+import type {Schema} from '../../src/lib/api/types';
+beforeEach(()=>localStorage.clear());afterEach(cleanup);
+const session=()=>({identityKey:'web-one',principal:{id:'user-one',kind:'user' as const,auth_session_id:'session-one'}});
+function setup(question=true){const state={view:conversationView(question),receipts:new Map<string,Schema['RunContinuationReceipt']>(),posts:[] as {path:string;body:any}[],lost:false,missing:false};
+ const fetcher=vi.fn(async(i:RequestInfo|URL,o?:RequestInit)=>{const path=String(i);if(o?.method==='POST'){const body=JSON.parse(String(o.body)),kind=path.endsWith('/answers')?'clarification_answer':'correction';state.posts.push({path,body});const receipt=continuationReceipt(body.meta.request_id,kind);state.receipts.set(body.meta.request_id,receipt);state.view={protocol:'conversation-v1',run:receipt.run,input_revision:2,continuation_request_ids:[body.meta.request_id]};if(state.lost)throw new TypeError('lost');return new Response(JSON.stringify(ok(receipt)));}
+  if(path.endsWith('/conversation'))return new Response(JSON.stringify(ok(state.view)));if(path.endsWith('/question-one'))return new Response(JSON.stringify(ok(state.view.question)));const receipt=state.receipts.get(path.split('/').at(-1)!);if(state.missing||!receipt)return new Response(JSON.stringify({kind:'missing',failure:{code:'record_missing',category:'arguments',message:'原回执暂不可读',retryable:false,failed_phase:'read'},output_refs:[]}),{status:404});return new Response(JSON.stringify(ok(receipt)));});
+ const store=new ContinuationStore(),port=new HttpConversationPort(new UawClient(session,fetcher)),onSource=vi.fn(),onBusy=vi.fn(),onChanged=vi.fn(),run=structuredClone(state.view.run);
+ const show=()=>render(<ConversationPanel port={port} store={store} run={run} identity="web-one" connected onSource={onSource} onBusy={onBusy} onChanged={onChanged} pollMs={60000}/>);return{state,store,port,fetcher,show,onChanged};
+}
+it('actual self-contained question/reason/options and exact free answer target same Run, accepted is not applied',async()=>{
+ const x=setup();x.show();await screen.findByText('请提供要分析的材料范围。');expect(screen.getByText(/缺少原材料/)).toBeVisible();fireEvent.click(screen.getByRole('button',{name:'仅分析第一段'}));expect(screen.getByLabelText('回答原问题')).toHaveValue('仅分析第一段');fireEvent.change(screen.getByLabelText('回答原问题'),{target:{value:'  只分析第一段\n保留原文  '}});await waitFor(()=>expect(screen.getByRole('button',{name:'提交回答到原任务'})).toBeEnabled());fireEvent.click(screen.getByRole('button',{name:'提交回答到原任务'}));await screen.findByText('已收到，尚待生效');expect(screen.queryByText('已生效',{exact:true})).toBeNull();expect(x.state.posts).toHaveLength(1);expect(x.state.posts[0]).toMatchObject({path:'/v1/runs/run-one/clarifications/question-one/answers',body:{meta:{schema_version:'0.2',expected_revision:4},payload:{expected_input_revision:1,expected_question_revision:2,text:'  只分析第一段\n保留原文  '}}});expect(x.store.draft({conversationId:'conv-one',runId:'run-one'},'answer:question-one')).toBe('  只分析第一段\n保留原文  ');expect(screen.queryByRole('button',{name:'接受整份成果'})).toBeNull();
+});
+it('running correction and actual accepted/applied/superseded/cancelled receipts stay separate',async()=>{
+ const x=setup(false);x.show();await screen.findByLabelText('补充或纠正原任务');fireEvent.change(screen.getByLabelText('补充或纠正原任务'),{target:{value:'  更正范围  '}});await waitFor(()=>expect(screen.getByRole('button',{name:'提交纠正到原任务'})).toBeEnabled());fireEvent.click(screen.getByRole('button',{name:'提交纠正到原任务'}));await screen.findByText('已收到，尚待生效');const id=x.state.posts[0].body.meta.request_id;
+ for(const [state,label] of [['applied','已生效'],['superseded','已被后续修订替代'],['cancelled','补充已取消']] as const){x.state.receipts.set(id,continuationReceipt(id,'correction',state));fireEvent.click(screen.getByRole('button',{name:'读取原任务与补充回执'}));await screen.findByText(label,{exact:true});}
+ expect(x.state.posts).toHaveLength(1);expect(x.state.posts[0].path).toBe('/v1/runs/run-one/corrections');expect(screen.getByLabelText('补充或纠正原任务')).toHaveValue('  更正范围  ');
+});
+it('unknown submit persists original lookup, remount GET recovers same receipt and draft without new POST',async()=>{
+ const x=setup(false);x.state.lost=true;x.state.missing=true;let component=x.show();await screen.findByLabelText('补充或纠正原任务');fireEvent.change(screen.getByLabelText('补充或纠正原任务'),{target:{value:'待对账原文'}});await waitFor(()=>expect(screen.getByRole('button',{name:'提交纠正到原任务'})).toBeEnabled());fireEvent.click(screen.getByRole('button',{name:'提交纠正到原任务'}));await screen.findByText(/原补充结果尚待对账/);expect(x.state.posts).toHaveLength(1);const requestId=x.state.posts[0].body.meta.request_id;component.unmount();x.state.missing=false;component=x.show();await screen.findByText('已收到，尚待生效');expect(screen.getByLabelText('补充或纠正原任务')).toHaveValue('待对账原文');expect(x.state.posts).toHaveLength(1);expect(x.store.pending({conversationId:'conv-one',runId:'run-one'})).toEqual([]);expect(x.state.view.continuation_request_ids).toEqual([requestId]);component.unmount();
+});
+it('terminal or absent capability never sends continuation or guesses a question from ordinary text',async()=>{
+ const x=setup(false);x.state.view.run.status='cancelled';x.show();await screen.findByText('原任务已结束，不能继续提交回答或纠正。新请求请使用下方原文输入框。');expect(screen.queryByLabelText('回答原问题')).toBeNull();expect(screen.queryByRole('button',{name:'提交纠正到原任务'})).toBeNull();expect(x.state.posts).toHaveLength(0);cleanup();
+ const port=new HttpConversationPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify({kind:'failed',failure:{code:'dependency_unavailable',category:'dependency',message:'旧协议或真实时钟尚未装配',retryable:false,failed_phase:'read'},output_refs:[]}),{status:503}))));render(<ConversationPanel port={port} run={conversationView().run} identity="web-one" connected onSource={()=>{}} onBusy={()=>{}} onChanged={()=>{}}/>);await screen.findByText('旧协议或真实时钟尚未装配');expect(screen.queryByRole('button',{name:'提交回答到原任务'})).toBeNull();
+});
