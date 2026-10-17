@@ -936,3 +936,16 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 精确文件、接口/样例、命令/回执、三文件dist/hash、未通过和接线要求见[最终接线](../requests/B/H01-I01-B-waiting-feedback-final.md)。自身ignored h01-i01-unit-final.log/.xml、browser-final.log/.xml、receipts.json和受控waiting.png；截图已目视核对。准确构建在本worktree apps/web/.test-results/h01-i01-dist，A只读复制，不执行B环境。
 - H01-v1仍A29固定旧快照，A30/B修复未热部署；真实只读认证pending A新固定入口/原Page/可见会话，不操作本人旧任务停止/提交、审批/native/成果接受，不读取A配置/key。旧Run和费用不变，无真实模型/文件调用。
 - A负责原问题Item/唯一理解事务、后台回执、合入和新版本实际部署/本人体验。无新Context/多Run/澄清协议/flags/default model或D01/D03/D06设定，不标H01/MS-I2l/P1整轮accepted。源码与handoff分开clean交付，完成后停止，不自动扩包。
+
+## MS-U4 原Run自然对话/纠正/刷新组件（2026-10-17）
+
+- 原worktree `E:/UAW/.worktrees/context` / `dev/context`，原干净HEAD `c13232bd8b8af813e448c14b8d39b8e4789662ba`。自行fetch核对正式远端DISPATCH与准确tag，只快进 `ms-i2m-start / 1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe`、固定 `ms-i2m-a6-source / b16c69a92d81124c00fb859ce8123748f56df054`，两次HEAD相等。uv frozen/pnpm原锁离线通过，旧提交/handoff保留；未改app detached checkout、未reset/rebase/stash/合浮动integration。
+- M1源码 `1e3447853b4d068955728b43099beb07d74ffac9` / 阶段说明 `7676b135f670fa87409378ae9361ef4a6d3a8dd3`；M2源码 `b210f4bb61d0bff9852497b854c7820b345a51ed` / 阶段说明 `4697e8a6f34722237a4a14b9fd629fdc817ddf47`；阶段交付后继续本包，没有等待新小包。最终源码 **`5e0b37d90d12641d20e3acf4b704cf79bca3a13d`**，本独立handoff为随后docs提交，准确SHA见最终回报。
+- 仅21个apps/web文件与B阶段/最终文档/handoffs，精确清单、五HTTP、typed样例、失败及接线见[MS-U4-final-wiring](../requests/B/MS-U4-final-wiring.md)。不改Context/backend/shared/公共schema/锁/Model/Run/装配根/flags/其他worker，未读取A配置/key或复制真实正文。
+- 固定A6生成30路径/33方法/204完整定义，业务字段/description/if/then保持。新增client五HTTP+ConversationRequestMeta 0.2，旧turn等0.1不变。HttpConversationPort.read/question/lookup/submit固定原Run/input/question CAS，等待后身份/Abort复查；问题来自RunConversationView，不猜文字。默认main接ConversationPanel，原问题/原因/候选/自由输入、同Run回答/运行中纠正，精确保留原文与固定模型；accepted/applied/superseded/cancelled分别消费实际回执，不置completed，终态走原新turn，普通消息不制造成果接受。
+- ContinuationStore只保存完整身份+conversation+Run的草稿及每request独立lookup/CAS，保存读回成功才POST；unknown刷新只GET原ID、不重发/换ID。两页pending不覆盖，损坏/碰撞/持久化失败拒绝；退出清理，无许可/图/patch状态/模型输出/secret缓存。组件3秒/120次有界串行读取，可选port注入，省port嵌入可隐藏；后端缺源真实503显示不可用。
+- 最终 **96不同单元/20文件＋53不同受控Chromium**，各0失败/错误/跳过；冻结安装、类型、build、完整生成字段/重复生成无diff、diff-check通过。原82/43回归保留，新14/10；阶段88/95、targeted8及视觉1复跑不叠加。实际本地锁内node24.21.0/pnpm10.17.0，外引导engine/Vite原大chunk提示如实保留。
+- 自身ignored `apps/web/.test-results/ms-u4-final-receipts.json`保存不同节点/回执/hash；m3-unit.xml、final-chromium.log/.xml与所有类型/build/安装回执保留。M2括号/null收窄/Storage替身缺clear原失败已修；M3初次身份夹具在丢响应返回前切换1失败，正确等待实际未知后8/8及53通过，原log/XML/trace/screenshot保留，未删隔离断言/改时限。两次自动审批额度限制动作未执行，正常流程重试后成功，不算测试失败。
+- 准确三文件dist/hash已冻结在 `apps/web/.test-results/ms-u4-final-dist/`，A只读复制，不执行B环境；正文/输入与生效截图只含受控材料，已目视核对。完整SHA256见final-wiring，源码5e0b37d。
+- 最后干净fetch只读 `origin/integration / 49cf4026464c74e441b05f0a6f90fc6b4df793b4` DISPATCH仍无D真实clock/Tool时间adapter/新H02服务。M4真实原Page联调 **pending**，`scripts/u4-readonly.mjs`三明确变量缺失，exit2，未尝试连接，不计通过/skip。verifyOwnedConversationPage(originalPage,actualRunId)仅同Page GET/前后身份及图版本/原scope回执复查；无newPage/context、launch交换、导航、持久化、截图/trace、cookie导出、提交/审批/native/接受或关闭A页面。两个受控验证器节点不等于真实认证。
+- A负责合入、真实时钟/当前权限/Model/队列/费用来源、独立新服务部署及本人操作与质量门槛。H01-v5/本人历史/原失败和账本保留；没有B新真实SQL/LLM/native/授权/合同接受/长等待通过声明，不标H02/P1整轮accepted。源码/handoff分开clean交付，后续准确真实来源到达才联调，不自动扩包。

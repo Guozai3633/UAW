@@ -33,10 +33,10 @@ M2源码 **b210f4bb61d0bff9852497b854c7820b345a51ed**，基于M1文档7676b135f6
 
 ```tsx
 <ConversationPanel port={new HttpConversationPort(client)}
-  store={new ContinuationStore()} run={actualRun} identity={host.identityKey!}
+  store={new ContinuationStore()} run={actualRun} identity={client.currentSession()!.identityKey}
   connected={true} onSource={setSourceAvailable} onBusy={setControlBusy}
   onChanged={() => controller.reconnect()} />
-// 默认3秒有界分页读图/原回执，120次后手动读；卸载/身份/Run变化取消。
+// 默认3秒有界轮询读图/原回执，120次后手动读；卸载/身份/Run变化取消。
 ```
 
 每次提交先把唯一request_id及原CAS写入按请求独立的恢复key，再显式POST一次。pending绑定完整身份+conversation+Run；刷新只GET原ID，缺回执时不换ID。持久化只有本人草稿与查找元数据，没有回执、权限、模型输出、token或审批。读图/回执每次重取；accepted/applied/superseded/cancelled明确分别显示，applied只消费实际回执。退出清理，用户草稿保留；来源不可用不伪造图。
