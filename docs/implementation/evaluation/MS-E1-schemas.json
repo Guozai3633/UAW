@@ -1,0 +1,2328 @@
+{
+  "schema_version": "ms-e1.v1",
+  "types": {
+    "Manifest": {
+      "$defs": {
+        "AttemptPin": {
+          "additionalProperties": false,
+          "properties": {
+            "attempt_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Attempt Id",
+              "type": "string"
+            },
+            "observation_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Observation Sha256",
+              "type": "string"
+            },
+            "output_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Sha256"
+            }
+          },
+          "required": [
+            "attempt_id",
+            "observation_sha256",
+            "output_sha256"
+          ],
+          "title": "AttemptPin",
+          "type": "object"
+        },
+        "CandidateManifest": {
+          "additionalProperties": false,
+          "properties": {
+            "attempts": {
+              "items": {
+                "$ref": "#/$defs/AttemptPin"
+              },
+              "maxItems": 2048,
+              "title": "Attempts",
+              "type": "array"
+            },
+            "dirty": {
+              "title": "Dirty",
+              "type": "boolean"
+            },
+            "environment_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Environment Sha256",
+              "type": "string"
+            },
+            "finished_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Finished At",
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "inventory_complete": {
+              "title": "Inventory Complete",
+              "type": "boolean"
+            },
+            "model": {
+              "$ref": "#/$defs/ModelPin"
+            },
+            "prompts": {
+              "items": {
+                "$ref": "#/$defs/NamedHash"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "title": "Prompts",
+              "type": "array"
+            },
+            "provenance": {
+              "enum": [
+                "actual_candidate",
+                "controlled_fixture"
+              ],
+              "title": "Provenance",
+              "type": "string"
+            },
+            "selections": {
+              "items": {
+                "$ref": "#/$defs/Selection"
+              },
+              "maxItems": 128,
+              "title": "Selections",
+              "type": "array"
+            },
+            "source_commit": {
+              "pattern": "^[0-9a-f]{40}$",
+              "title": "Source Commit",
+              "type": "string"
+            },
+            "started_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Started At",
+              "type": "string"
+            },
+            "suite_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Suite Sha256",
+              "type": "string"
+            },
+            "working_tree_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Working Tree Sha256"
+            }
+          },
+          "required": [
+            "id",
+            "provenance",
+            "source_commit",
+            "dirty",
+            "working_tree_sha256",
+            "suite_sha256",
+            "environment_sha256",
+            "model",
+            "prompts",
+            "started_at",
+            "finished_at",
+            "inventory_complete",
+            "attempts",
+            "selections"
+          ],
+          "title": "CandidateManifest",
+          "type": "object"
+        },
+        "ModelPin": {
+          "additionalProperties": false,
+          "properties": {
+            "configuration_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Configuration Sha256",
+              "type": "string"
+            },
+            "model_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Model Id",
+              "type": "string"
+            },
+            "model_version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Model Version",
+              "type": "string"
+            },
+            "provider_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Provider Id",
+              "type": "string"
+            },
+            "provider_version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Provider Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider_id",
+            "provider_version",
+            "model_id",
+            "model_version",
+            "configuration_sha256"
+          ],
+          "title": "ModelPin",
+          "type": "object"
+        },
+        "NamedHash": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Name",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "sha256"
+          ],
+          "title": "NamedHash",
+          "type": "object"
+        },
+        "Policy": {
+          "additionalProperties": false,
+          "properties": {
+            "baseline_required": {
+              "title": "Baseline Required",
+              "type": "boolean"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "max_answer_error_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Answer Error Rate",
+              "type": "string"
+            },
+            "max_reviewer_miss_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Reviewer Miss Rate",
+              "type": "string"
+            },
+            "max_unnecessary_block_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Unnecessary Block Rate",
+              "type": "string"
+            },
+            "max_unsupported_execution_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Unsupported Execution Rate",
+              "type": "string"
+            },
+            "registered_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Registered At",
+              "type": "string"
+            },
+            "reviewer_required": {
+              "title": "Reviewer Required",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "registered_at",
+            "reviewer_required",
+            "baseline_required",
+            "max_answer_error_rate",
+            "max_reviewer_miss_rate",
+            "max_unnecessary_block_rate",
+            "max_unsupported_execution_rate"
+          ],
+          "title": "Policy",
+          "type": "object"
+        },
+        "Selection": {
+          "additionalProperties": false,
+          "properties": {
+            "answer_attempt_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Answer Attempt Id"
+            },
+            "case_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Case Id",
+              "type": "string"
+            },
+            "reviewer_attempt_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reviewer Attempt Id"
+            }
+          },
+          "required": [
+            "case_id",
+            "answer_attempt_id",
+            "reviewer_attempt_id"
+          ],
+          "title": "Selection",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CandidateManifest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidate": {
+          "$ref": "#/$defs/CandidateManifest"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "schema_version": {
+          "const": "ms-e1.v1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "policy",
+        "candidate",
+        "baseline"
+      ],
+      "title": "Manifest",
+      "type": "object"
+    },
+    "Observation": {
+      "$defs": {
+        "Answer": {
+          "additionalProperties": false,
+          "properties": {
+            "decision": {
+              "enum": [
+                "reply",
+                "ask",
+                "tool",
+                "deliver",
+                "blocked",
+                "none"
+              ],
+              "title": "Decision",
+              "type": "string"
+            },
+            "evidence": {
+              "items": {
+                "$ref": "#/$defs/OutputEvidence"
+              },
+              "maxItems": 64,
+              "title": "Evidence",
+              "type": "array"
+            },
+            "text": {
+              "maxLength": 65536,
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "decision",
+            "text",
+            "evidence"
+          ],
+          "title": "Answer",
+          "type": "object"
+        },
+        "OutputEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "content",
+                "artifact",
+                "tool_call",
+                "tool_result",
+                "receipt"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "version",
+            "sha256"
+          ],
+          "title": "OutputEvidence",
+          "type": "object"
+        },
+        "ReviewerObservation": {
+          "additionalProperties": false,
+          "properties": {
+            "target_attempt_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Target Attempt Id",
+              "type": "string"
+            },
+            "target_output_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Target Output Sha256",
+              "type": "string"
+            },
+            "verdict": {
+              "enum": [
+                "passed",
+                "failed",
+                "not_applicable",
+                "unavailable"
+              ],
+              "title": "Verdict",
+              "type": "string"
+            }
+          },
+          "required": [
+            "target_attempt_id",
+            "target_output_sha256",
+            "verdict"
+          ],
+          "title": "ReviewerObservation",
+          "type": "object"
+        },
+        "Usage": {
+          "additionalProperties": false,
+          "properties": {
+            "billing_state": {
+              "enum": [
+                "confirmed",
+                "pending",
+                "unknown"
+              ],
+              "title": "Billing State",
+              "type": "string"
+            },
+            "currency": {
+              "pattern": "^[A-Z]{3}$",
+              "title": "Currency",
+              "type": "string"
+            },
+            "input_tokens": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Input Tokens"
+            },
+            "model_calls": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Model Calls"
+            },
+            "money": {
+              "anyOf": [
+                {
+                  "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,8})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Money"
+            },
+            "output_tokens": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Tokens"
+            },
+            "tool_calls": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tool Calls"
+            }
+          },
+          "required": [
+            "input_tokens",
+            "output_tokens",
+            "model_calls",
+            "tool_calls",
+            "money",
+            "currency",
+            "billing_state"
+          ],
+          "title": "Usage",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "active_ms": {
+          "maximum": 1000000000000000000,
+          "minimum": 0,
+          "title": "Active Ms",
+          "type": "integer"
+        },
+        "attempt_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "attempt_number": {
+          "maximum": 4096,
+          "minimum": 1,
+          "title": "Attempt Number",
+          "type": "integer"
+        },
+        "case_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Case Id",
+          "type": "string"
+        },
+        "case_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Case Version",
+          "type": "string"
+        },
+        "failure_code": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Failure Code"
+        },
+        "finished_at": {
+          "maxLength": 40,
+          "minLength": 20,
+          "title": "Finished At",
+          "type": "string"
+        },
+        "logical_request_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Logical Request Id",
+          "type": "string"
+        },
+        "manifest_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "output": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Answer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phase": {
+          "enum": [
+            "answer",
+            "reviewer",
+            "tool",
+            "preparation"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewerObservation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "const": "ms-e1.v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "maxLength": 40,
+          "minLength": 20,
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "cancelled",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/Usage"
+        },
+        "wall_ms": {
+          "maximum": 1000000000000000000,
+          "minimum": 0,
+          "title": "Wall Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "manifest_id",
+        "case_id",
+        "case_version",
+        "attempt_id",
+        "logical_request_id",
+        "attempt_number",
+        "phase",
+        "status",
+        "started_at",
+        "finished_at",
+        "active_ms",
+        "wall_ms",
+        "usage",
+        "output",
+        "reviewer",
+        "failure_code"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "Report": {
+      "$defs": {
+        "AttemptPin": {
+          "additionalProperties": false,
+          "properties": {
+            "attempt_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Attempt Id",
+              "type": "string"
+            },
+            "observation_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Observation Sha256",
+              "type": "string"
+            },
+            "output_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Sha256"
+            }
+          },
+          "required": [
+            "attempt_id",
+            "observation_sha256",
+            "output_sha256"
+          ],
+          "title": "AttemptPin",
+          "type": "object"
+        },
+        "AttemptSummary": {
+          "additionalProperties": false,
+          "properties": {
+            "active_ms": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Active Ms",
+              "type": "integer"
+            },
+            "attempt_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Attempt Id",
+              "type": "string"
+            },
+            "binding_verified": {
+              "title": "Binding Verified",
+              "type": "boolean"
+            },
+            "case_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Case Id",
+              "type": "string"
+            },
+            "failure_code": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Failure Code"
+            },
+            "observation_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Observation Sha256",
+              "type": "string"
+            },
+            "output_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Sha256"
+            },
+            "phase": {
+              "title": "Phase",
+              "type": "string"
+            },
+            "status": {
+              "title": "Status",
+              "type": "string"
+            },
+            "usage": {
+              "$ref": "#/$defs/Usage"
+            },
+            "wall_ms": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Wall Ms",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "attempt_id",
+            "case_id",
+            "phase",
+            "status",
+            "failure_code",
+            "observation_sha256",
+            "output_sha256",
+            "binding_verified",
+            "active_ms",
+            "wall_ms",
+            "usage"
+          ],
+          "title": "AttemptSummary",
+          "type": "object"
+        },
+        "CandidateManifest": {
+          "additionalProperties": false,
+          "properties": {
+            "attempts": {
+              "items": {
+                "$ref": "#/$defs/AttemptPin"
+              },
+              "maxItems": 2048,
+              "title": "Attempts",
+              "type": "array"
+            },
+            "dirty": {
+              "title": "Dirty",
+              "type": "boolean"
+            },
+            "environment_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Environment Sha256",
+              "type": "string"
+            },
+            "finished_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Finished At",
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "inventory_complete": {
+              "title": "Inventory Complete",
+              "type": "boolean"
+            },
+            "model": {
+              "$ref": "#/$defs/ModelPin"
+            },
+            "prompts": {
+              "items": {
+                "$ref": "#/$defs/NamedHash"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "title": "Prompts",
+              "type": "array"
+            },
+            "provenance": {
+              "enum": [
+                "actual_candidate",
+                "controlled_fixture"
+              ],
+              "title": "Provenance",
+              "type": "string"
+            },
+            "selections": {
+              "items": {
+                "$ref": "#/$defs/Selection"
+              },
+              "maxItems": 128,
+              "title": "Selections",
+              "type": "array"
+            },
+            "source_commit": {
+              "pattern": "^[0-9a-f]{40}$",
+              "title": "Source Commit",
+              "type": "string"
+            },
+            "started_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Started At",
+              "type": "string"
+            },
+            "suite_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Suite Sha256",
+              "type": "string"
+            },
+            "working_tree_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Working Tree Sha256"
+            }
+          },
+          "required": [
+            "id",
+            "provenance",
+            "source_commit",
+            "dirty",
+            "working_tree_sha256",
+            "suite_sha256",
+            "environment_sha256",
+            "model",
+            "prompts",
+            "started_at",
+            "finished_at",
+            "inventory_complete",
+            "attempts",
+            "selections"
+          ],
+          "title": "CandidateManifest",
+          "type": "object"
+        },
+        "CandidateReport": {
+          "additionalProperties": false,
+          "properties": {
+            "acceptable_output_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Acceptable Output Count",
+              "type": "integer"
+            },
+            "active_ms": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Active Ms",
+              "type": "integer"
+            },
+            "answer_error": {
+              "$ref": "#/$defs/Rate"
+            },
+            "attempt_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Attempt Count",
+              "type": "integer"
+            },
+            "attempt_wall_ms_sum": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Attempt Wall Ms Sum",
+              "type": "integer"
+            },
+            "attempts": {
+              "items": {
+                "$ref": "#/$defs/AttemptSummary"
+              },
+              "maxItems": 2048,
+              "title": "Attempts",
+              "type": "array"
+            },
+            "cancelled_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Cancelled Count",
+              "type": "integer"
+            },
+            "controlled_reviewed_cases": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Controlled Reviewed Cases",
+              "type": "integer"
+            },
+            "costs": {
+              "items": {
+                "$ref": "#/$defs/Cost"
+              },
+              "title": "Costs",
+              "type": "array"
+            },
+            "experiment_wall_ms": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Experiment Wall Ms",
+              "type": "integer"
+            },
+            "failure_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Failure Count",
+              "type": "integer"
+            },
+            "human_reviewed_cases": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Human Reviewed Cases",
+              "type": "integer"
+            },
+            "input_tokens": {
+              "$ref": "#/$defs/Quantity"
+            },
+            "manifest_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Manifest Id",
+              "type": "string"
+            },
+            "model_calls": {
+              "$ref": "#/$defs/Quantity"
+            },
+            "model_suggestion_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Model Suggestion Count",
+              "type": "integer"
+            },
+            "output_tokens": {
+              "$ref": "#/$defs/Quantity"
+            },
+            "requirements_lost": {
+              "$ref": "#/$defs/Rate"
+            },
+            "retry_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Retry Count",
+              "type": "integer"
+            },
+            "reviewer_miss": {
+              "$ref": "#/$defs/Rate"
+            },
+            "reviewer_na_cases": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Reviewer Na Cases",
+              "type": "integer"
+            },
+            "selected_output_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Selected Output Count",
+              "type": "integer"
+            },
+            "tool_calls": {
+              "$ref": "#/$defs/Quantity"
+            },
+            "unknown_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Unknown Count",
+              "type": "integer"
+            },
+            "unnecessary_block": {
+              "$ref": "#/$defs/Rate"
+            },
+            "unsupported_execution": {
+              "$ref": "#/$defs/Rate"
+            },
+            "unverified_costs": {
+              "items": {
+                "$ref": "#/$defs/Cost"
+              },
+              "title": "Unverified Costs",
+              "type": "array"
+            },
+            "verified_observation_count": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Verified Observation Count",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "manifest_id",
+            "attempts",
+            "attempt_count",
+            "failure_count",
+            "cancelled_count",
+            "unknown_count",
+            "retry_count",
+            "verified_observation_count",
+            "selected_output_count",
+            "acceptable_output_count",
+            "reviewer_na_cases",
+            "human_reviewed_cases",
+            "controlled_reviewed_cases",
+            "model_suggestion_count",
+            "answer_error",
+            "reviewer_miss",
+            "unnecessary_block",
+            "unsupported_execution",
+            "requirements_lost",
+            "active_ms",
+            "attempt_wall_ms_sum",
+            "experiment_wall_ms",
+            "input_tokens",
+            "output_tokens",
+            "model_calls",
+            "tool_calls",
+            "costs",
+            "unverified_costs"
+          ],
+          "title": "CandidateReport",
+          "type": "object"
+        },
+        "Comparison": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_minus_baseline": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "title": "Candidate Minus Baseline",
+              "type": "object"
+            },
+            "reasons": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                "type": "string"
+              },
+              "title": "Reasons",
+              "type": "array"
+            },
+            "status": {
+              "enum": [
+                "comparable",
+                "incomparable",
+                "not_available"
+              ],
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "reasons",
+            "candidate_minus_baseline"
+          ],
+          "title": "Comparison",
+          "type": "object"
+        },
+        "Cost": {
+          "additionalProperties": false,
+          "properties": {
+            "confirmed": {
+              "pattern": "^(0|[1-9][0-9]{0,29})(\\.[0-9]{1,8})?$",
+              "title": "Confirmed",
+              "type": "string"
+            },
+            "confirmed_per_acceptable_output": {
+              "anyOf": [
+                {
+                  "pattern": "^(0|[1-9][0-9]{0,29})(\\.[0-9]{1,8})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Confirmed Per Acceptable Output"
+            },
+            "currency": {
+              "title": "Currency",
+              "type": "string"
+            },
+            "pending": {
+              "pattern": "^(0|[1-9][0-9]{0,29})(\\.[0-9]{1,8})?$",
+              "title": "Pending",
+              "type": "string"
+            },
+            "pending_attempts": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Pending Attempts",
+              "type": "integer"
+            },
+            "unknown_billing_attempts": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Unknown Billing Attempts",
+              "type": "integer"
+            },
+            "unknown_estimate": {
+              "pattern": "^(0|[1-9][0-9]{0,29})(\\.[0-9]{1,8})?$",
+              "title": "Unknown Estimate",
+              "type": "string"
+            },
+            "unknown_money_attempts": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Unknown Money Attempts",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "currency",
+            "confirmed",
+            "pending",
+            "unknown_estimate",
+            "unknown_money_attempts",
+            "pending_attempts",
+            "unknown_billing_attempts",
+            "confirmed_per_acceptable_output"
+          ],
+          "title": "Cost",
+          "type": "object"
+        },
+        "Gate": {
+          "additionalProperties": false,
+          "properties": {
+            "reasons": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                "type": "string"
+              },
+              "title": "Reasons",
+              "type": "array"
+            },
+            "status": {
+              "enum": [
+                "passed",
+                "blocked",
+                "incomplete"
+              ],
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "reasons"
+          ],
+          "title": "Gate",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "attempt_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Attempt Id"
+            },
+            "case_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Case Id"
+            },
+            "code": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Code",
+              "type": "string"
+            },
+            "manifest_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Manifest Id"
+            }
+          },
+          "required": [
+            "code",
+            "manifest_id",
+            "case_id",
+            "attempt_id"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Manifest": {
+          "additionalProperties": false,
+          "properties": {
+            "baseline": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/CandidateManifest"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "candidate": {
+              "$ref": "#/$defs/CandidateManifest"
+            },
+            "policy": {
+              "$ref": "#/$defs/Policy"
+            },
+            "schema_version": {
+              "const": "ms-e1.v1",
+              "title": "Schema Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "schema_version",
+            "policy",
+            "candidate",
+            "baseline"
+          ],
+          "title": "Manifest",
+          "type": "object"
+        },
+        "ModelPin": {
+          "additionalProperties": false,
+          "properties": {
+            "configuration_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Configuration Sha256",
+              "type": "string"
+            },
+            "model_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Model Id",
+              "type": "string"
+            },
+            "model_version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Model Version",
+              "type": "string"
+            },
+            "provider_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Provider Id",
+              "type": "string"
+            },
+            "provider_version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Provider Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider_id",
+            "provider_version",
+            "model_id",
+            "model_version",
+            "configuration_sha256"
+          ],
+          "title": "ModelPin",
+          "type": "object"
+        },
+        "NamedHash": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Name",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "sha256"
+          ],
+          "title": "NamedHash",
+          "type": "object"
+        },
+        "Policy": {
+          "additionalProperties": false,
+          "properties": {
+            "baseline_required": {
+              "title": "Baseline Required",
+              "type": "boolean"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "max_answer_error_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Answer Error Rate",
+              "type": "string"
+            },
+            "max_reviewer_miss_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Reviewer Miss Rate",
+              "type": "string"
+            },
+            "max_unnecessary_block_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Unnecessary Block Rate",
+              "type": "string"
+            },
+            "max_unsupported_execution_rate": {
+              "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+              "title": "Max Unsupported Execution Rate",
+              "type": "string"
+            },
+            "registered_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Registered At",
+              "type": "string"
+            },
+            "reviewer_required": {
+              "title": "Reviewer Required",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "registered_at",
+            "reviewer_required",
+            "baseline_required",
+            "max_answer_error_rate",
+            "max_reviewer_miss_rate",
+            "max_unnecessary_block_rate",
+            "max_unsupported_execution_rate"
+          ],
+          "title": "Policy",
+          "type": "object"
+        },
+        "Quantity": {
+          "additionalProperties": false,
+          "properties": {
+            "known_total": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Known Total",
+              "type": "integer"
+            },
+            "unknown_attempts": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Unknown Attempts",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "known_total",
+            "unknown_attempts"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        "Rate": {
+          "additionalProperties": false,
+          "properties": {
+            "denominator": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Denominator",
+              "type": "integer"
+            },
+            "numerator": {
+              "maximum": 1000000000000000000,
+              "minimum": 0,
+              "title": "Numerator",
+              "type": "integer"
+            },
+            "status": {
+              "enum": [
+                "measured",
+                "provisional",
+                "not_applicable"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "pattern": "^(0(\\.[0-9]{1,8})?|1(\\.0{1,8})?)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Value"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator",
+            "value",
+            "status"
+          ],
+          "title": "Rate",
+          "type": "object"
+        },
+        "Selection": {
+          "additionalProperties": false,
+          "properties": {
+            "answer_attempt_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Answer Attempt Id"
+            },
+            "case_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Case Id",
+              "type": "string"
+            },
+            "reviewer_attempt_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reviewer Attempt Id"
+            }
+          },
+          "required": [
+            "case_id",
+            "answer_attempt_id",
+            "reviewer_attempt_id"
+          ],
+          "title": "Selection",
+          "type": "object"
+        },
+        "Usage": {
+          "additionalProperties": false,
+          "properties": {
+            "billing_state": {
+              "enum": [
+                "confirmed",
+                "pending",
+                "unknown"
+              ],
+              "title": "Billing State",
+              "type": "string"
+            },
+            "currency": {
+              "pattern": "^[A-Z]{3}$",
+              "title": "Currency",
+              "type": "string"
+            },
+            "input_tokens": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Input Tokens"
+            },
+            "model_calls": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Model Calls"
+            },
+            "money": {
+              "anyOf": [
+                {
+                  "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,8})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Money"
+            },
+            "output_tokens": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Tokens"
+            },
+            "tool_calls": {
+              "anyOf": [
+                {
+                  "maximum": 1000000000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tool Calls"
+            }
+          },
+          "required": [
+            "input_tokens",
+            "output_tokens",
+            "model_calls",
+            "tool_calls",
+            "money",
+            "currency",
+            "billing_state"
+          ],
+          "title": "Usage",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CandidateReport"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidate": {
+          "$ref": "#/$defs/CandidateReport"
+        },
+        "comparison": {
+          "$ref": "#/$defs/Comparison"
+        },
+        "human_verification": {
+          "const": "offline_assertions_only_not_identity_authentication",
+          "title": "Human Verification",
+          "type": "string"
+        },
+        "input_sha256": {
+          "items": {
+            "$ref": "#/$defs/NamedHash"
+          },
+          "title": "Input Sha256",
+          "type": "array"
+        },
+        "integrity_issues": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Integrity Issues",
+          "type": "array"
+        },
+        "manifests": {
+          "$ref": "#/$defs/Manifest"
+        },
+        "release_gate": {
+          "$ref": "#/$defs/Gate"
+        },
+        "schema_version": {
+          "const": "ms-e1.v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "suite_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Suite Id",
+          "type": "string"
+        },
+        "suite_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Suite Sha256",
+          "type": "string"
+        },
+        "unassigned_attempts": {
+          "items": {
+            "$ref": "#/$defs/AttemptSummary"
+          },
+          "title": "Unassigned Attempts",
+          "type": "array"
+        },
+        "unassigned_costs": {
+          "items": {
+            "$ref": "#/$defs/Cost"
+          },
+          "title": "Unassigned Costs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "suite_id",
+        "suite_sha256",
+        "manifests",
+        "unassigned_attempts",
+        "unassigned_costs",
+        "input_sha256",
+        "candidate",
+        "baseline",
+        "comparison",
+        "release_gate",
+        "integrity_issues",
+        "human_verification"
+      ],
+      "title": "Report",
+      "type": "object"
+    },
+    "Review": {
+      "$defs": {
+        "Labels": {
+          "additionalProperties": false,
+          "properties": {
+            "acceptable": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Acceptable"
+            },
+            "answer_correct": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Answer Correct"
+            },
+            "critical_error": {
+              "title": "Critical Error",
+              "type": "boolean"
+            },
+            "requirements_preserved": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Requirements Preserved"
+            },
+            "unnecessary_block": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unnecessary Block"
+            },
+            "unsupported_execution": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unsupported Execution"
+            }
+          },
+          "required": [
+            "answer_correct",
+            "unnecessary_block",
+            "unsupported_execution",
+            "requirements_preserved",
+            "acceptable",
+            "critical_error"
+          ],
+          "title": "Labels",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "attempt_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "human_evidence_review",
+            "model_suggestion",
+            "controlled_test"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "case_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Case Id",
+          "type": "string"
+        },
+        "case_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Case Sha256",
+          "type": "string"
+        },
+        "case_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Case Version",
+          "type": "string"
+        },
+        "evidence_reviewed": {
+          "title": "Evidence Reviewed",
+          "type": "boolean"
+        },
+        "evidence_sha256": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Evidence Sha256",
+          "type": "array"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "labels": {
+          "$ref": "#/$defs/Labels"
+        },
+        "manifest_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "notes": {
+          "maxLength": 16384,
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "output_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Output Sha256",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "maxLength": 40,
+          "minLength": 20,
+          "title": "Reviewed At",
+          "type": "string"
+        },
+        "reviewer_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Reviewer Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "ms-e1.v1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "manifest_id",
+        "case_id",
+        "case_version",
+        "attempt_id",
+        "output_sha256",
+        "case_sha256",
+        "basis",
+        "reviewer_id",
+        "reviewed_at",
+        "evidence_sha256",
+        "evidence_reviewed",
+        "labels",
+        "notes"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "Suite": {
+      "$defs": {
+        "Case": {
+          "additionalProperties": false,
+          "properties": {
+            "category": {
+              "enum": [
+                "office",
+                "academic",
+                "technical",
+                "missing_material",
+                "reasonable_ambiguity",
+                "correction"
+              ],
+              "title": "Category",
+              "type": "string"
+            },
+            "evidence": {
+              "items": {
+                "$ref": "#/$defs/Evidence"
+              },
+              "maxItems": 16,
+              "title": "Evidence",
+              "type": "array"
+            },
+            "human_verification": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/HumanVerification"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "prompt": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "review_status": {
+              "enum": [
+                "needs_human_review",
+                "human_verified"
+              ],
+              "title": "Review Status",
+              "type": "string"
+            },
+            "rubric": {
+              "$ref": "#/$defs/Rubric"
+            },
+            "split": {
+              "enum": [
+                "revision",
+                "holdout"
+              ],
+              "title": "Split",
+              "type": "string"
+            },
+            "version": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "split",
+            "category",
+            "prompt",
+            "rubric",
+            "evidence",
+            "review_status",
+            "human_verification"
+          ],
+          "title": "Case",
+          "type": "object"
+        },
+        "Evidence": {
+          "additionalProperties": false,
+          "properties": {
+            "captured_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Captured At",
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Id",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "provided_material",
+                "primary_source"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "locator": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "title": "Locator",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "text": {
+              "maxLength": 65536,
+              "minLength": 1,
+              "title": "Text",
+              "type": "string"
+            },
+            "url": {
+              "anyOf": [
+                {
+                  "maxLength": 2048,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Url"
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "locator",
+            "captured_at",
+            "text",
+            "sha256"
+          ],
+          "title": "Evidence",
+          "type": "object"
+        },
+        "HumanVerification": {
+          "additionalProperties": false,
+          "properties": {
+            "evidence_sha256": {
+              "items": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "maxItems": 16,
+              "title": "Evidence Sha256",
+              "type": "array"
+            },
+            "record_locator": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "title": "Record Locator",
+              "type": "string"
+            },
+            "reviewed_at": {
+              "maxLength": 40,
+              "minLength": 20,
+              "title": "Reviewed At",
+              "type": "string"
+            },
+            "reviewer_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Reviewer Id",
+              "type": "string"
+            },
+            "rubric_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Rubric Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "reviewer_id",
+            "reviewed_at",
+            "rubric_sha256",
+            "evidence_sha256",
+            "record_locator"
+          ],
+          "title": "HumanVerification",
+          "type": "object"
+        },
+        "Rubric": {
+          "additionalProperties": false,
+          "properties": {
+            "allowed_assumptions": {
+              "items": {
+                "maxLength": 16384,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 16,
+              "title": "Allowed Assumptions",
+              "type": "array"
+            },
+            "critical": {
+              "title": "Critical",
+              "type": "boolean"
+            },
+            "expected_behavior": {
+              "enum": [
+                "answer",
+                "clarify",
+                "decline",
+                "deliver",
+                "tool"
+              ],
+              "title": "Expected Behavior",
+              "type": "string"
+            },
+            "required_facts": {
+              "items": {
+                "maxLength": 16384,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 24,
+              "minItems": 1,
+              "title": "Required Facts",
+              "type": "array"
+            },
+            "retained_requirements": {
+              "items": {
+                "maxLength": 16384,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 24,
+              "title": "Retained Requirements",
+              "type": "array"
+            }
+          },
+          "required": [
+            "expected_behavior",
+            "required_facts",
+            "allowed_assumptions",
+            "retained_requirements",
+            "critical"
+          ],
+          "title": "Rubric",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "cases": {
+          "items": {
+            "$ref": "#/$defs/Case"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Cases",
+          "type": "array"
+        },
+        "created_at": {
+          "maxLength": 40,
+          "minLength": 20,
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "ms-e1.v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "version",
+        "created_at",
+        "cases"
+      ],
+      "title": "Suite",
+      "type": "object"
+    }
+  }
+}
