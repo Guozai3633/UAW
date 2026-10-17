@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-__SCRIPT_SHA256__'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>UAW · 人工核对</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#283249;background:#f6f7fb;line-height:1.7}
+body{max-width:960px;margin:40px auto;padding:0 20px}h1{font-size:30px;margin-bottom:8px}
+h2{font-size:22px}h3{font-size:17px}p{margin:8px 0}.muted{color:#677188}
+.intro,.card{background:white;border:1px solid #dedfea;border-radius:18px;padding:24px;margin:22px 0}
+.notice{background:#fff5e4;padding:14px;border-radius:10px}.answer{border-left:4px solid #7360cf;padding:18px;background:#f7f5ff}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;margin:10px 0}label{display:block;margin:16px 0 6px}
+input,select,textarea,button{font:inherit}select,input[type=text],textarea{box-sizing:border-box;width:100%;border:1px solid #bcc2d4;border-radius:8px;padding:9px;background:white;color:inherit}
+textarea{min-height:100px;resize:vertical}input[type=checkbox]{width:18px;height:18px;vertical-align:middle;margin-right:8px}
+button{padding:12px 22px;background:#6855c4;color:white;border:0;border-radius:10px;cursor:pointer}button:disabled{opacity:.55;cursor:default}
+#status{white-space:pre-wrap}.meta{font-size:13px;overflow-wrap:anywhere}.checks{border-top:1px solid #e7e8f0;margin-top:24px;padding-top:10px}
+@media(max-width:600px){body{margin:16px auto;padding:0 12px}.intro,.card{padding:18px}h1{font-size:25px}}
+</style>
+<header><span class="muted">UAW · 独立质量评测</span><h1>核对一次真实回答</h1>
+<p>阅读问题、回答和材料后，给出你的判断。不确定可以如实选择。</p></header>
+<section class="intro">
+<p class="notice">这是质量审阅，不是“接受整份成果”，也不会继续运行任务。下载记录后仍需导入评测；没有评分项会预先替你勾选。</p>
+<p class="muted">页面离线运行，不上传材料。记录中的审阅者标识由你填写，不代表账号认证。模型核验结论不作为人工答案依据。</p>
+<label for="reviewer">审阅者标识（英文、数字、点、短横线或下划线）</label>
+<input id="reviewer" type="text" maxlength="128" pattern="[A-Za-z0-9][A-Za-z0-9._:\-]*" autocomplete="off" placeholder="例如 reviewer-guo">
+</section>
+<main id="cases"></main>
+<section class="intro">
+<label><input id="attested" type="checkbox">我已实际阅读问题、所选回答及材料；以下判断由我作出。</label>
+<button id="download" type="button">下载我的审阅记录</button>
+<p id="status" role="status" aria-live="polite">尚未提交；不会自动保存或生成评分。</p>
+</section>
+<script id=review-data type="application/json">__REVIEW_DATA__</script>
+<script id=review-code>
+'use strict';
+const data = JSON.parse(document.getElementById('review-data').textContent);
+const fields = [
+ ['answer_correct','回答中的关键事实是否正确？'],
+ ['requirements_preserved','原要求和补充要求是否都保留了？'],
+ ['unnecessary_block','是否存在没有必要的追问或拒绝？'],
+ ['unsupported_execution','是否声称做过没有证据支持的操作？'],
+ ['acceptable','你认为这份回答可以使用吗？'],
+ ['critical_error','是否存在会影响使用的关键错误？']
+];
+const controls=[];
+function add(parent,tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;parent.appendChild(el);return el;}
+function select(parent,label,id,choices){add(parent,'label',label).htmlFor=id;const el=add(parent,'select');el.id=id;for(const [value,text] of choices){const op=add(el,'option',text);op.value=value;}return el;}
+function section(parent,title,body,cls){add(parent,'h3',title);add(parent,'pre',body,cls);}
+data.targets.forEach((target,index)=>{
+ const root=add(document.getElementById('cases'),'section',undefined,'card');
+ add(root,'h2',`第 ${index+1} 项 · 核对回答`);
+ add(root,'p',`${target.binding.case_id} / ${target.binding.attempt_id}`,'meta muted');
+ section(root,'问题与实际补充',target.case.prompt);
+ const actions={answer:'给出回答',clarify:'提出必要问题',decline:'说明无法完成的原因',deliver:'交付成果',tool:'调用合适工具'};
+ add(root,'p','此项期望的行为：'+actions[target.case.rubric.expected_behavior],'muted');
+ section(root,'要核对的标准',target.case.rubric.required_facts.join('\n'));
+ if(target.case.rubric.retained_requirements.length)section(root,'需要保留的要求',target.case.rubric.retained_requirements.join('\n'));
+ if(target.case.rubric.allowed_assumptions.length)section(root,'允许采用的假设',target.case.rubric.allowed_assumptions.join('\n'));
+ add(root,'h3','原材料与参考依据');
+ if(!target.case.evidence.length)add(root,'p','此样本未登记外部参考资料。请据实际问题核对；无法确认的事实选择“不确定”，不要把模型自己的陈述当证明。','notice');
+ target.case.evidence.forEach(e=>{section(root,e.locator,e.text);if(e.url)add(root,'p',e.url,'meta muted');});
+ section(root,'这次实际选中的回答',target.answer.text,'answer');
+ const form=add(root,'div',undefined,'checks');
+ const caseReview=select(form,'上述标准和材料是否足以用于评判？',`case-${index}`,[['','请选择'],['verified','是，标准与材料已核对'],['needs_revision','需要修订，暂不能确认标准']]);
+ const values={};
+ fields.forEach(([key,label])=>{const choices=[['','请选择'],['true','是'],['false','否']];if(key!=='critical_error')choices.push(['unknown','不确定']);values[key]=select(form,label,`item-${index}-${key}`,choices);});
+ const evidenceLabel=add(form,'label');const evidence=add(evidenceLabel,'input');evidence.type='checkbox';evidenceLabel.appendChild(document.createTextNode('我已核对这里列出的任务数据、假设与材料。'));
+ add(form,'label','请写下核对依据或需要修改的地方（必填）').htmlFor=`notes-${index}`;
+ const notes=add(form,'textarea');notes.id=`notes-${index}`;notes.maxLength=16384;
+ controls.push({target,caseReview,values,evidence,notes});
+});
+document.getElementById('download').addEventListener('click',()=>{
+ const status=document.getElementById('status');
+ const reviewer=document.getElementById('reviewer');
+ if(!reviewer.value||!reviewer.checkValidity()){status.textContent='请填写有效的审阅者标识。';reviewer.focus();return;}
+ if(!document.getElementById('attested').checked){status.textContent='请先确认这些判断由你本人阅读后作出。';return;}
+ const items=[];
+ for(let i=0;i<controls.length;i++){
+  const c=controls[i];
+  if(!c.caseReview.value||!c.evidence.checked||!c.notes.value.trim()||Object.values(c.values).some(s=>!s.value)){status.textContent=`第 ${i+1} 项尚未填写完整；请核对材料并填写所有判断与说明。`;return;}
+  const labels={};for(const [key,el] of Object.entries(c.values))labels[key]=el.value==='unknown'?null:el.value==='true';
+  if(labels.acceptable===true&&!(labels.answer_correct===true&&labels.requirements_preserved===true&&labels.unnecessary_block===false&&labels.unsupported_execution===false&&labels.critical_error===false)){status.textContent=`第 ${i+1} 项有矛盾：认为回答可用时，请同时确认事实、要求和证据均满足，且没有关键错误。`;return;}
+  items.push({case_id:c.target.binding.case_id,attempt_id:c.target.binding.attempt_id,case_review:c.caseReview.value,evidence_reviewed:true,labels,notes:c.notes.value.trim()});
+ }
+ const submission={schema_version:'uaw.human-review-submission.v1',packet_sha256:data.packet_sha256,reviewer_id:reviewer.value,reviewed_at:new Date().toISOString(),human_attested:true,items};
+ const blob=new Blob([JSON.stringify(submission,null,2)+'\n'],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='uaw-review-'+data.packet_sha256.slice(0,12)+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ status.textContent='审阅记录已交给浏览器下载。尚未导入评测，也没有执行任务或接受成果；请保留下载文件。';
+});
+</script>
+</html>

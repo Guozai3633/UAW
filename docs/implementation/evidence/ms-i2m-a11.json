@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-17",
+  "stage": "MS-I2m-A11",
+  "source_ref": "ms-i2m-a11-source",
+  "source_commit_authority": "origin/integration:docs/coordination/DISPATCH.md",
+  "status": "offline_human_review_intake_component_ready_browser_display_pending",
+  "implementation_scope": [
+    "A_owned_offline_review_packet",
+    "explicit_operator_submission_import",
+    "frozen_C_contracts_consumed_unchanged"
+  ],
+  "actual_packet": {
+    "targets": 1,
+    "sha256": "17ab7704d8a4a60e254bd5a596f0a087de06e4c81845dd5a52464d2d1074d16a",
+    "source_four_files_unchanged": true,
+    "source_actual_model_attempts": 4,
+    "new_model_calls": 0,
+    "runtime_writes": 0,
+    "human_reviews_created": 0,
+    "human_labels_generated": false,
+    "source_release_gate": "incomplete",
+    "import_on_actual_data_performed": false,
+    "raw_local_folder": ".data/evaluation/a11-review-ready",
+    "files_sha256": {
+      "index.html": "8f70cc2033fc13b3600eccd624390336553046244afc1f39285b8954de610685",
+      "packet.json": "5a61b975942e52387582f1af91538d2a9de7a9123ba39e27f2039536bcd1fba3"
+    }
+  },
+  "verification": {
+    "unit_unique_final_nodes": 23,
+    "final_unit_receipt": "ms-i2m-a11-unit-published.xml",
+    "earlier_passes_not_added": [
+      "ms-i2m-a11-unit-first.xml",
+      "ms-i2m-a11-unit-final.xml"
+    ],
+    "static_receipt": "ms-i2m-a11-static.json",
+    "changed_python_files": 3,
+    "mypy_source_files": 244,
+    "offline_html_parse": "passed",
+    "html_script_count": 2,
+    "prefilled_checked_inputs": 0,
+    "script_CSP_sha256_matches": true,
+    "javascript_syntax_check": {
+      "command": "node --check [stdin from fixed review script]",
+      "exit_code": 0,
+      "node_version": "v22.13.0"
+    },
+    "sql": "N/A_offline_no_database_access",
+    "actual_browser_render": "pending",
+    "browser_attempt": "file_protocol_rejected_by_browser_URL_security_policy",
+    "browser_workaround_attempted": false,
+    "human_acknowledgements_clicked": false,
+    "human_data_not_used_as_controlled_test": true,
+    "full_repository_regression": false,
+    "initial_development_diagnostics": [
+      {
+        "check": "ruff",
+        "result": "line_length_errors_reformatted"
+      },
+      {
+        "check": "mypy",
+        "result": "inferred_result_dict_type_annotation_fixed"
+      },
+      {
+        "check": "strict_literal_probe",
+        "result": "numeric_1_initially_accepted_replaced_with_strict_bool_and_explicit_true_validator"
+      }
+    ]
+  },
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:5183/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8013/health/ready",
+      "status": 200
+    }
+  ],
+  "existing_service_restarted_or_modified": false,
+  "runtime_backend_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+  "runtime_frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+  "operator_identity_authenticated": false,
+  "operator_ack_is_not_human_authentication": true,
+  "new_policy_or_baseline_created": false,
+  "pending": [
+    "actual_browser_display_and_download_experience",
+    "actual_independent_human_judgments",
+    "case_and_evidence_calibration",
+    "preregistered_candidate_baseline_comparison",
+    "H02_owner_retest",
+    "native_and_Tool_long_wall_independent_gates"
+  ],
+  "workers": "B_C_D_delivery_points_preserved_no_new_dispatch",
+  "last_full_updated": false,
+  "implementation_sha256": {
+    "src/uaw/run/evaluation_review.py": "3269f5e394ca49592c92b35b2193c56bdae4f08c67cd703be74196a75a3b0168",
+    "src/uaw/resources/reviews/human-review-v1.html": "a2b226ae231dfee7575e2549204e57321dc848981ae4fcd59e15e0963be9d3d0",
+    "ops/conversation_review.py": "6a575dcac236e8c98317b4c9c57135af675f5dd8c4ccd54a8fb2da10b525f025",
+    "tests/unit/agent/test_evaluation_review.py": "ce4585f4653f2834be66c7360b582c4e03081d27aad44458d692ffa2d78713bd"
+  }
+}

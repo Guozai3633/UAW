@@ -1,3 +1,7 @@
+# A11人工审阅消费
+
+2026-10-17。A自有`run/evaluation_review.py`将固定实际回答与原标准/材料整理为无预选的离线表单；原包/目标/版本/摘要一致且操作者明确提供真正人工判断后，写入新的C四文件及审计。测试评分不升级人工核准，事后人审不补造预登记；身份声明并非认证。[逐字段接口](../../coordination/requests/A/MS-I2m-A11-review-wiring.md) · [实现与实际未过项](../../implementation/MS-I2m-A11.md)。真实浏览器显示/下载、本人评分及新旧比较仍待完成。
+
 # A10实际来源接线
 
 2026-10-17。A在 `src/uaw/run/evaluation_capture.py` 和 `ops/capture_conversation_evaluation.py` 提供终态单Run的只读采集，不改C评测器。原输入/全部模型调用/精确核验绑定/未知费用进入四文件，空人审不产生质量通过；目前实际结果为incomplete。[逐项算法与限制](../../implementation/MS-I2m-A10.md) · [输入输出和目录](../../coordination/requests/A/MS-I2m-A10-capture-wiring.md)。该来源适配不装入每次用户请求，事后采集不替代题集人审或事前登记。
