@@ -1,0 +1,23 @@
+{
+  "unit": {
+    "tests": 107,
+    "receipt_sha256": "107135d4ba4e57e5b8edae4481d7a5f652570616b9e6352bd3e9797daeb18bea"
+  },
+  "browser": {
+    "tests": 60,
+    "receipt_sha256": "168e692bbf65873d3b4fe234a69f2b1fb0ad63e51e4605d30cb1052b82c14d9a"
+  },
+  "source": "500d292937b511dbced4e674e3486b84213a2de6",
+  "handoff": "9504d70f650318f025d24531d6e8bbbba1ed5fb8",
+  "merged_without_rewriting": true,
+  "dist_sha256": {
+    "index.html": "2bb4cfe3a59dca6c72d7fdd0d5e1b36875b9fbbc8a930525ba6bfff83e42b5a0",
+    "assets/index-BqL45bof.css": "40e08da4c5b490bdbab11b1bdd9b42d0accba7cc4a1cf803ff0f521557b87270",
+    "assets/index-CfUSTHXz.js": "51598b4bbfbb2e1f9a704f9a644ad011bff2154b42232e3cacc478b4eefd2643"
+  },
+  "A_review": "component_accepted_actual_original_Page_pending",
+  "A_SQL": 16,
+  "A_mypy_sources": 240,
+  "full_repository_gate": false,
+  "human_accepted": false
+}

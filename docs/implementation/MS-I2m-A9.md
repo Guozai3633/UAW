@@ -23,3 +23,7 @@
 ## A定向工程结果
 
 16个不同SQL节点最终通过（15原批＋1定向复跑，不重复累计），6变动Python文件Ruff/格式和240源码严格类型通过；原两个夹具失败保留，第二次为提供方参数名误用max_tokens，实际夹具使用max_completion_tokens。未放宽业务断言，未标全仓通过。[逐项回执](evidence/ms-i2m-a9.json)。
+
+## B组件接受
+
+普通合入B源码500d292937b511dbced4e674e3486b84213a2de6及独立handoff9504d70f650318f025d24531d6e8bbbba1ed5fb8。A核对10业务/测试文件逐字等于交付，XML摘要与107单元/60受控浏览器全通过及固定dist三文件一致，按组件范围接受。原Page、真实模型与候选部署待实际验证。[汇合回执](evidence/h02-i01-ab-integration.json)。
