@@ -1,3 +1,9 @@
+# H02-I01修复已部署：本人原会话可继续体验
+
+2026-10-17。当前H02-v4沿用 http://127.0.0.1:5183、原数据库/登录和本人原会话；准确后端 **ebbcd9ea33557d23ddcda4569909893ce590da4d** / **ms-i2m-a9a-source**，前端B **500d292937b511dbced4e674e3486b84213a2de6**。真实模型4调用完成原报告→大学生就业纠正→同Run新Artifact/独立核验，补充实际applied；重写2098 output tokens完整stop，超过旧2048上限，实际管理员4096 cap保留。B实际1050px成果入口/旧报告可读、终态反馈已验证。本人原12条Run/消息/Model/补充payload逐项未变。未代本人重发/接受。
+
+[问题及重测](../implementation/human-tests/H02-I01.md) · [来源/全部失败和用量](../implementation/evidence/h02-i01-final.json)。A16 SQL＋B107单元/60受控浏览器＋A9a11 adapter单元按各自范围通过，非全仓门槛。修复诊断全部9个模型调用与本人原3调用/pending费用保留，探针误判不是产品通过，last_full不改。H02本人反馈、独立事实质量、native及Tool长墙钟仍各自pending。B已交付按组件接受后停止，无自动扩包/同步。以下为历史。
+
 # MS-I2m A9a固定补充：模型字符串格式与真实回执
 
 2026-10-17。准确源码 **ebbcd9ea33557d23ddcda4569909893ce590da4d** / **ms-i2m-a9a-source**。A9实际报告自检又发现模型正文ASCII引号未转义；A9a准确归类structured-output失败并补平台JSON转义/完整收尾指引，不接纳无效JSON、不自动重发。11 adapter单元及240源码类型通过；A9原16SQL/B107单元/60受控浏览器按各自范围保留。原零调用准备错误、诊断状态误判与真实模型失败/3调用/pending费用全部保留，非实际整链通过。[A9过程](../implementation/MS-I2m-A9.md) · [A9a回执](../implementation/evidence/ms-i2m-a9a.json)。

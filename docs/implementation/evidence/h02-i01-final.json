@@ -1,0 +1,281 @@
+{
+  "date": "2026-10-17",
+  "issue": "H02-I01",
+  "status": "fixed_candidate_live_check_passed_ready_for_user_feedback",
+  "backend_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
+  "fixed_ref": "ms-i2m-a9a-source",
+  "frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+  "origin": "http://127.0.0.1:5183",
+  "same_original_user_database": true,
+  "original_authentication_reused": true,
+  "history_receipt": "h02-i01-history-preserved.json",
+  "page_receipt": "h02-i01-page.json",
+  "root_configured_limit": 8192,
+  "actual_admin_model_cap": 4096,
+  "semantic_review_limit": 2048,
+  "live_report_correction": {
+    "run_id": "run-26abe943d8324d4db3fe3e2e043b9d0c",
+    "phases": [
+      {
+        "state": "delivery_waiting_for_owner",
+        "input_revision": 1,
+        "elapsed_ms": 23098
+      },
+      {
+        "state": "delivery_waiting_for_owner",
+        "input_revision": 2,
+        "elapsed_ms": 37741
+      }
+    ],
+    "same_run": true,
+    "patch_state": "applied",
+    "different_artifact_versions": true,
+    "original_report_preserved": true,
+    "university_graduate_section_present": true,
+    "old_and_new_reports_checked_separately": true,
+    "current_verification_outcome": "succeeded",
+    "correction_in_actual_contract": true,
+    "requires_human_acceptance": true,
+    "human_acceptance_performed": false,
+    "diagnostic_only_cancelled_after_check": true,
+    "model_calls": 4,
+    "all_four_model_finish_reason": "stop",
+    "corrected_generation_output_tokens": 2098,
+    "corrected_generation_exceeds_previous_2048_limit": true,
+    "content_characters": 3214
+  },
+  "all_fix_diagnostic_attempts": [
+    {
+      "runtime": "H02-v3",
+      "receipt": "live-report-smoke-9a079cecd63d4dd991f0a54b0bf930ab.json",
+      "status": "stopped",
+      "error_type": "ConnectError",
+      "error_code": null,
+      "calls": 0,
+      "phases": []
+    },
+    {
+      "runtime": "H02-v3",
+      "receipt": "live-report-smoke-ba214f1fd44647be81072b3be0907892.json",
+      "status": "stopped",
+      "error_type": "RuntimeError",
+      "error_code": "diagnostic_report_failed",
+      "calls": 1,
+      "phases": []
+    },
+    {
+      "runtime": "H02-v3",
+      "receipt": "live-report-smoke-cb9d5122749146a6a95980e15da46403.json",
+      "status": "stopped",
+      "error_type": "RuntimeError",
+      "error_code": "diagnostic_report_timeout",
+      "calls": 2,
+      "phases": []
+    },
+    {
+      "runtime": "H02-v4",
+      "receipt": "live-report-smoke-e3f9c9ea5990438490e09c5a564a5ee8.json",
+      "status": "passed",
+      "error_type": null,
+      "error_code": null,
+      "calls": 4,
+      "phases": [
+        {
+          "state": "delivery_waiting_for_owner",
+          "input_revision": 1,
+          "elapsed_ms": 23098
+        },
+        {
+          "state": "delivery_waiting_for_owner",
+          "input_revision": 2,
+          "elapsed_ms": 37741
+        }
+      ]
+    },
+    {
+      "runtime": "H02-v4",
+      "receipt": "live-report-smoke-fd53a0a4e3ad4721b63930d9d4c506b9.json",
+      "status": "stopped",
+      "error_type": "AssertionError",
+      "error_code": null,
+      "calls": 2,
+      "phases": [
+        {
+          "state": "delivery_waiting_for_owner",
+          "input_revision": 1,
+          "elapsed_ms": 22770
+        },
+        {
+          "state": "delivery_waiting_for_owner",
+          "input_revision": 2,
+          "elapsed_ms": 140
+        }
+      ]
+    }
+  ],
+  "all_fix_diagnostic_unique_model_calls": 9,
+  "all_fix_diagnostic_usage": [
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2379,
+        "wall_time_ms": 9146,
+        "output_tokens": 1338
+      },
+      "attempt_id": "web-step-model-1-run-dbf45f46c5f146b6abb1a58a4e50550b",
+      "billing_state": "pending"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2377,
+        "wall_time_ms": 9823,
+        "output_tokens": 1534
+      },
+      "attempt_id": "web-step-model-1-run-6064cab22d91488a91f7637863cfc36b",
+      "billing_state": "pending",
+      "cached_input_tokens": 256,
+      "provider_receipt_id": "cd612706-1e83-41bb-8cb6-f1b909799f54"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2922,
+        "wall_time_ms": 2004,
+        "output_tokens": 220
+      },
+      "attempt_id": "evaluation-31262952b9db2b8995e4e58051ebf4772b2cb27c3fb98a4e585293cc173d089b",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "53373313-8248-4b32-b2e9-14e1d2b27fde"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2457,
+        "wall_time_ms": 8375,
+        "output_tokens": 1160
+      },
+      "attempt_id": "web-step-model-1-run-26abe943d8324d4db3fe3e2e043b9d0c",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "2e560164-c088-4013-9684-45536682fcf2"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2556,
+        "wall_time_ms": 1813,
+        "output_tokens": 199
+      },
+      "attempt_id": "evaluation-509e212d3502f034a6ca8fec40fe4970f57b8c6ce2324c9d536f5f70330fd273",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "e8e2b563-ad5e-469e-a2a1-81b92fcd7293"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2602,
+        "wall_time_ms": 13747,
+        "output_tokens": 2098
+      },
+      "attempt_id": "web-step-model-2-run-26abe943d8324d4db3fe3e2e043b9d0c",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "f9c62b54-fb01-4422-b28d-5bd6582d7340"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 3674,
+        "wall_time_ms": 3244,
+        "output_tokens": 284
+      },
+      "attempt_id": "evaluation-7a70ce65c6a1c6a1ce830616d732b0b445bff3dc56e5b254cd71bdd14c419f5c",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "0591496f-6e91-424a-a9d9-dcd5d1c60e46"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2460,
+        "wall_time_ms": 7835,
+        "output_tokens": 1100
+      },
+      "attempt_id": "web-step-model-1-run-104dff8e14a9416494af41f4c870fcd2",
+      "billing_state": "pending",
+      "cached_input_tokens": 256,
+      "provider_receipt_id": "85b9155d-9c20-4848-bd24-832e5b41d187"
+    },
+    {
+      "resources": {
+        "currency": "USD",
+        "tool_calls": 0,
+        "model_calls": 1,
+        "child_agents": 0,
+        "input_tokens": 2498,
+        "wall_time_ms": 2076,
+        "output_tokens": 259
+      },
+      "attempt_id": "evaluation-53e88d0542fc5ce1d5d0b953c7bbb7e145ee3a5d7dd8af97cd8ac7dc9fa2616d",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "86222ae6-1700-4fe9-9609-7a51048a9a9d"
+    }
+  ],
+  "billing_state": "pending",
+  "original_user_failure_calls": 3,
+  "original_user_failure_receipt": "h02-i01-user-failure.json",
+  "preparation_failures_preserved": [
+    "process_selector_path_normalization_no_process_stopped_before_checks",
+    "original_H02_v2_helpers_already_absent_ports_verified_before_start",
+    "first_probe_before_service_ready_zero_calls",
+    "probe_original_waiting_status_and_later_old_artifact_version_expectations_fixed_no_product_success_fabricated",
+    "non_escalated_adapter_test_interrupted_no_result_not_counted_as_passed"
+  ],
+  "old_H01_modified": false,
+  "default_native_flags_enabled": false,
+  "subagents_or_DAG_enabled": false,
+  "last_full_updated": false,
+  "human_experience_accepted": false,
+  "remaining": [
+    "actual_user_retest_and_feedback",
+    "independent_quality_human_review",
+    "native_file_chain_and_Tool_long_wall_dispatch"
+  ],
+  "final_original_conversation_reread": {
+    "runtime": "H02-v4",
+    "authenticated": true,
+    "same_conversation_and_failed_Run_preserved": true,
+    "report_drawer_open": true,
+    "prior_version_warning": true,
+    "screenshot": "private .data/human/H02-v4/original-report-visible.jpg",
+    "Page_left_open": true
+  }
+}

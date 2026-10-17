@@ -1,3 +1,7 @@
+# H02-I01已修复并部署，继续本人重测
+
+H02-v4 / ms-i2m-a9a-source ebbcd9ea33557d23ddcda4569909893ce590da4d，原5183地址/登录/历史沿用；真实模型报告纠正4调用通过、实际applied，新稿2098 tokens完整stop。B修复已合入并实际验证1050px旧成果可读及终态反馈；本人原12条payload未改，未代接受。A16 SQL/B107单元60浏览器/A9a11单元分别通过，非全仓。所有9诊断调用与原本人失败3调用费用pending。[最终回执](../../implementation/evidence/h02-i01-final.json)。下一步按本人反馈处理，质量人审/native/Tool长墙钟保持pending。以下为历史。
+
 # H02-v2独立体验已就绪，等待本人反馈
 
 A8固定源码fd50359ccd0c99f3416b5c0aeaf2375847f60dca / ms-i2m-a8-source，已登录 http://127.0.0.1:5183 的空白测试会话。真实模型3调用完成澄清→纠正→回答，2补充applied，实际idle6008ms；含原失败共4调用、费用pending。[测试说明](../../implementation/human-tests/H02.md) · [实际回执](../../implementation/evidence/h02-v2-ready.json)。下一步根据本人体验修正，独立质量人审与工具/native路径继续保留pending；不代本人任务或接受。以下为历史。
