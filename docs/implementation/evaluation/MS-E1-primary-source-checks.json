@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://seata.apache.org/docs/user/mode/tcc/",
+    "displayed_version": "v2.6",
+    "checked_at_utc": "2026-10-17T02:42:49Z",
+    "locator": "Overall Mechanism, first paragraph, sentence identifying TM coordination",
+    "excerpt": "The Transaction Manager (TM) coordinates all Resource Managers in two phases.",
+    "excerpt_utf8_sha256": "30355c32124d1ccdeb39f846c55996d9a79ed5f0c22de7d4aa790d1cba69763e",
+    "verification_scope": "Actual official page opened with research tool; excerpt only, not full page hash or human grading."
+  },
+  {
+    "url": "https://zookeeper.apache.org/doc/current/zookeeperInternals.html",
+    "displayed_version": "3.9 documentation",
+    "checked_at_utc": "2026-10-17T02:42:49Z",
+    "locator": "Consistency Guarantees, paragraph about read operations",
+    "excerpt": "Read operations in ZooKeeper are not linearizable since they can return potentially stale data.",
+    "excerpt_utf8_sha256": "883c9ffe38265544d057e0170d15b4b902e24fcdec31d807b4774e9e8d772f0f",
+    "verification_scope": "Actual official page opened with research tool; excerpt only, not full page hash or human grading."
+  }
+]

@@ -1,0 +1,122 @@
+{
+  "schema_version": "ms-e1.v1",
+  "policy": {
+    "id": "registered-policy",
+    "reviewer_required": false,
+    "baseline_required": false,
+    "registered_at": "2026-10-17T02:42:49Z",
+    "max_answer_error_rate": "0",
+    "max_reviewer_miss_rate": "0",
+    "max_unnecessary_block_rate": "0",
+    "max_unsupported_execution_rate": "0"
+  },
+  "candidate": {
+    "id": "unrun-candidate-placeholder",
+    "provenance": "controlled_fixture",
+    "source_commit": "b16c69a92d81124c00fb859ce8123748f56df054",
+    "dirty": false,
+    "working_tree_sha256": null,
+    "suite_sha256": "b50464d91b84f94393bc05b1a9cffc631271965a2d47734954d5521bae75624f",
+    "environment_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "model": {
+      "provider_id": "not-a-real-provider",
+      "provider_version": "1",
+      "model_id": "not-a-real-model",
+      "model_version": "1",
+      "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    "prompts": [
+      {
+        "name": "controlled-prompt",
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      }
+    ],
+    "started_at": "2026-10-17T02:42:49Z",
+    "finished_at": "2026-10-17T02:42:49Z",
+    "inventory_complete": true,
+    "attempts": [],
+    "selections": [
+      {
+        "case_id": "office-invoice",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "office-growth",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "office-empty-cost",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "academic-pilot",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "academic-quote",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "technical-tcc-zk",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "technical-zk-read",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "technical-unknown-write",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "missing-paper",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "missing-target",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "ambiguity-weekly-title",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "ambiguity-cache-db",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "correction-office",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "correction-academic",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "technical-tcc-locking",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      },
+      {
+        "case_id": "ambiguity-polite",
+        "answer_attempt_id": null,
+        "reviewer_attempt_id": null
+      }
+    ]
+  },
+  "baseline": null
+}
