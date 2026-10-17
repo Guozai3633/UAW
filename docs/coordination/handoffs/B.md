@@ -949,3 +949,13 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 准确三文件dist/hash已冻结在 `apps/web/.test-results/ms-u4-final-dist/`，A只读复制，不执行B环境；正文/输入与生效截图只含受控材料，已目视核对。完整SHA256见final-wiring，源码5e0b37d。
 - 最后干净fetch只读 `origin/integration / 49cf4026464c74e441b05f0a6f90fc6b4df793b4` DISPATCH仍无D真实clock/Tool时间adapter/新H02服务。M4真实原Page联调 **pending**，`scripts/u4-readonly.mjs`三明确变量缺失，exit2，未尝试连接，不计通过/skip。verifyOwnedConversationPage(originalPage,actualRunId)仅同Page GET/前后身份及图版本/原scope回执复查；无newPage/context、launch交换、导航、持久化、截图/trace、cookie导出、提交/审批/native/接受或关闭A页面。两个受控验证器节点不等于真实认证。
 - A负责合入、真实时钟/当前权限/Model/队列/费用来源、独立新服务部署及本人操作与质量门槛。H01-v5/本人历史/原失败和账本保留；没有B新真实SQL/LLM/native/授权/合同接受/长等待通过声明，不标H02/P1整轮accepted。源码/handoff分开clean交付，后续准确真实来源到达才联调，不自动扩包。
+
+## H02-I01 B 终态纠正反馈/窄屏成果定向修复（2026-10-17）
+
+- 实际原worktree `E:/UAW/.worktrees/context` / `dev/context`，原干净HEAD `f37265a5d4fc7f5545a0591ab91057e45b29d84c`；只读请求固定发布 `fdc7b30c26defa4bebd5a0096de9e5f30c9de6ed`。fetch核对远端正式DISPATCH和准确A8 tag解析，普通merge固定 `ms-i2m-a8-source / fd50359ccd0c99f3416b5c0aeaf2375847f60dca`，实际快进且HEAD相同；全部B旧提交/handoff祖先保留，无浮动integration/reset/rebase/stash/替代worktree。
+- 阶段及最终源码 **`500d292937b511dbced4e674e3486b84213a2de6`**。定向通过后先交源码SHA继续完整回归；本独立handoff为随后docs提交，准确SHA见最终回报。仅10个apps/web文件及B文档；[完整文件、接口/样例、回执、hash及接线](../requests/B/H02-I01-B-terminal-correction-feedback-final.md)。不改公共HTTP/DTO/后端/schema/锁/flags/其他worker。
+- accepted仍保留历史事实，按同原Run最新revision的failed/cancelled/completed明确“本次未生效，任务已结束”，失败不说本人取消；真正applied保持，原patch不改。可选onInputRevision仅发布已校验当前读图版本，TaskUnderstanding按原task/input区分当前/旧版/未核对；终态无当前理解不再持续等待，旧summary原文和版本明确标记，草稿保留。
+- <=1150px header“查看成果”打开唯一原Review抽屉；1050/390px完整正文/Refs/版本/逐项核验可读，关闭/Escape恢复入口焦点。stale或proposal Run修订不符明确旧成果只读，原接受guard/当前重查/Ref/hash/未知对账不变，旧Artifact不升格新结果，无自动提交/接受/重发。
+- 最终 **107不同单元/21文件＋60不同受控Chromium**，各0失败/错误/跳过；原96/53完整保留，新11/7，不累计定向24/7复跑。uv/pnpm冻结同步、生成一致无diff、公共schema/锁不变、类型/build/diff-check通过。锁内node24.21.0/pnpm10.17.0，外引导engine/原chunk提示保留。
+- 自身ignored `apps/web/.test-results/h02-i01-b-receipts.json`保存去重节点及日志/XML/hash。初次定向5过2失败为抽屉关闭焦点未返回，正确实现focus后原断言/时限不变7/7及60/60；原initial log/XML/trace/screenshot和全部MS-U4旧失败保留。1050/390截图已目视核对，均合成DTO，未复制本人正文。
+- 准确构建 `apps/web/.test-results/h02-i01-b-dist/`（源码500d292），三文件完整SHA256见final文档；A只读复制，不执行B环境。B没有访问/登录/交换5183本人Page、切dist或本人提交/确认/授权/接受。A负责原Page和最终切换，以及输出额度/截断分类/真实report→correction；真实复验与本人体验pending，不标整轮MS-U4/H02 accepted。源码/handoff分别clean交付后停止，不自动扩包。
