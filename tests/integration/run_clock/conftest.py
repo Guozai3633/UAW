@@ -1,6 +1,8 @@
 """Own D55435 records. Service time is controlled; no live model/native actions."""
 
+import json
 from datetime import datetime, timedelta
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -39,7 +41,7 @@ async def clock_case(domain, principal):
         principal,
         {
             "conversation_id": conversation["id"],
-            "text": "鍘熸枃  涓嶆敼\nclock component",
+            "text": "原文  不改\nclock component",
             "attachment_refs": [],
         },
         meta("clock-run"),
@@ -88,3 +90,11 @@ async def clock_case(domain, principal):
 
     p.change = change
     return p
+
+
+@pytest.fixture(autouse=True)
+def own_cleanup_ledger(principal):
+    # Fixture principals only; no credential, request body or user/session data.
+    target = Path(__file__).resolve().parents[3] / "tests/.artifacts/D/MS-K1/sql-principals.jsonl"
+    with target.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps({"principal": principal.id}) + "\n")
