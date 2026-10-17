@@ -1,9 +1,9 @@
 {
-  "baseline": "06ff3ef56b68d391387bc7b154fa58ecb00571f9",
-  "contract_ref": "ms-i2l-a8",
-  "contract_commit": "06ff3ef56b68d391387bc7b154fa58ecb00571f9",
-  "schema_sha256": "7089c76fd673686b639c1dc8dd6d697522b83b54983c52af6ce7008d86e79925",
-  "openapi_sha256": "5dae5e37e37376d7f3fc699fe648bf8c8b4b3a744720cf0f47b915af878d6868",
+  "baseline": "b16c69a92d81124c00fb859ce8123748f56df054",
+  "contract_ref": "ms-i2m-a6-source",
+  "contract_commit": "b16c69a92d81124c00fb859ce8123748f56df054",
+  "schema_sha256": "0c421003560ceae17c72a72b2f48363688bf86efe75744d7ec62e236c4cee7cc",
+  "openapi_sha256": "eb3d4ccc827b04060128d31b003b4431cad63b70b80031482730042cdbcef100",
   "paths": {
     "/v1/conversations": [
       "get",
@@ -74,6 +74,21 @@
     ],
     "/v1/runner/local/{launch_id}/stop": [
       "post"
+    ],
+    "/v1/runs/{run_id}/conversation": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/clarifications/{question_item_id}": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/clarifications/{question_item_id}/answers": [
+      "post"
+    ],
+    "/v1/runs/{run_id}/corrections": [
+      "post"
+    ],
+    "/v1/runs/{run_id}/continuations/{request_id}": [
+      "get"
     ],
     "/v1/models": [
       "get"

@@ -1,0 +1,32 @@
+import {it,expect,vi} from 'vitest';
+import {UawClient,conversationMeta,requestMeta} from '../../src/lib/api/client';
+import {HttpConversationPort} from '../../src/features/conversation/port';
+import {conversationView,continuationReceipt} from '../conversation-fixtures';
+import {makeRun,ok} from '../fixtures';
+const session=()=>({identityKey:'web-one',principal:{id:'user-one',kind:'user' as const,auth_session_id:'session-one'}}),signal=()=>new AbortController().signal;
+it('five exact endpoints use 0.2 header/meta with precise body; original turn remains 0.1',async()=>{
+ const calls:[string,RequestInit|undefined][]=[];const fetcher=vi.fn(async(i:RequestInfo|URL,o?:RequestInit)=>{const path=String(i);calls.push([path,o]);return new Response(JSON.stringify(ok(path.endsWith('/conversation')?conversationView():path.endsWith('/question-one')?conversationView().question:path.endsWith('/turns')?makeRun():continuationReceipt())));});
+ const c=new UawClient(session,fetcher),meta=conversationMeta(4);await c.runConversation('run-one');await c.clarification('run-one','question-one');await c.answer('run-one','question-one',{expected_input_revision:1,expected_question_revision:2,text:'  精确回答\n原文  ',attachment_refs:[]},meta);await c.correct('run-one',{expected_input_revision:1,text:'纠正',attachment_refs:[]},meta);await c.continuation('run-one','request-one');await c.submit('conv-one',{text:'旧提交',attachment_refs:[]},requestMeta(1));
+ expect(calls.slice(0,5).map(c=>c[0])).toEqual(['/v1/runs/run-one/conversation','/v1/runs/run-one/clarifications/question-one','/v1/runs/run-one/clarifications/question-one/answers','/v1/runs/run-one/corrections','/v1/runs/run-one/continuations/request-one']);
+ for(const [,o] of calls.slice(0,5))expect(o?.headers).toMatchObject({'X-UAW-Schema-Version':'0.2'});
+ expect(JSON.parse(String(calls[2][1]?.body))).toEqual({meta,payload:{expected_input_revision:1,expected_question_revision:2,text:'  精确回答\n原文  ',attachment_refs:[]}});expect(JSON.parse(String(calls[5][1]?.body)).meta.schema_version).toBe('0.1');expect(()=>conversationMeta(0)).toThrow();
+});
+it('question discovery requires actual graph, cross-scope/mismatched versions/null/unknown fields are rejected',async()=>{
+ const v=conversationView(false);v.run=makeRun('waiting_for_user',4);const read=async(value:unknown)=>new HttpConversationPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify(ok(value)))))).read(v.run,signal());expect((await read(v)).question).toBeUndefined();
+ for(const value of [{...v,question:null},{...v,approved:true},{...conversationView(),run:{...v.run,conversation_id:'other'}},{...conversationView(),question:{...conversationView().question,input_revision:2}}])await expect(read(value)).rejects.toThrow();
+});
+it('answer rechecks view plus original question, keeps original text and accepted receipt; correction needs no question',async()=>{
+ for(const kind of ['clarification_answer','correction'] as const){const v=conversationView(kind==='clarification_answer'),meta=conversationMeta(4),calls:[string,RequestInit|undefined][]=[];const port=new HttpConversationPort(new UawClient(session,vi.fn(async(i:RequestInfo|URL,o?:RequestInit)=>{calls.push([String(i),o]);return new Response(JSON.stringify(ok(o?.method==='POST'?continuationReceipt(meta.request_id,kind):String(i).endsWith('/conversation')?v:v.question)));})));
+ const result=await port.submit(v,kind,'  本人原文\n保留  ',meta,signal());expect(result.patch.state).toBe('accepted');const post=calls.filter(c=>c[1]?.method==='POST');expect(post).toHaveLength(1);expect(JSON.parse(String(post[0][1]?.body)).payload.text).toBe('  本人原文\n保留  ');expect(calls.filter(c=>c[1]?.method==='GET')).toHaveLength(kind==='clarification_answer'?2:1);}
+});
+it('current terminal, Run/input/question CAS change prevents POST; no input is applied by an HTTP acknowledgement',async()=>{
+ const old=conversationView(),meta=conversationMeta(4);for(const fresh of [{...old,run:makeRun('cancelled',5),question:undefined},{...old,run:makeRun('waiting_for_user',5),question:{...old.question!,run_revision:5}},{...old,input_revision:2,question:{...old.question!,input_revision:2,question:{...old.question!.question,input_revision:2}}}]){let posts=0;const port=new HttpConversationPort(new UawClient(session,vi.fn(async(_i:RequestInfo|URL,o?:RequestInit)=>{if(o?.method==='POST')posts++;return new Response(JSON.stringify(ok(fresh)));})));await expect(port.submit(old,'clarification_answer','answer',meta,signal())).rejects.toThrow();expect(posts).toBe(0);}
+});
+it('receipt must bind original request and full scope, applied requires actual applied_at',async()=>{
+ const scope={conversationId:'conv-one',runId:'run-one'},base=continuationReceipt();for(const receipt of [{...base,patch:{...base.patch,request_id:'other'}},{...base,run:{...base.run,conversation_id:'foreign'}},{...base,patch:{...base.patch,state:'applied'}}]){const port=new HttpConversationPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify(ok(receipt))))));await expect(port.lookup(scope,'request-one',signal())).rejects.toThrow();}
+ for(const state of ['accepted','applied','superseded','cancelled'] as const){const port=new HttpConversationPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify(ok(continuationReceipt('request-one','correction',state)))))));expect((await port.lookup(scope,'request-one',signal())).patch.state).toBe(state);}
+});
+it('late identity or cancellation cannot publish a view, and duplicate submissions do not dispatch twice',async()=>{
+ const v=conversationView();let current=session(),release!:(v:Response)=>void;const c=new UawClient(()=>current,vi.fn(()=>new Promise<Response>(r=>{release=r;}))),port=new HttpConversationPort(c);const reading=port.read(v.run,signal());current={...session(),identityKey:'other'};release(new Response(JSON.stringify(ok(v))));await expect(reading).rejects.toThrow('身份');current=session();const first=port.submit(v,'clarification_answer','x',conversationMeta(4),signal());await expect(port.submit(v,'clarification_answer','x',conversationMeta(4),signal())).rejects.toThrow('提交');release(new Response(JSON.stringify(ok({...v,run:makeRun('cancelled',5),question:undefined}))));await expect(first).rejects.toThrow();
+ const abort=new AbortController();abort.abort();await expect(new HttpConversationPort(new UawClient(session,vi.fn(async()=>new Response(JSON.stringify(ok(v)))))).read(v.run,abort.signal)).rejects.toThrow();
+});

@@ -2,14 +2,14 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import openapiTS, { astToString } from 'openapi-typescript';
-const contractRef='ms-i2l-a8';
+const contractRef='ms-i2m-a6-source';
 const contractCommit=execFileSync('git',['rev-parse',`${contractRef}^{commit}`],{encoding:'utf8',maxBuffer:16777216}).trim();
-if(contractCommit!=='06ff3ef56b68d391387bc7b154fa58ecb00571f9')throw Error('Published API tag changed');
+if(contractCommit!=='b16c69a92d81124c00fb859ce8123748f56df054')throw Error('Published API tag changed');
 const target = new URL('../src/lib/api/generated/', import.meta.url);
 const raw=execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
 const schemaRaw=execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
 const api = JSON.parse(raw), schema = JSON.parse(schemaRaw);
-// Exact public routes checked in src/uaw/api/routes.py at ms-i2l-a8.
+// Exact public routes checked in src/uaw/api/routes.py at ms-i2m-a6-source.
 const allowed = {
  '/v1/conversations': ['get','post'], '/v1/conversations/{conversation_id}': ['get'],
  '/v1/conversations/{conversation_id}/items': ['get'],
@@ -23,6 +23,9 @@ const allowed = {
  '/v1/runner/enrollments':['post'], '/v1/runner/enrollments/{enrollment_id}':['get'],
  '/v1/runner/enrollments/{enrollment_id}/confirmation':['post'], '/v1/runner/enrollments/{enrollment_id}/revocation':['post'],
  '/v1/runner/local':['post'], '/v1/runner/local/{launch_id}':['get'], '/v1/runner/local/{launch_id}/stop':['post'],
+ '/v1/runs/{run_id}/conversation':['get'], '/v1/runs/{run_id}/clarifications/{question_item_id}':['get'],
+ '/v1/runs/{run_id}/clarifications/{question_item_id}/answers':['post'], '/v1/runs/{run_id}/corrections':['post'],
+ '/v1/runs/{run_id}/continuations/{request_id}':['get'],
  '/v1/models': ['get'], '/v1/web/session':['get','post','delete'] };
 const paths = Object.fromEntries(Object.entries(allowed).map(([path, methods]) => [path,
  Object.fromEntries(methods.map(method => { if (!api.paths[path]?.[method]) throw Error(`Missing ${path}`);
@@ -34,7 +37,7 @@ function visit(value) { if (!value || typeof value !== 'object') return;
  for (const [key, child] of Object.entries(value)) if (key !== '$ref') visit(child); }
 visit(paths);
 // Requests are inline in OpenAPI; include their unchanged named schema DTOs too.
-for(const key of ['RunnerLocalBeginRequest','RunnerLocalGetRequest','RunnerLocalStopRequest','RunnerEnrollmentsBeginRequest','RunnerEnrollmentsGetRequest','RunnerEnrollmentsCompleteRequest','RunnerEnrollmentsRevokeRequest','ConversationsCreateRequest','ConversationsGetRequest','ConversationsItemsRequest',
+for(const key of ['ConversationRequestMeta','RunClarificationAnswerRequest','RunCorrectionRequest','RunClarificationGetRequest','RunContinuationGetRequest','RunnerLocalBeginRequest','RunnerLocalGetRequest','RunnerLocalStopRequest','RunnerEnrollmentsBeginRequest','RunnerEnrollmentsGetRequest','RunnerEnrollmentsCompleteRequest','RunnerEnrollmentsRevokeRequest','ConversationsCreateRequest','ConversationsGetRequest','ConversationsItemsRequest',
  'TurnsSubmitRequest','RunsGetRequest','RunsControlRequest','TasksFrameRequest','ApprovalsGetRequest',
  'ApprovalsDecideRequest','EventsReadRequest','EventsPayloadRequest','ModelsListRequest',
  'ConversationsListRequest','TurnsLookupRequest','RunsDeliveryRequest','RunsDeliveryAcceptRequest','ArtifactsGetRequest','ArtifactsContentRequest','CompletionAcceptance','ArtifactRecord','VerificationReport','WebSessionGetRequest','WebSessionExchangeRequest','WebSessionLogoutRequest']) {
@@ -64,7 +67,7 @@ function collect(value) { if (!value || typeof value !== 'object') return;
 for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
  $defs:Object.fromEntries([...defs].sort().map(k=>[k,schema.$defs[k]]))},null,2)+'\n');
-await writeFile(new URL('source.json',target),JSON.stringify({baseline:'06ff3ef56b68d391387bc7b154fa58ecb00571f9',
+await writeFile(new URL('source.json',target),JSON.stringify({baseline:'b16c69a92d81124c00fb859ce8123748f56df054',
  contract_ref:contractRef,contract_commit:contractCommit,
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
  openapi_sha256:createHash('sha256').update(raw).digest('hex'),paths:allowed},null,2)+'\n');
