@@ -26,7 +26,12 @@
       "initial_line_lengths_reformatted",
       "mypy_manifest_variable_type_collision_fixed",
       "new_test_canonical_import_added"
-    ]
+    ],
+    "diff_check_exception": {
+      "path": "docs/implementation/evidence/ms-i2m-a12-unit-first.xml",
+      "reason": "original_pytest_traceback_blank_line_trailing_whitespace_preserved",
+      "source_and_document_check_excluding_raw_XML": "checked_separately"
+    }
   },
   "actual_provisional_registration": {
     "id": "a12-provisional-future-report-correction",
@@ -153,5 +158,6 @@
     "local_receipt": ".data/human/H02-v4/a12-restart-3f94391f6aed4884af4b051bc215728e.json",
     "service_code_modified": false,
     "model_calls_requested": 0
-  }
+  },
+  "source_commit": "ce1ff8a58b03e59c86e4b521bab7b31a811f2812"
 }
