@@ -796,6 +796,198 @@
       ],
       "additionalProperties": false
     },
+    "ClarificationPrompt": {
+      "type": "object",
+      "description": "模型的必要补充问题；不是审批请求。",
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "自包含问题",
+          "pattern": "\\S"
+        },
+        "reason": {
+          "$ref": "#/$defs/NonEmptyText",
+          "description": "缺什么和为什么需要",
+          "pattern": "\\S"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NonEmptyText"
+          },
+          "minItems": 0,
+          "maxItems": 5,
+          "description": "可选候选，空数组表示自由答复",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "text",
+        "reason",
+        "options"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "ClarificationQuestion": {
+      "type": "object",
+      "description": "原问题的持久权威关联，用稳定Item表达，无新RefKind。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "conversation-v1",
+          "description": "协议"
+        },
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "conversation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "所属会话"
+        },
+        "item_id": {
+          "$ref": "#/$defs/ID",
+          "description": "agent_message问题Item"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "问题CAS版本",
+          "minimum": 1
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "提问时有效原文版本",
+          "minimum": 1
+        },
+        "prompt": {
+          "$ref": "#/$defs/ClarificationPrompt",
+          "description": "用户看到的问题"
+        },
+        "decision_record_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原ask动作的实际模型记录"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "answered",
+            "stale",
+            "cancelled"
+          ],
+          "description": "问题状态"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "问题提交时间"
+        },
+        "answer_input_ref": {
+          "$ref": "#/$defs/UserInputRef",
+          "description": "实际受理答复，answered时必需"
+        }
+      },
+      "required": [
+        "protocol",
+        "run_id",
+        "conversation_id",
+        "item_id",
+        "revision",
+        "input_revision",
+        "prompt",
+        "decision_record_ref",
+        "state",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "answered"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "answer_input_ref"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "answer_input_ref"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "ClarificationView": {
+      "type": "object",
+      "description": "UI同源读取原问题与Run，刷新不创建新launch或会话。",
+      "properties": {
+        "question": {
+          "$ref": "#/$defs/ClarificationQuestion",
+          "description": "当前实际问题"
+        },
+        "run_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "当前Run版本，用于提交CAS",
+          "minimum": 1
+        },
+        "run_status": {
+          "$ref": "#/$defs/RunStatus",
+          "description": "当前Run真实状态"
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "当前有效输入版本",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "question",
+        "run_revision",
+        "run_status",
+        "input_revision"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "question": {
+                "properties": {
+                  "state": {
+                    "const": "open"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            },
+            "required": [
+              "question"
+            ]
+          },
+          "then": {
+            "properties": {
+              "run_status": {
+                "const": "waiting_for_user"
+              }
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
     "CompletionAcceptance": {
       "type": "object",
       "description": "独立认证用户对确切成果版本的审阅记录。",
@@ -1130,6 +1322,33 @@
         "snapshot_revision"
       ],
       "additionalProperties": false
+    },
+    "ConversationRequestMeta": {
+      "type": "object",
+      "description": "新对话控制专用元信息；不能提交给旧0.1入口。",
+      "properties": {
+        "request_id": {
+          "$ref": "#/$defs/ID",
+          "description": "同一逻辑补充提交保持不变"
+        },
+        "schema_version": {
+          "type": "string",
+          "const": "0.2",
+          "description": "新控制HTTP版本"
+        },
+        "expected_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原Run预期修订，必需且从1开始",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "request_id",
+        "schema_version",
+        "expected_revision"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
     },
     "ConversationsCreateRequest": {
       "type": "object",
@@ -4549,6 +4768,396 @@
         }
       ]
     },
+    "HttpRunsClarificationAnswerResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunContinuationReceipt",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "HttpRunsClarificationGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/ClarificationView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "HttpRunsContinuationGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunContinuationReceipt",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
     "HttpRunsControlResult": {
       "type": "object",
       "description": "该接口的状态结果；ok才携带完整业务payload。",
@@ -4677,6 +5286,266 @@
           }
         }
       ]
+    },
+    "HttpRunsConversationGetResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunConversationView",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "HttpRunsCorrectionCreateResult": {
+      "type": "object",
+      "description": "该接口的状态结果；ok才携带完整业务payload。",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "waiting",
+            "missing",
+            "denied",
+            "conflict",
+            "stale",
+            "failed",
+            "cancelled"
+          ],
+          "description": "接口状态"
+        },
+        "payload": {
+          "$ref": "#/$defs/RunContinuationReceipt",
+          "description": "ok的业务结果"
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "description": "关联真实资源"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "本次提交/读取的域版本"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure",
+          "description": "失败状态的明确原因"
+        },
+        "wait_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "waiting时审批/进程/用户问题引用"
+        },
+        "usage_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "发生消耗时真实统计"
+        }
+      },
+      "required": [
+        "kind",
+        "output_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "payload"
+            ],
+            "not": {
+              "required": [
+                "failure"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "waiting"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "wait_ref"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missing",
+                  "denied",
+                  "conflict",
+                  "stale",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "payload"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
     },
     "HttpRunsDeliveryAcceptResult": {
       "type": "object",
@@ -7073,6 +7942,251 @@
       "type": "integer",
       "minimum": 0
     },
+    "RunClarificationAnswerRequest": {
+      "type": "object",
+      "description": "原Run回答；身份和expected_run_revision来自meta。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径中的原Run"
+        },
+        "question_item_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径中原问题稳定Item"
+        },
+        "expected_question_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "问题预期CAS版本",
+          "minimum": 1
+        },
+        "expected_input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原有效输入版本",
+          "minimum": 1
+        },
+        "text": {
+          "$ref": "#/$defs/Text",
+          "description": "用户真实回答"
+        },
+        "attachment_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "description": "本人获准材料，真实权限另查",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "run_id",
+        "question_item_id",
+        "expected_question_revision",
+        "expected_input_revision",
+        "text",
+        "attachment_refs"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "text": {
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "properties": {
+            "attachment_refs": {
+              "minItems": 1
+            }
+          },
+          "required": [
+            "attachment_refs"
+          ]
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "RunClarificationGetRequest": {
+      "type": "object",
+      "description": "读取原Run特定问题，不猜最新问题。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径原Run"
+        },
+        "question_item_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径原问题"
+        }
+      },
+      "required": [
+        "run_id",
+        "question_item_id"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "RunContinuationGetRequest": {
+      "type": "object",
+      "description": "原提交响应丢失或刷新后的受理/生效查询。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径原Run"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径原逻辑提交ID"
+        }
+      },
+      "required": [
+        "run_id",
+        "request_id"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "RunContinuationReceipt": {
+      "type": "object",
+      "description": "补充受理和实际生效回执，不等于最终成果完成。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "conversation-v1",
+          "description": "协议"
+        },
+        "run": {
+          "$ref": "#/$defs/RunRecord",
+          "description": "当前原Run；允许受理后又取消的查询结果"
+        },
+        "patch": {
+          "$ref": "#/$defs/RunInputPatch",
+          "description": "原请求受理及生效状态"
+        },
+        "event_seq": {
+          "$ref": "#/$defs/Revision",
+          "description": "最后可续持久事件序号",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "protocol",
+        "run",
+        "patch",
+        "event_seq"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "RunConversationView": {
+      "type": "object",
+      "description": "当前Run对话控制读图；问题ID来自持久来源，不猜消息文本。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "conversation-v1",
+          "description": "对话协议"
+        },
+        "run": {
+          "$ref": "#/$defs/RunRecord",
+          "description": "当前原Run及CAS修订"
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "当前有效输入版本",
+          "minimum": 1
+        },
+        "question": {
+          "$ref": "#/$defs/ClarificationView",
+          "description": "当前仍开放的具体问题；没有时省略，不传null"
+        },
+        "continuation_request_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ID"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "description": "按输入版本排序的既有补充request_id；查询原回执用",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "protocol",
+        "run",
+        "input_revision",
+        "continuation_request_ids"
+      ],
+      "additionalProperties": false,
+      "x-uaw-protocol": "conversation-v1"
+    },
+    "RunCorrectionRequest": {
+      "type": "object",
+      "description": "当前Run纠正，不让客户端指定任意执行节点或权限。",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "路径中的原Run"
+        },
+        "expected_input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原有效输入版本",
+          "minimum": 1
+        },
+        "text": {
+          "$ref": "#/$defs/Text",
+          "description": "明确用户纠正"
+        },
+        "attachment_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "description": "本人获准材料",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "run_id",
+        "expected_input_revision",
+        "text",
+        "attachment_refs"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "text": {
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "properties": {
+            "attachment_refs": {
+              "minItems": 1
+            }
+          },
+          "required": [
+            "attachment_refs"
+          ]
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
+    },
     "RunDeliveryView": {
       "type": "object",
       "description": "真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。",
@@ -7150,6 +8264,152 @@
         "stale"
       ],
       "additionalProperties": false
+    },
+    "RunInputPatch": {
+      "type": "object",
+      "description": "追加输入关联，InputRecord结构不变；受理与生效区分。",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "const": "conversation-v1",
+          "description": "协议"
+        },
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "conversation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "会话"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原用户逻辑请求"
+        },
+        "input_ref": {
+          "$ref": "#/$defs/UserInputRef",
+          "description": "原子追加的实际InputRecord"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "clarification_answer",
+            "correction"
+          ],
+          "description": "来源类型"
+        },
+        "base_input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原有效输入版本",
+          "minimum": 1
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "受理后有效输入版本",
+          "minimum": 1
+        },
+        "question_item_id": {
+          "$ref": "#/$defs/ID",
+          "description": "澄清时必需；纠正时不允许"
+        },
+        "question_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原提问版本，与Item关联",
+          "minimum": 1
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "applied",
+            "superseded",
+            "cancelled"
+          ],
+          "description": "受理/真实生效"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "受理时间"
+        },
+        "applied_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "实际安全边界生效时刻"
+        }
+      },
+      "required": [
+        "protocol",
+        "run_id",
+        "conversation_id",
+        "request_id",
+        "input_ref",
+        "kind",
+        "base_input_revision",
+        "input_revision",
+        "state",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "clarification_answer"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "question_item_id",
+              "question_revision"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "question_item_id"
+                  ]
+                },
+                {
+                  "required": [
+                    "question_revision"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "applied"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "applied_at"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "applied_at"
+              ]
+            }
+          }
+        }
+      ],
+      "x-uaw-protocol": "conversation-v1"
     },
     "RunRecord": {
       "type": "object",

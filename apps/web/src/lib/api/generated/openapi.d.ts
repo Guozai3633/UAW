@@ -391,6 +391,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/runs/{run_id}/conversation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 运行状态。 */
+        get: operations["http_runs_conversation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/clarifications/{question_item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 读取原Run特定问题，不猜最新问题。 */
+        get: operations["http_runs_clarification_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/clarifications/{question_item_id}/answers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 原Run回答；身份和expected_run_revision来自meta。 */
+        post: operations["http_runs_clarification_answer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/corrections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 当前Run纠正，不让客户端指定任意执行节点或权限。 */
+        post: operations["http_runs_correction_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/continuations/{request_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 原提交响应丢失或刷新后的受理/生效查询。 */
+        get: operations["http_runs_continuation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/models": {
         parameters: {
             query?: never;
@@ -718,6 +803,57 @@ export interface components {
             /** @description 提交时间 */
             created_at: components["schemas"]["Timestamp"];
         };
+        /** @description 模型的必要补充问题；不是审批请求。 */
+        ClarificationPrompt: {
+            /** @description 自包含问题 */
+            text: components["schemas"]["NonEmptyText"];
+            /** @description 缺什么和为什么需要 */
+            reason: components["schemas"]["NonEmptyText"];
+            /** @description 可选候选，空数组表示自由答复 */
+            options: components["schemas"]["NonEmptyText"][];
+        };
+        /** @description 原问题的持久权威关联，用稳定Item表达，无新RefKind。 */
+        ClarificationQuestion: {
+            /**
+             * @description 协议
+             * @constant
+             */
+            protocol: "conversation-v1";
+            /** @description 原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 所属会话 */
+            conversation_id: components["schemas"]["ID"];
+            /** @description agent_message问题Item */
+            item_id: components["schemas"]["ID"];
+            /** @description 问题CAS版本 */
+            revision: components["schemas"]["Revision"];
+            /** @description 提问时有效原文版本 */
+            input_revision: components["schemas"]["Revision"];
+            /** @description 用户看到的问题 */
+            prompt: components["schemas"]["ClarificationPrompt"];
+            /** @description 原ask动作的实际模型记录 */
+            decision_record_ref: components["schemas"]["Ref"];
+            /**
+             * @description 问题状态
+             * @enum {string}
+             */
+            state: "open" | "answered" | "stale" | "cancelled";
+            /** @description 问题提交时间 */
+            created_at: components["schemas"]["Timestamp"];
+            /** @description 实际受理答复，answered时必需 */
+            answer_input_ref?: components["schemas"]["UserInputRef"];
+        };
+        /** @description UI同源读取原问题与Run，刷新不创建新launch或会话。 */
+        ClarificationView: {
+            /** @description 当前实际问题 */
+            question: components["schemas"]["ClarificationQuestion"];
+            /** @description 当前Run版本，用于提交CAS */
+            run_revision: components["schemas"]["Revision"];
+            /** @description 当前Run真实状态 */
+            run_status: components["schemas"]["RunStatus"];
+            /** @description 当前有效输入版本 */
+            input_revision: components["schemas"]["Revision"];
+        };
         /** @description 独立认证用户对确切成果版本的审阅记录。 */
         CompletionAcceptance: {
             /** @description 确切不可变交付Bundle */
@@ -821,6 +957,18 @@ export interface components {
             next_cursor?: components["schemas"]["Cursor"];
             /** @description 读取版本 */
             snapshot_revision: components["schemas"]["Revision"];
+        };
+        /** @description 新对话控制专用元信息；不能提交给旧0.1入口。 */
+        ConversationRequestMeta: {
+            /** @description 同一逻辑补充提交保持不变 */
+            request_id: components["schemas"]["ID"];
+            /**
+             * @description 新控制HTTP版本
+             * @constant
+             */
+            schema_version: "0.2";
+            /** @description 原Run预期修订，必需且从1开始 */
+            expected_revision: components["schemas"]["Revision"];
         };
         /** @description 创建会话。 */
         ConversationsCreateRequest: {
@@ -1612,6 +1760,66 @@ export interface components {
             usage_ref?: components["schemas"]["Ref"];
         };
         /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsClarificationAnswerResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunContinuationReceipt"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsClarificationGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["ClarificationView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsContinuationGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunContinuationReceipt"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
         HttpRunsControlResult: {
             /**
              * @description 接口状态
@@ -1620,6 +1828,46 @@ export interface components {
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
             /** @description ok的业务结果 */
             payload?: components["schemas"]["Acknowledgement"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsConversationGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunConversationView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsCorrectionCreateResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunContinuationReceipt"];
             /** @description 关联真实资源 */
             output_refs: components["schemas"]["Ref"][];
             /** @description 本次提交/读取的域版本 */
@@ -2202,6 +2450,76 @@ export interface components {
         };
         /** @description CAS单调修订号；0仅表示对象尚不存在，已有版本从1开始。 */
         Revision: number;
+        /** @description 原Run回答；身份和expected_run_revision来自meta。 */
+        RunClarificationAnswerRequest: {
+            /** @description 路径中的原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 路径中原问题稳定Item */
+            question_item_id: components["schemas"]["ID"];
+            /** @description 问题预期CAS版本 */
+            expected_question_revision: components["schemas"]["Revision"];
+            /** @description 原有效输入版本 */
+            expected_input_revision: components["schemas"]["Revision"];
+            /** @description 用户真实回答 */
+            text: components["schemas"]["Text"];
+            /** @description 本人获准材料，真实权限另查 */
+            attachment_refs: components["schemas"]["Ref"][];
+        };
+        /** @description 读取原Run特定问题，不猜最新问题。 */
+        RunClarificationGetRequest: {
+            /** @description 路径原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 路径原问题 */
+            question_item_id: components["schemas"]["ID"];
+        };
+        /** @description 原提交响应丢失或刷新后的受理/生效查询。 */
+        RunContinuationGetRequest: {
+            /** @description 路径原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 路径原逻辑提交ID */
+            request_id: components["schemas"]["ID"];
+        };
+        /** @description 补充受理和实际生效回执，不等于最终成果完成。 */
+        RunContinuationReceipt: {
+            /**
+             * @description 协议
+             * @constant
+             */
+            protocol: "conversation-v1";
+            /** @description 当前原Run；允许受理后又取消的查询结果 */
+            run: components["schemas"]["RunRecord"];
+            /** @description 原请求受理及生效状态 */
+            patch: components["schemas"]["RunInputPatch"];
+            /** @description 最后可续持久事件序号 */
+            event_seq: components["schemas"]["Revision"];
+        };
+        /** @description 当前Run对话控制读图；问题ID来自持久来源，不猜消息文本。 */
+        RunConversationView: {
+            /**
+             * @description 对话协议
+             * @constant
+             */
+            protocol: "conversation-v1";
+            /** @description 当前原Run及CAS修订 */
+            run: components["schemas"]["RunRecord"];
+            /** @description 当前有效输入版本 */
+            input_revision: components["schemas"]["Revision"];
+            /** @description 当前仍开放的具体问题；没有时省略，不传null */
+            question?: components["schemas"]["ClarificationView"];
+            /** @description 按输入版本排序的既有补充request_id；查询原回执用 */
+            continuation_request_ids: components["schemas"]["ID"][];
+        };
+        /** @description 当前Run纠正，不让客户端指定任意执行节点或权限。 */
+        RunCorrectionRequest: {
+            /** @description 路径中的原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 原有效输入版本 */
+            expected_input_revision: components["schemas"]["Revision"];
+            /** @description 明确用户纠正 */
+            text: components["schemas"]["Text"];
+            /** @description 本人获准材料 */
+            attachment_refs: components["schemas"]["Ref"][];
+        };
         /** @description 真实成果、合同、逐项核验、完成提案的固定视图；不返回执行上下文。 */
         RunDeliveryView: {
             /** @description 所属Run */
@@ -2232,6 +2550,44 @@ export interface components {
             stale: components["schemas"]["Bool"];
             /** @description 实际用户决定 */
             acceptance?: components["schemas"]["CompletionAcceptance"];
+        };
+        /** @description 追加输入关联，InputRecord结构不变；受理与生效区分。 */
+        RunInputPatch: {
+            /**
+             * @description 协议
+             * @constant
+             */
+            protocol: "conversation-v1";
+            /** @description 原Run */
+            run_id: components["schemas"]["ID"];
+            /** @description 会话 */
+            conversation_id: components["schemas"]["ID"];
+            /** @description 原用户逻辑请求 */
+            request_id: components["schemas"]["ID"];
+            /** @description 原子追加的实际InputRecord */
+            input_ref: components["schemas"]["UserInputRef"];
+            /**
+             * @description 来源类型
+             * @enum {string}
+             */
+            kind: "clarification_answer" | "correction";
+            /** @description 原有效输入版本 */
+            base_input_revision: components["schemas"]["Revision"];
+            /** @description 受理后有效输入版本 */
+            input_revision: components["schemas"]["Revision"];
+            /** @description 澄清时必需；纠正时不允许 */
+            question_item_id?: components["schemas"]["ID"];
+            /** @description 原提问版本，与Item关联 */
+            question_revision?: components["schemas"]["Revision"];
+            /**
+             * @description 受理/真实生效
+             * @enum {string}
+             */
+            state: "accepted" | "applied" | "superseded" | "cancelled";
+            /** @description 受理时间 */
+            created_at: components["schemas"]["Timestamp"];
+            /** @description 实际安全边界生效时刻 */
+            applied_at?: components["schemas"]["Timestamp"];
         };
         /** @description 调度执行实体；任务历史有多个Run。 */
         RunRecord: {
@@ -6536,6 +6892,893 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_conversation_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.2";
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsConversationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_clarification_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.2";
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+                question_item_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_clarification_answer: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+                /** @description 使用cookie会话写请求时必需；缺失不得执行。 */
+                "X-UAW-CSRF"?: components["schemas"]["Hash"];
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+                question_item_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["ConversationRequestMeta"] & {
+                        expected_revision: number;
+                    };
+                    /** @description 原Run回答；身份和expected_run_revision来自meta。 */
+                    payload: {
+                        /** @description 问题预期CAS版本 */
+                        expected_question_revision: components["schemas"]["Revision"];
+                        /** @description 原有效输入版本 */
+                        expected_input_revision: components["schemas"]["Revision"];
+                        /** @description 用户真实回答 */
+                        text: components["schemas"]["Text"];
+                        /** @description 本人获准材料，真实权限另查 */
+                        attachment_refs: components["schemas"]["Ref"][];
+                    } | {
+                        text: unknown;
+                    } | {
+                        attachment_refs: unknown;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsClarificationAnswerResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_correction_create: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+                /** @description 使用cookie会话写请求时必需；缺失不得执行。 */
+                "X-UAW-CSRF"?: components["schemas"]["Hash"];
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["ConversationRequestMeta"] & {
+                        expected_revision: number;
+                    };
+                    /** @description 当前Run纠正，不让客户端指定任意执行节点或权限。 */
+                    payload: {
+                        /** @description 原有效输入版本 */
+                        expected_input_revision: components["schemas"]["Revision"];
+                        /** @description 明确用户纠正 */
+                        text: components["schemas"]["Text"];
+                        /** @description 本人获准材料 */
+                        attachment_refs: components["schemas"]["Ref"][];
+                    } | {
+                        text: unknown;
+                    } | {
+                        attachment_refs: unknown;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsCorrectionCreateResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_continuation_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.2";
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+                request_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

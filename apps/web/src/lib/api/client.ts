@@ -6,9 +6,9 @@ export type WebSession = {identityKey:string; principal?:Schema['Principal'];csr
 export class UawClient {
  constructor(private session:()=>WebSession|null, private transport:typeof fetch=(input,init)=>fetch(input,init)) {}
  currentSession(){return this.session();}
- async call<T>(method:'GET'|'POST'|'DELETE',path:string,schema:string,query:Record<string,string|number|undefined>={},payload?:unknown,meta?:Schema['RequestMeta'],signal?:AbortSignal):Promise<T> {
+ async call<T>(method:'GET'|'POST'|'DELETE',path:string,schema:string,query:Record<string,string|number|undefined>={},payload?:unknown,meta?:Schema['RequestMeta']|Schema['ConversationRequestMeta'],signal?:AbortSignal,protocol?:'0.2'):Promise<T> {
   const qs=new URLSearchParams();for(const[k,v]of Object.entries(query))if(v!==undefined)qs.set(k,String(v));
-  const url=path+(qs.size?'?'+qs:''); const headers:Record<string,string>={Accept:'application/json'};
+  const url=path+(qs.size?'?'+qs:''); const headers:Record<string,string>={Accept:'application/json'};if(protocol)headers['X-UAW-Schema-Version']=protocol;
   if(method!=='GET'){headers['Content-Type']='application/json';const csrf=this.session()?.csrfHeader;if(csrf){if(['authorization','cookie','origin','content-type','accept'].includes(csrf.name.toLowerCase()))throw new Error('身份host不能替代HTTP认证协议');headers[csrf.name]=csrf.value;}}
   let response:Response;
   try{response=await this.transport(url,{method,headers,credentials:'same-origin',cache:'no-store',signal:signal?AbortSignal.any([signal,AbortSignal.timeout(15000)]):AbortSignal.timeout(15000),
@@ -20,6 +20,11 @@ export class UawClient {
   const result=wire as Result<T>;if(result.kind!=='ok')throw new ApiFailure(result);
   if(!response.ok)throw new TransportError(method!=='GET');return result.payload;
  }
+ runConversation(runId:string,signal?:AbortSignal){validate('ID',runId);return this.call<Schema['RunConversationView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/conversation`,'HttpRunsConversationGetResult',{},undefined,undefined,signal,'0.2');}
+ clarification(runId:string,itemId:string,signal?:AbortSignal){validate('RunClarificationGetRequest',{run_id:runId,question_item_id:itemId});return this.call<Schema['ClarificationView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/clarifications/${encodeURIComponent(itemId)}`,'HttpRunsClarificationGetResult',{},undefined,undefined,signal,'0.2');}
+ answer(runId:string,itemId:string,payload:Omit<Schema['RunClarificationAnswerRequest'],'run_id'|'question_item_id'>,meta:Schema['ConversationRequestMeta'],signal?:AbortSignal){validate('ConversationRequestMeta',meta);validate('RunClarificationAnswerRequest',{...payload,run_id:runId,question_item_id:itemId});return this.call<Schema['RunContinuationReceipt']>('POST',`/v1/runs/${encodeURIComponent(runId)}/clarifications/${encodeURIComponent(itemId)}/answers`,'HttpRunsClarificationAnswerResult',{},payload,meta,signal,'0.2');}
+ correct(runId:string,payload:Omit<Schema['RunCorrectionRequest'],'run_id'>,meta:Schema['ConversationRequestMeta'],signal?:AbortSignal){validate('ConversationRequestMeta',meta);validate('RunCorrectionRequest',{...payload,run_id:runId});return this.call<Schema['RunContinuationReceipt']>('POST',`/v1/runs/${encodeURIComponent(runId)}/corrections`,'HttpRunsCorrectionCreateResult',{},payload,meta,signal,'0.2');}
+ continuation(runId:string,requestId:string,signal?:AbortSignal){validate('RunContinuationGetRequest',{run_id:runId,request_id:requestId});return this.call<Schema['RunContinuationReceipt']>('GET',`/v1/runs/${encodeURIComponent(runId)}/continuations/${encodeURIComponent(requestId)}`,'HttpRunsContinuationGetResult',{},undefined,undefined,signal,'0.2');}
  webSession(signal?:AbortSignal){return this.call<Schema['WebSession']>('GET','/v1/web/session','HttpWebSessionGetResult',{},undefined,undefined,signal);}
  exchange(launch_code:string,meta:Schema['RequestMeta'],signal?:AbortSignal){const payload={launch_code};validate('WebSessionExchangeRequest',payload);return this.call<Schema['WebSession']>('POST','/v1/web/session','HttpWebSessionExchangeResult',{},payload,meta,signal);}
  logout(meta:Schema['RequestMeta'],signal?:AbortSignal){return this.call<Schema['Acknowledgement']>('DELETE','/v1/web/session','HttpWebSessionLogoutResult',{}, {},meta,signal);}
@@ -50,3 +55,5 @@ export class UawClient {
  control(id:string,control:Schema['UserControl'],meta:Schema['RequestMeta'],signal?:AbortSignal){validate('RunsControlRequest',{run_id:id,control});return this.call<Schema['Acknowledgement']>('POST',`/v1/runs/${encodeURIComponent(id)}/control`,'HttpRunsControlResult',{}, {control},meta,signal);}
 }
 export const requestMeta=(expected_revision?:number):Schema['RequestMeta']=>({request_id:crypto.randomUUID(),schema_version:'0.1',...(expected_revision!==undefined?{expected_revision}:{})});
+
+export const conversationMeta=(expected_revision:number):Schema['ConversationRequestMeta']=>{const meta={request_id:crypto.randomUUID(),schema_version:'0.2' as const,expected_revision};validate('ConversationRequestMeta',meta);return meta;};
