@@ -1,0 +1,55 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="1" time="41.678233">
+<testsuite name="controlled\quality.spec.ts" timestamp="2026-10-18T11:07:09.863Z" hostname="chromium" tests="4" failures="0" skipped="0" time="36.706" errors="1">
+<testcase name="quality controlled: original sources, blank judgments, saved draft and browser reload" classname="controlled\quality.spec.ts" time="2.721">
+</testcase>
+<testcase name="quality controlled: lost reply requires reread and does not resend" classname="controlled\quality.spec.ts" time="1.491">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 1280px" classname="controlled\quality.spec.ts" time="2.246">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 390px" classname="controlled\quality.spec.ts" time="30.248">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › controlled\quality.spec.ts:71:31 › quality controlled: Run feedback saved and reopened at 390px 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: '质量审阅与反馈', exact: true })
+
+
+      78 |  await expect(dialog.getByText('反馈已保存；原任务和成果接受状态保持。')).toBeVisible();
+      79 |  await dialog.getByRole('button',{name:'关闭',exact:true}).click();
+    > 80 |  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
+         |                                                             ^
+      81 |  await dialog.getByRole('button',{name:'当前任务反馈',exact:true}).click();
+      82 |  await dialog.getByRole('button',{name:/其他 · v1/}).click();
+      83 |  await expect(dialog.getByLabel('具体问题')).toHaveValue('受控反馈：等待文案不够清楚。');
+        at E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:80:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\.test-results\playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.test-results\playwright\controlled-quality-quality-87336-saved-and-reopened-at-390px-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+</testsuites>

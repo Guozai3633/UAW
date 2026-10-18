@@ -1,0 +1,532 @@
+{
+  "schema_version": "uaw.a17-study-summary.v1",
+  "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+  "suite_sha256": "e9391ecb125353b1f48da07f6151893b1a88f753ce4e9a4174215a1247672faa",
+  "study_sha256": "3effc86bb925e27b56a4693dffe689142ff5b9dbcec946b077c0411390429b4d",
+  "different_cases": 8,
+  "all_attempts": 17,
+  "failed_attempts": 0,
+  "cancelled_model_attempts": 0,
+  "unknown_model_attempts": 0,
+  "retry_count": 0,
+  "input_tokens": 41392,
+  "output_tokens": 4916,
+  "active_ms": 43299,
+  "pending_bill_attempts": 17,
+  "unknown_money_attempts": 17,
+  "human_reviews": 0,
+  "fact_quality": "pending",
+  "answer_error_rate": null,
+  "reviewer_miss_rate": null,
+  "unnecessary_block_rate": null,
+  "unsupported_execution_rate": null,
+  "quality_denominator": 0,
+  "comparison": "not_performed_generation_strategy_unchanged",
+  "original_C16_unchanged": true,
+  "original_holdout_claim": false,
+  "items": [
+    {
+      "case_id": "office-invoice",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-b95c011a8ff54c14a66c37d63e53c5a9",
+      "input_revision": 1,
+      "terminal_status": "completed",
+      "observed_boundary": "observed_terminal",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 1,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 1635,
+      "scenario_elapsed_ms": 14237,
+      "selected_output_count": 1,
+      "delivery_count": 0,
+      "old_artifact_refs": [],
+      "continuations": [],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-b83bd7d9d21612dbf85f1a9bbbb703e92d2e8758",
+      "observations_sha256": "14248e09e57a1e8f36698cd566a47f938fdb48851212cb16e8fcee9e29753764",
+      "evaluator_report_sha256": "d35568a0a09181d0aa5eba5ad958dc2dccb583ff2f64fb4661573d25cc15db93"
+    },
+    {
+      "case_id": "academic-pilot",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-c32b0455b6234fd09c72da1556433362",
+      "input_revision": 1,
+      "terminal_status": "cancelled",
+      "observed_boundary": "observed_delivery",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 2,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 4780,
+      "scenario_elapsed_ms": 22379,
+      "selected_output_count": 1,
+      "delivery_count": 1,
+      "old_artifact_refs": [
+        {
+          "content_hash": "f641c327df9f189390063dffdc5d0235049d9f7f7b218bb5bb231b205031c33b",
+          "id": "artifact-28530d3f94b7f9c3aeadb14d6689c305685d52cdbf56a731537dc4e6437f86bd",
+          "kind": "artifact",
+          "version": "1"
+        }
+      ],
+      "continuations": [],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-8ae2bbcbf1c2a5dfc49d3f5659a07fefe8c5fd4e",
+      "observations_sha256": "9cc10aa9ac1a7fa0dcff4a96243b436e234c8564edd1da02745cc2aff1bdae27",
+      "evaluator_report_sha256": "729ce8b38a009eb06cdb4be0fcc33184763a128fef090fba01ef8706e6e12062"
+    },
+    {
+      "case_id": "academic-quote",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-799ab0f50d174a33b2c591acb91416d8",
+      "input_revision": 1,
+      "terminal_status": "completed",
+      "observed_boundary": "observed_terminal",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 1,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 4219,
+      "scenario_elapsed_ms": 17797,
+      "selected_output_count": 1,
+      "delivery_count": 0,
+      "old_artifact_refs": [],
+      "continuations": [],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-391e905df98c00393d7670e936a12c8ab2896c0a",
+      "observations_sha256": "060e79c9971c206163406a97fbac15e28d32f3dd59e9dc0a74eb49411b2d8f7e",
+      "evaluator_report_sha256": "c2f1f645358d74fdb8a475062ecf5e516f16f4ef00dbdc82d8f8da71d214c3e4"
+    },
+    {
+      "case_id": "technical-tcc-zk",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-963395f797a44509bd2b0a7724d1ea8b",
+      "input_revision": 1,
+      "terminal_status": "completed",
+      "observed_boundary": "observed_terminal",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 1,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 4109,
+      "scenario_elapsed_ms": 16355,
+      "selected_output_count": 1,
+      "delivery_count": 0,
+      "old_artifact_refs": [],
+      "continuations": [],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-9e341cc9e76e6c33c40f01b8d02f3e4d341c42fe",
+      "observations_sha256": "4f27f32060382039dc7c2833899612915c12630d21dff4daac2602dd6bb488ad",
+      "evaluator_report_sha256": "d9c59980350d976a9295b1149f3e5238ed265ef65e6eb8d471910ffe49cb78cc"
+    },
+    {
+      "case_id": "missing-paper",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-782a9beb22da4c83a749d5183a169aa2",
+      "input_revision": 2,
+      "terminal_status": "cancelled",
+      "observed_boundary": "observed_delivery",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 3,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 8628,
+      "scenario_elapsed_ms": 44996,
+      "selected_output_count": 1,
+      "delivery_count": 1,
+      "old_artifact_refs": [
+        {
+          "content_hash": "0e32330c0d9d62707f7fc77f27fcf3190426e8d211a0d5b7ae3728913006f554",
+          "id": "artifact-c002c4d66ef49ed2c9f676716054dab3aac805ece9d541cafa43b47b714a3136",
+          "kind": "artifact",
+          "version": "1"
+        }
+      ],
+      "continuations": [
+        {
+          "state": "applied",
+          "input_revision": 2
+        }
+      ],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-9028bf3a03871a8bb808a0987a85200bb5adc712",
+      "observations_sha256": "b488adb9fee5ed29ae2ca0a3d6b714381c14046d1c16bd24b650de8e11c06b4a",
+      "evaluator_report_sha256": "1521c655c694a52c6f5cb5af2a0b17249f633fee79811baf20487ff087e2c93f"
+    },
+    {
+      "case_id": "ambiguity-cache-db",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-9dedb6eaa5f54a99ad230c4ae0262734",
+      "input_revision": 1,
+      "terminal_status": "completed",
+      "observed_boundary": "observed_terminal",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 1,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 2741,
+      "scenario_elapsed_ms": 15721,
+      "selected_output_count": 1,
+      "delivery_count": 0,
+      "old_artifact_refs": [],
+      "continuations": [],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-1db68f9c21de1523df7e6988c619a006ebee7d68",
+      "observations_sha256": "18ade60180873a787e2bfe8a4559031fb3f8d8eeb06953cda3f4fdd80137199d",
+      "evaluator_report_sha256": "ce9db300e068dab4b2160555455c595e10a4f9e16a5aa6e44f45d5513742c329"
+    },
+    {
+      "case_id": "correction-office",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-ca697089db44407cb85325cb1a6c1877",
+      "input_revision": 2,
+      "terminal_status": "cancelled",
+      "observed_boundary": "observed_delivery",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 4,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 9460,
+      "scenario_elapsed_ms": 50739,
+      "selected_output_count": 1,
+      "delivery_count": 2,
+      "old_artifact_refs": [
+        {
+          "content_hash": "bf7d0c31f43b6ed859d2fa6794a46b3d097cae8c82cc8ac4a1697a6c4b6c2689",
+          "id": "artifact-fa7b3b05f950db1f1aa84a730c96fec10c6f55f645270b3855941a534d4df130",
+          "kind": "artifact",
+          "version": "1"
+        },
+        {
+          "content_hash": "97134b5f97ced1812d5af156a859ee81fd3a750dca979769ef8eb29dd416628b",
+          "id": "artifact-5024dd43fd28008c9ea14563211bd7157915d4170cf9c3c70304858e9d347f73",
+          "kind": "artifact",
+          "version": "1"
+        }
+      ],
+      "continuations": [
+        {
+          "state": "applied",
+          "input_revision": 2
+        }
+      ],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-59e39cb4a50fe1f6e4f31c1cc9ad0e721a7adedd",
+      "observations_sha256": "d4d359d3ae402cdc624a72732d360b05fc78d6b9fa32ba97cf58e620f41aebd7",
+      "evaluator_report_sha256": "fd5ebce202acbd7128fe9516021e8a6195ebbc3185a6ac629e5a65bac6397ff3"
+    },
+    {
+      "case_id": "correction-academic",
+      "source_case_version": "a17-3",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "run_id": "run-0528899914a4464fa54920b85a5f755f",
+      "input_revision": 2,
+      "terminal_status": "cancelled",
+      "observed_boundary": "observed_delivery",
+      "scenario_error": null,
+      "planned_input_complete": true,
+      "calls": 4,
+      "failed_attempts": 0,
+      "retry_count": 0,
+      "active_ms": 7727,
+      "scenario_elapsed_ms": 49649,
+      "selected_output_count": 1,
+      "delivery_count": 2,
+      "old_artifact_refs": [
+        {
+          "content_hash": "11a0b4526ab0ea516651d79021657dd600945853c9342e71d5d95370c8e5846b",
+          "id": "artifact-ef141e1ed0d2a539b8b75447cc2dac76910055a1832657e2ecc2bd73aec47f3c",
+          "kind": "artifact",
+          "version": "1"
+        },
+        {
+          "content_hash": "3112caaf2050f7743ec17518ba62274bfc4b0048a63a00c6e497d7d3c9d7822c",
+          "id": "artifact-00a671e443b2e45d1007a06e64bee3997d50242826151aefd0661216ba8eada6",
+          "kind": "artifact",
+          "version": "1"
+        }
+      ],
+      "continuations": [
+        {
+          "state": "applied",
+          "input_revision": 2
+        }
+      ],
+      "evaluator_gate": "incomplete",
+      "quality": {
+        "answer_error": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "reviewer_miss": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unnecessary_block": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "unsupported_execution": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        },
+        "requirements_lost": {
+          "denominator": 0,
+          "numerator": 0,
+          "status": "not_applicable",
+          "value": null
+        }
+      },
+      "review_id": "quality-b13adb1fcb2f5aba18aa941ad2be1eccd21faba6",
+      "observations_sha256": "09fe5b4a8ef2528293747904cc6e912942310a3c885a966fd37ee81b765cc6f7",
+      "evaluator_report_sha256": "b44ac82df31e81b29b571dd950674bf06f147051dc4f8d36dab9862933a7c414"
+    }
+  ]
+}

@@ -29,6 +29,9 @@ async function setup(page:Page){
  await expect(page.getByRole('button',{name:'质量审阅与反馈',exact:true})).toBeEnabled();
  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'质量审阅与反馈'});
+ if((page.viewportSize()?.width??1280)<700)await expect(page.getByRole('button',{name:'新建会话',exact:true})).not.toBeVisible();
+ const width=await dialog.evaluate(element=>element.getBoundingClientRect().width);
+ expect(width).toBeGreaterThan(Math.min(1000,(page.viewportSize()?.width??1280)*0.9));
  await dialog.getByRole('button',{name:/受控质量样本/}).click();
  await expect(dialog.getByRole('heading',{name:'实际完整回答'})).toBeVisible();
  return {dialog,writes,loseNext:()=>{lose=true;},original};
@@ -74,6 +77,7 @@ for(const width of [1280,390])test(`quality controlled: Run feedback saved and r
  await dialog.getByRole('button',{name:'保存任务反馈'}).click();
  await expect(dialog.getByText('反馈已保存；原任务和成果接受状态保持。')).toBeVisible();
  await dialog.getByRole('button',{name:'关闭',exact:true}).click();
+ if(width<700)await page.getByRole('button',{name:'显示会话'}).click();
  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
  await dialog.getByRole('button',{name:'当前任务反馈',exact:true}).click();
  await dialog.getByRole('button',{name:/其他 · v1/}).click();
