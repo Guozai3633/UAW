@@ -2,7 +2,7 @@
   "date": "2026-10-18",
   "stage": "MS-I2m-A15",
   "issue": "H02-I03",
-  "status": "A15_readonly_component_fixed_B_repair_authorized_published_message_pending",
+  "status": "A15_component_and_actual_authenticated_HTTP_ready_B_UI_repair_in_progress",
   "source_ref": "ms-i2m-a15-source",
   "reported_conversation": "conversation-6702653d5e0a45159a1eee55d171ab2f",
   "reported_run": "run-169ef7763d694cc297c00b51dea9e6b4",
@@ -32,7 +32,7 @@
   },
   "original_snapshot_sha256": "1714ca534c5e4e29ffd0ff2a001249dd7e963bcc454df637603d5a685502c8b0",
   "original_snapshot_path": "E:\\UAW\\.data\\human\\H02-v5\\h02-i03-status-93c0bfc7eaee472c85cac502d431bf7b.json",
-  "runtime_deployed": false,
+  "runtime_deployed": true,
   "human_task_stopped_or_accepted": false,
   "worker_B_authorization": "explicit_human_reply_2026_10_18",
   "workers_C_D": "no_new_scope",
@@ -80,5 +80,53 @@
     "contracts/implementation_catalog.py": "59a31ed664e425f7a8095da2d7b68dd2076bd145563a773f4b5a2ed2494c6d71",
     "tests/integration/agent/test_run_presentation.py": "ac3e268fcc7a6a1baf3d3ed38903fe29c2612998f2030f53653b272d87d60497"
   },
-  "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b"
+  "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+  "B_dispatch": {
+    "thread_id": "01a1167e-42ba-7b00-a120-c9f4a2f4e566",
+    "title": "UAW Session B 上下文组件",
+    "sent": true,
+    "authorized_directly_by_human": true,
+    "fixed_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+    "specific_package": "H02-I03-B-run-presentation-sync.md",
+    "actual_service_source_sent": true
+  },
+  "actual_deployment": {
+    "runtime": "H02-v6",
+    "backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+    "frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+    "UI_status": "old_UI_waiting_B_repair",
+    "same_database_identity_and_cookie_settings": true,
+    "original_H02_v5_snapshot_preserved": true,
+    "guard": "only_delivery_waiting_no_unfinished_model_or_tool_contexts",
+    "actual_HTTP": {
+      "phase": "awaiting_acceptance",
+      "understanding_state": "available",
+      "Run_revision": 5,
+      "input_revision": 1,
+      "same_original_Run_and_current_delivery": true,
+      "authenticated_HTTP_status": 200,
+      "anonymous_HTTP_status": 401,
+      "cache_control": "no-store",
+      "original_payloads_unchanged": 8,
+      "model_calls_requested": 0,
+      "human_acceptance_performed": false,
+      "source_proof": {
+        "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+        "file_count": 267,
+        "files_sha256": "b7df3e467343d0c48b1301cb3d828fc4749d519b9f952af02c5b749dc1f5e45b"
+      }
+    },
+    "service_checks": [
+      {
+        "url": "http://127.0.0.1:8013/health/ready",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:5183/",
+        "status": 200
+      }
+    ],
+    "private_actual_response_sha256": "5dc83c4a01b683cf9bf89827523cbd85b2a2c816f46ca29f6a6536fb97627118",
+    "original_task_stopped_resent_or_accepted": false
+  }
 }

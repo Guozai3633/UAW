@@ -60,12 +60,12 @@
   },
   "milestones_per_package": 4,
   "integrate_on_stage_sha": true,
-  "current_human_runtime": "H02-v5",
+  "current_human_runtime": "H02-v6",
   "replace_human_runtime": false,
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A15_readonly_presentation_fixed_B_H02_I03_UI_repair_authorized_dispatch_pending",
+  "status": "A15_actual_presentation_HTTP_ready_B_specific_UI_repair_dispatched",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -197,19 +197,18 @@
     "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
     "fixed_ref": "ms-i2m-a15-source",
     "receipt": "docs/implementation/evidence/h02-i03-a15.json",
-    "runtime_deployed": false,
-    "runtime_backend_source": "9f5bce6ea951a4670015c224f7884cadc310a1a7",
+    "runtime_deployed": true,
+    "runtime_backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
     "runtime_frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
-    "runtime_receipt": "docs/implementation/evidence/h02-i02-a14.json",
+    "runtime_receipt": "docs/implementation/evidence/h02-i03-a15.json",
     "runtime_restart_same_source": false,
-    "live_provider_smoke": "prior_A14_report_passed_no_new_model_for_A15",
+    "live_provider_smoke": "no_A15_model_calls_actual_owned_presentation_HTTP_verified",
     "quality_capture": "prior_A13_eight_attempts_quality_still_incomplete",
     "human_experience": "pending_retest_after_H02_I02_report_format_failure",
     "next": [
-      "dispatch_B_exact_H02_I03_repair",
-      "safe_actual_presentation_HTTP_service_source",
-      "B_UI_and_original_Page_readonly_verification",
-      "owner_retest_no_agent_acceptance"
+      "B_UI_stage_review_and_exact_dist_deployment",
+      "original_Page_readonly_check",
+      "owner_retest_no_automatic_acceptance"
     ],
     "offline_review_packet": "two_actual_second_generation_targets_all_fields_unselected",
     "actual_human_imports": 0,
@@ -230,10 +229,11 @@
         "status": "component_accepted_actual_1050px_original_conversation_verified"
       },
       "H02_I03": {
-        "status": "authorized_specific_repair_source_published_message_pending",
+        "status": "specific_repair_sent_actual_source_available_UI_in_progress",
         "package_document": "docs/coordination/requests/A/H02-I03-B-run-presentation-sync.md",
         "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
-        "fixed_ref": "ms-i2m-a15-source"
+        "fixed_ref": "ms-i2m-a15-source",
+        "actual_service": "H02-v6_same_original_Page"
       }
     },
     "C": {

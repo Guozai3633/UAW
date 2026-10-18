@@ -1,3 +1,9 @@
+# A15实际端点就绪：已向B派发H02-I03页面修复
+
+2026-10-18。后端H02-v6已部署准确A15 `3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b`；原8013/5183实查200，新增presentation认证HTTP200、匿名401，原Run/v5/input1返回等待审阅及真实理解。只在原job delivery/waiting、无未结模型或工具时切换，原账号/数据库/cookie沿用，8个原Run/成果/决策/消息等payload逐项不变；0新模型，不停止/重发/接受。267固定源码文件复核通过。
+
+已按本人明确授权向现有「UAW Session B 上下文组件」发送固定A15、具名修复单和原Page/实际服务来源；B负责页面实现与定向验证。**前端仍500d292，页面文案尚未修复**，阶段源码到即审阅装配。A继续保留原任务和实际来源，C/D无新包。[机器记录](../implementation/evidence/h02-i03-a15.json) · [B范围](requests/A/H02-I03-B-run-presentation-sync.md)。以下为固定接口及历史。
+
 # H02-I03 / A15接口固定：统一显示阶段，B页面修复待接线
 
 2026-10-18，准确源码 **3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b** / **ms-i2m-a15-source**。新增只读0.2 `GET /v1/runs/{run_id}/presentation`，在同一只读快照返回原Run/input、真实Model决策理解及当前完整交付引用；awaiting_acceptance与实际running分开，接受后收尾、取消受理stopping、unknown不可用及终态准确区分。原1404schema/全部原OpenAPI路径不变，5新对象/1新读取入口；不改Run、Frame或Proposal来迁就文案。[接口及异步版本规则](requests/A/MS-I2m-A15-presentation-wiring.md) · [B具名修复单](requests/A/H02-I03-B-run-presentation-sync.md) · [实现](../implementation/MS-I2m-A15.md) · [完整回执](../implementation/evidence/h02-i03-a15.json)。
