@@ -1,9 +1,9 @@
 {
-  "baseline": "b16c69a92d81124c00fb859ce8123748f56df054",
-  "contract_ref": "ms-i2m-a6-source",
-  "contract_commit": "b16c69a92d81124c00fb859ce8123748f56df054",
-  "schema_sha256": "0c421003560ceae17c72a72b2f48363688bf86efe75744d7ec62e236c4cee7cc",
-  "openapi_sha256": "eb3d4ccc827b04060128d31b003b4431cad63b70b80031482730042cdbcef100",
+  "baseline": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+  "contract_ref": "ms-i2m-a15-source",
+  "contract_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+  "schema_sha256": "4bf6925db7e09910bd8a7755e832d59047e41a0732b139e58af0dd5d2561faeb",
+  "openapi_sha256": "d10d645419b0c0640647f2c1f263ddc521e1d418e1619e5afeacb5e9eee06560",
   "paths": {
     "/v1/conversations": [
       "get",
@@ -74,6 +74,9 @@
     ],
     "/v1/runner/local/{launch_id}/stop": [
       "post"
+    ],
+    "/v1/runs/{run_id}/presentation": [
+      "get"
     ],
     "/v1/runs/{run_id}/conversation": [
       "get"

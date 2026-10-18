@@ -391,6 +391,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/runs/{run_id}/presentation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 运行状态。 */
+        get: operations["http_runs_presentation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/runs/{run_id}/conversation": {
         parameters: {
             query?: never;
@@ -969,6 +986,13 @@ export interface components {
             schema_version: "0.2";
             /** @description 原Run预期修订，必需且从1开始 */
             expected_revision: components["schemas"]["Revision"];
+        };
+        /** @description 首次调用中的可选理解提示，不是额外调用或权限。 */
+        ConversationUnderstanding: {
+            /** @description 理解摘要 */
+            summary: components["schemas"]["NonEmptyText"];
+            /** @description 明确的少量假设 */
+            assumptions: components["schemas"]["NonEmptyText"][];
         };
         /** @description 创建会话。 */
         ConversationsCreateRequest: {
@@ -1940,6 +1964,26 @@ export interface components {
             usage_ref?: components["schemas"]["Ref"];
         };
         /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpRunsPresentationGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["RunPresentationView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
         HttpTasksFrameResult: {
             /**
              * @description 接口状态
@@ -2588,6 +2632,64 @@ export interface components {
             created_at: components["schemas"]["Timestamp"];
             /** @description 实际安全边界生效时刻 */
             applied_at?: components["schemas"]["Timestamp"];
+        };
+        /** @description 当前输入和Run修订的完整已登记成果引用；不是接受授权。 */
+        RunPresentationDelivery: {
+            /** @description 原完整成果包 */
+            bundle_ref: components["schemas"]["Ref"];
+            /** @description 原成果版本 */
+            artifact_ref: components["schemas"]["Ref"];
+            /** @description 原逐项核验 */
+            report_ref: components["schemas"]["Ref"];
+            /** @description 原交付提案 */
+            proposal_ref: components["schemas"]["Ref"];
+            /** @description 交付提案绑定的当前Run修订 */
+            run_revision: components["schemas"]["Revision"];
+            /** @description 原执行帧绑定的当前输入版本 */
+            input_revision: components["schemas"]["Revision"];
+            /** @description 真实核验结果，不代表独立事实质量 */
+            outcome: components["schemas"]["Outcome"];
+            /** @description 原合同是否要求本人接受 */
+            requires_acceptance: components["schemas"]["Bool"];
+        };
+        /** @description 同次真实模型决策的理解提示，独立于不可变执行帧。 */
+        RunPresentationUnderstanding: {
+            /**
+             * @description 尚未得到决策、有原理解或本次未提供
+             * @enum {string}
+             */
+            state: "pending" | "available" | "not_provided";
+            /** @description 本次读取的当前输入版本 */
+            input_revision: components["schemas"]["Revision"];
+            /** @description 真实模型摘要和假设；没有时省略 */
+            value?: components["schemas"]["ConversationUnderstanding"];
+            /** @description 原FirstDecisionRecord及摘要 */
+            decision_record_ref?: components["schemas"]["Ref"];
+            /** @description 原ModelOutput版本 */
+            model_output_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 同一只读数据库快照中的显示阶段、真实理解及当前成果；不授权执行或完成。 */
+        RunPresentationView: {
+            /**
+             * @description 协议
+             * @constant
+             */
+            protocol: "conversation-v1";
+            /** @description 权威原Run，保持原CAS修订和状态 */
+            run: components["schemas"]["RunRecord"];
+            /** @description 当前有效输入版本 */
+            input_revision: components["schemas"]["Revision"];
+            /**
+             * @description 显示阶段，不替代Run.status；取消受理尚未终态为stopping
+             * @enum {string}
+             */
+            phase: "preparing" | "working" | "verifying" | "waiting_for_user" | "awaiting_acceptance" | "finalizing" | "needs_revision" | "stopping" | "completed" | "failed" | "cancelled" | "unavailable";
+            /** @description 真实理解状态与来源 */
+            understanding: components["schemas"]["RunPresentationUnderstanding"];
+            /** @description 仅返回同一当前Run修订和输入的成果 */
+            delivery?: components["schemas"]["RunPresentationDelivery"];
+            /** @description 一致性快照读取时间 */
+            captured_at: components["schemas"]["Timestamp"];
         };
         /** @description 调度执行实体；任务历史有多个Run。 */
         RunRecord: {
@@ -6892,6 +6994,174 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpRunnerLocalStopResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_runs_presentation_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.2";
+                /** @description cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。 */
+                Origin?: string;
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description 新handler或当前可信来源未装配，明确不可用；不续跑旧Run。 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"];
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpRunsPresentationGetResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

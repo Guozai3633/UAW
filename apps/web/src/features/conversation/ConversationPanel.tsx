@@ -1,3 +1,4 @@
+import type {CoordinatedPresentation} from '../presentation/usePresentation';
 import {useEffect,useRef,useState} from 'react';
 import {ApiFailure,conversationMeta} from '../../lib/api/client';
 import {terminal} from '../../lib/events/projection';
@@ -6,24 +7,25 @@ import type {Run} from '../../lib/api/types';
 import {ContinuationStore,type PendingContinuation} from './store';
 import {ControlPreflightError,type ConversationPort,type ConversationView,type ContinuationReceipt,type ControlKind} from './port';
 const statusLabel={accepted:'已收到，尚待生效',applied:'已生效',superseded:'已被后续修订替代',cancelled:'补充已取消'};
-export function ConversationPanel({port,store:providedStore,run,identity,connected,decisionAllowed=true,onSource,onBusy,onChanged,onInputRevision,pollMs=3000,pollLimit=120}:{port?:ConversationPort;store?:ContinuationStore;run:Run;identity:string;connected:boolean;decisionAllowed?:boolean;onSource:(supported:boolean)=>void;onBusy:(busy:boolean)=>void;onChanged:()=>void;onInputRevision?:(inputRevision:number,runRevision:number)=>void;pollMs?:number;pollLimit?:number}){
+export function ConversationPanel({port,store:providedStore,run,identity,connected,decisionAllowed=true,onSource,onBusy,onChanged,onInputRevision,coordinated,pollMs=3000,pollLimit=120}:{port?:ConversationPort;store?:ContinuationStore;run:Run;identity:string;connected:boolean;decisionAllowed?:boolean;onSource:(supported:boolean)=>void;onBusy:(busy:boolean)=>void;onChanged:()=>void;onInputRevision?:(inputRevision:number,runRevision:number)=>void;coordinated?:CoordinatedPresentation;pollMs?:number;pollLimit?:number}){
  const local=useRef<ContinuationStore|undefined>(undefined);local.current??=new ContinuationStore();const store=providedStore??local.current;
  const [view,setView]=useState<ConversationView>(),[receipts,setReceipts]=useState<ContinuationReceipt[]>([]),[pending,setPending]=useState<PendingContinuation[]>([]),[answer,setAnswer]=useState(''),[correction,setCorrection]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[reading,setReading]=useState(false);
  const active=useRef(false),abort=useRef<AbortController|undefined>(undefined),timer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined),writing=useRef(false),reads=useRef(0);
  const scope={conversationId:run.conversation_id,runId:run.id},question=view?.question,answerKey=question?'answer:'+question.question.item_id:'';
  const stop=()=>{abort.current?.abort();clearTimeout(timer.current);};
  function schedule(v:ConversationView){clearTimeout(timer.current);if(!active.current||terminal(v.run.status))return;if(reads.current>=pollLimit){setMessage('本次自动读取已达上限，请手动读取原任务与回执。');return;}timer.current=setTimeout(()=>void refresh(),pollMs);}
- async function refresh(clearNotice=true){if(!port||!active.current||!connected||writing.current)return;stop();const current=new AbortController();abort.current=current;setReading(true);
+ async function refresh(clearNotice=true){if(coordinated){coordinated.refresh();return;}if(!port||!active.current||!connected||writing.current)return;stop();const current=new AbortController();abort.current=current;setReading(true);
   try{store.bind(identity);const next=await port.read(run,current.signal),saved=store.pending(scope),ids=[...new Set([...next.continuation_request_ids,...saved.map(p=>p.requestId)])];if(ids.length>128)throw Error('原补充查询超过本次上限。');const actual:ContinuationReceipt[]=[];
    for(const requestId of ids){try{const receipt=await port.lookup(scope,requestId,current.signal);if(current.signal.aborted)return;store.resolve(scope,receipt);actual.push(receipt);}catch(e){if(e instanceof ApiFailure&&e.result.kind==='missing'&&saved.some(p=>p.requestId===requestId))continue;throw e;}}
    if(current.signal.aborted||!active.current)return;setView(next);setReceipts(actual.sort((a,b)=>a.patch.input_revision-b.patch.input_revision));setPending(store.pending(scope));setCorrection(store.draft(scope,'correction'));setAnswer(next.question?store.draft(scope,'answer:'+next.question.question.item_id):'');if(clearNotice)setMessage('');onSource(true);onInputRevision?.(next.input_revision,next.run.revision);reads.current++;schedule(next);
   }catch(e){if(!current.signal.aborted&&active.current){setView(undefined);setReceipts([]);onSource(false);setMessage(e instanceof Error?e.message:'原任务对话来源不可用。');try{setPending(store.pending(scope));}catch{/* corrupt lookup remains unavailable */}}}finally{if(abort.current===current&&active.current)setReading(false);}
  }
- useEffect(()=>{active.current=true;stop();reads.current=0;writing.current=false;setBusy(false);onBusy(false);setView(undefined);setReceipts([]);setPending([]);setMessage('');setAnswer('');setCorrection('');onSource(false);if(connected&&identity&&port)void refresh();
+ useEffect(()=>{active.current=true;stop();reads.current=0;writing.current=false;setBusy(false);onBusy(false);if(!coordinated){setView(undefined);setReceipts([]);setPending([]);setMessage('');setAnswer('');setCorrection('');onSource(false);}if(!coordinated&&connected&&identity&&port)void refresh();
   return()=>{active.current=false;stop();onBusy(false);};
  },[port,store,identity,run.id,run.conversation_id,run.revision,run.status,connected]);
+ useEffect(()=>{if(!coordinated)return;setReading(coordinated.updating);if(coordinated.error)setMessage(coordinated.error);const source=coordinated.source;if(!source||source.identity!==identity)return;store.bind(identity);setView(source.conversation);setReceipts(source.receipts);setPending(source.pending);setCorrection(store.draft(scope,'correction'));setAnswer(source.conversation.question?store.draft(scope,'answer:'+source.conversation.question.question.item_id):'');onSource(coordinated.current);},[coordinated?.source,coordinated?.updating,coordinated?.current,coordinated?.error]);
  function edit(kind:ControlKind,text:string){if(kind==='clarification_answer')setAnswer(text);else setCorrection(text);try{store.bind(identity);store.draft(scope,kind==='clarification_answer'?answerKey:'correction',text);}catch(e){setMessage(e instanceof Error?e.message:'草稿保存不可用');}}
- async function submit(kind:ControlKind){if(!port||!view||!connected||!decisionAllowed||busy||writing.current||reading||terminal(view.run.status))return;const text=kind==='clarification_answer'?answer:correction;if(!text.trim())return;
+ async function submit(kind:ControlKind){if(!port||!view||coordinated&&!coordinated.current||!connected||!decisionAllowed||busy||writing.current||reading||terminal(view.run.status))return;const text=kind==='clarification_answer'?answer:correction;if(!text.trim())return;
   writing.current=true;setBusy(true);onBusy(true);stop();const current=new AbortController();abort.current=current;let requestId:string|undefined,marked=false;
   try{store.bind(identity);if(store.pending(scope).length)throw Error('原补充结果未知，请先查询同一请求；不会换ID重发。');const meta=conversationMeta(view.run.revision);requestId=meta.request_id;const q=view.question?.question;
    const lookup:PendingContinuation={requestId,kind,runRevision:view.run.revision,inputRevision:view.input_revision,...(kind==='clarification_answer'&&q?{questionId:q.item_id,questionRevision:q.revision}:{})};store.mark(scope,lookup);marked=true;setPending(store.pending(scope));
@@ -34,7 +36,7 @@ export function ConversationPanel({port,store:providedStore,run,identity,connect
  if(!port)return null;
  const currentRun=[run,...(view?[view.run]:[]),...receipts.map(r=>r.run)].filter(r=>r.id===run.id&&r.conversation_id===run.conversation_id).reduce((latest,r)=>r.revision>latest.revision?r:latest,run);
  const ended=terminal(currentRun.status);
- const disabled=!connected||!decisionAllowed||busy||reading||pending.length>0||!view||terminal(view.run.status);
+ const disabled=!!coordinated&&!coordinated.current||!connected||!decisionAllowed||busy||reading||pending.length>0||!view||terminal(view.run.status);
  return <section className="conversation-control" aria-label="原任务对话"><header><h3>{question?'回答当前任务的问题':'补充或纠正当前任务'}</h3><button disabled={!connected||busy} onClick={()=>{reads.current=0;void refresh();}}>读取原任务与补充回执</button></header>
  {reading&&<p className="muted">正在读取原任务…</p>}{message&&<p role="status">{message}</p>}{pending.length>0&&<p role="status">原补充结果尚待对账。刷新只查询这次原请求，不会重发；草稿已保留。</p>}
  {view&&<><p className="muted">原任务补充 · 输入版本 {view.input_revision} · 任务版本 {view.run.revision}</p>

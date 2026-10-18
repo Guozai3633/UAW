@@ -20,6 +20,7 @@ export class UawClient {
   const result=wire as Result<T>;if(result.kind!=='ok')throw new ApiFailure(result);
   if(!response.ok)throw new TransportError(method!=='GET');return result.payload;
  }
+ presentation(runId:string,signal?:AbortSignal){validate('ID',runId);return this.call<Schema['RunPresentationView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/presentation`,'HttpRunsPresentationGetResult',{},undefined,undefined,signal,'0.2');}
  runConversation(runId:string,signal?:AbortSignal){validate('ID',runId);return this.call<Schema['RunConversationView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/conversation`,'HttpRunsConversationGetResult',{},undefined,undefined,signal,'0.2');}
  clarification(runId:string,itemId:string,signal?:AbortSignal){validate('RunClarificationGetRequest',{run_id:runId,question_item_id:itemId});return this.call<Schema['ClarificationView']>('GET',`/v1/runs/${encodeURIComponent(runId)}/clarifications/${encodeURIComponent(itemId)}`,'HttpRunsClarificationGetResult',{},undefined,undefined,signal,'0.2');}
  answer(runId:string,itemId:string,payload:Omit<Schema['RunClarificationAnswerRequest'],'run_id'|'question_item_id'>,meta:Schema['ConversationRequestMeta'],signal?:AbortSignal){validate('ConversationRequestMeta',meta);validate('RunClarificationAnswerRequest',{...payload,run_id:runId,question_item_id:itemId});return this.call<Schema['RunContinuationReceipt']>('POST',`/v1/runs/${encodeURIComponent(runId)}/clarifications/${encodeURIComponent(itemId)}/answers`,'HttpRunsClarificationAnswerResult',{},payload,meta,signal,'0.2');}
