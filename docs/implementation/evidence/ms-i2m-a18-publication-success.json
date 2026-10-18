@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-18T16:45:56.839994+00:00",
+  "remote": "https://github.com/Guozai3633/UAW.git",
+  "status": "pushed_and_remote_refs_verified",
+  "explicit_human_disclosure_authorization": true,
+  "authorized_data": "Actual owner screenshots, history/review evidence and runtime records in A18 commits",
+  "authorization_source": "User reply: 允许将上述材料推送到指定仓库",
+  "initial_approval_rejection_retained": "ms-i2m-a18-publication-status.json",
+  "bypass_used": false,
+  "push_exit_code": 0,
+  "verified_refs": {
+    "refs/heads/integration": "7fd992af4a4146f54995e176fc1c20f873b0cc6d",
+    "refs/tags/ms-i2m-a18-runtime": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+    "refs/tags/ms-i2m-a18-delivery": "844130f250d46cae3a50aca63292634989a5d038"
+  },
+  "note": "This publication receipt is a following documentation commit; runtime and recovery tags remain fixed."
+}

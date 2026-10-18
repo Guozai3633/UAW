@@ -11,7 +11,7 @@
 
 原人工评审和已提交任务反馈仍为0，事实正确率与本人满意pending。主会话等待体验工程交付不升级P1-15/P1-17整轮accepted；子Agent/DAG/本机写入安装exec和原flags保持关闭。下一步本人按清单体验并用原审阅/反馈入口记录具体问题，A再定向处理，不自动扩包。
 
-历史审批服务额度耗尽时Git暂存未执行，记录见原阶段[未完成审计](../implementation/evidence/ms-i2m-a18-incomplete-audit.json)；后续正常审查的工具调用实际成功，固定提交和部署均有回执。没有更换通道绕过审批，也不推断账户额度已全面恢复。远程发布另记：[推送停止点](../implementation/evidence/ms-i2m-a18-publication-status.json)。本地运行eeaa6ff、交付/审计844130f及新恢复标签已固定；向GitHub推送被自动审批拒绝，原因是包含真实账号截图/历史审阅材料且尚无具体披露授权，命令未执行。已询问本人，不改用其他方式上传。原Goal要求的本地可测版本与可恢复提交已完成；远程披露单独待本人决定。
+历史审批服务额度耗尽时Git暂存未执行，记录见原阶段[未完成审计](../implementation/evidence/ms-i2m-a18-incomplete-audit.json)；后续正常审查的工具调用实际成功，固定提交和部署均有回执。没有更换通道绕过审批，也不推断账户额度已全面恢复。远程发布：本人已明确授权上述真实账号截图、历史/审阅证据和运行记录上传到指定Guozai3633/UAW仓库。正常审批后的推送成功，远端integration=7fd992a、runtime标签=eeaa6ff、delivery标签=844130f已核对；[成功回执](../implementation/evidence/ms-i2m-a18-publication-success.json)。此前[自动审批拒绝](../implementation/evidence/ms-i2m-a18-publication-status.json)保留，未绕过；本发布说明由后续文档提交同步，运行及恢复标签不移动。
 
 下方为A17及历史。
 
