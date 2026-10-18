@@ -22,3 +22,5 @@
 @media(max-width:700px){.chat-header>div{gap:7px}.chat-header{padding:0 12px}.header-actions{gap:5px!important}.review-open{font-size:10px;padding:6px}.connection{max-width:82px;flex-wrap:wrap;gap:3px}.review-drawer .review-body{padding:18px}.review-drawer .review-empty{display:block}}
 
 .presentation-update{font-size:10px;color:#87909e;margin:0 5px 8px;line-height:1.7}.presentation-update p{margin:4px 0}.presentation-update button{color:var(--accent);border:1px solid var(--line);border-radius:5px;padding:4px 7px;margin-left:6px}.understanding details{font-size:10px;overflow-wrap:anywhere}.understanding ul{list-style:disc;padding-left:20px;font-size:11px}
+
+.run-state-details{font-size:10px;color:#8a93a2;margin:0 3px 10px;line-height:1.8}.run-state-details summary{cursor:pointer}.run-state-details p{margin:3px 0}.run-status button{margin-left:auto}

@@ -10,7 +10,7 @@ import {validate} from '../../lib/api/validation';
 import {type ReviewPort,type ReviewSnapshot,checkReview,sameReview} from './port';
 export function Review({items,run,port,identity,connected,decisionAllowed=true,onAccepted,presentation,synchronized=false,sourceCurrent=false,onReconcile}:{items:DisplayItem[];run?:Run;port?:ReviewPort;identity:string;connected:boolean;decisionAllowed?:boolean;onAccepted:()=>void;presentation?:Presentation;synchronized?:boolean;sourceCurrent?:boolean;onReconcile?:()=>void}){
  const artifacts=items.filter(i=>i.type==='artifact');const [selected,setSelected]=useState('');
- const item=artifacts.find(i=>i.id===selected)??artifacts.at(-1);const ref=(!selected?presentation?.delivery?.artifact_ref:undefined)??item?.resource_refs.find(r=>r.kind==='artifact');
+ const item=artifacts.find(i=>i.id===selected)??artifacts.at(-1);const itemRef=item?.resource_refs.find(r=>r.kind==='artifact'),currentRef=presentation?.delivery?.artifact_ref;const ref=!selected&&currentRef&&(itemRef?.id!==currentRef.id||itemRef?.version!==currentRef.version)?currentRef:itemRef??currentRef;
  const actions=useRef(new Set<AbortController>());
  useEffect(()=>()=>{for(const a of actions.current)a.abort();actions.current.clear();},[identity,connected,ref?.id,ref?.version,ref?.content_hash,run?.id,run?.revision,run?.status,decisionAllowed]);
  const [busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[decisionPending,setDecisionPending]=useState(false);

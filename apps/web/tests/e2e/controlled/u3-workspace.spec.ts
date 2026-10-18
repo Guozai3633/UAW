@@ -1,3 +1,5 @@
+import {expectRunState} from './run-state';
+import {presentationView,withDelivery} from '../../presentation-fixtures';
 // Fixed HTTP fixtures only. No actual model, OS, native authorization or acceptance.
 import {test,expect,type Page} from '@playwright/test';
 import {conversation,models,makeRun,makeItem,frame,now,ref,ok,denied} from '../../fixtures';
@@ -8,7 +10,9 @@ async function backend(page:Page){
  await page.route('**/v1/**',async route=>{const request=route.request(),url=new URL(request.url()),path=url.pathname;const write=request.method()!=='GET';if(write)state.writes++;
   const old={...conversation,id:'conv-old',title:'原待接受会话',owner_id:state.owner},fresh={...conversation,id:'conv-new',title:'最新学术草稿',owner_id:state.owner};
   const run={...makeRun('running'),conversation_id:old.id};let value:unknown;
-  if(path==='/v1/web/session')value={principal:{id:state.owner,kind:'user',auth_session_id:state.session},expires_at:now,csrf_token:'c'.repeat(64)};
+  if(path.endsWith('/presentation'))value=withDelivery(presentationView(run,1,'awaiting_acceptance'),deliveryView());
+  else if(path.endsWith('/conversation'))value={protocol:'conversation-v1',run,input_revision:1,continuation_request_ids:[]};
+  else if(path==='/v1/web/session')value={principal:{id:state.owner,kind:'user',auth_session_id:state.session},expires_at:now,csrf_token:'c'.repeat(64)};
   else if(path==='/v1/models')value=models;
   else if(path==='/v1/conversations')value={items:state.hidden?[fresh]:[fresh,old],snapshot_revision:2};
   else if(path===`/v1/conversations/${old.id}`||path===`/v1/conversations/${fresh.id}`)value=path.endsWith(old.id)?old:fresh;
@@ -41,7 +45,7 @@ test('MS-U3: identity change on reload keeps URL but clears foreign drafts and r
 test('MS-U3: original global recovery stays linked while another conversation retains its draft',async({page})=>{
  const state=await backend(page);
  await page.addInitScript(({now})=>{if(sessionStorage.getItem('u3-seed'))return;sessionStorage.setItem('u3-seed','yes');localStorage.setItem('uaw.web.local.v1',JSON.stringify({identity:`web:${location.origin}:user-one:session-one:${now}`,value:{version:1,activeConversationId:'conv-new',conversationIds:['conv-new','conv-old'],drafts:{'conv-new':'学术原文草稿'},recovery:{conversationId:'conv-old',requestId:'request-original',runId:'run-one'}}}));},{now});
- await page.goto('/?conversation=conv-new');await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');await page.reload();await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');await expect(page.getByRole('button',{name:'发送原文'})).toBeDisabled();await page.getByRole('button',{name:'返回原请求会话'}).click();await expect(page).toHaveURL(/conv-old/);await expect(page.getByText('实际阶段 · running')).toBeVisible();await page.getByLabel('会话侧栏').getByRole('button',{name:'最新学术草稿'}).click();await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');expect(state.turns).toBe(0);expect(state.writes).toBe(0);
+ await page.goto('/?conversation=conv-new');await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');await page.reload();await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');await expect(page.getByRole('button',{name:'发送原文'})).toBeDisabled();await page.getByRole('button',{name:'返回原请求会话'}).click();await expect(page).toHaveURL(/conv-old/);await expectRunState(page,'实际阶段 · running');await page.getByLabel('会话侧栏').getByRole('button',{name:'最新学术草稿'}).click();await expect(page.getByLabel('任务原文')).toHaveValue('学术原文草稿');expect(state.turns).toBe(0);expect(state.writes).toBe(0);
 });
 test('MS-U3: device pending/active/revoked are actual read states and absent candidate/root are unavailable',async({page})=>{
  const state=await backend(page);await page.goto('/?conversation=conv-new');await page.getByRole('button',{name:'本机设备与目录状态'}).click();
