@@ -729,6 +729,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3191,6 +3197,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3542,6 +3554,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -3764,6 +3782,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",
@@ -4305,6 +4329,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",
@@ -6052,6 +6082,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -6467,6 +6503,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",
@@ -7447,6 +7489,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",
@@ -9341,6 +9389,12 @@
         },
         {
           "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
+        },
+        {
+          "channel": "http",
           "id": "runs.clarification.get",
           "request": "RunClarificationGetRequest",
           "response": "ClarificationView"
@@ -9581,6 +9635,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",
@@ -10612,6 +10672,12 @@
           "id": "runs.conversation.get",
           "request": "RunsGetRequest",
           "response": "RunConversationView"
+        },
+        {
+          "channel": "http",
+          "id": "runs.presentation.get",
+          "request": "RunsGetRequest",
+          "response": "RunPresentationView"
         },
         {
           "channel": "http",

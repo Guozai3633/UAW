@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-18",
+  "stage": "MS-I2m-A15",
+  "issue": "H02-I03",
+  "status": "A_readonly_component_passed_exact_source_publication_pending_B_UI_not_deployed",
+  "source_ref": "ms-i2m-a15-source",
+  "reported_conversation": "conversation-6702653d5e0a45159a1eee55d171ab2f",
+  "reported_run": "run-169ef7763d694cc297c00b51dea9e6b4",
+  "actual_diagnosis": {
+    "same_Run_and_revision_in_both_areas": true,
+    "original_Run_status": "running",
+    "original_Run_revision": 5,
+    "original_input_revision": 1,
+    "original_job_stage": "delivery",
+    "original_job_state": "waiting",
+    "original_model_calls": 2,
+    "actual_understanding_returned_by_model": true,
+    "separate_understanding_model_call_required": false,
+    "missing_in_UI": "FirstDecision_understanding_not_consumed_and_running_status_does_not_mean_model_still_working",
+    "artifact_verification_complete_waiting_owner": true
+  },
+  "actual_readonly_projection": {
+    "phase": "awaiting_acceptance",
+    "Run_revision": 5,
+    "Run_status": "running",
+    "understanding_state": "available",
+    "current_delivery_available": true,
+    "private_receipt_sha256": "0c2485e2c3dd301433543c9cfbbad00b55f0370a27ddf11aca5597fd687b8cbf",
+    "model_calls": 0,
+    "runtime_writes": 0,
+    "authentication_basis": "offline_owned_reader_not_real_HTTP_login"
+  },
+  "original_snapshot_sha256": "1714ca534c5e4e29ffd0ff2a001249dd7e963bcc454df637603d5a685502c8b0",
+  "original_snapshot_path": "E:\\UAW\\.data\\human\\H02-v5\\h02-i03-status-93c0bfc7eaee472c85cac502d431bf7b.json",
+  "runtime_deployed": false,
+  "human_task_stopped_or_accepted": false,
+  "worker_B_authorization": "explicit_human_reply_2026_10_18",
+  "workers_C_D": "no_new_scope",
+  "new_model_calls": 0,
+  "last_full_updated": false,
+  "verification": {
+    "initial_SQL": {
+      "passed": 5,
+      "failed": 3,
+      "receipt": "h02-i03-presentation-first.xml",
+      "reasons": [
+        "cancel_request_is_not_terminal_yet_stopping_projection_added",
+        "HTTP_invalid_schema_version_and_query_follow_existing_422_not_fixture_400"
+      ]
+    },
+    "final_SQL_receipt": "h02-i03-presentation-final.xml",
+    "final_SQL_status": "passed",
+    "static": "h02-i03-static.json",
+    "mypy_source_files": 249,
+    "new_endpoint_no_existing_schema_changed": true,
+    "contract_compatibility": "h02-i03-contract-compatibility.json",
+    "initial_contract": "h02-i03-contract-first.json",
+    "initial_contract_failure": "checker_defaults_compare_historical_675_source_to_current_not_a_runtime_test_failure",
+    "contract_check_historical_ref": "90ef2f12bc92eea2877cb8c9d8820e9f833552bb",
+    "full_repository_regression": false,
+    "unique_SQL_nodes": 10,
+    "new_SQL_nodes": 8,
+    "affected_SQL_nodes": 2,
+    "contract_preparation": "checker_started_before_final_SQL_XML_existed_original_record_retained",
+    "contract_final": "docs/api/contract-check.json",
+    "contract_positive_examples": 1409,
+    "contract_negative_rejections": 337,
+    "implementation_history_only_count_not_current_full": 675,
+    "diff_check_exception": {
+      "path": "docs/implementation/evidence/h02-i03-presentation-first.xml",
+      "reason": "original_pytest_traceback_blank_lines_with_trailing_whitespace_preserved",
+      "all_other_paths_checked_separately": true
+    }
+  },
+  "implementation_sha256": {
+    "src/uaw/run/presentation.py": "9f37e7fa59211b6ff4dc5ac1c297dafebe05f1c91fb7ecdc7ccff7886972e158",
+    "src/uaw/api/conversation.py": "826ea630e251021ba077dd890b6828f58731c914841e7376966a7b1baf426d89",
+    "src/uaw/api/routes.py": "cd473e86ba9f38afb9587cab050e5a063ff45feaf7dedf28723763b0a70bacb3",
+    "contracts/conversation_catalog.py": "55ed2cb71b4c711607ac67f5ae2237ef9e703e8e7229bc0977c73636b41b0774",
+    "contracts/implementation_catalog.py": "59a31ed664e425f7a8095da2d7b68dd2076bd145563a773f4b5a2ed2494c6d71",
+    "tests/integration/agent/test_run_presentation.py": "ac3e268fcc7a6a1baf3d3ed38903fe29c2612998f2030f53653b272d87d60497"
+  }
+}

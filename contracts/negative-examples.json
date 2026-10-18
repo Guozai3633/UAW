@@ -1646,6 +1646,11 @@
       "rejected": true
     },
     {
+      "case": "http:runs.presentation.get cannot succeed without payload",
+      "schema": "HttpRunsPresentationGetResult",
+      "rejected": true
+    },
+    {
       "case": "http:runs.clarification.get cannot succeed without payload",
       "schema": "HttpRunsClarificationGetResult",
       "rejected": true

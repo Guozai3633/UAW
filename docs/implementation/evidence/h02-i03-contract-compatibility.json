@@ -1,0 +1,13 @@
+{
+  "old_types_unchanged": 1404,
+  "new_types": [
+    "HttpRunsPresentationGetEnvelope",
+    "HttpRunsPresentationGetResult",
+    "RunPresentationDelivery",
+    "RunPresentationUnderstanding",
+    "RunPresentationView"
+  ],
+  "new_operations": 1,
+  "no_worker_sources_changed": true,
+  "no_flags_or_lock_changed": true
+}

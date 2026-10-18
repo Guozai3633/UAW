@@ -7581,6 +7581,49 @@
       "envelope": "HttpRunsConversationGetEnvelope"
     },
     {
+      "id": "runs.presentation.get",
+      "channel": "http",
+      "owner": "run",
+      "nodes": [
+        "ui",
+        "ingress",
+        "run.history",
+        "run.state",
+        "run.budget"
+      ],
+      "request": "RunsGetRequest",
+      "response": "RunPresentationView",
+      "effect": "read",
+      "rules": [
+        "MS-I2m M1仅安装所属原Run控制的读取与受理handler，尚不唤醒执行；旧Run无conversation-v1绑定明确拒绝，不转换旧期限。",
+        "实际认证、精确Origin、CSRF与原会话归属仍必需；请求体没有可信主体、批准或授权字段。",
+        "受理后返回真实原Run/补充状态；当前权限/模型/预算复核和未知效果对账后才执行。"
+      ],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/presentation",
+      "auth": "user",
+      "errors": [
+        "旧协议或来源缺失明确不可用；版本冲突重读；终态/取消不能复活；unknown先对账不重发。"
+      ],
+      "feature": null,
+      "implemented": true,
+      "wire_version": "0.2",
+      "request_meta": "ConversationRequestMeta",
+      "requires_cas": false,
+      "protocol": "conversation-v1",
+      "browser_session": true,
+      "implementation": {
+        "scope": "development_readonly_owned_Run_presentation_no_completion_authority",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A15.md",
+          "docs/implementation/evidence/h02-i03-presentation-final.xml"
+        ]
+      },
+      "result": "HttpRunsPresentationGetResult",
+      "envelope": "HttpRunsPresentationGetEnvelope"
+    },
+    {
       "id": "runs.clarification.get",
       "channel": "http",
       "owner": "run",

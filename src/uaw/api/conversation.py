@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 
 from uaw.composition import Container
 from uaw.run.conversation_control import ConversationControls
+from uaw.run.presentation import RunPresentationReader
 from uaw.shared.contracts import Principal
 from uaw.shared.conversation import (
     ConversationRequestMeta,
@@ -21,6 +22,7 @@ from uaw.shared.schema import parse_json, validate_contract
 OPERATIONS = frozenset(
     {
         "runs.conversation.get",
+        "runs.presentation.get",
         "runs.clarification.get",
         "runs.clarification.answer",
         "runs.correction.create",
@@ -78,7 +80,9 @@ async def endpoint(
             validate_contract(schema, payload)
         except ValueError:
             raise reject("request_invalid", "Path fields do not match the contract") from None
-        if operation == "runs.conversation.get":
+        if operation == "runs.presentation.get":
+            result = await RunPresentationReader(container.records).read(actor, payload["run_id"])
+        elif operation == "runs.conversation.get":
             result = (await service.view(actor, payload["run_id"])).wire()
         elif operation == "runs.clarification.get":
             result = (

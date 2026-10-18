@@ -39,6 +39,13 @@ for operation in (
         "entrypoint": "src/uaw/api/routes.py",
         "evidence": ["docs/implementation/MS-I2j-M2.md", "docs/implementation/evidence/ms-i2j-m2.json"],
     }
+
+IMPLEMENTATIONS["runs.presentation.get"] = {
+    "scope": "development_readonly_owned_Run_presentation_no_completion_authority",
+    "entrypoint": "src/uaw/api/routes.py",
+    "evidence": ["docs/implementation/MS-I2m-A15.md",
+                 "docs/implementation/evidence/h02-i03-presentation-final.xml"],
+}
 IMPLEMENTATIONS["ModelRuntime.generate"] = {
     "scope": "development_model_protocol", "entrypoint": "src/uaw/model/facade.py",
     "evidence": ["docs/implementation/P0-05.md", "docs/implementation/evidence/p0-tests.xml"],

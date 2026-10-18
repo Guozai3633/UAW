@@ -152,6 +152,13 @@ ROUTES = (
     ),
     ("runs.get", "GET", "/v1/runs/{run_id}", "RunsGetRequest", "RunRecord"),
     (
+        "runs.presentation.get",
+        "GET",
+        "/v1/runs/{run_id}/presentation",
+        "RunsGetRequest",
+        "RunPresentationView",
+    ),
+    (
         "runs.conversation.get",
         "GET",
         "/v1/runs/{run_id}/conversation",

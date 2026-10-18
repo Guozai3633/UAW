@@ -30817,6 +30817,323 @@
         "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume"
       }
     },
+    "/v1/runs/{run_id}/presentation": {
+      "get": {
+        "operationId": "http_runs_presentation_get",
+        "summary": "运行状态。",
+        "tags": [
+          "run"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "运行"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.2"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "cookie写请求必需且精确匹配已发布同源配置；bearer遵守原CLI认证规则。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "新handler或当前可信来源未装配，明确不可用；不续跑旧Run。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpRunsPresentationGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "webCookie": []
+          },
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "ui",
+          "ingress",
+          "run.history",
+          "run.state",
+          "run.budget"
+        ],
+        "x-uaw-implemented": true,
+        "x-uaw-implementation-scope": "development_readonly_owned_Run_presentation_no_completion_authority"
+      }
+    },
     "/v1/runs/{run_id}/clarifications/{question_item_id}": {
       "get": {
         "operationId": "http_runs_clarification_get",
@@ -59741,6 +60058,198 @@
           "run",
           "input_revision",
           "continuation_request_ids"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunPresentationUnderstanding": {
+        "type": "object",
+        "description": "同次真实模型决策的理解提示，独立于不可变执行帧。",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "available",
+              "not_provided"
+            ],
+            "description": "尚未得到决策、有原理解或本次未提供"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次读取的当前输入版本",
+            "minimum": 1
+          },
+          "value": {
+            "$ref": "#/components/schemas/ConversationUnderstanding",
+            "description": "真实模型摘要和假设；没有时省略"
+          },
+          "decision_record_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原FirstDecisionRecord及摘要"
+          },
+          "model_output_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原ModelOutput版本"
+          }
+        },
+        "required": [
+          "state",
+          "input_revision"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "available"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "required": [
+                "value",
+                "decision_record_ref",
+                "model_output_ref"
+              ]
+            },
+            "else": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "value"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "decision_record_ref"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "model_output_ref"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunPresentationDelivery": {
+        "type": "object",
+        "description": "当前输入和Run修订的完整已登记成果引用；不是接受授权。",
+        "properties": {
+          "bundle_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原完整成果包"
+          },
+          "artifact_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原成果版本"
+          },
+          "report_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原逐项核验"
+          },
+          "proposal_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原交付提案"
+          },
+          "run_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "交付提案绑定的当前Run修订",
+            "minimum": 1
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原执行帧绑定的当前输入版本",
+            "minimum": 1
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome",
+            "description": "真实核验结果，不代表独立事实质量"
+          },
+          "requires_acceptance": {
+            "$ref": "#/components/schemas/Bool",
+            "description": "原合同是否要求本人接受"
+          }
+        },
+        "required": [
+          "bundle_ref",
+          "artifact_ref",
+          "report_ref",
+          "proposal_ref",
+          "run_revision",
+          "input_revision",
+          "outcome",
+          "requires_acceptance"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "RunPresentationView": {
+        "type": "object",
+        "description": "同一只读数据库快照中的显示阶段、真实理解及当前成果；不授权执行或完成。",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "conversation-v1",
+            "description": "协议"
+          },
+          "run": {
+            "$ref": "#/components/schemas/RunRecord",
+            "description": "权威原Run，保持原CAS修订和状态"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "当前有效输入版本",
+            "minimum": 1
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "preparing",
+              "working",
+              "verifying",
+              "waiting_for_user",
+              "awaiting_acceptance",
+              "finalizing",
+              "needs_revision",
+              "stopping",
+              "completed",
+              "failed",
+              "cancelled",
+              "unavailable"
+            ],
+            "description": "显示阶段，不替代Run.status；取消受理尚未终态为stopping"
+          },
+          "understanding": {
+            "$ref": "#/components/schemas/RunPresentationUnderstanding",
+            "description": "真实理解状态与来源"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/RunPresentationDelivery",
+            "description": "仅返回同一当前Run修订和输入的成果"
+          },
+          "captured_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "一致性快照读取时间"
+          }
+        },
+        "required": [
+          "protocol",
+          "run",
+          "input_revision",
+          "phase",
+          "understanding",
+          "captured_at"
         ],
         "additionalProperties": false,
         "x-uaw-protocol": "conversation-v1"
@@ -98949,6 +99458,156 @@
         "x-uaw-protocol": "conversation-v1"
       },
       "HttpRunsConversationGetEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ConversationRequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunsGetRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false,
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsPresentationGetResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RunPresentationView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ],
+        "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpRunsPresentationGetEnvelope": {
         "type": "object",
         "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
         "properties": {

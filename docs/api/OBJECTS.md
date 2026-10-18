@@ -1114,6 +1114,8 @@
 | [HttpRunsDeliveryResult](objects/HttpRunsDeliveryResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsGetEnvelope](objects/HttpRunsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsGetResult](objects/HttpRunsGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpRunsPresentationGetEnvelope](objects/HttpRunsPresentationGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpRunsPresentationGetResult](objects/HttpRunsPresentationGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpRunsResumeEnvelope](objects/HttpRunsResumeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpRunsResumeResult](objects/HttpRunsResumeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpTasksAttachConversationEnvelope](objects/HttpTasksAttachConversationEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
@@ -1226,6 +1228,9 @@
 | [RunInputApplication](objects/RunInputApplication.md) | 原模型实际消费补充的不可变证据；不是执行授权。 |
 | [RunInputPatch](objects/RunInputPatch.md) | 追加输入关联，InputRecord结构不变；受理与生效区分。 |
 | [RunInputState](objects/RunInputState.md) | Run拥有的用户输入集合；追加要求只经真实用户入口保存。 |
+| [RunPresentationDelivery](objects/RunPresentationDelivery.md) | 当前输入和Run修订的完整已登记成果引用；不是接受授权。 |
+| [RunPresentationUnderstanding](objects/RunPresentationUnderstanding.md) | 同次真实模型决策的理解提示，独立于不可变执行帧。 |
+| [RunPresentationView](objects/RunPresentationView.md) | 同一只读数据库快照中的显示阶段、真实理解及当前成果；不授权执行或完成。 |
 | [RunRecord](objects/RunRecord.md) | 调度执行实体；任务历史有多个Run。 |
 | [RunToolAccessBinding](objects/RunToolAccessBinding.md) | 可信控制入口登记的Run/Agent工具角色绑定；不是模型可提交的授权。 |
 | [RunnerBindingState](objects/RunnerBindingState.md) | 取值含义见字段及协议约束。 |

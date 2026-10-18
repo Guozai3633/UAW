@@ -104,6 +104,7 @@
 | [admin.providers.accept](interfaces/http--admin-providers-accept.md) | [AdminProvidersAcceptRequest](objects/AdminProvidersAcceptRequest.md) | [ProviderBinding](objects/ProviderBinding.md) | `internal_write` |
 | [events.payload](interfaces/http--events-payload.md) | [EventsPayloadRequest](objects/EventsPayloadRequest.md) | [EventPayload](objects/EventPayload.md) | `read` |
 | [runs.conversation.get](interfaces/http--runs-conversation-get.md) | [RunsGetRequest](objects/RunsGetRequest.md) | [RunConversationView](objects/RunConversationView.md) | `read` |
+| [runs.presentation.get](interfaces/http--runs-presentation-get.md) | [RunsGetRequest](objects/RunsGetRequest.md) | [RunPresentationView](objects/RunPresentationView.md) | `read` |
 | [runs.clarification.get](interfaces/http--runs-clarification-get.md) | [RunClarificationGetRequest](objects/RunClarificationGetRequest.md) | [ClarificationView](objects/ClarificationView.md) | `read` |
 | [runs.clarification.answer](interfaces/http--runs-clarification-answer.md) | [RunClarificationAnswerRequest](objects/RunClarificationAnswerRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |
 | [runs.correction.create](interfaces/http--runs-correction-create.md) | [RunCorrectionRequest](objects/RunCorrectionRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |

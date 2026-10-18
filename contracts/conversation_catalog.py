@@ -252,6 +252,41 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
         "question只在open且原Run等待时返回；人工工具审批与成果接受不伪装成澄清。"])
     http("runs.conversation.get", "GET", "/v1/runs/{run_id}/conversation", "RunsGetRequest", "RunConversationView")
 
+    obj("RunPresentationUnderstanding", "run", "同次真实模型决策的理解提示，独立于不可变执行帧。", {
+        "state": field({"type":"string", "enum":["pending", "available", "not_provided"]}, "尚未得到决策、有原理解或本次未提供"),
+        "input_revision": revision("本次读取的当前输入版本"),
+        "value": field("ConversationUnderstanding", "真实模型摘要和假设；没有时省略", True),
+        "decision_record_ref": field("Ref", "原FirstDecisionRecord及摘要", True),
+        "model_output_ref": field("Ref", "原ModelOutput版本", True),
+    }, ["available必须绑定同Run/当前input_revision的原决策及成功ModelOutput；不改TaskFrame或补造理解。"])
+    types["RunPresentationUnderstanding"]["allOf"] = [
+        {"if":{"properties":{"state":{"const":"available"}},"required":["state"]},
+         "then":{"required":["value","decision_record_ref","model_output_ref"]},
+         "else":{"not":{"anyOf":[{"required":[name]} for name in ["value","decision_record_ref","model_output_ref"]]}}},
+    ]
+    obj("RunPresentationDelivery", "run", "当前输入和Run修订的完整已登记成果引用；不是接受授权。", {
+        "bundle_ref": field("Ref", "原完整成果包"),
+        "artifact_ref": field("Ref", "原成果版本"),
+        "report_ref": field("Ref", "原逐项核验"),
+        "proposal_ref": field("Ref", "原交付提案"),
+        "run_revision": revision("交付提案绑定的当前Run修订"),
+        "input_revision": revision("原执行帧绑定的当前输入版本"),
+        "outcome": field("Outcome", "真实核验结果，不代表独立事实质量"),
+        "requires_acceptance": field("Bool", "原合同是否要求本人接受"),
+    })
+    obj("RunPresentationView", "run", "同一只读数据库快照中的显示阶段、真实理解及当前成果；不授权执行或完成。", {
+        "protocol": field(literal(PROTOCOL), "协议"),
+        "run": field("RunRecord", "权威原Run，保持原CAS修订和状态"),
+        "input_revision": revision("当前有效输入版本"),
+        "phase": field({"type":"string", "enum":["preparing","working","verifying","waiting_for_user","awaiting_acceptance","finalizing","needs_revision","stopping","completed","failed","cancelled","unavailable"]}, "显示阶段，不替代Run.status；取消受理尚未终态为stopping"),
+        "understanding": field("RunPresentationUnderstanding", "真实理解状态与来源"),
+        "delivery": field("RunPresentationDelivery", "仅返回同一当前Run修订和输入的成果", True),
+        "captured_at": field("Timestamp", "一致性快照读取时间"),
+    }, ["读取原Run、输入、实际决策/ModelOutput、原job及当前成果；同一次REPEATABLE READ READ ONLY事务，不写事件或执行。",
+        "awaiting_acceptance要求当前完整成果、实际交付等待、原合同要求接受、核验成功且未接受；旧成果或unknown不得推断完成。",
+        "已有Frame、Proposal和Run不因显示理解/阶段被改写；缺源503/明确不可用；0.1与旧conversation端点不变。"])
+    http("runs.presentation.get", "GET", "/v1/runs/{run_id}/presentation", "RunsGetRequest", "RunPresentationView")
+
     obj("RunClarificationGetRequest", "run", "读取原Run特定问题，不猜最新问题。", {
         "run_id": field("ID", "路径原Run"), "question_item_id": field("ID", "路径原问题"),
     })

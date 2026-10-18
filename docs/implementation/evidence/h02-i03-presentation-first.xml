@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="8" time="98.651" timestamp="2026-10-18T12:50:29.451276+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_run_presentation" name="test_current_report_understanding_and_wait_are_one_readonly_snapshot[case0]" time="13.682" /><testcase classname="tests.integration.agent.test_run_presentation" name="test_finished_model_without_summary_is_not_pending_understanding[case0]" time="13.049" /><testcase classname="tests.integration.agent.test_run_presentation" name="test_pending_first_model_and_new_correction_do_not_show_old_delivery[case0]" time="11.203" /><testcase classname="tests.integration.agent.test_run_presentation" name="test_acceptance_projects_finalizing_then_actual_completed_only[case0]" time="13.046" /><testcase classname="tests.integration.agent.test_run_presentation" name="test_cancelled_report_never_presents_ready_or_completes[case0]" time="11.573"><failure message="AssertionError: assert ('working' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + working)">tests\integration\agent\test_run_presentation.py:165: in test_cancelled_report_never_presents_ready_or_completes
+    assert view["phase"] == "cancelled" and "delivery" not in view
+E   AssertionError: assert ('working' == 'cancelled'
+E     
+E     - cancelled
+E     + working)</failure></testcase><testcase classname="tests.integration.agent.test_run_presentation" name="test_unknown_original_effect_is_not_ready_for_acceptance[case0]" time="10.702" /><testcase classname="tests.integration.agent.test_run_presentation" name="test_read_snapshot_cannot_mix_cancellation_committed_during_read[case0]" time="12.349"><failure message="AssertionError: assert 'working' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + working">tests\integration\agent\test_run_presentation.py:213: in test_read_snapshot_cannot_mix_cancellation_committed_during_read
+    assert (await reader.read(p.actor, p.run["id"]))["phase"] == "cancelled"
+E   AssertionError: assert 'working' == 'cancelled'
+E     
+E     - cancelled
+E     + working</failure></testcase><testcase classname="tests.integration.agent.test_run_presentation" name="test_owned_HTTP_projection_uses_02_and_rejects_foreign_or_unexpected_query[case0]" time="11.531"><failure message="assert 422 == 400&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">tests\integration\agent\test_run_presentation.py:229: in test_owned_HTTP_projection_uses_02_and_rejects_foreign_or_unexpected_query
+    assert (await client.get(url, headers={"X-UAW-Schema-Version": "0.1"})).status_code == 400
+E   assert 422 == 400
+E    +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code</failure></testcase></testsuite></testsuites>

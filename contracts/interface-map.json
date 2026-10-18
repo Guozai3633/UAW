@@ -259,6 +259,11 @@
           "doc": "docs/api/interfaces/http--runs-conversation-get.md"
         },
         {
+          "id": "runs.presentation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-presentation-get.md"
+        },
+        {
           "id": "runs.clarification.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-clarification-get.md"
@@ -354,6 +359,11 @@
           "id": "runs.conversation.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-conversation-get.md"
+        },
+        {
+          "id": "runs.presentation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-presentation-get.md"
         },
         {
           "id": "runs.clarification.get",
@@ -2297,6 +2307,11 @@
           "doc": "docs/api/interfaces/http--runs-conversation-get.md"
         },
         {
+          "id": "runs.presentation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-presentation-get.md"
+        },
+        {
           "id": "runs.clarification.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-clarification-get.md"
@@ -2367,6 +2382,11 @@
           "id": "runs.conversation.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-conversation-get.md"
+        },
+        {
+          "id": "runs.presentation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-presentation-get.md"
         },
         {
           "id": "runs.clarification.get",
@@ -2446,6 +2466,11 @@
           "id": "runs.conversation.get",
           "channel": "http",
           "doc": "docs/api/interfaces/http--runs-conversation-get.md"
+        },
+        {
+          "id": "runs.presentation.get",
+          "channel": "http",
+          "doc": "docs/api/interfaces/http--runs-presentation-get.md"
         },
         {
           "id": "runs.clarification.get",
