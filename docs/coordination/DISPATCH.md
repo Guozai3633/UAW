@@ -1,3 +1,13 @@
+# H02-I03 / A15接口固定：统一显示阶段，B页面修复待接线
+
+2026-10-18，准确源码 **3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b** / **ms-i2m-a15-source**。新增只读0.2 `GET /v1/runs/{run_id}/presentation`，在同一只读快照返回原Run/input、真实Model决策理解及当前完整交付引用；awaiting_acceptance与实际running分开，接受后收尾、取消受理stopping、unknown不可用及终态准确区分。原1404schema/全部原OpenAPI路径不变，5新对象/1新读取入口；不改Run、Frame或Proposal来迁就文案。[接口及异步版本规则](requests/A/MS-I2m-A15-presentation-wiring.md) · [B具名修复单](requests/A/H02-I03-B-run-presentation-sync.md) · [实现](../implementation/MS-I2m-A15.md) · [完整回执](../implementation/evidence/h02-i03-a15.json)。
+
+10个不同真实SQL（8新+2原兼容）、249源码类型/4Python静态格式通过；契约1409正例/337反例通过。原5通过/3失败、过早契约准备错误及历史源码差异保留；旧675只按原准确快照核对，不是本轮全仓，不更新last_full。
+
+本人原Run/v5实际为delivery/waiting，报告核验完毕、原模型理解已存在；新的Reader只读实查awaiting_acceptance+available，0新模型/0运行写入。当前5183仍为H02-v5/A14+B原页面，**A15尚未部署，页面未修复**。不停止/重发原任务或代接受。
+
+本人已明确授权直接派发给现有B：只在原B工作区保留原提交，核对准确tag后普通merge本A15源码，不合浮动integration；允许apps/web、B原请求/交接/回执路径，其他禁止。以统一投影替代“努力奔跑中/永久等待理解”，保留原只读来源、版本/取消/接受限制，按阶段交付，A消费。此发布为B可开工具体修复；A正式消息送达状态另记。C/D无新包，flags/模型/锁/旧成果和费用保持。以下为历史。
+
 # H02-I02 / A14已部署：报告换行编码兼容
 
 2026-10-18，准确源码 **9f5bce6ea951a4670015c224f7884cadc310a1a7** / **ms-i2m-a14-source**。本人两次报告均完整stop，但字符串内未转义换行导致首次生成拒收；不是截断/核验失败。A只在明确json_object模式兼容字符串内部LF/CR/TAB，再按原严格JSON及完整schema验证；raw/text/usage保持，不猜结构、不增重试。两份原失败响应离线回放均通过，0额外调用。29单元＋4真实SQL共33节点、4Python静态格式/248源码类型通过，原5失败/13通过复现保留，非全仓/不更新last_full。[原因与重测](../implementation/human-tests/H02-I02.md) · [实现策略](../implementation/MS-I2m-A14.md) · [完整回执](../implementation/evidence/h02-i02-a14.json)。

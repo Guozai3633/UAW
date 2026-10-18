@@ -2,7 +2,7 @@
   "date": "2026-10-18",
   "stage": "MS-I2m-A15",
   "issue": "H02-I03",
-  "status": "A_readonly_component_passed_exact_source_publication_pending_B_UI_not_deployed",
+  "status": "A15_readonly_component_fixed_B_repair_authorized_published_message_pending",
   "source_ref": "ms-i2m-a15-source",
   "reported_conversation": "conversation-6702653d5e0a45159a1eee55d171ab2f",
   "reported_run": "run-169ef7763d694cc297c00b51dea9e6b4",
@@ -79,5 +79,6 @@
     "contracts/conversation_catalog.py": "55ed2cb71b4c711607ac67f5ae2237ef9e703e8e7229bc0977c73636b41b0774",
     "contracts/implementation_catalog.py": "59a31ed664e425f7a8095da2d7b68dd2076bd145563a773f4b5a2ed2494c6d71",
     "tests/integration/agent/test_run_presentation.py": "ac3e268fcc7a6a1baf3d3ed38903fe29c2612998f2030f53653b272d87d60497"
-  }
+  },
+  "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b"
 }
