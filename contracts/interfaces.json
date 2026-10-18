@@ -7891,7 +7891,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityReviewsListResult",
       "envelope": "HttpQualityReviewsListEnvelope"
     },
@@ -7913,7 +7921,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityReviewsGetResult",
       "envelope": "HttpQualityReviewsGetEnvelope"
     },
@@ -7935,7 +7951,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityReviewsSaveResult",
       "envelope": "HttpQualityReviewsSaveEnvelope"
     },
@@ -7957,7 +7981,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityReviewsSubmitResult",
       "envelope": "HttpQualityReviewsSubmitEnvelope"
     },
@@ -7979,7 +8011,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityReviewsExportResult",
       "envelope": "HttpQualityReviewsExportEnvelope"
     },
@@ -8001,7 +8041,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityFeedbackListResult",
       "envelope": "HttpQualityFeedbackListEnvelope"
     },
@@ -8023,7 +8071,15 @@
       "auth": "user",
       "errors": [],
       "feature": null,
-      "implemented": false,
+      "implemented": true,
+      "implementation": {
+        "scope": "development_authenticated_quality_review_and_feedback",
+        "entrypoint": "src/uaw/api/routes.py",
+        "evidence": [
+          "docs/implementation/MS-I2m-A17.md",
+          "docs/implementation/evidence/ms-i2m-a17-backend.json"
+        ]
+      },
       "result": "HttpQualityFeedbackSaveResult",
       "envelope": "HttpQualityFeedbackSaveEnvelope"
     }

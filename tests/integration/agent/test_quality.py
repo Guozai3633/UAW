@@ -3,20 +3,25 @@
 import asyncio
 import json
 from copy import deepcopy
+from datetime import UTC, datetime
 
 import pytest
 from sqlalchemy import select
 
+from tests.integration.agent.test_completion_postgres import review as semantic_review
 from tests.integration.agent.test_conversation_postgres import case as case
 from tests.integration.agent.test_conversation_postgres import domain as domain
-from tests.integration.agent.test_conversation_postgres import inventory
+from tests.integration.agent.test_conversation_postgres import inventory, output
 from tests.integration.agent.test_conversation_postgres import scenario as scenario
 from tests.integration.test_browser_sessions import ORIGIN, login
 from tests.integration.test_browser_sessions import web as web
 from tests.integration.test_control_plane import meta
 from tests.unit.evaluation.factories import add_reviewer, example_files, write_files
+from uaw.agent.completion.contracts import contract_from_frame
+from uaw.evaluation.contracts import Case, Policy
 from uaw.evaluation.runner import evaluate_files
 from uaw.infrastructure.db.models import RecordRow
+from uaw.run.evaluation_capture import prepare_bundle, read_run, write_bundle
 from uaw.run.quality import QualityReviews, parsed
 from uaw.run.quality import write_files as restore_files
 from uaw.shared.contracts import Principal
@@ -265,3 +270,113 @@ async def test_feedback_is_run_bound_reopenable_and_does_not_touch_execution(sce
     for name, data in before.items():
         assert await inventory(p, name) == data
     assert len(p.case.requests) == 0
+
+
+@pytest.mark.parametrize(
+    "case", [{"active_provider_for_tools": True, "json_object_mode": True}], indirect=True
+)
+async def test_actual_sql_source_is_rebuilt_and_includes_original_reviewer_limits(
+    scenario, tmp_path
+):
+    p = scenario
+    frame = (await p.runs.store.get(p.actor, "intent.frames", p.run["task_id"])).payload
+    p.case.responses[:] = [
+        output(
+            {
+                "protocol": "conversation-v1",
+                "action": "deliver",
+                "text": "Controlled complete report.",
+            }
+        ),
+        semantic_review(contract_from_frame(frame)["requirements"]),
+    ]
+    assert await p.queue.tick()
+    current = await p.runs.get_run(p.actor, p.run["id"])
+    await p.runs.control(
+        p.actor,
+        {
+            "run_id": current["id"],
+            "control": {
+                "mode": "cancel",
+                "preserve_refs": [],
+                "reason": "End controlled source capture",
+            },
+        },
+        meta("source-cancel", current["revision"]),
+    )
+    assert await p.queue.tick()
+    rows = await read_run(p.runs.store.database, p.actor, current["id"])
+    state = next(row for row in rows if row.namespace == "run.input_sets")
+    source_input = next(
+        row.payload["text"]
+        for row in rows
+        if row.namespace == "inputs" and row.id == state.payload["original_input_ref"]["id"]
+    )
+    case = parsed(
+        Case,
+        {
+            "id": "actual-sql-capture",
+            "version": "1",
+            "split": "revision",
+            "category": "office",
+            "prompt": source_input,
+            "rubric": {
+                "expected_behavior": "deliver",
+                "required_facts": ["Preserve request"],
+                "allowed_assumptions": [],
+                "retained_requirements": [],
+                "critical": True,
+            },
+            "evidence": [],
+            "review_status": "needs_human_review",
+            "human_verification": None,
+        },
+    )
+    policy = parsed(
+        Policy,
+        {
+            "id": "retrospective-test",
+            "registered_at": datetime.now(UTC).isoformat(),
+            "reviewer_required": False,
+            "baseline_required": True,
+            "max_answer_error_rate": "0",
+            "max_reviewer_miss_rate": "0",
+            "max_unnecessary_block_rate": "0",
+            "max_unsupported_execution_rate": "0",
+        },
+    )
+    selection = next(row.id for row in rows if row.namespace == "agent.conversation.decisions")
+    bundle = prepare_bundle(
+        rows,
+        case,
+        policy,
+        candidate_id="controlled-sql-source",
+        source_commit="a" * 40,
+        environment_hash="b" * 64,
+        prompt_hash="c" * 64,
+        selected_attempt=selection,
+    )
+    directory = tmp_path / "actual-capture"
+    write_bundle(directory, bundle)
+    origin = QualityOrigin(
+        kind="actual_run",
+        principal_id=p.actor.id,
+        run_id=current["id"],
+        run_revision=next(row.revision for row in rows if row.namespace == "runs"),
+        input_revision=state.revision,
+        source_commit="a" * 40,
+    )
+    operator = p.actor.model_copy(update={"kind": "service"})
+    registered = await QualityReviews(p.runs.store).register(
+        operator,
+        p.actor,
+        directory,
+        origin,
+        "Controlled persisted model source",
+        meta("register-actual", 0),
+    )
+    details = registered["targets"][0]["verification_outputs"]
+    assert len(details) == 1 and '"limitations"' in details[0]["text"]
+    before = [(row.namespace, row.id, row.revision, row.payload) for row in rows]
+    after = await read_run(p.runs.store.database, p.actor, current["id"])
+    assert before == [(row.namespace, row.id, row.revision, row.payload) for row in after]

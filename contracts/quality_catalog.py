@@ -71,3 +71,9 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
             obj(request_name, "support", "认证网页质量审阅/反馈入口。", request)
         operation(identity, "http", "support", "support.evaluation", request_name, response,
                   effect, ["本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"], method, path)
+        operations[-1].update(implemented=True, implementation={
+            "scope": "development_authenticated_quality_review_and_feedback",
+            "entrypoint": "src/uaw/api/routes.py",
+            "evidence": ["docs/implementation/MS-I2m-A17.md",
+                         "docs/implementation/evidence/ms-i2m-a17-backend.json"],
+        })

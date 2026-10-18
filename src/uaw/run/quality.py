@@ -36,6 +36,7 @@ from uaw.shared.quality import (
     QualitySave,
     QualitySubmit,
     QualityTarget,
+    QualityVerificationOutput,
 )
 from uaw.shared.stores import StoreConflict
 
@@ -101,6 +102,7 @@ class QualityReviews:
         if operator.kind not in ("admin", "service") or owner.kind != "user":
             raise reject("quality_registration_denied", "Trusted source registration required", 403)
         bundle, raw = source_bundle(source)
+        original_outputs = {}
         if len(bundle.suite.cases) != 1:
             raise reject("quality_origin_inventory", "One original Run per registered packet")
         if bundle.manifest.candidate.source_commit != origin.source_commit:
@@ -113,6 +115,9 @@ class QualityReviews:
             )
             rows = await read_run(self.records.database, actor, origin.run_id)
             index = {(row.namespace, row.id): row for row in rows}
+            original_outputs = {
+                row.id: row.payload for row in rows if row.namespace == "model.outputs"
+            }
             run = index[("runs", origin.run_id)]
             inputs = index[("run.input_sets", origin.run_id)]
             refs = [inputs.payload["original_input_ref"], *inputs.payload["patch_refs"]]
@@ -167,6 +172,17 @@ class QualityReviews:
                     for row in bundle.observations
                     if row.reviewer is not None
                     and row.reviewer.target_attempt_id == target.attempt_id
+                ),
+                verification_outputs=tuple(
+                    QualityVerificationOutput(
+                        attempt_id=row.attempt_id,
+                        output_sha256=digest(original_outputs[row.attempt_id]),
+                        text=original_outputs[row.attempt_id]["text"],
+                    )
+                    for row in bundle.observations
+                    if row.reviewer is not None
+                    and row.reviewer.target_attempt_id == target.attempt_id
+                    and row.attempt_id in original_outputs
                 ),
             )
             for target in packet.targets

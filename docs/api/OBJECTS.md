@@ -1493,6 +1493,7 @@
 | [QualitySubmittedReview](objects/QualitySubmittedReview.md) |  |
 | [QualityTarget](objects/QualityTarget.md) |  |
 | [QualityUsage](objects/QualityUsage.md) |  |
+| [QualityVerificationOutput](objects/QualityVerificationOutput.md) |  |
 | [ReleaseManifest](objects/ReleaseManifest.md) | 可评测、恢复核对的不可变系统版本清单。 |
 | [RepositoryReceipt](objects/RepositoryReceipt.md) | 仓储CAS回执。 |
 | [SecretReceipt](objects/SecretReceipt.md) | 只返回句柄。 |

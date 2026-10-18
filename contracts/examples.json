@@ -12303,6 +12303,11 @@
       "version": "example_001",
       "sha256": "example_001"
     },
+    "QualityVerificationOutput": {
+      "attempt_id": "example_001",
+      "output_sha256": "example_001",
+      "text": "example_001"
+    },
     "QualityReviewTarget": {
       "case_id": "example_001",
       "case_version": "example_001",

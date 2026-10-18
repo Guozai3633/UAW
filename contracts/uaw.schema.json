@@ -28228,6 +28228,35 @@
       "title": "OutputEvidence",
       "type": "object"
     },
+    "QualityVerificationOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "output_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Output Sha256",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 65536,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempt_id",
+        "output_sha256",
+        "text"
+      ],
+      "title": "QualityVerificationOutput",
+      "type": "object"
+    },
     "QualityReviewTarget": {
       "additionalProperties": false,
       "properties": {
@@ -28487,6 +28516,15 @@
           },
           "maxItems": 32,
           "title": "Verifications",
+          "type": "array"
+        },
+        "verification_outputs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/QualityVerificationOutput"
+          },
+          "maxItems": 32,
+          "title": "Verification Outputs",
           "type": "array"
         }
       },

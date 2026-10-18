@@ -14,6 +14,7 @@
 | `case` | [QualityCase](./QualityCase.md) | 是 | 见类型说明 | 类型约束见对应对象 |
 | `answer` | [QualityAnswer](./QualityAnswer.md) | 是 | 见类型说明 | 类型约束见对应对象 |
 | `verifications` | 数组&lt;[QualityObservation](./QualityObservation.md)&gt; | 是 | 见类型说明 | 最多项 `32` |
+| `verification_outputs` | 数组&lt;[QualityVerificationOutput](./QualityVerificationOutput.md)&gt; | 否 | 见类型说明 | 最多项 `32`；默认注解 `[]` |
 
 拒绝未声明字段。可选字段省略表示没有提供；只有显式 `null` 分支允许空值。默认注解不会自动写入请求。
 

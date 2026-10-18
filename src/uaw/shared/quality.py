@@ -28,11 +28,20 @@ class QualityOrigin(StrictModel):
     source_commit: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
 
 
+class QualityVerificationOutput(StrictModel):
+    attempt_id: Identifier
+    output_sha256: Hash
+    text: Annotated[str, Field(max_length=65536)]
+
+
 class QualityTarget(StrictModel):
     binding: ReviewTarget
     case: Case
     answer: Answer
     verifications: Annotated[tuple[Observation, ...], Field(max_length=32)]
+    verification_outputs: Annotated[
+        tuple[QualityVerificationOutput, ...], Field(max_length=32)
+    ] = ()
 
 
 class QualityJudgment(StrictModel):
