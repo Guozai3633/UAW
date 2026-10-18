@@ -2,14 +2,14 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import openapiTS, { astToString } from 'openapi-typescript';
-const contractRef='ms-i2m-a6-source';
+const contractRef='ms-i2m-a15-source';
 const contractCommit=execFileSync('git',['rev-parse',`${contractRef}^{commit}`],{encoding:'utf8',maxBuffer:16777216}).trim();
-if(contractCommit!=='b16c69a92d81124c00fb859ce8123748f56df054')throw Error('Published API tag changed');
+if(contractCommit!=='3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b')throw Error('Published API tag changed');
 const target = new URL('../src/lib/api/generated/', import.meta.url);
 const raw=execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
 const schemaRaw=execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
 const api = JSON.parse(raw), schema = JSON.parse(schemaRaw);
-// Exact public routes checked in src/uaw/api/routes.py at ms-i2m-a6-source.
+// Exact public routes checked in src/uaw/api/routes.py at ms-i2m-a15-source.
 const allowed = {
  '/v1/conversations': ['get','post'], '/v1/conversations/{conversation_id}': ['get'],
  '/v1/conversations/{conversation_id}/items': ['get'],
@@ -23,6 +23,7 @@ const allowed = {
  '/v1/runner/enrollments':['post'], '/v1/runner/enrollments/{enrollment_id}':['get'],
  '/v1/runner/enrollments/{enrollment_id}/confirmation':['post'], '/v1/runner/enrollments/{enrollment_id}/revocation':['post'],
  '/v1/runner/local':['post'], '/v1/runner/local/{launch_id}':['get'], '/v1/runner/local/{launch_id}/stop':['post'],
+ '/v1/runs/{run_id}/presentation':['get'],
  '/v1/runs/{run_id}/conversation':['get'], '/v1/runs/{run_id}/clarifications/{question_item_id}':['get'],
  '/v1/runs/{run_id}/clarifications/{question_item_id}/answers':['post'], '/v1/runs/{run_id}/corrections':['post'],
  '/v1/runs/{run_id}/continuations/{request_id}':['get'],
@@ -67,7 +68,7 @@ function collect(value) { if (!value || typeof value !== 'object') return;
 for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
  $defs:Object.fromEntries([...defs].sort().map(k=>[k,schema.$defs[k]]))},null,2)+'\n');
-await writeFile(new URL('source.json',target),JSON.stringify({baseline:'b16c69a92d81124c00fb859ce8123748f56df054',
+await writeFile(new URL('source.json',target),JSON.stringify({baseline:'3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b',
  contract_ref:contractRef,contract_commit:contractCommit,
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
  openapi_sha256:createHash('sha256').update(raw).digest('hex'),paths:allowed},null,2)+'\n');
