@@ -1,3 +1,4 @@
+import {presentationView} from '../../presentation-fixtures';
 // Explicit intercepted backend fixture. No SQL, LLM, Runner, product auth or acceptance.
 import type {Page,Route} from '@playwright/test';
 import {conversation,models,makeRun,makeItem,frame,approval,now,ref,ok,denied} from '../../fixtures';
@@ -7,7 +8,7 @@ export async function controlledBackend(page:Page,scenario:'artifact'|'approval'
  const state={turnPosts:0,controlPosts:0,decisionPosts:0,submitted:false,original:'',approval:structuredClone(approval),
   run:makeRun(scenario==='artifact'?'completed':scenario==='approval'?'waiting_for_user':'running'),cancelled:false,disconnect:false,staleApproval:false,historyFault:false,
   decisionBody:undefined as unknown};
- await page.addInitScript(()=>{window.uawWebHost={session:()=>({identityKey:'controlled:test-user:workspace-one:epoch-1'})};});
+ await page.addInitScript(()=>{window.uawWebHost={session:()=>({identityKey:'controlled:test-user:workspace-one:epoch-1',principal:{id:'user-one',kind:'user',auth_session_id:'session-one'}})};});
  const payloads=new Map<string,Payload>();
  function event(seq:number,payload:Payload):Event{const id='event-'+seq;payloads.set(id,payload);return{event_id:id,stream_id:conversation.id,seq,type:payload.action,schema_version:'0.1',occurred_at:now,payload_ref:ref('event',id)};}
  await page.route('**/v1/**',async(route:Route)=>{
@@ -15,6 +16,8 @@ export async function controlledBackend(page:Page,scenario:'artifact'|'approval'
   if(state.disconnect)return route.abort('connectionfailed');
   if(scenario==='denied')return route.fulfill({status:403,json:denied()});
   let data:unknown;const body=req.method()==='POST'?req.postDataJSON():undefined;
+  if(path.endsWith('/presentation'))return route.fulfill({json:ok(presentationView(state.run,1,['completed','failed','cancelled'].includes(state.run.status)?state.run.status as 'completed'|'failed'|'cancelled':state.run.status==='waiting_for_user'?'waiting_for_user':'working',true))});
+  if(path.endsWith('/conversation'))return route.fulfill({json:ok({protocol:'conversation-v1',run:state.run,input_revision:1,continuation_request_ids:[]})});
   if(path==='/v1/models')data=models;
   else if(path==='/v1/conversations')data=req.method()==='POST'?conversation:{items:[conversation],snapshot_revision:1};
   else if(path==='/v1/conversations/conv-one')data=conversation;
