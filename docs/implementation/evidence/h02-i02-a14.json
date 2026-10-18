@@ -2,7 +2,7 @@
   "date": "2026-10-18",
   "stage": "MS-I2m-A14",
   "issue": "H02-I02",
-  "status": "targeted_fix_verified_original_replay_passed_live_candidate_pending",
+  "status": "fixed_deployed_H02_v5_actual_report_passed_original_failed_Runs_preserved",
   "source_ref": "ms-i2m-a14-source",
   "original_conversation_id": "conversation-a88a0d7209884b07af6a70e831165a53",
   "diagnosis": {
@@ -88,8 +88,84 @@
     "development_issue": "new_SQL_test_line_length_reformatted_before_run",
     "full_repository_regression": false
   },
-  "new_model_calls": 0,
-  "live_candidate": "pending",
+  "new_model_calls": 2,
+  "live_candidate": {
+    "status": "passed",
+    "run_id": "run-df6fc51c1e9944798c0c10d66beb77eb",
+    "conversation_id": "conversation-88cb3a77d20b4f5e90712d4787e7f1b6",
+    "source": "9f5bce6ea951a4670015c224f7884cadc310a1a7",
+    "phase_observations": [
+      {
+        "state": "delivery_waiting_for_owner",
+        "input_revision": 1,
+        "elapsed_ms": 22581
+      }
+    ],
+    "model_attempts": [
+      {
+        "id": "evaluation-23b00d800e63fff0e0e9397ee3b0aa49e30dc8d3eeb9e6f8838ae06ff7f89c09",
+        "state": "received",
+        "usage": {
+          "resources": {
+            "currency": "USD",
+            "tool_calls": 0,
+            "model_calls": 1,
+            "child_agents": 0,
+            "input_tokens": 2997,
+            "wall_time_ms": 2127,
+            "output_tokens": 262
+          },
+          "attempt_id": "evaluation-23b00d800e63fff0e0e9397ee3b0aa49e30dc8d3eeb9e6f8838ae06ff7f89c09",
+          "billing_state": "pending",
+          "cached_input_tokens": 384,
+          "provider_receipt_id": "387ba03e-75e6-4acc-84ab-e0dcc21d35c6"
+        },
+        "raw_sha256": "19c5d1a48bf7d93df90c37cd60adb9886e0f06d831b676845d02c26a15f6106f",
+        "finish_reason": "stop",
+        "original_inner_JSON_valid": true,
+        "literal_lf": 0
+      },
+      {
+        "id": "web-step-model-1-run-df6fc51c1e9944798c0c10d66beb77eb",
+        "state": "received",
+        "usage": {
+          "resources": {
+            "currency": "USD",
+            "tool_calls": 0,
+            "model_calls": 1,
+            "child_agents": 0,
+            "input_tokens": 2458,
+            "wall_time_ms": 9881,
+            "output_tokens": 1565
+          },
+          "attempt_id": "web-step-model-1-run-df6fc51c1e9944798c0c10d66beb77eb",
+          "billing_state": "pending",
+          "cached_input_tokens": 384,
+          "provider_receipt_id": "2e3b7f6a-88d7-4126-af24-6d1093a26013"
+        },
+        "raw_sha256": "4a4c9200c9ed282a8c9f25ee431cb06cd607a8aa32a1529be53e2def154635df",
+        "finish_reason": "stop",
+        "original_inner_JSON_valid": true,
+        "literal_lf": 0
+      }
+    ],
+    "formal_artifact_ref": {
+      "id": "artifact-7128bccb8afeb7e8e34f35b0eabc7c1323d355f9bb166cdd8b40691bbfc2b181",
+      "kind": "artifact",
+      "version": "1",
+      "content_hash": "4e2c19d800eadc556d53e21e0b7b99f060277a7c4714b9aa8161d4ee04ee852d"
+    },
+    "verification_outcome": "succeeded",
+    "content_characters": 2506,
+    "requires_user_acceptance": true,
+    "human_acceptance_performed": false,
+    "final_diagnostic_Run_status": "cancelled",
+    "cleanup_cancellation_is_not_model_failure": true,
+    "private_receipt": "E:\\UAW\\.data\\human\\H02-v5\\live-report-smoke-79c05cf1bcc94033a24caaac601df549.json",
+    "full_receipt_sha256": "6a32b856ad45072b545337d8a7e5e9f595371a275a8e4d530fedfa63a81b3251",
+    "facts_independently_reviewed": false,
+    "new_response_JSON_was_valid_compatibility_proven_by_original_replay_and_SQL": true
+  },
   "human_acceptance_performed": false,
   "original_failed_Runs_rewritten": false,
   "last_full_updated": false,
@@ -98,5 +174,41 @@
     "src/uaw/model/structured_text.py": "ee53539cfde14400c449477417e097c684fcc8917675f72ad41aac81a6aa61c9",
     "tests/unit/model/test_structured_whitespace.py": "4b35ad4a0c94cc0a33b1c01a0e0fe60eca03587d516ed42230313ef538dc90f7",
     "tests/integration/model/test_structured_whitespace_postgres.py": "ff4f5aa8b2522dfcf50144b528e20f26089b86f4d84da82d78dde81e2f8c2632"
+  },
+  "source_commit": "9f5bce6ea951a4670015c224f7884cadc310a1a7",
+  "original_history_check": {
+    "checked_original_rows": 39,
+    "all_unchanged": true,
+    "read_only_transaction": true,
+    "excluded_conversation_last_activity": true,
+    "owning_row_inventory_sha256": "7596c1f5f867b73fa7a668e06092951b707183579eed97b3bdd15da1f37e740c"
+  },
+  "runtime_source_proof": {
+    "source_commit": "9f5bce6ea951a4670015c224f7884cadc310a1a7",
+    "file_count": 266,
+    "files_sha256": "7667bb625ebc66fa8ce1e6389c2dc3607dd94e8a2c73d000701817cf43bfa2e4"
+  },
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:8013/health/ready",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5183/",
+      "status": 200
+    }
+  ],
+  "service": {
+    "runtime": "H02-v5",
+    "backend_source": "9f5bce6ea951a4670015c224f7884cadc310a1a7",
+    "frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
+    "previous_runtime": "H02-v4",
+    "same_database_and_auth_settings_bytes": true,
+    "settings_sha256": "f390648d5707ee0c56eb96d7b98034ee4fb66bb6d6bd30102e33456583b62a26",
+    "launcher_sha256": "ff0ae44fef74e066af9784f9aa7f251c709a827033b2f159fa2c2e8be8379ada",
+    "provider_model_changed": false,
+    "original_failed_Run_statuses_changed": false,
+    "actual_original_Page_authentication_verified": true,
+    "original_two_failed_messages_visibly_retained": true
   }
 }

@@ -1,3 +1,11 @@
+# H02-I02 / A14已部署：报告换行编码兼容
+
+2026-10-18，准确源码 **9f5bce6ea951a4670015c224f7884cadc310a1a7** / **ms-i2m-a14-source**。本人两次报告均完整stop，但字符串内未转义换行导致首次生成拒收；不是截断/核验失败。A只在明确json_object模式兼容字符串内部LF/CR/TAB，再按原严格JSON及完整schema验证；raw/text/usage保持，不猜结构、不增重试。两份原失败响应离线回放均通过，0额外调用。29单元＋4真实SQL共33节点、4Python静态格式/248源码类型通过，原5失败/13通过复现保留，非全仓/不更新last_full。[原因与重测](../implementation/human-tests/H02-I02.md) · [实现策略](../implementation/MS-I2m-A14.md) · [完整回执](../implementation/evidence/h02-i02-a14.json)。
+
+H02-v5已从固定快照部署到原 http://127.0.0.1:5183/，A9a后端替换为A14，B固定前端/账号/数据库/认证settings沿用。无进行中任务后切换精确旧进程，39条原失败相关记录只读核对不变；实际原Page仍登录、两次旧失败保持。旧v4快照/原失败/pending费用不修改，不替本人重发或接受。
+
+独立同题真实诊断2调用通过，约22.581秒形成2506字可读成果及succeeded核验报告，待本人接受前由探针取消收尾。新提供方JSON本身合法；对已观察的非法换行由两份原响应回放与SQL证明兼容，不能把本次合法响应说成真实触发了该分支。新调用5455输入/1827输出Token、2笔金额未知pending；本人原2失败5147/3077Token及费用另保留。模型核验不是事实质量，H02本人反馈、独立人审、本机/Tool门槛继续待验。BCD原停止点/flags/锁/提示词及公共契约保持，无新包。以下为历史。
+
 # MS-I2m A13正式固定：登记后真实报告纠正对比
 
 2026-10-18，准确源码 **c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71** / **ms-i2m-a13-source**。实际2026-10-17登记后在两份固定源码/独立空数据库中各执行4次模型调用，原报告→同Run纠正→结果与全部失败费用交原C评测器。候选A9a可读纠正成果；基线A9末次Reviewer输出结构失败，纠正最终仍applied。8调用/0重试/1模型失败/8笔金额未知pending完整保留。[策略目录及实际边界](../implementation/MS-I2m-A13.md) · [准确接线](requests/A/MS-I2m-A13-real-comparison-wiring.md) · [脱敏机器证据](../implementation/evidence/ms-i2m-a13.json)。
