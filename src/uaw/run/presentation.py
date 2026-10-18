@@ -176,6 +176,7 @@ class RunPresentationReader:
                 "understanding": await self.understanding(tx, run, inputs.revision),
                 "captured_at": timestamp(),
             }
+            job: Payload = {}
             try:
                 job = (await tx.load(JOBS, run_id)).payload
             except StoreMissing:
@@ -228,6 +229,10 @@ class RunPresentationReader:
             elif (await tx.load("budget.ledgers", run_id)).payload["cancel_requested"]:
                 phase = "stopping"
                 value.pop("delivery", None)
+                if job.get("state") == "blocked" and job.get("step") == 1:
+                    stopped = await self.stopped_reply(tx, run, inputs.revision)
+                    if stopped is not None:
+                        value["stopped_reply_ref"] = stopped
             elif run["status"] == "waiting_for_user" and "delivery" not in value:
                 phase = "waiting_for_user"
             elif run["status"] == "verifying" and "delivery" not in value:
@@ -235,3 +240,59 @@ class RunPresentationReader:
             value["phase"] = phase
             validate_contract("RunPresentationView", value)
             return value
+
+    async def stopped_reply(
+        self, tx: RecordTransaction, run: Payload, input_revision: int
+    ) -> Payload | None:
+        """Release only a known stopped plain reply lookup; retain all pending billing."""
+        from uaw.run.streaming import NAMESPACE
+
+        streams = await self.rows(tx, NAMESPACE, run["id"])
+        invocations = await self.rows(tx, "model.invocations", run["id"])
+        if (
+            len(streams) != 1
+            or len(invocations) != 1
+            or await self.rows(tx, "tool.contexts", run["id"])
+        ):
+            return None
+        row, invocation = streams[0], invocations[0]
+        stream = row.payload
+        if (
+            row.schema_name != "ConversationStreamRecord"
+            or invocation.schema_name != "ModelInvocation"
+        ):
+            raise reject(
+                "presentation_stopped_source_invalid", "Original stopped source schema differs", 412
+            )
+        validate_contract("ConversationStreamRecord", stream)
+        validate_contract("ModelInvocation", invocation.payload)
+        if (
+            stream["state"] != "interrupted"
+            or not stream["text"]
+            or stream["conversation_id"] != run["conversation_id"]
+            or stream["input_revision"] != input_revision
+            or invocation.resource_id != stream["id"]
+            or invocation.payload["state"] != "finished"
+            or invocation.payload.get("result", {}).get("kind") == "ok"
+        ):
+            return None
+        attempt = await tx.load("model.attempts", stream["attempt_id"])
+        item = await tx.load("items", stream["item_id"])
+        if attempt.schema_name != "ModelAttemptRecord" or item.schema_name != "InteractionItem":
+            raise reject(
+                "presentation_stopped_source_invalid",
+                "Original stopped receipt schema differs",
+                412,
+            )
+        validate_contract("ModelAttemptRecord", attempt.payload)
+        validate_contract("InteractionItem", item.payload)
+        if (
+            attempt.payload["run_id"] != run["id"]
+            or attempt.payload["state"] != "failed"
+            or item.payload["run_id"] != run["id"]
+            or item.payload["conversation_id"] != run["conversation_id"]
+            or item.payload["status"] != "failed"
+            or item.payload["text"] != stream["text"]
+        ):
+            return None
+        return row_pin("content", row.resource_id, stream).wire()

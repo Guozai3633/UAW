@@ -32,6 +32,7 @@
 | `phase` | enum: `preparing` / `working` / `verifying` / `waiting_for_user` / `awaiting_acceptance` / `finalizing` / `needs_revision` / `stopping` / `completed` / `failed` / `cancelled` / `unavailable` | 是 | 显示阶段，不替代Run.status；取消受理尚未终态为stopping |
 | `understanding` | [RunPresentationUnderstanding](../objects/RunPresentationUnderstanding.md) | 是 | 真实理解状态与来源 |
 | `delivery` | [RunPresentationDelivery](../objects/RunPresentationDelivery.md) | 否 | 仅返回同一当前Run修订和输入的成果 |
+| `stopped_reply_ref` | [Ref](../objects/Ref.md) | 否 | 原普通回复与调用已停止的证据；仅释放本地发送查询，不结算Run/费用或授权续跑 |
 | `captured_at` | [Timestamp](../objects/Timestamp.md) | 是 | 一致性快照读取时间 |
 
 ## 约束与提交

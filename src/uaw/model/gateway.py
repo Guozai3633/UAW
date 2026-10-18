@@ -412,7 +412,9 @@ class ModelGateway:
                         previous.response_raw,
                     )
                 response = None
-                with suppress(DomainError):
+                # Display recovery must not prevent recording the already observed
+                # provider receipt/usage if its own second checkpoint also fails.
+                with suppress(Exception):
                     await asyncio.shield(consumer.finish(None, failure, observation))
             except Exception:
                 previous = failure

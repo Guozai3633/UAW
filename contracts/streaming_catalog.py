@@ -19,6 +19,7 @@ def register(obj, field):
         "updated_at": field("Timestamp", "最新检查点时刻"),
         "first_provider_at": field("Timestamp", "首content，不含推理", True),
         "first_text_at": field("Timestamp", "首可展示正文", True),
+        "first_committed_at": field("Timestamp", "首次正文事务COMMIT返回后的观察时刻，后续检查点保存；进程突失时可缺失", True),
         "received_at": field("Timestamp", "原响应收齐时刻", True),
         "provider_started_at": field("Timestamp", "适配器开始实际HTTP请求", True),
         "provider_headers_at": field("Timestamp", "收到提供方HTTP头", True),

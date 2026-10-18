@@ -281,6 +281,7 @@ def register(types, owners, rules, operations, obj, field, ref, arr, operation):
         "phase": field({"type":"string", "enum":["preparing","working","verifying","waiting_for_user","awaiting_acceptance","finalizing","needs_revision","stopping","completed","failed","cancelled","unavailable"]}, "显示阶段，不替代Run.status；取消受理尚未终态为stopping"),
         "understanding": field("RunPresentationUnderstanding", "真实理解状态与来源"),
         "delivery": field("RunPresentationDelivery", "仅返回同一当前Run修订和输入的成果", True),
+        "stopped_reply_ref": field("Ref", "原普通回复与调用已停止的证据；仅释放本地发送查询，不结算Run/费用或授权续跑", True),
         "captured_at": field("Timestamp", "一致性快照读取时间"),
     }, ["读取原Run、输入、实际决策/ModelOutput、原job及当前成果；同一次REPEATABLE READ READ ONLY事务，不写事件或执行。",
         "awaiting_acceptance要求当前完整成果、实际交付等待、原合同要求接受、核验成功且未接受；旧成果或unknown不得推断完成。",

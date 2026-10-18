@@ -120,6 +120,7 @@ class ConversationStream:
         self.provider_chunks = 0
         self.first_provider: str | None = None
         self.first_text: str | None = None
+        self.first_committed: str | None = None
         self.observation: ProviderObservation | None = None
 
     async def content(self, delta: str) -> None:
@@ -173,6 +174,8 @@ class ConversationStream:
                 changed["first_provider_at"] = self.first_provider
             if self.first_text:
                 changed["first_text_at"] = self.first_text
+            if self.first_committed:
+                changed["first_committed_at"] = self.first_committed
             if self.observation is not None:
                 for field in (
                     "started_at",
@@ -220,6 +223,10 @@ class ConversationStream:
         self.value = await self.owner.transactions.inspect(
             ctx.principal, "conversation:" + (ctx.conversation_id or ""), write
         )
+        if text:
+            # Capture acknowledgement after COMMIT, not the row's earlier created_at.
+            # The next/final checkpoint persists it without another transaction.
+            self.first_committed = self.first_committed or timestamp()
         self.last_write = monotonic()
 
     async def finish(

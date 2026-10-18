@@ -16,6 +16,7 @@
 | `phase` | enum: `preparing` / `working` / `verifying` / `waiting_for_user` / `awaiting_acceptance` / `finalizing` / `needs_revision` / `stopping` / `completed` / `failed` / `cancelled` / `unavailable` | 是 | 显示阶段，不替代Run.status；取消受理尚未终态为stopping | — |
 | `understanding` | [RunPresentationUnderstanding](./RunPresentationUnderstanding.md) | 是 | 真实理解状态与来源 | 类型约束见对应对象 |
 | `delivery` | [RunPresentationDelivery](./RunPresentationDelivery.md) | 否 | 仅返回同一当前Run修订和输入的成果 | 类型约束见对应对象 |
+| `stopped_reply_ref` | [Ref](./Ref.md) | 否 | 原普通回复与调用已停止的证据；仅释放本地发送查询，不结算Run/费用或授权续跑 | 类型约束见对应对象 |
 | `captured_at` | [Timestamp](./Timestamp.md) | 是 | 一致性快照读取时间 | 类型约束见对应对象 |
 
 拒绝未声明字段。可选字段省略表示没有提供；只有显式 `null` 分支允许空值。默认注解不会自动写入请求。

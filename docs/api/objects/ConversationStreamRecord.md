@@ -26,6 +26,7 @@
 | `updated_at` | [Timestamp](./Timestamp.md) | 是 | 最新检查点时刻 | 类型约束见对应对象 |
 | `first_provider_at` | [Timestamp](./Timestamp.md) | 否 | 首content，不含推理 | 类型约束见对应对象 |
 | `first_text_at` | [Timestamp](./Timestamp.md) | 否 | 首可展示正文 | 类型约束见对应对象 |
+| `first_committed_at` | [Timestamp](./Timestamp.md) | 否 | 首次正文事务COMMIT返回后的观察时刻，后续检查点保存；进程突失时可缺失 | 类型约束见对应对象 |
 | `received_at` | [Timestamp](./Timestamp.md) | 否 | 原响应收齐时刻 | 类型约束见对应对象 |
 | `provider_started_at` | [Timestamp](./Timestamp.md) | 否 | 适配器开始实际HTTP请求 | 类型约束见对应对象 |
 | `provider_headers_at` | [Timestamp](./Timestamp.md) | 否 | 收到提供方HTTP头 | 类型约束见对应对象 |
