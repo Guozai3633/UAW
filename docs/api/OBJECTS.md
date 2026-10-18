@@ -1338,6 +1338,10 @@
 | [ConnectionsRevokeRequest](objects/ConnectionsRevokeRequest.md) | 撤销连接。 |
 | [CredentialMetadata](objects/CredentialMetadata.md) | 不含密文或明文秘密的句柄归属。 |
 | [EvaluationResult](objects/EvaluationResult.md) | 成本统计包含失败、重试和用户返工。 |
+| [EventPayloadQualityFeedbackSaved](objects/EventPayloadQualityFeedbackSaved.md) | 注册的质量审计分支。 |
+| [EventPayloadQualityRegistered](objects/EventPayloadQualityRegistered.md) | 注册的质量审计分支。 |
+| [EventPayloadQualitySaved](objects/EventPayloadQualitySaved.md) | 注册的质量审计分支。 |
+| [EventPayloadQualitySubmitted](objects/EventPayloadQualitySubmitted.md) | 注册的质量审计分支。 |
 | [ExtensionManifest](objects/ExtensionManifest.md) | 能力包安装、依赖、校验与启停。 |
 | [ExtensionPage](objects/ExtensionPage.md) | 稳定筛选条件的分页结果。 |
 | [FeatureFlag](objects/FeatureFlag.md) | 关闭能力在发现、调用、恢复和子Agent处均执行。 |
@@ -1381,6 +1385,20 @@
 | [HttpConnectionsListResult](objects/HttpConnectionsListResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [HttpConnectionsRevokeEnvelope](objects/HttpConnectionsRevokeEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
 | [HttpConnectionsRevokeResult](objects/HttpConnectionsRevokeResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityFeedbackListEnvelope](objects/HttpQualityFeedbackListEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityFeedbackListResult](objects/HttpQualityFeedbackListResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityFeedbackSaveEnvelope](objects/HttpQualityFeedbackSaveEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityFeedbackSaveResult](objects/HttpQualityFeedbackSaveResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityReviewsExportEnvelope](objects/HttpQualityReviewsExportEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityReviewsExportResult](objects/HttpQualityReviewsExportResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityReviewsGetEnvelope](objects/HttpQualityReviewsGetEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityReviewsGetResult](objects/HttpQualityReviewsGetResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityReviewsListEnvelope](objects/HttpQualityReviewsListEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityReviewsListResult](objects/HttpQualityReviewsListResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityReviewsSaveEnvelope](objects/HttpQualityReviewsSaveEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityReviewsSaveResult](objects/HttpQualityReviewsSaveResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
+| [HttpQualityReviewsSubmitEnvelope](objects/HttpQualityReviewsSubmitEnvelope.md) | HTTP请求meta和业务参数；路径/查询另由API合成。 |
+| [HttpQualityReviewsSubmitResult](objects/HttpQualityReviewsSubmitResult.md) | 该接口的状态结果；ok才携带完整业务payload。 |
 | [InternalSupportCacheOutput](objects/InternalSupportCacheOutput.md) | 互斥分支；所有字段须匹配所选action。 |
 | [InternalSupportCacheOutputGetOrCompute](objects/InternalSupportCacheOutputGetOrCompute.md) | 按action选择的独立参数/结果分支。 |
 | [InternalSupportCacheOutputInvalidate](objects/InternalSupportCacheOutputInvalidate.md) | 按action选择的独立参数/结果分支。 |
@@ -1435,6 +1453,46 @@
 | [PolicyPayload](objects/PolicyPayload.md) | 政策按类型分别验证，不使用任意configuration_patch。 |
 | [ProviderDraft](objects/ProviderDraft.md) | 提供方类型对应的配置须通过profile schema，不能带明文secret。 |
 | [ProviderProfileRef](objects/ProviderProfileRef.md) |  |
+| [QualityAnswer](objects/QualityAnswer.md) |  |
+| [QualityCase](objects/QualityCase.md) |  |
+| [QualityEvidence](objects/QualityEvidence.md) |  |
+| [QualityExport](objects/QualityExport.md) |  |
+| [QualityFeedback](objects/QualityFeedback.md) |  |
+| [QualityFeedbackListRequest](objects/QualityFeedbackListRequest.md) | 认证网页质量审阅/反馈入口。 |
+| [QualityFeedbackPage](objects/QualityFeedbackPage.md) |  |
+| [QualityFeedbackSave](objects/QualityFeedbackSave.md) |  |
+| [QualityFeedbackSaveRequest](objects/QualityFeedbackSaveRequest.md) | 认证网页质量审阅写入；要求 CAS 和原目标绑定。 |
+| [QualityFeedbackSavedEvent](objects/QualityFeedbackSavedEvent.md) | 独立质量记录的事务审计，不是任务完成事件。 |
+| [QualityFiles](objects/QualityFiles.md) |  |
+| [QualityHumanVerification](objects/QualityHumanVerification.md) |  |
+| [QualityJudgment](objects/QualityJudgment.md) |  |
+| [QualityLabels](objects/QualityLabels.md) |  |
+| [QualityNamedHash](objects/QualityNamedHash.md) |  |
+| [QualityObservation](objects/QualityObservation.md) |  |
+| [QualityOrigin](objects/QualityOrigin.md) |  |
+| [QualityOutputEvidence](objects/QualityOutputEvidence.md) |  |
+| [QualityRegisteredEvent](objects/QualityRegisteredEvent.md) | 独立质量记录的事务审计，不是任务完成事件。 |
+| [QualityReviewPacket](objects/QualityReviewPacket.md) |  |
+| [QualityReviewPage](objects/QualityReviewPage.md) |  |
+| [QualityReviewRecord](objects/QualityReviewRecord.md) |  |
+| [QualityReviewSubmission](objects/QualityReviewSubmission.md) |  |
+| [QualityReviewSummary](objects/QualityReviewSummary.md) |  |
+| [QualityReviewTarget](objects/QualityReviewTarget.md) |  |
+| [QualityReviewView](objects/QualityReviewView.md) |  |
+| [QualityReviewerObservation](objects/QualityReviewerObservation.md) |  |
+| [QualityReviewsExportRequest](objects/QualityReviewsExportRequest.md) | 认证网页质量审阅/反馈入口。 |
+| [QualityReviewsGetRequest](objects/QualityReviewsGetRequest.md) | 认证网页质量审阅/反馈入口。 |
+| [QualityReviewsListRequest](objects/QualityReviewsListRequest.md) | 认证网页质量审阅/反馈入口。 |
+| [QualityReviewsSaveRequest](objects/QualityReviewsSaveRequest.md) | 认证网页质量审阅写入；要求 CAS 和原目标绑定。 |
+| [QualityReviewsSubmitRequest](objects/QualityReviewsSubmitRequest.md) | 认证网页质量审阅写入；要求 CAS 和原目标绑定。 |
+| [QualityRubric](objects/QualityRubric.md) |  |
+| [QualitySave](objects/QualitySave.md) |  |
+| [QualitySavedEvent](objects/QualitySavedEvent.md) | 独立质量记录的事务审计，不是任务完成事件。 |
+| [QualitySubmit](objects/QualitySubmit.md) |  |
+| [QualitySubmittedEvent](objects/QualitySubmittedEvent.md) | 独立质量记录的事务审计，不是任务完成事件。 |
+| [QualitySubmittedReview](objects/QualitySubmittedReview.md) |  |
+| [QualityTarget](objects/QualityTarget.md) |  |
+| [QualityUsage](objects/QualityUsage.md) |  |
 | [ReleaseManifest](objects/ReleaseManifest.md) | 可评测、恢复核对的不可变系统版本清单。 |
 | [RepositoryReceipt](objects/RepositoryReceipt.md) | 仓储CAS回执。 |
 | [SecretReceipt](objects/SecretReceipt.md) | 只返回句柄。 |

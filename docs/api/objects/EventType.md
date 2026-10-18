@@ -8,7 +8,7 @@
 
 ## 类型
 
-enum: `input.committed` / `understanding.preview` / `task.frame.committed` / `plan.committed` / `agent.updated` / `agent.result` / `tool.started` / `tool.completed` / `process.updated` / `changes.committed` / `artifact.registered` / `approval.required` / `approval.decided` / `item.delta` / `item.updated` / `run.updated` / `verification.completed` / `control.accepted` / `memory.deleted` / `configuration.activated` / `checkpoint.committed` / `budget.updated`。—
+enum: `input.committed` / `understanding.preview` / `task.frame.committed` / `plan.committed` / `agent.updated` / `agent.result` / `tool.started` / `tool.completed` / `process.updated` / `changes.committed` / `artifact.registered` / `approval.required` / `approval.decided` / `item.delta` / `item.updated` / `run.updated` / `verification.completed` / `control.accepted` / `memory.deleted` / `configuration.activated` / `checkpoint.committed` / `budget.updated` / `quality.registered` / `quality.saved` / `quality.submitted` / `quality.feedback.saved`。—
 
 ## 结构示例
 

@@ -80,6 +80,18 @@
     },
     {
       "$ref": "#/$defs/EventPayloadBudget.updated"
+    },
+    {
+      "$ref": "#/$defs/EventPayloadQualityRegistered"
+    },
+    {
+      "$ref": "#/$defs/EventPayloadQualitySaved"
+    },
+    {
+      "$ref": "#/$defs/EventPayloadQualitySubmitted"
+    },
+    {
+      "$ref": "#/$defs/EventPayloadQualityFeedbackSaved"
     }
   ]
 }

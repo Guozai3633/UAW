@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="9" failures="0" skipped="0" tests="9" time="2.825" timestamp="2026-10-18T18:00:53.810206+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_quality" name="test_blank_save_reopen_replay_and_other_owner_denied" time="0.520"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_wrong_target_never_saves[old_hash]" time="0.159"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_wrong_target_never_saves[duplicate]" time="0.181"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_wrong_target_never_saves[missing]" time="0.177"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_wrong_target_never_saves[other_attempt]" time="0.169"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_cross_process_style_cas_only_one_writer" time="0.166"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_submission_exports_original_attempts_to_original_evaluator" time="0.208"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_http_auth_csrf_origin_and_unknown_judgment" time="0.173"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase><testcase classname="tests.integration.agent.test_quality" name="test_http_inconsistent_acceptable_is_rejected_without_commit" time="0.141"><error message="failed on setup with &quot;uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /&quot;">tests\integration\agent\test_quality.py:31: in review
+    value = await service.register(
+src\uaw\run\quality.py:215: in register
+    return await self.transactions.execute(
+src\uaw\infrastructure\db\transactions.py:177: in execute
+    return await self._execute(
+src\uaw\infrastructure\db\transactions.py:213: in _execute
+    result = await action(RecordTransaction(session, owner.id, self.database))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\quality.py:212: in action
+    await tx.emit(key, "quality.registered", {"review_id": key, "operator_id": operator.id})
+src\uaw\infrastructure\db\transactions.py:117: in emit
+    await self.write("event.payloads", event_id, "EventPayload", payload)
+src\uaw\infrastructure\db\transactions.py:59: in write
+    validate_contract(schema, payload)
+src\uaw\shared\schema.py:137: in validate_contract
+    raise ContractViolation(name, paths)
+E   uaw.shared.schema.ContractViolation: EventPayload: invalid fields at /</error></testcase></testsuite></testsuites>

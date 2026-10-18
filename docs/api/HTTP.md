@@ -109,3 +109,10 @@
 | [runs.clarification.answer](interfaces/http--runs-clarification-answer.md) | [RunClarificationAnswerRequest](objects/RunClarificationAnswerRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |
 | [runs.correction.create](interfaces/http--runs-correction-create.md) | [RunCorrectionRequest](objects/RunCorrectionRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `internal_write` |
 | [runs.continuation.get](interfaces/http--runs-continuation-get.md) | [RunContinuationGetRequest](objects/RunContinuationGetRequest.md) | [RunContinuationReceipt](objects/RunContinuationReceipt.md) | `read` |
+| [quality.reviews.list](interfaces/http--quality-reviews-list.md) | [QualityReviewsListRequest](objects/QualityReviewsListRequest.md) | [QualityReviewPage](objects/QualityReviewPage.md) | `read` |
+| [quality.reviews.get](interfaces/http--quality-reviews-get.md) | [QualityReviewsGetRequest](objects/QualityReviewsGetRequest.md) | [QualityReviewView](objects/QualityReviewView.md) | `read` |
+| [quality.reviews.save](interfaces/http--quality-reviews-save.md) | [QualityReviewsSaveRequest](objects/QualityReviewsSaveRequest.md) | [QualityReviewView](objects/QualityReviewView.md) | `write` |
+| [quality.reviews.submit](interfaces/http--quality-reviews-submit.md) | [QualityReviewsSubmitRequest](objects/QualityReviewsSubmitRequest.md) | [QualityReviewView](objects/QualityReviewView.md) | `write` |
+| [quality.reviews.export](interfaces/http--quality-reviews-export.md) | [QualityReviewsExportRequest](objects/QualityReviewsExportRequest.md) | [QualityExport](objects/QualityExport.md) | `read` |
+| [quality.feedback.list](interfaces/http--quality-feedback-list.md) | [QualityFeedbackListRequest](objects/QualityFeedbackListRequest.md) | [QualityFeedbackPage](objects/QualityFeedbackPage.md) | `read` |
+| [quality.feedback.save](interfaces/http--quality-feedback-save.md) | [QualityFeedbackSaveRequest](objects/QualityFeedbackSaveRequest.md) | [QualityFeedback](objects/QualityFeedback.md) | `write` |

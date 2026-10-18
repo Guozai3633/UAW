@@ -7872,6 +7872,160 @@
       "protocol": "conversation-v1",
       "wire_version": "0.2",
       "result": "RuntimeRunruntimeCommitQuestionResult"
+    },
+    {
+      "id": "quality.reviews.list",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityReviewsListRequest",
+      "response": "QualityReviewPage",
+      "effect": "read",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "GET",
+      "path": "/v1/quality/reviews",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityReviewsListResult",
+      "envelope": "HttpQualityReviewsListEnvelope"
+    },
+    {
+      "id": "quality.reviews.get",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityReviewsGetRequest",
+      "response": "QualityReviewView",
+      "effect": "read",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "GET",
+      "path": "/v1/quality/reviews/{review_id}",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityReviewsGetResult",
+      "envelope": "HttpQualityReviewsGetEnvelope"
+    },
+    {
+      "id": "quality.reviews.save",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityReviewsSaveRequest",
+      "response": "QualityReviewView",
+      "effect": "write",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "POST",
+      "path": "/v1/quality/reviews/{review_id}/draft",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityReviewsSaveResult",
+      "envelope": "HttpQualityReviewsSaveEnvelope"
+    },
+    {
+      "id": "quality.reviews.submit",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityReviewsSubmitRequest",
+      "response": "QualityReviewView",
+      "effect": "write",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "POST",
+      "path": "/v1/quality/reviews/{review_id}/submission",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityReviewsSubmitResult",
+      "envelope": "HttpQualityReviewsSubmitEnvelope"
+    },
+    {
+      "id": "quality.reviews.export",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityReviewsExportRequest",
+      "response": "QualityExport",
+      "effect": "read",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "GET",
+      "path": "/v1/quality/reviews/{review_id}/export",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityReviewsExportResult",
+      "envelope": "HttpQualityReviewsExportEnvelope"
+    },
+    {
+      "id": "quality.feedback.list",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityFeedbackListRequest",
+      "response": "QualityFeedbackPage",
+      "effect": "read",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/feedback",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityFeedbackListResult",
+      "envelope": "HttpQualityFeedbackListEnvelope"
+    },
+    {
+      "id": "quality.feedback.save",
+      "channel": "http",
+      "owner": "support",
+      "nodes": [
+        "support.evaluation"
+      ],
+      "request": "QualityFeedbackSaveRequest",
+      "response": "QualityFeedback",
+      "effect": "write",
+      "rules": [
+        "本人归属；写入要求独立对象 CAS/幂等；不修改 Run。"
+      ],
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/feedback",
+      "auth": "user",
+      "errors": [],
+      "feature": null,
+      "implemented": false,
+      "result": "HttpQualityFeedbackSaveResult",
+      "envelope": "HttpQualityFeedbackSaveEnvelope"
     }
   ]
 }

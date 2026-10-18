@@ -32600,6 +32600,2170 @@
         "x-uaw-implemented": true,
         "x-uaw-implementation-scope": "development_conversation_control_acceptance_only_no_resume"
       }
+    },
+    "/v1/quality/reviews": {
+      "get": {
+        "operationId": "http_quality_reviews_list",
+        "summary": "认证网页质量审阅/反馈入口。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "上一页最后 ID"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      }
+    },
+    "/v1/quality/reviews/{review_id}": {
+      "get": {
+        "operationId": "http_quality_reviews_get",
+        "summary": "认证网页质量审阅/反馈入口。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "本人审阅包"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsGetResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      }
+    },
+    "/v1/quality/reviews/{review_id}/draft": {
+      "post": {
+        "operationId": "http_quality_reviews_save",
+        "summary": "认证网页质量审阅写入；要求 CAS 和原目标绑定。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Review Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "write",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "packet_sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Packet Sha256",
+                        "type": "string"
+                      },
+                      "judgments": {
+                        "items": {
+                          "$ref": "#/components/schemas/QualityJudgment"
+                        },
+                        "maxItems": 8,
+                        "minItems": 1,
+                        "title": "Judgments",
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "packet_sha256",
+                      "judgments"
+                    ],
+                    "title": "QualitySave",
+                    "type": "object",
+                    "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
+    "/v1/quality/reviews/{review_id}/submission": {
+      "post": {
+        "operationId": "http_quality_reviews_submit",
+        "summary": "认证网页质量审阅写入；要求 CAS 和原目标绑定。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Review Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsSubmitResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "write",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "packet_sha256": {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "title": "Packet Sha256",
+                        "type": "string"
+                      },
+                      "judgments": {
+                        "items": {
+                          "$ref": "#/components/schemas/QualityJudgment"
+                        },
+                        "maxItems": 8,
+                        "minItems": 1,
+                        "title": "Judgments",
+                        "type": "array"
+                      },
+                      "human_attested": {
+                        "title": "Human Attested",
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "packet_sha256",
+                      "judgments",
+                      "human_attested"
+                    ],
+                    "title": "QualitySubmit",
+                    "type": "object",
+                    "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
+    },
+    "/v1/quality/reviews/{review_id}/export": {
+      "get": {
+        "operationId": "http_quality_reviews_export",
+        "summary": "认证网页质量审阅/反馈入口。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "本人已提交包"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityReviewsExportResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      }
+    },
+    "/v1/runs/{run_id}/feedback": {
+      "get": {
+        "operationId": "http_quality_feedback_list",
+        "summary": "认证网页质量审阅/反馈入口。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID",
+              "description": "本人原任务"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "X-UAW-Schema-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "0.1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackListResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "read",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned"
+      },
+      "post": {
+        "operationId": "http_quality_feedback_save",
+        "summary": "认证网页质量审阅写入；要求 CAS 和原目标绑定。",
+        "tags": [
+          "support"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "本接口成功；Run/作业可能仍在执行。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "waiting；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "waiting"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "denied；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "denied"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "missing；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "missing"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "conflict；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "conflict"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "stale；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "stale"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "failed；failure.code区分原因，waiting含wait_ref。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpQualityFeedbackSaveResult"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "const": "failed"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "认证失败；不进入业务接口。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationFailure"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "x-uaw-effect": "write",
+        "x-uaw-node-ids": [
+          "support.evaluation"
+        ],
+        "x-uaw-implemented": false,
+        "x-uaw-implementation-scope": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "meta",
+                  "payload"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/components/schemas/RequestMeta"
+                  },
+                  "payload": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "feedback_id": {
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                        "title": "Feedback Id",
+                        "type": "string"
+                      },
+                      "run_revision": {
+                        "minimum": 1,
+                        "title": "Run Revision",
+                        "type": "integer"
+                      },
+                      "input_revision": {
+                        "minimum": 1,
+                        "title": "Input Revision",
+                        "type": "integer"
+                      },
+                      "category": {
+                        "enum": [
+                          "latency",
+                          "clarification",
+                          "correction",
+                          "presentation",
+                          "content",
+                          "other"
+                        ],
+                        "title": "Category",
+                        "type": "string"
+                      },
+                      "notes": {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "title": "Notes",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "feedback_id",
+                      "run_revision",
+                      "input_revision",
+                      "category",
+                      "notes"
+                    ],
+                    "title": "QualityFeedbackSave",
+                    "type": "object",
+                    "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-uaw-cas-required": false
+      }
     }
   },
   "components": {
@@ -48674,7 +50838,11 @@
           "memory.deleted",
           "configuration.activated",
           "checkpoint.committed",
-          "budget.updated"
+          "budget.updated",
+          "quality.registered",
+          "quality.saved",
+          "quality.submitted",
+          "quality.feedback.saved"
         ]
       },
       "EventPayloadInput.committed": {
@@ -49185,6 +51353,18 @@
           },
           {
             "$ref": "#/components/schemas/EventPayloadBudget.updated"
+          },
+          {
+            "$ref": "#/components/schemas/EventPayloadQualityRegistered"
+          },
+          {
+            "$ref": "#/components/schemas/EventPayloadQualitySaved"
+          },
+          {
+            "$ref": "#/components/schemas/EventPayloadQualitySubmitted"
+          },
+          {
+            "$ref": "#/components/schemas/EventPayloadQualityFeedbackSaved"
           }
         ]
       },
@@ -60293,6 +62473,2140 @@
         ],
         "additionalProperties": false,
         "x-uaw-protocol": "conversation-v1"
+      },
+      "QualityFiles": {
+        "additionalProperties": false,
+        "properties": {
+          "suite": {
+            "maxLength": 2097152,
+            "title": "Suite",
+            "type": "string"
+          },
+          "manifest": {
+            "maxLength": 2097152,
+            "title": "Manifest",
+            "type": "string"
+          },
+          "observations": {
+            "maxLength": 2097152,
+            "title": "Observations",
+            "type": "string"
+          },
+          "reviews": {
+            "maxLength": 2097152,
+            "title": "Reviews",
+            "type": "string"
+          }
+        },
+        "required": [
+          "suite",
+          "manifest",
+          "observations",
+          "reviews"
+        ],
+        "title": "QualityFiles",
+        "type": "object"
+      },
+      "QualityOrigin": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "actual_run",
+              "controlled_test"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "principal_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "run_revision": {
+            "minimum": 1,
+            "title": "Run Revision",
+            "type": "integer"
+          },
+          "input_revision": {
+            "minimum": 1,
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "source_commit": {
+            "pattern": "^[0-9a-f]{40}$",
+            "title": "Source Commit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "principal_id",
+          "run_id",
+          "run_revision",
+          "input_revision",
+          "source_commit"
+        ],
+        "title": "QualityOrigin",
+        "type": "object"
+      },
+      "QualityAnswer": {
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "enum": [
+              "reply",
+              "ask",
+              "tool",
+              "deliver",
+              "blocked",
+              "none"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 65536,
+            "title": "Text",
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/QualityOutputEvidence"
+            },
+            "maxItems": 64,
+            "title": "Evidence",
+            "type": "array"
+          }
+        },
+        "required": [
+          "decision",
+          "text",
+          "evidence"
+        ],
+        "title": "Answer",
+        "type": "object"
+      },
+      "QualityCase": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Version",
+            "type": "string"
+          },
+          "split": {
+            "enum": [
+              "revision",
+              "holdout"
+            ],
+            "title": "Split",
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "office",
+              "academic",
+              "technical",
+              "missing_material",
+              "reasonable_ambiguity",
+              "correction"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "prompt": {
+            "maxLength": 16384,
+            "minLength": 1,
+            "title": "Prompt",
+            "type": "string"
+          },
+          "rubric": {
+            "$ref": "#/components/schemas/QualityRubric"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/QualityEvidence"
+            },
+            "maxItems": 16,
+            "title": "Evidence",
+            "type": "array"
+          },
+          "review_status": {
+            "enum": [
+              "needs_human_review",
+              "human_verified"
+            ],
+            "title": "Review Status",
+            "type": "string"
+          },
+          "human_verification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityHumanVerification"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "split",
+          "category",
+          "prompt",
+          "rubric",
+          "evidence",
+          "review_status",
+          "human_verification"
+        ],
+        "title": "Case",
+        "type": "object"
+      },
+      "QualityEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "provided_material",
+              "primary_source"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "locator": {
+            "maxLength": 16384,
+            "minLength": 1,
+            "title": "Locator",
+            "type": "string"
+          },
+          "captured_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Captured At",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 65536,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "maxLength": 2048,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "locator",
+          "captured_at",
+          "text",
+          "sha256"
+        ],
+        "title": "Evidence",
+        "type": "object"
+      },
+      "QualityHumanVerification": {
+        "additionalProperties": false,
+        "properties": {
+          "reviewer_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "reviewed_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Reviewed At",
+            "type": "string"
+          },
+          "rubric_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Rubric Sha256",
+            "type": "string"
+          },
+          "evidence_sha256": {
+            "items": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "maxItems": 16,
+            "title": "Evidence Sha256",
+            "type": "array"
+          },
+          "record_locator": {
+            "maxLength": 16384,
+            "minLength": 1,
+            "title": "Record Locator",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reviewer_id",
+          "reviewed_at",
+          "rubric_sha256",
+          "evidence_sha256",
+          "record_locator"
+        ],
+        "title": "HumanVerification",
+        "type": "object"
+      },
+      "QualityObservation": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": "ms-e1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "manifest_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Manifest Id",
+            "type": "string"
+          },
+          "case_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Version",
+            "type": "string"
+          },
+          "attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Attempt Id",
+            "type": "string"
+          },
+          "logical_request_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Logical Request Id",
+            "type": "string"
+          },
+          "attempt_number": {
+            "maximum": 4096,
+            "minimum": 1,
+            "title": "Attempt Number",
+            "type": "integer"
+          },
+          "phase": {
+            "enum": [
+              "answer",
+              "reviewer",
+              "tool",
+              "preparation"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "started_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Started At",
+            "type": "string"
+          },
+          "finished_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Finished At",
+            "type": "string"
+          },
+          "active_ms": {
+            "maximum": 1000000000000000000,
+            "minimum": 0,
+            "title": "Active Ms",
+            "type": "integer"
+          },
+          "wall_ms": {
+            "maximum": 1000000000000000000,
+            "minimum": 0,
+            "title": "Wall Ms",
+            "type": "integer"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/QualityUsage"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityAnswer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reviewer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityReviewerObservation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "failure_code": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Code"
+          }
+        },
+        "required": [
+          "schema_version",
+          "manifest_id",
+          "case_id",
+          "case_version",
+          "attempt_id",
+          "logical_request_id",
+          "attempt_number",
+          "phase",
+          "status",
+          "started_at",
+          "finished_at",
+          "active_ms",
+          "wall_ms",
+          "usage",
+          "output",
+          "reviewer",
+          "failure_code"
+        ],
+        "title": "Observation",
+        "type": "object"
+      },
+      "QualityOutputEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "content",
+              "artifact",
+              "tool_call",
+              "tool_result",
+              "receipt"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Version",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "version",
+          "sha256"
+        ],
+        "title": "OutputEvidence",
+        "type": "object"
+      },
+      "QualityReviewTarget": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Version",
+            "type": "string"
+          },
+          "case_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Case Sha256",
+            "type": "string"
+          },
+          "manifest_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Manifest Id",
+            "type": "string"
+          },
+          "attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Attempt Id",
+            "type": "string"
+          },
+          "output_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Output Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "case_version",
+          "case_sha256",
+          "manifest_id",
+          "attempt_id",
+          "output_sha256"
+        ],
+        "title": "ReviewTarget",
+        "type": "object"
+      },
+      "QualityReviewerObservation": {
+        "additionalProperties": false,
+        "properties": {
+          "target_attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Target Attempt Id",
+            "type": "string"
+          },
+          "target_output_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Target Output Sha256",
+            "type": "string"
+          },
+          "verdict": {
+            "enum": [
+              "passed",
+              "failed",
+              "not_applicable",
+              "unavailable"
+            ],
+            "title": "Verdict",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_attempt_id",
+          "target_output_sha256",
+          "verdict"
+        ],
+        "title": "ReviewerObservation",
+        "type": "object"
+      },
+      "QualityRubric": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_behavior": {
+            "enum": [
+              "answer",
+              "clarify",
+              "decline",
+              "deliver",
+              "tool"
+            ],
+            "title": "Expected Behavior",
+            "type": "string"
+          },
+          "required_facts": {
+            "items": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 24,
+            "minItems": 1,
+            "title": "Required Facts",
+            "type": "array"
+          },
+          "allowed_assumptions": {
+            "items": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 16,
+            "title": "Allowed Assumptions",
+            "type": "array"
+          },
+          "retained_requirements": {
+            "items": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 24,
+            "title": "Retained Requirements",
+            "type": "array"
+          },
+          "critical": {
+            "title": "Critical",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "expected_behavior",
+          "required_facts",
+          "allowed_assumptions",
+          "retained_requirements",
+          "critical"
+        ],
+        "title": "Rubric",
+        "type": "object"
+      },
+      "QualityUsage": {
+        "additionalProperties": false,
+        "properties": {
+          "input_tokens": {
+            "anyOf": [
+              {
+                "maximum": 1000000000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "maximum": 1000000000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Tokens"
+          },
+          "model_calls": {
+            "anyOf": [
+              {
+                "maximum": 1000000000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Calls"
+          },
+          "tool_calls": {
+            "anyOf": [
+              {
+                "maximum": 1000000000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Calls"
+          },
+          "money": {
+            "anyOf": [
+              {
+                "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,8})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Money"
+          },
+          "currency": {
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "billing_state": {
+            "enum": [
+              "confirmed",
+              "pending",
+              "unknown"
+            ],
+            "title": "Billing State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input_tokens",
+          "output_tokens",
+          "model_calls",
+          "tool_calls",
+          "money",
+          "currency",
+          "billing_state"
+        ],
+        "title": "Usage",
+        "type": "object"
+      },
+      "QualityTarget": {
+        "additionalProperties": false,
+        "properties": {
+          "binding": {
+            "$ref": "#/components/schemas/QualityReviewTarget"
+          },
+          "case": {
+            "$ref": "#/components/schemas/QualityCase"
+          },
+          "answer": {
+            "$ref": "#/components/schemas/QualityAnswer"
+          },
+          "verifications": {
+            "items": {
+              "$ref": "#/components/schemas/QualityObservation"
+            },
+            "maxItems": 32,
+            "title": "Verifications",
+            "type": "array"
+          }
+        },
+        "required": [
+          "binding",
+          "case",
+          "answer",
+          "verifications"
+        ],
+        "title": "QualityTarget",
+        "type": "object"
+      },
+      "QualityJudgment": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Id",
+            "type": "string"
+          },
+          "attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Attempt Id",
+            "type": "string"
+          },
+          "case_review": {
+            "anyOf": [
+              {
+                "enum": [
+                  "verified",
+                  "needs_revision"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Review"
+          },
+          "evidence_reviewed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Reviewed"
+          },
+          "answer_correct": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Correct"
+          },
+          "unnecessary_block": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unnecessary Block"
+          },
+          "unsupported_execution": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unsupported Execution"
+          },
+          "requirements_preserved": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirements Preserved"
+          },
+          "acceptable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptable"
+          },
+          "critical_error": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Critical Error"
+          },
+          "fabricated_evidence": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fabricated Evidence"
+          },
+          "notes": {
+            "maxLength": 4000,
+            "title": "Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "attempt_id",
+          "case_review",
+          "evidence_reviewed",
+          "answer_correct",
+          "unnecessary_block",
+          "unsupported_execution",
+          "requirements_preserved",
+          "acceptable",
+          "critical_error",
+          "fabricated_evidence",
+          "notes"
+        ],
+        "title": "QualityJudgment",
+        "type": "object"
+      },
+      "QualitySave": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          }
+        },
+        "required": [
+          "review_id",
+          "packet_sha256",
+          "judgments"
+        ],
+        "title": "QualitySave",
+        "type": "object"
+      },
+      "QualitySubmit": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          },
+          "human_attested": {
+            "title": "Human Attested",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "review_id",
+          "packet_sha256",
+          "judgments",
+          "human_attested"
+        ],
+        "title": "QualitySubmit",
+        "type": "object"
+      },
+      "QualityLabels": {
+        "additionalProperties": false,
+        "properties": {
+          "answer_correct": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Correct"
+          },
+          "unnecessary_block": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unnecessary Block"
+          },
+          "unsupported_execution": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unsupported Execution"
+          },
+          "requirements_preserved": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirements Preserved"
+          },
+          "acceptable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptable"
+          },
+          "critical_error": {
+            "title": "Critical Error",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "answer_correct",
+          "unnecessary_block",
+          "unsupported_execution",
+          "requirements_preserved",
+          "acceptable",
+          "critical_error"
+        ],
+        "title": "Labels",
+        "type": "object"
+      },
+      "QualityNamedHash": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Name",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "sha256"
+        ],
+        "title": "NamedHash",
+        "type": "object"
+      },
+      "QualityReviewPacket": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": "uaw.human-review-packet.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "created_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Created At",
+            "type": "string"
+          },
+          "input_sha256": {
+            "items": {
+              "$ref": "#/components/schemas/QualityNamedHash"
+            },
+            "title": "Input Sha256",
+            "type": "array"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/QualityReviewTarget"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Targets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "created_at",
+          "input_sha256",
+          "targets"
+        ],
+        "title": "ReviewPacket",
+        "type": "object"
+      },
+      "QualityReviewSubmission": {
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": "uaw.human-review-submission.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "reviewer_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "reviewed_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Reviewed At",
+            "type": "string"
+          },
+          "human_attested": {
+            "title": "Human Attested",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QualitySubmittedReview"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "packet_sha256",
+          "reviewer_id",
+          "reviewed_at",
+          "human_attested",
+          "items"
+        ],
+        "title": "ReviewSubmission",
+        "type": "object"
+      },
+      "QualitySubmittedReview": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Case Id",
+            "type": "string"
+          },
+          "attempt_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Attempt Id",
+            "type": "string"
+          },
+          "case_review": {
+            "enum": [
+              "verified",
+              "needs_revision"
+            ],
+            "title": "Case Review",
+            "type": "string"
+          },
+          "evidence_reviewed": {
+            "title": "Evidence Reviewed",
+            "type": "boolean"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/QualityLabels"
+          },
+          "notes": {
+            "maxLength": 16384,
+            "minLength": 1,
+            "title": "Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "attempt_id",
+          "case_review",
+          "evidence_reviewed",
+          "labels",
+          "notes"
+        ],
+        "title": "SubmittedReview",
+        "type": "object"
+      },
+      "QualityReviewView": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "created_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Created At",
+            "type": "string"
+          },
+          "updated_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Updated At",
+            "type": "string"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/QualityOrigin"
+          },
+          "packet": {
+            "$ref": "#/components/schemas/QualityReviewPacket"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/QualityTarget"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Targets",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          },
+          "submission": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityReviewSubmission"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "title",
+          "created_at",
+          "updated_at",
+          "origin",
+          "packet",
+          "packet_sha256",
+          "targets",
+          "status",
+          "judgments",
+          "submission"
+        ],
+        "title": "QualityReviewView",
+        "type": "object"
+      },
+      "QualityReviewRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "created_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Created At",
+            "type": "string"
+          },
+          "updated_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Updated At",
+            "type": "string"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/QualityOrigin"
+          },
+          "packet": {
+            "$ref": "#/components/schemas/QualityReviewPacket"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/QualityTarget"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Targets",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          },
+          "submission": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityReviewSubmission"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "files": {
+            "$ref": "#/components/schemas/QualityFiles"
+          },
+          "exported_files": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityFiles"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "basis": {
+            "enum": [
+              "human_evidence_review",
+              "controlled_test"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "registered_by": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Registered By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "title",
+          "created_at",
+          "updated_at",
+          "origin",
+          "packet",
+          "packet_sha256",
+          "targets",
+          "status",
+          "judgments",
+          "submission",
+          "files",
+          "exported_files",
+          "basis",
+          "registered_by"
+        ],
+        "title": "QualityReviewRecord",
+        "type": "object"
+      },
+      "QualityReviewSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Updated At",
+            "type": "string"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/QualityOrigin"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "title",
+          "status",
+          "updated_at",
+          "origin"
+        ],
+        "title": "QualityReviewSummary",
+        "type": "object"
+      },
+      "QualityReviewPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QualityReviewSummary"
+            },
+            "maxItems": 25,
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "QualityReviewPage",
+        "type": "object"
+      },
+      "QualityExport": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "submission_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Submission Sha256",
+            "type": "string"
+          },
+          "authenticated_reviewer_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Authenticated Reviewer Id",
+            "type": "string"
+          },
+          "basis": {
+            "enum": [
+              "human_evidence_review",
+              "controlled_test"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "files": {
+            "$ref": "#/components/schemas/QualityFiles"
+          }
+        },
+        "required": [
+          "review_id",
+          "revision",
+          "packet_sha256",
+          "submission_sha256",
+          "authenticated_reviewer_id",
+          "basis",
+          "files"
+        ],
+        "title": "QualityExport",
+        "type": "object"
+      },
+      "QualityFeedback": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "run_revision": {
+            "minimum": 1,
+            "title": "Run Revision",
+            "type": "integer"
+          },
+          "input_revision": {
+            "minimum": 1,
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "category": {
+            "enum": [
+              "latency",
+              "clarification",
+              "correction",
+              "presentation",
+              "content",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Notes",
+            "type": "string"
+          },
+          "created_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Created At",
+            "type": "string"
+          },
+          "updated_at": {
+            "maxLength": 40,
+            "minLength": 20,
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "run_id",
+          "run_revision",
+          "input_revision",
+          "category",
+          "notes",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "QualityFeedback",
+        "type": "object"
+      },
+      "QualityFeedbackSave": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "feedback_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Feedback Id",
+            "type": "string"
+          },
+          "run_revision": {
+            "minimum": 1,
+            "title": "Run Revision",
+            "type": "integer"
+          },
+          "input_revision": {
+            "minimum": 1,
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "category": {
+            "enum": [
+              "latency",
+              "clarification",
+              "correction",
+              "presentation",
+              "content",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "feedback_id",
+          "run_revision",
+          "input_revision",
+          "category",
+          "notes"
+        ],
+        "title": "QualityFeedbackSave",
+        "type": "object"
+      },
+      "QualityFeedbackPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QualityFeedback"
+            },
+            "maxItems": 100,
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "QualityFeedbackPage",
+        "type": "object"
+      },
+      "QualityRegisteredEvent": {
+        "type": "object",
+        "description": "独立质量记录的事务审计，不是任务完成事件。",
+        "properties": {
+          "review_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "审阅包"
+          },
+          "operator_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "可信登记来源"
+          }
+        },
+        "required": [
+          "review_id",
+          "operator_id"
+        ],
+        "additionalProperties": false
+      },
+      "EventPayloadQualityRegistered": {
+        "type": "object",
+        "description": "注册的质量审计分支。",
+        "properties": {
+          "action": {
+            "const": "quality.registered",
+            "type": "string",
+            "description": "事件"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/QualityRegisteredEvent",
+            "description": "审计元数据，不含凭据"
+          }
+        },
+        "required": [
+          "action",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "QualitySavedEvent": {
+        "type": "object",
+        "description": "独立质量记录的事务审计，不是任务完成事件。",
+        "properties": {
+          "review_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "审阅包"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "审阅修订"
+          },
+          "auth_session_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "认证会话"
+          },
+          "basis": {
+            "enum": [
+              "human_evidence_review",
+              "controlled_test"
+            ],
+            "description": "判断来源"
+          }
+        },
+        "required": [
+          "review_id",
+          "revision",
+          "auth_session_id",
+          "basis"
+        ],
+        "additionalProperties": false
+      },
+      "EventPayloadQualitySaved": {
+        "type": "object",
+        "description": "注册的质量审计分支。",
+        "properties": {
+          "action": {
+            "const": "quality.saved",
+            "type": "string",
+            "description": "事件"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/QualitySavedEvent",
+            "description": "审计元数据，不含凭据"
+          }
+        },
+        "required": [
+          "action",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "QualitySubmittedEvent": {
+        "type": "object",
+        "description": "独立质量记录的事务审计，不是任务完成事件。",
+        "properties": {
+          "review_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "审阅包"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "审阅修订"
+          },
+          "auth_session_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "认证会话"
+          },
+          "basis": {
+            "enum": [
+              "human_evidence_review",
+              "controlled_test"
+            ],
+            "description": "判断来源"
+          }
+        },
+        "required": [
+          "review_id",
+          "revision",
+          "auth_session_id",
+          "basis"
+        ],
+        "additionalProperties": false
+      },
+      "EventPayloadQualitySubmitted": {
+        "type": "object",
+        "description": "注册的质量审计分支。",
+        "properties": {
+          "action": {
+            "const": "quality.submitted",
+            "type": "string",
+            "description": "事件"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/QualitySubmittedEvent",
+            "description": "审计元数据，不含凭据"
+          }
+        },
+        "required": [
+          "action",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "QualityFeedbackSavedEvent": {
+        "type": "object",
+        "description": "独立质量记录的事务审计，不是任务完成事件。",
+        "properties": {
+          "feedback_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "反馈"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原任务"
+          },
+          "auth_session_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "认证会话"
+          }
+        },
+        "required": [
+          "feedback_id",
+          "run_id",
+          "auth_session_id"
+        ],
+        "additionalProperties": false
+      },
+      "EventPayloadQualityFeedbackSaved": {
+        "type": "object",
+        "description": "注册的质量审计分支。",
+        "properties": {
+          "action": {
+            "const": "quality.feedback.saved",
+            "type": "string",
+            "description": "事件"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/QualityFeedbackSavedEvent",
+            "description": "审计元数据，不含凭据"
+          }
+        },
+        "required": [
+          "action",
+          "parameters"
+        ],
+        "additionalProperties": false
+      },
+      "QualityReviewsListRequest": {
+        "type": "object",
+        "description": "认证网页质量审阅/反馈入口。",
+        "properties": {
+          "cursor": {
+            "$ref": "#/components/schemas/ID",
+            "description": "上一页最后 ID"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "QualityReviewsGetRequest": {
+        "type": "object",
+        "description": "认证网页质量审阅/反馈入口。",
+        "properties": {
+          "review_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "本人审阅包"
+          }
+        },
+        "required": [
+          "review_id"
+        ],
+        "additionalProperties": false
+      },
+      "QualityReviewsSaveRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          }
+        },
+        "required": [
+          "review_id",
+          "packet_sha256",
+          "judgments"
+        ],
+        "title": "QualitySave",
+        "type": "object",
+        "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
+      },
+      "QualityReviewsSubmitRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "packet_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Packet Sha256",
+            "type": "string"
+          },
+          "judgments": {
+            "items": {
+              "$ref": "#/components/schemas/QualityJudgment"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Judgments",
+            "type": "array"
+          },
+          "human_attested": {
+            "title": "Human Attested",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "review_id",
+          "packet_sha256",
+          "judgments",
+          "human_attested"
+        ],
+        "title": "QualitySubmit",
+        "type": "object",
+        "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
+      },
+      "QualityReviewsExportRequest": {
+        "type": "object",
+        "description": "认证网页质量审阅/反馈入口。",
+        "properties": {
+          "review_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "本人已提交包"
+          }
+        },
+        "required": [
+          "review_id"
+        ],
+        "additionalProperties": false
+      },
+      "QualityFeedbackListRequest": {
+        "type": "object",
+        "description": "认证网页质量审阅/反馈入口。",
+        "properties": {
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "本人原任务"
+          }
+        },
+        "required": [
+          "run_id"
+        ],
+        "additionalProperties": false
+      },
+      "QualityFeedbackSaveRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "feedback_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Feedback Id",
+            "type": "string"
+          },
+          "run_revision": {
+            "minimum": 1,
+            "title": "Run Revision",
+            "type": "integer"
+          },
+          "input_revision": {
+            "minimum": 1,
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "category": {
+            "enum": [
+              "latency",
+              "clarification",
+              "correction",
+              "presentation",
+              "content",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "feedback_id",
+          "run_revision",
+          "input_revision",
+          "category",
+          "notes"
+        ],
+        "title": "QualityFeedbackSave",
+        "type": "object",
+        "description": "认证网页质量审阅写入；要求 CAS 和原目标绑定。"
       },
       "HttpConversationsCreateResult": {
         "type": "object",
@@ -100616,6 +104930,1042 @@
           }
         ],
         "x-uaw-protocol": "conversation-v1"
+      },
+      "HttpQualityReviewsListResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewPage",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityReviewsListEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewsListRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityReviewsGetResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityReviewsGetEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewsGetRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityReviewsSaveResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityReviewsSaveEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewsSaveRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityReviewsSubmitResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewView",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityReviewsSubmitEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewsSubmitRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityReviewsExportResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityExport",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityReviewsExportEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityReviewsExportRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityFeedbackListResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityFeedbackPage",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityFeedbackListEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityFeedbackListRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "HttpQualityFeedbackSaveResult": {
+        "type": "object",
+        "description": "该接口的状态结果；ok才携带完整业务payload。",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "waiting",
+              "missing",
+              "denied",
+              "conflict",
+              "stale",
+              "failed",
+              "cancelled"
+            ],
+            "description": "接口状态"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityFeedback",
+            "description": "ok的业务结果"
+          },
+          "output_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref"
+            },
+            "minItems": 0,
+            "maxItems": 256,
+            "description": "关联真实资源"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "本次提交/读取的域版本"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure",
+            "description": "失败状态的明确原因"
+          },
+          "wait_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "waiting时审批/进程/用户问题引用"
+          },
+          "usage_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "发生消耗时真实统计"
+          }
+        },
+        "required": [
+          "kind",
+          "output_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "ok"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "payload"
+              ],
+              "not": {
+                "required": [
+                  "failure"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "waiting"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "wait_ref"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "missing",
+                    "denied",
+                    "conflict",
+                    "stale",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "failure"
+              ],
+              "not": {
+                "required": [
+                  "payload"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HttpQualityFeedbackSaveEnvelope": {
+        "type": "object",
+        "description": "HTTP请求meta和业务参数；路径/查询另由API合成。",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RequestMeta",
+            "description": "幂等与版本元信息"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/QualityFeedbackSaveRequest",
+            "description": "业务参数"
+          }
+        },
+        "required": [
+          "meta",
+          "payload"
+        ],
+        "additionalProperties": false
       }
     },
     "securitySchemes": {

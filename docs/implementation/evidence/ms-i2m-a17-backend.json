@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-18",
+  "scope": "M1 design and M2 backend protocol, not complete web or product acceptance",
+  "baseline": "d128e4e5ddb4ca256ba5064a45959920d496283c",
+  "sql": {"different_final_passed_nodes": 38, "quality_nodes": 10, "affected_browser_and_presentation_nodes": 28, "failures": 0, "errors": 0, "skipped": 0, "receipt": "ms-i2m-a17-sql-final.xml"},
+  "offline": {"different_final_passed_nodes": 95, "failures": 0, "errors": 0, "skipped": 0, "receipt": "ms-i2m-a17-offline-elevated.xml"},
+  "source_typecheck": {"passed_files": 248},
+  "schema_compatibility": {"original_definitions": 1409, "added_definitions": 58, "removed_definitions": 0, "changed_original_definitions": ["EventType", "EventPayload"], "meaning": "only additive quality audit event alternatives"},
+  "contract_check": {"positive_examples": 1467, "negative_rejections": 344, "status": "not_passed_historical_source_evidence_mismatch", "receipt": "ms-i2m-a17-contract-first.json"},
+  "history": {
+    "sql_first": "9 setup errors: new quality audit events not registered; transaction rejected",
+    "sql_second": "8 passed, 1 failed: browser GET fixture lacked exact Referer",
+    "http_diagnostic": "origin_denied; original Origin/CSRF checks retained",
+    "offline_first": "20 passed, 75 temp directory setup errors in sandbox",
+    "offline_second": "73 passed, 3 failed, 19 errors: sandbox denied existing atomic hardlink publication",
+    "resolution": "registered strict event variants, corrected fixture Referer, requested ordinary required OS permission for original atomic publication; no weakening of assertions or production authorization"
+  },
+  "real_model_calls": 0,
+  "real_human_reviews": 0,
+  "worker_dispatches": 0,
+  "production_deployment_changed": false,
+  "goal_complete": false,
+  "remaining": ["web review/save/reopen and feedback UI", "trusted small sample sources and actual model runs", "actual authenticated browser", "fixed deployment", "human factual judgments pending"]
+}

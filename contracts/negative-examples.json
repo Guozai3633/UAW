@@ -1684,6 +1684,41 @@
       "case": "runtime:RunRuntime.commit_question cannot succeed without payload",
       "schema": "RuntimeRunruntimeCommitQuestionResult",
       "rejected": true
+    },
+    {
+      "case": "http:quality.reviews.list cannot succeed without payload",
+      "schema": "HttpQualityReviewsListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.reviews.get cannot succeed without payload",
+      "schema": "HttpQualityReviewsGetResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.reviews.save cannot succeed without payload",
+      "schema": "HttpQualityReviewsSaveResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.reviews.submit cannot succeed without payload",
+      "schema": "HttpQualityReviewsSubmitResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.reviews.export cannot succeed without payload",
+      "schema": "HttpQualityReviewsExportResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.feedback.list cannot succeed without payload",
+      "schema": "HttpQualityFeedbackListResult",
+      "rejected": true
+    },
+    {
+      "case": "http:quality.feedback.save cannot succeed without payload",
+      "schema": "HttpQualityFeedbackSaveResult",
+      "rejected": true
     }
   ]
 }

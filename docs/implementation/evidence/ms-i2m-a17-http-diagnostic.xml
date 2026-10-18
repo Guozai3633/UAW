@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.949" timestamp="2026-10-18T18:02:39.382759+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_quality" name="test_http_auth_csrf_origin_and_unknown_judgment" time="0.408"><failure message="AssertionError: {'kind': 'denied', 'failure': {'code': 'origin_denied', 'category': 'authorization', 'message': 'Exact configured browser Origin required', 'retryable': False, ...}, 'output_refs': []}&#10;assert 403 == 200&#10; +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code">tests\integration\agent\test_quality.py:163: in test_http_auth_csrf_origin_and_unknown_judgment
+    assert loaded.status_code == 200, loaded.json()
+E   AssertionError: {'kind': 'denied', 'failure': {'code': 'origin_denied', 'category': 'authorization', 'message': 'Exact configured browser Origin required', 'retryable': False, ...}, 'output_refs': []}
+E   assert 403 == 200
+E    +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code</failure></testcase></testsuite></testsuites>

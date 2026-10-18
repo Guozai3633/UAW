@@ -9,6 +9,8 @@ from fastapi.routing import APIRoute
 
 from uaw.api.authentication import authenticate
 from uaw.api.browser import COOKIE, authenticated
+from uaw.api.quality import ROUTES as QUALITY_ROUTES
+from uaw.api.quality import endpoint as quality_endpoint
 from uaw.composition import Container
 from uaw.infrastructure.db.transactions import RecordTransaction, reference
 from uaw.run.deliveries import DeliveryReader
@@ -295,7 +297,7 @@ ROUTES = (
         "AdminConfigurationActivateRequest",
         "ConfigurationVersion",
     ),
-)
+) + QUALITY_ROUTES
 
 
 def result_schema(operation: str) -> str:
@@ -441,6 +443,8 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 raise reject(
                     "authentication_required", "Authenticated user required", 401, "permission"
                 )
+            elif operation.startswith("quality."):
+                result = await quality_endpoint(records, actor, operation, payload, meta)
             elif operation.startswith("runner.local."):
                 local = container.installed_lifecycle
                 if local is None:
