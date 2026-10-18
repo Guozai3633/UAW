@@ -342,7 +342,28 @@ def install_routes(app: FastAPI, container: Container) -> None:
             async def protected(request: Request) -> Response:
                 try:
                     return await route_handler(request)
-                except DomainError:
+                except DomainError as exc:
+                    # A foreign/expired loopback instance cookie must not trap
+                    # the owner outside the one-use launch flow. Only the exact
+                    # configured browser may discard its already invalid cookie.
+                    browser = container.browser_sessions
+                    if (
+                        self.name == "web.session.get"
+                        and exc.status_code == 401
+                        and browser is not None
+                        and COOKIE in request.cookies
+                        and not request.headers.get("authorization")
+                    ):
+                        browser.guard(request, origin_required=False)
+                        from uaw.shared.errors import error_result
+
+                        response = JSONResponse(
+                            status_code=401,
+                            content=error_result(exc),
+                            headers={"Cache-Control": "no-store"},
+                        )
+                        response.delete_cookie(COOKIE, path="/v1", httponly=True, samesite="strict")
+                        return response
                     raise
                 except Exception as exc:
                     report_request_failure(self.name, type(exc).__name__)

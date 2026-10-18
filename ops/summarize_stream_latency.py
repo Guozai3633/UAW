@@ -35,7 +35,12 @@ def first_time(rows: list[Payload], namespace: str, **values: Any) -> str | None
     )
 
 
-def summary(directory: Path, extra_probes: list[Path]) -> Payload:
+def summary(
+    directory: Path,
+    extra_probes: list[Path],
+    prior_runs: list[Payload],
+    browser_runs: list[Payload],
+) -> Payload:
     source = directory / "records-timeline.json"
     raw = source.read_bytes()
     data = json.loads(raw)
@@ -97,7 +102,9 @@ def summary(directory: Path, extra_probes: list[Path]) -> Payload:
         ]
 
         probe = next((case for case in probes if case.get("run_id") == run_id), {})
-        submit = probe.get("submit_started_at")
+        prior = next((row for row in prior_runs if row.get("run_id") == run_id), {})
+        browser = next((row for row in browser_runs if row.get("run_id") == run_id), {})
+        submit = probe.get("submit_started_at") or browser.get("submit_started_at")
         queued = first_time(own, "run.background.jobs", state="queued", stage="admitted")
         claimed = first_time(own, "run.background.jobs", state="working", stage="admitted")
         step = first_time(own, "run.background.jobs", state="working", stage="step")
@@ -155,10 +162,23 @@ def summary(directory: Path, extra_probes: list[Path]) -> Payload:
         runs.append(
             {
                 "run_id": run_id,
-                "source_commit": probe.get("source_commit", manifest["backend_source"]),
-                "source_evidence": "http_probe_receipt" if probe else "export_environment_manifest",
+                "source_commit": (
+                    probe.get("source_commit")
+                    or prior.get("source_commit")
+                    or browser.get("source_commit")
+                    or manifest["backend_source"]
+                ),
+                "source_evidence": (
+                    "http_probe_receipt"
+                    if probe
+                    else "prior_frozen_summary"
+                    if prior
+                    else "browser_dom_observation"
+                    if browser
+                    else "export_environment_manifest"
+                ),
                 "http_receipt": probe.get("receipt"),
-                "case_id": probe.get("case_id"),
+                "case_id": probe.get("case_id") or browser.get("case_id"),
                 "run_status_at_capture": run["status"],
                 "submit_started_at": submit,
                 "accepted_ms": probe.get("accepted_ms"),
@@ -177,6 +197,11 @@ def summary(directory: Path, extra_probes: list[Path]) -> Payload:
                 ),
                 "first_text_to_commit_ack_ms": elapsed(
                     stream.get("first_text_at"), stream.get("first_committed_at")
+                ),
+                "browser_submit_to_accepted_ms": browser.get("submit_to_accepted_ms"),
+                "browser_submit_to_first_render_ms": browser.get("submit_to_first_render_ms"),
+                "commit_ack_to_first_render_ms": elapsed(
+                    stream.get("first_committed_at"), browser.get("first_rendered_at")
                 ),
                 "provider_http_to_first_content_ms": elapsed(
                     stream.get("provider_started_at"), stream.get("provider_first_content_at")
@@ -276,12 +301,25 @@ def main() -> None:
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument("--candidate-http", type=Path, action="append", default=[])
+    parser.add_argument("--prior-summary", type=Path)
+    parser.add_argument("--browser-observations", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    prior = json.loads(args.prior_summary.read_bytes()) if args.prior_summary else {}
+    browser = (
+        json.loads(args.browser_observations.read_bytes()) if args.browser_observations else {}
+    )
     result: Payload = {
         "schema_version": "uaw.a18-latency-observations.v1",
-        "baseline": summary(args.baseline, []),
-        "candidate": summary(args.candidate, args.candidate_http),
+        "baseline": summary(
+            args.baseline, [], prior.get("baseline", {}).get("runs", []), browser.get("runs", [])
+        ),
+        "candidate": summary(
+            args.candidate,
+            args.candidate_http,
+            prior.get("candidate", {}).get("runs", []),
+            browser.get("runs", []),
+        ),
         "quality_human_judgments": "pending",
         "p95": None,
         "limits": [

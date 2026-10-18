@@ -157,6 +157,42 @@ async def test_one_launch_code_consumed_by_one_concurrent_request(web):
         await BrowserSessions(container.records, container.settings).exchange(code)
 
 
+async def test_foreign_cookie_can_be_discarded_before_fresh_one_use_login(web):
+    container, client = web
+    code = await launch(client)
+    foreign = BrowserSessions(
+        container.records,
+        container.settings.model_copy(update={"browser_session_signing_key": SecretStr("z" * 40)}),
+    ).token("session", "web-session-foreign-instance")
+    client.cookies.set(COOKIE, foreign, domain="127.0.0.1", path="/v1")
+    failed = await client.get("/v1/web/session", headers={"Referer": ORIGIN + "/"})
+    assert failed.status_code == 401
+    assert failed.json()["failure"]["code"] == "authentication_failed"
+    assert "Max-Age=0" in failed.headers["set-cookie"]
+    assert client.cookies.get(COOKIE) is None
+    # Cleanup grants no session and does not consume a launch ticket.
+    assert (await client.get("/v1/models", headers={"Origin": ORIGIN})).status_code == 401
+    exchanged = await client.post(
+        "/v1/web/session",
+        headers={"Origin": ORIGIN},
+        json=envelope("fresh-login", launch_code=code),
+    )
+    assert exchanged.status_code == 200
+    current = await client.get("/v1/web/session", headers={"Origin": ORIGIN})
+    assert current.status_code == 200 and "set-cookie" not in current.headers
+    assert current.json()["payload"] == exchanged.json()["payload"]
+
+
+@pytest.mark.parametrize("origin", ["https://untrusted.invalid", None])
+async def test_untrusted_request_cannot_discard_browser_cookie(web, origin):
+    _, client = web
+    foreign = "web-session-foreign-instance." + "0" * 64
+    client.cookies.set(COOKIE, foreign, domain="127.0.0.1", path="/v1")
+    denied = await client.get("/v1/web/session", headers={"Origin": origin} if origin else {})
+    assert denied.status_code == 403
+    assert "set-cookie" not in denied.headers and client.cookies.get(COOKIE) == foreign
+
+
 @pytest.mark.parametrize(
     "origin", ["https://untrusted.invalid", "http://localhost:5173", ORIGIN + "/", "null", None]
 )
