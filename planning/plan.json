@@ -4408,7 +4408,9 @@
         "docs/implementation/MS-I2m-A11.md",
         "docs/implementation/evidence/ms-i2m-a11.json",
         "docs/implementation/MS-I2m-A12.md",
-        "docs/implementation/evidence/ms-i2m-a12.json"
+        "docs/implementation/evidence/ms-i2m-a12.json",
+        "docs/implementation/MS-I2m-A13.md",
+        "docs/implementation/evidence/ms-i2m-a13.json"
       ],
       "phase_gate": null,
       "effective_dependencies": [

@@ -7,10 +7,11 @@ import json
 from pathlib import Path
 
 from uaw.evaluation.contracts import Case, Policy
-from uaw.evaluation.io import canonical, digest, parse_json, read_bounded
+from uaw.evaluation.io import canonical, parse_json, read_bounded
 from uaw.infrastructure.db.session import Database
 from uaw.infrastructure.event_loop import control_plane_loop
 from uaw.run.evaluation_capture import (
+    environment_hash,
     instant,
     prepare_bundle,
     read_run,
@@ -57,16 +58,7 @@ async def capture(args: argparse.Namespace) -> dict[str, object]:
         policy,
         candidate_id=args.candidate_id,
         source_commit=environment["backend_source"],
-        environment_hash=digest(
-            {
-                k: environment[k]
-                for k in (
-                    "dependency_inventory_sha256",
-                    "dependency_lock_sha256",
-                    "settings_sha256",
-                )
-            }
-        ),
+        environment_hash=environment_hash(environment),
         prompt_hash=hashlib.sha256(prompt.read_bytes()).hexdigest(),
         selected_attempt=args.answer_attempt_id,
     )
@@ -77,6 +69,7 @@ async def capture(args: argparse.Namespace) -> dict[str, object]:
         schema_version="uaw.capture.v1",
         runtime_source_basis="operator_recorded_switch_and_exact_archive_bytes",
         immutable_Run_code_attestation_available=False,
+        evaluation_execution_scope=environment.get("evaluation_execution_scope"),
         exporter_sources_sha256={
             name: hashlib.sha256(path.read_bytes()).hexdigest()
             for name, path in (

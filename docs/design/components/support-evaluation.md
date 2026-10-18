@@ -1,3 +1,7 @@
+# A13真实固定版本执行及失败核验来源
+
+2026-10-18。A自有隔离探针运行新登记后的两版原队列报告纠正，各4次调用，全部成功/失败/用量进入C原算法；可选执行scope进入环境摘要，失败Reviewer保留目标与unavailable。实际比较仍incomplete/incomparable，缺人工判断不出质量差值。原产品聊天流程、C评分算法、B/D源码和flags不变。[策略与目录](../../implementation/MS-I2m-A13.md) · [逐项输入输出](../../coordination/requests/A/MS-I2m-A13-real-comparison-wiring.md)。以下保留旧阶段记录。
+
 # A12实验固定及多Run来源汇合
 
 2026-10-17。A自有`run/evaluation_experiment.py`与`ops/conversation_experiment.py`固定题集、源码/提示词、相同模型/环境和事前政策；每题每版完整采集后复核再交C原评分器。旧调用、少题、重复、条件改变拒绝；失败/unknown/费用保留，登记成功不决定质量门槛。A11对已有题目核准保留原版本，存疑须重新登记。[策略/目录/限制](../../implementation/MS-I2m-A12.md) · [完整接口](../../coordination/requests/A/MS-I2m-A12-experiment-wiring.md)。实际只有未审的未来单案例暂定登记，没有新的真实执行或对比。

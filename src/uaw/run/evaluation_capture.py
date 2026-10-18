@@ -28,6 +28,17 @@ Payload = dict[str, Any]
 LIMIT = 512
 
 
+def environment_hash(environment: Payload) -> str:
+    """Keep old environment pins stable; explicitly bind isolated probe overrides."""
+    fields = {
+        key: environment[key]
+        for key in ("dependency_inventory_sha256", "dependency_lock_sha256", "settings_sha256")
+    }
+    if "evaluation_execution_scope" in environment:
+        fields["execution_scope_sha256"] = digest(environment["evaluation_execution_scope"])
+    return digest(fields)
+
+
 class CaptureError(ValueError):
     """Only a bounded code may be printed; never private values."""
 
@@ -402,9 +413,7 @@ def prepare_bundle(
                         "target_attempt_id": target,
                         "target_output_sha256": digest(answers[target]),
                         "verdict": verdict,
-                    }
-                    if obs["status"] == "succeeded"
-                    else None,
+                    },
                     "failure_code": obs["code"],
                 }
             )

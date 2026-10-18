@@ -22,7 +22,7 @@ pytestmark = pytest.mark.parametrize(
 )
 
 
-@pytest.mark.parametrize("mode", ["reply", "failed", "deliver"])
+@pytest.mark.parametrize("mode", ["reply", "failed", "deliver", "failed_review"])
 async def test_readonly_capture_retains_every_attempt_and_cannot_pass_without_human(
     scenario, tmp_path, mode
 ):
@@ -32,14 +32,18 @@ async def test_readonly_capture_retains_every_attempt_and_cannot_pass_without_hu
         output(
             {
                 "protocol": "conversation-v1",
-                "action": "deliver" if mode == "deliver" else "reply",
+                "action": "deliver" if mode in ("deliver", "failed_review") else "reply",
                 **({} if failed else {"text": "A complete response under an explicit assumption."}),
             }
         )
     ]
-    if mode == "deliver":
+    if mode in ("deliver", "failed_review"):
         frame = (await p.runs.store.get(p.actor, "intent.frames", p.run["task_id"])).payload
-        p.case.responses.append(review(contract_from_frame(frame)["requirements"]))
+        p.case.responses.append(
+            output({"broken": "reviewer"})
+            if mode == "failed_review"
+            else review(contract_from_frame(frame)["requirements"])
+        )
     assert await p.queue.tick()
     if mode == "deliver":
         current = await p.runs.get_run(p.actor, p.run["id"])
@@ -125,10 +129,11 @@ async def test_readonly_capture_retains_every_attempt_and_cannot_pass_without_hu
         path / "reviews.jsonl",
     )
     assert report.release_gate.status == "incomplete"
-    expected_calls = 2 if mode == "deliver" else 1
+    expected_calls = 2 if mode in ("deliver", "failed_review") else 1
     assert report.candidate.attempt_count == expected_calls
     assert report.candidate.model_calls.known_total == expected_calls
-    assert report.candidate.failure_count == int(failed) and report.candidate.retry_count == 0
+    assert report.candidate.failure_count == int(failed or mode == "failed_review")
+    assert report.candidate.retry_count == 0
     assert (
         report.candidate.human_reviewed_cases == 0 and report.candidate.answer_error.value is None
     )
@@ -145,10 +150,19 @@ async def test_readonly_capture_retains_every_attempt_and_cannot_pass_without_hu
         )
         with pytest.raises(CaptureError, match="owning_output_mismatch"):
             prepare_bundle(tampered, sample, policy, **options)
-    if mode == "deliver":
+    if mode in ("deliver", "failed_review"):
         observed_review = next(o for o in bundle["observations"] if o["phase"] == "reviewer")
         assert observed_review["reviewer"]["target_attempt_id"] == selection
-        assert observed_review["reviewer"]["verdict"] == "passed"
+        assert observed_review["reviewer"]["verdict"] == (
+            "unavailable" if mode == "failed_review" else "passed"
+        )
+        assert (
+            bundle["manifest"]["candidate"]["selections"][0]["reviewer_attempt_id"]
+            == observed_review["attempt_id"]
+        )
+        if mode == "failed_review":
+            assert observed_review["status"] == "failed"
+            assert observed_review["failure_code"] == "provider_structured_output_invalid"
         tampered = tuple(
             replace(
                 r,
