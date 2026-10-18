@@ -609,6 +609,11 @@ r("P1-17","foundation","H02对话与文本成果真人体验","固定版本交�
 for package in ROUNDS:
     if package["id"] == "P1-14":
         package["status"] = "in_progress"
+        package.setdefault("implementation_evidence", []).extend([
+            "docs/implementation/MS-I2m-A16.md",
+            "docs/implementation/evidence/h02-i04-a16.json",
+        ])
+        package["tasks"].insert(0, "H02-I04由A独立补齐正式成果审阅暂停、接受/纠正唤醒和取消；新任务跨墙钟/进程恢复与原失败保留，准确结果见A16，不将组件或模型自评当本人接受。")
         package["tasks"].insert(0, "MS-I2m：A原Run控制与实际接线；B/MS-U4前端；D/MS-K1新增持久时钟组件。准确固定基线和允许目录按DISPATCH/正式分包；组件开发不等于续跑整链接受。")
     if package["id"] == "P1-15":
         package.update(status="in_progress", implementation_evidence=[
@@ -619,6 +624,13 @@ for package in ROUNDS:
             "docs/implementation/MS-I2m-A13.md", "docs/implementation/evidence/ms-i2m-a13.json",
         ])
         package["tasks"].insert(0, "MS-I2m C/MS-E1正式分派独立评测组件；新evaluation目录与原Tool包隔离。人工未核对的样本不伪造human-approved，真实候选/费用由A导出后再验。")
+    if package["id"] in ("P1-16", "P1-17"):
+        package.update(status="in_progress", implementation_evidence=[
+            "docs/implementation/MS-I2m-A16.md",
+            "docs/implementation/evidence/h02-i04-a16.json",
+            "docs/implementation/human-tests/H02-v7.md",
+        ])
+        package["tasks"].insert(0, "H02-v7固定服务用于本人测试；办公/学术真实诊断、历史保留、工程回归分别记录。本人反馈、成果接受和独立事实质量仍pending，本轮由A完成必要修改，BCD不自动扩包。")
 ROUNDS.sort(key=lambda package: package["id"])
 for package in ROUNDS:
     if package["id"] == "P1-12":

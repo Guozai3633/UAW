@@ -1,3 +1,9 @@
+# 2026-10-18 A16实际目录补充
+
+当前已装配的审阅等待来源位于 `src/uaw/run/review_wait.py`；内部端口在 `run/clock_ports.py`，持久时钟在 `run/execution_clock.py`，队列/后台/恢复在 `run/jobs.py`、`background.py`、`conversation_recovery.py`，完成控制在 `run/completion.py` 和 `agent/completion/`。公开API读取继续经 `run/presentation.py`；没有新建万能对话服务。
+
+本轮本人要求全部由A实施，属于当前时钟文件归属的明确例外，未操作D分支；前端复用B已交付版本。详细目录、链路与验证见[A16](implementation/MS-I2m-A16.md)、[内部接口](coordination/requests/A/H02-I04-A16-review-wait-contract.md)和[H02-v7实际入口](implementation/human-tests/H02-v7.md)。下方待开发说明为历史。
+
 # v0.11新增职责映射（待开发）
 
 [对话执行设计](design/CONVERSATION_EXECUTION.md)和[H02计划](plan/H02_CONVERSATION.md)明确新分支，保持七Runtime目录，不新建万能对话服务。

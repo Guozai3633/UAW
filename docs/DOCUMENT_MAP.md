@@ -1,3 +1,15 @@
+# 2026-10-18当前入口：H02-v7工程交付
+
+| 文档 | 作用与位置 |
+| --- | --- |
+| [H02-v7本人测试](implementation/human-tests/H02-v7.md) | 实际入口、可测试功能、步骤、已知限制和下一阶段；本人反馈仍pending |
+| [A16实现](implementation/MS-I2m-A16.md) | 审阅等待来源、时钟、恢复/完成/显示的模块联系、策略与代码目录 |
+| [A16内部契约](coordination/requests/A/H02-I04-A16-review-wait-contract.md) | 每个新增内部入口的输入、输出、状态、错误与装配；公开HTTP结构不变 |
+| [实际回执](implementation/evidence/h02-i04-a16.json) | 固定源码、SQL、全部真实模型失败/用量及部署范围，不推断事实质量 |
+| [当前计划](plan/H02_CONVERSATION.md)、[DISPATCH](coordination/DISPATCH.md) | 本轮全部由A完成；BCD停止点、下一步人测/事实核对与独立本机边界 |
+
+下方“未装配/待实现”属于各历史阶段；最新状态以上述回执与DISPATCH页首为准。
+
 # P1-12公共协议已发布（2026-10-14）
 
 准确source b13d8d9612b45f8833cebd29b603a940e0b815e9 / h02-p1-12-source；不是新的worker正式基线。输入输出与组装见[固定消费说明](coordination/requests/A/H02-P1-12-ports.md)，actual/pending见[实施报告](implementation/P1-12.md)，[源码消费者](../src/uaw/shared/conversation.py)及[纯Run边界](../src/uaw/run/conversation_protocol.py)已实现。

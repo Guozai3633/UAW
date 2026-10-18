@@ -1,16 +1,18 @@
 # UAW 项目全局指引
 
-UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。已有单Agent动态循环、固定用户模型、文本/Markdown成果与页面实现。A32/H01-v4的人工作业发现等待偏长、澄清不能接续及事实错误/核验漏判；本机首次签名发布链仍未通过。
+UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。当前H02-v7已接通普通交流、同Run澄清/纠正、单Agent文本成果、审阅等待暂停与接受。原账号/历史沿用，实际页面可测试；本人体验、独立事实质量和完整本机文件链仍待验收。
 
-2026-10-14架构v0.11采纳用户已确认的Q1–Q8：[确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行详细设计](docs/design/CONVERSATION_EXECUTION.md)、[H02六轮安排](docs/plan/H02_CONVERSATION.md)。P1-12已交付[公共契约与严格消费者](docs/coordination/requests/A/H02-P1-12-ports.md)，56定向/217源码类型通过；旧1362命名结构不变。**新handler、真实快通路/同Run接续/暂停计时及独立质量门槛待接线验收。**
+2026-10-18实际版本：后端d2000f9、前端B af3889f，见[本人测试清单](docs/implementation/human-tests/H02-v7.md)和[A16全部回执](docs/implementation/evidence/h02-i04-a16.json)。50不同SQL最终通过，真实固定模型样例与所有18调用/失败/pending费用保留；不能据此宣称全任务质量达标。原超时任务保持失败，报告只读保留。
+
+架构v0.11采纳已确认Q1–Q8：[确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行详细设计](docs/design/CONVERSATION_EXECUTION.md)、[H02安排](docs/plan/H02_CONVERSATION.md)。[公共契约](docs/coordination/requests/A/H02-P1-12-ports.md)与[A16内部审阅等待约束](docs/coordination/requests/A/H02-I04-A16-review-wait-contract.md)分别记录结构和实际装配。
 
 仓库为[Guozai3633/UAW](https://github.com/Guozai3633/UAW)，集成分支integration。实际源码、会话交付与开工版本以[DISPATCH](docs/coordination/DISPATCH.md)页首为准；本次没有新worker正式基线，B/C/D保留原提交。旧MS-I2i的1691全量及原失败保留，不能覆盖后续设计。
 
-[开发启动与实际能力](docs/implementation/README.md) · [A32真实回执](docs/implementation/evidence/ms-i2l-a32.json) · [本人反馈](docs/implementation/human-tests/H01-I02.md)。管理员凭据仍走受保护配置，不进入文档或模型。
+[开发启动与实际能力](docs/implementation/README.md) · [当前问题修复](docs/implementation/human-tests/H02-I04.md) · [历史本人反馈](docs/implementation/human-tests/H01-I02.md)。管理员凭据仍走受保护配置，不进入文档或模型。
 
 ## 先看这些入口
 
-下一步先固定 [对话与续跑接口](docs/api/CONVERSATION_REVISION.md)，再按 [H02计划](docs/plan/H02_CONVERSATION.md)正式分包和发布准确SHA。A负责公共来源/接线与完成控制，B负责页面，C负责工具，D负责本机；本机与协作验收不挡单Agent文本体验。
+下一步先按[体验清单](docs/implementation/human-tests/H02-v7.md)收集本人反馈，并完成人工事实样本核对。当前续项由A独立完成，BCD停在原交付点；后续按[H02计划](docs/plan/H02_CONVERSATION.md)和正式DISPATCH安排，不自动同步或扩包。本机与协作验收独立推进。
 
 | 文档 | 用途 |
 | --- | --- |

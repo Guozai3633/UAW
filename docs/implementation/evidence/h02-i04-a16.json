@@ -1,0 +1,225 @@
+{
+  "schema_version": "uaw.h02-i04-a16.v1",
+  "recorded_at": "2026-10-18T09:01:40.192440+00:00",
+  "backend_source": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+  "initial_clock_source": "50c3bdd5d0aeb14554bd29f7a7168a01dc0ea37d",
+  "frontend_source": "af3889f209054b2485aa5ff7aeab6479878342b0",
+  "status": "engineering_verified_deployed_owner_retest_pending",
+  "whole_H02_accepted": false,
+  "independent_fact_quality_accepted": false,
+  "scope": "single_root_agent_conversation_and_text_delivery_only",
+  "controlled_SQL": {
+    "different_nodes_finally_passed": 50,
+    "frozen_deployed_source_review_nodes": 10,
+    "compatible_regression_nodes": 40,
+    "failures_final": 0,
+    "errors_final": 0,
+    "skipped_final": 0,
+    "receipts": [
+      "docs/implementation/evidence/h02-i04-frozen-final.xml",
+      "docs/implementation/evidence/h02-i04-atomic-boundary.xml",
+      "docs/implementation/evidence/h02-i04-review-final-regression.xml",
+      "docs/implementation/evidence/h02-i04-race-fix.xml"
+    ],
+    "compatibility_receipt_scope": "40 non-review nodes passed during source development; historical review failure superseded by exact frozen-source 8 plus 2 atomic/unknown opening boundaries, not a new full repository run"
+  },
+  "static": {
+    "mypy_source_files": 245,
+    "ruff_check_and_format_files": 15,
+    "public_HTTP_schema_changed": false,
+    "flags_changed": false,
+    "lock_changed": false
+  },
+  "real_wall_review_accept": {
+    "source_commit": "50c3bdd5d0aeb14554bd29f7a7168a01dc0ea37d",
+    "run_id": "run-7f9da0b800fd4108b0e210cf9f475f8d",
+    "model_calls": 2,
+    "original_deadline": "2026-10-18T08:31:53.971093+00:00",
+    "active_limit_ms": 89859,
+    "active_elapsed_ms": 14498,
+    "wait_elapsed_ms": 80782,
+    "final_status": "completed",
+    "model_calls_after_accept": 0,
+    "original_budget_unchanged": true,
+    "ledger_unchanged_after_wait_and_accept": true,
+    "new_driver_same_process_only": true
+  },
+  "real_current_source": {
+    "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+    "cases": [
+      {
+        "case": "normal_reply",
+        "run_id": "run-15bdd9cd2319441ca7d0698f6c27b77c",
+        "conversation_id": "conversation-54ff54f294ac43708d26c37ddaec552f",
+        "status": "passed",
+        "model_invocations": 1
+      },
+      {
+        "case": "clarification_answer_same_run",
+        "run_id": "run-271c5df99fe34fa489c54ed66ced7415",
+        "conversation_id": "conversation-5df0b4bb1c8940b6a211f66818e2c9ed",
+        "status": "passed",
+        "question_item_id": "conversation-message-374e7581e34d7acdcfa9f235adefd132f48c0fa2ad63216e80074f1f7d718688",
+        "same_run_resumed": true,
+        "answer_applied": true,
+        "model_invocations": 2
+      },
+      {
+        "case": "report_correction_then_cancel",
+        "run_id": "run-ff7659a94e8b4fc5b7ac9d90f44aa387",
+        "conversation_id": "conversation-8ce368d4adaa4592b2e235981ada6dab",
+        "status": "passed",
+        "model_invocations": 4,
+        "correction_applied": true,
+        "current_input_revision": 2,
+        "old_artifact_preserved": true,
+        "corrected_explicit_condition_present": true,
+        "presentation_phase_before_accept": "awaiting_acceptance",
+        "final_status": "completed",
+        "old_body_sha256": "57b5ef04791ec681a3820cf7fc86e6469c051ebcae760612f1a0ba20c6fa5710",
+        "new_body_sha256": "42457580858d529e49798c79a493e516a5fb5f3b87aa7c949b8612526ceecc61"
+      },
+      {
+        "case": "cancel_waiting_question",
+        "run_id": "run-ff18cacc6a504f65b973e75e2d724614",
+        "conversation_id": "conversation-e4670926ca414f0c8d18c9434bfd21f4",
+        "status": "passed",
+        "final_status": "cancelled",
+        "model_invocations": 1
+      }
+    ],
+    "model_calls": 8,
+    "actual_worker_process_exited_and_new_process_resumed": true,
+    "checkpoint_pid": 53120,
+    "original_deadline": "2026-10-18T08:41:01.391192+00:00",
+    "resumed_after_original_deadline": true,
+    "wait_elapsed_ms": 106856,
+    "final_active_elapsed_ms": 35788,
+    "original_active_limit_ms": 89903,
+    "new_execution_segment_deadline": "2026-10-18T08:42:46.409626+00:00",
+    "old_model_records_unchanged_after_correction": 19,
+    "old_artifact_preserved": true,
+    "human_acceptance_performed": false
+  },
+  "real_academic": {
+    "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+    "run_id": "run-c0d453b379a94112a234e43be738cef8",
+    "model_calls": 2,
+    "material_A_B_labels_and_actual_owned_source_refs_checked": true,
+    "body_sha256": "4c1c85ab169fdd1f5926ae102b592a1568a54abb3aa0e449ee61e1850654d404",
+    "wait_elapsed_ms": 77050,
+    "final_status": "completed",
+    "human_fact_quality_reviewed": false
+  },
+  "all_real_calls_including_failed_probes": {
+    "model_invocations": 18,
+    "model_transport_or_protocol_failures": 0,
+    "usage": {
+      "input_tokens": 43967,
+      "output_tokens": 2694,
+      "model_calls": 18,
+      "wall_time_ms": 35194
+    },
+    "billing_pending_records": 18,
+    "known_actual_fee_total": null,
+    "unknown_fees_not_treated_as_zero": true,
+    "automatic_model_retries": 0
+  },
+  "failure_history": [
+    {
+      "kind": "controlled_test",
+      "receipt": "docs/implementation/evidence/h02-i04-review-first.xml",
+      "cause": "blocked delivery missing from presentation waiting projection",
+      "resolution": "presentation accepts only proven parked delivery"
+    },
+    {
+      "kind": "controlled_test",
+      "receipt": "docs/implementation/evidence/h02-i04-review-final-regression.xml",
+      "cause": "immediate acceptance used proposal content hash instead of bundle hash",
+      "resolution": "fixed exact bundle pin; 8 frozen-source tests pass"
+    },
+    {
+      "kind": "diagnostic_script",
+      "source": "50c3bdd5d0aeb14554bd29f7a7168a01dc0ea37d",
+      "cause": "read ClarificationView.item_id instead of its question.item_id",
+      "resolution": "preserved first evidence and cancelled orphaned synthetic wait; no old-session impersonation"
+    },
+    {
+      "kind": "product_behavior",
+      "source": "50c3bdd5d0aeb14554bd29f7a7168a01dc0ea37d",
+      "cause": "200-character weekly report chose reply and completed without review",
+      "resolution": "narrow prompt guidance; original exact task delivered and corrected under d2000f9; no keyword router"
+    },
+    {
+      "kind": "browser_probe",
+      "cause": "title locator matched hidden sidebar and visible header",
+      "resolution": "fresh AX and unique textbox isEnabled read confirmed; no product code change"
+    }
+  ],
+  "deployment": {
+    "runtime": "H02-v7",
+    "origin": "http://127.0.0.1:5183",
+    "ready_HTTP": 200,
+    "anonymous_conversations_HTTP": 401,
+    "frontend_dist_hashes": [
+      {
+        "file": "index.html",
+        "bytes": 411,
+        "sha256": "691209ac20ffa101925f0bd1f8bd1238434bd8dd5e1281fcd7b9bd687068537d"
+      },
+      {
+        "file": "assets/index-BMQtQCI7.css",
+        "bytes": 21051,
+        "sha256": "e237d3788925a7c0d3fb4ff7897173b4e62672c34bf79621e43e2954852b8b7f"
+      },
+      {
+        "file": "assets/index-DcQ18qX1.js",
+        "bytes": 865669,
+        "sha256": "f85248b12b07521048a02eb407e09b9509f6bdc39f305827b52b80761fbf6516"
+      }
+    ],
+    "source_proof": {
+      "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+      "file_count": 268,
+      "files_sha256": "43ce61b4f4a6cf42955e2dc55385a37870944c7db6c2bb0761bc353b7886fb13"
+    },
+    "same_original_identity_and_database": true,
+    "original_user_rows_unchanged": 999,
+    "new_blank_experience_conversation": "conversation-142272e7703a4494bc5326def8e203ab",
+    "new_record_count": 3,
+    "human_Run_remains": "failed/v6",
+    "old_user_Run_model_calls_unchanged": 2,
+    "human_task_resent_cancelled_or_accepted": false,
+    "actual_browser_original_cookie_reused": true,
+    "actual_browser_old_report_read_and_refresh_verified": true,
+    "actual_browser_blank_conversation_input_enabled": true
+  },
+  "screenshots": [
+    "docs/implementation/human-tests/H02-I04-original-report.png",
+    "docs/implementation/human-tests/H02-v7-ready.png"
+  ],
+  "private_local_evidence_sha256": {
+    ".data/diagnostics/h02-i04-a16/calls-and-accounting.json": "ab2b159525021af7b1d5d7ec77f0f3a5c8ed076c8dcf16cdd77238782fa582fc",
+    ".data/diagnostics/h02-i04-a16/conversation-evidence.json": "fe74cc8a49b5f1bf08df172e66b5bcbd01e6638022889607ae87203bd9fa30f4",
+    ".data/diagnostics/h02-i04-a16a/conversation-evidence.json": "4f47d0b601a84aa3e463c8274c48efe24f720fb6051c5c955ec92d5755843f84",
+    ".data/diagnostics/h02-i04-academic/calls-and-accounting.json": "f94b629bb6a31987c26a99c7abdd20be78d88f3dedb9c94b13739dd8592dba8e",
+    ".data/diagnostics/h02-i04-a16/report.json": "8d624ad22c98c7e2e1564f6c8ebb31d87f990f00dd4ad207717953eaba00b6ad",
+    ".data/diagnostics/h02-i04-a16/conversation-report-first.json": "0bc826ee3ebcc102bb68b3fa8c26512cba5023aabcf8206e1d9b89064fc08a75",
+    ".data/diagnostics/h02-i04-a16/conversation-report.json": "afbba014cd656119231b311e04ad88901ee4695edc433107eb7e9fc6bb932738",
+    ".data/diagnostics/h02-i04-a16a/conversation-checkpoint.json": "ee4737b44a37a0b40dd75c4bcca06de35207ea475d3b19738bd543cb5edc6cb9",
+    ".data/diagnostics/h02-i04-a16a/conversation-report.json": "e2ac4360822ae50c94e158e99543aab8be3b45f086fdfdc5e32599901f1d7c0e",
+    ".data/diagnostics/h02-i04-academic/report.json": "9058b28426e8b6d30cecea3aaaa788335e714a96d7c821f11367e280d88045de",
+    ".data/h02-i04-probe.py": "68c5ad6e8f0c0a884564469ffb71c322074fc353c4fdb54ef07b20551aa131d3",
+    ".data/h02-i04-conversation-probe.py": "361d4045ae2f033cfcfc9749e652731bcccd1e1492629badf3b565e52632dcb7",
+    ".data/h02-i04-academic-probe.py": "98a28468083f99e07446fc2328d0022b0464604b96cd8648ee127bdaf31d5211",
+    ".data/deploy-h02-v7.py": "423abe4f10def907a836c11ebc259d33f3c80f07e0a793d87bfcc4e955b36eb8"
+  },
+  "remaining": [
+    "owner H02 feedback and satisfaction",
+    "independent human fact quality and comparative evaluation",
+    "full native file and Tool long-wall acceptance",
+    "subagents/DAG/write/install/exec remain closed"
+  ],
+  "last_full_changed": false,
+  "BCD_dispatched_or_synced": false
+}

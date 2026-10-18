@@ -2,7 +2,7 @@
 
 [总索引](README.md)
 
-计划记录日期2026-10-14：已验收3轮、开发中10轮、待开发42轮、后续讨论1轮。已验收轮数：3。
+计划记录日期2026-10-14：已验收3轮、开发中12轮、待开发40轮、后续讨论1轮。已验收轮数：3。
 
 准确当前能力以DISPATCH页首及对应固定源码回执为准。普通问答、同Run澄清/纠正和文本成果已有实际模型记录；P1-15评测组件及单Run真实来源采集已实现，独立人审、可比基线和事前登记仍待完成。H02本人体验、本机首次签名文件链和Tool长墙钟分别验收。下表按完整工作包保守记录，不能据组件或轮数计算产品完成百分比。当前能力与启动方式见[实际实施入口](../implementation/README.md)。文档检查只核对引用/覆盖/依赖，不能替代运行证据。
 
@@ -26,10 +26,10 @@
 | [P1-11 第一条真实任务阶段验收](rounds/P1-11.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P1-12 对话与续跑公共协议](rounds/P1-12.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-12.md](../implementation/P1-12.md)、[docs/implementation/evidence/h02-p1-12.json](../implementation/evidence/h02-p1-12.json)、[docs/implementation/evidence/h02-p1-12-tests.xml](../implementation/evidence/h02-p1-12-tests.xml) |
 | [P1-13 普通交流首次调用与消息完成](rounds/P1-13.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-13.md](../implementation/P1-13.md)、[docs/implementation/evidence/h02-p1-13.json](../implementation/evidence/h02-p1-13.json) |
-| [P1-14 同Run澄清纠正与等待暂停](rounds/P1-14.md) | 开发中 | 核心开发范围 | 为空；没有实现完成声明 |
+| [P1-14 同Run澄清纠正与等待暂停](rounds/P1-14.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I2m-A16.md](../implementation/MS-I2m-A16.md)、[docs/implementation/evidence/h02-i04-a16.json](../implementation/evidence/h02-i04-a16.json) |
 | [P1-15 人工正确性样本与发布评测](rounds/P1-15.md) | 开发中 | 核心开发范围 | [docs/implementation/P1-15.md](../implementation/P1-15.md)、[docs/implementation/MS-I2m-A10.md](../implementation/MS-I2m-A10.md)、[docs/implementation/evidence/ms-i2m-a10.json](../implementation/evidence/ms-i2m-a10.json)、[docs/implementation/MS-I2m-A11.md](../implementation/MS-I2m-A11.md)、[docs/implementation/evidence/ms-i2m-a11.json](../implementation/evidence/ms-i2m-a11.json)、[docs/implementation/MS-I2m-A12.md](../implementation/MS-I2m-A12.md)、[docs/implementation/evidence/ms-i2m-a12.json](../implementation/evidence/ms-i2m-a12.json)、[docs/implementation/MS-I2m-A13.md](../implementation/MS-I2m-A13.md)、[docs/implementation/evidence/ms-i2m-a13.json](../implementation/evidence/ms-i2m-a13.json) |
-| [P1-16 单Agent粘贴文本成果独立验收](rounds/P1-16.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
-| [P1-17 H02对话与文本成果真人体验](rounds/P1-17.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
+| [P1-16 单Agent粘贴文本成果独立验收](rounds/P1-16.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I2m-A16.md](../implementation/MS-I2m-A16.md)、[docs/implementation/evidence/h02-i04-a16.json](../implementation/evidence/h02-i04-a16.json)、[docs/implementation/human-tests/H02-v7.md](../implementation/human-tests/H02-v7.md) |
+| [P1-17 H02对话与文本成果真人体验](rounds/P1-17.md) | 开发中 | 核心开发范围 | [docs/implementation/MS-I2m-A16.md](../implementation/MS-I2m-A16.md)、[docs/implementation/evidence/h02-i04-a16.json](../implementation/evidence/h02-i04-a16.json)、[docs/implementation/human-tests/H02-v7.md](../implementation/human-tests/H02-v7.md) |
 | [P2-01 文件上传、摄取与索引发布](rounds/P2-01.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P2-02 联网搜索与网页读取](rounds/P2-02.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |
 | [P2-03 技能加载与可复用任务模板](rounds/P2-03.md) | 待开发 | 核心开发范围 | 为空；没有实现完成声明 |

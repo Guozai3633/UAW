@@ -3868,6 +3868,7 @@
       ],
       "tasks": [
         "MS-I2m：A原Run控制与实际接线；B/MS-U4前端；D/MS-K1新增持久时钟组件。准确固定基线和允许目录按DISPATCH/正式分包；组件开发不等于续跑整链接受。",
+        "H02-I04由A独立补齐正式成果审阅暂停、接受/纠正唤醒和取消；新任务跨墙钟/进程恢复与原失败保留，准确结果见A16，不将组件或模型自评当本人接受。",
         "原子保存具体question Item、waiting状态与暂停检查点；API按主体/问题/Run版本CAS追加不可变补充，不覆盖原文。",
         "在安全边界消费纠正，按真实依赖局部失效；保留原材料与未受影响成果；受理回执与生效反馈分别展示。",
         "用户等待不耗主动执行时间；续跑复核实际剩余额度、原模型、授权/资料访问、取消和未知效果；原调用deadline不延长。",
@@ -3889,7 +3890,10 @@
       "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I2m-A16.md",
+        "docs/implementation/evidence/h02-i04-a16.json"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P1-12",
@@ -4521,6 +4525,7 @@
         "context.references"
       ],
       "tasks": [
+        "H02-v7固定服务用于本人测试；办公/学术真实诊断、历史保留、工程回归分别记录。本人反馈、成果接受和独立事实质量仍pending，本轮由A完成必要修改，BCD不自动扩包。",
         "复用现有文本/Markdown Artifact与Completion接线，原粘贴材料进入低信任Context，固定用户模型生成成果与准确引用。",
         "按原文契约逐项核验实际成果/证据/版本和未决效果；语义评审按需要，事实质量由P1-15独立发布门槛校准。",
         "B接成果阅读、引用定位、补充修改和合同要求的本人接受；普通消息不出现成果接受步骤。",
@@ -4539,10 +4544,14 @@
       "deliverables": [
         "办公/学术单Agent文本成果与验收回执"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I2m-A16.md",
+        "docs/implementation/evidence/h02-i04-a16.json",
+        "docs/implementation/human-tests/H02-v7.md"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P1-13",
@@ -4707,6 +4716,7 @@
       ],
       "nodes": [],
       "tasks": [
+        "H02-v7固定服务用于本人测试；办公/学术真实诊断、历史保留、工程回归分别记录。本人反馈、成果接受和独立事实质量仍pending，本轮由A完成必要修改，BCD不自动扩包。",
         "汇合逐包接受后的准确源码/dist/模型配置，跑受影响整链和独立事实评测；保留原失败和费用。",
         "准备固定体验版本与隔离服务/数据，实际启动和登录预跑；旧H01历史/取消状态不重写，旧快照不热改。",
         "用户本人体验正常提问→回答澄清→补充纠正→粘贴材料成果，含刷新/取消/拒绝与合同需要的接受。",
@@ -4725,10 +4735,14 @@
         "H02固定版本和人工反馈闭环",
         "独立于本机/协作的文本里程碑结论"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "scope": "required",
       "decision_dependencies": [],
-      "implementation_evidence": [],
+      "implementation_evidence": [
+        "docs/implementation/MS-I2m-A16.md",
+        "docs/implementation/evidence/h02-i04-a16.json",
+        "docs/implementation/human-tests/H02-v7.md"
+      ],
       "phase_gate": null,
       "effective_dependencies": [
         "P1-13",

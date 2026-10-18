@@ -24,14 +24,14 @@ from uaw.run.presentation import RunPresentationReader
 from uaw.run.review_wait import ReviewWaitSources
 from uaw.shared.contracts import Ref, TrustedExecutionContext
 from uaw.shared.conversation import ConversationRequestMeta, RunCorrectionRequest
-from uaw.shared.errors import DomainError
+from uaw.shared.errors import DomainError, reject
 
 pytestmark = pytest.mark.parametrize(
     "case", [{"active_provider_for_tools": True, "json_object_mode": True}], indirect=True
 )
 
 
-async def ready(p):
+async def ready(p, *, expect_park=True):
     p.future = datetime.now(UTC)
     p.clocks = ExecutionClocks(
         p.runs.store,
@@ -54,6 +54,8 @@ async def ready(p):
     ]
     assert await p.queue.tick()
     job = (await p.runs.store.get(p.actor, JOBS, p.run["id"])).payload
+    if not expect_park:
+        return job, None
     assert job["stage"] == "delivery" and job["state"] == "blocked", job
     view = await RunPresentationReader(p.runs.store).read(p.actor, p.run["id"])
     assert view["phase"] == "awaiting_acceptance", view
@@ -331,4 +333,67 @@ async def test_cancel_after_acceptance_before_completion_cannot_commit_old_propo
     assert (await p.runs.get_run(p.actor, p.run["id"]))["status"] == "cancelled"
     assert (await p.clocks.current(p.actor, p.run["id"])).mode == "stopped"
     assert len(await inventory(p, "run.completion.acceptance")) == 1
+    assert len(p.case.requests) == 2
+
+
+@pytest.mark.parametrize("fault", ["unknown_before_pause", "after_clock_write"])
+async def test_failed_review_parking_leaves_no_partial_wait_checkpoint(
+    scenario, monkeypatch, fault
+):
+    from sqlalchemy import select
+
+    from uaw.infrastructure.db.models import RecordVersionRow
+
+    p = scenario
+    original = BackgroundAgent.park_review
+
+    async def fail_parking(driver, actor, run, proposal, job):
+        if fault == "unknown_before_pause":
+            row = await p.runs.store.get(
+                actor, "model.invocations", job["step_context"]["attempt_id"]
+            )
+            value = {**row.payload, "state": "claimed"}
+            value.pop("result")
+            await p.runs.store.put(
+                actor,
+                row.namespace,
+                row.resource_id,
+                row.schema_name,
+                value,
+                expected_revision=row.revision,
+                request_id="unknown-before-review-pause",
+            )
+        else:
+            change = driver.conversation_clocks.change
+
+            async def fail_after_clock_write(tx, actor, run_id, request):
+                result = await change(tx, actor, run_id, request)
+                if request.mode == "waiting_for_user":
+                    raise reject("review_checkpoint_test_failure", "Abort parked checkpoint", 409)
+                return result
+
+            monkeypatch.setattr(driver.conversation_clocks, "change", fail_after_clock_write)
+        return await original(driver, actor, run, proposal, job)
+
+    monkeypatch.setattr(BackgroundAgent, "park_review", fail_parking)
+    job, _ = await ready(p, expect_park=False)
+    assert job["stage"] == "step" and job["state"] == "blocked"
+    expected = (
+        "conversation_effect_pending"
+        if fault == "unknown_before_pause"
+        else "review_checkpoint_test_failure"
+    )
+    assert job["failure"]["code"] == expected
+    async with p.runs.store.database.sessions() as session:
+        history = list(
+            await session.scalars(
+                select(RecordVersionRow).where(
+                    RecordVersionRow.principal_id == p.actor.id,
+                    RecordVersionRow.namespace == "run.execution_clocks",
+                    RecordVersionRow.resource_id == p.run["id"],
+                )
+            )
+        )
+    assert history and not any(r.payload["mode"] == "waiting_for_user" for r in history)
+    assert not await inventory(p, "run.completion.acceptance")
     assert len(p.case.requests) == 2

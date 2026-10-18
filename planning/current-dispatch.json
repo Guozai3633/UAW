@@ -19,7 +19,16 @@
         "tests/unit/run_clock/",
         "tests/integration/run_clock/",
         "docs/implementation/evaluation/"
-      ]
+      ],
+      "current_followup": {
+        "package": "H02-I04/A16",
+        "user_instruction": "本轮全部由A完成",
+        "override_of_old_excluded_paths": [
+          "src/uaw/run/execution_clock.py"
+        ],
+        "worker_branches_modified": false,
+        "new_worker_dispatch": false
+      }
     },
     "B": {
       "package": "MS-U4",
@@ -60,12 +69,12 @@
   },
   "milestones_per_package": 4,
   "integrate_on_stage_sha": true,
-  "current_human_runtime": "H02-v6",
+  "current_human_runtime": "H02-v7",
   "replace_human_runtime": false,
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A15_B_H02_I03_component_accepted_and_actual_UI_verified_H02_I04_review_wait_timeout_open",
+  "status": "A16_engineering_verified_H02_v7_deployed_owner_retest_and_fact_quality_pending",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -188,32 +197,45 @@
       "receipt": "docs/implementation/evidence/h02-i03-a15.json",
       "scope": "readonly_current_input_Run_activity_real_model_understanding_and_delivery_no_execution_mutation",
       "worker_consumption": "B_explicit_H02_I03_repair_only_merge_exact_A15_after_own_clean_stage"
+    },
+    "A/A16": {
+      "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+      "fixed_ref": "ms-i2m-a16-source",
+      "receipt": "docs/implementation/evidence/h02-i04-a16.json",
+      "scope": "verified_artifact_review_clock_pause_durable_delivery_wake_remaining_time_correction_and_concise_report_action_guidance",
+      "worker_consumption": "no_new_BCD_work_or_sync_authorized_by_this_followup",
+      "source_sha256": {
+        "src/uaw/run/clock_ports.py": "1374d3a6387890588c4c5a95dd16fefbffbd45d46f586be80a8ce9a9d00f5238",
+        "src/uaw/run/execution_clock.py": "c3c50621d489546b3e1d1f55e5d67463f90d0ac31c59ca7cedad06f303cae461",
+        "src/uaw/run/review_wait.py": "221bf1241043c4cea42eb42b8f5e3812d41aeadb128f7df52d8214f62ce0e2a9",
+        "src/uaw/resources/prompts/conversation-v1.txt": "97d5fe8f462ed6dc8c1d18594659a406ca794b1c4c1da78b37061cb1820df8d5"
+      }
     }
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A15+B-H02-I03",
+    "stage": "A16/H02-I04",
     "published": true,
-    "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
-    "fixed_ref": "ms-i2m-a15-source",
-    "receipt": "docs/implementation/evidence/h02-i03-a15.json",
+    "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+    "fixed_ref": "ms-i2m-a16-source",
+    "receipt": "docs/implementation/evidence/h02-i04-a16.json",
     "runtime_deployed": true,
-    "runtime_backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+    "runtime_backend_source": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
     "runtime_frontend_source": "af3889f209054b2485aa5ff7aeab6479878342b0",
-    "runtime_receipt": "docs/implementation/evidence/h02-i03-ab-final.json",
+    "runtime_receipt": "docs/implementation/evidence/h02-i04-a16.json",
     "runtime_restart_same_source": false,
-    "live_provider_smoke": "no_A15_model_calls_actual_owned_presentation_HTTP_verified",
+    "live_provider_smoke": "current_source_conversation_clarification_cross_deadline_new_process_correction_accept_cancel_and_academic_report_passed",
     "quality_capture": "prior_A13_eight_attempts_quality_still_incomplete",
-    "human_experience": "H02_I03_display_repaired_original_Run_timed_out_during_owner_review_H02_I04_open",
+    "human_experience": "H02_v7_ready_for_owner_retest_not_accepted",
     "next": [
-      "A_fix_current_delivery_review_wait_source_contract",
-      "review_wait_clock_pause_recovery_and_acceptance_revalidation",
-      "new_isolated_Run_and_owner_retest_no_old_Run_resurrection"
+      "owner_H02_v7_feedback_and_targeted_repairs",
+      "independent_human_case_and_answer_review",
+      "office_academic_full_quality_acceptance_separate_from_native_Tool_and_subagents"
     ],
     "offline_review_packet": "two_actual_second_generation_targets_all_fields_unselected",
     "actual_human_imports": 0,
     "browser_render": "pending_file_protocol_denied",
-    "actual_new_model_calls": 0,
+    "actual_new_model_calls": 18,
     "actual_quality_comparisons_assembled": 0,
     "future_registration": "A13_isolated_execution_scope_registered_before_all_eight_calls_case_needs_human_review"
   },
@@ -267,10 +289,13 @@
   "open_human_issues": {
     "H02_I04": {
       "document": "docs/implementation/human-tests/H02-I04.md",
-      "status": "confirmed_unfixed",
-      "priority": "next",
+      "status": "engineering_fixed_deployed_owner_retest_pending",
+      "priority": "owner_retest",
       "worker_dispatch_published": false,
-      "original_Run": "failed_v6_preserved_not_revived"
+      "original_Run": "failed_v6_preserved_not_revived",
+      "source_commit": "d2000f958dc8f5652a38fbf18f4e6af15020166a",
+      "receipt": "docs/implementation/evidence/h02-i04-a16.json"
     }
-  }
+  },
+  "current_followup_worker_policy": "A_only_per_user_instruction_BCD_delivered_stopped_no_messages_no_sync"
 }
