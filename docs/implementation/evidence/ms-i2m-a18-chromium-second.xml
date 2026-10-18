@@ -1,0 +1,80 @@
+<testsuites id="" name="" tests="11" failures="1" skipped="0" errors="0" time="24.270522">
+<testsuite name="controlled\streaming.spec.ts" timestamp="2026-10-18T14:34:49.129Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.71" errors="0">
+<testcase name="controlled stream: partial text survives reload; final replaces one Item, no replay POST" classname="controlled\streaming.spec.ts" time="2.71">
+</testcase>
+</testsuite>
+<testsuite name="controlled\workspace.spec.ts" timestamp="2026-10-18T14:34:49.129Z" hostname="chromium" tests="10" failures="1" skipped="0" time="14.566" errors="0">
+<testcase name="controlled: original→understanding→Markdown summary; reload/reconnect never resend" classname="controlled\workspace.spec.ts" time="1.168">
+</testcase>
+<testcase name="controlled: fresh approval 批准 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="1.129">
+</testcase>
+<testcase name="controlled: fresh approval 拒绝 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="1.152">
+</testcase>
+<testcase name="controlled: stale approval prevents POST" classname="controlled\workspace.spec.ts" time="0.733">
+</testcase>
+<testcase name="controlled: actual terminal confirms cancel, no resend on refresh" classname="controlled\workspace.spec.ts" time="1.102">
+</testcase>
+<testcase name="controlled: unknown send retained across refresh without matching text or resubmission" classname="controlled\workspace.spec.ts" time="0.807">
+</testcase>
+<testcase name="controlled: mobile layout, unavailable identity and denied API are readable" classname="controlled\workspace.spec.ts" time="0.507">
+</testcase>
+<testcase name="controlled: create uses actual model catalog and remains usable after opening" classname="controlled\workspace.spec.ts" time="5.619">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toHaveValue(expected) failed" type="expect.toHaveValue">
+<![CDATA[  [chromium] › controlled\workspace.spec.ts:47:1 › controlled: create uses actual model catalog and remains usable after opening 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByRole('textbox', { name: '任务原文' })
+    Expected: "创建后发送"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByRole('textbox', { name: '任务原文' }) with timeout 5000ms
+      - waiting for getByRole('textbox', { name: '任务原文' })
+        - locator resolved to <textarea disabled aria-label="任务原文" maxlength="131072" placeholder="告诉 UAW，你想完成什么…"></textarea>
+        13 × unexpected value ""
+           - locator resolved to <textarea aria-label="任务原文" maxlength="131072" placeholder="告诉 UAW，你想完成什么…"></textarea>
+        - unexpected value ""
+
+
+      49 |  await page.getByRole('button',{name:'新建会话',exact:true}).click();await expect(page.getByLabel('模型')).toContainText('受控测试模型（非LLM）');
+      50 |  await page.getByRole('button',{name:'创建会话',exact:true}).click();await expect(page.getByLabel('会话侧栏').getByRole('button',{name:'研究材料整理'})).toBeVisible();
+    > 51 |  await page.getByRole('textbox',{name:'任务原文'}).fill('创建后发送');await expect(page.getByRole('textbox',{name:'任务原文'})).toHaveValue('创建后发送');await expect(page.getByRole('button',{name:'发送原文'})).toBeEnabled();await page.getByRole('button',{name:'发送原文'}).click();await expect.poll(()=>state.turnPosts).toBe(1);
+         |                                                                                                                    ^
+      52 | });
+      53 | test('controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again',async({page})=>{
+      54 |  const state=await controlledBackend(page,'running');await send(page);await expectRunState(page,'实际阶段 · running');
+        at E:\UAW\apps\web\tests\e2e\controlled\workspace.spec.ts:51:116
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.test-results\playwright\controlled-workspace-contr-77d7f-emains-usable-after-opening-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again" classname="controlled\workspace.spec.ts" time="1.491">
+</testcase>
+<testcase name="controlled: a rejected historical event keeps recovery accessible and restores new conversation after validated reread" classname="controlled\workspace.spec.ts" time="0.858">
+</testcase>
+</testsuite>
+</testsuites>

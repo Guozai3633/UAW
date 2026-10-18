@@ -407,10 +407,13 @@ def install_routes(app: FastAPI, container: Container) -> None:
                 payload: dict[str, Any] = {**request.path_params, **dict(request.query_params)}
                 if len(request.query_params.multi_items()) != len(request.query_params):
                     raise reject("query_invalid", "Duplicate query parameters are not allowed")
-                if "limit" in payload:
-                    if not payload["limit"].isascii() or not payload["limit"].isdigit():
-                        raise reject("query_invalid", "Page limit must be an integer")
-                    payload["limit"] = int(payload["limit"])
+                for name in ("limit", "after_seq"):
+                    if name not in payload:
+                        continue
+                    value = payload[name]
+                    if not value.isascii() or not value.isdigit() or len(value) > 10:
+                        raise reject("query_invalid", "Page count must be a bounded integer")
+                    payload[name] = int(value)
                 try:
                     validate_contract(schema, payload)
                 except ContractViolation:

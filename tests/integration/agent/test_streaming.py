@@ -180,6 +180,31 @@ async def test_incremental_event_cursor_binds_offset_and_owner(scenario):
         await reader.read(p.actor, p.run["conversation_id"], items=True, after_seq=1)
 
 
+async def test_actual_http_incremental_count_is_decoded_and_invalid_values_fail(scenario):
+    from uaw.api.application import create_app
+
+    p = scenario
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=create_app(p.control)),
+        base_url="http://test",
+        headers={"Authorization": "Bearer " + "u" * 40},
+    ) as client:
+        path = "/v1/conversations/" + p.run["conversation_id"] + "/events"
+        response = await client.get(path, params={"after_seq": "1", "limit": "2"})
+        assert response.status_code == 200, response.text
+        page = response.json()["payload"]
+        assert len(page["items"]) == 2 and page["items"][0]["seq"] == 2
+        for params in (
+            {"after_seq": "-1"},
+            {"after_seq": "１"},
+            {"after_seq": "9" * 4301},
+            [("after_seq", "1"), ("after_seq", "2")],
+        ):
+            response = await client.get(path, params=params)
+            assert response.status_code == 422, response.text
+            assert response.json()["failure"]["code"] == "query_invalid"
+
+
 async def test_late_original_publication_failure_closes_display_without_marking_success(
     scenario, monkeypatch
 ):
@@ -206,6 +231,7 @@ async def test_late_original_publication_failure_closes_display_without_marking_
 
 async def test_event_read_measurement_and_missing_owned_history_is_rejected(scenario):
     from sqlalchemy import event, update
+
     from uaw.infrastructure.db.models import RecordRow
 
     p = scenario
@@ -227,7 +253,8 @@ async def test_event_read_measurement_and_missing_owned_history_is_rejected(scen
         )
     )
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
+    await asyncio.to_thread(
+        path.write_text,
         json.dumps(
             {
                 "events": len(page["items"]),
