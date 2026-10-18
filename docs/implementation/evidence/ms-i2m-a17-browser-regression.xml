@@ -1,0 +1,26 @@
+<testsuites id="" name="" tests="10" failures="0" skipped="0" errors="0" time="24.272432">
+<testsuite name="controlled\h02-presentation.spec.ts" timestamp="2026-10-18T10:56:10.726Z" hostname="chromium" tests="6" failures="0" skipped="0" time="10.389" errors="0">
+<testcase name="H02-I03 controlled 1440: same revision ready graph updates status/model summary/full delivery without new POST" classname="controlled\h02-presentation.spec.ts" time="1.815">
+</testcase>
+<testcase name="H02-I03 controlled 1050: same revision ready graph updates status/model summary/full delivery without new POST" classname="controlled\h02-presentation.spec.ts" time="1.897">
+</testcase>
+<testcase name="H02-I03 controlled: background GET retains verified display; delayed old input cannot restore old delivery" classname="controlled\h02-presentation.spec.ts" time="1.926">
+</testcase>
+<testcase name="H02-I03 controlled: not_provided hides endless waiting and terminal/stopping/finalizing remain distinct" classname="controlled\h02-presentation.spec.ts" time="1.314">
+</testcase>
+<testcase name="H02-I03 controlled: unknown acceptance queries actual receipt, finalizing is not completed and refresh never resends" classname="controlled\h02-presentation.spec.ts" time="1.833">
+</testcase>
+<testcase name="H02-I03 controlled: missing source and new identity do not reuse prior permission/summary or replay requests" classname="controlled\h02-presentation.spec.ts" time="1.604">
+</testcase>
+</testsuite>
+<testsuite name="controlled\quality.spec.ts" timestamp="2026-10-18T10:56:10.726Z" hostname="chromium" tests="4" failures="0" skipped="0" time="7.397" errors="0">
+<testcase name="quality controlled: original sources, blank judgments, saved draft and browser reload" classname="controlled\quality.spec.ts" time="2.536">
+</testcase>
+<testcase name="quality controlled: lost reply requires reread and does not resend" classname="controlled\quality.spec.ts" time="1.437">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 1280px" classname="controlled\quality.spec.ts" time="2.033">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 390px" classname="controlled\quality.spec.ts" time="1.391">
+</testcase>
+</testsuite>
+</testsuites>

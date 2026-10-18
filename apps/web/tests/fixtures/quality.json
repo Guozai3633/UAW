@@ -1,0 +1,146 @@
+{
+  "id": "controlled-web-review",
+  "revision": 1,
+  "title": "受控质量样本",
+  "created_at": "2026-10-18T10:30:00Z",
+  "updated_at": "2026-10-18T10:30:00Z",
+  "origin": {
+    "kind": "controlled_test",
+    "principal_id": "controlled-person",
+    "run_id": "controlled-run",
+    "run_revision": 1,
+    "input_revision": 1,
+    "source_commit": "b16c69a92d81124c00fb859ce8123748f56df054"
+  },
+  "packet": {
+    "schema_version": "uaw.human-review-packet.v1",
+    "created_at": "2026-10-18T10:30:00Z",
+    "input_sha256": [
+      {
+        "name": "suite",
+        "sha256": "eaacba701ad0077077630c1e7356d7bf671d6bb89b4475d5919621145c7a26bb"
+      },
+      {
+        "name": "manifest",
+        "sha256": "163242fe37e2b1e78373bdbdc1afd5a89b1303e614ae96bc34004241743ecf78"
+      },
+      {
+        "name": "observations",
+        "sha256": "ad6d7eb185e4966d9492e74bd544df011cf00800cbf08fe832a961b281e13df0"
+      },
+      {
+        "name": "reviews",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "targets": [
+      {
+        "case_id": "office-total",
+        "case_version": "1",
+        "case_sha256": "3fe768c0558dcd3a8871bea7ac57a46417c373d444671b709a3d3fa4af152ea7",
+        "manifest_id": "controlled-candidate",
+        "attempt_id": "answer-1",
+        "output_sha256": "9b0ff4afbc56e70eb78775754452251e1a6389bb72aa4c6bceec8078dd22ba68"
+      }
+    ]
+  },
+  "packet_sha256": "9fd5bb581febe6ba96032d31ff241e88af89fea624c924b7354c55be4f6d6655",
+  "targets": [
+    {
+      "binding": {
+        "case_id": "office-total",
+        "case_version": "1",
+        "case_sha256": "3fe768c0558dcd3a8871bea7ac57a46417c373d444671b709a3d3fa4af152ea7",
+        "manifest_id": "controlled-candidate",
+        "attempt_id": "answer-1",
+        "output_sha256": "9b0ff4afbc56e70eb78775754452251e1a6389bb72aa4c6bceec8078dd22ba68"
+      },
+      "case": {
+        "id": "office-total",
+        "version": "1",
+        "split": "revision",
+        "category": "office",
+        "prompt": "核对给定数量：2+3。",
+        "rubric": {
+          "expected_behavior": "answer",
+          "required_facts": [
+            "给定两项之和为5。"
+          ],
+          "allowed_assumptions": [],
+          "retained_requirements": [],
+          "critical": true
+        },
+        "evidence": [
+          {
+            "id": "given-table",
+            "kind": "provided_material",
+            "locator": "fixture row 1",
+            "captured_at": "2026-10-17T00:00:00Z",
+            "text": "第一项2；第二项3。",
+            "sha256": "f620d4c977903eb2c53197c7d8da288ca952d4e658c4412c790f5dce8911b4e7",
+            "url": null
+          }
+        ],
+        "review_status": "needs_human_review",
+        "human_verification": null
+      },
+      "answer": {
+        "decision": "reply",
+        "text": "合计5。",
+        "evidence": []
+      },
+      "verifications": [
+        {
+          "schema_version": "ms-e1.v1",
+          "manifest_id": "controlled-candidate",
+          "case_id": "office-total",
+          "case_version": "1",
+          "attempt_id": "reviewer-1",
+          "logical_request_id": "reviewer-request",
+          "attempt_number": 1,
+          "phase": "reviewer",
+          "status": "succeeded",
+          "started_at": "2026-10-17T00:00:02Z",
+          "finished_at": "2026-10-17T00:00:03Z",
+          "active_ms": 500,
+          "wall_ms": 1000,
+          "usage": {
+            "input_tokens": 5,
+            "output_tokens": 2,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "money": "0.04",
+            "currency": "USD",
+            "billing_state": "confirmed"
+          },
+          "output": null,
+          "reviewer": {
+            "target_attempt_id": "answer-1",
+            "target_output_sha256": "9b0ff4afbc56e70eb78775754452251e1a6389bb72aa4c6bceec8078dd22ba68",
+            "verdict": "passed"
+          },
+          "failure_code": null
+        }
+      ],
+      "verification_outputs": []
+    }
+  ],
+  "status": "draft",
+  "judgments": [
+    {
+      "case_id": "office-total",
+      "attempt_id": "answer-1",
+      "case_review": null,
+      "evidence_reviewed": null,
+      "answer_correct": null,
+      "unnecessary_block": null,
+      "unsupported_execution": null,
+      "requirements_preserved": null,
+      "acceptable": null,
+      "critical_error": null,
+      "fabricated_evidence": null,
+      "notes": ""
+    }
+  ],
+  "submission": null
+}

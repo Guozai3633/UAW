@@ -1,0 +1,12 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="14.442245000000002">
+<testsuite name="controlled\quality.spec.ts" timestamp="2026-10-18T10:36:34.844Z" hostname="chromium" tests="4" failures="0" skipped="0" time="9.203" errors="0">
+<testcase name="quality controlled: original sources, blank judgments, saved draft and browser reload" classname="controlled\quality.spec.ts" time="3.014">
+</testcase>
+<testcase name="quality controlled: lost reply requires reread and does not resend" classname="controlled\quality.spec.ts" time="2.112">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 1280px" classname="controlled\quality.spec.ts" time="2.494">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 390px" classname="controlled\quality.spec.ts" time="1.583">
+</testcase>
+</testsuite>
+</testsuites>

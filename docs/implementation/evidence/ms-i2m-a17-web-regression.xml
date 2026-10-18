@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="3" errors="0" time="1.5359967">
+    <testsuite name="tests/unit/presentation-hook.test.tsx" timestamp="2026-10-18T10:25:26.198Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="tests/unit/presentation-hook.test.tsx" name="tests/unit/presentation-hook.test.tsx" time="0">
+            <failure message="ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;" type="Error">
+Error: ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -4058, code: &apos;ENOENT&apos;, syscall: &apos;open&apos;, path: &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/presentation.test.ts" timestamp="2026-10-18T10:25:26.206Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="tests/unit/presentation.test.ts" name="tests/unit/presentation.test.ts" time="0">
+            <failure message="ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;" type="Error">
+Error: ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -4058, code: &apos;ENOENT&apos;, syscall: &apos;open&apos;, path: &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/quality.test.tsx" timestamp="2026-10-18T10:25:26.209Z" hostname="LAPTOP-JE6KH8OE" tests="8" failures="0" errors="0" skipped="0" time="1.5359967">
+        <testcase classname="tests/unit/quality.test.tsx" name="opens the original material and answer with no ratings or human declaration selected" time="0.4979286">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves unknown judgments as a draft and reopens the persisted revision" time="0.2219723">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="keeps uncertain writes disabled until an explicit re-read and never retries automatically" time="0.2013607">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="requires the explicit declaration plus completed mandatory judgments for submission" time="0.2220064">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="clears the old identity by unmounting and ignores a late old response" time="0.087905">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="sends the exact source and CAS without a self-reported reviewer" time="0.1368754">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves feedback against the selected Run and reopens the persisted notes" time="0.153718">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="shows the idle task prompt without an unavailable-source warning in a new conversation" time="0.0118531">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/task-understanding.test.tsx" timestamp="2026-10-18T10:25:26.214Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="tests/unit/task-understanding.test.tsx" time="0">
+            <failure message="ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;" type="Error">
+Error: ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos;
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -4058, code: &apos;ENOENT&apos;, syscall: &apos;open&apos;, path: &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{63ab2a15-352e-4f86-a6dd-d7c440f78afe}\AC\Temp\GAYu-7_l1ThrC9kCIIYqf\client\9538f2a66f5a7cf862079606047cc8bffaeb270f&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,9 +1,9 @@
 {
-  "baseline": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
-  "contract_ref": "ms-i2m-a15-source",
-  "contract_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
-  "schema_sha256": "4bf6925db7e09910bd8a7755e832d59047e41a0732b139e58af0dd5d2561faeb",
-  "openapi_sha256": "d10d645419b0c0640647f2c1f263ddc521e1d418e1619e5afeacb5e9eee06560",
+  "baseline": "3222251e281beb5685fc29b2667d58ab421846d8",
+  "contract_ref": "ms-i2m-a17-study-source",
+  "contract_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+  "schema_sha256": "20c4e1b5f4965e712e41b7cacb7f76802f3f262f40c33b34e09d3e6b57496bc4",
+  "openapi_sha256": "156df5407a5ef3dcd8dfae0f42fa6092ced34f136996653a9c2ac9d697ed75a3",
   "paths": {
     "/v1/conversations": [
       "get",
@@ -92,6 +92,25 @@
     ],
     "/v1/runs/{run_id}/continuations/{request_id}": [
       "get"
+    ],
+    "/v1/quality/reviews": [
+      "get"
+    ],
+    "/v1/quality/reviews/{review_id}": [
+      "get"
+    ],
+    "/v1/quality/reviews/{review_id}/draft": [
+      "post"
+    ],
+    "/v1/quality/reviews/{review_id}/submission": [
+      "post"
+    ],
+    "/v1/quality/reviews/{review_id}/export": [
+      "get"
+    ],
+    "/v1/runs/{run_id}/feedback": [
+      "get",
+      "post"
     ],
     "/v1/models": [
       "get"

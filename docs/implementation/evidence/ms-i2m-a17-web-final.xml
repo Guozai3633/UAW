@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="2.053821">
+    <testsuite name="tests/unit/presentation-hook.test.tsx" timestamp="2026-10-18T10:36:51.463Z" hostname="LAPTOP-JE6KH8OE" tests="2" failures="0" errors="0" skipped="0" time="0.0821619">
+        <testcase classname="tests/unit/presentation-hook.test.tsx" name="automatic reconciliation shares the120-read bound; only explicit manual refresh opens a new read window" time="0.0755634">
+        </testcase>
+        <testcase classname="tests/unit/presentation-hook.test.tsx" name="automatic reconciliation does not replace an in-flight read or publish after unmount" time="0.0045385">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/presentation.test.ts" timestamp="2026-10-18T10:36:51.466Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0973666">
+        <testcase classname="tests/unit/presentation.test.ts" name="A15 exact GET 0.2 has no payload/query and validates complete actual DTO" time="0.0740817">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="unknown fields, cross-scope/input/pins and fabricated terminal phases are refused" time="0.0075995">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="same Run revision working→awaiting→finalizing updates actual understanding/phase; new input removes old delivery" time="0.0054948">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="older input/capture is rejected and a new owner starts an independent display boundary" time="0.002104">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="late earlier request cannot publish over the newest generation, even with unchanged Run revision" time="0.002315">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="conversation mismatch retries only a read and refuses a mixed snapshot; auth changes and abort refuse" time="0.0034669">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/quality.test.tsx" timestamp="2026-10-18T10:36:51.470Z" hostname="LAPTOP-JE6KH8OE" tests="8" failures="0" errors="0" skipped="0" time="1.578697">
+        <testcase classname="tests/unit/quality.test.tsx" name="opens the original material and answer with no ratings or human declaration selected" time="0.5555907">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves unknown judgments as a draft and reopens the persisted revision" time="0.2157987">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="keeps uncertain writes disabled until an explicit re-read and never retries automatically" time="0.2159652">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="requires the explicit declaration plus completed mandatory judgments for submission" time="0.256142">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="clears the old identity by unmounting and ignores a late old response" time="0.068096">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="sends the exact source and CAS without a self-reported reviewer" time="0.1289339">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves feedback against the selected Run and reopens the persisted notes" time="0.1224364">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="shows the idle task prompt without an unavailable-source warning in a new conversation" time="0.0118559">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/task-understanding.test.tsx" timestamp="2026-10-18T10:36:51.474Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.2955955">
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal failed without current understanding stops waiting and does not invent a summary" time="0.0736664">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal cancelled without current understanding stops waiting and does not invent a summary" time="0.009827">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal completed without current understanding stops waiting and does not invent a summary" time="0.0083017">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="old input understanding remains exactly readable with an old-version label; current understanding is never falsely old" time="0.1680445">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="unverified/foreign understanding never becomes current, and user draft remains the composition baseline" time="0.0211932">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="nonterminal without a summary retains actual waiting feedback" time="0.0121048">
+        </testcase>
+    </testsuite>
+</testsuites>

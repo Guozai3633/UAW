@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="1.1668533">
+    <testsuite name="tests/unit/quality.test.tsx" timestamp="2026-10-18T10:20:44.328Z" hostname="LAPTOP-JE6KH8OE" tests="7" failures="0" errors="0" skipped="0" time="1.1668533">
+        <testcase classname="tests/unit/quality.test.tsx" name="opens the original material and answer with no ratings or human declaration selected" time="0.4137898">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves unknown judgments as a draft and reopens the persisted revision" time="0.1886548">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="keeps uncertain writes disabled until an explicit re-read and never retries automatically" time="0.1680062">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="requires the explicit declaration plus completed mandatory judgments for submission" time="0.2051067">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="clears the old identity by unmounting and ignores a late old response" time="0.0728897">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="sends the exact source and CAS and uses the original feedback binding on update" time="0.1073847">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="shows the idle task prompt without an unavailable-source warning in a new conversation" time="0.0089434">
+        </testcase>
+    </testsuite>
+</testsuites>

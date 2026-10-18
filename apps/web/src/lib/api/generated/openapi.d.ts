@@ -493,6 +493,109 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/quality/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 认证网页质量审阅/反馈入口。 */
+        get: operations["http_quality_reviews_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/quality/reviews/{review_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 认证网页质量审阅/反馈入口。 */
+        get: operations["http_quality_reviews_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/quality/reviews/{review_id}/draft": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 认证网页质量审阅写入；要求 CAS 和原目标绑定。 */
+        post: operations["http_quality_reviews_save"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/quality/reviews/{review_id}/submission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 认证网页质量审阅写入；要求 CAS 和原目标绑定。 */
+        post: operations["http_quality_reviews_submit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/quality/reviews/{review_id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 认证网页质量审阅/反馈入口。 */
+        get: operations["http_quality_reviews_export"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/runs/{run_id}/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 认证网页质量审阅/反馈入口。 */
+        get: operations["http_quality_feedback_list"];
+        put?: never;
+        /** 认证网页质量审阅写入；要求 CAS 和原目标绑定。 */
+        post: operations["http_quality_feedback_save"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/models": {
         parameters: {
             query?: never;
@@ -1142,7 +1245,7 @@ export interface components {
             snapshot_revision: components["schemas"]["Revision"];
         };
         /** @description 互斥分支；所有字段须匹配所选action。 */
-        EventPayload: components["schemas"]["EventPayloadInput.committed"] | components["schemas"]["EventPayloadUnderstanding.preview"] | components["schemas"]["EventPayloadTask.frame.committed"] | components["schemas"]["EventPayloadPlan.committed"] | components["schemas"]["EventPayloadAgent.updated"] | components["schemas"]["EventPayloadAgent.result"] | components["schemas"]["EventPayloadTool.started"] | components["schemas"]["EventPayloadTool.completed"] | components["schemas"]["EventPayloadProcess.updated"] | components["schemas"]["EventPayloadChanges.committed"] | components["schemas"]["EventPayloadArtifact.registered"] | components["schemas"]["EventPayloadApproval.required"] | components["schemas"]["EventPayloadApproval.decided"] | components["schemas"]["EventPayloadItem.delta"] | components["schemas"]["EventPayloadItem.updated"] | components["schemas"]["EventPayloadRun.updated"] | components["schemas"]["EventPayloadVerification.completed"] | components["schemas"]["EventPayloadControl.accepted"] | components["schemas"]["EventPayloadMemory.deleted"] | components["schemas"]["EventPayloadConfiguration.activated"] | components["schemas"]["EventPayloadCheckpoint.committed"] | components["schemas"]["EventPayloadBudget.updated"];
+        EventPayload: components["schemas"]["EventPayloadInput.committed"] | components["schemas"]["EventPayloadUnderstanding.preview"] | components["schemas"]["EventPayloadTask.frame.committed"] | components["schemas"]["EventPayloadPlan.committed"] | components["schemas"]["EventPayloadAgent.updated"] | components["schemas"]["EventPayloadAgent.result"] | components["schemas"]["EventPayloadTool.started"] | components["schemas"]["EventPayloadTool.completed"] | components["schemas"]["EventPayloadProcess.updated"] | components["schemas"]["EventPayloadChanges.committed"] | components["schemas"]["EventPayloadArtifact.registered"] | components["schemas"]["EventPayloadApproval.required"] | components["schemas"]["EventPayloadApproval.decided"] | components["schemas"]["EventPayloadItem.delta"] | components["schemas"]["EventPayloadItem.updated"] | components["schemas"]["EventPayloadRun.updated"] | components["schemas"]["EventPayloadVerification.completed"] | components["schemas"]["EventPayloadControl.accepted"] | components["schemas"]["EventPayloadMemory.deleted"] | components["schemas"]["EventPayloadConfiguration.activated"] | components["schemas"]["EventPayloadCheckpoint.committed"] | components["schemas"]["EventPayloadBudget.updated"] | components["schemas"]["EventPayloadQualityRegistered"] | components["schemas"]["EventPayloadQualitySaved"] | components["schemas"]["EventPayloadQualitySubmitted"] | components["schemas"]["EventPayloadQualityFeedbackSaved"];
         /** @description 按action选择的独立参数/结果分支。 */
         "EventPayloadAgent.result": {
             /**
@@ -1303,6 +1406,46 @@ export interface components {
             /** @description 该分支的明确结构 */
             parameters: components["schemas"]["ProcessRecord"];
         };
+        /** @description 注册的质量审计分支。 */
+        EventPayloadQualityFeedbackSaved: {
+            /**
+             * @description 事件
+             * @constant
+             */
+            action: "quality.feedback.saved";
+            /** @description 审计元数据，不含凭据 */
+            parameters: components["schemas"]["QualityFeedbackSavedEvent"];
+        };
+        /** @description 注册的质量审计分支。 */
+        EventPayloadQualityRegistered: {
+            /**
+             * @description 事件
+             * @constant
+             */
+            action: "quality.registered";
+            /** @description 审计元数据，不含凭据 */
+            parameters: components["schemas"]["QualityRegisteredEvent"];
+        };
+        /** @description 注册的质量审计分支。 */
+        EventPayloadQualitySaved: {
+            /**
+             * @description 事件
+             * @constant
+             */
+            action: "quality.saved";
+            /** @description 审计元数据，不含凭据 */
+            parameters: components["schemas"]["QualitySavedEvent"];
+        };
+        /** @description 注册的质量审计分支。 */
+        EventPayloadQualitySubmitted: {
+            /**
+             * @description 事件
+             * @constant
+             */
+            action: "quality.submitted";
+            /** @description 审计元数据，不含凭据 */
+            parameters: components["schemas"]["QualitySubmittedEvent"];
+        };
         /** @description 按action选择的独立参数/结果分支。 */
         "EventPayloadRun.updated": {
             /**
@@ -1367,7 +1510,7 @@ export interface components {
          * @description 取值含义见字段及协议约束。
          * @enum {string}
          */
-        EventType: "input.committed" | "understanding.preview" | "task.frame.committed" | "plan.committed" | "agent.updated" | "agent.result" | "tool.started" | "tool.completed" | "process.updated" | "changes.committed" | "artifact.registered" | "approval.required" | "approval.decided" | "item.delta" | "item.updated" | "run.updated" | "verification.completed" | "control.accepted" | "memory.deleted" | "configuration.activated" | "checkpoint.committed" | "budget.updated";
+        EventType: "input.committed" | "understanding.preview" | "task.frame.committed" | "plan.committed" | "agent.updated" | "agent.result" | "tool.started" | "tool.completed" | "process.updated" | "changes.committed" | "artifact.registered" | "approval.required" | "approval.decided" | "item.delta" | "item.updated" | "run.updated" | "verification.completed" | "control.accepted" | "memory.deleted" | "configuration.activated" | "checkpoint.committed" | "budget.updated" | "quality.registered" | "quality.saved" | "quality.submitted" | "quality.feedback.saved";
         /** @description 读取同主体持久事件的严格分支载荷。 */
         EventsPayloadRequest: {
             /** @description 事件 */
@@ -1632,6 +1775,146 @@ export interface components {
             kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
             /** @description ok的业务结果 */
             payload?: components["schemas"]["ModelPage"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityFeedbackListResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityFeedbackPage"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityFeedbackSaveResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityFeedback"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityReviewsExportResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityExport"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityReviewsGetResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityReviewView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityReviewsListResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityReviewPage"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityReviewsSaveResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityReviewView"];
+            /** @description 关联真实资源 */
+            output_refs: components["schemas"]["Ref"][];
+            /** @description 本次提交/读取的域版本 */
+            revision?: components["schemas"]["Revision"];
+            /** @description 失败状态的明确原因 */
+            failure?: components["schemas"]["Failure"];
+            /** @description waiting时审批/进程/用户问题引用 */
+            wait_ref?: components["schemas"]["Ref"];
+            /** @description 发生消耗时真实统计 */
+            usage_ref?: components["schemas"]["Ref"];
+        };
+        /** @description 该接口的状态结果；ok才携带完整业务payload。 */
+        HttpQualityReviewsSubmitResult: {
+            /**
+             * @description 接口状态
+             * @enum {string}
+             */
+            kind: "ok" | "waiting" | "missing" | "denied" | "conflict" | "stale" | "failed" | "cancelled";
+            /** @description ok的业务结果 */
+            payload?: components["schemas"]["QualityReviewView"];
             /** @description 关联真实资源 */
             output_refs: components["schemas"]["Ref"][];
             /** @description 本次提交/读取的域版本 */
@@ -2408,6 +2691,561 @@ export interface components {
          * @enum {string}
          */
         ProviderState: "draft" | "validated" | "active" | "disabled" | "revoked";
+        /** Answer */
+        QualityAnswer: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "reply" | "ask" | "tool" | "deliver" | "blocked" | "none";
+            /** Text */
+            text: string;
+            /** Evidence */
+            evidence: components["schemas"]["QualityOutputEvidence"][];
+        };
+        /** Case */
+        QualityCase: {
+            /** Id */
+            id: string;
+            /** Version */
+            version: string;
+            /**
+             * Split
+             * @enum {string}
+             */
+            split: "revision" | "holdout";
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "office" | "academic" | "technical" | "missing_material" | "reasonable_ambiguity" | "correction";
+            /** Prompt */
+            prompt: string;
+            rubric: components["schemas"]["QualityRubric"];
+            /** Evidence */
+            evidence: components["schemas"]["QualityEvidence"][];
+            /**
+             * Review Status
+             * @enum {string}
+             */
+            review_status: "needs_human_review" | "human_verified";
+            human_verification: components["schemas"]["QualityHumanVerification"] | null;
+        };
+        /** Evidence */
+        QualityEvidence: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "provided_material" | "primary_source";
+            /** Locator */
+            locator: string;
+            /** Captured At */
+            captured_at: string;
+            /** Text */
+            text: string;
+            /** Sha256 */
+            sha256: string;
+            /**
+             * Url
+             * @default null
+             */
+            url: string | null;
+        };
+        /** QualityExport */
+        QualityExport: {
+            /** Review Id */
+            review_id: string;
+            /** Revision */
+            revision: number;
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Submission Sha256 */
+            submission_sha256: string;
+            /** Authenticated Reviewer Id */
+            authenticated_reviewer_id: string;
+            /**
+             * Basis
+             * @enum {string}
+             */
+            basis: "human_evidence_review" | "controlled_test";
+            files: components["schemas"]["QualityFiles"];
+        };
+        /** QualityFeedback */
+        QualityFeedback: {
+            /** Id */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Run Id */
+            run_id: string;
+            /** Run Revision */
+            run_revision: number;
+            /** Input Revision */
+            input_revision: number;
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "latency" | "clarification" | "correction" | "presentation" | "content" | "other";
+            /** Notes */
+            notes: string;
+            /** Created At */
+            created_at: string;
+            /** Updated At */
+            updated_at: string;
+        };
+        /** QualityFeedbackPage */
+        QualityFeedbackPage: {
+            /** Items */
+            items: components["schemas"]["QualityFeedback"][];
+        };
+        /**
+         * QualityFeedbackSave
+         * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+         */
+        QualityFeedbackSaveRequest: {
+            /** Run Id */
+            run_id: string;
+            /** Feedback Id */
+            feedback_id: string;
+            /** Run Revision */
+            run_revision: number;
+            /** Input Revision */
+            input_revision: number;
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "latency" | "clarification" | "correction" | "presentation" | "content" | "other";
+            /** Notes */
+            notes: string;
+        };
+        /** @description 独立质量记录的事务审计，不是任务完成事件。 */
+        QualityFeedbackSavedEvent: {
+            /** @description 反馈 */
+            feedback_id: components["schemas"]["ID"];
+            /** @description 原任务 */
+            run_id: components["schemas"]["ID"];
+            /** @description 认证会话 */
+            auth_session_id: components["schemas"]["ID"];
+        };
+        /** QualityFiles */
+        QualityFiles: {
+            /** Suite */
+            suite: string;
+            /** Manifest */
+            manifest: string;
+            /** Observations */
+            observations: string;
+            /** Reviews */
+            reviews: string;
+        };
+        /** HumanVerification */
+        QualityHumanVerification: {
+            /** Reviewer Id */
+            reviewer_id: string;
+            /** Reviewed At */
+            reviewed_at: string;
+            /** Rubric Sha256 */
+            rubric_sha256: string;
+            /** Evidence Sha256 */
+            evidence_sha256: string[];
+            /** Record Locator */
+            record_locator: string;
+        };
+        /** QualityJudgment */
+        QualityJudgment: {
+            /** Case Id */
+            case_id: string;
+            /** Attempt Id */
+            attempt_id: string;
+            /** Case Review */
+            case_review: ("verified" | "needs_revision") | null;
+            /** Evidence Reviewed */
+            evidence_reviewed: boolean | null;
+            /** Answer Correct */
+            answer_correct: boolean | null;
+            /** Unnecessary Block */
+            unnecessary_block: boolean | null;
+            /** Unsupported Execution */
+            unsupported_execution: boolean | null;
+            /** Requirements Preserved */
+            requirements_preserved: boolean | null;
+            /** Acceptable */
+            acceptable: boolean | null;
+            /** Critical Error */
+            critical_error: boolean | null;
+            /** Fabricated Evidence */
+            fabricated_evidence: boolean | null;
+            /** Notes */
+            notes: string;
+        };
+        /** Labels */
+        QualityLabels: {
+            /** Answer Correct */
+            answer_correct: boolean | null;
+            /** Unnecessary Block */
+            unnecessary_block: boolean | null;
+            /** Unsupported Execution */
+            unsupported_execution: boolean | null;
+            /** Requirements Preserved */
+            requirements_preserved: boolean | null;
+            /** Acceptable */
+            acceptable: boolean | null;
+            /** Critical Error */
+            critical_error: boolean;
+        };
+        /** NamedHash */
+        QualityNamedHash: {
+            /** Name */
+            name: string;
+            /** Sha256 */
+            sha256: string;
+        };
+        /** Observation */
+        QualityObservation: {
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "ms-e1.v1";
+            /** Manifest Id */
+            manifest_id: string;
+            /** Case Id */
+            case_id: string;
+            /** Case Version */
+            case_version: string;
+            /** Attempt Id */
+            attempt_id: string;
+            /** Logical Request Id */
+            logical_request_id: string;
+            /** Attempt Number */
+            attempt_number: number;
+            /**
+             * Phase
+             * @enum {string}
+             */
+            phase: "answer" | "reviewer" | "tool" | "preparation";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "succeeded" | "failed" | "cancelled" | "unknown";
+            /** Started At */
+            started_at: string;
+            /** Finished At */
+            finished_at: string;
+            /** Active Ms */
+            active_ms: number;
+            /** Wall Ms */
+            wall_ms: number;
+            usage: components["schemas"]["QualityUsage"];
+            output: components["schemas"]["QualityAnswer"] | null;
+            reviewer: components["schemas"]["QualityReviewerObservation"] | null;
+            /** Failure Code */
+            failure_code: string | null;
+        };
+        /** QualityOrigin */
+        QualityOrigin: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "actual_run" | "controlled_test";
+            /** Principal Id */
+            principal_id: string;
+            /** Run Id */
+            run_id: string;
+            /** Run Revision */
+            run_revision: number;
+            /** Input Revision */
+            input_revision: number;
+            /** Source Commit */
+            source_commit: string;
+        };
+        /** OutputEvidence */
+        QualityOutputEvidence: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "content" | "artifact" | "tool_call" | "tool_result" | "receipt";
+            /** Id */
+            id: string;
+            /** Version */
+            version: string;
+            /** Sha256 */
+            sha256: string;
+        };
+        /** @description 独立质量记录的事务审计，不是任务完成事件。 */
+        QualityRegisteredEvent: {
+            /** @description 审阅包 */
+            review_id: components["schemas"]["ID"];
+            /** @description 可信登记来源 */
+            operator_id: components["schemas"]["ID"];
+        };
+        /** ReviewPacket */
+        QualityReviewPacket: {
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "uaw.human-review-packet.v1";
+            /** Created At */
+            created_at: string;
+            /** Input Sha256 */
+            input_sha256: components["schemas"]["QualityNamedHash"][];
+            /** Targets */
+            targets: components["schemas"]["QualityReviewTarget"][];
+        };
+        /** QualityReviewPage */
+        QualityReviewPage: {
+            /** Items */
+            items: components["schemas"]["QualityReviewSummary"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+        };
+        /** ReviewSubmission */
+        QualityReviewSubmission: {
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "uaw.human-review-submission.v1";
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Reviewer Id */
+            reviewer_id: string;
+            /** Reviewed At */
+            reviewed_at: string;
+            /** Human Attested */
+            human_attested: boolean;
+            /** Items */
+            items: components["schemas"]["QualitySubmittedReview"][];
+        };
+        /** QualityReviewSummary */
+        QualityReviewSummary: {
+            /** Id */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Title */
+            title: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "draft" | "submitted";
+            /** Updated At */
+            updated_at: string;
+            origin: components["schemas"]["QualityOrigin"];
+        };
+        /** ReviewTarget */
+        QualityReviewTarget: {
+            /** Case Id */
+            case_id: string;
+            /** Case Version */
+            case_version: string;
+            /** Case Sha256 */
+            case_sha256: string;
+            /** Manifest Id */
+            manifest_id: string;
+            /** Attempt Id */
+            attempt_id: string;
+            /** Output Sha256 */
+            output_sha256: string;
+        };
+        /** QualityReviewView */
+        QualityReviewView: {
+            /** Id */
+            id: string;
+            /** Revision */
+            revision: number;
+            /** Title */
+            title: string;
+            /** Created At */
+            created_at: string;
+            /** Updated At */
+            updated_at: string;
+            origin: components["schemas"]["QualityOrigin"];
+            packet: components["schemas"]["QualityReviewPacket"];
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Targets */
+            targets: components["schemas"]["QualityTarget"][];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "draft" | "submitted";
+            /** Judgments */
+            judgments: components["schemas"]["QualityJudgment"][];
+            submission: components["schemas"]["QualityReviewSubmission"] | null;
+        };
+        /** ReviewerObservation */
+        QualityReviewerObservation: {
+            /** Target Attempt Id */
+            target_attempt_id: string;
+            /** Target Output Sha256 */
+            target_output_sha256: string;
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "passed" | "failed" | "not_applicable" | "unavailable";
+        };
+        /**
+         * QualitySave
+         * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+         */
+        QualityReviewsSaveRequest: {
+            /** Review Id */
+            review_id: string;
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Judgments */
+            judgments: components["schemas"]["QualityJudgment"][];
+        };
+        /**
+         * QualitySubmit
+         * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+         */
+        QualityReviewsSubmitRequest: {
+            /** Review Id */
+            review_id: string;
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Judgments */
+            judgments: components["schemas"]["QualityJudgment"][];
+            /** Human Attested */
+            human_attested: boolean;
+        };
+        /** Rubric */
+        QualityRubric: {
+            /**
+             * Expected Behavior
+             * @enum {string}
+             */
+            expected_behavior: "answer" | "clarify" | "decline" | "deliver" | "tool";
+            /** Required Facts */
+            required_facts: string[];
+            /** Allowed Assumptions */
+            allowed_assumptions: string[];
+            /** Retained Requirements */
+            retained_requirements: string[];
+            /** Critical */
+            critical: boolean;
+        };
+        /** QualitySave */
+        QualitySave: {
+            /** Review Id */
+            review_id: string;
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Judgments */
+            judgments: components["schemas"]["QualityJudgment"][];
+        };
+        /** @description 独立质量记录的事务审计，不是任务完成事件。 */
+        QualitySavedEvent: {
+            /** @description 审阅包 */
+            review_id: components["schemas"]["ID"];
+            /** @description 审阅修订 */
+            revision: components["schemas"]["Revision"];
+            /** @description 认证会话 */
+            auth_session_id: components["schemas"]["ID"];
+            /**
+             * @description 判断来源
+             * @enum {unknown}
+             */
+            basis: "human_evidence_review" | "controlled_test";
+        };
+        /** QualitySubmit */
+        QualitySubmit: {
+            /** Review Id */
+            review_id: string;
+            /** Packet Sha256 */
+            packet_sha256: string;
+            /** Judgments */
+            judgments: components["schemas"]["QualityJudgment"][];
+            /** Human Attested */
+            human_attested: boolean;
+        };
+        /** @description 独立质量记录的事务审计，不是任务完成事件。 */
+        QualitySubmittedEvent: {
+            /** @description 审阅包 */
+            review_id: components["schemas"]["ID"];
+            /** @description 审阅修订 */
+            revision: components["schemas"]["Revision"];
+            /** @description 认证会话 */
+            auth_session_id: components["schemas"]["ID"];
+            /**
+             * @description 判断来源
+             * @enum {unknown}
+             */
+            basis: "human_evidence_review" | "controlled_test";
+        };
+        /** SubmittedReview */
+        QualitySubmittedReview: {
+            /** Case Id */
+            case_id: string;
+            /** Attempt Id */
+            attempt_id: string;
+            /**
+             * Case Review
+             * @enum {string}
+             */
+            case_review: "verified" | "needs_revision";
+            /** Evidence Reviewed */
+            evidence_reviewed: boolean;
+            labels: components["schemas"]["QualityLabels"];
+            /** Notes */
+            notes: string;
+        };
+        /** QualityTarget */
+        QualityTarget: {
+            binding: components["schemas"]["QualityReviewTarget"];
+            case: components["schemas"]["QualityCase"];
+            answer: components["schemas"]["QualityAnswer"];
+            /** Verifications */
+            verifications: components["schemas"]["QualityObservation"][];
+            /**
+             * Verification Outputs
+             * @default []
+             */
+            verification_outputs: components["schemas"]["QualityVerificationOutput"][];
+        };
+        /** Usage */
+        QualityUsage: {
+            /** Input Tokens */
+            input_tokens: number | null;
+            /** Output Tokens */
+            output_tokens: number | null;
+            /** Model Calls */
+            model_calls: number | null;
+            /** Tool Calls */
+            tool_calls: number | null;
+            /** Money */
+            money: string | null;
+            /** Currency */
+            currency: string;
+            /**
+             * Billing State
+             * @enum {string}
+             */
+            billing_state: "confirmed" | "pending" | "unknown";
+        };
+        /** QualityVerificationOutput */
+        QualityVerificationOutput: {
+            /** Attempt Id */
+            attempt_id: string;
+            /** Output Sha256 */
+            output_sha256: string;
+            /** Text */
+            text: string;
+        };
         /** @description 跨域资源引用；资源本体/权限归所属领域。 */
         Ref: {
             /** @description 来源类型 */
@@ -8049,6 +8887,1155 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HttpRunsContinuationGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_reviews_list: {
+        parameters: {
+            query?: {
+                cursor?: components["schemas"]["ID"];
+            };
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_reviews_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                review_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsGetResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_reviews_save: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /**
+                     * QualitySave
+                     * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+                     */
+                    payload: {
+                        /** Packet Sha256 */
+                        packet_sha256: string;
+                        /** Judgments */
+                        judgments: components["schemas"]["QualityJudgment"][];
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_reviews_submit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /**
+                     * QualitySubmit
+                     * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+                     */
+                    payload: {
+                        /** Packet Sha256 */
+                        packet_sha256: string;
+                        /** Judgments */
+                        judgments: components["schemas"]["QualityJudgment"][];
+                        /** Human Attested */
+                        human_attested: boolean;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsSubmitResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_reviews_export: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                review_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityReviewsExportResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_feedback_list: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Request-Id"?: components["schemas"]["ID"];
+                "X-UAW-Schema-Version"?: "0.1";
+            };
+            path: {
+                run_id: components["schemas"]["ID"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackListResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+        };
+    };
+    http_quality_feedback_save: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    meta: components["schemas"]["RequestMeta"];
+                    /**
+                     * QualityFeedbackSave
+                     * @description 认证网页质量审阅写入；要求 CAS 和原目标绑定。
+                     */
+                    payload: {
+                        /** Feedback Id */
+                        feedback_id: string;
+                        /** Run Revision */
+                        run_revision: number;
+                        /** Input Revision */
+                        input_revision: number;
+                        /**
+                         * Category
+                         * @enum {string}
+                         */
+                        category: "latency" | "clarification" | "correction" | "presentation" | "content" | "other";
+                        /** Notes */
+                        notes: string;
+                    };
+                };
+            };
+        };
+        responses: {
+            /** @description 本接口成功；Run/作业可能仍在执行。 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "ok";
+                    };
+                };
+            };
+            /** @description waiting；failure.code区分原因，waiting含wait_ref。 */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "waiting";
+                    };
+                };
+            };
+            /** @description 认证失败；不进入业务接口。 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthenticationFailure"];
+                };
+            };
+            /** @description denied；failure.code区分原因，waiting含wait_ref。 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "denied";
+                    };
+                };
+            };
+            /** @description missing；failure.code区分原因，waiting含wait_ref。 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "missing";
+                    };
+                };
+            };
+            /** @description conflict；failure.code区分原因，waiting含wait_ref。 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "conflict";
+                    };
+                };
+            };
+            /** @description stale；failure.code区分原因，waiting含wait_ref。 */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "stale";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
+                        /** @constant */
+                        kind?: "failed";
+                    };
+                };
+            };
+            /** @description failed；failure.code区分原因，waiting含wait_ref。 */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HttpQualityFeedbackSaveResult"] & {
                         /** @constant */
                         kind?: "failed";
                     };

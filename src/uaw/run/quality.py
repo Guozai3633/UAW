@@ -97,6 +97,8 @@ class QualityReviews:
         origin: QualityOrigin,
         title: str,
         meta: RequestMeta,
+        *,
+        source_records: PostgresRecordStore | None = None,
     ) -> dict[str, Any]:
         """Trusted composition/CLI only. Public browser has no registration route."""
         if operator.kind not in ("admin", "service") or owner.kind != "user":
@@ -113,7 +115,7 @@ class QualityReviews:
             actor = Principal(
                 id=origin.principal_id, kind="user", auth_session_id=operator.auth_session_id
             )
-            rows = await read_run(self.records.database, actor, origin.run_id)
+            rows = await read_run((source_records or self.records).database, actor, origin.run_id)
             index = {(row.namespace, row.id): row for row in rows}
             original_outputs = {
                 row.id: row.payload for row in rows if row.namespace == "model.outputs"

@@ -1,0 +1,144 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="3" time="105.087021">
+<testsuite name="controlled\quality.spec.ts" timestamp="2026-10-18T10:24:46.284Z" hostname="chromium" tests="4" failures="0" skipped="0" time="92.546" errors="3">
+<testcase name="quality controlled: original sources, blank judgments, saved draft and browser reload" classname="controlled\quality.spec.ts" time="30.313">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › controlled\quality.spec.ts:37:1 › quality controlled: original sources, blank judgments, saved draft and browser reload 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: '质量审阅与反馈' }).getByRole('button', { name: /受控质量样本/ })
+
+
+      30 |  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
+      31 |  const dialog=page.getByRole('dialog',{name:'质量审阅与反馈'});
+    > 32 |  await dialog.getByRole('button',{name:/受控质量样本/}).click();
+         |                                                   ^
+      33 |  await expect(dialog.getByRole('heading',{name:'实际完整回答'})).toBeVisible();
+      34 |  return {dialog,writes,loseNext:()=>{lose=true;},original};
+      35 | }
+        at setup (E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:32:51)
+        at E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:38:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\.test-results\playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.test-results\playwright\controlled-quality-quality-32c7b-ed-draft-and-browser-reload-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="quality controlled: lost reply requires reread and does not resend" classname="controlled\quality.spec.ts" time="30.313">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › controlled\quality.spec.ts:56:1 › quality controlled: lost reply requires reread and does not resend 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: '质量审阅与反馈' }).getByRole('button', { name: /受控质量样本/ })
+
+
+      30 |  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
+      31 |  const dialog=page.getByRole('dialog',{name:'质量审阅与反馈'});
+    > 32 |  await dialog.getByRole('button',{name:/受控质量样本/}).click();
+         |                                                   ^
+      33 |  await expect(dialog.getByRole('heading',{name:'实际完整回答'})).toBeVisible();
+      34 |  return {dialog,writes,loseNext:()=>{lose=true;},original};
+      35 | }
+        at setup (E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:32:51)
+        at E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:57:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\.test-results\playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.test-results\playwright\controlled-quality-quality-a877d--reread-and-does-not-resend-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 1280px" classname="controlled\quality.spec.ts" time="30.319">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\error-context.md]]
+
+[[ATTACHMENT|playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › controlled\quality.spec.ts:68:31 › quality controlled: Run feedback saved and reopened at 1280px 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: '质量审阅与反馈' }).getByRole('button', { name: /受控质量样本/ })
+
+
+      30 |  await page.getByRole('button',{name:'质量审阅与反馈',exact:true}).click();
+      31 |  const dialog=page.getByRole('dialog',{name:'质量审阅与反馈'});
+    > 32 |  await dialog.getByRole('button',{name:/受控质量样本/}).click();
+         |                                                   ^
+      33 |  await expect(dialog.getByRole('heading',{name:'实际完整回答'})).toBeVisible();
+      34 |  return {dialog,writes,loseNext:()=>{lose=true;},original};
+      35 | }
+        at setup (E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:32:51)
+        at E:\UAW\apps\web\tests\e2e\controlled\quality.spec.ts:70:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\.test-results\playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.test-results\playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.test-results\playwright\controlled-quality-quality-e7bc0-aved-and-reopened-at-1280px-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 390px" classname="controlled\quality.spec.ts" time="1.601">
+</testcase>
+</testsuite>
+</testsuites>
