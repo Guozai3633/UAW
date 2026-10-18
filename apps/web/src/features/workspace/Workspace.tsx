@@ -46,7 +46,7 @@ export function Workspace({controller,reviewPort,enrollmentPort,installedPort,co
  const inputRevision=inputSource?.key===conversationKey&&inputSource.runRevision>=(s.run?.revision??0)?inputSource.inputRevision:undefined;
  useEffect(()=>setReviewOpen(false),[conversationKey]);
  const chosen=model||s.models[0]?.id||'';
- const review=<Review key={`${controller.host.session()?.identityKey}:${s.active?.id}`} items={s.items} run={displayRun} port={reviewPort} synchronized={synchronized} presentation={presentation} sourceCurrent={shared.current} onReconcile={shared.refresh} identity={controller.host.session()?.identityKey??''} connected={s.connected} decisionAllowed={decisions} onAccepted={()=>{void controller.reconnect();shared.refresh();}}/>;
+ const review=<Review key={`${controller.host.session()?.identityKey}:${s.active?.id}`} items={s.items} run={displayRun} port={reviewPort} synchronized={synchronized} presentation={presentation} sourceCurrent={shared.current} onReconcile={shared.reconcile} identity={controller.host.session()?.identityKey??''} connected={s.connected} decisionAllowed={decisions} onAccepted={()=>{void controller.reconnect();shared.refresh();}}/>;
  return <div className="workspace">
  <aside className={`sidebar ${menu?'mobile-open':''}`} aria-label="会话侧栏"><a href="/" className="brand"><span className="brand-mark">u</span><b>UAW</b><span>工作区</span></a>
  <button aria-label="新建会话" className="new-chat" disabled={!s.connected||s.busy} onClick={()=>setNewOpen(true)}><Plus size={16}/>新建会话<span>＋</span></button>
