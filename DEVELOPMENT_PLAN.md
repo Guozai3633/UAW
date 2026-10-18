@@ -1,6 +1,6 @@
 # UAW 开发计划
 
-计划v0.2制定于2026-10-14，对齐v0.11架构及已采纳Q1–Q8。2026-10-18进度更新：P1-14/16/17按实际接线与体验工作记开发中，H02-v7已可测试；不是整轮accepted。准确工程、模型、部署和本人状态见[A16回执](docs/implementation/evidence/h02-i04-a16.json)与[功能清单](docs/implementation/human-tests/H02-v7.md)。
+计划v0.2制定于2026-10-14，对齐v0.11架构及已采纳Q1–Q8。2026-10-18进度更新：A17工程交付H02-v9，认证审阅/任务反馈、原评测导出及8题17次真实调用已接通；P1-15事实质量、P1-17本人体验继续pending，相关阶段不升级整轮accepted。[逐项工程审计](docs/implementation/evidence/ms-i2m-a17-completion-audit.json) · [功能清单](docs/implementation/human-tests/H02-v9.md) · [下一轮模块/任务/目录/退出证据](docs/plan/H02_CONVERSATION.md)。
 
 优先安排 [H02：对话→澄清→纠正→单Agent文本成果](docs/plan/H02_CONVERSATION.md)。本机文件、代码执行与子Agent/Join独立推进和验收；已确认依据见 [ADR-001](docs/decisions/ADR-001-conversation-and-delivery.md)。
 

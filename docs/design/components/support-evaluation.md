@@ -1,3 +1,9 @@
+# A17认证审阅与反馈实际接线
+
+2026-10-18，H02-v9已部署。`shared/quality.py`和`contracts/quality_catalog.py`维护严格对象；`run/quality.py`统一登记/读取/草稿CAS/本人显式提交/原评测导出及独立Run反馈；`api/quality.py`接原身份/Origin/CSRF；`apps/web/src/features/quality/`提供空白评分与不确定写入复查。原A10重建来源、A11导入、C评测算法复用，模型核验原文与人工判断分别保存。
+
+8份固定实际结果可供本人核对，17调用及未知费用保留；题目与回答均待人审，不能由模型或受控测试升级质量结论。可信跨库来源只读，不复制诊断任务；反馈不改变原Run执行/预算/时钟。[模块/字段/策略](../../implementation/MS-I2m-A17.md) · [HTTP与消费](../../api/QUALITY_REVIEW.md) · [逐项工程验证](../../implementation/evidence/ms-i2m-a17-completion-audit.json)。下方为历史和目标策略。
+
 # A13真实固定版本执行及失败核验来源
 
 2026-10-18。A自有隔离探针运行新登记后的两版原队列报告纠正，各4次调用，全部成功/失败/用量进入C原算法；可选执行scope进入环境摘要，失败Reviewer保留目标与unavailable。实际比较仍incomplete/incomparable，缺人工判断不出质量差值。原产品聊天流程、C评分算法、B/D源码和flags不变。[策略与目录](../../implementation/MS-I2m-A13.md) · [逐项输入输出](../../coordination/requests/A/MS-I2m-A13-real-comparison-wiring.md)。以下保留旧阶段记录。

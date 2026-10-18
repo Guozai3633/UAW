@@ -1,4 +1,18 @@
-# 2026-10-18当前入口：H02-v7工程交付
+# 2026-10-18当前入口：H02-v9认证审阅与反馈交付
+
+| 文档 | 作用与位置 |
+| --- | --- |
+| [H02-v9本人测试](implementation/human-tests/H02-v9.md) | 实际地址、审阅草稿/提交/导出与Run反馈步骤、可测功能和限制 |
+| [A17详细设计](implementation/MS-I2m-A17.md) | 模块联系、目录、来源登记、版本/权限/一致性策略与真实阶段 |
+| [审阅API与消费](api/QUALITY_REVIEW.md) | 七个HTTP、对象语义、固定四文件、身份/CSRF/CAS与恢复方式 |
+| [Goal审计](implementation/evidence/ms-i2m-a17-completion-audit.json) | 每项工程目标及其代码、测试、实际页面和文档证据 |
+| [8题真实模型](implementation/evidence/ms-i2m-a17-real-study.json) | 17次调用、用量/未知费用、原版本/核验及无真人标签的N/A |
+| [最终部署](implementation/evidence/ms-i2m-a17-final-deployment.json) | 固定源码、资源hash、原账号/历史和实际页面来源 |
+| [当前计划](plan/H02_CONVERSATION.md)、[DISPATCH](coordination/DISPATCH.md) | A工程交付、BCD停止点、本人反馈后定向修复及独立本机边界 |
+
+下方为各历史阶段，不能把旧“未装配”覆盖到当前；事实质量与本人满意继续pending。
+
+# 历史：H02-v7工程交付
 
 | 文档 | 作用与位置 |
 | --- | --- |

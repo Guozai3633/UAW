@@ -1,0 +1,397 @@
+{
+  "schema_version": "uaw.goal-completion-audit.v1",
+  "at": "2026-10-18T11:39:41.767255+00:00",
+  "goal_scope": "A17 engineering delivery; human factual quality/satisfaction remain independent pending gates",
+  "runtime_source": "69408bca5896d978e58bd280364bb3c972aaeded",
+  "study_source": "3222251e281beb5685fc29b2667d58ab421846d8",
+  "status": "engineering_verified",
+  "delivery_verification": "Inspect the commit containing this audit and clean Git status before marking the Goal complete.",
+  "requirements": [
+    {
+      "id": "M1",
+      "requirement": "Prioritize existing gaps; design modules, interfaces, objects and directories before implementation",
+      "engineering_status": "verified",
+      "evidence": [
+        "docs/implementation/MS-I2m-A17.md",
+        "docs/api/QUALITY_REVIEW.md",
+        "src/uaw/shared/quality.py",
+        "contracts/quality_catalog.py"
+      ],
+      "limit": "Original initial design was committed with d33d74a; later sections preserve stage-specific failures and results."
+    },
+    {
+      "id": "M2.1",
+      "requirement": "Authenticated page shows original question, materials, full answer, references, original verification/reasons/limits and versions",
+      "engineering_status": "verified",
+      "evidence": [
+        "src/uaw/run/quality.py",
+        "apps/web/src/features/quality/QualityPanel.tsx",
+        "tests/integration/agent/test_quality.py::test_actual_sql_source_is_rebuilt_and_includes_original_reviewer_limits",
+        "docs/implementation/evidence/ms-i2m-a17-actual-review.png",
+        "docs/implementation/evidence/ms-i2m-a17-actual-answer.png"
+      ],
+      "limit": "Original model verification remains distinct from human factual judgment; direct answers have no fabricated independent verifier."
+    },
+    {
+      "id": "M2.2",
+      "requirement": "Unknown ratings, notes, persistent draft/reopen, CAS and idempotent replay",
+      "engineering_status": "verified",
+      "evidence": [
+        "tests/integration/agent/test_quality.py::test_blank_save_reopen_replay_and_other_owner_denied",
+        "tests/integration/agent/test_quality.py::test_cross_process_style_cas_only_one_writer",
+        "apps/web/tests/e2e/controlled/quality.spec.ts",
+        "apps/web/tests/unit/quality.test.tsx"
+      ],
+      "limit": "Browser write tests use controlled protocol fixtures; real PostgreSQL/HTTP persistence is separately verified. A did not submit actual human labels."
+    },
+    {
+      "id": "M2.3",
+      "requirement": "Explicit human submission, strict source binding, reject old/duplicate/mismatched targets, export into original evaluator",
+      "engineering_status": "verified",
+      "evidence": [
+        "tests/integration/agent/test_quality.py::test_wrong_target_never_saves",
+        "tests/integration/agent/test_quality.py::test_submission_exports_original_attempts_to_original_evaluator",
+        "tests/integration/agent/test_quality.py::test_http_inconsistent_acceptable_is_rejected_without_commit",
+        "src/uaw/run/evaluation_review.py",
+        "src/uaw/evaluation/runner.py"
+      ],
+      "limit": "Controlled ratings retain controlled_test basis and cannot create human-reviewed quality. Real human submission/export remain optional user actions, not fabricated acceptance."
+    },
+    {
+      "id": "M2.4",
+      "requirement": "Owner authorization, Origin/CSRF, audit, original snapshots, identity isolation and uncertain-write reconciliation",
+      "engineering_status": "verified",
+      "evidence": [
+        "src/uaw/api/quality.py",
+        "src/uaw/api/routes.py",
+        "tests/integration/agent/test_quality.py::test_http_auth_csrf_origin_and_unknown_judgment",
+        "tests/integration/agent/test_quality.py::test_blank_save_reopen_replay_and_other_owner_denied",
+        "apps/web/tests/unit/quality.test.tsx",
+        "apps/web/tests/e2e/controlled/quality.spec.ts"
+      ],
+      "limit": "Registration is trusted/internal only; source DB is read-only and browser cannot choose a server path or self-report authenticated reviewer identity."
+    },
+    {
+      "id": "M2.5",
+      "requirement": "UX feedback is separate, persistent, reopenable and bound to original Run/input without changing execution",
+      "engineering_status": "verified",
+      "evidence": [
+        "tests/integration/agent/test_quality.py::test_feedback_is_run_bound_reopenable_and_does_not_touch_execution",
+        "apps/web/tests/unit/quality.test.tsx",
+        "apps/web/tests/e2e/controlled/quality.spec.ts"
+      ],
+      "limit": "SQL verifies unchanged Run, job, budget, clock and Item inventories and zero model calls; actual user feedback is still pending."
+    },
+    {
+      "id": "M3.1",
+      "requirement": "6-8 representative cases from original16, with source materials, references, assumptions, rubric and preserved revisions",
+      "engineering_status": "verified",
+      "evidence": [
+        "ops/prepare_quality_samples.py",
+        "docs/implementation/evaluation/A17-study-v3.json",
+        "docs/implementation/evidence/ms-i2m-a17-real-study.json"
+      ],
+      "limit": "8 cases cover technical confusion, ambiguity, missing original then continuation, report, corrections, evidence conflict and limits. Synthetic practice material is identified; case/reference human review remains pending."
+    },
+    {
+      "id": "M3.2",
+      "requirement": "Actual fixed model results and complete attempts/failures/retries/usage/pending fees",
+      "engineering_status": "verified",
+      "evidence": [
+        "ops/quality_sample_probe.py",
+        "ops/quality_review.py",
+        "src/uaw/run/evaluation_capture.py",
+        "docs/implementation/evidence/ms-i2m-a17-real-study.json"
+      ],
+      "limit": "All 8 private observation inventories were rehashed here: 17 calls,0 failures/retries,41392 input/4916 output,17 pending/unknown money. Diagnostic reports were cancelled for capture without user acceptance."
+    },
+    {
+      "id": "M3.3",
+      "requirement": "Separate factual errors, reviewer misses, unnecessary blocks, unsupported execution and cost; no invented denominator",
+      "engineering_status": "verified",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a17-real-study.json",
+        "src/uaw/evaluation/runner.py"
+      ],
+      "limit": "All8 evaluator gates incomplete; human_reviews=0 and all quality denominators=0 with null value. No quality pass or zero-error claim."
+    },
+    {
+      "id": "M3.4",
+      "requirement": "Register baseline/candidate and fixed conditions before comparison when generation strategy changes",
+      "engineering_status": "verified",
+      "evidence": [
+        "src/uaw/run/evaluation_experiment.py",
+        "ops/conversation_experiment.py",
+        "docs/implementation/MS-I2m-A17.md"
+      ],
+      "limit": "Conditional this round: generation prompts/agent/model paths unchanged against d128e4e, so no redundant generation comparison or model calls. Earlier actual A13 comparison and its failures remain preserved."
+    },
+    {
+      "id": "M4.1",
+      "requirement": "Fix observed interaction defects without performing user confirmations or acceptance",
+      "engineering_status": "verified",
+      "evidence": [
+        "apps/web/src/features/workspace/TaskUnderstanding.tsx",
+        "apps/web/src/features/workspace/Workspace.tsx",
+        "apps/web/src/styles.css",
+        "apps/web/src/features/quality/QualityPanel.tsx",
+        "docs/implementation/evidence/ms-i2m-a17-visual-final.xml",
+        "docs/implementation/evidence/ms-i2m-a17-judgment-web-confirmed.xml"
+      ],
+      "limit": "Fixed premature initial dialog, Run-identity dialog reset, idle warning, mobile sidebar/width and inconsistent submission. Original conversation/artifact acceptance behavior is retained and covered by28 compatibility SQL +6 controlled H02 browser cases."
+    },
+    {
+      "id": "M4.2",
+      "requirement": "Relevant regression, fixed deployment, active-request preflight, same account/history and actual page",
+      "engineering_status": "verified",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a17-final-deployment.json",
+        "docs/implementation/evidence/ms-i2m-a17-actual-review.png",
+        "docs/implementation/evidence/ms-i2m-a17-actual-answer.png"
+      ],
+      "limit": "69408bc frozen272 source files; three served asset hashes,ready200,anonymous401;0 active Run/model before switch,1209 original rows unchanged,old assets retained and original page not reloaded."
+    },
+    {
+      "id": "M4.3",
+      "requirement": "Deliver feature checklist, test steps, limitations, next plan and synchronized design/interface/docs",
+      "engineering_status": "verified",
+      "evidence": [
+        "docs/implementation/human-tests/H02-v9.md",
+        "docs/plan/H02_CONVERSATION.md",
+        "docs/plan/sessions/A.md",
+        "docs/coordination/DISPATCH.md",
+        "docs/implementation/P1-15.md",
+        "docs/api/QUALITY_REVIEW.md",
+        "docs/DOCUMENT_MAP.md",
+        "README.md",
+        "DEVELOPMENT_PLAN.md"
+      ]
+    },
+    {
+      "id": "Completion.6",
+      "requirement": "Reviewable stage commits and explicit validation sources for all implementation and delivery records",
+      "engineering_status": "verified",
+      "evidence": [
+        "d33d74ae1277184fc1b7826a67c492a385ffdf69",
+        "3222251e281beb5685fc29b2667d58ab421846d8",
+        "67d43eeaa84a4c01c81220349e2ea07e7eb2bba5",
+        "a3c1c60cd80a42cddc8b0bb10efb3a8b70ce80b8",
+        "69408bca5896d978e58bd280364bb3c972aaeded"
+      ],
+      "limit": "Final documentation, screenshots and this audit are in the delivery commit containing this file; resolve via git log -1 --format=%H -- docs/implementation/evidence/ms-i2m-a17-completion-audit.json. Completion is not marked until the commit and clean worktree are verified."
+    }
+  ],
+  "validation": {
+    "sql_quality_latest": 13,
+    "sql_original_compatibility": 28,
+    "sql_different_nodes": 41,
+    "offline_nodes": 95,
+    "web_previous_full": 123,
+    "web_latest_targeted": 9,
+    "web_different_nodes": 124,
+    "controlled_browser_nodes": 10,
+    "later_visual_recheck_nodes": 4,
+    "batches_are_not_added_as_new_coverage": true,
+    "python_mypy_files": 251,
+    "changed_python_ruff_and_format": "passed",
+    "frontend_typescript_and_build": "passed",
+    "build_large_chunk_warning_retained": true,
+    "whole_repository_full_test_claim": false,
+    "last_full_changed": false,
+    "historical_contract_evidence_checker": "not_passed_due_historical_source_evidence_mismatch; strict new schemas/routes and targeted tests verified"
+  },
+  "real_model": {
+    "different_cases": 8,
+    "all_attempts": 17,
+    "failed_attempts": 0,
+    "retry_count": 0,
+    "input_tokens": 41392,
+    "output_tokens": 4916,
+    "pending_bill_attempts": 17,
+    "unknown_money_attempts": 17,
+    "human_reviews": 0,
+    "fact_quality": "pending",
+    "quality_denominator": 0,
+    "comparison": "not_performed_generation_strategy_unchanged"
+  },
+  "constraints": {
+    "A_only": true,
+    "BCD_worktrees_or_branches_operated": false,
+    "subagent_or_DAG_enabled": false,
+    "native_write_install_exec_enabled": false,
+    "flags_or_lock_changed": false,
+    "generation_strategy_changed": false,
+    "human_scores_confirmations_acceptance_by_A": 0,
+    "old_failed_Run_revived": false,
+    "old_failures_and_receipts_retained": true
+  },
+  "pending_product_gates": [
+    "actual human fact/reference review",
+    "actual user satisfaction",
+    "P1-15 quality release",
+    "P1-17 human experience acceptance",
+    "independent native file/Tool long-wall-clock acceptance"
+  ],
+  "evidence_files": [
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-actual-answer.png",
+      "bytes": 55938,
+      "sha256": "29aacd99ece34a169d59a908f3d0bdc45e6d2e078af5094698e56cbf8d77e48e"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-actual-review.png",
+      "bytes": 58195,
+      "sha256": "a7a3f1c20fad2629c9d09006f8fb630d97be8a4e90cbb84518b8b238d4292ab6"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-backend.json",
+      "bytes": 1989,
+      "sha256": "a255f83194d112db9ef46c5707a7d49e5b1a325ac7a300791b79abe1e9d735cf"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-browser-final.xml",
+      "bytes": 891,
+      "sha256": "dbc9ff2787b59777a9a744bf92fa2a845fe3b2fc3dbf4bf68cf76fe4316043fb"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-browser-first.xml",
+      "bytes": 9995,
+      "sha256": "4a9af62470d196aeca0f2452e714692e7ffa90e26df8676e0c343029b427d5f9"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-browser-regression.xml",
+      "bytes": 2273,
+      "sha256": "0aeda4d761a6cd920e0afde9eb33692f720608f9e19e029bd00f340cb24f53ee"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-contract-first.json",
+      "bytes": 16422,
+      "sha256": "30a235ea3ba5b49967e865f78175965c1fed2d70551792018fb186c72ad61a00"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-deployment.json",
+      "bytes": 1554,
+      "sha256": "d85566a2c5efc91b6021bde8df4865d23d6b1a5180cdb96966bf0a7cdd5d5dd4"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-final-deployment.json",
+      "bytes": 3365,
+      "sha256": "e7123f128003544389c1a9f457591b91b060f2057cb8b8ba5d6d734a3d69fbba"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-http-diagnostic.xml",
+      "bytes": 1149,
+      "sha256": "445d2fd82976bd6fb73d56eee01d44656124d27c743854beff4e6b08df5c62ca"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-judgment-atomic-sql.xml",
+      "bytes": 2091,
+      "sha256": "a9f42d82f2c6b28fc9bb47e866e322ab40a12eaecf8c379b1a861ee5758d039c"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-judgment-sql-final.xml",
+      "bytes": 2091,
+      "sha256": "369ac7aacca27f9e0bd57b91279a0970246a82609c7911018ac60b86424ee60e"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-judgment-sql.xml",
+      "bytes": 4023,
+      "sha256": "d90a4d3670c1873301469f5043fe70cbd0e026b496c957f2ce5e13ee62b579eb"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-judgment-web-confirmed.xml",
+      "bytes": 1975,
+      "sha256": "3b62d090f83d11f45fe6ca7b97c56212c76ab6bb8215b3c54ce28b5ec120c032"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-judgment-web-final.xml",
+      "bytes": 30448,
+      "sha256": "c02839a6b186c306fd68668f94380d04ca19ea90fd8b0b9700c8b14ab63e3313"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-offline-elevated.xml",
+      "bytes": 15986,
+      "sha256": "be8e703567a8746e3f7bc8ae3a379a54b54044f024eafcf58432b4826d8759c1"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-offline-final.xml",
+      "bytes": 36141,
+      "sha256": "41434107c37fa32811bddaed9dee2e268cf3f2e1e4283fb2353ce4e7fcbc7f8d"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-offline.xml",
+      "bytes": 59187,
+      "sha256": "2cf13e6271f26a579a1bcc621ad78440781a06217f5e699c07a9423dfe9982d5"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-real-study.json",
+      "bytes": 17406,
+      "sha256": "14195a5f69cc463e7600b90a420c400542a840fc567b34ef800c90e13010d211"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-source-sql.xml",
+      "bytes": 1734,
+      "sha256": "aed092321f61fbb4083fe0097c59909e93a6c2fef8266d9e453fd6d411d294d1"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-sql-final.xml",
+      "bytes": 5781,
+      "sha256": "bf7fbb8ee3bedc4b9e07245f185627d5b88d9d9e6a2d04f2dbbecfd03796fc19"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-sql-first.xml",
+      "bytes": 11820,
+      "sha256": "43ec0570a42936472ac8d7583b3a469fe19bf42bd93cf25401bc956066ac14f1"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-sql-second.xml",
+      "bytes": 1752,
+      "sha256": "11dd9c2a204a8c1a8dc53a423a6fdc023f8d2902f14bb30771fc128e3f8cbb12"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-sql-third.xml",
+      "bytes": 1572,
+      "sha256": "de1fb86e3a83ddf403b1ff77eda69e3f0c37dddfe5a2badc8494773439155376"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-visual-final.xml",
+      "bytes": 882,
+      "sha256": "d75453b8f050d40e2bf54a8836ac3a45a9f5cde959b6c7a5724408943465ea62"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-visual-first.xml",
+      "bytes": 3946,
+      "sha256": "78441a2e5244cc1df2c3f4a78b0334db6abeffb3bc03d4b0c6a8721e796fe620"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-final.xml",
+      "bytes": 5243,
+      "sha256": "c038504b8f72184c937d2a4b995b6f0cb8f489d54b5b365f2b6f7d17227a1e6e"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-first.xml",
+      "bytes": 1620,
+      "sha256": "2bf96e5c641e96fcc3fd0495f2e3fb3448c1b0c8ddff25f8cad7b2296597dd7f"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-full.xml",
+      "bytes": 29445,
+      "sha256": "865a4ae3940fd2f389cf4cd5feebdcea9f610cf69876a35c34e4b482c023411d"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-judgment.xml",
+      "bytes": 1775,
+      "sha256": "cb86ad42eacafef016665293824bab464877be9c12ccb3ffbe6ab72e6f12f266"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-regression.xml",
+      "bytes": 5417,
+      "sha256": "2449bcfec1ba963e00a606408ec8f203909c42b362fae22f69db75ecbf44b878"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a17-web-second.xml",
+      "bytes": 1779,
+      "sha256": "554ed06667ae93aeacccc673ec2052b81bb34996189938ac12144294affa84d5"
+    }
+  ]
+}

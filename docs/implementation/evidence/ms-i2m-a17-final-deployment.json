@@ -1,0 +1,104 @@
+{
+  "schema_version": "uaw.a17-deployment.v1",
+  "runtime": "H02-v9",
+  "origin": "http://127.0.0.1:5183",
+  "backend_source": "69408bca5896d978e58bd280364bb3c972aaeded",
+  "frontend_source": "69408bca5896d978e58bd280364bb3c972aaeded",
+  "verified_at": "2026-10-18T11:28:16.745198+00:00",
+  "runtime_source_proof": {
+    "source_commit": "69408bca5896d978e58bd280364bb3c972aaeded",
+    "file_count": 272,
+    "files_sha256": "94994686ede92350ec43d3a184b7153cdb56ddce3744d23e989cd4b48adb0193"
+  },
+  "dist_hashes": [
+    {
+      "bytes": 23293,
+      "file": "assets/index-BeIoI3EH.css",
+      "sha256": "a6135089ae8c955f5e9197f2a26cc0be060cb8a1818de451d0e91c7b2400e294"
+    },
+    {
+      "bytes": 915404,
+      "file": "assets/index-C4UJqOaS.js",
+      "sha256": "2508e8b5e2828da848b6abc52c7d149a3b3c2508330e670a41983ca8c6a4285c"
+    },
+    {
+      "bytes": 411,
+      "file": "index.html",
+      "sha256": "1aa19f5c7d1fff15fb5981227babb4e6427aa72aed378e87cf7c6eb56bbc2355"
+    }
+  ],
+  "deployment_http": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "assets/index-C4UJqOaS.js",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256_matches": true
+    }
+  ],
+  "ready_status": 200,
+  "anonymous_quality_status": 401,
+  "original_user_rows_before": 1209,
+  "original_non_ephemeral_rows_unchanged": 1209,
+  "expired_list_snapshots_removed": 0,
+  "original_history_changed": false,
+  "auth_settings_unchanged": true,
+  "same_original_user_database": true,
+  "retired_assets_preserved_for_already_open_pages": true,
+  "activity_before": {
+    "nonterminal_runs": 0,
+    "unfinished_model_invocations": 0
+  },
+  "quality_samples": 8,
+  "quality_real_human_reviews": 0,
+  "new_user_tasks_submitted_by_A": 0,
+  "human_confirmation_or_acceptance_by_A": 0,
+  "status": "HTTP_history_and_actual_authenticated_browser_verified_human_review_pending",
+  "http_and_history_verified_at": "2026-10-18T11:28:16.745198+00:00",
+  "actual_browser_verified_at": "2026-10-18T11:39:41.737946+00:00",
+  "actual_browser": {
+    "same_original_cookie": true,
+    "original_conversations_visible": 12,
+    "registered_samples_visible": 8,
+    "selected_case": "office-invoice",
+    "original_question_and_complete_answer_visible": true,
+    "all_judgments_unknown": true,
+    "human_declaration_unchecked": true,
+    "formal_submission_disabled": true,
+    "final_consistency_help_visible": true,
+    "original_page_not_reloaded": true,
+    "actual_human_form_save_or_submit_by_A": false,
+    "screenshots": [
+      {
+        "file": "docs/implementation/evidence/ms-i2m-a17-actual-review.png",
+        "sha256": "a7a3f1c20fad2629c9d09006f8fb630d97be8a4e90cbb84518b8b238d4292ab6"
+      },
+      {
+        "file": "docs/implementation/evidence/ms-i2m-a17-actual-answer.png",
+        "sha256": "29aacd99ece34a169d59a908f3d0bdc45e6d2e078af5094698e56cbf8d77e48e"
+      }
+    ]
+  },
+  "listener_source_proof": [
+    {
+      "port": 8013,
+      "address": "127.0.0.1",
+      "pid": 187352,
+      "runtime": "H02-v9"
+    },
+    {
+      "port": 5183,
+      "address": "127.0.0.1",
+      "pid": 186224,
+      "runtime": "H02-v9"
+    }
+  ]
+}

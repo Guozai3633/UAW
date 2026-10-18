@@ -1,0 +1,51 @@
+{
+  "backend_source": "67d43eeaa84a4c01c81220349e2ea07e7eb2bba5",
+  "frontend_source": "a3c1c60cd80a42cddc8b0bb10efb3a8b70ce80b8",
+  "ready_at": "2026-10-18T11:11:49.868497+00:00",
+  "dist_hashes": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "bytes": 23293,
+      "sha256": "a6135089ae8c955f5e9197f2a26cc0be060cb8a1818de451d0e91c7b2400e294"
+    },
+    {
+      "file": "assets/index-F35Fsvsn.js",
+      "bytes": 915269,
+      "sha256": "44627c603eb3dd2942b13cb900ffcc5b5ad1d19991b3c15f7f9bc87ab37bd6f1"
+    },
+    {
+      "file": "index.html",
+      "bytes": 411,
+      "sha256": "b5b1941f6f510ef1f6eedab48843ee738a70ddddb3fc8c355851f314340c57d1"
+    }
+  ],
+  "deployment_http": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "assets/index-F35Fsvsn.js",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256_matches": true
+    }
+  ],
+  "original_non_ephemeral_rows_unchanged": 1185,
+  "expired_list_snapshots_removed": 0,
+  "quality_samples": 8,
+  "quality_real_human_reviews": 0,
+  "retired_assets_preserved_for_already_open_pages": true,
+  "backend_not_restarted_for_visual_fix": true,
+  "anonymous_quality_status": 401,
+  "status": "HTTP_and_history_verified_actual_browser_recheck_pending",
+  "original_total_rows": 1185,
+  "original_history_changed": false,
+  "new_user_tasks_submitted": 0,
+  "human_confirmation_or_acceptance": 0
+}

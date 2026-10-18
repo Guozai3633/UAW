@@ -1,8 +1,10 @@
-# A17 进行中：网页审阅与反馈，后端阶段已验证
+# A17 / H02-v9 工程交付：认证审阅、任务反馈与八份真实结果
 
-2026-10-18。当前 Goal 由 A 独立完成必要后端、前端、评测和测试，覆盖本轮相关目录；不派发或操作 B/C/D 工作区。起点 d128e4e，从当前 HEAD 继续。先固定了[设计、对象、HTTP 和目录](../implementation/MS-I2m-A17.md)，已实现认证审阅/反馈后端及可信来源登记/原评测导出；10 SQL/HTTP、95 原离线回归最终通过，全部失败和受限环境回执保留。[阶段证据](../implementation/evidence/ms-i2m-a17-backend.json)。不是全量验收，不更新 last_full。
+2026-10-18。本轮由 A 独立完成必要后端、前端、评测和测试；未派发、同步或操作 B/C/D 工作区。最终后端/新页面准确 `69408bca5896d978e58bd280364bb3c972aaeded` / `ms-i2m-a17-final-runtime`，实际 <http://127.0.0.1:5183/> 已部署，原身份、数据库、历史与旧页面保留。[设计/对象/目录](../implementation/MS-I2m-A17.md) · [准确 HTTP 与消费](../api/QUALITY_REVIEW.md) · [本人测试清单](../implementation/human-tests/H02-v9.md) · [部署](../implementation/evidence/ms-i2m-a17-final-deployment.json) · [逐项 Goal 审计](../implementation/evidence/ms-i2m-a17-completion-audit.json)。
 
-接下来：固定 API 源码供本 A 前端生成，接实际保存/重开/反馈；准备原 16 题的 6–8 题及真实固定模型，最后固定部署。本人评分 0；网页与新部署尚未交付。当前实际服务仍是下方 H02-v7，账号、用户记录、flags、旧费用及 worker 停止点保持。
+41 不同 SQL/HTTP（最终 13 质量＋原 28 兼容）、95 原离线节点，前端原 123 单元及最终 9 定向、10 受控 Chromium及最终视觉 4 定向通过；各批不重复累计，不是全仓验收，last_full 保持。272 冻结运行源码和实际构建资源 hash 通过，ready=200、匿名质量入口=401；切换前任务/模型空闲，1209 原记录不变，实际已登录页面可读 8 个空白包。失败回执均保留，未代评分、确认、接受或重发。
+
+固定源码 `3222251` 的 8 题 17 次真实调用全部进入原 C 格式：41392 输入/4916 输出 Token、0 重试/0 模型失败、17 笔未知金额 pending。[原始结果摘要](../implementation/evidence/ms-i2m-a17-real-study.json)。题目与回答尚无人审，质量门槛 incomplete、各质量率 N/A；未改生成策略，无新旧质量优劣结论。下一步由本人按 H02-v9 保存审阅/反馈，A据具体问题定向修复；变更策略再登记比较。P1-15/P1-17及本人满意继续 pending，本机/Tool长墙钟另验；子Agent/DAG/写入安装exec与flags不开放。下方均为历史。
 
 # A16 / H02-v7 已部署：审阅计时修复，交付本人重测
 

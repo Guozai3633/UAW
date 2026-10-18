@@ -1,8 +1,8 @@
 # UAW 项目全局指引
 
-UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。当前H02-v7已接通普通交流、同Run澄清/纠正、单Agent文本成果、审阅等待暂停与接受。原账号/历史沿用，实际页面可测试；本人体验、独立事实质量和完整本机文件链仍待验收。
+UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runtime。当前H02-v9沿用普通交流、同Run澄清/纠正、单Agent文本成果和审阅停钟，新增认证质量审阅、草稿重开、原评测导出与任务反馈。原账号/历史沿用，实际页面可测试；本人体验、独立事实质量和完整本机文件链仍待验收。
 
-2026-10-18实际版本：后端d2000f9、前端B af3889f，见[本人测试清单](docs/implementation/human-tests/H02-v7.md)和[A16全部回执](docs/implementation/evidence/h02-i04-a16.json)。50不同SQL最终通过，真实固定模型样例与所有18调用/失败/pending费用保留；不能据此宣称全任务质量达标。原超时任务保持失败，报告只读保留。
+2026-10-18实际版本：后端/新页面固定 `69408bc`，见[本人测试清单](docs/implementation/human-tests/H02-v9.md)、[A17逐项验证](docs/implementation/evidence/ms-i2m-a17-completion-audit.json)及[实际部署](docs/implementation/evidence/ms-i2m-a17-final-deployment.json)。本轮8份真实结果、17次调用与17笔未知金额pending完整保留，真人评分0、质量指标N/A。41不同SQL/HTTP、95离线与相关网页验证按自身范围通过，不是全仓或事实质量验收；原失败与旧报告保留。
 
 架构v0.11采纳已确认Q1–Q8：[确认决策](docs/decisions/ADR-001-conversation-and-delivery.md)、[执行详细设计](docs/design/CONVERSATION_EXECUTION.md)、[H02安排](docs/plan/H02_CONVERSATION.md)。[公共契约](docs/coordination/requests/A/H02-P1-12-ports.md)与[A16内部审阅等待约束](docs/coordination/requests/A/H02-I04-A16-review-wait-contract.md)分别记录结构和实际装配。
 
@@ -12,7 +12,7 @@ UAW面向办公、开发与学术任务，采用Python构建可扩展Agent Runti
 
 ## 先看这些入口
 
-下一步先按[体验清单](docs/implementation/human-tests/H02-v7.md)收集本人反馈，并完成人工事实样本核对。当前续项由A独立完成，BCD停在原交付点；后续按[H02计划](docs/plan/H02_CONVERSATION.md)和正式DISPATCH安排，不自动同步或扩包。本机与协作验收独立推进。
+下一步先按[体验清单](docs/implementation/human-tests/H02-v9.md)保存本人审阅与反馈，再按实际问题修复、固定条件复测。[A17详细设计](docs/implementation/MS-I2m-A17.md)与[审阅HTTP/对象/消费](docs/api/QUALITY_REVIEW.md)解释新增模块。当前续项由A独立完成，BCD停在原交付点；后续按[H02计划](docs/plan/H02_CONVERSATION.md)和正式DISPATCH安排，不自动同步或扩包。本机与协作验收独立推进。
 
 | 文档 | 用途 |
 | --- | --- |
