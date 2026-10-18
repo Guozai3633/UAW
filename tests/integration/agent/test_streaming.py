@@ -90,6 +90,16 @@ async def test_real_sql_partial_visible_before_final_same_item_replays_and_does_
     stream = (await inventory(p, NAMESPACE))[0]
     assert stream["state"] == "published" and stream["input_revision"] == 1
     assert stream["first_provider_at"] <= stream["first_text_at"] <= stream["received_at"]
+    assert (
+        stream["provider_started_at"]
+        <= stream["provider_headers_at"]
+        <= stream["provider_first_content_at"]
+    )
+    assert (
+        stream["provider_first_content_at"]
+        <= stream["provider_last_content_at"]
+        <= stream["provider_ended_at"]
+    )
     events = await reader.read(p.actor, p.run["conversation_id"], after_seq=before)
     assert events["items"] and min(e["seq"] for e in events["items"]) > before
     assert len(p.case.requests) == 1 and json.loads(p.case.requests[0].content)["stream"]
@@ -141,8 +151,8 @@ async def test_cancel_during_stream_does_not_publish_success_and_preserves_billi
         source.release.set()
     assert await task
     run = await p.runs.get_run(p.actor, p.run["id"])
-    attempts = await inventory(p, "model.attempts")
-    ledger = (await inventory(p, "budget.ledgers"))[0]
+    attempts = [row for row in await inventory(p, "model.attempts") if row["run_id"] == p.run["id"]]
+    ledger = next(row for row in await inventory(p, "budget.ledgers") if row["id"] == p.run["id"])
     assert ledger["cancel_requested"]
     if "input_tokens" in attempts[0]["usage"]["resources"]:
         assert run["status"] == "cancelled"
@@ -278,3 +288,57 @@ async def test_event_read_measurement_and_missing_owned_history_is_rejected(scen
     with pytest.raises(DomainError) as failure:
         await reader.read(p.actor, p.run["conversation_id"])
     assert failure.value.failure.code == "snapshot_required"
+
+
+async def test_process_loss_after_prefix_restart_preserves_unknown_intent_without_resend(scenario):
+    from datetime import UTC, datetime, timedelta
+
+    from uaw.run.jobs import JOBS, RunJobs
+
+    class ProcessLost(BaseException):
+        pass
+
+    class Loss(httpx.AsyncByteStream):
+        async def __aiter__(self):
+            yield frame({"role": "assistant"})
+            yield frame(
+                {"content": '{"protocol":"conversation-v1","action":"reply","text":"First '}
+            )
+            raise ProcessLost()
+
+    p = scenario
+    p.driver.agent.runtime.loop.models.model.gateway.streams = ConversationStreams(p.runs.store)
+    p.case.responses[:] = [
+        httpx.Response(200, headers={"content-type": "text/event-stream"}, stream=Loss())
+    ]
+    with pytest.raises(ProcessLost):
+        await p.queue.tick()
+    stream = (await inventory(p, NAMESPACE))[0]
+    assert stream["state"] == "receiving" and stream["text"] == "First "
+    assert (await inventory(p, "model.invocations"))[0]["state"] == "claimed"
+
+    async def expire_original_fixture_lease(tx):
+        row = await tx.load(JOBS, p.run["id"])
+        await tx.write(
+            JOBS,
+            p.run["id"],
+            "BackgroundRunJob",
+            {
+                **row.payload,
+                "revision": row.revision + 1,
+                "lease_expires": (datetime.now(UTC) - timedelta(seconds=1)).isoformat(),
+            },
+            row.revision,
+        )
+        return {}
+
+    await p.queue.transactions.inspect(p.actor, "web.queue", expire_original_fixture_lease)
+    restarted = RunJobs(p.runs.store, p.actor, advance=p.driver.advance, finalize=p.driver.finalize)
+    assert await restarted.tick()
+    assert len(p.case.requests) == 1
+    stream = (await inventory(p, NAMESPACE))[0]
+    assert stream["state"] == "interrupted" and stream["text"] == "First "
+    item = next(row for row in await inventory(p, "items") if row["id"] == stream["item_id"])
+    assert item["status"] == "failed"
+    assert (await p.runs.get_run(p.actor, p.run["id"]))["status"] != "completed"
+    assert not await restarted.tick() and len(p.case.requests) == 1

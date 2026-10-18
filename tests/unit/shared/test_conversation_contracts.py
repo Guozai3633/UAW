@@ -241,6 +241,7 @@ def test_published_endpoints_record_exact_acceptance_scope_not_full_continuation
     new = [op for op in catalog["operations"] if op.get("protocol") == "conversation-v1"]
     assert {op["id"] for op in new} == {
         "runs.conversation.get",
+        "runs.presentation.get",  # A15 published read-only projection, already present at 69408bc.
         "runs.clarification.get",
         "runs.clarification.answer",
         "runs.correction.create",
@@ -254,7 +255,11 @@ def test_published_endpoints_record_exact_acceptance_scope_not_full_continuation
             assert op["implemented"]
             assert (
                 op["implementation"]["scope"]
-                == "development_conversation_control_acceptance_only_no_resume"
+                == (
+                    "development_readonly_owned_Run_presentation_no_completion_authority"
+                    if op["id"] == "runs.presentation.get"
+                    else "development_conversation_control_acceptance_only_no_resume"
+                )
             )
         else:
             assert not op["implemented"]

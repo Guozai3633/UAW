@@ -2,7 +2,12 @@
 
 from typing import Protocol
 
-from uaw.model.contracts import ProviderFailure, ProviderRequest, ProviderResponse
+from uaw.model.contracts import (
+    ProviderFailure,
+    ProviderObservation,
+    ProviderRequest,
+    ProviderResponse,
+)
 from uaw.shared.contracts import TrustedExecutionContext
 
 
@@ -10,7 +15,10 @@ class ModelStreamConsumer(Protocol):
     async def content(self, delta: str) -> None: ...
 
     async def finish(
-        self, response: ProviderResponse | None, failure: ProviderFailure | None
+        self,
+        response: ProviderResponse | None,
+        failure: ProviderFailure | None,
+        observation: ProviderObservation | None = None,
     ) -> None: ...
 
 

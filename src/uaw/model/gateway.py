@@ -400,7 +400,7 @@ class ModelGateway:
             failure.safe_retry = False
         if consumer is not None:
             try:
-                await asyncio.shield(consumer.finish(response, failure))
+                await asyncio.shield(consumer.finish(response, failure, observation))
             except DomainError as exc:
                 previous = failure
                 failure = ProviderFailure(exc.failure.code, category=exc.failure.category)
@@ -413,7 +413,7 @@ class ModelGateway:
                     )
                 response = None
                 with suppress(DomainError):
-                    await asyncio.shield(consumer.finish(None, failure))
+                    await asyncio.shield(consumer.finish(None, failure, observation))
             except Exception:
                 previous = failure
                 failure = ProviderFailure(

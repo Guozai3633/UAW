@@ -14,7 +14,12 @@ from uaw.infrastructure.db.transactions import (
     reference,
     timestamp,
 )
-from uaw.model.contracts import ProviderFailure, ProviderRequest, ProviderResponse
+from uaw.model.contracts import (
+    ProviderFailure,
+    ProviderObservation,
+    ProviderRequest,
+    ProviderResponse,
+)
 from uaw.model.stream_text import ReplyText
 from uaw.shared.contracts import TrustedExecutionContext
 from uaw.shared.errors import reject
@@ -115,6 +120,7 @@ class ConversationStream:
         self.provider_chunks = 0
         self.first_provider: str | None = None
         self.first_text: str | None = None
+        self.observation: ProviderObservation | None = None
 
     async def content(self, delta: str) -> None:
         self.provider_chunks += 1
@@ -167,6 +173,17 @@ class ConversationStream:
                 changed["first_provider_at"] = self.first_provider
             if self.first_text:
                 changed["first_text_at"] = self.first_text
+            if self.observation is not None:
+                for field in (
+                    "started_at",
+                    "headers_at",
+                    "first_content_at",
+                    "last_content_at",
+                    "ended_at",
+                ):
+                    observed = getattr(self.observation, field)
+                    if observed is not None:
+                        changed["provider_" + field] = observed
             if state == "received":
                 changed["received_at"] = now
             if failure:
@@ -206,8 +223,12 @@ class ConversationStream:
         self.last_write = monotonic()
 
     async def finish(
-        self, response: ProviderResponse | None, failure: ProviderFailure | None
+        self,
+        response: ProviderResponse | None,
+        failure: ProviderFailure | None,
+        observation: ProviderObservation | None = None,
     ) -> None:
+        self.observation = observation
         if failure is not None:
             # On superseded/cancelled input retain only the last committed prefix.
             await self.checkpoint(

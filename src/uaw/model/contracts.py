@@ -43,6 +43,11 @@ class ProviderObservation:
 
     raw: bytes | None = None
     resources: Payload | None = None
+    started_at: str | None = None
+    headers_at: str | None = None
+    first_content_at: str | None = None
+    last_content_at: str | None = None
+    ended_at: str | None = None
 
 
 @dataclass(frozen=True)

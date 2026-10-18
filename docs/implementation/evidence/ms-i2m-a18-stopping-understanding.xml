@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.0208118">
+    <testsuite name="tests/unit/streaming-understanding.test.tsx" timestamp="2026-10-18T14:55:43.783Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="0" errors="0" skipped="0" time="0.0208118">
+        <testcase classname="tests/unit/streaming-understanding.test.tsx" name="stopping without a completed model decision does not promise a future understanding" time="0.019919">
+        </testcase>
+    </testsuite>
+</testsuites>

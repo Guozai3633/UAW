@@ -3,6 +3,7 @@
 import hashlib
 import json
 from dataclasses import replace
+from datetime import UTC, datetime
 from typing import Any
 
 import httpx
@@ -113,6 +114,8 @@ class ChatCompletionsAdapter:
         headers = {"Content-Type": "application/json"}
         if request.credential:
             headers["Authorization"] = "Bearer " + request.credential.get_secret_value()
+        if request.observation is not None:
+            request.observation.started_at = datetime.now(UTC).isoformat()
         try:
             async with self.client.stream(
                 "POST",
@@ -122,6 +125,8 @@ class ChatCompletionsAdapter:
                 follow_redirects=False,
                 timeout=request.settings["timeout_ms"] / 1000,
             ) as response:
+                if request.observation is not None:
+                    request.observation.headers_at = datetime.now(UTC).isoformat()
                 if response.status_code != 200:
                     raise ProviderFailure(
                         f"provider_http_{response.status_code}",
@@ -172,6 +177,8 @@ class ChatCompletionsAdapter:
         stream = CompletionStream(
             (request.settings["model_name"], *request.settings.get("allowed_response_models", []))
         )
+        if request.observation is not None:
+            request.observation.started_at = datetime.now(UTC).isoformat()
         headers = {"Content-Type": "application/json"}
         if request.credential:
             headers["Authorization"] = "Bearer " + request.credential.get_secret_value()
@@ -184,6 +191,8 @@ class ChatCompletionsAdapter:
                 follow_redirects=False,
                 timeout=request.settings["timeout_ms"] / 1000,
             ) as response:
+                if request.observation is not None:
+                    request.observation.headers_at = datetime.now(UTC).isoformat()
                 if response.status_code != 200:
                     raise ProviderFailure(
                         f"provider_http_{response.status_code}",
@@ -193,6 +202,12 @@ class ChatCompletionsAdapter:
                     raise ProviderFailure("provider_stream_content_type_invalid")
                 async for chunk in response.aiter_bytes():
                     for content in stream.feed(chunk):
+                        if request.observation is not None:
+                            now = datetime.now(UTC).isoformat()
+                            request.observation.first_content_at = (
+                                request.observation.first_content_at or now
+                            )
+                            request.observation.last_content_at = now
                         assert request.on_content is not None
                         await request.on_content(content)
             parsed = self.parse(stream.complete(), request)
@@ -211,6 +226,7 @@ class ChatCompletionsAdapter:
             failure = ProviderFailure("provider_stream_response_invalid")
         finally:
             if request.observation is not None:
+                request.observation.ended_at = datetime.now(UTC).isoformat()
                 request.observation.raw = bytes(stream.raw) or None
                 if stream.usage:
                     try:

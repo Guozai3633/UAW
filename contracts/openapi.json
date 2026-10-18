@@ -62564,6 +62564,26 @@
             "$ref": "#/components/schemas/Timestamp",
             "description": "原响应收齐时刻"
           },
+          "provider_started_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "适配器开始实际HTTP请求"
+          },
+          "provider_headers_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "收到提供方HTTP头"
+          },
+          "provider_first_content_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "收到首个实际content delta，持久化之前"
+          },
+          "provider_last_content_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "收到最后实际content delta，持久化之前"
+          },
+          "provider_ended_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "适配器退出时刻，可能失败或取消"
+          },
           "output_ref": {
             "$ref": "#/components/schemas/Ref",
             "description": "原模型输出"

@@ -27,6 +27,11 @@
 | `first_provider_at` | [Timestamp](./Timestamp.md) | 否 | 首content，不含推理 | 类型约束见对应对象 |
 | `first_text_at` | [Timestamp](./Timestamp.md) | 否 | 首可展示正文 | 类型约束见对应对象 |
 | `received_at` | [Timestamp](./Timestamp.md) | 否 | 原响应收齐时刻 | 类型约束见对应对象 |
+| `provider_started_at` | [Timestamp](./Timestamp.md) | 否 | 适配器开始实际HTTP请求 | 类型约束见对应对象 |
+| `provider_headers_at` | [Timestamp](./Timestamp.md) | 否 | 收到提供方HTTP头 | 类型约束见对应对象 |
+| `provider_first_content_at` | [Timestamp](./Timestamp.md) | 否 | 收到首个实际content delta，持久化之前 | 类型约束见对应对象 |
+| `provider_last_content_at` | [Timestamp](./Timestamp.md) | 否 | 收到最后实际content delta，持久化之前 | 类型约束见对应对象 |
+| `provider_ended_at` | [Timestamp](./Timestamp.md) | 否 | 适配器退出时刻，可能失败或取消 | 类型约束见对应对象 |
 | `output_ref` | [Ref](./Ref.md) | 否 | 原模型输出 | 类型约束见对应对象 |
 | `failure_code` | [ID](./ID.md) | 否 | 原失败，不作为完成 | 类型约束见对应对象 |
 | `provider_chunks` | [Count](./Count.md) | 是 | 收到的content分片数 | 类型约束见对应对象 |

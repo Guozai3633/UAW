@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="125" failures="0" errors="0" time="8.4239674">
+    <testsuite name="tests/unit/a2-adapters.test.ts" timestamp="2026-10-18T14:54:16.692Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.1411008">
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="lookup uses exact original IDs; missing returns no Run, denial does not become missing" time="0.0496401">
+        </testcase>
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="full delivery binds existing sources and dispatches exact immutable refs without expected_revision" time="0.0767959">
+        </testcase>
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="ref/hash/source mismatch and stale current delivery cannot dispatch acceptance" time="0.0060557">
+        </testcase>
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="malformed RunDeliveryView is rejected rather than guessed from successful HTTP" time="0.0013727">
+        </testcase>
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="content-hashed actual source records match the fixed digest while altered report is rejected" time="0.0041819">
+        </testcase>
+        <testcase classname="tests/unit/a2-adapters.test.ts" name="fixed digest matches Python sorted UTF-8 JSON with Unicode and integer metadata" time="0.0008813">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/browser-session.test.ts" timestamp="2026-10-18T14:54:16.698Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.0695065">
+        <testcase classname="tests/unit/browser-session.test.ts" name="exchanges exact published launch code once after removing fragment; CSRF stays in memory" time="0.0489538">
+        </testcase>
+        <testcase classname="tests/unit/browser-session.test.ts" name="lost exchange queries current cookie session without replay; logout uses exact DELETE/CSRF/JSON" time="0.0164944">
+        </testcase>
+        <testcase classname="tests/unit/browser-session.test.ts" name="denied or revoked current session never becomes an anonymous identity" time="0.0023324">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/client.test.ts" timestamp="2026-10-18T14:54:16.699Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.1316746">
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; preserves original text and path fields outside JSON; HTTP202 waiting remains waiting" time="0.0619334">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; never retries an uncertain send" time="0.0036549">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; refuses malformed successful payload" time="0.0064152">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="actual wire client &gt; propagates permission denial" time="0.0271311">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="future Item types stay readable but revisions remain strictly validated" time="0.0288261">
+        </testcase>
+        <testcase classname="tests/unit/client.test.ts" name="host cannot inject administrator authorization instead of the published CSRF protocol" time="0.0010583">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/continuation-store.test.ts" timestamp="2026-10-18T14:54:16.700Z" hostname="LAPTOP-JE6KH8OE" tests="4" failures="0" errors="0" skipped="0" time="0.0143466">
+        <testcase classname="tests/unit/continuation-store.test.ts" name="drafts and lookup IDs bind full identity/conversation/Run; clear removes them without cached authority" time="0.0071646">
+        </testcase>
+        <testcase classname="tests/unit/continuation-store.test.ts" name="per-request keys preserve two tab CAS contenders and resolve only the exact original receipt" time="0.0036665">
+        </testcase>
+        <testcase classname="tests/unit/continuation-store.test.ts" name="pending persistence failure blocks dispatch and malformed original metadata does not become an empty successful recovery" time="0.0007507">
+        </testcase>
+        <testcase classname="tests/unit/continuation-store.test.ts" name="corrupt scope, unexpected answer metadata and colliding request IDs block a new submission without deleting the original" time="0.0011763">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-18T14:54:16.701Z" hostname="LAPTOP-JE6KH8OE" tests="9" failures="0" errors="0" skipped="0" time="0.3512457">
+        <testcase classname="tests/unit/controller.test.ts" name="sends exact original once, refreshes known Run and does not treat cancellation acknowledgement as terminal" time="0.280731">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="uncertain dispatch persists lookup only and refresh never resubmits" time="0.0031841">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="decision binds fresh hash/refs/revision, rejects changed approval" time="0.0139054">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="creating a conversation releases busy state and records an opened URL in the sidebar" time="0.0136727">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="new controller restores original Run by GET without dispatching a turn" time="0.005214">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="aborted identity read cannot restore old data or a connected state" time="0.0010531">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="cursor-invalid responses resnapshot without sending and cursor loops fail explicitly" time="0.0053971">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="a rejected historical event leaves reconnect usable; a valid reread restores creation without sending a turn" time="0.0112718">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="polls only new ordered events while active, updates one partial message, and restores full final content on refresh" time="0.0147704">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/conversation-panel.test.tsx" timestamp="2026-10-18T14:54:16.702Z" hostname="LAPTOP-JE6KH8OE" tests="8" failures="0" errors="0" skipped="0" time="0.63509">
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="actual self-contained question/reason/options and exact free answer target same Run, accepted is not applied" time="0.3630907">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="running correction and actual accepted/applied/superseded/cancelled receipts stay separate" time="0.083847">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="unknown submit persists original lookup, remount GET recovers same receipt and draft without new POST" time="0.0470457">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="terminal or absent capability never sends continuation or guesses a question from ordinary text" time="0.0344167">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="accepted history uses newer authoritative failed Run without mutating patch or implying automatic execution" time="0.0286765">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="accepted history uses newer authoritative cancelled Run without mutating patch or implying automatic execution" time="0.0307995">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="accepted history uses newer authoritative completed Run without mutating patch or implying automatic execution" time="0.0300906">
+        </testcase>
+        <testcase classname="tests/unit/conversation-panel.test.tsx" name="actually applied correction stays applied after a later failure, never reclassified as unapplied" time="0.0155528">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/conversation-port.test.ts" timestamp="2026-10-18T14:54:16.703Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.2341356">
+        <testcase classname="tests/unit/conversation-port.test.ts" name="five exact endpoints use 0.2 header/meta with precise body; original turn remains 0.1" time="0.2062457">
+        </testcase>
+        <testcase classname="tests/unit/conversation-port.test.ts" name="question discovery requires actual graph, cross-scope/mismatched versions/null/unknown fields are rejected" time="0.0089702">
+        </testcase>
+        <testcase classname="tests/unit/conversation-port.test.ts" name="answer rechecks view plus original question, keeps original text and accepted receipt; correction needs no question" time="0.0060229">
+        </testcase>
+        <testcase classname="tests/unit/conversation-port.test.ts" name="current terminal, Run/input/question CAS change prevents POST; no input is applied by an HTTP acknowledgement" time="0.0035756">
+        </testcase>
+        <testcase classname="tests/unit/conversation-port.test.ts" name="receipt must bind original request and full scope, applied requires actual applied_at" time="0.003666">
+        </testcase>
+        <testcase classname="tests/unit/conversation-port.test.ts" name="late identity or cancellation cannot publish a view, and duplicate submissions do not dispatch twice" time="0.0025893">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/drafts.test.ts" timestamp="2026-10-18T14:54:16.704Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.0078352">
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; restores same identity IDs and draft, no authoritative state" time="0.0040836">
+        </testcase>
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; clears on logout/identity or epoch change, never merges foreign data" time="0.0013257">
+        </testcase>
+        <testcase classname="tests/unit/drafts.test.ts" name="identity-bound drafts and lookup IDs &gt; ignores malformed persisted metadata and returns copies" time="0.0005225">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/enrollments.test.tsx" timestamp="2026-10-18T14:54:16.704Z" hostname="LAPTOP-JE6KH8OE" tests="8" failures="0" errors="0" skipped="0" time="0.4765272">
+        <testcase classname="tests/unit/enrollments.test.tsx" name="all four published HTTP methods bind payload, path and exact CAS without browser proof" time="0.0701632">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="absent trusted candidate leaves begin unavailable; known ID still reads pending without showing secret evidence" time="0.256412">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="active, revoked and expired show actual states, never directory authorization" time="0.1089238">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="unknown confirmation retains original lookup across reload and queries same ID before another write" time="0.0052865">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="changed challenge/revision, expired deadline, mismatched owner or identity wait cannot dispatch" time="0.0028232">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="UI identity change cancels old read so its response cannot show another login record" time="0.0276569">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="lost begin retains original candidate/request lookup across reload, never silently dispatches a new ID" time="0.0015974">
+        </testcase>
+        <testcase classname="tests/unit/enrollments.test.tsx" name="blocked lookup persistence refuses dispatch, and late identity or cancellation never returns a record" time="0.001816">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/generated-contract.test.ts" timestamp="2026-10-18T14:54:16.705Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.3830464">
+        <testcase classname="tests/unit/generated-contract.test.ts" name="every reachable runtime definition equals the complete fixed source, including name maps and nested annotations" time="0.1954779">
+        </testcase>
+        <testcase classname="tests/unit/generated-contract.test.ts" name="actual task.frame.committed OutputSpec.description survives both HTTP and TaskFrame validation" time="0.1798429">
+        </testcase>
+        <testcase classname="tests/unit/generated-contract.test.ts" name="the same actual nested event still rejects unknown fields and wrongly typed description" time="0.0058721">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/installed-ui.test.tsx" timestamp="2026-10-18T14:54:16.706Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.3953849">
+        <testcase classname="tests/unit/installed-ui.test.tsx" name="only a user click starts; three system steps and bounded status reads never grant execution" time="0.3196476">
+        </testcase>
+        <testcase classname="tests/unit/installed-ui.test.tsx" name="refresh only GETs original known launch; unavailable errors hide prior ready and preserve lookup" time="0.0420961">
+        </testcase>
+        <testcase classname="tests/unit/installed-ui.test.tsx" name="identity change/unmount aborts old reads, removes old status, and never automatically starts" time="0.0319223">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/installed.test.ts" timestamp="2026-10-18T14:54:16.706Z" hostname="LAPTOP-JE6KH8OE" tests="9" failures="0" errors="0" skipped="0" time="0.0974364">
+        <testcase classname="tests/unit/installed.test.ts" name="fixed local start/get/stop HTTP validates exact empty payload/CAS and full ready DTO" time="0.0707296">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="double click has one write; no status/proof/rights persists and restored GET uses original identity/request" time="0.0043106">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="lost start without ID blocks automatic new IDs; explicit recovery sends same request ID only" time="0.0019137">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="known launch first GET, lost stop cannot retry; terminal actual read alone reconciles stop" time="0.0058949">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="cross Web session cannot inherit, late identity/abort/clear rejects, current denied never returns prior ready" time="0.0043635">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="stale revisions, mismatched IDs/request and unavailable writes do not bypass original boundary" time="0.0030986">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="concurrent old GET cannot roll the latest in-operation lookup revision backward" time="0.0011">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="logout clear wins a late start, abort preserves unknown original ID, and explicit 503 stays unavailable" time="0.0019477">
+        </testcase>
+        <testcase classname="tests/unit/installed.test.ts" name="controlled RPC timeout uses the fixed 15s transport bound and retains original unknown start metadata" time="0.0023231">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/markdown.test.tsx" timestamp="2026-10-18T14:54:16.708Z" hostname="LAPTOP-JE6KH8OE" tests="2" failures="0" errors="0" skipped="0" time="0.160544">
+        <testcase classname="tests/unit/markdown.test.tsx" name="renders Markdown but no raw HTML, unsafe URLs or remote image requests" time="0.1586444">
+        </testcase>
+        <testcase classname="tests/unit/markdown.test.tsx" name="preserves valid URL digits and removes control characters before scheme checking" time="0.0003384">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/presentation-hook.test.tsx" timestamp="2026-10-18T14:54:16.708Z" hostname="LAPTOP-JE6KH8OE" tests="2" failures="0" errors="0" skipped="0" time="0.0653077">
+        <testcase classname="tests/unit/presentation-hook.test.tsx" name="automatic reconciliation shares the120-read bound; only explicit manual refresh opens a new read window" time="0.0578845">
+        </testcase>
+        <testcase classname="tests/unit/presentation-hook.test.tsx" name="automatic reconciliation does not replace an in-flight read or publish after unmount" time="0.0052761">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/presentation.test.ts" timestamp="2026-10-18T14:54:16.709Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0711797">
+        <testcase classname="tests/unit/presentation.test.ts" name="A15 exact GET 0.2 has no payload/query and validates complete actual DTO" time="0.0542063">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="unknown fields, cross-scope/input/pins and fabricated terminal phases are refused" time="0.0057925">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="same Run revision working→awaiting→finalizing updates actual understanding/phase; new input removes old delivery" time="0.0040218">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="older input/capture is rejected and a new owner starts an independent display boundary" time="0.0016055">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="late earlier request cannot publish over the newest generation, even with unchanged Run revision" time="0.0015663">
+        </testcase>
+        <testcase classname="tests/unit/presentation.test.ts" name="conversation mismatch retries only a read and refuses a mixed snapshot; auth changes and abort refuse" time="0.0022679">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/projection.test.ts" timestamp="2026-10-18T14:54:16.709Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0270838">
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; deduplicates exact seq and Item revisions without text guesses" time="0.004345">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; requires snapshot on sequence gap or conflicting identity" time="0.0007394">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; applies delta once with exact base/result and accepts latest snapshot over old delta" time="0.0005729">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; honors replacement and ignores older fixed watermark" time="0.0002952">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="new Run and task identities start their own revision boundary and keep server order on equal timestamps" time="0.0184469">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="duplicate IDs in snapshot pages retain the highest revision regardless of page order" time="0.000446">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/quality.test.tsx" timestamp="2026-10-18T14:54:16.710Z" hostname="LAPTOP-JE6KH8OE" tests="9" failures="0" errors="0" skipped="0" time="1.1742719">
+        <testcase classname="tests/unit/quality.test.tsx" name="opens the original material and answer with no ratings or human declaration selected" time="0.2967204">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves unknown judgments as a draft and reopens the persisted revision" time="0.1607967">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="keeps uncertain writes disabled until an explicit re-read and never retries automatically" time="0.1422268">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="requires the explicit declaration plus completed mandatory judgments for submission" time="0.1577896">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="does not submit an acceptable judgment while evidence is unknown or a critical error remains" time="0.1792882">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="clears the old identity by unmounting and ignores a late old response" time="0.057569">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="sends the exact source and CAS without a self-reported reviewer" time="0.0806471">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="saves feedback against the selected Run and reopens the persisted notes" time="0.0908283">
+        </testcase>
+        <testcase classname="tests/unit/quality.test.tsx" name="shows the idle task prompt without an unavailable-source warning in a new conversation" time="0.0068374">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/review-media.test.ts" timestamp="2026-10-18T14:54:16.711Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.1801602">
+        <testcase classname="tests/unit/review-media.test.ts" name="both text types permit only an optional UTF-8 charset, preserving complete body and pins" time="0.0868121">
+        </testcase>
+        <testcase classname="tests/unit/review-media.test.ts" name="rejects unsupported types, charsets, extra/duplicate parameters and malformed values" time="0.0123977">
+        </testcase>
+        <testcase classname="tests/unit/review-media.test.ts" name="actual observed media_type works through full RunDeliveryView HTTP adapter without weakening source or contract checks" time="0.0767966">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/review.test.tsx" timestamp="2026-10-18T14:54:16.712Z" hostname="LAPTOP-JE6KH8OE" tests="10" failures="0" errors="0" skipped="0" time="1.0386103">
+        <testcase classname="tests/unit/review.test.tsx" name="missing production review port leaves content and acceptance explicitly unavailable" time="0.1750556">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="rejects altered content and stale artifact versions" time="0.0410606">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="accepts exact current bundle receipt then queries Run; does not mark it completed" time="0.1091712">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="changed verification before acceptance blocks dispatch" time="0.0857093">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="unknown dispatched acceptance blocks repeated decisions in the current view" time="0.0698348">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="honors optional fixed Ref hash and shows failed requirements with their actual reason and limits" time="0.0323342">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="cancellation or another current mutation disables acceptance even while Run still waits" time="0.0366401">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="running fixed delivery permits acceptance receipt without setting completed" time="0.0536318">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="terminal, non-delivery phases, missing or mismatched current sources and uncertain decisions stay disabled" time="0.396467">
+        </testcase>
+        <testcase classname="tests/unit/review.test.tsx" name="previous delivery remains fully readable with explicit task revisions while stale acceptance stays blocked" time="0.0368879">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/task-understanding.test.tsx" timestamp="2026-10-18T14:54:16.713Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.2919907">
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal failed without current understanding stops waiting and does not invent a summary" time="0.0561618">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal cancelled without current understanding stops waiting and does not invent a summary" time="0.0072605">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="terminal completed without current understanding stops waiting and does not invent a summary" time="0.0057187">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="old input understanding remains exactly readable with an old-version label; current understanding is never falsely old" time="0.1868631">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="unverified/foreign understanding never becomes current, and user draft remains the composition baseline" time="0.0243155">
+        </testcase>
+        <testcase classname="tests/unit/task-understanding.test.tsx" name="nonterminal without a summary retains actual waiting feedback" time="0.0095821">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/u2-recovery.test.ts" timestamp="2026-10-18T14:54:16.714Z" hostname="LAPTOP-JE6KH8OE" tests="4" failures="0" errors="0" skipped="0" time="0.2147047">
+        <testcase classname="tests/unit/u2-recovery.test.ts" name="lost acceptance survives new port and only real acceptance clears lookup; absent receipt never permits a new ID" time="0.0994299">
+        </testcase>
+        <testcase classname="tests/unit/u2-recovery.test.ts" name="identity change during a delivery wait cannot authorize a decision" time="0.0019667">
+        </testcase>
+        <testcase classname="tests/unit/u2-recovery.test.ts" name="lost submit reconciles original request before history; refreshed controller sends nothing" time="0.1051501">
+        </testcase>
+        <testcase classname="tests/unit/u2-recovery.test.ts" name="server list follows fixed cursor and deduplicates revisions; expired cursor restarts from first page" time="0.0037487">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/u3-selection.test.ts" timestamp="2026-10-18T14:54:16.715Z" hostname="LAPTOP-JE6KH8OE" tests="4" failures="0" errors="0" skipped="0" time="0.1492655">
+        <testcase classname="tests/unit/u3-selection.test.ts" name="explicit URL overrides newest and old recovery, refresh restores selected draft without POST" time="0.1345846">
+        </testcase>
+        <testcase classname="tests/unit/u3-selection.test.ts" name="same identity selected conversation outranks newest, invisible URL never falls back" time="0.0051204">
+        </testcase>
+        <testcase classname="tests/unit/u3-selection.test.ts" name="current ownership, identity switch and revoked reads cannot retain another identity draft or details" time="0.0049651">
+        </testcase>
+        <testcase classname="tests/unit/u3-selection.test.ts" name="fresh conversation owner mismatch clears old body, Run and draft without dispatch or fallback" time="0.0027252">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/waiting-feedback.test.tsx" timestamp="2026-10-18T14:54:16.715Z" hostname="LAPTOP-JE6KH8OE" tests="4" failures="0" errors="0" skipped="0" time="1.4652498">
+        <testcase classname="tests/unit/waiting-feedback.test.tsx" name="missing information is neutral, original question and three Ref versions remain, no approval or acceptance is manufactured" time="0.5763724">
+        </testcase>
+        <testcase classname="tests/unit/waiting-feedback.test.tsx" name="actual ApprovalRequest and DeliveryView independently expose their original operations while default waiting stays neutral" time="0.3871863">
+        </testcase>
+        <testcase classname="tests/unit/waiting-feedback.test.tsx" name="empty question or absent message/delivery cannot invent text, artifacts, confirmation or success" time="0.2763499">
+        </testcase>
+        <testcase classname="tests/unit/waiting-feedback.test.tsx" name="waiting preserves editable draft and explains send restriction; only actual cancelled reread unlocks new request" time="0.2239563">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/workspace-recovery.test.tsx" timestamp="2026-10-18T14:54:16.716Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="0" errors="0" skipped="0" time="0.6482692">
+        <testcase classname="tests/unit/workspace-recovery.test.tsx" name="another conversation explains its blocked draft and returns to the original Run without deleting IDs or dispatching" time="0.6466178">
+        </testcase>
+    </testsuite>
+</testsuites>
