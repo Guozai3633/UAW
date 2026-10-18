@@ -1,3 +1,9 @@
+# A18 进行中：真实流式与网页耗时，M1设计已固定
+
+2026-10-18。本人已授权本Goal由A独立完成前后端、接口和回归，不派发或操作BCD。起点 `9ad685c`，原H02-v9 `69408bc` 实际ready/网页均200、0活动本人Run、0新反馈/正式审阅；实际模型仍为管理员原`deepseek-flash`，原账号/记录/费用与flags保持。已定位旧适配器stream=false、页面约3秒完整轮询；实际瓶颈和当前endpoint SSE能力尚待测量，不能据阅读代码宣称收益。
+
+[本轮模块/目录/内部端口/事件/恢复/测量/退出策略](../implementation/MS-I2m-A18.md)已先于业务实现固定。随后先做隔离基线与原模型流式实连，再接有界SSE→原发送/预算→稳定Item→认证事件增量→页面；原Agent最终发布和成果接受保留。旧8题事实判断继续pending，工程Goal与质量认可分别验收。下方为已交付A17及历史。
+
 # A17 / H02-v9 工程交付：认证审阅、任务反馈与八份真实结果
 
 2026-10-18。本轮由 A 独立完成必要后端、前端、评测和测试；未派发、同步或操作 B/C/D 工作区。最终后端/新页面准确 `69408bca5896d978e58bd280364bb3c972aaeded` / `ms-i2m-a17-final-runtime`，实际 <http://127.0.0.1:5183/> 已部署，原身份、数据库、历史与旧页面保留。[设计/对象/目录](../implementation/MS-I2m-A17.md) · [准确 HTTP 与消费](../api/QUALITY_REVIEW.md) · [本人测试清单](../implementation/human-tests/H02-v9.md) · [部署](../implementation/evidence/ms-i2m-a17-final-deployment.json) · [逐项 Goal 审计](../implementation/evidence/ms-i2m-a17-completion-audit.json)。
