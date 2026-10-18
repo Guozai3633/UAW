@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A12_registration_and_assembly_component_ready_provisional_future_experiment_actual_quality_pending",
+  "status": "A13_actual_registered_single_case_comparison_assembled_independent_quality_pending",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -167,36 +167,43 @@
       "receipt": "docs/implementation/evidence/ms-i2m-a12.json",
       "scope": "fixed_local_UTC_protocol_and_complete_per_case_version_capture_assembly_no_actual_new_comparison",
       "worker_consumption": "no_automatic_sync_or_new_package"
+    },
+    "A/A13": {
+      "source_commit": "c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71",
+      "fixed_ref": "ms-i2m-a13-source",
+      "receipt": "docs/implementation/evidence/ms-i2m-a13.json",
+      "scope": "actual_registered_isolated_two_version_report_correction_eight_attempts_C_gate_incomplete_no_human_judgments",
+      "worker_consumption": "no_automatic_sync_or_new_package"
     }
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A12",
+    "stage": "A13",
     "published": true,
-    "source_commit": "ce1ff8a58b03e59c86e4b521bab7b31a811f2812",
-    "fixed_ref": "ms-i2m-a12-source",
-    "receipt": "docs/implementation/evidence/ms-i2m-a12.json",
+    "source_commit": "c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71",
+    "fixed_ref": "ms-i2m-a13-source",
+    "receipt": "docs/implementation/evidence/ms-i2m-a13.json",
     "runtime_deployed": false,
     "runtime_backend_source": "ebbcd9ea33557d23ddcda4569909893ce590da4d",
     "runtime_frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
     "runtime_receipt": "docs/implementation/evidence/h02-i01-final.json",
     "runtime_restart_same_source": true,
-    "live_provider_smoke": "retained_A9a_four_call_report_correction_no_A10_new_calls",
-    "quality_capture": "four_actual_model_attempts_exported_C_gate_incomplete",
+    "live_provider_smoke": "A13_isolated_candidate_report_correction_passed_baseline_reviewer_failed_both_patch_applied",
+    "quality_capture": "eight_actual_registered_attempts_two_versions_C_gate_incomplete_comparison_incomparable",
     "human_experience": "pending_retest_after_report_failure",
     "next": [
-      "human_case_and_evidence_calibration",
-      "valid_registration_then_isolated_fixed_new_executions",
-      "independent_review_and_actual_comparison",
-      "A11_local_form_and_H02_owner_experience",
+      "independent_case_and_evidence_calibration",
+      "independent_human_review_and_valid_actual_comparison",
+      "H02_owner_retest",
+      "A11_real_display_download",
       "native_file_chain_and_Tool_long_wall_dispatch"
     ],
-    "offline_review_packet": "prepared_one_actual_target_all_fields_unselected",
+    "offline_review_packet": "two_actual_second_generation_targets_all_fields_unselected",
     "actual_human_imports": 0,
     "browser_render": "pending_file_protocol_denied",
-    "actual_new_model_calls": 0,
-    "actual_quality_comparisons_assembled": 0,
-    "future_registration": "one_unreviewed_report_correction_case_needs_case_review"
+    "actual_new_model_calls": 8,
+    "actual_quality_comparisons_assembled": 1,
+    "future_registration": "A13_isolated_execution_scope_registered_before_all_eight_calls_case_needs_human_review"
   },
   "worker_stage_reports": {
     "B": {
@@ -216,9 +223,9 @@
       "status": "M1_M3_accepted_M4_actual_quality_pending",
       "work_status": "delivered_stopped",
       "actual_capture": {
-        "status": "A10_single_retrospective_Run_data_ready_release_gate_incomplete",
+        "status": "A13_registered_two_version_eight_attempts_available_C_release_incomplete",
         "human_reviews_created": 0,
-        "actual_model_attempts": 4,
+        "actual_model_attempts": 8,
         "release_comparison_accepted": false
       }
     },

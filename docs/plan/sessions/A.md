@@ -1,3 +1,9 @@
+# A13固定：真实两版报告纠正执行与完整汇总
+
+2026-10-18，source **c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71** / **ms-i2m-a13-source**。新登记隔离条件后候选/基线各4调用，8调用全保留；A9a纠正可交付，A9末次Reviewer结构失败，两版最终补充均applied。5单元＋4SQL和247源码类型通过，非全仓。[实际结果与限制](../../implementation/MS-I2m-A13.md) · [回执](../../implementation/evidence/ms-i2m-a13.json)。
+
+C实际评测incomplete/incomparable，缺题目/依据核准与独立人审，不宣称质量提升。待审两版完整第二稿已准备；基线第二稿不等于成功交付。原H02服务及数据库按原固定版本恢复、实际200，原历史12条不变；A13不部署聊天链。下一步真正题目/回答审阅及H02本人反馈，本机/Tool/A11显示下载分别待验。B/C/D停止点、flags和last_full保留，未派新包。以下为历史。
+
 # A12固定：实验登记与完整采集比较组件完成
 
 2026-10-17，source **ce1ff8a58b03e59c86e4b521bab7b31a811f2812** / **ms-i2m-a12-source**。47相关节点/246源码类型/4Python静态格式通过；按当前时间固定条件，完整每题每版采集交C原评分，失败/unknown/费用均保留。[实施及真实边界](../../implementation/MS-I2m-A12.md) · [实际回执](../../implementation/evidence/ms-i2m-a12.json)。

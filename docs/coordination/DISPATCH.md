@@ -1,3 +1,13 @@
+# MS-I2m A13正式固定：登记后真实报告纠正对比
+
+2026-10-18，准确源码 **c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71** / **ms-i2m-a13-source**。实际2026-10-17登记后在两份固定源码/独立空数据库中各执行4次模型调用，原报告→同Run纠正→结果与全部失败费用交原C评测器。候选A9a可读纠正成果；基线A9末次Reviewer输出结构失败，纠正最终仍applied。8调用/0重试/1模型失败/8笔金额未知pending完整保留。[策略目录及实际边界](../implementation/MS-I2m-A13.md) · [准确接线](requests/A/MS-I2m-A13-real-comparison-wiring.md) · [脱敏机器证据](../implementation/evidence/ms-i2m-a13.json)。
+
+5单元＋4真实SQL共9不同节点通过，5Python静态/格式及247源码类型通过，非全仓/不更新last_full。可选隔离scope参与环境摘要，旧摘要不变；失败Reviewer保留准确目标/unavailable。C/B/D、公共契约/锁/flags不变，未部署离线工具到聊天服务。
+
+实际汇总退出3，release_gate=incomplete、comparison=incomparable；事前来源条件绑定有效，题目/依据和回答无独立人审，质量差值为空。两份空白审阅包已准备，真人评分/接受0；基线完整第二稿不是成功交付。单样例不能证明修复有普遍质量或性能收益，原C16题仍待审。
+
+原H02数据库容器停止，测试服务一度不可达；按原launcher/源码/数据库恢复，页面 http://127.0.0.1:5183/ 及后端ready实查200，停因未定。本人12条原记录只读核对未变，未代重发/确认/接受。下一步独立题目依据/回答审阅，若改题目须新登记；本人H02、本机文件、Tool跨墙钟及A11真实显示下载各自pending。B/C/D保持交付停止点，无新派发或自动同步。以下为历史。
+
 # MS-I2m A12正式固定：实验条件登记与新旧结果汇合
 
 2026-10-17，准确源码 **ce1ff8a58b03e59c86e4b521bab7b31a811f2812** / **ms-i2m-a12-source**。A自有离线接口按当前UTC固定题目/源码/提示词/相同模型环境和政策；逐题逐版完整采集复核后交原C评测器，拒绝旧调用、少题、重复或条件变化，保留全部失败/unknown/重试和成本。A11保留已核准题目的原元数据，不改写成新时间。[策略与目录](../implementation/MS-I2m-A12.md) · [完整接口](requests/A/MS-I2m-A12-experiment-wiring.md) · [机器证据](../implementation/evidence/ms-i2m-a12.json)。

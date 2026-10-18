@@ -673,5 +673,54 @@
     "tests/integration/agent/test_evaluation_capture.py": "b49d653f243004fbc202741849416c51b3cda4aa6a6feecd1b929e37e1e000b1"
   },
   "private_evidence_base": ".data/evaluation/a13-report-comparison-bb7dfa7a994e42ff8e224cef9ca71ea1",
-  "private_raw_answers_committed": false
+  "private_raw_answers_committed": false,
+  "source_commit": "c37e06aea6afc3f1f2d46b3c1fe8e7376c374b71",
+  "plan_generation": {
+    "status": "passed",
+    "date": "2026-10-14",
+    "plan_rounds": 56,
+    "phase_counts": {
+      "P0": 5,
+      "P1": 17,
+      "P2": 9,
+      "P3": 8,
+      "P4": 10,
+      "P5": 7
+    },
+    "module_groups": 11,
+    "scope_counts": {
+      "required": 54,
+      "target_implementation_default_disabled": 1,
+      "future_adapter_design_only": 1
+    },
+    "status_counts": {
+      "accepted": 3,
+      "in_progress": 10,
+      "planned": 42,
+      "deferred": 1
+    },
+    "planned_node_coverage": {
+      "covered": 115,
+      "total": 115
+    },
+    "interface_associations": 296,
+    "dependency_graph_acyclic": true,
+    "final_core_gate_covers_required_rounds": true,
+    "optional_rounds_do_not_block_first_core_trial": true,
+    "conversation_text_independent_of_local_and_join": true,
+    "local_document_links_checked": 4670,
+    "generated_files": 78,
+    "errors": [],
+    "runtime_implementation": "not_inferred_from_plan_checks",
+    "runtime_behavior_tests": "not_run_by_plan_generator",
+    "limitations": [
+      "coverage means planned association, not implementation or interface readiness",
+      "code paths are planned and intentionally not validated as existing implementations",
+      "no schedule/team capacity estimate or provider availability is inferred",
+      "local link checks validate file existence, not Markdown anchor validity"
+    ]
+  },
+  "publication_notes": [
+    "authored_document_and_catalog_prior_LF_convention_restored_in_metadata_commit_no_runtime_code_change"
+  ]
 }
