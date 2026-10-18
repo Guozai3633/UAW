@@ -1,3 +1,19 @@
+# 2026-10-19：A18固定H02-v10，进入本人体验
+
+A独立完成本轮必要前后端/接口/验证，未派发BCD或启用子智能体。准确运行 **eeaa6ff815b42f95ff49993e84f8159f7fd6ae48**，保留原固定模型、单Agent、质量审阅/反馈/评测器。实际 <http://127.0.0.1:5183/> 已登录原账号，原1209记录/12会话/8评测包保留。
+
+| 模块—阶段 | 已完成任务与目标 | 目录与退出证据 | 后续任务 |
+| --- | --- | --- | --- |
+| Model/Item—M1/M2 | 真实SSE、有界正文提取、稳定Item、原最终校验/费用；首HTTP/content/提交确认计时 | `model/streaming.py`、`stream_text.py`、`run/streaming.py`；107模型/契约及50相关SQL | 依本人具体反馈定向处理兼容性，不静默换模型 |
+| HTTP/页面—M2/M3 | after_seq、活动250ms轮询、事件批读10→4SQL、刷新/重复事件恢复、取消不完整提示、停止后新会话 | `run/events.py`、`api/routes.py`、`run/presentation.py`、`apps/web/`；129单元、71受控浏览器、实际页面证据 | 本人体验出字、刷新、停止和新会话 |
+| 质量—M3 | 读原8题及当前反馈；无新人工标签，无生成策略改动 | 原`run/quality.py`、`evaluation/`；读取摘要与当前检查 | 本人提交事实判断/具体问题后定向修复；策略变化前登记比较条件 |
+| 计时/费用—M1/M3 | 固定少量顺序样本，精确提供方/提交/DOM时刻，全部20次调用及2次未知末帧 | `ops/summarize_stream_latency.py`；A18-LATENCY和JSON | 优先分析仍存的约6–7秒应用准备与约3秒完成提交，优化前保留计数/条件 |
+| 部署/本人—M4 | 固定277运行源码、三资源hash、原账号/历史、匿名401和实际登录页面；无效Cookie同源清理23SQL | H02-v10测试步骤、部署/服务恢复记录 | 本人体验及8题人审，A不代填、授权或接受 |
+
+工程验收按实际范围，不更新last_full，不把传输改善当事实正确率或满意度提升。旧预览失败、审批未执行、登录/服务中断证据全部保留。子Agent/DAG/本机写入安装exec与flags关闭；P1-15/P1-17产品整轮继续pending。下方为历史。
+
+[设计及目录](../implementation/MS-I2m-A18.md) · [耗时/限制](../implementation/MS-I2m-A18-LATENCY.md) · [本人可测清单](../implementation/human-tests/H02-v10.md) · [准确派发状态](../coordination/DISPATCH.md)。
+
 # 2026-10-18：A17 工程交付，H02-v9进入本人审阅
 
 本轮由 A 独立完成必要后端、前端和评测，未派发或操作 B/C/D。M1详细设计与严格契约、M2认证持久草稿/正式导出及独立Run反馈、M3固定8题17真实调用、M4实际视觉修复与H02-v9部署均有证据。[完整策略/字段/目录](../implementation/MS-I2m-A17.md) · [本人测试](../implementation/human-tests/H02-v9.md) · [Goal逐项审计](../implementation/evidence/ms-i2m-a17-completion-audit.json)。本人评分0、费用未知17笔，P1-15事实质量/P1-17体验整轮不升级accepted。

@@ -13,3 +13,11 @@
 接口生成支持显式`node scripts/generate.mjs --working-tree`供提交前预览，来源manifest标记`contract_commit:null/release_ready:false`。正式部署仍需生成器绑定准确已提交接口SHA，再生成类型与运行时schema；预览不能当成固定发布证据。
 
 [设计及目录](../implementation/MS-I2m-A18.md) · [事件接口](interfaces/http--events-read.md)
+
+## 当前固定消费与认证恢复
+
+H02-v10运行源码`eeaa6ff815b42f95ff49993e84f8159f7fd6ae48`，网页生成器绑定接口`363618f8c38eaa0078b54d6b3b807d3f97957893`，manifest有准确commit，非working-tree-preview。Model/Item/网页真实流式证据源1cce51e，最终仅增加原同源401无效Cookie清理，未改上述对象或生成策略。
+
+`GET /v1/web/session`：当原浏览器Cookie无效且请求没有Authorization，先复核原精确loopback/host/Origin或同源Referer，继续返回401并发送原Path=/v1、HttpOnly、SameSite=strict的删除Cookie。它不授予身份、消费ticket或撤销其他会话；有效Cookie不删除、不可信Origin不清理。新的登录仍用原一次性launch且交换不得带已有Cookie；GET清理后须由正常入口重新登录，写入的CSRF/Origin约束不变。不会清理草稿或替本人操作。
+
+内部首正文`first_committed_at`来自事务返回后的UTC时刻，由下一检查点保存；进程损失可缺失。Provider HTTP/headers/首末content/结束时间独立记录；页面DOM属性只含原Run与数字时刻，无正文/凭据，React提交不等于物理首帧。完整字段仍以生成对象字典为准。

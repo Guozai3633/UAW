@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="0.2191599">
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-18T15:25:54.834Z" hostname="LAPTOP-JE6KH8OE" tests="10" failures="0" errors="0" skipped="0" time="0.1927817">
+        <testcase classname="tests/unit/controller.test.ts" name="sends exact original once, refreshes known Run and does not treat cancellation acknowledgement as terminal" time="0.129079">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="uncertain dispatch persists lookup only and refresh never resubmits" time="0.001963">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="decision binds fresh hash/refs/revision, rejects changed approval" time="0.006815">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="creating a conversation releases busy state and records an opened URL in the sidebar" time="0.0078711">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="new controller restores original Run by GET without dispatching a turn" time="0.0028783">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="aborted identity read cannot restore old data or a connected state" time="0.000844">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="cursor-invalid responses resnapshot without sending and cursor loops fail explicitly" time="0.002942">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="a rejected historical event leaves reconnect usable; a valid reread restores creation without sending a turn" time="0.0206728">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="polls only new ordered events while active, updates one partial message, and restores full final content on refresh" time="0.010715">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="retires only the original proven stopped reply lookup, without submitting again or treating billing as settled" time="0.0080029">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/streaming-understanding.test.tsx" timestamp="2026-10-18T15:25:54.842Z" hostname="LAPTOP-JE6KH8OE" tests="3" failures="0" errors="0" skipped="0" time="0.0263782">
+        <testcase classname="tests/unit/streaming-understanding.test.tsx" name="stopping without a completed model decision does not promise a future understanding" time="0.0195125">
+        </testcase>
+        <testcase classname="tests/unit/streaming-understanding.test.tsx" name="reflects actual receiving reply without inventing a completed understanding" time="0.0036802">
+        </testcase>
+        <testcase classname="tests/unit/streaming-understanding.test.tsx" name="reflects actual interrupted reply without inventing a completed understanding" time="0.0022291">
+        </testcase>
+    </testsuite>
+</testsuites>

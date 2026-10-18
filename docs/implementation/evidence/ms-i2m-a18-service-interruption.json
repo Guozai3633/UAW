@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-18T16:29:59.644493+00:00",
+  "source_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "observation": "HTTP connection refused; exact runtime python process query returned no processes",
+  "after_interrupted_tool_turn": true,
+  "logs_preserved": true,
+  "model_calls_replayed": 0,
+  "recovery": "Preflight original task state; start same frozen runtime only after verified absent process and listener"
+}

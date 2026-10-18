@@ -1,0 +1,95 @@
+{
+  "schema_version": "uaw.a18-fixed-actual-page.v1",
+  "source_commit": "1cce51e59d08fca09adf31af1c40d02518374153",
+  "synthetic_identity_only": true,
+  "new_original_user_tasks": 0,
+  "human_rating_or_authorization_or_acceptance": 0,
+  "refresh": {
+    "run_id": "run-1525b4df1ec641599a78d6181f0d47f4",
+    "item_id": "conversation-message-40fa13a310f0bfe5920613a6be106f80b36d34e0d12c2b0f31a6d71b3583cad1",
+    "same_item_after_restore": true,
+    "persisted_prefixes_monotonic": true,
+    "model_calls": 1,
+    "before_revision": 1,
+    "after_observation_revision": 28,
+    "final_revision": 29,
+    "final_item_status": "completed",
+    "final_text_sha256": "b85cbe50436a8cfaa3cb2c22a4acf046794fb93ef80b4ee14dfdebf45d97a43d",
+    "final_characters": 1275,
+    "attempt_state": "received",
+    "failure_code": null,
+    "usage": {
+      "attempt_id": "web-step-model-1-run-1525b4df1ec641599a78d6181f0d47f4",
+      "billing_state": "pending",
+      "cached_input_tokens": 384,
+      "provider_receipt_id": "051349ba-2fd6-48cc-bd0d-01f2ee2bcbd3",
+      "resources": {
+        "child_agents": 0,
+        "currency": "USD",
+        "input_tokens": 2572,
+        "model_calls": 1,
+        "output_tokens": 851,
+        "tool_calls": 0,
+        "wall_time_ms": 6524
+      }
+    },
+    "raw_receipt_saved": true
+  },
+  "cancel": {
+    "run_id": "run-56857f42a1314ea48dbb385b9ef18b7d",
+    "item_id": "conversation-message-f5e0762e728e14e6d766bfbc94f65dd9d5f1cb4a55bdcf374c03e336d7645d0d",
+    "same_item_after_restore": true,
+    "persisted_prefixes_monotonic": true,
+    "model_calls": 1,
+    "before_revision": 1,
+    "after_observation_revision": 3,
+    "final_revision": 3,
+    "final_item_status": "failed",
+    "final_text_sha256": "ceefded8ba579eba789c94f217febe74687c91ad55b6148e1310bd2b48922f88",
+    "final_characters": 46,
+    "attempt_state": "failed",
+    "failure_code": "model_run_cancelled",
+    "usage": {
+      "attempt_id": "web-step-model-1-run-56857f42a1314ea48dbb385b9ef18b7d",
+      "billing_state": "pending",
+      "resources": {
+        "child_agents": 0,
+        "currency": "USD",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "wall_time_ms": 1738
+      }
+    },
+    "raw_receipt_saved": true
+  },
+  "formal_report": {
+    "run_id": "run-21469abf4f5e4388a56fdc8c8b2b14cc",
+    "model_calls": 2,
+    "actual_artifact_and_verification_visible": true,
+    "awaiting_acceptance_visible": true,
+    "accepted_by_A": false,
+    "diagnostic_cancel_after_capture": true
+  },
+  "new_conversation_after_interrupted_reply": {
+    "actual_submit_accepted": true,
+    "new_run_id": "run-21469abf4f5e4388a56fdc8c8b2b14cc",
+    "old_cancelled_invocation_not_retried": true,
+    "old_pending_fees_not_released": true
+  },
+  "limits": [
+    "Fresh page render time is DOM commit, not physical paint.",
+    "The refreshed message was still in_progress; provider EOF may precede final Run completion.",
+    "The attempted stop after the refresh sample found the Run already completed; no cancel was sent. The separate early-cancel sample validates actual cancellation.",
+    "Formal semantic checks are model receipts, not human fact validation."
+  ],
+  "screenshots": [
+    {
+      "file": "ms-i2m-a18-fixed-real-cancel.png",
+      "sha256": "07dd3080b7b88da5c84fe10db7d82a949453625449a343aac23c467a58f5495b"
+    },
+    {
+      "file": "ms-i2m-a18-fixed-real-report.png",
+      "sha256": "e087e190832f10b114685a33ee0f48a3352e250c90ad283ba57f4bc08c30b248"
+    }
+  ]
+}

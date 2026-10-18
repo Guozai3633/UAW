@@ -1,0 +1,498 @@
+{
+  "schema_version": "uaw.a18-completion-audit.v2",
+  "audited_at": "2026-10-18T16:38:51.187313+00:00",
+  "branch": "integration",
+  "runtime_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "stream_measurement_source": "1cce51e59d08fca09adf31af1c40d02518374153",
+  "goal_complete": false,
+  "goal_status": "active",
+  "remaining_required": [
+    "Commit current final docs/evidence and readonly context timing summary; verify commit and current service before Goal completion."
+  ],
+  "requirements": [
+    {
+      "id": "M1.recover_actual_checkout_design_before_implementation",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/MS-I2m-A18.md",
+          "sha256": "b74eeebf049a5a4a889491e3ddf88eb88497d1b3e7e503b53397b3cd0888b6d4"
+        }
+      ],
+      "scope": "Design first committed122ed07 before implementation908727b; single A, original repository state inspected."
+    },
+    {
+      "id": "M1.submit_accept_queue_fixed_context_and_model_stages",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-browser-timing.json",
+          "sha256": "03fafc1332f2280a529eb9e39587528b5a51dc04453549554cf977e1cdfa6e69"
+        }
+      ],
+      "scope": "Original web HTTP and actual browser requests; stage boundaries from original fixed references, record timestamps not CPU/commit acknowledgements."
+    },
+    {
+      "id": "M1.provider_first_displayable_generation_commit_event_page",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-browser-timing.json",
+          "sha256": "03fafc1332f2280a529eb9e39587528b5a51dc04453549554cf977e1cdfa6e69"
+        }
+      ],
+      "scope": "Provider HTTP/first-last content, first allowed decoded reply, real commit acknowledgement and React DOM render; not physical paint."
+    },
+    {
+      "id": "M1.formal_verification_and_registration",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        }
+      ],
+      "scope": "Actual formal report generation plus verifier; original Artifact/Report/acceptance contract."
+    },
+    {
+      "id": "M1.conditions_cold_repeat_failed_attempts_startup_and_all_fees",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
+          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+        }
+      ],
+      "scope": "Sequential small samples, process/cache/load limits explicit, startup excluded, original failures retained, no P95 or zero-cost inference."
+    },
+    {
+      "id": "M2.fixed_user_model_actual_stream_capability",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        }
+      ],
+      "scope": "Actual DeepSeek original model/config; no silent substitution."
+    },
+    {
+      "id": "M2.single_business_call_no_extra_classifier_or_reasoning_UI",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-model.xml",
+          "sha256": "2724e6f1872aa1d41962af6addf4afe3bade67a7f3383ee2426ae6438d1490c7"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "src/uaw/model/stream_text.py",
+          "sha256": "e724add73eaf1a4421ea6a1c063c21901536c1f3756fc29fdb627f3312da5df2"
+        }
+      ],
+      "scope": "Ordinary answers each one actual business call; incremental decoder emits only permitted reply text, ignores hidden reasoning."
+    },
+    {
+      "id": "M2.original_Run_input_invocation_model_and_stable_message_binding",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+          "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+        },
+        {
+          "path": "src/uaw/run/streaming.py",
+          "sha256": "58f2ea18acf80e69789026f5279d29fcaaeeb76cb03f5f191b8cfe39a130540d"
+        }
+      ],
+      "scope": "SQL covers original IDs/input/policy/snapshot and same Item revision; no per-connection execution."
+    },
+    {
+      "id": "M2.final_completion_usage_and_cost_from_original_receipt",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+          "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+        },
+        {
+          "path": "src/uaw/model/gateway.py",
+          "sha256": "ae7d84f14429618c45aefce011107eadeef9585c5bde597bf06672d1d54e0b2a"
+        },
+        {
+          "path": "src/uaw/run/conversation_entry.py",
+          "sha256": "e1db2463682a0514f1809fefec7eb6576100e23cd057639153a0024978801656"
+        }
+      ],
+      "scope": "Partial is in_progress; final original publication only, settlement retained even display finish fails."
+    },
+    {
+      "id": "M2.refresh_disconnect_duplicate_event_process_loss_no_resend",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+          "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+          "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+        }
+      ],
+      "scope": "Real refresh in_progress same Item/one call; controlled transport disconnect, gaps/repeats and restarted queue unknown-intent recovery."
+    },
+    {
+      "id": "M2.cancel_and_incomplete_text_no_false_completed",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        }
+      ],
+      "scope": "Real cancel failed prefix, pending unknown tokens/money; old attempt not replayed."
+    },
+    {
+      "id": "M2.formal_output_verification_version_and_user_acceptance",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+          "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+          "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+        }
+      ],
+      "scope": "Actual report waiting for acceptance; controlled version/correction/acceptance checks; no original user acceptance by A."
+    },
+    {
+      "id": "M3.measured_redundant_reads_and_polling_fixed",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-event-sql-before.json",
+          "sha256": "ea0e3f25dc634692125d317672b181abbd0b8f35690258497ddad025b91b15d2"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-event-sql-after.json",
+          "sha256": "3fc499a669824c36a028a3d6f7f0d23fdb93bdfc9d63990fe9cd4303ffd89c1a"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+          "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+        }
+      ],
+      "scope": "Same seven-event graph10->4SQL; active incremental polling250ms vs3000ms; no claim of universal end-to-end improvement."
+    },
+    {
+      "id": "M3.read_existing_eight_and_actual_submitted_feedback",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-existing-quality-read.json",
+          "sha256": "d1f2b85b5b37855ec3a2906f909cb54418321492020b0c16a131312fda94a093"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-current-delivery-check.json",
+          "sha256": "e63e1bd09ce4e3185f0326bb8e4f80b1100cfc4fb03d6b0e5cf28794515e33e3"
+        }
+      ],
+      "scope": "Eight original selected responses/patches read; zero submitted human feedback/reviews as checked, not fabricated."
+    },
+    {
+      "id": "M3.reproducible_state_draft_failure_and_new_conversation_fixes",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-web.xml",
+          "sha256": "ee00f9bca4bb3d3f379cfea5e922a3ffd4101b178cdb154b8a8993382cfdd917"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+          "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+        }
+      ],
+      "scope": "Consistent partial/interrupted understanding UI, switch draft protection, stopped lookup source permits new conversation without releasing original fees."
+    },
+    {
+      "id": "M3.original_generation_strategy_and_quality_boundary",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-existing-quality-read.json",
+          "sha256": "d1f2b85b5b37855ec3a2906f909cb54418321492020b0c16a131312fda94a093"
+        },
+        {
+          "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
+          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+        }
+      ],
+      "scope": "Prompts and model params unchanged, no unrelated full eight-case model rerun; human facts remain pending, no quality gain claimed."
+    },
+    {
+      "id": "M4.ordinary_clarification_sameRun_correction_cancel_refresh_review_acceptance_regression",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-model.xml",
+          "sha256": "2724e6f1872aa1d41962af6addf4afe3bade67a7f3383ee2426ae6438d1490c7"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-web.xml",
+          "sha256": "ee00f9bca4bb3d3f379cfea5e922a3ffd4101b178cdb154b8a8993382cfdd917"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+          "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+          "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-auth-cookie.xml",
+          "sha256": "401713b156bbc156b4e356b4f4fd0d83c847f528d69c65668832cb8fc284913a"
+        }
+      ],
+      "scope": "Affected final model/UI/SQL scopes plus auth-only final change; preserved actual source trees prove inherited regression applicability, not full repository coverage."
+    },
+    {
+      "id": "M4.predeploy_activity_forms_auth_history_old_artifacts_fees_preserved",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-deployment.json",
+          "sha256": "d3c5fcc9824e040fab8c002ec3d75d784961ef3d802e1abf40f5a01dd605fdfa"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-current-delivery-check.json",
+          "sha256": "e63e1bd09ce4e3185f0326bb8e4f80b1100cfc4fb03d6b0e5cf28794515e33e3"
+        }
+      ],
+      "scope": "Idle Run/invocation preflight, zero open user tabs at inspection, original1209 rows unchanged, old frozen builds retained, no original user task or human decisions submitted."
+    },
+    {
+      "id": "M4.exact_source_deployment_accessible_original_account",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-deployment.json",
+          "sha256": "d3c5fcc9824e040fab8c002ec3d75d784961ef3d802e1abf40f5a01dd605fdfa"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-current-delivery-check.json",
+          "sha256": "e63e1bd09ce4e3185f0326bb8e4f80b1100cfc4fb03d6b0e5cf28794515e33e3"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-owner-final-page.png",
+          "sha256": "0c70f88fd483192293685ec7de6709893693e381b1fdc8b9fb5c505fab77d75e"
+        }
+      ],
+      "scope": "Frozen277 source verification and three served assets hash, ready200 anonymous401, actual owner connected12 historical conversations."
+    },
+    {
+      "id": "M4.actual_stream_reconnect_cancel_evidence",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-actual-page.json",
+          "sha256": "85da739769ca448779da333d054e370b7572f2b7a4b530075794b4823fb81e8e"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-browser-timing.json",
+          "sha256": "03fafc1332f2280a529eb9e39587528b5a51dc04453549554cf977e1cdfa6e69"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-real-cancel.png",
+          "sha256": "07dd3080b7b88da5c84fe10db7d82a949453625449a343aac23c467a58f5495b"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-fixed-real-report.png",
+          "sha256": "e087e190832f10b114685a33ee0f48a3352e250c90ad283ba57f4bc08c30b248"
+        }
+      ],
+      "scope": "Synthetic actual browser/model evidence separate from controlled tests and owner visual login."
+    },
+    {
+      "id": "M4.phase_timing_calls_entire_cost_status",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-latency.json",
+          "sha256": "3a6ed1df0cf244581ccc5d59fdd029bce4d6dd543d6fb0ea89a47eed32ccdf11"
+        },
+        {
+          "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
+          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+        }
+      ],
+      "scope": "Twenty actual calls,43460/4025 known tokens plus2 unknown frames,20 unknown monetary settlements; no retries."
+    },
+    {
+      "id": "M4.updated_design_interfaces_objects_directory_plan_and_test_steps",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/MS-I2m-A18.md",
+          "sha256": "b74eeebf049a5a4a889491e3ddf88eb88497d1b3e7e503b53397b3cd0888b6d4"
+        },
+        {
+          "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
+          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+        },
+        {
+          "path": "docs/api/STREAMING.md",
+          "sha256": "cc39216e2ef617f466cae5f19f7214d1e094cc06bafd4fab7ef5b9dad20550c3"
+        },
+        {
+          "path": "docs/PROJECT_STRUCTURE.md",
+          "sha256": "a5124443a94bd378c97adb6037145ada65ff7e221a5fd02373f0c9848fc9c1df"
+        },
+        {
+          "path": "docs/DOCUMENT_MAP.md",
+          "sha256": "a003b2ff45ea7d9db63b901a6948933b454f3350708d10bd3f328c4580de5787"
+        },
+        {
+          "path": "docs/coordination/DISPATCH.md",
+          "sha256": "1a09610ef6d176627e5a05e933cadd9630121a24e22945bbd4bd0f46c0671603"
+        },
+        {
+          "path": "docs/plan/sessions/A.md",
+          "sha256": "924e81a3f67f48736377d98fd03af7c77426be7edd9ab45498cc3b34b1e6bb0d"
+        },
+        {
+          "path": "docs/plan/H02_CONVERSATION.md",
+          "sha256": "c17e1de12919444b1f2266d73a99fc02f117ea986c3f728d0ba2eb92fbaa145a"
+        },
+        {
+          "path": "docs/implementation/human-tests/H02-v10.md",
+          "sha256": "f005038b6635fed4f9a19c6d17c83f19ca1b59706f97a34e2a8abf942b24f5fd"
+        }
+      ],
+      "scope": "Current top-level entry points supersede explicit historical incomplete states; detailed object schema remains generated from catalog."
+    },
+    {
+      "id": "M4.failures_retained_no_auth_bypass",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-incomplete-audit.json",
+          "sha256": "74bb66e2bd84fb18a8e762038fc51631dacc5fee9e965863e7160ce96aa6dad4"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-latest-preview-web-unit.xml",
+          "sha256": "0098b6713350324cbaee377e0f7b51c4f3b97fcf1b028556bb8480fcfc7f6de8"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-initial-login-failure.json",
+          "sha256": "8c5dd0eb953d82fd249aa10ba74c182cd8d4eb37016f4e66e2a6eb05ba7807b3"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-service-interruption.json",
+          "sha256": "80a7efe6a5af1e42095fc63f6318ae8312868de0f5f39b4ee824fa940cfb5277"
+        },
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-final-auth-cookie.xml",
+          "sha256": "401713b156bbc156b4e356b4f4fd0d83c847f528d69c65668832cb8fc284913a"
+        }
+      ],
+      "scope": "Original approval non-execution and preview failure kept; normal later authorized tools succeeded. Invalid-cookie recovery still401/exact-origin/one-use-ticket, original auth unchanged."
+    }
+  ],
+  "test_groups": [
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-pinned-source-model.xml",
+      "nodes": 107,
+      "sha256": "2724e6f1872aa1d41962af6addf4afe3bade67a7f3383ee2426ae6438d1490c7"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-pinned-source-web.xml",
+      "nodes": 129,
+      "sha256": "ee00f9bca4bb3d3f379cfea5e922a3ffd4101b178cdb154b8a8993382cfdd917"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-pinned-source-sql.xml",
+      "nodes": 50,
+      "sha256": "f4b395965e7514d06496394b92f04458141a20dd4a28992132939cce21ef80fa"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-pinned-source-chromium.xml",
+      "nodes": 71,
+      "sha256": "0778930d28b4d9241a8d08b4b86af454a98645b43083141b688a60c4f639f4f0"
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-final-auth-cookie.xml",
+      "nodes": 23,
+      "sha256": "401713b156bbc156b4e356b4f4fd0d83c847f528d69c65668832cb8fc284913a"
+    }
+  ],
+  "unchanged_runtime_trees_since_stream_measurement": [
+    "src/uaw/model",
+    "src/uaw/run",
+    "src/uaw/context",
+    "src/uaw/agent",
+    "src/uaw/resources/prompts",
+    "apps/web",
+    "contracts"
+  ],
+  "generated_contract_commit": "363618f8c38eaa0078b54d6b3b807d3f97957893",
+  "independent_human_acceptance": {
+    "fact_quality": "pending",
+    "satisfaction": "pending",
+    "ratings_filled_by_A": 0,
+    "acceptance_by_A": 0
+  },
+  "scope_boundaries": {
+    "BCD_dispatched": false,
+    "worker_workspaces_modified": false,
+    "subagents_started": false,
+    "fixed_user_model": true,
+    "single_agent": true,
+    "product_exec_install_write_DAG_disabled": true,
+    "keyword_router_added": false,
+    "old_failed_runs_revived": false,
+    "budget_or_authorization_extended": false,
+    "last_full_updated": false
+  }
+}

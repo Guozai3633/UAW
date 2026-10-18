@@ -112,6 +112,25 @@ def summary(
         model_prepared = first_time(own, "model.attempts", state="prepared")
         model_received = first_time(own, "model.attempts", state="received")
         model_finished = first_time(own, "model.invocations", state="finished")
+        operation: Payload = next(
+            (
+                row["payload"]
+                for row in rows
+                if row["namespace"] == "agent.loop.operations"
+                and row["payload"].get("context", {}).get("run_id") == run_id
+                and row["payload"].get("step") == 1
+            ),
+            {},
+        )
+        snapshot_id = operation.get("snapshot_ref", {}).get("id")
+        snapshot_created = next(
+            (
+                row["created_at"]
+                for row in versions
+                if row["namespace"] == "context.snapshots" and row["resource_id"] == snapshot_id
+            ),
+            None,
+        )
         stream: Payload = next(
             (
                 row["payload"]
@@ -185,6 +204,10 @@ def summary(
                 "queue_wait_ms": elapsed(queued, claimed),
                 "claimed_to_step_ms": elapsed(claimed, step),
                 "step_to_model_claim_ms": elapsed(step, model_claimed),
+                "context_snapshot_id": snapshot_id,
+                "first_context_record_at": snapshot_created,
+                "step_to_fixed_context_record_ms": elapsed(step, snapshot_created),
+                "fixed_context_record_to_model_claim_ms": elapsed(snapshot_created, model_claimed),
                 "model_claim_to_attempt_prepared_ms": elapsed(model_claimed, model_prepared),
                 "submit_to_first_reply_version_timestamp_ms": elapsed(
                     submit, displayed_versions[0]["at"] if displayed_versions else None

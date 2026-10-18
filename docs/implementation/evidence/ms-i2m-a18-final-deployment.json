@@ -1,0 +1,85 @@
+{
+  "schema_version": "uaw.a18-deployment.v1",
+  "runtime": "H02-v10-final2",
+  "origin": "http://127.0.0.1:5183",
+  "backend_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "frontend_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "verified_at": "2026-10-18T16:18:22.938875+00:00",
+  "runtime_source_proof": {
+    "source_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+    "file_count": 277,
+    "files_sha256": "042d75fcf8d7aee9f74dd67f8e6f565ea92c62974a1b986cbe5c2edf746b7dc0"
+  },
+  "dist_hashes": [
+    {
+      "bytes": 23293,
+      "file": "assets/index-BeIoI3EH.css",
+      "sha256": "a6135089ae8c955f5e9197f2a26cc0be060cb8a1818de451d0e91c7b2400e294"
+    },
+    {
+      "bytes": 920294,
+      "file": "assets/index-BHQKEwFU.js",
+      "sha256": "b0c723a70a705b305525875d0ecf2cf9b5747f4b73e1af1090e0dd0b6c4a367d"
+    },
+    {
+      "bytes": 411,
+      "file": "index.html",
+      "sha256": "86a040bdeabc22f7515836317fcb37763e5ade49eb6d36fc0822e1375dc673eb"
+    }
+  ],
+  "deployment_http": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "assets/index-BHQKEwFU.js",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256_matches": true
+    }
+  ],
+  "ready_status": 200,
+  "anonymous_quality_status": 401,
+  "original_user_rows_before": 1209,
+  "original_non_ephemeral_rows_unchanged": 1209,
+  "expired_list_snapshots_removed": 0,
+  "original_history_changed": false,
+  "auth_settings_unchanged": true,
+  "same_original_user_database": true,
+  "retired_assets_preserved_for_already_open_pages": true,
+  "activity_before": {
+    "nonterminal_runs": 0,
+    "unfinished_model_invocations": 0
+  },
+  "quality_samples": 8,
+  "quality_real_human_reviews": 0,
+  "new_user_tasks_submitted_by_A": 0,
+  "human_confirmation_or_acceptance_by_A": 0,
+  "status": "HTTP_history_and_actual_owner_browser_verified",
+  "browser_verified_at": "2026-10-18T16:21:01.029724+00:00",
+  "actual_owner_browser": {
+    "origin": "http://127.0.0.1:5183",
+    "connected": true,
+    "existing_conversations_visible": 12,
+    "task_input_enabled": true,
+    "original_history_visible": true,
+    "user_tasks_submitted_by_A": 0,
+    "human_review_or_authorization_or_acceptance_by_A": 0,
+    "screenshot": "ms-i2m-a18-owner-final-page.png",
+    "screenshot_sha256": "0c70f88fd483192293685ec7de6709893693e381b1fdc8b9fb5c505fab77d75e"
+  },
+  "preflight_open_user_tabs": 0,
+  "local_forms_edited_by_A": 0,
+  "streaming_measurement_source": "1cce51e59d08fca09adf31af1c40d02518374153",
+  "final_runtime_delta_from_measurement": [
+    "src/uaw/api/routes.py: invalid-cookie cleanup on guarded GET only"
+  ],
+  "final_auth_regression": "ms-i2m-a18-final-auth-cookie.xml",
+  "frontend_tree_unchanged_from_actual_stream_browser_capture": true
+}

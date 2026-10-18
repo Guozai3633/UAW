@@ -1,3 +1,16 @@
+# 2026-10-19 A18实际增量链路目录
+
+| 模块 | 当前代码位置 | 职责 |
+| --- | --- | --- |
+| Model | `src/uaw/model/{adapters,streaming,stream_text,gateway,contracts,ports}.py` | 实际SSE、仅reply正文解码、有界读取、原调用/费用/最终严格校验 |
+| Run/Item | `src/uaw/run/{streaming,conversation_entry,termination,presentation}.py` | 原输入/调用绑定、同Item检查点、取消/失败、停止证据及最终发布 |
+| HTTP/Event | `src/uaw/run/events.py`、`src/uaw/api/routes.py` | after_seq固定分页、批读取、query校验、无效Cookie同源恢复 |
+| 公共对象 | `contracts/streaming_catalog.py`、`src/uaw/shared/streaming.py` | 严格流对象、Provider与提交确认时刻；原schema生成链 |
+| 页面 | `apps/web/src/features/workspace/`、`lib/events/{projection,timing}.ts` | 现有轮询增量、按修订覆盖、恢复/不完整提示、DOM计时 |
+| 测量/验证 | `ops/summarize_stream_latency.py`、`tests/unit/model/`、`tests/integration/agent/`、`apps/web/tests/` | 只读阶段/费用汇总、受控和实际证据分开 |
+
+[详细对象/链路](implementation/MS-I2m-A18.md) · [协议](api/STREAMING.md) · [实际交付](implementation/human-tests/H02-v10.md)。本轮前后端均由A按本人授权完成，没有操作BCD工作区。下方为历史职责及未来目录，不能据旧“未开发”推断当前状态。
+
 # 2026-10-18 A16实际目录补充
 
 当前已装配的审阅等待来源位于 `src/uaw/run/review_wait.py`；内部端口在 `run/clock_ports.py`，持久时钟在 `run/execution_clock.py`，队列/后台/恢复在 `run/jobs.py`、`background.py`、`conversation_recovery.py`，完成控制在 `run/completion.py` 和 `agent/completion/`。公开API读取继续经 `run/presentation.py`；没有新建万能对话服务。

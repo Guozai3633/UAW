@@ -1,0 +1,31 @@
+{
+  "source": "1cce51e59d08fca09adf31af1c40d02518374153",
+  "runtime": "H02-v10-final",
+  "phase": "actual_owner_browser_login_after_HTTP_deploy_verification",
+  "http_resources_previously_verified": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "sha256_matches": true,
+      "status": 200
+    },
+    {
+      "file": "assets/index-BHQKEwFU.js",
+      "sha256_matches": true,
+      "status": 200
+    },
+    {
+      "file": "index.html",
+      "sha256_matches": true,
+      "status": 200
+    }
+  ],
+  "original_user_rows": 1209,
+  "actual_error": "Browser credential is invalid",
+  "cause": "Cookie from another loopback instance prevented unauthenticated launch exchange",
+  "failed_model_calls": 0,
+  "fix_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "fixed_checks": "ms-i2m-a18-final-auth-cookie.xml",
+  "original_manifest_sha256": "2b690573c922040a172ce7f988d22b3ca38fac6f9e77d6591d08717be15ec6f5",
+  "original_runtime_and_logs_retained": true,
+  "no_auth_bypass_or_form_clear": true
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="1" errors="0" time="0.2350027">
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-18T15:09:29.377Z" hostname="LAPTOP-JE6KH8OE" tests="10" failures="1" errors="0" skipped="0" time="0.2139008">
+        <testcase classname="tests/unit/controller.test.ts" name="sends exact original once, refreshes known Run and does not treat cancellation acknowledgement as terminal" time="0.1461508">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="uncertain dispatch persists lookup only and refresh never resubmits" time="0.0021995">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="decision binds fresh hash/refs/revision, rejects changed approval" time="0.0071056">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="creating a conversation releases busy state and records an opened URL in the sidebar" time="0.0081669">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="new controller restores original Run by GET without dispatching a turn" time="0.0028453">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="aborted identity read cannot restore old data or a connected state" time="0.0006113">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="cursor-invalid responses resnapshot without sending and cursor loops fail explicitly" time="0.0025671">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="a rejected historical event leaves reconnect usable; a valid reread restores creation without sending a turn" time="0.0231229">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="polls only new ordered events while active, updates one partial message, and restores full final content on refresh" time="0.0072892">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="retires only the original proven stopped reply lookup, without submitting again or treating billing as settled" time="0.0127841">
+            <failure message="连接中断，请重新读取。" type="Error">
+Error: 连接中断，请重新读取。
+ ❯ UawClient.call src/lib/api/client.ts:19:42
+ ❯ WorkspaceController.retireStoppedLookup src/features/workspace/controller.ts:156:33
+ ❯ tests/unit/controller.test.ts:124:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { uncertain: false }
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/streaming-understanding.test.tsx" timestamp="2026-10-18T15:09:29.395Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="0" errors="0" skipped="0" time="0.0211019">
+        <testcase classname="tests/unit/streaming-understanding.test.tsx" name="stopping without a completed model decision does not promise a future understanding" time="0.0202718">
+        </testcase>
+    </testsuite>
+</testsuites>

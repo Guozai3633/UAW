@@ -1,3 +1,16 @@
+# 2026-10-19当前入口：H02-v10普通正文增量
+
+| 文档 | 作用与位置 |
+| --- | --- |
+| [H02-v10本人测试](implementation/human-tests/H02-v10.md) | 已登录原地址、出字/刷新/停止/新会话、澄清/纠正与原成果体验 |
+| [A18设计](implementation/MS-I2m-A18.md) | 模块图、真实目录、SSE/Item/事件/失败恢复及计时策略 |
+| [增量读取协议](api/STREAMING.md) | after_seq、同Item修订、stopped_reply_ref、未完成/费用及认证恢复 |
+| [耗时/费用](implementation/MS-I2m-A18-LATENCY.md) | 实际分阶段观测、20调用全部费用、保留失败、范围与限制 |
+| [固定部署](implementation/evidence/ms-i2m-a18-final-deployment.json) | eeaa6ff、277源码/构建hash、原账号1209记录和实际登录页面 |
+| [当前计划](plan/H02_CONVERSATION.md)、[DISPATCH](coordination/DISPATCH.md) | A单会话工程交付、本人体验/人审与下一阶段独立任务 |
+
+原8题人审/满意度pending，A18不改生成策略、不代评分。下方标题中的“当前”属于历史阶段。
+
 # 2026-10-18当前入口：H02-v9认证审阅与反馈交付
 
 | 文档 | 作用与位置 |

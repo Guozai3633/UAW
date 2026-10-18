@@ -1,0 +1,105 @@
+{
+  "source": "existing_A17_original_capture",
+  "cases": [
+    {
+      "case_id": "office-invoice",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-1-run-b95c011a8ff54c14a66c37d63e53c5a9",
+      "observations_sha256": "14248e09e57a1e8f36698cd566a47f938fdb48851212cb16e8fcee9e29753764",
+      "selected_text_sha256": "85bfe6558297be0b38fdd8254180690ba2a55b988893b2a68f311ea2ad2f77f6",
+      "selected_characters": 285,
+      "decision": "reply",
+      "actual_calls": 1,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "academic-pilot",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-1-run-c32b0455b6234fd09c72da1556433362",
+      "observations_sha256": "9cc10aa9ac1a7fa0dcff4a96243b436e234c8564edd1da02745cc2aff1bdae27",
+      "selected_text_sha256": "aca6006a70397d1e0a4055414dfb724e8d735260cb2c35586ee205a6cbc7214a",
+      "selected_characters": 419,
+      "decision": "deliver",
+      "actual_calls": 2,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "academic-quote",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-1-run-799ab0f50d174a33b2c591acb91416d8",
+      "observations_sha256": "060e79c9971c206163406a97fbac15e28d32f3dd59e9dc0a74eb49411b2d8f7e",
+      "selected_text_sha256": "861ef56bd74c0221f86a5d4621267901bb38dc241967522f19791954990c6905",
+      "selected_characters": 932,
+      "decision": "reply",
+      "actual_calls": 1,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "technical-tcc-zk",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-1-run-963395f797a44509bd2b0a7724d1ea8b",
+      "observations_sha256": "4f27f32060382039dc7c2833899612915c12630d21dff4daac2602dd6bb488ad",
+      "selected_text_sha256": "c30592654967795b2ef560ec5068ceff58dc3f307e062a3bee7e0d67d6ee7fd5",
+      "selected_characters": 925,
+      "decision": "reply",
+      "actual_calls": 1,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "missing-paper",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-2-run-782a9beb22da4c83a749d5183a169aa2",
+      "observations_sha256": "b488adb9fee5ed29ae2ca0a3d6b714381c14046d1c16bd24b650de8e11c06b4a",
+      "selected_text_sha256": "74a4c60d196f66db1075426be77412aa124f71d713613cdff4474ffd5003fd32",
+      "selected_characters": 878,
+      "decision": "deliver",
+      "actual_calls": 3,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "ambiguity-cache-db",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-1-run-9dedb6eaa5f54a99ad230c4ae0262734",
+      "observations_sha256": "18ade60180873a787e2bfe8a4559031fb3f8d8eeb06953cda3f4fdd80137199d",
+      "selected_text_sha256": "1d02359241a8779616333bdbad7ffe85def86f4d0e1e0b8772a4ac022da96da3",
+      "selected_characters": 525,
+      "decision": "reply",
+      "actual_calls": 1,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "correction-office",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-2-run-ca697089db44407cb85325cb1a6c1877",
+      "observations_sha256": "d4d359d3ae402cdc624a72732d360b05fc78d6b9fa32ba97cf58e620f41aebd7",
+      "selected_text_sha256": "8366a6c48144e0c44ef1dd9b7409a4f63a6c3d2388671e4ed3f60e75a3629b76",
+      "selected_characters": 327,
+      "decision": "deliver",
+      "actual_calls": 4,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    },
+    {
+      "case_id": "correction-academic",
+      "source_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
+      "selected_attempt": "web-step-model-2-run-0528899914a4464fa54920b85a5f755f",
+      "observations_sha256": "09fe5b4a8ef2528293747904cc6e912942310a3c885a966fd37ee81b765cc6f7",
+      "selected_text_sha256": "0d63bff440c992a9a2a6606d1febc77eaa32465d34f5ab2d6654461e69dcf123",
+      "selected_characters": 120,
+      "decision": "deliver",
+      "actual_calls": 4,
+      "human_judgment": "pending",
+      "quality_change_claimed": false
+    }
+  ],
+  "new_model_calls": 0,
+  "new_human_ratings": 0,
+  "generation_strategy_changed": false,
+  "quality_rates": null
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": "uaw.a18-browser-dom-timing.v1",
+  "synthetic_identity_only": true,
+  "user_tasks_submitted": 0,
+  "clock": "DOM React commit attributes; UTC wall clock of this computer, not physical paint",
+  "raw_sha256": "914323eb0e72102ba128f198e97cd72d90422e76468f3b280fa4128ee2a32d6b",
+  "runs": [
+    {
+      "run_id": "run-c90dca9406b64c34931d72ae6549062c",
+      "case_id": "fixed-ui-ordinary-first",
+      "source_commit": "1cce51e59d08fca09adf31af1c40d02518374153",
+      "submit_started_at": "2026-10-18T16:01:18.493100+00:00",
+      "first_rendered_at": "2026-10-18T16:01:27.618000+00:00",
+      "submit_to_accepted_ms": 199.6,
+      "submit_to_first_render_ms": 9124.9,
+      "item_id": "conversation-message-7210f983889c2a13ae9731dd6a7a8a3eb2914e5475a62b5390396e31bbb811df",
+      "revision_at_observation": 7,
+      "partial_observed": true
+    },
+    {
+      "run_id": "run-858a6e369afd46d69cace9bce5994599",
+      "case_id": "fixed-ui-ordinary-repeat",
+      "source_commit": "1cce51e59d08fca09adf31af1c40d02518374153",
+      "submit_started_at": "2026-10-18T16:01:53.975000+00:00",
+      "first_rendered_at": "2026-10-18T16:02:02.268000+00:00",
+      "submit_to_accepted_ms": 232.6,
+      "submit_to_first_render_ms": 8293.0,
+      "item_id": "conversation-message-61fa0dcf9563405c0569780d053f846aa7742832edea240875666ff5ac1b149a",
+      "revision_at_observation": 9,
+      "partial_observed": false
+    },
+    {
+      "run_id": "run-1525b4df1ec641599a78d6181f0d47f4",
+      "case_id": "fixed-ui-refresh-in-progress",
+      "source_commit": "1cce51e59d08fca09adf31af1c40d02518374153",
+      "submit_started_at": "2026-10-18T16:03:18.246900+00:00",
+      "first_rendered_at": "2026-10-18T16:03:28.093000+00:00",
+      "submit_to_accepted_ms": 205.0,
+      "submit_to_first_render_ms": 9846.1,
+      "item_id": "conversation-message-40fa13a310f0bfe5920613a6be106f80b36d34e0d12c2b0f31a6d71b3583cad1",
+      "revision_at_observation": 1,
+      "partial_observed": true
+    },
+    {
+      "run_id": "run-56857f42a1314ea48dbb385b9ef18b7d",
+      "case_id": "fixed-ui-cancel",
+      "source_commit": "1cce51e59d08fca09adf31af1c40d02518374153",
+      "submit_started_at": "2026-10-18T16:04:09.848700+00:00",
+      "first_rendered_at": "2026-10-18T16:04:19.012000+00:00",
+      "submit_to_accepted_ms": 187.0,
+      "submit_to_first_render_ms": 9163.3,
+      "item_id": "conversation-message-f5e0762e728e14e6d766bfbc94f65dd9d5f1cb4a55bdcf374c03e336d7645d0d",
+      "revision_at_observation": 1,
+      "partial_observed": true
+    }
+  ]
+}

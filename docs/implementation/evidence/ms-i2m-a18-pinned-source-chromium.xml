@@ -1,0 +1,166 @@
+<testsuites id="" name="" tests="71" failures="0" skipped="0" errors="0" time="124.150252">
+<testsuite name="controlled\a2-workspace.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="10" failures="0" skipped="0" time="17.739" errors="0">
+<testcase name="A2 default: server list, full text, requirement reasons and exact contract acceptance survive refresh" classname="controlled\a2-workspace.spec.ts" time="2.747">
+</testcase>
+<testcase name="A2 default: unknown acceptance stays blocked after reload until actual receipt exists" classname="controlled\a2-workspace.spec.ts" time="1.8">
+</testcase>
+<testcase name="A2 default: lost submit refresh looks up original request and never resubmits" classname="controlled\a2-workspace.spec.ts" time="1.352">
+</testcase>
+<testcase name="A2 default: old artifact hash refuses content and acceptance" classname="controlled\a2-workspace.spec.ts" time="0.93">
+</testcase>
+<testcase name="A2 default: missing delivery is no result and never creates a task" classname="controlled\a2-workspace.spec.ts" time="0.892">
+</testcase>
+<testcase name="A2 default: cancellation winning acceptance race is not reported as completed or retried" classname="controlled\a2-workspace.spec.ts" time="1.74">
+</testcase>
+<testcase name="A2 default: expired server cursor restarts and later page history is visible" classname="controlled\a2-workspace.spec.ts" time="0.623">
+</testcase>
+<testcase name="A2 default: later login reads history but server refuses old-session acceptance; no automatic action" classname="controlled\a2-workspace.spec.ts" time="1.604">
+</testcase>
+<testcase name="A2 default: unsupported artifact media type rejects full content and acceptance" classname="controlled\a2-workspace.spec.ts" time="1.101">
+</testcase>
+<testcase name="A2 default: running/version5 fixed delivery accepts but stays running until a separately reread completion" classname="controlled\a2-workspace.spec.ts" time="4.95">
+</testcase>
+</testsuite>
+<testsuite name="controlled\auth.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="2" failures="0" skipped="0" time="1.476" errors="0">
+<testcase name="controlled: published session exchange removes fragment, logout clears local drafts and uses CSRF" classname="controlled\auth.spec.ts" time="0.905">
+</testcase>
+<testcase name="controlled: lost exchange reconciles GET cookie session without consuming launch code twice" classname="controlled\auth.spec.ts" time="0.571">
+</testcase>
+</testsuite>
+<testsuite name="controlled\h02-presentation.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="6" failures="0" skipped="0" time="10.889" errors="0">
+<testcase name="H02-I03 controlled 1440: same revision ready graph updates status/model summary/full delivery without new POST" classname="controlled\h02-presentation.spec.ts" time="1.789">
+</testcase>
+<testcase name="H02-I03 controlled 1050: same revision ready graph updates status/model summary/full delivery without new POST" classname="controlled\h02-presentation.spec.ts" time="2.297">
+</testcase>
+<testcase name="H02-I03 controlled: background GET retains verified display; delayed old input cannot restore old delivery" classname="controlled\h02-presentation.spec.ts" time="1.938">
+</testcase>
+<testcase name="H02-I03 controlled: not_provided hides endless waiting and terminal/stopping/finalizing remain distinct" classname="controlled\h02-presentation.spec.ts" time="1.387">
+</testcase>
+<testcase name="H02-I03 controlled: unknown acceptance queries actual receipt, finalizing is not completed and refresh never resends" classname="controlled\h02-presentation.spec.ts" time="1.919">
+</testcase>
+<testcase name="H02-I03 controlled: missing source and new identity do not reuse prior permission/summary or replay requests" classname="controlled\h02-presentation.spec.ts" time="1.559">
+</testcase>
+</testsuite>
+<testsuite name="controlled\h02-terminal-feedback.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="7" failures="0" skipped="0" time="10.355" errors="0">
+<testcase name="H02-I01 B controlled: accepted + failed shows unapplied terminal feedback, no waiting understanding or replay" classname="controlled\h02-terminal-feedback.spec.ts" time="1.503">
+</testcase>
+<testcase name="H02-I01 B controlled: accepted + cancelled shows unapplied terminal feedback, no waiting understanding or replay" classname="controlled\h02-terminal-feedback.spec.ts" time="1.613">
+</testcase>
+<testcase name="H02-I01 B controlled: accepted + completed shows unapplied terminal feedback, no waiting understanding or replay" classname="controlled\h02-terminal-feedback.spec.ts" time="1.416">
+</testcase>
+<testcase name="H02-I01 B controlled: actually applied correction stays applied after failure; old execution frame is never presented as current model understanding" classname="controlled\h02-terminal-feedback.spec.ts" time="1.45">
+</testcase>
+<testcase name="H02-I01 B controlled: 1050px registered old artifact opens with full body/Refs/checks, stale acceptance forbidden and no POST" classname="controlled\h02-terminal-feedback.spec.ts" time="1.811">
+</testcase>
+<testcase name="H02-I01 B controlled: 390px registered old artifact opens with full body/Refs/checks, stale acceptance forbidden and no POST" classname="controlled\h02-terminal-feedback.spec.ts" time="1.493">
+</testcase>
+<testcase name="H02-I01 B controlled: old proposal version stays read-only even without stale flag and current nonterminal Run" classname="controlled\h02-terminal-feedback.spec.ts" time="1.069">
+</testcase>
+</testsuite>
+<testsuite name="controlled\quality.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="4" failures="0" skipped="0" time="7.848" errors="0">
+<testcase name="quality controlled: original sources, blank judgments, saved draft and browser reload" classname="controlled\quality.spec.ts" time="2.679">
+</testcase>
+<testcase name="quality controlled: lost reply requires reread and does not resend" classname="controlled\quality.spec.ts" time="1.537">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 1280px" classname="controlled\quality.spec.ts" time="2.092">
+</testcase>
+<testcase name="quality controlled: Run feedback saved and reopened at 390px" classname="controlled\quality.spec.ts" time="1.54">
+</testcase>
+</testsuite>
+<testsuite name="controlled\streaming.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.796" errors="0">
+<testcase name="controlled stream: partial text survives reload; final replaces one Item, no replay POST" classname="controlled\streaming.spec.ts" time="1.796">
+</testcase>
+</testsuite>
+<testsuite name="controlled\u3-workspace.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="7" failures="0" skipped="0" time="8.535" errors="0">
+<testcase name="MS-U3: explicit older URL and drafts survive reload, list refresh and back navigation with zero writes" classname="controlled\u3-workspace.spec.ts" time="1.663">
+</testcase>
+<testcase name="MS-U3: hidden explicit URL never falls back to newest or retains old content" classname="controlled\u3-workspace.spec.ts" time="0.656">
+</testcase>
+<testcase name="MS-U3: identity change on reload keeps URL but clears foreign drafts and reads current owner only" classname="controlled\u3-workspace.spec.ts" time="0.966">
+</testcase>
+<testcase name="MS-U3: original global recovery stays linked while another conversation retains its draft" classname="controlled\u3-workspace.spec.ts" time="1.213">
+</testcase>
+<testcase name="MS-U3: device pending/active/revoked are actual read states and absent candidate/root are unavailable" classname="controlled\u3-workspace.spec.ts" time="1.302">
+</testcase>
+<testcase name="MS-U3 controlled: unknown device confirmation survives reload and never retries POST without new original version" classname="controlled\u3-workspace.spec.ts" time="1.81">
+</testcase>
+<testcase name="MS-U3: server list removal clears active data on read and does not pick a newer conversation" classname="controlled\u3-workspace.spec.ts" time="0.925">
+</testcase>
+</testsuite>
+<testsuite name="controlled\u3b-installed.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="7" failures="0" skipped="0" time="10.171" errors="0">
+<testcase name="MS-U3b controlled: click starts once, system steps and current lifecycle never imply file rights, stop is original CAS" classname="controlled\u3b-installed.spec.ts" time="1.704">
+</testcase>
+<testcase name="MS-U3b controlled: known-ID refresh and conversation switch only GET original launch, draft is preserved" classname="controlled\u3b-installed.spec.ts" time="1.544">
+</testcase>
+<testcase name="MS-U3b controlled: lost start has no ID; reload never POSTs and explicit recovery replays same request ID" classname="controlled\u3b-installed.spec.ts" time="1.734">
+</testcase>
+<testcase name="MS-U3b controlled: stop unknown first GETs on reload, terminal original response clears it without another stop" classname="controlled\u3b-installed.spec.ts" time="1.451">
+</testcase>
+<testcase name="MS-U3b controlled: same account new session cannot inherit, logout clears lookup without frontend stop" classname="controlled\u3b-installed.spec.ts" time="1.249">
+</testcase>
+<testcase name="MS-U3b controlled: actual 503 is unavailable, refresh does not retry or show ready" classname="controlled\u3b-installed.spec.ts" time="1.3">
+</testcase>
+<testcase name="MS-U3b controlled: reusable same owner Page verifier performs GET/reload with no launch exchange or lifecycle write" classname="controlled\u3b-installed.spec.ts" time="1.189">
+</testcase>
+</testsuite>
+<testsuite name="controlled\u4-conversation.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="10" failures="0" skipped="0" time="14.812" errors="0">
+<testcase name="MS-U4: graph question/options/free answer use same Run and exact 0.2 CAS; accepted never renders applied or completed" classname="controlled\u4-conversation.spec.ts" time="1.485">
+</testcase>
+<testcase name="MS-U4: running correction is one explicit write, real superseded state and original draft survive refresh" classname="controlled\u4-conversation.spec.ts" time="1.409">
+</testcase>
+<testcase name="MS-U4: lost response and absent receipt reload query the original ID without POST replay or ID replacement" classname="controlled\u4-conversation.spec.ts" time="1.564">
+</testcase>
+<testcase name="MS-U4: stale question after server CAS refuses old answer, retains exact draft and never retries" classname="controlled\u4-conversation.spec.ts" time="1.405">
+</testcase>
+<testcase name="MS-U4: another page sees original in-flight lookup, cannot replace ID; release reconciles both with GET" classname="controlled\u4-conversation.spec.ts" time="2.011">
+</testcase>
+<testcase name="MS-U4: cancellation winning answer race shows actual terminal status; no continuation resurrection" classname="controlled\u4-conversation.spec.ts" time="1.637">
+</testcase>
+<testcase name="MS-U4: identity/session changes isolate drafts and pending; auth/source absence never manufactures capability" classname="controlled\u4-conversation.spec.ts" time="1.646">
+</testcase>
+<testcase name="MS-U4: ordinary waiting text is not a graph question or a contract acceptance" classname="controlled\u4-conversation.spec.ts" time="1.254">
+</testcase>
+<testcase name="MS-U4 verifier controlled: original Page only GETs the exact graph/question and original receipt; does not navigate or persist" classname="controlled\u4-conversation.spec.ts" time="1.521">
+</testcase>
+<testcase name="MS-U4 verifier controlled: missing actual source or foreign graph fails privately with zero writes" classname="controlled\u4-conversation.spec.ts" time="0.88">
+</testcase>
+</testsuite>
+<testsuite name="controlled\waiting-feedback.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="7" failures="0" skipped="0" time="9.885" errors="0">
+<testcase name="H01-I01 controlled: original question/limits and three pinned refs show neutral waiting with no invented decision; refresh only GET" classname="controlled\waiting-feedback.spec.ts" time="1.507">
+</testcase>
+<testcase name="H01-I01 controlled: only original ApprovalRequest has approve/decline operations" classname="controlled\waiting-feedback.spec.ts" time="1.48">
+</testcase>
+<testcase name="H01-I01 controlled: only actual fixed DeliveryView has full content/report and acceptance operation" classname="controlled\waiting-feedback.spec.ts" time="1.507">
+</testcase>
+<testcase name="H01-I01 controlled: empty original source cannot fabricate question, success or approval" classname="controlled\waiting-feedback.spec.ts" time="0.946">
+</testcase>
+<testcase name="H01-I01 controlled: missing original source cannot fabricate question, success or approval" classname="controlled\waiting-feedback.spec.ts" time="0.966">
+</testcase>
+<testcase name="H01-I01 controlled: manual stop acknowledgement keeps draft blocked; only actual cancelled GET permits a new exact request" classname="controlled\waiting-feedback.spec.ts" time="1.811">
+</testcase>
+<testcase name="H01-I01 controlled: lost manual stop first reads original run after refresh and never cancels or submits automatically" classname="controlled\waiting-feedback.spec.ts" time="1.668">
+</testcase>
+</testsuite>
+<testsuite name="controlled\workspace.spec.ts" timestamp="2026-10-18T15:49:50.107Z" hostname="chromium" tests="10" failures="0" skipped="0" time="14.298" errors="0">
+<testcase name="controlled: original→understanding→Markdown summary; reload/reconnect never resend" classname="controlled\workspace.spec.ts" time="1.738">
+</testcase>
+<testcase name="controlled: fresh approval 批准 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="1.648">
+</testcase>
+<testcase name="controlled: fresh approval 拒绝 binds exact hashes and version" classname="controlled\workspace.spec.ts" time="1.637">
+</testcase>
+<testcase name="controlled: stale approval prevents POST" classname="controlled\workspace.spec.ts" time="1.16">
+</testcase>
+<testcase name="controlled: actual terminal confirms cancel, no resend on refresh" classname="controlled\workspace.spec.ts" time="1.619">
+</testcase>
+<testcase name="controlled: unknown send retained across refresh without matching text or resubmission" classname="controlled\workspace.spec.ts" time="1.323">
+</testcase>
+<testcase name="controlled: mobile layout, unavailable identity and denied API are readable" classname="controlled\workspace.spec.ts" time="0.74">
+</testcase>
+<testcase name="controlled: create uses actual model catalog and remains usable after opening" classname="controlled\workspace.spec.ts" time="1.137">
+</testcase>
+<testcase name="controlled: disconnected reads reconcile original Run before reconnecting, never dispatch again" classname="controlled\workspace.spec.ts" time="1.767">
+</testcase>
+<testcase name="controlled: a rejected historical event keeps recovery accessible and restores new conversation after validated reread" classname="controlled\workspace.spec.ts" time="1.529">
+</testcase>
+</testsuite>
+</testsuites>

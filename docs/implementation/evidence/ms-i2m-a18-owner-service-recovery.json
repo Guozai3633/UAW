@@ -1,0 +1,15 @@
+{
+  "source_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "observed_at": "2026-10-18T16:37:39.539058+00:00",
+  "origin": "http://127.0.0.1:5183",
+  "connected_original_user": true,
+  "existing_conversations": 12,
+  "task_input_enabled": true,
+  "same_cookie_after_same_frozen_runtime_restart": true,
+  "browser_page_preserved_for_user": true,
+  "new_model_calls": 0,
+  "new_original_user_tasks": 0,
+  "human_ratings_authorizations_acceptance": 0,
+  "screenshot": "ms-i2m-a18-owner-restored-page.png",
+  "screenshot_sha256": "ff0b62cfa567444d3c6d70d85a999bf78b86470cf9f6bbd158f841cc89c0650f"
+}

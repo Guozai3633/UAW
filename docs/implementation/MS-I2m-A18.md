@@ -1,3 +1,11 @@
+# 2026-10-19最终状态：H02-v10固定部署
+
+准确运行源码 **eeaa6ff815b42f95ff49993e84f8159f7fd6ae48**，网页契约固定363618f；<http://127.0.0.1:5183/> 已登录原账号。277源码和三构建文件hash核对，1209原记录不变。真实流式和页面测量在1cce51e完成；最终仅新增准确同源GET对无效Cookie的清理，23认证SQL和实际原账号登录已验证，Model/Run/Context/网页树均未改变。
+
+[本轮结果与限制](MS-I2m-A18-LATENCY.md) · [固定实际页面](evidence/ms-i2m-a18-fixed-actual-page.json) · [最终部署](evidence/ms-i2m-a18-final-deployment.json) · [本人测试](human-tests/H02-v10.md)。正文逐步显示、同Item刷新、取消不完整与新会话、正式成果核验/待接受均有实际证据；澄清/纠正/审阅时钟保持相关SQL兼容。未变更生成策略或事实标签。
+
+下文1–5节为实施前设计；6–7节为保留的阶段记录，其中“未提交/未部署/审批未执行”描述当时停止点，已由上面的准确提交、回归与部署证据接续，不是当前状态。
+
 # A18：普通回复流式显示与网页端到端耗时
 
 2026-10-18。工程起点 `9ad685c3c99492e0fc68af52a4595d1e903bfdce`，H02-v9冻结运行源码 `69408bc`。本轮由A独立实施，不派发或操作BCD，不启用子Agent/DAG/本机写入安装exec。A17的审阅、反馈、原评测器及8题结果直接复用；本人事实判断继续pending。
@@ -102,3 +110,26 @@ flowchart LR
 实际页面另捕获约600字回复的`in_progress`正文和刷新后的同一稳定Item完整回复；约800字回复在出字后实际点击停止，原前缀转failed，1次调用的usage缺失保持pending，未重发。准确汇总及全部费用另列，不把测试身份操作当本人接受。
 
 实连发现并修复HTTP query里的`after_seq`字符串需转整数（保留422拒绝非法/重复参数）；新建会话HTTP处理中禁用输入，防止在旧框输入后被切换清空；stopping且无完整决策时不再承诺等待新的理解。旧测试对A15已发布presentation端点的清单过期，先记录固定旧源码/旧目录证据，再保留其无完成权威的精确scope断言。原失败回执保留。
+
+## 7. 最新未提交续项与恢复顺序
+
+读者以[实测汇总](MS-I2m-A18-LATENCY.md)和DISPATCH页首为准。最后提交为65be065，后续修改尚未固定：
+
+- 原`RunPresentationView`追加可选`stopped_reply_ref`，读图在原只读事务核对首步唯一流/调用、job blocked、原Run取消、原输入/消息及无Tool上下文。只证明普通回复已停止，不改变Run、预算、未知效果或费用。网页重新读取后只清除本地查询锁，新会话可以发新问题；旧Run仍不得提交。后端2SQL及前端预览13节点分别通过，最终真实新会话行为仍待验。
+- 提示框消费当前Run实际最新回复状态，接收正文时说明正在生成，正文中断时不再说等待完整理解；没有另起模型理解调用。
+- `first_committed_at`在首正文事务返回后采集，由后续/最终检查点保存，不增加事务；进程恰在首提交后丢失则允许缺失。原版本行`created_at`不冒充COMMIT时间。新增SQL断言尚待复跑。
+- `ops/summarize_stream_latency.py`只读既有合成快照及HTTP探针，按原Run/attempt/成果Bundle关联时间/费用。原202观察失败按唯一受理会话精确恢复，不按文字猜任务，不再发模型。缺失时刻为null，命令可复算；它不是另建质量评测体系。
+- 网页`generate.mjs --working-tree`可显式生成提交前预览，manifest为`contract_commit:null/release_ready:false`。正式交付须先提交接口，再绑定准确SHA生成；不能将这个preview打包成固定验收版本。
+
+当前Git暂存被自动审批服务因使用额度耗尽而拒绝执行，审查没有完成；没有换通道执行。继续完成了本地允许的编辑/类型/单元/离线整理。待审批服务恢复后先固定接口SHA与网页，再完成当前变更的SQL/浏览器、真实精确计时、H02-v10部署及逐项Goal审计。H02-v10现只有65be065准备目录，没有最终交付。原用户没有新增任务、评分、授权或接受；人工质量pending，Goal未完成。
+
+## 8. 最终对象、恢复与测量落点
+
+- `first_committed_at`在首正文事务COMMIT返回后取UTC，由下一次/最终检查点保存；若进程恰在提交后消失允许缺失。`created_at`只是版本行时间。提供方五个时刻来自实际HTTP/SSE读取，首content在持久回调前采集。
+- `RunPresentationView.stopped_reply_ref`按原取消、首步唯一普通流/调用、blocked job、原输入/消息及无工具上下文给出只读停止证据。网页只解除原本地查询锁；原Run/预算/未知费用不被改写。实际新会话提交成功且旧调用1次、不重发。
+- `api/routes.py`只在`GET web.session.get`返回401、有Cookie且无Authorization时执行原精确host/origin/loopback守卫，再发送删除无效Cookie。仍拒绝请求、不签发会话、不消费ticket，已登录Cookie不动；不可信Origin不清理。新登录必须持有原一次性入口，所有写入仍须CSRF。
+- `ops/summarize_stream_latency.py`读取已有合成导出和不可变HTTP回执；`--prior-summary`保留升级前各Run源码，`--browser-observations`合并原Run的DOM提交属性。通过原Agent operation的固定snapshot_ref拆出Context记录阶段，版本行时间不冒充纯计算/COMMIT；不另建评测体系。
+- 复算：`python ops/summarize_stream_latency.py --baseline <隔离基线目录> --candidate <隔离候选目录> --candidate-http <原阶段HTTP回执> --prior-summary docs/implementation/evidence/ms-i2m-a18-latency-observations.json --browser-observations docs/implementation/evidence/ms-i2m-a18-fixed-browser-timing.json --output <新汇总路径>`。私有目录包含原raw/费用/参数，公开摘要不含凭据或协议正文；不得将此命令当模型重跑器。
+- 原127.0.0.1与隔离127.0.0.2各自精确Origin；浏览器Cookie按host而非端口隔离。最终服务被冻结在`.data/human/H02-v10-final2`，旧v9/v10准备/首次部署包均保留，不覆盖源码或记录。普通回复内部streaming装配开启，产品子Agent/DAG/本机执行flags仍关闭。
+
+最终相关回归为107模型/契约、129网页单元、50真实SQL、71受控Chromium，加23认证SQL；不重复累计历史节点，不称全仓通过。全部20新模型调用/原失败/2未知末帧及金额pending保留，8题人工事实判断和满意度独立pending。工程逐项审计与交付提交另附。

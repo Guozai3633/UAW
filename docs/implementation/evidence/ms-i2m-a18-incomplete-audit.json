@@ -1,0 +1,419 @@
+{
+  "schema_version": "uaw.a18-completion-audit.v1",
+  "audited_at": "2026-10-18T15:42:39.061257+00:00",
+  "branch": "integration",
+  "last_commit": "65be065ece4fe8150e226c577e1ce53e12d2ad1e",
+  "goal_complete": false,
+  "goal_status": "active",
+  "requirements": [
+    {
+      "requirement": "M1.recover_actual_checkout_and_design_before_code",
+      "status": "proven_stage",
+      "evidence": [
+        "122ed0713bc101dd28de09e4d79866b8bd013cc2",
+        "docs/implementation/MS-I2m-A18.md"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M1.actual_protected_web_submit_and_queue_context_timeline",
+      "status": "partial",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-latency-observations.json"
+      ],
+      "remaining": "Small sequential cases observed; baseline restarted; strict same-load cold/warm comparison still needed."
+    },
+    {
+      "requirement": "M1.provider_first_content_generation_commit_event_and_page_stages",
+      "status": "incomplete",
+      "evidence": [
+        "65be065ece4fe8150e226c577e1ce53e12d2ad1e",
+        "src/uaw/run/streaming.py",
+        "apps/web/src/lib/events/timing.ts"
+      ],
+      "remaining": "Precise provider fields passed controlled SQL; latest COMMIT-ack field not SQL rerun; final fixed version real provider/page timing not collected."
+    },
+    {
+      "requirement": "M1.formal_report_extra_verification",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-latency-observations.json"
+      ],
+      "remaining": "Observed prior candidate stage, not a faster formal report claim."
+    },
+    {
+      "requirement": "M1.keep_startup_failures_fees_and_missing_values",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/MS-I2m-A18-LATENCY.md",
+        "docs/implementation/evidence/ms-i2m-a18-latency-observations.json"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M2.fixed_model_real_SSE_capability",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-actual-page.json",
+        "docs/implementation/evidence/ms-i2m-a18-latency-observations.json"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M2.no_extra_classification_reasoning_or_raw_protocol_UI",
+      "status": "proven_stage",
+      "evidence": [
+        "src/uaw/model/stream_text.py",
+        "tests/unit/model/test_streaming.py",
+        "docs/implementation/evidence/ms-i2m-a18-actual-page.json"
+      ],
+      "remaining": "Ordinary samples each one business model call; no hidden reasoning UI."
+    },
+    {
+      "requirement": "M2.original_Run_input_model_and_stable_Item_binding",
+      "status": "proven_stage",
+      "evidence": [
+        "tests/integration/agent/test_streaming.py",
+        "docs/implementation/evidence/ms-i2m-a18-timing-stream-final.xml"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M2.original_final_receipt_completion_and_usage_authority",
+      "status": "proven_stage",
+      "evidence": [
+        "src/uaw/run/conversation_entry.py",
+        "docs/implementation/evidence/ms-i2m-a18-timing-stream-final.xml"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M2.refresh_disconnect_duplicate_event_and_process_loss_recovery",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-actual-page.json",
+        "docs/implementation/evidence/ms-i2m-a18-chromium-final.xml",
+        "docs/implementation/evidence/ms-i2m-a18-process-loss.xml"
+      ],
+      "remaining": "Exact pre-EOF refresh timing is controlled evidence; real page settled refresh observed."
+    },
+    {
+      "requirement": "M2.cancel_partial_failure_and_pending_costs",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-actual-page.json",
+        "docs/implementation/evidence/ms-i2m-a18-stopped-lookup-source.xml"
+      ],
+      "remaining": "Current stopped-lookup UI source is preview and not deployed."
+    },
+    {
+      "requirement": "M2.formal_artifact_verification_version_acceptance_contract",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-related-sql-path-fixed.xml",
+        "docs/implementation/evidence/ms-i2m-a18-chromium-final.xml"
+      ],
+      "remaining": ""
+    },
+    {
+      "requirement": "M3.measure_and_reduce_application_redundancy",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-event-sql-before.json",
+        "docs/implementation/evidence/ms-i2m-a18-event-sql-after.json"
+      ],
+      "remaining": "Same 7-event graph: 10 -> 4 SQL; overall completion still not faster in these samples."
+    },
+    {
+      "requirement": "M3.read_existing_8_results_and_existing_feedback",
+      "status": "proven_stage",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-existing-quality-read.json"
+      ],
+      "remaining": "Latest earlier protected read had zero submitted feedback/reviews; recheck before final deployment."
+    },
+    {
+      "requirement": "M3.fix_concrete_state_and_failure_experience",
+      "status": "partial",
+      "evidence": [
+        "src/uaw/run/presentation.py",
+        "apps/web/src/features/workspace/TaskUnderstanding.tsx",
+        "docs/implementation/evidence/ms-i2m-a18-stopped-preview-ui.xml"
+      ],
+      "remaining": "Latest UI and COMMIT instrumentation pending exact-source SQL/browser and deployment."
+    },
+    {
+      "requirement": "M3.human_fact_quality_no_substituted_judgments",
+      "status": "pending_human",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a17-real-study.json",
+        "docs/implementation/evidence/ms-i2m-a18-existing-quality-read.json"
+      ],
+      "remaining": "No generation strategy change or new factual quality claim; independent human judgment remains pending."
+    },
+    {
+      "requirement": "M4.related_regression_on_final_exact_source",
+      "status": "incomplete",
+      "evidence": [
+        "docs/implementation/evidence/ms-i2m-a18-latest-preview-web-unit.xml"
+      ],
+      "remaining": "Preview:128 passed/1 fixed-source failure retained. Previous 39 distinct SQL/71 Chromium/107 model-contract passes do not prove latest uncommitted source."
+    },
+    {
+      "requirement": "M4.predeployment_idle_forms_history_accounts_and_costs",
+      "status": "partial",
+      "evidence": [
+        ".data/human/H02-v10/environment.json"
+      ],
+      "remaining": "Earlier 1209 original rows and idle preflight passed; recheck live jobs and unsaved forms at actual switch, not inferred from stale manifest."
+    },
+    {
+      "requirement": "M4.fixed_version_actual_service_and_accessible_user_page",
+      "status": "incomplete",
+      "evidence": [
+        "docs/implementation/human-tests/H02-v10.md"
+      ],
+      "remaining": "H02-v10 prepared only at65be065; no final switch or user-facing delivery."
+    },
+    {
+      "requirement": "M4.docs_interfaces_directory_plan_and_test_steps",
+      "status": "partial",
+      "evidence": [
+        "docs/api/STREAMING.md",
+        "docs/implementation/MS-I2m-A18.md",
+        "docs/implementation/MS-I2m-A18-LATENCY.md",
+        "docs/plan/H02_CONVERSATION.md",
+        "docs/plan/sessions/A.md",
+        "docs/coordination/DISPATCH.md",
+        "docs/implementation/human-tests/H02-v10.md"
+      ],
+      "remaining": "Current files describe an incomplete preview, not a release."
+    },
+    {
+      "requirement": "M4.reviewable_recoverable_final_commits",
+      "status": "incomplete",
+      "evidence": [
+        "65be065ece4fe8150e226c577e1ce53e12d2ad1e"
+      ],
+      "remaining": "Earlier stage commits exist. Current Git staging was not executed because automatic approval review hit its usage limit; must restore review before final source publication."
+    }
+  ],
+  "blocker": {
+    "kind": "automatic_approval_review_usage_limit",
+    "action_not_executed": "git add for stopped-reply contract/source",
+    "not_a_safety_determination": true,
+    "bypass_used": false,
+    "required_change": "Approval review service available again"
+  },
+  "current_generated_source": {
+    "baseline": "3222251e281beb5685fc29b2667d58ab421846d8",
+    "contract_ref": "working-tree-preview",
+    "contract_commit": null,
+    "release_ready": false,
+    "schema_sha256": "4d45ae081f3229f3f1936b2361cf912dd1619ba1997082e167d85b18df30c6eb",
+    "openapi_sha256": "c7b7f54c40c4540fe822c9fe61e8844d59960cd3664ce9e29368d227d0415043",
+    "paths": {
+      "/v1/conversations": [
+        "get",
+        "post"
+      ],
+      "/v1/conversations/{conversation_id}": [
+        "get"
+      ],
+      "/v1/conversations/{conversation_id}/items": [
+        "get"
+      ],
+      "/v1/conversations/{conversation_id}/turns": [
+        "post"
+      ],
+      "/v1/runs/{run_id}": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/control": [
+        "post"
+      ],
+      "/v1/tasks/{task_id}/frame": [
+        "get"
+      ],
+      "/v1/approvals/{approval_id}": [
+        "get"
+      ],
+      "/v1/approvals/{approval_id}/decisions": [
+        "post"
+      ],
+      "/v1/conversations/{conversation_id}/events": [
+        "get"
+      ],
+      "/v1/events/{event_id}/payload": [
+        "get"
+      ],
+      "/v1/conversations/{conversation_id}/turn-requests/{request_id}": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/delivery": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/delivery/acceptance": [
+        "post"
+      ],
+      "/v1/artifacts/{artifact_id}": [
+        "get"
+      ],
+      "/v1/artifacts/{artifact_id}/content": [
+        "get"
+      ],
+      "/v1/runner/enrollments": [
+        "post"
+      ],
+      "/v1/runner/enrollments/{enrollment_id}": [
+        "get"
+      ],
+      "/v1/runner/enrollments/{enrollment_id}/confirmation": [
+        "post"
+      ],
+      "/v1/runner/enrollments/{enrollment_id}/revocation": [
+        "post"
+      ],
+      "/v1/runner/local": [
+        "post"
+      ],
+      "/v1/runner/local/{launch_id}": [
+        "get"
+      ],
+      "/v1/runner/local/{launch_id}/stop": [
+        "post"
+      ],
+      "/v1/runs/{run_id}/presentation": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/conversation": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/clarifications/{question_item_id}": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/clarifications/{question_item_id}/answers": [
+        "post"
+      ],
+      "/v1/runs/{run_id}/corrections": [
+        "post"
+      ],
+      "/v1/runs/{run_id}/continuations/{request_id}": [
+        "get"
+      ],
+      "/v1/quality/reviews": [
+        "get"
+      ],
+      "/v1/quality/reviews/{review_id}": [
+        "get"
+      ],
+      "/v1/quality/reviews/{review_id}/draft": [
+        "post"
+      ],
+      "/v1/quality/reviews/{review_id}/submission": [
+        "post"
+      ],
+      "/v1/quality/reviews/{review_id}/export": [
+        "get"
+      ],
+      "/v1/runs/{run_id}/feedback": [
+        "get",
+        "post"
+      ],
+      "/v1/models": [
+        "get"
+      ],
+      "/v1/web/session": [
+        "get",
+        "post",
+        "delete"
+      ]
+    }
+  },
+  "test_receipts": [
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-related-sql-path-fixed.xml",
+      "sha256": "b2cb6721efe48e4cb798b80414f16dbba98c7f35436a775d7138804a9257f39c",
+      "nodes": 37,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-timing-stream-final.xml",
+      "sha256": "2265c60a3ee05302dc2e9330e334b72b760abd2ad113e5e751230eb691af50a4",
+      "nodes": 9,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-stopped-lookup-source.xml",
+      "sha256": "3f783de513c0606765528cb913ebd7121e078b8def7c28a80774985d208c925b",
+      "nodes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-chromium-final.xml",
+      "sha256": "424788ccfca1e19816e745c88fb2f5e42e5323f1b738cc2b65685c43f08a10cf",
+      "nodes": 71,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-model-contract-scope-fixed.xml",
+      "sha256": "daad618ace2274e449e4e50c7a8a8f2d143691d1d18e719956b89e5dfec8ffc0",
+      "nodes": 107,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-stopped-preview-ui.xml",
+      "sha256": "894ad6832e1641a4e6045f83690c8faa51c8e87bab6d775f1a67434f33b95a5f",
+      "nodes": 13,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "file": "docs/implementation/evidence/ms-i2m-a18-latest-preview-web-unit.xml",
+      "sha256": "0098b6713350324cbaee377e0f7b51c4f3b97fcf1b028556bb8480fcfc7f6de8",
+      "nodes": 129,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "current_static_checks": {
+    "ruff": "passed",
+    "mypy_changed_python": "passed",
+    "typescript": "passed",
+    "git_diff_check": "passed",
+    "latest_model_unit": "interrupted_no_result_not_passed"
+  },
+  "human_actions_by_A": {
+    "original_user_task_submissions": 0,
+    "ratings": 0,
+    "native_authorizations": 0,
+    "artifact_acceptances": 0
+  },
+  "scope": {
+    "worker_dispatch": false,
+    "worker_worktrees_modified": false,
+    "subagents_started": false,
+    "generation_strategy_changed": false,
+    "last_full_updated": false
+  },
+  "resume_order": [
+    "Restore automatic approval service; do not re-route the rejected Git action.",
+    "Commit current contract/source, pin generator to the exact interface SHA, regenerate without preview.",
+    "Re-run relevant SQL/HTTP, stopped-new-conversation and stream browser boundaries on fixed source.",
+    "Collect exact provider first-content, COMMIT acknowledgement and rendered-time evidence from fixed service.",
+    "Recheck actual original-user jobs/forms/history, then deploy H02-v10 and verify HTTP assets/account/history.",
+    "Update actual address/test instructions, retain all failures/fees, audit every requirement before Goal completion."
+  ]
+}

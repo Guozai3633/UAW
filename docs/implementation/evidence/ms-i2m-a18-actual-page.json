@@ -1,0 +1,74 @@
+{
+  "schema_version": "uaw.a18-actual-page.v1",
+  "runtime_source": "d75222693ca9e1c95c571f5d3908a29629295d44",
+  "synthetic_identity_only": true,
+  "user_tasks_submitted": 0,
+  "human_judgments_or_acceptance": 0,
+  "actual_partial": {
+    "submit_at": "2026-10-18T14:50:36.393Z",
+    "observed_at": "2026-10-18T14:50:44.637Z",
+    "item": {
+      "item_id": "conversation-message-65929aaf4b03e4de181700d95852fba3bcfc469ca4de18fb3a3de4f00760c4fd",
+      "rendered_text_sha256": "5bc6ed5c6bd20eb156be6f14dc1a2d360e6be9f9d117c2b920e5653947db5685",
+      "rendered_text_characters": 74,
+      "visible_status": "in_progress",
+      "revision": 2
+    },
+    "run_id": "run-f95468db5e2c43b7bcceb867328328d7"
+  },
+  "refresh": {
+    "observed_at": "2026-10-18T14:51:59.926Z",
+    "item": {
+      "item_id": "conversation-message-65929aaf4b03e4de181700d95852fba3bcfc469ca4de18fb3a3de4f00760c4fd",
+      "rendered_text_sha256": "b2a38456627c1d795f2139cdbe2fd623c36141a8db6c58aacbc1ffb6addc6f3d",
+      "rendered_text_characters": 1009,
+      "visible_status": "completed",
+      "revision": 21
+    },
+    "same_item_id": true,
+    "backend_prefixes_monotonic": true,
+    "model_calls": 1,
+    "snapshot_items_with_same_id": 1
+  },
+  "cancel": {
+    "submit_at": "2026-10-18T14:52:21.428Z",
+    "click_at": "2026-10-18T14:52:32.380Z",
+    "observed_at": "2026-10-18T14:52:56.332Z",
+    "before": {
+      "item_id": "conversation-message-098e853e38ce37dcc7a2d1c28f0afc842945977495aae837b85bceee5f77f360",
+      "rendered_text_sha256": "4b518694111fb804d518b08da66bd637fd50ced25f223f39f2958c9c06f3d104",
+      "rendered_text_characters": 69,
+      "visible_status": "in_progress",
+      "revision": 2
+    },
+    "after": {
+      "item_id": "conversation-message-098e853e38ce37dcc7a2d1c28f0afc842945977495aae837b85bceee5f77f360",
+      "rendered_text_sha256": "af1bb5aeb5e17de68c435518fc8f76bccae20ea438d392dee9694ac6a7d44871",
+      "rendered_text_characters": 235,
+      "visible_status": "failed",
+      "revision": 6
+    },
+    "run_id": "run-8599cd5dddbb4299ae992211ebaffbee",
+    "model_calls": 1,
+    "failure_code": "model_run_cancelled",
+    "billing_state": "pending",
+    "input_tokens": null,
+    "output_tokens": null,
+    "raw_receipt_saved": true
+  },
+  "limits": [
+    "DOM observations bound the display time; they are not exact first paint.",
+    "Refresh was observed at its settled result; no claim that it happened before final provider EOF.",
+    "This is a prior stage page, not the current uncommitted preview or final deployment."
+  ],
+  "screenshots": [
+    {
+      "file": "ms-i2m-a18-real-partial.png",
+      "sha256": "3cc4e009b88705890561f7a57dd16059a82f89b63b5f9743fde3d902dd260021"
+    },
+    {
+      "file": "ms-i2m-a18-real-cancel.png",
+      "sha256": "50558ed454e0c07b099425940b2c83b86f0bc6e5334bf54e1d21abc99805390c"
+    }
+  ]
+}

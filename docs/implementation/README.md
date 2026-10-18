@@ -1,3 +1,9 @@
+## 当前交付：H02-v10实际正文增量与等待体验
+
+2026-10-19。固定运行 **eeaa6ff815b42f95ff49993e84f8159f7fd6ae48**，<http://127.0.0.1:5183/> 已登录原账号。普通回复逐步显示、同Item刷新、取消不完整/费用待核、停止后新会话及正式成果待接受已实际验证。原1209记录/12会话/8评测包保持，0代任务/评分/授权/接受。
+
+[本人测试](human-tests/H02-v10.md) · [设计/目录](MS-I2m-A18.md) · [接口](../api/STREAMING.md) · [耗时与全部费用](MS-I2m-A18-LATENCY.md) · [固定部署](evidence/ms-i2m-a18-final-deployment.json)。相关107模型/契约、129前端单元、50真实SQL、71受控浏览器与最终23认证SQL通过，不是全仓验收，last_full不动。20实测调用的失败及未知费用保留；生成策略未改，事实质量与本人满意pending。以下为历史。
+
 ## 当前交付：H02-v9认证质量审阅与任务反馈
 
 2026-10-18。后端与新前端准确 `69408bca5896d978e58bd280364bb3c972aaeded` / `ms-i2m-a17-final-runtime`，实际 <http://127.0.0.1:5183/> 已登录、原历史保留；8个实际结果空白审阅包可读，保存/重开/正式导出和Run反馈协议已接。[本人测试](human-tests/H02-v9.md) · [详细设计/目录](MS-I2m-A17.md) · [HTTP与字段](../api/QUALITY_REVIEW.md) · [实际部署](evidence/ms-i2m-a17-final-deployment.json) · [Goal逐项审计](evidence/ms-i2m-a17-completion-audit.json)。

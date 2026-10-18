@@ -1,0 +1,87 @@
+{
+  "source_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+  "checked_at": "2026-10-18T16:30:28.546318+00:00",
+  "origin": "http://127.0.0.1:5183",
+  "ready_status": 200,
+  "anonymous_quality_status": 401,
+  "served_resources": [
+    {
+      "file": "assets/index-BeIoI3EH.css",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "assets/index-BHQKEwFU.js",
+      "status": 200,
+      "sha256_matches": true
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256_matches": true
+    }
+  ],
+  "quality_and_feedback_records": [
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-1db68f9c21de1523df7e6988c619a006ebee7d68",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "22c1bc5eb94c0fbd0d9be24d22a2c1970b4e73bdbda9063cb078f9a1020b73e0"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-391e905df98c00393d7670e936a12c8ab2896c0a",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "d1eedff18b94140bcdc987552f306d132b4d647895a79bc84589cd234def5f95"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-59e39cb4a50fe1f6e4f31c1cc9ad0e721a7adedd",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "252b30ed66778df905fcd5b2df3ed13a52fb58d20db6bde2c8daa0845ba603e0"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-8ae2bbcbf1c2a5dfc49d3f5659a07fefe8c5fd4e",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "0d668ca93445c06bfe741182881ead02d4bc30dd67f86a2acfcc580eb8abd425"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-9028bf3a03871a8bb808a0987a85200bb5adc712",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "5151559903bfd9eebdd809782f2ebb7a9c52902ce688f335e244f4927a30a01e"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-9e341cc9e76e6c33c40f01b8d02f3e4d341c42fe",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "633aeabc7f09c5e0ef624d4eebc4d8a71e8d9f7e1fca8c7f3cc358add45a5d8b"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-b13adb1fcb2f5aba18aa941ad2be1eccd21faba6",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "b3ca1985cf12b1223728713b319e7b6c5ca9ca7a3f026a1c2b4376c0ad4e1b5f"
+    },
+    {
+      "namespace": "quality.reviews",
+      "id": "quality-b83bd7d9d21612dbf85f1a9bbbb703e92d2e8758",
+      "revision": 1,
+      "status": "draft",
+      "payload_sha256": "03c097b0991b5465ab4c83257bc4b27827cb261d8c71b9efd84a984f8766ff49"
+    }
+  ],
+  "feedback_count": 0,
+  "submitted_human_reviews": 0,
+  "read_only_check": true,
+  "new_model_calls": 0,
+  "new_original_user_tasks": 0
+}
