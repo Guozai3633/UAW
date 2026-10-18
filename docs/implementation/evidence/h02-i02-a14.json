@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-18",
+  "stage": "MS-I2m-A14",
+  "issue": "H02-I02",
+  "status": "targeted_fix_verified_original_replay_passed_live_candidate_pending",
+  "source_ref": "ms-i2m-a14-source",
+  "original_conversation_id": "conversation-a88a0d7209884b07af6a70e831165a53",
+  "diagnosis": {
+    "phase": "first_report_generation",
+    "failed_calls": 2,
+    "original_failure_code": "provider_structured_output_invalid",
+    "original_finish_reason": "stop",
+    "cause": "literal_LF_inside_JSON_string_not_escaped",
+    "not_token_truncation": true,
+    "not_completion_reviewer_failure": true,
+    "sum_input_tokens": 5147,
+    "sum_output_tokens": 3077,
+    "billing": "2_pending_unknown_money",
+    "private_original_snapshot": "E:\\UAW\\.data\\human\\H02-v4\\h02-i02-user-failure-88671d2b4f504f068382fe4c9b8fafd6.json",
+    "snapshot_sha256": "80386458446d51144597a380e9b60d6fea0d4d969561500ab4543762cbcde6f0"
+  },
+  "replay": [
+    {
+      "run_id": "run-a42dcc983b08497b974dc4eddd91e43b",
+      "attempt_id": "web-step-model-1-run-a42dcc983b08497b974dc4eddd91e43b",
+      "raw_sha256": "344814618c4c6aa2dabd6bc8f2437ee502ac6aeedcff66725ee84f4bb11c4ed9",
+      "replay_status": "passed",
+      "structured_action": "deliver",
+      "prose_characters": 3000,
+      "raw_bytes_unchanged": true,
+      "original_model_text_unchanged": true,
+      "new_model_calls": 0,
+      "literal_lf": 93,
+      "literal_cr": 0,
+      "literal_tab": 0,
+      "text_has_unicode_replacement": false,
+      "finish_reason": "stop",
+      "resources": {
+        "input_tokens": 2450,
+        "output_tokens": 1785
+      }
+    },
+    {
+      "run_id": "run-3c0b3acb480e45499dd6037dac82d5d0",
+      "attempt_id": "web-step-model-1-run-3c0b3acb480e45499dd6037dac82d5d0",
+      "raw_sha256": "c2ade7ecade0d8a629b6c94a8f5c4e2c267781430e8c21b316cf07516a65ae11",
+      "replay_status": "passed",
+      "structured_action": "deliver",
+      "prose_characters": 2123,
+      "raw_bytes_unchanged": true,
+      "original_model_text_unchanged": true,
+      "new_model_calls": 0,
+      "literal_lf": 69,
+      "literal_cr": 0,
+      "literal_tab": 0,
+      "text_has_unicode_replacement": false,
+      "finish_reason": "stop",
+      "resources": {
+        "input_tokens": 2697,
+        "output_tokens": 1292
+      }
+    }
+  ],
+  "implementation": {
+    "scope": "explicit_json_object_mode_only_LF_CR_TAB_inside_strings",
+    "original_raw_and_visible_provider_text_unchanged": true,
+    "full_schema_validation_kept": true,
+    "duplicates_NaN_quotes_truncation_unsupported_actions_rejected": true,
+    "native_schema_and_tool_call_transport_unchanged": true,
+    "automatic_model_retry_added": false,
+    "public_contracts_flags_lock_worker_sources_changed": false
+  },
+  "verification": {
+    "unique_nodes": 33,
+    "unit_nodes": 29,
+    "real_SQL_nodes": 4,
+    "initial_reproducer": {
+      "receipt": "h02-i02-whitespace-first.xml",
+      "failed": 5,
+      "passed": 13,
+      "pytest_cache_permission_warning": true
+    },
+    "final_unit": "h02-i02-adapter-final.xml",
+    "final_SQL": "h02-i02-sql-final.xml",
+    "static": "h02-i02-static.json",
+    "Python_files_static": 4,
+    "mypy_source_files": 248,
+    "development_issue": "new_SQL_test_line_length_reformatted_before_run",
+    "full_repository_regression": false
+  },
+  "new_model_calls": 0,
+  "live_candidate": "pending",
+  "human_acceptance_performed": false,
+  "original_failed_Runs_rewritten": false,
+  "last_full_updated": false,
+  "implementation_sha256": {
+    "src/uaw/model/adapters.py": "8ddb0f65c1681bdf3a1f2f4ee05cf5855f03d3c4d6e15442070d93dfefe3cd4d",
+    "src/uaw/model/structured_text.py": "ee53539cfde14400c449477417e097c684fcc8917675f72ad41aac81a6aa61c9",
+    "tests/unit/model/test_structured_whitespace.py": "4b35ad4a0c94cc0a33b1c01a0e0fe60eca03587d516ed42230313ef538dc90f7",
+    "tests/integration/model/test_structured_whitespace_postgres.py": "ff4f5aa8b2522dfcf50144b528e20f26089b86f4d84da82d78dde81e2f8c2632"
+  }
+}

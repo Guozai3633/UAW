@@ -8,6 +8,7 @@ import httpx
 
 from uaw.model.capability import bounded_schema
 from uaw.model.contracts import ProviderFailure, ProviderRequest, ProviderResponse
+from uaw.model.structured_text import structured_text
 from uaw.shared.schema import parse_json, validator
 
 MAX_RESPONSE_BYTES = 2_097_152
@@ -249,7 +250,11 @@ class ChatCompletionsAdapter:
         structured = None
         if request.protocol == "json_schema" and reason == "stop":
             try:
-                structured = parse_json(text)
+                structured = structured_text(
+                    text,
+                    literal_whitespace=request.settings.get("structured_output_mode")
+                    == "json_object",
+                )
             except ValueError, TypeError, RecursionError:
                 raise ProviderFailure("provider_structured_output_invalid") from None
             if not isinstance(structured, dict) or not bounded_schema(
