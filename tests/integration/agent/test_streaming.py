@@ -90,6 +90,7 @@ async def test_real_sql_partial_visible_before_final_same_item_replays_and_does_
     stream = (await inventory(p, NAMESPACE))[0]
     assert stream["state"] == "published" and stream["input_revision"] == 1
     assert stream["first_provider_at"] <= stream["first_text_at"] <= stream["received_at"]
+    assert stream["first_text_at"] <= stream["first_committed_at"] <= stream["received_at"]
     assert (
         stream["provider_started_at"]
         <= stream["provider_headers_at"]
@@ -168,6 +169,16 @@ async def test_cancel_during_stream_does_not_publish_success_and_preserves_billi
     )
     assert attempts[0]["usage"]["billing_state"] == "pending"
     assert attempts[0]["response_ref"]  # The actual partial SSE survives cancellation.
+    if not finish_race:
+        from uaw.run.presentation import RunPresentationReader
+
+        before = dict(ledger)
+        view = await RunPresentationReader(p.runs.store).read(p.actor, p.run["id"])
+        assert view["phase"] == "stopping" and view["stopped_reply_ref"]["id"] == stream["id"]
+        after = next(
+            row for row in await inventory(p, "budget.ledgers") if row["id"] == p.run["id"]
+        )
+        assert before == after  # Display evidence does not settle, release or reset billing.
     assert len(p.case.requests) == 1
 
 

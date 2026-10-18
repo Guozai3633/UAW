@@ -151,8 +151,15 @@ export class WorkspaceController {
    }else throw e;}
   }
   async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.list(g);this.snapshotReady=false;await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
+  async retireStoppedLookup(runId:string){
+   const rec=this.value.recovery;if(!this.sameIdentity()||rec?.runId!==runId)return;
+   const g=this.generation,view=await this.client.presentation(runId,this.abort.signal);this.guard(g);
+   if(view.run.id!==runId||view.run.conversation_id!==rec.conversationId||view.phase!=='stopping'||!view.stopped_reply_ref)return;
+   const current=this.drafts.read().recovery;
+   if(current?.requestId===rec.requestId&&current.runId===runId){this.drafts.recovery();this.patch({recovery:undefined});}
+  }
  async send(){const active=this.value.active,text=this.value.draft;
-  if(!this.sameIdentity()||!active||!text.trim()||!this.value.connected||this.mutation||this.value.recovery)return;
+   if(!this.sameIdentity()||!active||!text.trim()||!this.value.connected||this.mutation||this.value.recovery||this.value.run&&!terminal(this.value.run.status))return;
   const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true,error:''});const g=this.generation;
   try{const meta=requestMeta(active.revision);
    // Persist lookup only BEFORE dispatch; never persist permission or Run status.

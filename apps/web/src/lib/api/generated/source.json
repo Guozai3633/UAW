@@ -1,9 +1,9 @@
 {
-  "baseline": "3222251e281beb5685fc29b2667d58ab421846d8",
-  "contract_ref": "ms-i2m-a17-study-source",
-  "contract_commit": "3222251e281beb5685fc29b2667d58ab421846d8",
-  "schema_sha256": "20c4e1b5f4965e712e41b7cacb7f76802f3f262f40c33b34e09d3e6b57496bc4",
-  "openapi_sha256": "156df5407a5ef3dcd8dfae0f42fa6092ced34f136996653a9c2ac9d697ed75a3",
+  "baseline": "363618f8c38eaa0078b54d6b3b807d3f97957893",
+  "contract_ref": "363618f8c38eaa0078b54d6b3b807d3f97957893",
+  "contract_commit": "363618f8c38eaa0078b54d6b3b807d3f97957893",
+  "schema_sha256": "4d45ae081f3229f3f1936b2361cf912dd1619ba1997082e167d85b18df30c6eb",
+  "openapi_sha256": "c7b7f54c40c4540fe822c9fe61e8844d59960cd3664ce9e29368d227d0415043",
   "paths": {
     "/v1/conversations": [
       "get",

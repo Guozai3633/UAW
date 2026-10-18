@@ -2449,6 +2449,10 @@
         "limit": {
           "$ref": "#/$defs/PageLimit",
           "description": "页大小"
+        },
+        "after_seq": {
+          "$ref": "#/$defs/Count",
+          "description": "仅返回此序号之后的新事件，分页期间固定"
         }
       },
       "required": [
@@ -11592,6 +11596,10 @@
         "delivery": {
           "$ref": "#/$defs/RunPresentationDelivery",
           "description": "仅返回同一当前Run修订和输入的成果"
+        },
+        "stopped_reply_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原普通回复与调用已停止的证据；仅释放本地发送查询，不结算Run/费用或授权续跑"
         },
         "captured_at": {
           "$ref": "#/$defs/Timestamp",

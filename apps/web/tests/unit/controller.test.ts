@@ -114,3 +114,14 @@ it('polls only new ordered events while active, updates one partial message, and
   expect(x.c.snapshot().items[0].status).toBe('completed');expect(x.posts).toHaveLength(1);
  }finally{x.c.stop();vi.useRealTimers();}
 });
+
+it('retires only the original proven stopped reply lookup, without submitting again or treating billing as settled',async()=>{
+ const x=setup();await x.c.start('conv-one');x.c.edit('原问题');await x.c.send();
+ const normal=x.transport.getMockImplementation()!;let proven=false;
+ x.transport.mockImplementation(async(input,options)=>String(input).endsWith('/presentation')?new Response(JSON.stringify(ok({protocol:'conversation-v1',run:makeRun(),phase:'stopping',input_revision:1,understanding:{state:'pending',input_revision:1},captured_at:now,...(proven?{stopped_reply_ref:ref('content','original-stopped-reply')}: {})}))):normal(input,options));
+ try{
+  await x.c.retireStoppedLookup('run-one');expect(x.c.snapshot().recovery?.runId).toBe('run-one');
+  proven=true;await x.c.retireStoppedLookup('run-one');expect(x.c.snapshot().recovery).toBeUndefined();
+  expect(x.c.snapshot().run?.status).toBe('running');x.c.edit('不能继续旧运行');await x.c.send();expect(x.posts).toHaveLength(1);
+ }finally{x.c.stop();}
+});

@@ -1524,6 +1524,8 @@ export interface components {
             cursor?: components["schemas"]["Cursor"];
             /** @description 页大小 */
             limit?: components["schemas"]["PageLimit"];
+            /** @description 仅返回此序号之后的新事件，分页期间固定 */
+            after_seq?: components["schemas"]["Count"];
         };
         /** @description 真实进程退出码；不能用缺省0表示成功。 */
         ExitCode: number;
@@ -3526,6 +3528,8 @@ export interface components {
             understanding: components["schemas"]["RunPresentationUnderstanding"];
             /** @description 仅返回同一当前Run修订和输入的成果 */
             delivery?: components["schemas"]["RunPresentationDelivery"];
+            /** @description 原普通回复与调用已停止的证据；仅释放本地发送查询，不结算Run/费用或授权续跑 */
+            stopped_reply_ref?: components["schemas"]["Ref"];
             /** @description 一致性快照读取时间 */
             captured_at: components["schemas"]["Timestamp"];
         };
@@ -5576,6 +5580,7 @@ export interface operations {
             query?: {
                 cursor?: components["schemas"]["Cursor"];
                 limit?: components["schemas"]["PageLimit"];
+                after_seq?: components["schemas"]["Count"];
             };
             header?: {
                 "X-Request-Id"?: components["schemas"]["ID"];

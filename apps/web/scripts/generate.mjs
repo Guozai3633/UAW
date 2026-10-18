@@ -1,15 +1,18 @@
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import openapiTS, { astToString } from 'openapi-typescript';
-const contractRef='ms-i2m-a17-study-source';
+const contractRef='363618f8c38eaa0078b54d6b3b807d3f97957893';
 const contractCommit=execFileSync('git',['rev-parse',`${contractRef}^{commit}`],{encoding:'utf8',maxBuffer:16777216}).trim();
-if(contractCommit!=='3222251e281beb5685fc29b2667d58ab421846d8')throw Error('Published API tag changed');
+if(contractCommit!=='363618f8c38eaa0078b54d6b3b807d3f97957893')throw Error('Fixed API source changed');
+const preview=process.argv.includes('--working-tree');
+if(process.argv.slice(2).some(value=>value!=='--working-tree'))throw Error('Unknown contract generation option');
 const target = new URL('../src/lib/api/generated/', import.meta.url);
-const raw=execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
-const schemaRaw=execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
+// Explicit local previews support precommit tests. Delivery keeps a published exact commit.
+const raw=preview?await readFile(new URL('../../../contracts/openapi.json',import.meta.url),'utf8'):execFileSync('git',['show',`${contractRef}:contracts/openapi.json`],{encoding:'utf8',maxBuffer:16777216});
+const schemaRaw=preview?await readFile(new URL('../../../contracts/uaw.schema.json',import.meta.url),'utf8'):execFileSync('git',['show',`${contractRef}:contracts/uaw.schema.json`],{encoding:'utf8',maxBuffer:16777216});
 const api = JSON.parse(raw), schema = JSON.parse(schemaRaw);
-// Exact public routes checked in src/uaw/api/routes.py at ms-i2m-a15-source.
+// Exact published routes; DTOs come from the immutable contract source above.
 const allowed = {
  '/v1/conversations': ['get','post'], '/v1/conversations/{conversation_id}': ['get'],
  '/v1/conversations/{conversation_id}/items': ['get'],
@@ -75,7 +78,8 @@ for (const key of [...defs]) collect(schema.$defs[key]);
 await writeFile(new URL('schema.json',target),JSON.stringify({$schema:schema.$schema,$id:'urn:uaw:web:0.1',
  $defs:Object.fromEntries([...defs].sort().map(k=>[k,schema.$defs[k]]))},null,2)+'\n');
 await writeFile(new URL('source.json',target),JSON.stringify({baseline:contractCommit,
- contract_ref:contractRef,contract_commit:contractCommit,
+ contract_ref:preview?'working-tree-preview':contractRef,contract_commit:preview?null:contractCommit,
+ ...(preview?{release_ready:false}:{}),
  schema_sha256:createHash('sha256').update(schemaRaw).digest('hex'),
  openapi_sha256:createHash('sha256').update(raw).digest('hex'),paths:allowed},null,2)+'\n');
-console.log(`Generated ${Object.keys(paths).length} actual paths; ${defs.size} schema definitions.`);
+console.log(`Generated ${Object.keys(paths).length} actual paths; ${defs.size} schema definitions.${preview?' Local preview only; not a fixed release.':''}`);
