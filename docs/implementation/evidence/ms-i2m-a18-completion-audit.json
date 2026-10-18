@@ -5,7 +5,7 @@
   "runtime_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
   "stream_measurement_source": "1cce51e59d08fca09adf31af1c40d02518374153",
   "goal_complete": true,
-  "goal_status": "completion_audit_passed_pending_tool_update",
+  "goal_status": "engineering_completion_audited",
   "remaining_required": [],
   "requirements": [
     {
@@ -393,7 +393,7 @@
         },
         {
           "path": "docs/coordination/DISPATCH.md",
-          "sha256": "9480c3cc1331028a236daa8fdacf8795d262b95602b17a33937fc5eca7b8e18a"
+          "sha256": "266e4d74c16b4c5afcef305afd236774b3a8aa0d8c7e4f5cbda082c3efe0abdc"
         },
         {
           "path": "docs/plan/sessions/A.md",
@@ -517,5 +517,19 @@
   },
   "delivery_docs_commit": "6842f7e4a099a354b31748aae3d4c7ff53d0c71b",
   "engineering_goal_proven": true,
-  "human_fact_quality_and_satisfaction_still_pending": true
+  "human_fact_quality_and_satisfaction_still_pending": true,
+  "optional_remote_publication": {
+    "source_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+    "local_delivery_commit": "844130f250d46cae3a50aca63292634989a5d038",
+    "recorded_at": "2026-10-18T16:42:26.771007+00:00",
+    "attempted_action": "git push origin integration refs/tags/ms-i2m-a18-runtime refs/tags/ms-i2m-a18-delivery",
+    "action_executed": false,
+    "status": "automatic_approval_rejected_pending_explicit_disclosure_authorization",
+    "reason": "Contains actual owner screenshots, history/review evidence and runtime records; explicit permission to disclose those materials to GitHub and repository privacy were not established.",
+    "bypass_used": false,
+    "user_asked_for_specific_authorization": true,
+    "local_commits_and_tags_preserved": true,
+    "local_runtime_ready_verified": true,
+    "remote_push_is_not_a_condition_of_the_original_local_engineering_goal": true
+  }
 }
