@@ -959,3 +959,14 @@ A审阅合入、处理公共冲突、逐包接受及整链/汇合全量；本包
 - 最终 **107不同单元/21文件＋60不同受控Chromium**，各0失败/错误/跳过；原96/53完整保留，新11/7，不累计定向24/7复跑。uv/pnpm冻结同步、生成一致无diff、公共schema/锁不变、类型/build/diff-check通过。锁内node24.21.0/pnpm10.17.0，外引导engine/原chunk提示保留。
 - 自身ignored `apps/web/.test-results/h02-i01-b-receipts.json`保存去重节点及日志/XML/hash。初次定向5过2失败为抽屉关闭焦点未返回，正确实现focus后原断言/时限不变7/7及60/60；原initial log/XML/trace/screenshot和全部MS-U4旧失败保留。1050/390截图已目视核对，均合成DTO，未复制本人正文。
 - 准确构建 `apps/web/.test-results/h02-i01-b-dist/`（源码500d292），三文件完整SHA256见final文档；A只读复制，不执行B环境。B没有访问/登录/交换5183本人Page、切dist或本人提交/确认/授权/接受。A负责原Page和最终切换，以及输出额度/截断分类/真实report→correction；真实复验与本人体验pending，不标整轮MS-U4/H02 accepted。源码/handoff分别clean交付后停止，不自动扩包。
+
+## H02-I03 B 任务展示/模型理解/成果同步（2026-10-18）
+
+- 原工作区 `E:/UAW/.worktrees/context` / `dev/context`，原干净HEAD `9504d70f650318f025d24531d6e8bbbba1ed5fb8`。fetch只读正式DISPATCH，核对准确 `ms-i2m-a15-source / 3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b`；普通merge实际快进且HEAD一致。旧提交/handoff祖先保留，无浮动integration/reset/rebase/stash/替代目录，uv/pnpm原锁同步通过。
+- 阶段源码 `a5f30e1feca102370c5f0de7707fdc473c137fa7` 已即交，A报告普通合入1507cad。审阅修正源码 `ab0fdce90023065d99162e7b20db9f6bee9e7785` 保留，**最终源码 `af3889f209054b2485aa5ff7aeab6479878342b0`**补自动对齐共用上限。独立handoff为随后docs提交，完整SHA见最终回报。[精确接口、文件、回执/失败、hash及实际接线](../requests/B/H02-I03-B-run-presentation-sync-final.md)。
+- 只改25个apps/web文件与本B文档；公共schema/锁/flags/后端/C/D不改。固定生成31路径/209完整定义，旧1404 canonical逐对象不变。client.presentation精确只读0.2、无query/body。HttpPresentationPort/PresentationSession按完整identity+conversation+Run/input/Run修订/四成果Ref核对；同Run修订phase仍更新，generation/Abort/captured_at防旧响应回退，混合输入拒绝。
+- 默认Workspace/ConversationPanel/Review共享核对来源，读中保留旧展示标后台更新，失源标历史禁提交/接受；来源错误独立提交/unknown提示，503恢复清旧读取错误。真实理解读模型summary/assumptions/Ref，not_provided不永久等待，原Frame不冒充理解。默认中文主阶段，权威Run.status/phase/版本放折叠详情，测试展开核对原值。stopping/finalizing不当终态，awaiting_acceptance可查看成果但不授予接受权。
+- Review原全文/Ref/hash/合同/核验/CAS/身份重查与接受未知恢复保留；新输入旧Artifact只读、不自动重发/停止/接受/解原Recovery。展示3秒/每观察窗口120完成周期，自动对齐共用上限、在途不替换，仅显式手动刷新开新窗口；不是整个应用总GET上限或权限缓存。
+- **最终115不同单元/23文件＋66不同受控Chromium，各0失败/错误/跳过**；原107/60+新8/6，不叠阶段/复跑。类型/build/冻结安装/生成一致/diff-check通过，锁内node24.21.0/pnpm10.17.0；engine/原chunk警告保留。自身ignored `h02-i03-b-final-receipts.json`保存节点/日志/XML/hash。首轮62过4失败为旧语义断言及fixture缺Principal，第二轮65过1失败为过早统计原stop POST，正确补夹具/等实际POST，原断言与时限保留；初始类型/语法和trace/XML保留。上限修复首工具动作审批额度不足未执行，正常恢复后通过，无绕过。
+- **准确最终构建 `apps/web/.test-results/h02-i03-b-final-dist/`（af3889f）**，三文件hash见final文档，A只读复制，不执行B环境。旧 `h02-i03-b-dist/`仅ab0fdce历史。1440/1050受控截图目视核对。
+- A已报A15 H02-v6认证HTTP实际原v5/input1 awaiting_acceptance+available；B未访问私有凭据/真实正文或代操作。原Page曾URL策略拒绝，未绕过，后本人刷新恢复由A负责。**A最新报原Run现failed/v6、理解available、无当前delivery，旧报告历史可读**，正查等待审阅计时未暂停；不恢复旧v5、不宣称当前仍待接受。A合入最终dist后在原Page按最新失败/真实理解/历史报告实查，B真实UI复验pending A，不计进115/66；不标H02整轮accepted。源码/handoff分开clean交付后停止。
