@@ -66,6 +66,24 @@ it('requires the explicit declaration plus completed mandatory judgments for sub
  expect(vi.mocked(port.save).mock.calls[0][2]).toBe(true);expect(screen.queryByRole('button',{name:'提交我的审阅'})).not.toBeInTheDocument();
 });
 
+it('does not submit an acceptable judgment while evidence is unknown or a critical error remains',async()=>{
+ const {port}=fixture();await open(port);
+ fireEvent.change(screen.getByLabelText('题目与参考标准'),{target:{value:'verified'}});
+ fireEvent.change(screen.getByLabelText('是否有关键错误'),{target:{value:'false'}});
+ fireEvent.change(screen.getByLabelText('是否已亲自核对参考依据'),{target:{value:'true'}});
+ fireEvent.change(screen.getByLabelText('回答质量是否可接受'),{target:{value:'true'}});
+ fireEvent.change(screen.getByLabelText('审阅意见'),{target:{value:'Controlled consistency test; not a human rating.'}});
+ fireEvent.click(screen.getByRole('checkbox'));
+ expect(screen.getByRole('button',{name:'提交我的审阅'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('是否虚构引用或依据'),{target:{value:'true'}});
+ expect(screen.getByRole('button',{name:'提交我的审阅'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('是否虚构引用或依据'),{target:{value:'false'}});
+ expect(screen.getByRole('button',{name:'提交我的审阅'})).toBeEnabled();
+ fireEvent.change(screen.getByLabelText('是否有关键错误'),{target:{value:'true'}});
+ expect(screen.getByRole('button',{name:'提交我的审阅'})).toBeDisabled();
+ expect(port.save).not.toHaveBeenCalled();
+});
+
 it('clears the old identity by unmounting and ignores a late old response',async()=>{
  const old=fixture(),next=fixture();let finish!:(view:QualityView)=>void;
  old.port.get=vi.fn(()=>new Promise<QualityView>(resolve=>{finish=resolve;}));

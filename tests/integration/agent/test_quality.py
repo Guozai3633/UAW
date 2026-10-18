@@ -216,19 +216,29 @@ async def test_http_auth_csrf_origin_and_unknown_judgment(review):
     assert (await client.get(path)).status_code == 401
 
 
-async def test_http_inconsistent_acceptable_is_rejected_without_commit(review):
+@pytest.mark.parametrize(
+    "field,judgment_value",
+    [("critical_error", True), ("fabricated_evidence", True), ("fabricated_evidence", None)],
+)
+async def test_http_inconsistent_acceptable_is_rejected_without_commit(
+    review, field, judgment_value
+):
     _, client, _, public, _, value, _ = review
     request = {**save(value, complete=True), "human_attested": True}
-    request["judgments"][0]["critical_error"] = True
+    request["judgments"][0][field] = judgment_value
     response = await client.post(
         "/v1/quality/reviews/" + value["id"] + "/submission",
         headers={"Origin": ORIGIN, "X-UAW-CSRF": public["csrf_token"]},
         json=envelope(request, "contradiction"),
     )
-    assert (
-        response.status_code == 422
-        and response.json()["failure"]["code"] == "quality_judgment_invalid"
+    expected = (
+        "quality_judgment_invalid"
+        if field == "critical_error"
+        else "quality_citation_judgment_required"
     )
+    assert response.status_code == 422 and response.json()["failure"]["code"] == expected
+    reopened = await client.get("/v1/quality/reviews/" + value["id"])
+    assert reopened.status_code == 200 and reopened.json()["payload"] == value
 
 
 @pytest.mark.parametrize(

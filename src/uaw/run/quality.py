@@ -308,6 +308,11 @@ class QualityReviews:
                     )
                 items = []
                 for item in request.judgments:
+                    if item.acceptable is True and item.fabricated_evidence is not False:
+                        raise reject(
+                            "quality_citation_judgment_required",
+                            "Acceptable requires an explicit judgment of no fabricated evidence",
+                        )
                     if (
                         item.critical_error is None
                         or item.evidence_reviewed is not True
