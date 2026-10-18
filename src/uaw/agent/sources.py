@@ -108,12 +108,21 @@ class RegisteredAgentSources:
         async with self.store.current_reads(), contract_validation_scope():
             return await self._current(ctx)
 
-    async def _current(self, ctx: TrustedExecutionContext) -> AgentView:
+    async def review_current(self, ctx: TrustedExecutionContext) -> AgentView:
+        """Read-only acceptance validation; never a new execution segment or send grant."""
+        async with self.store.current_reads(), contract_validation_scope():
+            return await self._current(ctx, review=True)
+
+    async def _current(self, ctx: TrustedExecutionContext, *, review: bool = False) -> AgentView:
         if ctx.agent_id is not None or ctx.node_id is not None:
             raise reject("agent_root_only", "Subagent/graph contexts require separate sources", 403)
-        sources = await self.runs.current(ctx)
+        if review:
+            await self.runs.permissions.inspect_for_continuation(ctx)
+            sources = await self.runs.data(ctx)
+        else:
+            sources = await self.runs.current(ctx)
         required = {"agent.start", "agent.step", "model.generate", "context.build"}
-        if not required <= set(sources.permissions["allowed_capabilities"]):
+        if not required <= set(ctx.scope.capabilities):
             raise reject("agent_capability_denied", "Current scope cannot run a root Agent", 403)
         binding = await self.access._binding(ctx)
         role_ref = Ref.model_validate(binding["role_ref"])
@@ -145,9 +154,10 @@ class RegisteredAgentSources:
             raise reject("agent_frame_stale", "Run and Task have different understanding", 412)
         ledger = await self.budgets.get_ledger(ctx)
         remaining = dict(row.payload["budget"])
-        remaining["deadline"] = (
-            await ExecutionSegments(self.store).deadline(ctx, row.payload, ledger)
-        ).isoformat()
+        if not review:
+            remaining["deadline"] = (
+                await ExecutionSegments(self.store).deadline(ctx, row.payload, ledger)
+            ).isoformat()
         limits = dict(ledger["limits"])
         for key in limits:
             if key == "currency":
@@ -163,7 +173,11 @@ class RegisteredAgentSources:
                 limits[key] = max(0, limits[key] - ledger["used"][key] - ledger["held"][key])
         remaining["limits"] = limits
         validate_contract("Budget", remaining)
-        again = await self.runs.current(ctx)
+        if review:
+            await self.runs.permissions.inspect_for_continuation(ctx)
+            again = await self.runs.data(ctx)
+        else:
+            again = await self.runs.current(ctx)
         if (
             again != sources
             or await self.access._binding(ctx) != binding

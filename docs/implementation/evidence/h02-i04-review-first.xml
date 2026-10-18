@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="35.138" timestamp="2026-10-18T13:51:57.422756+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_review_wait" name="test_long_review_wait_survives_restart_accepts_once_without_model_or_budget_renewal[case0]" time="11.832"><failure message="AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-9895fb33e1034ff9bfb3b37419b73cd6', 'budget': {'limits': {'money': '...4decb7b5a127ce7acbe6', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}&#10;assert 'finalizing' == 'awaiting_acceptance'&#10;  &#10;  - awaiting_acceptance&#10;  + finalizing">tests\integration\agent\test_review_wait.py:74: in test_long_review_wait_survives_restart_accepts_once_without_model_or_budget_renewal
+    job, view = await ready(p)
+                ^^^^^^^^^^^^^^
+tests\integration\agent\test_review_wait.py:55: in ready
+    assert view["phase"] == "awaiting_acceptance", view
+E   AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-9895fb33e1034ff9bfb3b37419b73cd6', 'budget': {'limits': {'money': '...4decb7b5a127ce7acbe6', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}
+E   assert 'finalizing' == 'awaiting_acceptance'
+E     
+E     - awaiting_acceptance
+E     + finalizing</failure></testcase><testcase classname="tests.integration.agent.test_review_wait" name="test_cancel_review_wait_stops_clock_and_retains_report[case0]" time="10.538"><failure message="AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-b541015ae4484696945d74698bfc0726', 'budget': {'limits': {'money': '...4d9cb340c999498d8f70', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}&#10;assert 'finalizing' == 'awaiting_acceptance'&#10;  &#10;  - awaiting_acceptance&#10;  + finalizing">tests\integration\agent\test_review_wait.py:112: in test_cancel_review_wait_stops_clock_and_retains_report
+    job, view = await ready(p)
+                ^^^^^^^^^^^^^^
+tests\integration\agent\test_review_wait.py:55: in ready
+    assert view["phase"] == "awaiting_acceptance", view
+E   AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-b541015ae4484696945d74698bfc0726', 'budget': {'limits': {'money': '...4d9cb340c999498d8f70', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}
+E   assert 'finalizing' == 'awaiting_acceptance'
+E     
+E     - awaiting_acceptance
+E     + finalizing</failure></testcase><testcase classname="tests.integration.agent.test_review_wait" name="test_revoked_policy_after_wait_cannot_accept_and_original_report_remains[case0]" time="11.223"><failure message="AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-47e924efea744bd2851f1d9fc7b216d7', 'budget': {'limits': {'money': '...4a6090a32db97afe3eec', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}&#10;assert 'finalizing' == 'awaiting_acceptance'&#10;  &#10;  - awaiting_acceptance&#10;  + finalizing">tests\integration\agent\test_review_wait.py:134: in test_revoked_policy_after_wait_cannot_accept_and_original_report_remains
+    job, view = await ready(p)
+                ^^^^^^^^^^^^^^
+tests\integration\agent\test_review_wait.py:55: in ready
+    assert view["phase"] == "awaiting_acceptance", view
+E   AssertionError: {'protocol': 'conversation-v1', 'run': {'id': 'run-47e924efea744bd2851f1d9fc7b216d7', 'budget': {'limits': {'money': '...4a6090a32db97afe3eec', ...}, 'input_revision': 1, 'understanding': {'state': 'not_provided', 'input_revision': 1}, ...}
+E   assert 'finalizing' == 'awaiting_acceptance'
+E     
+E     - awaiting_acceptance
+E     + finalizing</failure></testcase></testsuite></testsuites>

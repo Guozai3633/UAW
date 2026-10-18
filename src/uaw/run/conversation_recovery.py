@@ -11,7 +11,7 @@ from collections.abc import Awaitable, Callable
 from time import monotonic
 from typing import Any
 
-from sqlalchemy import and_, exists, select
+from sqlalchemy import and_, exists, or_, select
 from sqlalchemy.orm import aliased
 
 from uaw.agent.contracts import identifier
@@ -236,7 +236,7 @@ class ConversationRecovery:
         if self.scan_after > self.now():
             return False
         self.scan_after = self.now() + 2
-        job, run, patch = aliased(RecordRow), aliased(RecordRow), aliased(RecordRow)
+        job, run, patch, decision = (aliased(RecordRow) for _ in range(4))
         query = (
             select(job.payload)
             .join(
@@ -254,14 +254,28 @@ class ConversationRecovery:
                 job.deleted.is_(False),
                 job.payload["state"].astext == "blocked",
                 run.payload["status"].astext.in_(("preparing", "running", "waiting_for_user")),
-                exists(
-                    select(patch.resource_id).where(
-                        patch.principal_id == job.principal_id,
-                        patch.namespace == PATCHES,
-                        patch.deleted.is_(False),
-                        patch.payload["run_id"].astext == job.resource_id,
-                        patch.payload["state"].astext == "accepted",
-                    )
+                or_(
+                    exists(
+                        select(patch.resource_id).where(
+                            patch.principal_id == job.principal_id,
+                            patch.namespace == PATCHES,
+                            patch.deleted.is_(False),
+                            patch.payload["run_id"].astext == job.resource_id,
+                            patch.payload["state"].astext == "accepted",
+                        )
+                    ),
+                    and_(
+                        job.payload["stage"].astext == "delivery",
+                        exists(
+                            select(decision.resource_id).where(
+                                decision.principal_id == job.principal_id,
+                                decision.namespace == "run.completion.acceptance",
+                                decision.resource_id == job.payload["proposal_ref"]["id"].astext,
+                                decision.deleted.is_(False),
+                                decision.payload["decision"].astext == "accept",
+                            )
+                        ),
+                    ),
                 ),
             )
             .order_by(job.resource_id)

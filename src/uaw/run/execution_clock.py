@@ -15,7 +15,7 @@ from uaw.infrastructure.db.transactions import (
     reference,
     timestamp,
 )
-from uaw.run.clock_ports import ClockChange, ClockIdlePort
+from uaw.run.clock_ports import ClockChange, ClockIdlePort, ReviewWaitClockPort
 from uaw.run.conversation_control import QUESTIONS, TERMINAL, ConversationControls
 from uaw.shared.contracts import JsonObject, Principal, Ref
 from uaw.shared.conversation import ClarificationQuestion, RunExecutionClock
@@ -68,11 +68,13 @@ class ExecutionClocks:
         *,
         effects: ClockIdlePort,
         now: Callable[[], str] = timestamp,
+        reviews: ReviewWaitClockPort | None = None,
     ) -> None:
         if not callable(getattr(effects, "check", None)):
             raise CapabilityUnavailable("run.clock_idle_inventory")
         self.records, self.effects, self.now = records, effects, now
         self.controls = ConversationControls(records)
+        self.reviews = reviews
 
     async def _owned(
         self,
@@ -115,8 +117,25 @@ class ExecutionClocks:
             raise reject("execution_clock_source_changed", "Original clock pin/limit changed", 412)
         if clock.mode == "waiting_for_user":
             assert clock.waiting_item_ref is not None  # Strict schema requires this field.
-            await self._question(tx, run, clock.waiting_item_ref, opened=False)
+            await self._waiting(tx, actor, run, clock.waiting_item_ref, opened=False)
         return run, deepcopy(binding.payload), clock
+
+    async def _waiting(
+        self,
+        tx: RecordTransaction,
+        actor: Principal,
+        run: JsonObject,
+        pin: Ref,
+        *,
+        opened: bool,
+    ) -> None:
+        item = await tx.load("items", pin.id)
+        if item.payload.get("type") == "artifact":
+            if self.reviews is None:
+                raise CapabilityUnavailable("run.clock_review_wait_sources")
+            await require_none(self.reviews.check(tx, actor, str(run["id"]), pin, opened=opened))
+        else:
+            await self._question(tx, run, pin, opened=opened)
 
     async def _question(
         self,
@@ -221,11 +240,11 @@ class ExecutionClocks:
                 raise reject(
                     "execution_clock_not_idle", "Concrete question and idle inventory required", 409
                 )
-            await self._question(tx, run, request.waiting_item_ref, opened=True)
+            await self._waiting(tx, actor, run, request.waiting_item_ref, opened=True)
             await require_none(self.effects.check(tx, actor, run_id))
             # Recheck current owning sources after independent inventory work. No partial writes.
             again = await self._owned(tx, actor, run_id)
-            await self._question(tx, run, request.waiting_item_ref, opened=True)
+            await self._waiting(tx, actor, run, request.waiting_item_ref, opened=True)
             if (
                 again != (run, binding, clock)
                 or (await tx.load("budget.ledgers", run_id)).payload != ledger_before

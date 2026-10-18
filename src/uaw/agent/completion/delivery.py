@@ -63,8 +63,18 @@ class CompletionCoordinator:
             raise reject("completion_scope_denied", "Bundle belongs to another session/Run", 403)
         return row.payload
 
-    async def verify_bundle(self, value: Payload, ctx: TrustedExecutionContext) -> None:
-        view = await self.agents.sources.current(ctx)
+    async def verify_bundle(
+        self, value: Payload, ctx: TrustedExecutionContext, *, review: bool = False
+    ) -> None:
+        from uaw.agent.sources import RegisteredAgentSources
+
+        if review and not isinstance(self.agents.sources, RegisteredAgentSources):
+            raise CapabilityUnavailable("completion.actual_review_sources")
+        read = self.agents.sources.current
+        if review:
+            assert isinstance(self.agents.sources, RegisteredAgentSources)
+            read = self.agents.sources.review_current
+        view = await read(ctx)
         check_pin(
             Ref.model_validate(value["frame_ref"]),
             "task_frame",
@@ -84,7 +94,10 @@ class CompletionCoordinator:
         for ref in binding["observation_refs"]:
             if self.observations is None:
                 raise CapabilityUnavailable("completion.actual_tool_observations")
-            observed = await self.observations.read(Ref.model_validate(ref), ctx)
+            if isinstance(self.observations, AgentObservations):
+                observed = await self.observations.read(Ref.model_validate(ref), ctx, review=review)
+            else:
+                observed = await self.observations.read(Ref.model_validate(ref), ctx)
             if isinstance(self.observations, AgentObservations):
                 fragment = await self.observations.file_fragment(observed)
                 if fragment is not None:
@@ -97,7 +110,7 @@ class CompletionCoordinator:
                 checked_reading(pin, await self.read_evidence(pin, ctx))
         elif view.frame["evidence_refs"]:
             raise CapabilityUnavailable("completion.actual_evidence_reader")
-        if (await self.agents.sources.current(ctx)).frame != view.frame:
+        if (await read(ctx)).frame != view.frame:
             raise reject("completion_frame_changed", "Task changed before delivery", 412)
 
     async def propose(

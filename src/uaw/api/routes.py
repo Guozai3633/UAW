@@ -527,6 +527,8 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     result = (
                         await records.get(actor, "run.completion.acceptance", acceptance.id)
                     ).payload
+                    if container.conversation_recovery is not None:
+                        container.conversation_recovery.signal(actor, payload["run_id"])
                 else:
                     artifact, content = await reader.artifact(
                         actor, payload["artifact_id"], payload.get("version")

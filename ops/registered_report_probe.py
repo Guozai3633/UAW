@@ -30,6 +30,7 @@ from uaw.run.deliveries import DeliveryReader
 from uaw.run.execution_clock import ExecutionClocks
 from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.jobs import JOBS
+from uaw.run.review_wait import ReviewWaitSources
 from uaw.shared.contracts import Principal, RequestMeta
 from uaw.shared.conversation import ConversationRequestMeta, RunCorrectionRequest
 from uaw.shared.settings import Settings
@@ -147,7 +148,9 @@ async def run(args: argparse.Namespace) -> int:
             raise ProbeStop("fresh_isolated_user_inventory_required")
         driver = BackgroundAgent(
             control,
-            conversation_clocks=ExecutionClocks(records, effects=RunIdleEffects()),
+            conversation_clocks=ExecutionClocks(
+                records, effects=RunIdleEffects(), reviews=ReviewWaitSources(records)
+            ),
             conversation_segments=ExecutionSegments(records),
         )
         queue = await driver.prepare()

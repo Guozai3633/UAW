@@ -20,13 +20,14 @@ from uaw.context.contracts import InstructionRule
 from uaw.infrastructure.db.context_batch import PostgresContextRecordBatch
 from uaw.infrastructure.db.transactions import RecordTransaction, reference, timestamp
 from uaw.run.approval_router import RoutedApprovals, ToolApprovalRoute
-from uaw.run.clock_ports import ConversationClockPort
+from uaw.run.clock_ports import ClockChange, ConversationClockPort
 from uaw.run.completion import RunCompletionController
 from uaw.run.execution_segments import ExecutionSegments
 from uaw.run.file_admission import NAMESPACE as FILE_SOURCES
 from uaw.run.file_runtime import FileRunRuntime, assemble_file_run
 from uaw.run.inputs import RunInputReader
 from uaw.run.jobs import RunJobs
+from uaw.run.review_wait import ReviewWaitSources
 from uaw.run.service_router import RunApprovalRouter, RunCompletionRouter
 from uaw.run.state import validate_worker_transition
 from uaw.shared.contracts import (
@@ -273,6 +274,8 @@ class BackgroundAgent:
 
         if self.control.records is None or self.queue is None:
             raise CapabilityUnavailable("conversation.original_queue")
+        if await self.resume_review(actor, run_id):
+            return True
         return await ConversationResumer(
             self.control.records,
             self.queue,
@@ -284,6 +287,57 @@ class BackgroundAgent:
             ),
             segments=self.conversation_segments,
         ).resume(actor, run_id)
+
+    async def resume_review(self, actor: Principal, run_id: str) -> bool:
+        """Wake only an accepted, parked delivery; no model/tool execution or new time."""
+        c = self.control
+        assert c.records is not None and self.queue is not None
+        job = (await c.records.get(actor, "run.background.jobs", run_id)).payload
+        if job["state"] != "blocked" or job["stage"] != "delivery" or "proposal_ref" not in job:
+            return False
+        try:
+            acceptance = await c.records.get(
+                actor, "run.completion.acceptance", job["proposal_ref"]["id"]
+            )
+        except StoreMissing:
+            return False
+        if acceptance.payload["decision"] != "accept":
+            return False
+        ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["step_context"]))
+        await self.verify_segment_sources(job)
+
+        async def write(tx: RecordTransaction) -> Payload:
+            assert c.records is not None and self.queue is not None
+            current = await tx.load("run.background.jobs", run_id)
+            if current.payload != job:
+                return {"woken": False}
+            bundle = (await tx.load("agent.completion.bundles", job["proposal_ref"]["id"])).payload
+            from uaw.agent.completion.delivery import row_pin
+
+            decision = (
+                await tx.load("run.completion.acceptance", job["proposal_ref"]["id"])
+            ).payload
+            validate_contract("CompletionAcceptance", decision)
+            if (
+                actor != ctx.principal
+                or decision["principal"] != actor.wire()
+                or decision["bundle_ref"] != row_pin("content", bundle["id"], bundle).wire()
+                or decision["decision"] != "accept"
+                or not await ReviewWaitSources(c.records).paused(ctx, bundle, tx=tx)
+            ):
+                raise reject("review_wait_stale", "Accepted original review differs", 412)
+            await self.queue.wake(tx, job, resume_delivery=True)
+            await self.verify_segment_sources(job)
+            return {"woken": True}
+
+        assert c.run_service is not None
+        return bool(
+            (
+                await c.run_service.transactions.inspect(
+                    actor, "conversation:" + (ctx.conversation_id or ""), write
+                )
+            )["woken"]
+        )
 
     async def verify_segment_sources(self, job: Payload) -> None:
         """Observe current sources for a safe wake, without granting an execution."""
@@ -355,7 +409,16 @@ class BackgroundAgent:
         assert (
             c.records and c.run_service and c.configuration and c.intent_service and c.tool_access
         )
-        actor, run = await self.guard(job)
+        review = False
+        if self.conversation_clocks is not None and job["stage"] == "delivery":
+            row = await c.records.get(
+                Principal.model_validate(job["principal"]),
+                "agent.completion.bundles",
+                job["proposal_ref"]["id"],
+            )
+            ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["step_context"]))
+            review = await ReviewWaitSources(c.records).paused(ctx, row.payload)
+        actor, run = await self.guard(job, inspect_only=review)
         if run["status"] in ("completed", "failed", "cancelled"):
             self.file_runtimes.pop(run["id"], None)
             return {**job, "state": "finished", "stage": "finished"}
@@ -667,6 +730,9 @@ class BackgroundAgent:
                 )
             )
             await self.publish_preview(actor, run, proposal)
+            parked = await self.park_review(actor, run, proposal, job)
+            if parked is not None:
+                return parked
             return {**base, "stage": "delivery", "proposal_ref": proposal.wire()}
         if job["stage"] == "delivery":
             step_ctx = TrustedExecutionContext.model_validate_json(json.dumps(job["step_context"]))
@@ -699,6 +765,90 @@ class BackgroundAgent:
             await publish(agent, operation_id, ctx)
         else:
             await publish(agent, operation_id, ctx, clocks=self.conversation_clocks)
+
+    async def park_review(
+        self, actor: Principal, run: Payload, proposal: Ref, job: Payload
+    ) -> Payload | None:
+        """One durable clock + queue checkpoint. No high frequency completion retries."""
+        c, clocks = self.control, self.conversation_clocks
+        if clocks is None:
+            return None
+        assert c.records and c.run_service and self.queue
+        bundle = (await c.records.get(actor, "agent.completion.bundles", proposal.id)).payload
+        contract = (
+            await c.records.get(actor, "agent.completion.contracts", bundle["contract_ref"]["id"])
+        ).payload
+        report = (
+            await c.records.get(actor, "agent.completion.reports", bundle["report_ref"]["id"])
+        ).payload
+        if not contract.get("acceptance_required") or report["outcome"] != "succeeded":
+            return None
+        pin = Ref(
+            kind="item", id=stable_id("artifact-item-", {"proposal": proposal.wire()}), version="1"
+        )
+
+        async def write(tx: RecordTransaction) -> Payload:
+            from sqlalchemy import func, select
+
+            from uaw.agent.completion.delivery import row_pin
+            from uaw.shared.stores import StoreConflict
+
+            assert c.records is not None and self.queue is not None
+            # Same order as admission/continuation: conversation, then queue.
+            await tx.session.execute(
+                select(
+                    func.pg_advisory_xact_lock(func.hashtextextended(f"{actor.id}:web.queue", 0))
+                )
+            )
+            source = await tx.load("run.background.jobs", run["id"])
+            if (
+                RunJobs.progress(source.payload) != RunJobs.progress(job)
+                or source.payload["state"] != "working"
+                or source.payload["worker_id"] != self.queue.worker_id
+                or datetime.fromisoformat(source.payload["lease_expires"]) <= datetime.now(UTC)
+            ):
+                raise StoreConflict("job_review_fence_stale")
+            original_bundle = await ReviewWaitSources(c.records).read(
+                tx, actor, run["id"], pin, current=True
+            )
+            try:
+                decision = await tx.load("run.completion.acceptance", proposal.id)
+            except StoreMissing:
+                pass
+            else:
+                # The user can decide immediately after the preview is published.
+                # Do not turn that valid decision into a failed attempt to park.
+                validate_contract("CompletionAcceptance", decision.payload)
+                if (
+                    decision.payload["principal"] != actor.wire()
+                    or decision.payload["bundle_ref"]
+                    != row_pin("content", proposal.id, original_bundle).wire()
+                ):
+                    raise reject("review_wait_stale", "Original review decision differs", 412)
+                return {}
+            clock = await tx.load("run.execution_clocks", run["id"])
+            await clocks.change(
+                tx,
+                actor,
+                run["id"],
+                ClockChange(clock.revision, "waiting_for_user", waiting_item_ref=pin),
+            )
+            value = {
+                **source.payload,
+                "revision": source.revision + 1,
+                "stage": "delivery",
+                "state": "blocked",
+                "proposal_ref": proposal.wire(),
+            }
+            await tx.write(
+                "run.background.jobs", run["id"], "BackgroundRunJob", value, source.revision
+            )
+            return value
+
+        result = await c.run_service.transactions.inspect(
+            actor, "conversation:" + run["conversation_id"], write
+        )
+        return result or None
 
     async def resume_approval(self, job: Payload, operation: LoopOperation) -> None:
         """Wake the original step after a real decision, never grant Tool dispatch."""

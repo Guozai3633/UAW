@@ -150,6 +150,7 @@ async def assemble_file_run(container: Container, ctx: TrustedExecutionContext) 
         agent,
         contexts=contexts,
         acceptance_required=c.settings.agent_acceptance_required,
+        clocks=c.conversation_clocks,
     )
     approvals = RoutedApprovals(
         registry,

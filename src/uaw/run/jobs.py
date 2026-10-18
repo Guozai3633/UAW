@@ -134,6 +134,7 @@ class RunJobs:
         original: Payload,
         *,
         continuation_context: TrustedExecutionContext | None = None,
+        resume_delivery: bool = False,
     ) -> Payload:
         """Join the original conversation transaction; never grant execution rights."""
         validate_contract("BackgroundRunJob", original)
@@ -157,11 +158,17 @@ class RunJobs:
         )
         if active is None or active >= self.capacity:
             raise reject("run_queue_full", "Background queue has no continuation slot", 409)
+        if resume_delivery and (
+            original["stage"] != "delivery"
+            or "proposal_ref" not in original
+            or continuation_context is not None
+        ):
+            raise reject("job_review_scope", "Original parked delivery required", 412)
         changed = {
             **row.payload,
             "revision": row.revision + 1,
             "fence": row.payload["fence"] + 1,
-            "stage": "prepared",
+            "stage": "delivery" if resume_delivery else "prepared",
             "state": "queued",
             "ready_at": datetime.now(UTC).isoformat(),
         }
@@ -181,6 +188,8 @@ class RunJobs:
             "worker_id",
             "lease_expires",
         ):
+            if resume_delivery and key in ("frame_ref", "step_context", "proposal_ref"):
+                continue
             changed.pop(key, None)
         await tx.write(JOBS, original["run_id"], "BackgroundRunJob", changed, row.revision)
         return changed
@@ -190,6 +199,19 @@ class RunJobs:
 
         async def save(tx: RecordTransaction) -> Payload:
             row = await tx.load(JOBS, original["run_id"])
+            # Review parking commits job + clock atomically under the original
+            # conversation and queue locks. A late save must not write a second
+            # checkpoint or overwrite an acceptance/correction wake.
+            if (
+                row.payload == result
+                and result["state"] == "blocked"
+                and result["stage"] == "delivery"
+                and row.revision > original["revision"]
+                and result["worker_id"] == self.worker_id
+                and result["fence"] == original["fence"]
+                and result["principal"] == original["principal"]
+            ):
+                return row.payload
             if (
                 self.progress(row.payload) != self.progress(original)
                 or row.payload["state"] != "working"

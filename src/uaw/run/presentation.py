@@ -201,12 +201,26 @@ class RunPresentationReader:
                         phase == "finalizing"
                         and decision is None
                         and idle
-                        and job["state"] in ("waiting", "working")
+                        and job["state"] in ("waiting", "working", "blocked")
                         and delivery["requires_acceptance"]
                         and not ledger["cancel_requested"]
                         and not ledger["overdrawn"]
                     ):
                         phase = "awaiting_acceptance"
+                        if job["state"] == "blocked":
+                            from uaw.run.review_wait import ReviewWaitSources
+
+                            clock = await tx.load("run.execution_clocks", run_id)
+                            if clock.payload["mode"] != "waiting_for_user":
+                                phase = "unavailable"
+                            else:
+                                await ReviewWaitSources(self.records).check(
+                                    tx,
+                                    actor,
+                                    run_id,
+                                    Ref.model_validate(clock.payload["waiting_item_ref"]),
+                                    opened=True,
+                                )
                     if decision is not None and decision != "accept":
                         phase = "needs_revision"
             if run["status"] in TERMINAL:

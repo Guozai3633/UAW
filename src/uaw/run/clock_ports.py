@@ -31,6 +31,24 @@ class ClockIdlePort(Protocol):
         ...
 
 
+class ReviewWaitClockPort(Protocol):
+    async def check(
+        self,
+        tx: RecordTransaction,
+        actor: Principal,
+        run_id: str,
+        item_ref: Ref,
+        *,
+        opened: bool,
+    ) -> None:
+        """Verify the original artifact Item and owned delivery; never grant execution.
+
+        opened=True requires the current successful, idle, undecided delivery.
+        False checks immutable waiting provenance, even after revision/cancel.
+        """
+        ...
+
+
 class ConversationClockPort(ExecutionClockPort, Protocol):
     async def change(
         self,

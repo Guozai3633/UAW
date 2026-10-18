@@ -86,8 +86,17 @@ class AgentObservations:
         await self.sources.current(ctx)
         return reference("content", key, 1, value)
 
-    async def read(self, ref: Ref, ctx: TrustedExecutionContext) -> Payload:
-        await self.sources.current(ctx)
+    async def read(
+        self, ref: Ref, ctx: TrustedExecutionContext, *, review: bool = False
+    ) -> Payload:
+        from uaw.agent.sources import RegisteredAgentSources
+
+        read = self.sources.current
+        if review:
+            if not isinstance(self.sources, RegisteredAgentSources):
+                raise reject("agent_review_sources_missing", "Actual review sources required", 503)
+            read = self.sources.review_current
+        await read(ctx)
         row = await self.store.get(ctx.principal, OBSERVATIONS, ref.id)
         validate_contract("AgentObservation", row.payload)
         check_pin(ref, "content", row.resource_id, row.revision, row.payload)
@@ -104,7 +113,7 @@ class AgentObservations:
                 != result
             ):
                 raise reject("agent_tool_evidence_invalid", "Tool source changed", 412)
-        await self.sources.current(ctx)
+        await read(ctx)
         return frozen(row.payload)
 
 

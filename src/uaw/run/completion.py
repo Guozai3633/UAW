@@ -18,6 +18,7 @@ from uaw.infrastructure.db.transactions import RecordTransaction, TransactionalS
 from uaw.run.clock_ports import ConversationClockPort
 from uaw.run.conversation_clock_commit import stop_clock
 from uaw.run.conversation_recovery import close_notices
+from uaw.run.review_wait import ReviewWaitSources
 from uaw.shared.contracts import Principal, Ref, RequestMeta, TrustedExecutionContext
 from uaw.shared.errors import reject
 from uaw.shared.schema import validate_contract
@@ -33,6 +34,16 @@ class RunCompletionController:
         self.records = completion.records
         self.transactions = TransactionalStore(self.records.database)
 
+    async def verify_bundle(
+        self, bundle: Payload, ctx: TrustedExecutionContext, *, tx: RecordTransaction | None = None
+    ) -> None:
+        review = self.clocks is not None and await ReviewWaitSources(self.records).paused(
+            ctx, bundle, tx=tx
+        )
+        await self.completion.verify_bundle(bundle, ctx, review=review)
+        if review and not await ReviewWaitSources(self.records).paused(ctx, bundle, tx=tx):
+            raise reject("review_wait_stale", "Review wait changed during verification", 412)
+
     async def accept(
         self,
         actor: Principal,
@@ -47,7 +58,7 @@ class RunCompletionController:
                 "completion_user_required", "Independent authenticated user action required", 403
             )
         bundle = await self.completion.bundle(bundle_ref, ctx)
-        await self.completion.verify_bundle(bundle, ctx)
+        await self.verify_bundle(bundle, ctx)
         if artifact_ref.wire() != bundle["artifact_ref"]:
             raise reject(
                 "completion_acceptance_stale", "User decision names another artifact version", 412
@@ -63,7 +74,7 @@ class RunCompletionController:
         async def write(tx: RecordTransaction) -> Payload:
             # Serialize with cancel/Run revisions; checks made before taking this lock
             # are insufficient when the user decides during an in-flight cancellation.
-            await self.completion.verify_bundle(bundle, ctx)
+            await self.verify_bundle(bundle, ctx, tx=tx)
             await tx.write(
                 "run.completion.acceptance", bundle_ref.id, "CompletionAcceptance", value
             )
@@ -102,7 +113,7 @@ class RunCompletionController:
 
         async def write(tx: RecordTransaction) -> Payload:
             # Same aggregate lock as cancellation, revision and budget dispatch.
-            await self.completion.verify_bundle(bundle, ctx)
+            await self.verify_bundle(bundle, ctx, tx=tx)
             run = await tx.load("runs", ctx.run_id or "")
             proposal = await tx.load("agent.completion.proposals", proposal_ref.id)
             contract = (await tx.load(CONTRACTS, bundle["contract_ref"]["id"])).payload
