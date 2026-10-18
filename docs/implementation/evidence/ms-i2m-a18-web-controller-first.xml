@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="1" errors="0" time="0.0196097">
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-18T14:19:03.652Z" hostname="LAPTOP-JE6KH8OE" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="tests/unit/controller.test.ts" name="tests/unit/controller.test.ts" time="0">
+            <failure message="ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{2b6ff460-472e-4478-b977-2c70024b3220}\AC\Temp\91TKoues5d93NfAUnxiOc\client\a5cb663fe925251a3eb9336e6f9025498dfb95a4&apos;" type="Error">
+Error: ENOENT: no such file or directory, open &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{2b6ff460-472e-4478-b977-2c70024b3220}\AC\Temp\91TKoues5d93NfAUnxiOc\client\a5cb663fe925251a3eb9336e6f9025498dfb95a4&apos;
+ ❯ src/features/workspace/controller.ts:3:1
+ ❯ tests/unit/controller.test.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -4058, code: &apos;ENOENT&apos;, syscall: &apos;open&apos;, path: &apos;C:\Users\郭丰硕\AppData\Local\Packages\sandbox.{2b6ff460-472e-4478-b977-2c70024b3220}\AC\Temp\91TKoues5d93NfAUnxiOc\client\a5cb663fe925251a3eb9336e6f9025498dfb95a4&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/projection.test.ts" timestamp="2026-10-18T14:19:03.662Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0196097">
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; deduplicates exact seq and Item revisions without text guesses" time="0.0034683">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; requires snapshot on sequence gap or conflicting identity" time="0.0005192">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; applies delta once with exact base/result and accepts latest snapshot over old delta" time="0.0004035">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; honors replacement and ignores older fixed watermark" time="0.0002166">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="new Run and task identities start their own revision boundary and keep server order on equal timestamps" time="0.0128735">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="duplicate IDs in snapshot pages retain the highest revision regardless of page order" time="0.0004767">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -21,6 +21,7 @@
 | `conversation_id` | [ID](../objects/ID.md) | 是 | 会话 |
 | `cursor` | [Cursor](../objects/Cursor.md) | 否 | 续页 |
 | `limit` | [PageLimit](../objects/PageLimit.md) | 否 | 页大小 |
+| `after_seq` | [Count](../objects/Count.md) | 否 | 仅返回此序号之后的新事件，分页期间固定 |
 
 ## 输出
 

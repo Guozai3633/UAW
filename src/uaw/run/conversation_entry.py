@@ -273,9 +273,18 @@ async def publish(
             "created_at": now,
             "updated_at": now,
         }
-        await tx.write("items", item_id, "InteractionItem", item)
+        from uaw.run.streaming import finish_item
+
+        item = await finish_item(tx, ctx.attempt_id, item)
+        base = item["revision"] - 1
+        await tx.write("items", item_id, "InteractionItem", item, base)
         await tx.emit(
-            ctx.conversation_id or "", "item.updated", item, item_ref=reference("item", item_id)
+            ctx.conversation_id or "",
+            "item.updated",
+            item,
+            item_ref=reference("item", item_id, item["revision"]),
+            base_revision=base,
+            result_revision=item["revision"],
         )
         changed = {
             **run.payload,

@@ -1200,7 +1200,7 @@ endpoint("runs.control","POST","/v1/runs/{run_id}/control","run","ui run.approva
 endpoint("runs.checkpoint","POST","/v1/runs/{run_id}/checkpoints","run","run.checkpoint","创建可恢复检查点。","run_id|ID|运行","Checkpoint","internal_write",["只采集已提交域版本；未决外部写保留到pending_action_refs；需expected_revision。"])
 endpoint("runs.resume","POST","/v1/runs/{run_id}/resume","run","ui run.resume run.resume.lease run.resume.versions run.resume.access run.resume.effects run.resume.workspace run.resume.continue","从检查点恢复。","run_id|ID|运行\ncheckpoint_ref|Ref|目标检查点\nmode|RecoveryMode|resume或rerun","RunRecord","internal_write",["执行恢复先取得租约、复核权限与资源、对账未知写；rerun创建新Run，不能冒充结果复现。"])
 enum("RecoveryMode","resume|rerun","run")
-endpoint("events.read","GET","/v1/conversations/{conversation_id}/events","run","ingress run.events","分页读取历史事件。","conversation_id|ID|会话\ncursor?|Cursor|续页\nlimit?|PageLimit|页大小","EventPage")
+endpoint("events.read","GET","/v1/conversations/{conversation_id}/events","run","ingress run.events","分页读取历史事件。","conversation_id|ID|会话\ncursor?|Cursor|续页\nlimit?|PageLimit|页大小\nafter_seq?|Count|仅返回此序号之后的新事件，分页期间固定","EventPage")
 endpoint("events.stream","GET","/v1/conversations/{conversation_id}/events/stream","run","ui ingress run.events","SSE续接。","conversation_id|ID|会话\ncursor?|Cursor|续接位置","EventEnvelope",rules=["Last-Event-ID与cursor同时存在必须一致；断点过旧返回410并提供快照入口；心跳不持久化。"])
 endpoint("approvals.get","GET","/v1/approvals/{approval_id}","run","ui run.approval","审批详情。","approval_id|ID|审批","ApprovalRequest")
 endpoint("approvals.decide","POST","/v1/approvals/{approval_id}/decisions","run","ui run.approval tool.invocation.approval tool.invocation.recheck","用户审批。","approval_id|ID|审批\ndecision|ApprovalDecision|批准范围","ApprovalGrant","internal_write",["expected_revision必需；参数/资源版本不一致返回stale；不能从LLM参数approved读取授权。"])
@@ -2164,6 +2164,8 @@ def finalize(graph,strategies):
     # Additive conversation-v1 objects do not change any legacy 0.1 DTO or action.
     from contracts.conversation_catalog import register as register_conversation
     register_conversation(TYPES, OWNERS, RULES, OPERATIONS, obj, field, ref, arr, operation)
+    from contracts.streaming_catalog import register as register_streaming
+    register_streaming(obj, field)
     from contracts.quality_catalog import register as register_quality
     register_quality(TYPES, OWNERS, RULES, OPERATIONS, obj, field, ref, arr, operation)
     # Conversation operations are registered after the historical implementation pass.

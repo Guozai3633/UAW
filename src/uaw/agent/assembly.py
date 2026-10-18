@@ -105,6 +105,8 @@ def assemble_agent_runtime(
     )
     repository = AgentRepository(container.records, sources)
     original = container.model_service.gateway
+    from uaw.run.streaming import ConversationStreams
+
     # A second routing facade shares the owned provider client; Container remains
     # its lifecycle owner. Existing understanding/default bindings are untouched.
     model = ModelFacade(
@@ -115,6 +117,9 @@ def assemble_agent_runtime(
             original.budgets,
             original.blobs,
             original.adapter,
+            streams=ConversationStreams(container.records)
+            if container.settings.agent_streaming_enabled
+            else None,
         )
     )
     observations = AgentObservations(

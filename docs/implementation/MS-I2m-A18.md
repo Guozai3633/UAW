@@ -67,7 +67,7 @@ flowchart LR
 | `ReplyText.feed` | 任意分片的原conversation-v1 JSON content | 已确认reply的解码正文前缀；字段未齐返回空；无工具执行或状态提交 |
 | `EventReader.read`新增`after_seq` | 非负整数，默认0 | 原EventPage与签名分页；cursor已固定的序号不能被新参数覆盖 |
 
-计划严格`ConversationStreamRecord`：`id`为原invocation；`revision>=1`；`run_id/conversation_id/operation_id/item_id`为稳定ID；`input_revision>=1`；`attempt_id`为实际提供方attempt；`snapshot_ref/model_config`为原固定来源；`state`为receiving/received/interrupted/published；`text`为至多65536字符已允许的正文前缀；`created_at/updated_at`为UTC；可选`first_provider_at/first_text_at/received_at`、`output_ref`、`failure_code`，以及非负整数`provider_chunks/persisted_chunks`。具体实现若需要调整，先同步此策略及严格契约源，不在调用中夹带私有字段。
+严格`ConversationStreamRecord`：`id`为原invocation；`revision>=1`；`run_id/conversation_id/operation_id/item_id`为稳定ID；`input_revision>=1`；`attempt_id`为实际提供方attempt；`snapshot_ref/model_config`为原固定来源；`state`为receiving/received/interrupted/published；`text`沿用公共Text的16384字符上限；`created_at/updated_at`为UTC；可选`first_provider_at/first_text_at/received_at`、`output_ref`、`failure_code`，以及非负整数`provider_chunks/persisted_chunks`。解析器缓存可更大，但不能越过公共消息上限。准确契约由`contracts/streaming_catalog.py`生成。
 
 稳定Item使用原`conversation-message-`算法和原Agent operation，不以网络连接创建新消息。Item为原InteractionItem，正文检查点使用in_progress，原完成publish使用当前修订+1并保留created_at；只有最终publish增加正式来源refs。未收到合格reply时不创建空白假回答；原始SSE与失败用量仍由Model域保存。
 
@@ -84,4 +84,11 @@ flowchart LR
 3. M3：按测量定位并修复应用瓶颈，保留同条件前后值；按具体反馈修复，缺人审不代填。不能用调大deadline/放松校验掩盖问题。
 4. M4：相关澄清、纠正、取消、重连、报告审阅接受兼容回归，固定新源码部署，原账号/历史/未保存表单保留，交付可测清单与逐项审计。
 
-当前仅完成现场阅读和设计，尚无真实SSE验收、耗时收益或新部署结论。后续每阶段追加真实回执，旧失败和费用不覆盖。
+## 6. 实施阶段回执
+
+- 原账号无活动Run；没有新提交反馈，8份质量审阅仍未提交。旧服务启动准备耗时独立记录，不算网页请求耗时。隔离旧版已完成普通冷/重复问答、短报告和一个实际页面问答，使用原管理员模型目录；首次HTTP探针误判202后已只读恢复原Run，没有重发。
+- SSE和正文解析51项Model单元通过；真实SQL验证提前读取、同一Item最终发布、断线未知效果、取消和末帧竞争、原完成守卫拒绝、固定分页/删除历史。阶段失败和后续修正回执均保留。
+- 取消若缺提供方usage，输入/输出预留和金额继续pending，原Run可能保持stopping而不能结算cancelled。测试原先把“停止接收”与“已完成账务结算”混为一谈；现按真实usage分别断言，不填零、不清账。页面明确不完整及新建会话重试方式。
+- 同图7条事件旧读取10条SQL；批读取保留所有人、删除状态和缺源拒绝，准确新计数见独立回执。页面仅活动期使用250ms增量读取，普通轮询仍3000ms；提交、人工决定、重连先恢复原快照，再读增量。4路只读正文并发按事件顺序应用。
+- `apps/web/src/lib/events/timing.ts`在同一页面记录提交/受理、事件应用和React正文提交时间，最多每类256条，不含正文/凭据/推理；此时间不是显示器物理绘制时间。刷新后新页面重新记录，原持久检查点仍可恢复。
+- 生成提示词、固定模型和生成参数未变；不重新跑无关8题，不宣称事实正确率或满意度提升。真实固定模型SSE、候选耗时及新部署尚待后续阶段验收。

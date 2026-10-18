@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="16.038" timestamp="2026-10-18T22:14:12.834873+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_streaming" name="test_real_sql_partial_visible_before_final_same_item_replays_and_does_not_repeat_model[case0]" time="7.791" /><testcase classname="tests.integration.agent.test_streaming" name="test_provider_disconnect_preserves_partial_and_unknown_without_success_or_resend[case0]" time="6.566"><failure message="AttributeError: 'RecordTransaction' object has no attribute 'principal'">tests\integration\agent\test_streaming.py:105: in test_provider_disconnect_preserves_partial_and_unknown_without_success_or_resend
+    assert await task
+           ^^^^^^^^^^
+src\uaw\run\jobs.py:313: in tick
+    await self.finalize(saved)
+src\uaw\run\background.py:908: in finalize
+    await RunTerminationController(
+src\uaw\run\termination.py:150: in settle
+    await self.transactions.inspect(actor, "conversation:" + initial["conversation_id"], write)
+src\uaw\infrastructure\db\transactions.py:164: in inspect
+    return await action(RecordTransaction(session, owner.id, self.database))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\uaw\run\termination.py:42: in write
+    await interrupt_run(tx, run_id, job.get("failure", {}).get("code", "stream_job_stopped"))
+src\uaw\run\streaming.py:266: in interrupt_run
+    RecordRow.principal_id == tx.owner,
+                              ^^^^^^^^^^
+E   AttributeError: 'RecordTransaction' object has no attribute 'principal'</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="0.167786">
+    <testsuite name="tests/unit/controller.test.ts" timestamp="2026-10-18T14:20:42.360Z" hostname="LAPTOP-JE6KH8OE" tests="9" failures="0" errors="0" skipped="0" time="0.1563174">
+        <testcase classname="tests/unit/controller.test.ts" name="sends exact original once, refreshes known Run and does not treat cancellation acknowledgement as terminal" time="0.114801">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="uncertain dispatch persists lookup only and refresh never resubmits" time="0.0035367">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="decision binds fresh hash/refs/revision, rejects changed approval" time="0.0054955">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="creating a conversation releases busy state and records an opened URL in the sidebar" time="0.005779">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="new controller restores original Run by GET without dispatching a turn" time="0.0021742">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="aborted identity read cannot restore old data or a connected state" time="0.0005206">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="cursor-invalid responses resnapshot without sending and cursor loops fail explicitly" time="0.0020823">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="a rejected historical event leaves reconnect usable; a valid reread restores creation without sending a turn" time="0.0154926">
+        </testcase>
+        <testcase classname="tests/unit/controller.test.ts" name="polls only new ordered events while active, updates one partial message, and restores full final content on refresh" time="0.0055185">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/projection.test.ts" timestamp="2026-10-18T14:20:42.365Z" hostname="LAPTOP-JE6KH8OE" tests="6" failures="0" errors="0" skipped="0" time="0.0114686">
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; deduplicates exact seq and Item revisions without text guesses" time="0.0018995">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; requires snapshot on sequence gap or conflicting identity" time="0.000324">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; applies delta once with exact base/result and accepts latest snapshot over old delta" time="0.0002618">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="versioned event projection &gt; honors replacement and ignores older fixed watermark" time="0.0001323">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="new Run and task identities start their own revision boundary and keep server order on equal timestamps" time="0.0075272">
+        </testcase>
+        <testcase classname="tests/unit/projection.test.ts" name="duplicate IDs in snapshot pages retain the highest revision regardless of page order" time="0.0002058">
+        </testcase>
+    </testsuite>
+</testsuites>

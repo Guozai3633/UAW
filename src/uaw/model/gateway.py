@@ -35,6 +35,7 @@ from uaw.shared.errors import DomainError, error_result, reject
 from uaw.shared.observability import report_request_failure
 from uaw.shared.schema import validate_contract
 from uaw.shared.stores import BlobStorePort, StoreConflict
+from uaw.shared.streaming import ModelStreamPort
 
 
 def request_meta(action: str, identity: str) -> RequestMeta:
@@ -55,11 +56,13 @@ class ModelGateway:
         adapter: ModelProviderPort,
         *,
         dispatch_guard: Callable[[TrustedExecutionContext], Awaitable[None]] | None = None,
+        streams: ModelStreamPort | None = None,
     ) -> None:
         self.store, self.policies, self.inputs = store, policies, inputs
         self.budgets, self.blobs, self.adapter = budgets, blobs, adapter
         self.transactions = TransactionalStore(store.database)
         self.dispatch_guard = dispatch_guard
+        self.streams = streams
 
     async def close(self) -> None:
         await self.adapter.close()
@@ -369,7 +372,17 @@ class ModelGateway:
         response = None
         failure: ProviderFailure | None = None
         cancelled = False
+        consumer = None
+        from uaw.model.contracts import ProviderObservation
+
+        observation = ProviderObservation()
         try:
+            if self.streams is not None:
+                consumer = await self.streams.open(request, ctx, invocation_id)
+                if consumer is not None:
+                    from dataclasses import replace
+
+                    request = replace(request, on_content=consumer.content, observation=observation)
             response = await self._cancelable(request, ctx)
         except asyncio.CancelledError:
             failure, cancelled = ProviderFailure("model_cancelled", category="cancelled"), True
@@ -379,6 +392,44 @@ class ModelGateway:
             failure = ProviderFailure(exc.failure.code, category=exc.failure.category)
         except Exception:
             failure = ProviderFailure("provider_adapter_failure", category="infrastructure")
+        if failure and observation.raw:
+            failure.response_raw = observation.raw
+            failure.resources = observation.resources or failure.resources
+        if consumer is not None and failure:
+            # A durable display invocation is never automatically reopened/re-sent.
+            failure.safe_retry = False
+        if consumer is not None:
+            try:
+                await asyncio.shield(consumer.finish(response, failure))
+            except DomainError as exc:
+                previous = failure
+                failure = ProviderFailure(exc.failure.code, category=exc.failure.category)
+                if response:
+                    failure.resources, failure.response_raw = response.resources, response.raw
+                elif previous:
+                    failure.resources, failure.response_raw = (
+                        previous.resources,
+                        previous.response_raw,
+                    )
+                response = None
+                with suppress(DomainError):
+                    await asyncio.shield(consumer.finish(None, failure))
+            except Exception:
+                previous = failure
+                failure = ProviderFailure(
+                    "conversation_stream_store_failed", category="infrastructure"
+                )
+                failure.resources = (
+                    response.resources if response else previous.resources if previous else {}
+                )
+                failure.response_raw = (
+                    response.raw
+                    if response
+                    else previous.response_raw
+                    if previous
+                    else observation.raw
+                )
+                response = None
         observed = response.resources if response else failure.resources if failure else {}
         usage: Payload = {
             "attempt_id": ctx.attempt_id,

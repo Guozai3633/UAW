@@ -89,3 +89,28 @@ it('a rejected historical event leaves reconnect usable; a valid reread restores
   expect(x.c.snapshot().busy).toBe(false);expect(x.c.snapshot().connected).toBe(true);
  }finally{x.c.stop();}
 });
+
+it('polls only new ordered events while active, updates one partial message, and restores full final content on refresh',async()=>{
+ vi.useFakeTimers();const x=setup();const normal=x.transport.getMockImplementation()!;let stage=0;
+ const item=(revision:number,text:string,status:'in_progress'|'completed')=>({id:'reply-one',conversation_id:'conv-one',run_id:'run-one',type:'agent_message',status,revision,text,resource_refs:[],created_at:now,updated_at:now});
+ x.transport.mockImplementation(async(input,options)=>{
+  const url=new URL(String(input),'http://fixture'),path=url.pathname;
+  if(path.endsWith('/items')&&stage)return new Response(JSON.stringify(ok({items:[item(stage,'实际内容'+(stage===2?'完成':''),stage===2?'completed':'in_progress')],snapshot_revision:stage+1})));
+  if(path.endsWith('/events')&&stage){const after=Number(url.searchParams.get('after_seq')??0);const seq=stage+1;
+   return new Response(JSON.stringify(ok({items:seq>after?[{event_id:'partial-'+stage,stream_id:'conv-one',seq,type:'item.updated',schema_version:'0.1',occurred_at:now,payload_ref:ref('event','partial-'+stage)}]:[],snapshot_revision:seq})));}
+  if(path.includes('/partial-')&&path.endsWith('/payload'))return new Response(JSON.stringify(ok({action:'item.updated',parameters:item(stage,'实际内容'+(stage===2?'完成':''),stage===2?'completed':'in_progress')})));
+  return normal(input,options);
+ });
+ try{
+  await x.c.start('conv-one');x.c.edit('问');await x.c.send();
+  const snapshots=x.transport.mock.calls.filter(([path])=>String(path).includes('/items')).length;
+  stage=1;await vi.advanceTimersByTimeAsync(260);
+  expect(x.c.snapshot().items).toHaveLength(1);expect(x.c.snapshot().items[0].status).toBe('in_progress');
+  expect(x.transport.mock.calls.some(([path])=>String(path).includes('after_seq=1'))).toBe(true);
+  expect(x.transport.mock.calls.filter(([path])=>String(path).includes('/items')).length).toBe(snapshots);
+  await vi.advanceTimersByTimeAsync(260);expect(x.c.snapshot().items[0].text).toBe('实际内容');
+  stage=2;await vi.advanceTimersByTimeAsync(260);expect(x.c.snapshot().items[0].text).toBe('实际内容完成');
+  expect(x.c.snapshot().items).toHaveLength(1);await x.c.reconnect();
+  expect(x.c.snapshot().items[0].status).toBe('completed');expect(x.posts).toHaveLength(1);
+ }finally{x.c.stop();vi.useRealTimers();}
+});

@@ -4744,6 +4744,15 @@
             }
           },
           {
+            "name": "after_seq",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Count",
+              "description": "仅返回此序号之后的新事件，分页期间固定"
+            }
+          },
+          {
             "name": "X-Request-Id",
             "in": "header",
             "required": false,
@@ -44475,6 +44484,10 @@
           "limit": {
             "$ref": "#/components/schemas/PageLimit",
             "description": "页大小"
+          },
+          "after_seq": {
+            "$ref": "#/components/schemas/Count",
+            "description": "仅返回此序号之后的新事件，分页期间固定"
           }
         },
         "required": [
@@ -62473,6 +62486,120 @@
         ],
         "additionalProperties": false,
         "x-uaw-protocol": "conversation-v1"
+      },
+      "ConversationStreamRecord": {
+        "type": "object",
+        "description": "原模型调用的未完成正文检查点，不授予执行或完成。",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原invocation ID"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "流记录CAS"
+          },
+          "run_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Run"
+          },
+          "conversation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原会话"
+          },
+          "operation_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原Agent operation"
+          },
+          "item_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原稳定消息"
+          },
+          "input_revision": {
+            "$ref": "#/components/schemas/Revision",
+            "description": "原输入版本"
+          },
+          "attempt_id": {
+            "$ref": "#/components/schemas/ID",
+            "description": "实际提供方attempt"
+          },
+          "snapshot_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原上下文"
+          },
+          "model_config": {
+            "$ref": "#/components/schemas/ResolvedModelConfig",
+            "description": "原模型配置"
+          },
+          "state": {
+            "enum": [
+              "receiving",
+              "received",
+              "interrupted",
+              "published"
+            ],
+            "description": "生命周期"
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text",
+            "description": "只含允许展示的普通回复前缀"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "创建时刻"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "最新检查点时刻"
+          },
+          "first_provider_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "首content，不含推理"
+          },
+          "first_text_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "首可展示正文"
+          },
+          "received_at": {
+            "$ref": "#/components/schemas/Timestamp",
+            "description": "原响应收齐时刻"
+          },
+          "output_ref": {
+            "$ref": "#/components/schemas/Ref",
+            "description": "原模型输出"
+          },
+          "failure_code": {
+            "$ref": "#/components/schemas/ID",
+            "description": "原失败，不作为完成"
+          },
+          "provider_chunks": {
+            "$ref": "#/components/schemas/Count",
+            "description": "收到的content分片数"
+          },
+          "persisted_chunks": {
+            "$ref": "#/components/schemas/Count",
+            "description": "已持久正文次数"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "run_id",
+          "conversation_id",
+          "operation_id",
+          "item_id",
+          "input_revision",
+          "attempt_id",
+          "snapshot_ref",
+          "model_config",
+          "state",
+          "text",
+          "created_at",
+          "updated_at",
+          "provider_chunks",
+          "persisted_chunks"
+        ],
+        "additionalProperties": false
       },
       "QualityFiles": {
         "additionalProperties": false,

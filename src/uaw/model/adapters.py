@@ -1,7 +1,8 @@
-"""Explicit non-streaming Chat Completions adapter; no implicit provider compatibility."""
+"""Explicit Chat Completions transports; streaming requires a trusted content sink."""
 
 import hashlib
 import json
+from dataclasses import replace
 from typing import Any
 
 import httpx
@@ -9,6 +10,7 @@ import httpx
 from uaw.model.capability import bounded_schema
 from uaw.model.contracts import ProviderFailure, ProviderRequest, ProviderResponse
 from uaw.model.structured_text import structured_text
+from uaw.shared.errors import DomainError
 from uaw.shared.schema import parse_json, validator
 
 MAX_RESPONSE_BYTES = 2_097_152
@@ -41,9 +43,11 @@ class ChatCompletionsAdapter:
         body: dict[str, Any] = {
             "model": request.settings["model_name"],
             "messages": list(request.prompt.messages),
-            "stream": False,
+            "stream": request.on_content is not None,
             request.settings["output_token_parameter"]: config["max_output_tokens"],
         }
+        if request.on_content is not None:
+            body["stream_options"] = {"include_usage": True}
         if request.settings.get("include_n", True):
             body["n"] = 1
         if "temperature" in config:
@@ -103,6 +107,8 @@ class ChatCompletionsAdapter:
         )
 
     async def generate(self, request: ProviderRequest) -> ProviderResponse:
+        if request.on_content is not None:
+            return await self._stream(request)
         body = self.body(request)
         headers = {"Content-Type": "application/json"}
         if request.credential:
@@ -159,6 +165,71 @@ class ChatCompletionsAdapter:
             except ProviderFailure, AttributeError, KeyError, TypeError, ValueError, RecursionError:
                 pass
             raise failure from None
+
+    async def _stream(self, request: ProviderRequest) -> ProviderResponse:
+        from uaw.model.streaming import CompletionStream
+
+        stream = CompletionStream(
+            (request.settings["model_name"], *request.settings.get("allowed_response_models", []))
+        )
+        headers = {"Content-Type": "application/json"}
+        if request.credential:
+            headers["Authorization"] = "Bearer " + request.credential.get_secret_value()
+        try:
+            async with self.client.stream(
+                "POST",
+                request.endpoint.rstrip("/") + "/chat/completions",
+                json=self.body(request),
+                headers=headers,
+                follow_redirects=False,
+                timeout=request.settings["timeout_ms"] / 1000,
+            ) as response:
+                if response.status_code != 200:
+                    raise ProviderFailure(
+                        f"provider_http_{response.status_code}",
+                        safe_retry=response.status_code == 429,
+                    )
+                if not response.headers.get("content-type", "").startswith("text/event-stream"):
+                    raise ProviderFailure("provider_stream_content_type_invalid")
+                async for chunk in response.aiter_bytes():
+                    for content in stream.feed(chunk):
+                        assert request.on_content is not None
+                        await request.on_content(content)
+            parsed = self.parse(stream.complete(), request)
+            return replace(parsed, raw=bytes(stream.raw))
+        except httpx.ConnectError, httpx.ConnectTimeout:
+            failure = ProviderFailure("provider_connect_failed", safe_retry=True)
+        except httpx.TimeoutException:
+            failure = ProviderFailure("provider_timeout", category="timeout")
+        except httpx.HTTPError:
+            failure = ProviderFailure("provider_transport_unknown", category="unknown_effect")
+        except ProviderFailure as exc:
+            failure = exc
+        except DomainError as exc:
+            failure = ProviderFailure(exc.failure.code, category=exc.failure.category)
+        except KeyError, TypeError, ValueError, IndexError, RecursionError:
+            failure = ProviderFailure("provider_stream_response_invalid")
+        finally:
+            if request.observation is not None:
+                request.observation.raw = bytes(stream.raw) or None
+                if stream.usage:
+                    try:
+                        request.observation.resources = {
+                            "input_tokens": _count(stream.usage["prompt_tokens"]),
+                            "output_tokens": _count(stream.usage["completion_tokens"]),
+                        }
+                    except ProviderFailure, KeyError, TypeError:
+                        pass
+        failure.response_raw = bytes(stream.raw) or None
+        if stream.usage:
+            try:
+                failure.resources = {
+                    "input_tokens": _count(stream.usage["prompt_tokens"]),
+                    "output_tokens": _count(stream.usage["completion_tokens"]),
+                }
+            except ProviderFailure, KeyError, TypeError:
+                pass
+        raise failure
 
     @staticmethod
     def parse(raw: bytes, request: ProviderRequest) -> ProviderResponse:

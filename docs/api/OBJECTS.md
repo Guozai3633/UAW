@@ -1014,6 +1014,7 @@
 | [ConversationProtocolBinding](objects/ConversationProtocolBinding.md) | 新Run专用版本绑定；不转换旧Run或改写旧Budget语义。 |
 | [ConversationRequestMeta](objects/ConversationRequestMeta.md) | 新对话控制专用元信息；不能提交给旧0.1入口。 |
 | [ConversationRunRef](objects/ConversationRunRef.md) |  |
+| [ConversationStreamRecord](objects/ConversationStreamRecord.md) | 原模型调用的未完成正文检查点，不授予执行或完成。 |
 | [ConversationsConfigureRequest](objects/ConversationsConfigureRequest.md) | 修改会话设置。 |
 | [ConversationsCreateRequest](objects/ConversationsCreateRequest.md) | 创建会话。 |
 | [ConversationsGetRequest](objects/ConversationsGetRequest.md) | 读取会话。 |

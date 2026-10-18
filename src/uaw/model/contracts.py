@@ -4,6 +4,7 @@ Public wire objects still use the authoritative JSON Schema. Context adapters ma
 construct ModelPrompt without importing ProviderRequest or ProviderResponse.
 """
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -32,6 +33,16 @@ class ProviderRequest:
     protocol: str
     output_schema: Payload | None
     operation_id: str
+    on_content: Callable[[str], Awaitable[None]] | None = None
+    observation: ProviderObservation | None = None
+
+
+@dataclass
+class ProviderObservation:
+    """Private bytes observed before cancellation; never used as a successful result."""
+
+    raw: bytes | None = None
+    resources: Payload | None = None
 
 
 @dataclass(frozen=True)

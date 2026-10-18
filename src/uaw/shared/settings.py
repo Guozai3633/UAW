@@ -30,6 +30,7 @@ class Settings(BaseModel):
     browser_session_signing_key: SecretStr | None = None
     browser_session_seconds: int = Field(default=3600, ge=300, le=28800)
     agent_execution_enabled: bool = False
+    agent_streaming_enabled: bool = False
     agent_worker_count: int = Field(default=1, ge=1, le=4)
     agent_queue_capacity: int = Field(default=16, ge=1, le=64)
     agent_max_output_tokens: int = Field(default=8192, ge=128, le=8192)

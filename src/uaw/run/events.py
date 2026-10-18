@@ -70,11 +70,18 @@ class EventReader:
         limit: int = 50,
         cursor: str | None = None,
         items: bool = False,
+        after_seq: int | None = None,
     ) -> dict[str, Any]:
         validate_contract("PageLimit", limit)
+        if after_seq is not None:
+            validate_contract("Count", after_seq)
+            if items:
+                raise reject("cursor_invalid", "Item snapshots do not accept event offsets", 412)
         await self.store.get(principal, "conversations", conversation_id)
         kind = "items" if items else "events"
         value = self._decode(cursor, principal, conversation_id, kind) if cursor else None
+        if value and after_seq is not None and value.get("start", 0) != after_seq:
+            raise reject("cursor_invalid", "Event offset changed during pagination", 412)
         async with self.store.database.sessions() as session:
             current = (
                 await session.scalar(
@@ -85,7 +92,10 @@ class EventReader:
                 )
             ) or 0
             watermark = value["watermark"] if value else current
-            after = value["after"] if value else 0
+            start = value.get("start", 0) if value else after_seq or 0
+            if start > watermark:
+                raise reject("snapshot_required", "Event offset exceeds owned history", 412)
+            after = value["after"] if value else start
             filters = [
                 OutboxRow.principal_id == principal.id,
                 OutboxRow.stream_id == conversation_id,
@@ -123,13 +133,26 @@ class EventReader:
                 )
             rows = list((await session.scalars(query)).all())
             page_rows = rows[:limit]
+            event_rows = {}
+            if not items and page_rows:
+                event_rows = {
+                    row.resource_id: row
+                    for row in await session.scalars(
+                        select(RecordRow).where(
+                            RecordRow.principal_id == principal.id,
+                            RecordRow.namespace == "events",
+                            RecordRow.resource_id.in_([row.event_id for row in page_rows]),
+                            RecordRow.deleted.is_(False),
+                        )
+                    )
+                }
             entries = []
             for row in page_rows:
                 if items:
                     entries.append(row.payload["parameters"])
                 else:
-                    event = await session.get(RecordRow, (principal.id, "events", row.event_id))
-                    if event is None or event.deleted:
+                    event = event_rows.get(row.event_id)
+                    if event is None:
                         raise reject(
                             "snapshot_required",
                             "Event history is no longer available",
@@ -147,6 +170,7 @@ class EventReader:
                         "after": page_rows[-1].seq,
                         "watermark": watermark,
                         "expires": value["expires"] if value else int(time.time()) + 3600,
+                        **({"start": start} if start else {}),
                     }
                 )
         validate_contract("ItemPage" if items else "EventPage", result)

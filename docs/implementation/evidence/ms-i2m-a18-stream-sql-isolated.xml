@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="31.516" timestamp="2026-10-18T22:13:00.255263+08:00" hostname="LAPTOP-JE6KH8OE"><testcase classname="tests.integration.agent.test_streaming" name="test_real_sql_partial_visible_before_final_same_item_replays_and_does_not_repeat_model[case0]" time="11.743" /><testcase classname="tests.integration.agent.test_streaming" name="test_provider_disconnect_preserves_partial_and_unknown_without_success_or_resend[case0]" time="9.238" /><testcase classname="tests.integration.agent.test_streaming" name="test_cancel_during_stream_does_not_publish_success_and_preserves_billing[case0]" time="9.144"><failure message="AssertionError: assert 'running' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + running">tests\integration\agent\test_streaming.py:137: in test_cancel_during_stream_does_not_publish_success_and_preserves_billing
+    assert (await p.runs.get_run(p.actor, p.run["id"]))["status"] == "cancelled"
+E   AssertionError: assert 'running' == 'cancelled'
+E     
+E     - cancelled
+E     + running</failure></testcase></testsuite></testsuites>

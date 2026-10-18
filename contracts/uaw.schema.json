@@ -9710,6 +9710,10 @@
         "limit": {
           "$ref": "#/$defs/PageLimit",
           "description": "页大小"
+        },
+        "after_seq": {
+          "$ref": "#/$defs/Count",
+          "description": "仅返回此序号之后的新事件，分页期间固定"
         }
       },
       "required": [
@@ -27708,6 +27712,120 @@
       ],
       "additionalProperties": false,
       "x-uaw-protocol": "conversation-v1"
+    },
+    "ConversationStreamRecord": {
+      "type": "object",
+      "description": "原模型调用的未完成正文检查点，不授予执行或完成。",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID",
+          "description": "原invocation ID"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "流记录CAS"
+        },
+        "run_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Run"
+        },
+        "conversation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原会话"
+        },
+        "operation_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原Agent operation"
+        },
+        "item_id": {
+          "$ref": "#/$defs/ID",
+          "description": "原稳定消息"
+        },
+        "input_revision": {
+          "$ref": "#/$defs/Revision",
+          "description": "原输入版本"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/ID",
+          "description": "实际提供方attempt"
+        },
+        "snapshot_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原上下文"
+        },
+        "model_config": {
+          "$ref": "#/$defs/ResolvedModelConfig",
+          "description": "原模型配置"
+        },
+        "state": {
+          "enum": [
+            "receiving",
+            "received",
+            "interrupted",
+            "published"
+          ],
+          "description": "生命周期"
+        },
+        "text": {
+          "$ref": "#/$defs/Text",
+          "description": "只含允许展示的普通回复前缀"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "创建时刻"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "最新检查点时刻"
+        },
+        "first_provider_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "首content，不含推理"
+        },
+        "first_text_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "首可展示正文"
+        },
+        "received_at": {
+          "$ref": "#/$defs/Timestamp",
+          "description": "原响应收齐时刻"
+        },
+        "output_ref": {
+          "$ref": "#/$defs/Ref",
+          "description": "原模型输出"
+        },
+        "failure_code": {
+          "$ref": "#/$defs/ID",
+          "description": "原失败，不作为完成"
+        },
+        "provider_chunks": {
+          "$ref": "#/$defs/Count",
+          "description": "收到的content分片数"
+        },
+        "persisted_chunks": {
+          "$ref": "#/$defs/Count",
+          "description": "已持久正文次数"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "run_id",
+        "conversation_id",
+        "operation_id",
+        "item_id",
+        "input_revision",
+        "attempt_id",
+        "snapshot_ref",
+        "model_config",
+        "state",
+        "text",
+        "created_at",
+        "updated_at",
+        "provider_chunks",
+        "persisted_chunks"
+      ],
+      "additionalProperties": false
     },
     "QualityFiles": {
       "additionalProperties": false,

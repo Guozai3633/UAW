@@ -2,6 +2,7 @@ import {UawClient,ApiFailure,TransportError,requestMeta,type WebSession} from '.
 import type {Conversation,Schema,Approval,Run,DisplayItem} from '../../lib/api/types';
 import {Projection,SnapshotRequired,terminal} from '../../lib/events/projection';
 import {DraftStore,type Recovery} from '../../lib/cache/drafts';
+import {markTiming} from '../../lib/events/timing';
 export interface RecoveryPort { find(conversationId:string,requestId:string,signal:AbortSignal):Promise<Run|undefined>; }
 export type WorkspaceHost={session:()=>WebSession|null; subscribe?:(callback:()=>void)=>()=>void;
  unavailableReason?:()=>string;logout?:()=>Promise<void>;recovery?:RecoveryPort};
@@ -15,13 +16,14 @@ export class WorkspaceController {
  private abort=new AbortController();private timer:ReturnType<typeof setTimeout>|undefined;
  private reads:Promise<void>|undefined;private generation=0;private stopped=true;private projection=new Projection();
  private unknownActions=new Set<string>();private mutation:symbol|undefined;
+  private snapshotReady=false;
  constructor(readonly client:UawClient,readonly host:WorkspaceHost,private drafts=new DraftStore(),private pollMs=3000){}
  snapshot=()=>this.value;
  subscribe=(f:()=>void)=>{this.listeners.add(f);return()=>{this.listeners.delete(f);};};
  private patch(p:Partial<View>){this.value={...this.value,...p};for(const f of this.listeners)f();}
  private guard(generation:number){if(generation!==this.generation||this.stopped)throw new DOMException('操作已取消','AbortError');if(this.host.session()?.identityKey!==this.identity){void this.start();throw new DOMException('身份已变化','AbortError');}}
  private sameIdentity(){if(this.host.session()?.identityKey!==this.identity){void this.start();return false;}return true;}
- private reset(){this.mutation=undefined;this.abort.abort();this.abort=new AbortController();clearTimeout(this.timer);this.generation++;this.projection.clear();this.unknownActions.clear();this.reads=undefined;this.patch(initial());}
+  private reset(){this.snapshotReady=false;this.mutation=undefined;this.abort.abort();this.abort=new AbortController();clearTimeout(this.timer);this.generation++;this.projection.clear();this.unknownActions.clear();this.reads=undefined;this.patch(initial());}
  async start(initialId?:string){this.stopped=false;const identity=this.host.session()?.identityKey??null;
   if(identity!==this.identity||this.abort.signal.aborted){this.reset();this.identity=identity;this.drafts.bind(identity);}
   if(!identity){this.patch({error:this.host.unavailableReason?.()??'浏览器身份入口尚未接入，请等待服务端会话。'});return;}
@@ -44,7 +46,7 @@ export class WorkspaceController {
  }
  stop(){this.stopped=true;this.abort.abort();clearTimeout(this.timer);this.generation++;}
  async logout(){this.stop();this.identity=null;this.drafts.clear();this.reset();await this.host.logout?.();}
- private clearCurrent(){this.projection.clear();this.patch({active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:''});}
+  private clearCurrent(){this.snapshotReady=false;this.projection.clear();this.patch({active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:''});}
  private fail(e:unknown){if(e instanceof DOMException&&e.name==='AbortError')return;
   const denied=e instanceof ApiFailure&&['denied','missing'].includes(e.result.kind);
   if(denied)this.clearCurrent();
@@ -59,7 +61,7 @@ export class WorkspaceController {
  }
  async open(id:string){
   this.mutation=undefined;this.abort.abort();this.abort=new AbortController();clearTimeout(this.timer);const g=++this.generation;
-  this.projection.clear();this.patch({loading:true,busy:false,active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:'',error:'',stopping:false});
+   this.snapshotReady=false;this.projection.clear();this.patch({loading:true,busy:false,active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:'',error:'',stopping:false});
   try{if(!this.sameIdentity())return;
    if(!this.value.conversations.some(c=>c.id===id))throw new Error('URL会话不在当前身份的可见列表中，请重新读取会话列表。');
    const active=await this.client.conversation(id,this.abort.signal);this.guard(g);
@@ -69,7 +71,8 @@ export class WorkspaceController {
   }catch(e){if(g===this.generation)this.fail(e);}finally{if(g===this.generation){this.patch({loading:false});this.schedule(g);}}
  }
  private schedule(g:number){if(this.stopped||g!==this.generation)return;clearTimeout(this.timer);
-  this.timer=setTimeout(async()=>{try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}finally{this.schedule(g);}},this.pollMs);}
+   const running=this.value.run?.status==='running'||this.value.run?.status==='queued';
+   this.timer=setTimeout(async()=>{try{await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}finally{this.schedule(g);}},running?Math.min(this.pollMs,250):this.pollMs);}
  private async pages<T extends {items:unknown[];next_cursor?:string;snapshot_revision:number}>(load:(cursor?:string)=>Promise<T>){
   const generation=this.generation;let cursor:string|undefined,revision:number|undefined;const cursors=new Set<string>();const items:T['items']=[];
   for(let n=0;n<64;n++){const page=await load(cursor);this.guard(generation);if(revision!==undefined&&revision!==page.snapshot_revision)throw new SnapshotRequired('分页快照版本变化');
@@ -82,7 +85,8 @@ export class WorkspaceController {
   this.guard(g);const current=this.readFresh(g);this.reads=current;
   try{await current;}finally{if(this.reads===current)this.reads=undefined;}
  }
- private async readFresh(g:number){const active=this.value.active;if(!active)return;
+  private async readFresh(g:number){const active=this.value.active;if(!active)return;
+   if(this.snapshotReady&&(!this.value.recovery||this.value.recovery.runId)){await this.readIncremental(g,active.id);return;}
   if(!this.value.conversations.some(c=>c.id===active.id)){this.projection.clear();this.patch({active:undefined,items:[],run:undefined,frame:undefined,approvals:[],draft:''});throw new Error('当前会话已不在服务端可见列表中，请选择当前可见会话。');}const signal=this.abort.signal;
   const load=async()=>{
    const current=await this.client.conversation(active.id,signal);this.guard(g);
@@ -107,30 +111,65 @@ export class WorkspaceController {
    }
    const approvalIds=new Set([...this.projection.approvals.keys(),...this.projection.sorted().flatMap(i=>i.type==='approval'?i.resource_refs.filter(r=>r.kind==='approval').map(r=>r.id):[])]);
    for(const id of approvalIds){const approval=await this.client.approval(id,signal);this.guard(g);this.projection.approvals.set(id,approval);}
-   this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：尚无原请求Run回执，不会重发。':'',recovery:rec,
+    this.snapshotReady=true;this.patch({active:current,connected:true,error:rec&&!rec.runId?'发送结果待对账：尚无原请求Run回执，不会重发。':'',recovery:rec,
     items:this.projection.sorted(),run:this.projection.run,frame:this.projection.frame,approvals:[...this.projection.approvals.values()]});
   };
   try{await load();}catch(e){if(e instanceof SnapshotRequired || e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){
     this.projection.clear();await load();}else throw e;}
  }
- async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.list(g);await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
+  private async readIncremental(g:number,id:string){
+   try{
+    const after=this.projection.lastSeq,signal=this.abort.signal;
+    const history=await this.pages(c=>this.client.events(id,c,signal,after));this.guard(g);
+    const events=history.items as Schema['EventEnvelope'][];
+    // Bounded parallel reads; apply in sequence. Full Item revisions make replay idempotent.
+    for(let offset=0;offset<events.length;offset+=4){
+     const batch=events.slice(offset,offset+4);
+     const payloads=await Promise.all(batch.map(event=>this.client.payload(event.event_id,signal)));this.guard(g);
+     for(let index=0;index<batch.length;index++){
+      const event=batch[index];if(event.stream_id!==id)throw new SnapshotRequired('事件会话不一致');
+       this.projection.apply(event,payloads[index]);
+       markTiming('event.applied',{conversation_id:id,seq:event.seq,event_id:event.event_id});
+      this.patch({items:this.projection.sorted(),run:this.projection.run,frame:this.projection.frame});
+     }
+    }
+    let rec=this.drafts.read().recovery;
+    if(events.some(event=>event.type==='run.updated')){
+     const current=await this.client.conversation(id,signal);this.guard(g);
+     if(current.id!==id||this.host.session()?.principal&&current.owner_id!==this.host.session()!.principal!.id)throw new SnapshotRequired('会话归属变化');
+     this.patch({active:current});
+    }
+    if(this.projection.run&&terminal(this.projection.run.status)){
+     this.patch({stopping:false});if(rec?.runId===this.projection.run.id){this.drafts.recovery();rec=undefined;}
+    }
+    for(const approval of this.projection.approvals.values())if(approval.status==='pending'){
+     const current=await this.client.approval(approval.id,signal);this.guard(g);this.projection.approvals.set(current.id,current);
+    }
+    this.patch({connected:true,error:'',recovery:rec,approvals:[...this.projection.approvals.values()]});
+   }catch(e){if(e instanceof SnapshotRequired||e instanceof ApiFailure&&['cursor_invalid','snapshot_required'].includes(e.result.failure?.code??'')){
+    this.snapshotReady=false;this.projection.clear();await this.readFresh(g);
+   }else throw e;}
+  }
+  async reconnect(){if(!this.sameIdentity())return;if(this.value.active){const g=this.generation;try{await this.list(g);this.snapshotReady=false;await this.refresh(g);}catch(e){if(g===this.generation)this.fail(e);}}else await this.start();}
  async send(){const active=this.value.active,text=this.value.draft;
   if(!this.sameIdentity()||!active||!text.trim()||!this.value.connected||this.mutation||this.value.recovery)return;
   const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true,error:''});const g=this.generation;
   try{const meta=requestMeta(active.revision);
    // Persist lookup only BEFORE dispatch; never persist permission or Run status.
    const rec:Recovery={requestId:meta.request_id,conversationId:active.id};this.drafts.recovery(rec);this.patch({recovery:rec});
-   const run=await this.client.submit(active.id,{text,attachment_refs:[]},meta,this.abort.signal);this.guard(g);
-   this.drafts.recovery({...rec,runId:run.id});this.projection.run=run;this.edit('');this.patch({run,recovery:{...rec,runId:run.id}});await this.refresh(g);
+    markTiming('turn.submit',{conversation_id:active.id,request_id:meta.request_id});
+    const run=await this.client.submit(active.id,{text,attachment_refs:[]},meta,this.abort.signal);this.guard(g);
+    markTiming('turn.accepted',{conversation_id:active.id,run_id:run.id,request_id:meta.request_id});
+    this.drafts.recovery({...rec,runId:run.id});this.projection.run=run;this.edit('');this.patch({run,recovery:{...rec,runId:run.id}});this.snapshotReady=false;await this.refresh(g);
   }catch(e){if(g===this.generation){if(!(e instanceof TransportError) && !(e instanceof DOMException&&e.name==='AbortError') && !(e instanceof ApiFailure&&e.result.kind==='waiting')){this.drafts.recovery();this.patch({recovery:undefined});}this.fail(e);}}
-  finally{if(this.mutation===operation){this.mutation=undefined;this.patch({busy:false});}}
+   finally{if(this.mutation===operation){this.mutation=undefined;this.patch({busy:false});this.schedule(g);}}
  }
  async cancel(){const old=this.value.run;if(!this.sameIdentity()||!old||terminal(old.status)||this.mutation||!this.value.connected||this.unknownActions.has(old.id))return;
   const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true,stopping:true});const g=this.generation;
   try{const current=await this.client.run(old.id,this.abort.signal);this.guard(g);
    if(current.id!==old.id||current.conversation_id!==old.conversation_id||current.revision!==old.revision)throw new Error('运行版本已变化，请重新读取后操作。');
    await this.client.control(current.id,{mode:'cancel',preserve_refs:[],reason:'用户请求停止'},requestMeta(current.revision),this.abort.signal);this.guard(g);
-   await this.refresh(g); // Acknowledgement never means cancelled.
+    this.snapshotReady=false;await this.refresh(g); // Acknowledgement never means cancelled.
   }catch(e){if(g===this.generation){if(e instanceof TransportError)this.unknownActions.add(old.id);this.fail(e);}}
   finally{if(this.mutation===operation){this.mutation=undefined;this.patch({busy:false});}}
  }
@@ -138,7 +177,7 @@ export class WorkspaceController {
   if(!this.sameIdentity()||this.mutation||!this.value.connected||this.unknownActions.has(old.id))return;const operation=Symbol('mutation');this.mutation=operation;this.patch({busy:true});const g=this.generation;
   try{const current=await this.client.approval(old.id,this.abort.signal);this.guard(g);
    if(current.id!==old.id||current.status!=='pending'||Date.parse(current.expires_at)<=Date.now()||current.revision!==old.revision||current.arguments_hash!==old.arguments_hash||JSON.stringify(current.resource_refs)!==JSON.stringify(old.resource_refs))throw new Error('审批已过期或版本变化，请重新读取。');
-   await this.client.decide(current.id,{decision,expected_arguments_hash:current.arguments_hash,expected_resource_refs:current.resource_refs,reason:decision==='decline'?'用户拒绝本次动作':'用户批准本次动作'},requestMeta(current.revision),this.abort.signal);this.guard(g);await this.refresh(g);
+    await this.client.decide(current.id,{decision,expected_arguments_hash:current.arguments_hash,expected_resource_refs:current.resource_refs,reason:decision==='decline'?'用户拒绝本次动作':'用户批准本次动作'},requestMeta(current.revision),this.abort.signal);this.guard(g);this.snapshotReady=false;await this.refresh(g);
   }catch(e){if(g===this.generation){if(e instanceof TransportError)this.unknownActions.add(old.id);this.fail(e);}}finally{if(this.mutation===operation){this.mutation=undefined;this.patch({busy:false});}}
  }
 }

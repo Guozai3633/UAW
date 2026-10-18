@@ -37,6 +37,11 @@ class RunTerminationController:
                 raise reject(
                     "termination_original_job_required", "Stopped original job required", 403
                 )
+            from uaw.run.streaming import interrupt_run
+
+            await interrupt_run(
+                tx, run_id, job.get("failure", {}).get("code", "stream_job_stopped")
+            )
             run = await tx.load("runs", run_id)
             if run.payload["status"] in ("completed", "failed", "cancelled"):
                 await stop_clock(tx, actor, run_id, self.clocks)

@@ -13,6 +13,7 @@
 | `conversation_id` | [ID](./ID.md) | 是 | 会话 | 类型约束见对应对象 |
 | `cursor` | [Cursor](./Cursor.md) | 否 | 续页 | 类型约束见对应对象 |
 | `limit` | [PageLimit](./PageLimit.md) | 否 | 页大小 | 类型约束见对应对象 |
+| `after_seq` | [Count](./Count.md) | 否 | 仅返回此序号之后的新事件，分页期间固定 | 类型约束见对应对象 |
 
 拒绝未声明字段。可选字段省略表示没有提供；只有显式 `null` 分支允许空值。默认注解不会自动写入请求。
 

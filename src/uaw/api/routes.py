@@ -564,6 +564,7 @@ def install_routes(app: FastAPI, container: Container) -> None:
                     limit=payload.get("limit", 20),
                     cursor=payload.get("cursor"),
                     items=operation == "conversations.items",
+                    after_seq=payload.get("after_seq"),
                 )
             elif operation == "models.list":
                 result = await configuration.models()
