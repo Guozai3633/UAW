@@ -65,7 +65,7 @@
   "runtime_subagents_enabled": false,
   "fixed_commit": "1f84a746cfbd2ceeab15876f9260a1d2c74d6cfe",
   "published": true,
-  "status": "A15_actual_presentation_HTTP_ready_B_specific_UI_repair_dispatched",
+  "status": "A15_B_H02_I03_component_accepted_and_actual_UI_verified_H02_I04_review_wait_timeout_open",
   "remote_repository": "https://github.com/Guozai3633/UAW.git",
   "source_manifest": "docs/implementation/evidence/ms-i2m-preparation.json",
   "source_sha256": {
@@ -192,23 +192,23 @@
   },
   "worker_start_authorized_and_sent": true,
   "local_integration": {
-    "stage": "A15",
+    "stage": "A15+B-H02-I03",
     "published": true,
     "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
     "fixed_ref": "ms-i2m-a15-source",
     "receipt": "docs/implementation/evidence/h02-i03-a15.json",
     "runtime_deployed": true,
     "runtime_backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
-    "runtime_frontend_source": "500d292937b511dbced4e674e3486b84213a2de6",
-    "runtime_receipt": "docs/implementation/evidence/h02-i03-a15.json",
+    "runtime_frontend_source": "af3889f209054b2485aa5ff7aeab6479878342b0",
+    "runtime_receipt": "docs/implementation/evidence/h02-i03-ab-final.json",
     "runtime_restart_same_source": false,
     "live_provider_smoke": "no_A15_model_calls_actual_owned_presentation_HTTP_verified",
     "quality_capture": "prior_A13_eight_attempts_quality_still_incomplete",
-    "human_experience": "pending_retest_after_H02_I02_report_format_failure",
+    "human_experience": "H02_I03_display_repaired_original_Run_timed_out_during_owner_review_H02_I04_open",
     "next": [
-      "B_UI_stage_review_and_exact_dist_deployment",
-      "original_Page_readonly_check",
-      "owner_retest_no_automatic_acceptance"
+      "A_fix_current_delivery_review_wait_source_contract",
+      "review_wait_clock_pause_recovery_and_acceptance_revalidation",
+      "new_isolated_Run_and_owner_retest_no_old_Run_resurrection"
     ],
     "offline_review_packet": "two_actual_second_generation_targets_all_fields_unselected",
     "actual_human_imports": 0,
@@ -229,11 +229,17 @@
         "status": "component_accepted_actual_1050px_original_conversation_verified"
       },
       "H02_I03": {
-        "status": "specific_repair_sent_actual_source_available_UI_in_progress",
+        "status": "component_accepted_deployed_actual_original_conversation_summary_and_historical_report_verified",
         "package_document": "docs/coordination/requests/A/H02-I03-B-run-presentation-sync.md",
-        "source_commit": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+        "source_commit": "af3889f209054b2485aa5ff7aeab6479878342b0",
         "fixed_ref": "ms-i2m-a15-source",
-        "actual_service": "H02-v6_same_original_Page"
+        "actual_service": "H02-v6_same_identity_original_conversation_new_Page_after_old_Page_closed",
+        "baseline_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+        "handoff_commit": "6e4b21b86c3d8966d11e5a9f363b0650f21eec30",
+        "unit": 115,
+        "controlled_Chromium": 66,
+        "receipt": "docs/implementation/evidence/h02-i03-ab-final.json",
+        "whole_H02_accepted": false
       }
     },
     "C": {
@@ -257,5 +263,14 @@
       "work_status": "delivered_stopped"
     }
   },
-  "old_human_runtime_preserved": "H01-v5"
+  "old_human_runtime_preserved": "H01-v5",
+  "open_human_issues": {
+    "H02_I04": {
+      "document": "docs/implementation/human-tests/H02-I04.md",
+      "status": "confirmed_unfixed",
+      "priority": "next",
+      "worker_dispatch_published": false,
+      "original_Run": "failed_v6_preserved_not_revived"
+    }
+  }
 }

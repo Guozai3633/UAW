@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-18",
+  "issue": "H02-I03",
+  "backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+  "frontend_source": "af3889f209054b2485aa5ff7aeab6479878342b0",
+  "B_handoff": "6e4b21b86c3d8966d11e5a9f363b0650f21eec30",
+  "B_component_accepted": true,
+  "whole_H02_accepted": false,
+  "unit": {
+    "file": "h02-i03-b-bound-final-unit.xml",
+    "sha256": "0886797b3a94e9d4b79e59d95735c3d986984cba8f6b12efc666091f29bc3353",
+    "tests": 115,
+    "unique_nodes": 115,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "controlled_Chromium": {
+    "file": "h02-i03-b-bound-final-browser.xml",
+    "sha256": "08ce7ff4be2f992aec6fb81e0a036d1628302f0a9b698f117a8eb9ecb6b704b9",
+    "tests": 66,
+    "unique_nodes": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "B_receipt_sha256": "af381e26ffa1cbdf40eb516a716bd0143c02119c6270837aab07f30145be5840",
+  "dist_hashes": [
+    {
+      "file": "index.html",
+      "bytes": 411,
+      "sha256": "691209ac20ffa101925f0bd1f8bd1238434bd8dd5e1281fcd7b9bd687068537d"
+    },
+    {
+      "file": "assets/index-BMQtQCI7.css",
+      "bytes": 21051,
+      "sha256": "e237d3788925a7c0d3fb4ff7897173b4e62672c34bf79621e43e2954852b8b7f"
+    },
+    {
+      "file": "assets/index-DcQ18qX1.js",
+      "bytes": 865669,
+      "sha256": "f85248b12b07521048a02eb407e09b9509f6bdc39f305827b52b80761fbf6516"
+    }
+  ],
+  "actual_deployment": {
+    "status": "deployed_actual_UI_refreshed_and_verified",
+    "prepared_at": "2026-10-18T05:36:01.212118+00:00",
+    "backend_source": "3f10b6af27ed5f56a726a7bafe8ee1d083f2bd2b",
+    "backend_runtime": "E:\\UAW\\.data\\human\\H02-v6",
+    "backend_restarted_by_frontend_switch": false,
+    "frontend_source": "af3889f209054b2485aa5ff7aeab6479878342b0",
+    "dist_hashes": [
+      {
+        "file": "index.html",
+        "bytes": 411,
+        "sha256": "691209ac20ffa101925f0bd1f8bd1238434bd8dd5e1281fcd7b9bd687068537d"
+      },
+      {
+        "file": "assets/index-BMQtQCI7.css",
+        "bytes": 21051,
+        "sha256": "e237d3788925a7c0d3fb4ff7897173b4e62672c34bf79621e43e2954852b8b7f"
+      },
+      {
+        "file": "assets/index-DcQ18qX1.js",
+        "bytes": 865669,
+        "sha256": "f85248b12b07521048a02eb407e09b9509f6bdc39f305827b52b80761fbf6516"
+      }
+    ],
+    "launcher_sha256": "b27cdc31b2551d0e6a9226ad9a236e2c4a5a0da92b46443868a9848c4a42c83d",
+    "worker_receipt_sha256": "cf5eec223a1029a341e24bb7ec3ab320d7e82024b681f0e0de250e2ceb5fa006",
+    "origin": "http://127.0.0.1:5183",
+    "database_settings_auth_unchanged": true,
+    "model_calls": 0,
+    "user_task_cancelled_resent_or_accepted": false,
+    "previous_frontend_snapshot": "E:\\UAW\\.data\\human\\H02-v6\\dist",
+    "frontend_pid": 8508,
+    "old_exact_frontend_pids": [
+      4580,
+      22980
+    ],
+    "deployed_at": "2026-10-18T05:36:27.876891+00:00",
+    "HTTP_checks": [
+      {
+        "file": "index.html",
+        "status": 200,
+        "sha256_matches": true
+      },
+      {
+        "file": "assets/index-BMQtQCI7.css",
+        "status": 200,
+        "sha256_matches": true
+      },
+      {
+        "file": "assets/index-DcQ18qX1.js",
+        "status": 200,
+        "sha256_matches": true
+      }
+    ],
+    "backend_ready": 200,
+    "actual_UI": {
+      "same_browser_original_cookie_reused": true,
+      "original_Page_closed_between_turns": true,
+      "new_Page_same_original_conversation": true,
+      "original_conversation": "conversation-6702653d5e0a45159a1eee55d171ab2f",
+      "original_Run": "run-169ef7763d694cc297c00b51dea9e6b4",
+      "current_Run_revision": 6,
+      "current_input_revision": 1,
+      "current_Run_status": "failed",
+      "understanding": "available_actual_original_model_summary_and_assumptions",
+      "old_report": "actual_full_body_readable_in_original_delivery_reader",
+      "acceptance_button": "disabled_old_proposal_revision5_current_Run6",
+      "default_status": "运行失败",
+      "technical_status": "default_collapsed",
+      "reload_reverified_summary_and_report": true,
+      "initial_browser_policy_refusal": "no_workaround_user_manually_refreshed_then_allowed_original_Page_read",
+      "screenshot": "docs/implementation/human-tests/H02-I03-actual.png",
+      "screenshot_sha256": "eec42b39a81a23b449b4d5408b9d8e2a2ad73fdc29a8445e9b0aff8915267003",
+      "waiting_acceptance_on_current_original_Run": false,
+      "new_model_calls": 0,
+      "user_confirmation_acceptance_cancellation_or_resubmission": false
+    },
+    "actual_process_inventory": [
+      {
+        "pid": 18628,
+        "parent_pid": 34124,
+        "role": "backend"
+      },
+      {
+        "pid": 16752,
+        "parent_pid": 18628,
+        "role": "backend"
+      },
+      {
+        "pid": 8508,
+        "parent_pid": 36388,
+        "role": "frontend"
+      },
+      {
+        "pid": 12600,
+        "parent_pid": 8508,
+        "role": "frontend"
+      }
+    ],
+    "historical_backend_and_frontend_helpers_exited_before_resume": true,
+    "restored_same_backend_launcher_before_frontend_switch": true
+  },
+  "actual_UI": {
+    "same_browser_original_cookie_reused": true,
+    "original_Page_closed_between_turns": true,
+    "new_Page_same_original_conversation": true,
+    "original_conversation": "conversation-6702653d5e0a45159a1eee55d171ab2f",
+    "original_Run": "run-169ef7763d694cc297c00b51dea9e6b4",
+    "current_Run_revision": 6,
+    "current_input_revision": 1,
+    "current_Run_status": "failed",
+    "understanding": "available_actual_original_model_summary_and_assumptions",
+    "old_report": "actual_full_body_readable_in_original_delivery_reader",
+    "acceptance_button": "disabled_old_proposal_revision5_current_Run6",
+    "default_status": "运行失败",
+    "technical_status": "default_collapsed",
+    "reload_reverified_summary_and_report": true,
+    "initial_browser_policy_refusal": "no_workaround_user_manually_refreshed_then_allowed_original_Page_read",
+    "screenshot": "docs/implementation/human-tests/H02-I03-actual.png",
+    "screenshot_sha256": "eec42b39a81a23b449b4d5408b9d8e2a2ad73fdc29a8445e9b0aff8915267003",
+    "waiting_acceptance_on_current_original_Run": false,
+    "new_model_calls": 0,
+    "user_confirmation_acceptance_cancellation_or_resubmission": false
+  },
+  "preservation": {
+    "read_only": true,
+    "original_source_payloads_checked": [
+      {
+        "namespace": "run.input_sets",
+        "id": "run-169ef7763d694cc297c00b51dea9e6b4",
+        "unchanged": true
+      },
+      {
+        "namespace": "items",
+        "id": "item-93f32e618f7c4245a7383bd9ce3cb00f",
+        "unchanged": true
+      },
+      {
+        "namespace": "items",
+        "id": "artifact-item-cde5251560bd2a56f2de342bbb6116bc354baa9bad1be995c766baa890bc9417",
+        "unchanged": true
+      },
+      {
+        "namespace": "agent.conversation.decisions",
+        "id": "web-step-model-1-run-169ef7763d694cc297c00b51dea9e6b4",
+        "unchanged": true
+      },
+      {
+        "namespace": "workspace.artifact.bindings",
+        "id": "artifact-94fbab11408025815e8ed8f75481aa6e6da4692f57ddc0b9e9f3a270edceab0f",
+        "unchanged": true
+      },
+      {
+        "namespace": "agent.completion.proposals",
+        "id": "completion-17854f8e366b2778bad51c9d3cb4c69fc20712ec988f372f07f78f09515f5ef2",
+        "unchanged": true
+      },
+      {
+        "namespace": "agent.completion.bundles",
+        "id": "completion-17854f8e366b2778bad51c9d3cb4c69fc20712ec988f372f07f78f09515f5ef2",
+        "unchanged": true
+      }
+    ],
+    "model_calls_on_original_Run": 2,
+    "new_model_calls": 0,
+    "Run_status_changed_by_existing_timeout_not_UI_repair": true,
+    "original_report_and_understanding_preserved": true
+  },
+  "new_issue": {
+    "id": "H02-I04",
+    "failure": {
+      "code": "background_deadline_expired",
+      "message": "Run execution time expired",
+      "category": "timeout",
+      "retryable": false,
+      "failed_phase": "admission"
+    },
+    "cause": "formal_delivery_wait_keeps_execution_clock_active",
+    "old_Run_status_before_timeout": "running",
+    "old_Run_revision": 5,
+    "original_run_revived_or_deadline_extended": false,
+    "next_priority": "separate_execution_time_from_owner_review_wait_with_current_source_checks"
+  },
+  "scope": {
+    "not_full_repository_regression": true,
+    "last_full_unchanged": true,
+    "C_D_no_new_dispatch": true,
+    "flags_unchanged": true,
+    "independent_fact_quality_not_claimed": true
+  },
+  "recorded_at": "2026-10-18T05:38:42.255651+00:00"
+}
