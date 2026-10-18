@@ -1,8 +1,8 @@
-# A18 / H02-v10：固定源码已部署，工程交付待最终审计提交
+# A18 / H02-v10：固定源码已部署，工程逐项审计通过
 
 2026-10-19。A独立完成必要前后端、接口、验证和接线；没有派发BCD、操作其工作区或启动子智能体。运行源码 **eeaa6ff815b42f95ff49993e84f8159f7fd6ae48**，网页契约固定 **363618f8c38eaa0078b54d6b3b807d3f97957893**。实际 <http://127.0.0.1:5183/> 已登录原账号；1209条原记录、12个会话、8份人审包、旧成果和费用保留。一次工具回合中断后实查进程消失，原任务空闲核对通过后恢复同一固定版本，没有重发模型。
 
-[本人测试](../implementation/human-tests/H02-v10.md) · [设计/目录/契约](../implementation/MS-I2m-A18.md) · [耗时/费用与限制](../implementation/MS-I2m-A18-LATENCY.md) · [固定部署](../implementation/evidence/ms-i2m-a18-final-deployment.json) · [当前检查](../implementation/evidence/ms-i2m-a18-current-delivery-check.json)。
+[逐项工程审计](../implementation/evidence/ms-i2m-a18-completion-audit.json) · [本人测试](../implementation/human-tests/H02-v10.md) · [设计/目录/契约](../implementation/MS-I2m-A18.md) · [耗时/费用与限制](../implementation/MS-I2m-A18-LATENCY.md) · [固定部署](../implementation/evidence/ms-i2m-a18-final-deployment.json) · [当前检查](../implementation/evidence/ms-i2m-a18-current-delivery-check.json)。
 
 - 实际固定DeepSeek正文增量→同一Item→原最终校验/用量/Run完成已贯通。真实生成中刷新仍读到in_progress且同一消息继续增长；出字后取消保留failed前缀和未知费用，原调用不重发，核对停止来源后新会话可独立提交。
 - 固定阶段107模型/契约、129网页单元、50真实SQL、71受控Chromium通过；最终仅增加无效Cookie清理，23项认证SQL通过。静态/类型/构建与固定生成来源通过。按实际范围报告，非全仓验收，last_full不动；原失败、预览固定来源失败和初次真实登录失败均保留。

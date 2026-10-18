@@ -1,14 +1,12 @@
 {
   "schema_version": "uaw.a18-completion-audit.v2",
-  "audited_at": "2026-10-18T16:38:51.187313+00:00",
+  "audited_at": "2026-10-18T16:40:00.667955+00:00",
   "branch": "integration",
   "runtime_source": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
   "stream_measurement_source": "1cce51e59d08fca09adf31af1c40d02518374153",
-  "goal_complete": false,
-  "goal_status": "active",
-  "remaining_required": [
-    "Commit current final docs/evidence and readonly context timing summary; verify commit and current service before Goal completion."
-  ],
+  "goal_complete": true,
+  "goal_status": "completion_audit_passed_pending_tool_update",
+  "remaining_required": [],
   "requirements": [
     {
       "id": "M1.recover_actual_checkout_design_before_implementation",
@@ -76,7 +74,7 @@
         },
         {
           "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
-          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+          "sha256": "4971112527d279a69f7053596ef4930be9c01d7a2336aab5a7840939f7db0324"
         }
       ],
       "scope": "Sequential small samples, process/cache/load limits explicit, startup excluded, original failures retained, no P95 or zero-cost inference."
@@ -265,7 +263,7 @@
         },
         {
           "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
-          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+          "sha256": "4971112527d279a69f7053596ef4930be9c01d7a2336aab5a7840939f7db0324"
         }
       ],
       "scope": "Prompts and model params unchanged, no unrelated full eight-case model rerun; human facts remain pending, no quality gain claimed."
@@ -364,7 +362,7 @@
         },
         {
           "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
-          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+          "sha256": "4971112527d279a69f7053596ef4930be9c01d7a2336aab5a7840939f7db0324"
         }
       ],
       "scope": "Twenty actual calls,43460/4025 known tokens plus2 unknown frames,20 unknown monetary settlements; no retries."
@@ -379,7 +377,7 @@
         },
         {
           "path": "docs/implementation/MS-I2m-A18-LATENCY.md",
-          "sha256": "bf8d9b21f65246c1e33ac7467d2f1e481dcdb0e38393eb7dfe5cf5b5060c32dc"
+          "sha256": "4971112527d279a69f7053596ef4930be9c01d7a2336aab5a7840939f7db0324"
         },
         {
           "path": "docs/api/STREAMING.md",
@@ -395,11 +393,11 @@
         },
         {
           "path": "docs/coordination/DISPATCH.md",
-          "sha256": "1a09610ef6d176627e5a05e933cadd9630121a24e22945bbd4bd0f46c0671603"
+          "sha256": "9480c3cc1331028a236daa8fdacf8795d262b95602b17a33937fc5eca7b8e18a"
         },
         {
           "path": "docs/plan/sessions/A.md",
-          "sha256": "924e81a3f67f48736377d98fd03af7c77426be7edd9ab45498cc3b34b1e6bb0d"
+          "sha256": "4ece19931d07fc83a51007664e1cd7af2e34fc625f0f9b3b8a06d73ade13a2a2"
         },
         {
           "path": "docs/plan/H02_CONVERSATION.md",
@@ -438,6 +436,28 @@
         }
       ],
       "scope": "Original approval non-execution and preview failure kept; normal later authorized tools succeeded. Invalid-cookie recovery still401/exact-origin/one-use-ticket, original auth unchanged."
+    },
+    {
+      "id": "M4.reviewable_recoverable_commits",
+      "status": "proven",
+      "evidence": {
+        "runtime_commit": "eeaa6ff815b42f95ff49993e84f8159f7fd6ae48",
+        "delivery_docs_commit": "6842f7e4a099a354b31748aae3d4c7ff53d0c71b",
+        "parent_chain_checked": true,
+        "worktree_clean_before_audit_seal": true
+      },
+      "scope": "Runtime and delivery artifacts committed on integration; final audit seal is a following commit without runtime changes."
+    },
+    {
+      "id": "M4.current_owner_page_after_service_interruption",
+      "status": "proven",
+      "evidence": [
+        {
+          "path": "docs/implementation/evidence/ms-i2m-a18-owner-service-recovery.json",
+          "sha256": "3bd6caef38a3d3e36e71cef731ce230425cd48ed46df4b0d35a6f1190c32c241"
+        }
+      ],
+      "scope": "Actual restored original account page visible,12 conversations,input enabled,same cookie; zero new original user actions."
     }
   ],
   "test_groups": [
@@ -494,5 +514,8 @@
     "old_failed_runs_revived": false,
     "budget_or_authorization_extended": false,
     "last_full_updated": false
-  }
+  },
+  "delivery_docs_commit": "6842f7e4a099a354b31748aae3d4c7ff53d0c71b",
+  "engineering_goal_proven": true,
+  "human_fact_quality_and_satisfaction_still_pending": true
 }
